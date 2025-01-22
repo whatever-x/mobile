@@ -12,69 +12,63 @@ plugins {
 
 kotlin {
     androidTarget {
-        compilations.all {
-            compileTaskProvider.configure {
-                compilerOptions {
-                    jvmTarget.set(JvmTarget.JVM_17)
-                }
-            }
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "composeApp"
+            baseName = "ComposeApp"
             isStatic = true
         }
     }
-
     room {
         schemaDirectory("$projectDir/schemas")
     }
 
+
     sourceSets {
-        sourceSets {
-            androidMain.dependencies {
-                implementation(compose.preview)
-                implementation(libs.androidx.activity.compose)
+        androidMain.dependencies {
+            implementation(compose.preview)
+            implementation(libs.androidx.activity.compose)
 
-                implementation(libs.koin.android)
-                implementation(libs.koin.androidx.compose)
-                implementation(libs.ktor.client.okhttp)
-            }
-            commonMain.dependencies {
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.ui)
-                implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
-                implementation(libs.androidx.lifecycle.viewmodel)
-                implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
+            implementation(libs.ktor.client.okhttp)
+        }
+        commonMain.dependencies {
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.ui)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(libs.androidx.lifecycle.runtime.compose)
 
-                implementation(libs.androidx.lifecycle.viewmodel)
-                implementation(libs.androidx.lifecycle.runtime.compose)
-                implementation(libs.jetbrains.compose.navigation)
-                implementation(libs.kotlinx.serialization.json)
-                implementation(libs.androidx.room.runtime)
-                implementation(libs.sqlite.bundled)
-                implementation(libs.koin.compose)
-                implementation(libs.koin.compose.viewmodel)
-                api(libs.koin.core)
+            implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.jetbrains.compose.navigation)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.sqlite.bundled)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            api(libs.koin.core)
 
-                implementation(libs.bundles.ktor)
-                implementation(libs.bundles.coil)
-            }
-            nativeMain.dependencies {
-                implementation(libs.ktor.client.darwin)
-            }
-            dependencies {
-                ksp(libs.androidx.room.compiler)
-            }
+            implementation(libs.bundles.ktor)
+            implementation(libs.bundles.coil)
+        }
+        nativeMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+        }
+        dependencies {
+            ksp(libs.androidx.room.compiler)
         }
     }
 }
@@ -103,4 +97,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+}
+
+dependencies {
+    debugImplementation(compose.uiTooling)
 }
