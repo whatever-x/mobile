@@ -1,0 +1,53 @@
+name: Add PR to Project with Status
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  add-to-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add PR to Project
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          FIELD_ID: ${{ secrets.FIELD_ID }}
+        run: |
+          curl -X POST \
+          -H "Authorization: Bearer $GITHUB_TOKEN" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "query": "mutation {
+              addProjectV2ItemById(input: {
+                projectId: \"$PROJECT_ID\",
+                contentId: \"${{ github.event.pull_request.node_id }}\"
+              }) {
+                clientMutationId
+              }
+            }"
+          }' \
+          https://api.github.com/graphql
+
+      - name: Update Project Status
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          FIELD_ID: ${{ secrets.FIELD_ID }}
+        run: |
+          curl -X POST \
+          -H "Authorization: Bearer $GITHUB_TOKEN" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "query": "mutation {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: \"$PROJECT_ID\",
+                itemId: \"${{ github.event.pull_request.node_id }}\",
+                fieldId: \"$FIELD_ID\",
+                value: \"😎Plz Review\"
+              }) {
+                clientMutationId
+              }
+            }"
+          }' \
+          https://api.github.com/graphql
