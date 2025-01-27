@@ -1,0 +1,58 @@
+name: Update End Date on Merge
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  update-end-date:
+    if: ${{ github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Retrieve Project Item ID for this PR
+        id: get_item_id
+        run: |
+          response=$(curl -s -X POST \
+            -H "Authorization: Bearer $REPOSITORY_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"query\": \"query { node(id: \\\"${{ github.event.pull_request.node_id }}\\\") { ... on PullRequest { projectItems(first: 10) { nodes { id } } } } }\"
+            }" \
+            https://api.github.com/graphql
+          )
+          
+          item_id=$(echo "$response" | jq -r '.data.node.projectItems.nodes[0].id')
+          
+          if [ "$item_id" != "null" ]; then
+            echo "✅ Successfully retrieved item ID."
+            echo "item_id=$item_id" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Failed to retrieve item ID. Response: $response"
+            exit 1
+          fi
+        env:
+          REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
+
+      - name: Update End Date field
+        run: |
+          MERGED_DATE="${{ github.event.pull_request.merged_at }}"
+          DATE_ONLY="$(echo "$MERGED_DATE" | cut -d'T' -f1)"
+          
+          response=$(curl -s -X POST \
+            -H "Authorization: Bearer $REPOSITORY_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"query\": \"mutation { updateProjectV2ItemFieldValue(input: { projectId: \\\"${{ secrets.PROJECT_ID }}\\\", itemId: \\\"${{ steps.get_item_id.outputs.item_id }}\\\", fieldId: \\\"${{ secrets.END_DATE_FIELD_ID }}\\\", value: { date: \\\"$DATE_ONLY\\\" } }) { clientMutationId } }\"
+            }" \
+            https://api.github.com/graphql
+          )
+          
+          if echo "$response" | jq -e '.data.updateProjectV2ItemFieldValue.clientMutationId' > /dev/null; then
+            echo "✅ Successfully set End Date to $DATE_ONLY."
+          else
+            echo "❌ Failed to set End Date. Response: $response"
+            exit 1
+          fi
+        env:
+          REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
