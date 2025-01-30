@@ -56,16 +56,13 @@ kotlin {
             implementation(libs.sqlite.bundled)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
-            api(libs.koin.core)
+            implementation(libs.koin.core)
 
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.coil)
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
-        }
-        dependencies {
-            ksp(libs.androidx.room.compiler)
         }
     }
 }
@@ -98,4 +95,5 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
+    ksp(libs.androidx.room.compiler)
 }
