@@ -1,8 +1,8 @@
-package com.whatever.app.core.domain
+package com.whatever.caramel.core.domain
 
 sealed interface Result<out D, out E: Error> {
     data class Success<out D>(val data: D): Result<D, Nothing>
-    data class Error<out E: com.whatever.app.core.domain.Error>(val error: E):
+    data class Error<out E: com.whatever.caramel.core.domain.Error>(val error: E):
         Result<Nothing, E>
 }
 

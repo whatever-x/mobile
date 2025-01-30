@@ -71,10 +71,10 @@ kotlin {
 }
 
 android {
-    namespace = "com.whatever.app"
+    namespace = "com.whatever.caramel"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
-        applicationId = "com.whatever.app"
+        applicationId = "com.whatever.caramel"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1

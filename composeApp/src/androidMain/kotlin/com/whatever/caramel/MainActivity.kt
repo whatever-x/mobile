@@ -1,9 +1,9 @@
-package com.whatever.app
+package com.whatever.caramel
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.whatever.app.app.App
+import com.whatever.caramel.app.App
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

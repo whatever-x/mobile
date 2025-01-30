@@ -1,8 +1,8 @@
-package com.whatever.app
+package com.whatever.caramel
 
 import androidx.compose.ui.window.ComposeUIViewController
-import com.whatever.app.app.App
-import com.whatever.app.di.initKoin
+import com.whatever.caramel.app.App
+import com.whatever.caramel.di.initKoin
 
 fun MainViewController() = ComposeUIViewController(
     configure = {

@@ -1,6 +1,6 @@
-package com.whatever.app.di
+package com.whatever.caramel.di
 
-import com.whatever.app.core.data.HttpClientFactory
+import com.whatever.caramel.core.data.HttpClientFactory
 import org.koin.core.module.Module
 import org.koin.dsl.module
 

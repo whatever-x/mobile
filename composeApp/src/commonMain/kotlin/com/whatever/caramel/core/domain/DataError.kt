@@ -1,4 +1,4 @@
-package com.whatever.app.core.domain
+package com.whatever.caramel.core.domain
 
 sealed interface DataError: Error {
     enum class Remote: DataError {

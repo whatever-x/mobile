@@ -1,7 +1,7 @@
-package com.whatever.app.core.data
+package com.whatever.caramel.core.data
 
-import com.whatever.app.core.domain.DataError
-import com.whatever.app.core.domain.Result
+import com.whatever.caramel.core.domain.DataError
+import com.whatever.caramel.core.domain.Result
 import io.ktor.client.call.NoTransformationFoundException
 import io.ktor.client.call.body
 import io.ktor.client.network.sockets.SocketTimeoutException

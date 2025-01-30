@@ -1,4 +1,4 @@
-package com.whatever.app.core.data
+package com.whatever.caramel.core.data
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine

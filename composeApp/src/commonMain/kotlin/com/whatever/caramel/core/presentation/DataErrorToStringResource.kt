@@ -1,8 +1,8 @@
-package com.whatever.app.core.presentation
+package com.whatever.caramel.core.presentation
 
 import app.composeapp.generated.resources.Res
 import app.composeapp.generated.resources.title_test
-import com.whatever.app.core.domain.DataError
+import com.whatever.caramel.core.domain.DataError
 
 fun DataError.toUiText(): UiText {
     // FIXME : 에러 메세지 확인

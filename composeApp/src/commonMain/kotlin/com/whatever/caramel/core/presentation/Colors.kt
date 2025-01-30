@@ -1,4 +1,4 @@
-package com.whatever.app.core.presentation
+package com.whatever.caramel.core.presentation
 
 import androidx.compose.ui.graphics.Color
 

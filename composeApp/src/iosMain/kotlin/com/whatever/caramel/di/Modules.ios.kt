@@ -1,11 +1,11 @@
-package com.whatever.app.di
+package com.whatever.caramel.di
 
 import io.ktor.client.engine.HttpClientEngine
-import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.engine.darwin.Darwin
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 actual val platformModule: Module
     get() = module {
-        single<HttpClientEngine> { OkHttp.create() }
+        single<HttpClientEngine> { Darwin.create() }
     }
