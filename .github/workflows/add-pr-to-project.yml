@@ -1,0 +1,92 @@
+name: Add PR to Project
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  add-to-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add PR to Project
+        id: add_to_project
+        run: |
+          response=$(curl -s -X POST \
+            -H "Authorization: Bearer $REPOSITORY_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "query": "mutation { addProjectV2ItemById(input: { projectId: \"${{ secrets.PROJECT_ID }}\", contentId: \"${{ github.event.pull_request.node_id }}\" }) { item { id } } }"
+            }' \
+            https://api.github.com/graphql
+          )
+          
+          item_id=$(echo "$response" | jq -r '.data.addProjectV2ItemById.item.id')
+          
+          if [ "$item_id" != "null" ]; then
+            echo "✅ Successfully added PR to the project."
+            echo "item_id=$item_id" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Failed to add PR to the project. Response: $response"
+            exit 1
+          fi
+        env:
+          REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
+
+      - name: Update Project Status
+        run: |
+          response=$(curl -s -X POST \
+            -H "Authorization: Bearer $REPOSITORY_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "query": "mutation { updateProjectV2ItemFieldValue(input: { projectId: \"${{ secrets.PROJECT_ID }}\", itemId: \"${{ steps.add_to_project.outputs.item_id }}\", fieldId: \"${{ secrets.FIELD_ID }}\", value: { singleSelectOptionId : \"${{ secrets.REVIEW_STATUS_ID }}\" } }) { clientMutationId } }"
+            }' \
+            https://api.github.com/graphql
+          )
+          
+          if echo "$response" | jq -e '.data.updateProjectV2ItemFieldValue.clientMutationId' > /dev/null; then
+            echo "✅ Successfully updated project status."
+          else
+            echo "❌ Failed to update project status. Response: $response"
+            exit 1
+          fi
+        env:
+          REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
+
+      - name: Update Project Start Date
+        run: |
+          START_DATE=$(date -u +'%Y-%m-%d')
+          echo "Start date: $START_DATE"
+
+          GRAPHQL_QUERY=$(jq -n --arg projectId "${{ secrets.PROJECT_ID }}" \
+                                --arg itemId "${{ steps.add_to_project.outputs.item_id }}" \
+                                --arg fieldId "${{ secrets.START_DATE_FIELD_ID }}" \
+                                --arg startDate "$START_DATE" \
+                                '{
+                                  query: "mutation {
+                                    updateProjectV2ItemFieldValue(
+                                      input: {
+                                        projectId: \"\($projectId)\",
+                                        itemId: \"\($itemId)\",
+                                        fieldId: \"\($fieldId)\",
+                                        value: { date: \"\($startDate)\" }
+                                      }
+                                    ) {
+                                      clientMutationId
+                                    }
+                                  }"
+                                }')
+
+          response=$(curl -s -X POST \
+            -H "Authorization: Bearer $REPOSITORY_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$GRAPHQL_QUERY" \
+            https://api.github.com/graphql)
+
+          if echo "$response" | jq '.errors' | grep -q null; then
+            echo "✅ Successfully set Start Date to $START_DATE."
+          else
+            echo "❌ Failed to set Start Date. Response: $response"
+            exit 1
+          fi
+        env:
+          REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
