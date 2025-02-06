@@ -2,7 +2,7 @@ name: Add PR to Project
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, reopened, synchronize]
 
 jobs:
   add-to-project:
@@ -38,16 +38,24 @@ jobs:
             -H "Authorization: Bearer $REPOSITORY_TOKEN" \
             -H "Content-Type: application/json" \
             -d '{
-              "query": "mutation { updateProjectV2ItemFieldValue(input: { projectId: \"${{ secrets.PROJECT_ID }}\", itemId: \"${{ steps.add_to_project.outputs.item_id }}\", fieldId: \"${{ secrets.FIELD_ID }}\", value: { singleSelectOptionId : \"${{ secrets.REVIEW_STATUS_ID }}\" } }) { clientMutationId } }"
+              "query": "mutation {
+                updateProjectV2ItemFieldValue(input: {
+                  projectId: \"${{ secrets.PROJECT_ID }}\",
+                  itemId: \"${{ steps.add_to_project.outputs.item_id }}\", 
+                  fieldId: \"${{ secrets.FIELD_ID }}\", 
+                  value: { singleSelectOptionId : \"${{ secrets.REVIEW_STATUS_ID }}\" }
+                }) { clientMutationId } }"
             }' \
             https://api.github.com/graphql
           )
           
-          if echo "$response" | jq -e '.data.updateProjectV2ItemFieldValue.clientMutationId' > /dev/null; then
-            echo "✅ Successfully updated project status."
-          else
-            echo "❌ Failed to update project status. Response: $response"
+          echo "Checking errors field: $(echo "$response" | jq '.errors')"
+
+          if echo "$response" | jq -e '.errors' > /dev/null; then
+            echo "❌ GraphQL API returned an error. Response: $response"
             exit 1
+          else
+            echo "✅ No errors detected. Continuing..."
           fi
         env:
           REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
