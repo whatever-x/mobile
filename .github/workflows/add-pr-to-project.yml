@@ -10,7 +10,7 @@ jobs:
 
     permissions:
       pull-requests: write
-      projects: write
+      repository-projects: write
       contents: read
 
     steps:
