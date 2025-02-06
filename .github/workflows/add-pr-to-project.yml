@@ -7,12 +7,18 @@ on:
 jobs:
   add-to-project:
     runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+      projects: write
+      contents: read
+
     steps:
       - name: Add PR to Project
         id: add_to_project
         run: |
           response=$(curl -s -X POST \
-            -H "Authorization: Bearer $REPOSITORY_TOKEN" \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
             -d '{
               "query": "mutation { addProjectV2ItemById(input: { projectId: \"${{ secrets.PROJECT_ID }}\", contentId: \"${{ github.event.pull_request.node_id }}\" }) { item { id } } }"
@@ -30,12 +36,12 @@ jobs:
             exit 1
           fi
         env:
-          REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Project Status
         run: |
           response=$(curl -s -X POST \
-            -H "Authorization: Bearer $REPOSITORY_TOKEN" \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
             -d '{
               "query": "mutation {
@@ -58,7 +64,7 @@ jobs:
             echo "✅ No errors detected. Continuing..."
           fi
         env:
-          REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Project Start Date
         run: |
@@ -85,7 +91,7 @@ jobs:
                                 }')
 
           response=$(curl -s -X POST \
-            -H "Authorization: Bearer $REPOSITORY_TOKEN" \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
             -d "$GRAPHQL_QUERY" \
             https://api.github.com/graphql)
@@ -97,4 +103,4 @@ jobs:
             exit 1
           fi
         env:
-          REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
