@@ -9,12 +9,17 @@ jobs:
     if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
 
+    permissions:
+      pull-requests: write
+      projects: write
+      contents: read
+
     steps:
       - name: Retrieve Project Item ID for this PR
         id: get_item_id
         run: |
           response=$(curl -s -X POST \
-            -H "Authorization: Bearer $REPOSITORY_TOKEN" \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
             -d "{
               \"query\": \"query { node(id: \\\"${{ github.event.pull_request.node_id }}\\\") { ... on PullRequest { projectItems(first: 10) { nodes { id } } } } }\"
@@ -32,7 +37,7 @@ jobs:
             exit 1
           fi
         env:
-          REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update End Date field
         run: |
@@ -40,7 +45,7 @@ jobs:
           DATE_ONLY="$(echo "$MERGED_DATE" | cut -d'T' -f1)"
           
           response=$(curl -s -X POST \
-            -H "Authorization: Bearer $REPOSITORY_TOKEN" \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
             -d "{
               \"query\": \"mutation { updateProjectV2ItemFieldValue(input: { projectId: \\\"${{ secrets.PROJECT_ID }}\\\", itemId: \\\"${{ steps.get_item_id.outputs.item_id }}\\\", fieldId: \\\"${{ secrets.END_DATE_FIELD_ID }}\\\", value: { date: \\\"$DATE_ONLY\\\" } }) { clientMutationId } }\"
@@ -55,4 +60,4 @@ jobs:
             exit 1
           fi
         env:
-          REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
