@@ -50,7 +50,7 @@ jobs:
             https://api.github.com/graphql
           )
           
-          echo "Checking errors field: $(echo "$response" | jq '.errors')"
+          echo "Response : $response"
 
           if echo "$response" | jq -e '.errors' > /dev/null; then
             echo "❌ GraphQL API returned an error. Response: $response"
