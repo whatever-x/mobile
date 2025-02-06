@@ -25,10 +25,13 @@ jobs:
           ACTOR="${{ github.actor }}"
           EVENT_URL="${{ github.event.issue.html_url || github.event.pull_request.html_url || github.event.repository.html_url }}"
 
+          # JSON 파싱을 위해 이벤트 데이터를 저장
+          echo '${{ toJson(github.event) }}' > event.json
+
           # 이슈 관련
           if [[ "$EVENT_TYPE" == "issues" ]]; then
-            ISSUE_NUMBER="${{ github.event.issue.number }}"
-            ISSUE_TITLE="${{ github.event.issue.title }}"
+            ISSUE_NUMBER=$(jq -r '.issue.number' event.json)
+            ISSUE_TITLE=$(jq -r '.issue.title' event.json)
 
             if [[ "$ACTION" == "opened" ]]; then
               MESSAGE="📌 *이슈 생성됨:* #$ISSUE_NUMBER - $ISSUE_TITLE"
@@ -38,27 +41,27 @@ jobs:
               MESSAGE="💬 *이슈 댓글 작성됨:* #$ISSUE_NUMBER - $ISSUE_TITLE"
             fi
           
-          # 커밋 푸시 관련
+          # 커밋 푸시 관련 (| length 대신 jq 활용)
           elif [[ "$EVENT_TYPE" == "push" ]]; then
-            COMMIT_COUNT="${{ github.event.commits | length }}"
-            FIRST_COMMIT_MSG="${{ github.event.commits[0].message }}"
-            BRANCH_NAME="${{ github.ref_name }}"
+            COMMIT_COUNT=$(jq '.commits | length' event.json)
+            FIRST_COMMIT_MSG=$(jq -r '.commits[0].message' event.json)
+            BRANCH_NAME=$(jq -r '.ref' event.json | sed 's|refs/heads/||')
 
             MESSAGE="🚀 *$BRANCH_NAME 브랜치에 코드 푸시됨:* $COMMIT_COUNT개 커밋 - 첫 메시지: \"$FIRST_COMMIT_MSG\""
           
           # 브랜치 생성 및 삭제 관련
           elif [[ "$EVENT_TYPE" == "create" ]]; then
-            BRANCH_NAME="${{ github.ref_name }}"
+            BRANCH_NAME=$(jq -r '.ref' event.json)
             MESSAGE="🌱 *새로운 브랜치 생성됨:* $BRANCH_NAME by $ACTOR"
           
           elif [[ "$EVENT_TYPE" == "delete" ]]; then
-            BRANCH_NAME="${{ github.ref_name }}"
+            BRANCH_NAME=$(jq -r '.ref' event.json)
             MESSAGE="🗑️ *브랜치 삭제됨:* $BRANCH_NAME by $ACTOR"
           
           # PR 관련
           elif [[ "$EVENT_TYPE" == "pull_request" ]]; then
-            PR_NUMBER="${{ github.event.pull_request.number }}"
-            PR_TITLE="${{ github.event.pull_request.title }}"
+            PR_NUMBER=$(jq -r '.pull_request.number' event.json)
+            PR_TITLE=$(jq -r '.pull_request.title' event.json)
 
             case "$ACTION" in
               "opened") MESSAGE="🔃 *PR 생성됨:* #$PR_NUMBER - $PR_TITLE";;
