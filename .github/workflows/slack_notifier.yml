@@ -41,13 +41,13 @@ jobs:
               MESSAGE="💬 *이슈 댓글 작성됨:* #$ISSUE_NUMBER - $ISSUE_TITLE"
             fi
           
-          # 커밋 푸시 관련 (| length 대신 jq 활용)
+          # 커밋 푸시 관련
           elif [[ "$EVENT_TYPE" == "push" ]]; then
             COMMIT_COUNT=$(jq '.commits | length' event.json)
-            FIRST_COMMIT_MSG=$(jq -r '.commits[0].message' event.json)
+            FIRST_COMMIT_MSG=$(jq -r '.commits[0].message' event.json | jq -Rs .)
             BRANCH_NAME=$(jq -r '.ref' event.json | sed 's|refs/heads/||')
 
-            MESSAGE="🚀 *$BRANCH_NAME 브랜치에 코드 푸시됨:* $COMMIT_COUNT개 커밋 - 첫 메시지: \"$FIRST_COMMIT_MSG\""
+            MESSAGE="🚀 *$BRANCH_NAME 브랜치에 코드 푸시됨:* $COMMIT_COUNT개 커밋 - 첫 메시지: $FIRST_COMMIT_MSG"
           
           # 브랜치 생성 및 삭제 관련
           elif [[ "$EVENT_TYPE" == "create" ]]; then
@@ -80,7 +80,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "${{ env.MESSAGE }}",
+              "text": ${{ toJson(env.MESSAGE) }},
               "attachments": [
                 {
                   "fallback": "GitHub 이벤트 알림",
@@ -101,3 +101,4 @@ jobs:
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
