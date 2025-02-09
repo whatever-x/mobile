@@ -48,7 +48,7 @@ jobs:
             https://api.github.com/graphql
           )
           
-          if echo "$response" | jq -e '.data.updateProjectV2ItemFieldValue.clientMutationId' > /dev/null; then
+          if echo "$response" | jq '.errors' | grep -q null; then
             echo "✅ Successfully set End Date to $DATE_ONLY."
           else
             echo "❌ Failed to set End Date. Response: $response"

@@ -7,6 +7,7 @@ on:
 jobs:
   add-to-project:
     runs-on: ubuntu-latest
+
     steps:
       - name: Add PR to Project
         id: add_to_project
@@ -38,18 +39,12 @@ jobs:
             -H "Authorization: Bearer $REPOSITORY_TOKEN" \
             -H "Content-Type: application/json" \
             -d '{
-              "query": "mutation {
-                updateProjectV2ItemFieldValue(input: {
-                  projectId: \"${{ secrets.PROJECT_ID }}\",
-                  itemId: \"${{ steps.add_to_project.outputs.item_id }}\", 
-                  fieldId: \"${{ secrets.FIELD_ID }}\", 
-                  value: { singleSelectOptionId : \"${{ secrets.REVIEW_STATUS_ID }}\" }
-                }) { clientMutationId } }"
+              "query": "mutation { updateProjectV2ItemFieldValue(input: { projectId: \"${{ secrets.PROJECT_ID }}\", itemId: \"${{ steps.add_to_project.outputs.item_id }}\", fieldId: \"${{ secrets.FIELD_ID }}\", value: { singleSelectOptionId : \"${{ secrets.REVIEW_STATUS_ID }}\" } }) { clientMutationId } }"
             }' \
             https://api.github.com/graphql
           )
           
-          echo "Checking errors field: $(echo "$response" | jq '.errors')"
+          echo "Response : $response"
 
           if echo "$response" | jq -e '.errors' > /dev/null; then
             echo "❌ GraphQL API returned an error. Response: $response"
