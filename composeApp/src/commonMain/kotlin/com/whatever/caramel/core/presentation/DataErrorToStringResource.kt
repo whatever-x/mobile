@@ -5,7 +5,6 @@ import app.composeapp.generated.resources.title_test
 import com.whatever.caramel.core.domain.DataError
 
 fun DataError.toUiText(): UiText {
-    // FIXME : 에러 메세지 확인
     val stringRes = when(this) {
         DataError.Local.DISK_FULL -> Res.string.title_test
         DataError.Local.UNKNOWN -> Res.string.title_test
