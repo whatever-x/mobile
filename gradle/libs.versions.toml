@@ -69,6 +69,7 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 
 voyager-navigator = { group = "cafe.adriel.voyager", name = "voyager-navigator", version.ref = "voyager" }
+voyager-transition = { group = "cafe.adriel.voyager", name = "voyager-transitions", version.ref = "voyager" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -94,4 +95,8 @@ coil = [
     "coil-network-ktor2",
     "coil-network-ktor3",
     "coil-mp"
+]
+voyager = [
+    "voyager-navigator",
+    "voyager-transition"
 ]
