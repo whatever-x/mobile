@@ -3,7 +3,6 @@ package com.whatever.caramel.app
 import cafe.adriel.voyager.core.registry.ScreenProvider
 
 sealed class Route : ScreenProvider {
-    data object Splash : Route()
     data object Onboarding : Route()
     data object Login : Route()
     data object ProfileBirth : Route()
