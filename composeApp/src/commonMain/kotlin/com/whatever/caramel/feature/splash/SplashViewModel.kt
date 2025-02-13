@@ -42,7 +42,7 @@ class SplashViewModel : ViewModel() {
                     isLoading = true
                 )
             }
-            delay(2000L)
+            delay(1000L)
             _state.update {
                 it.copy(
                     isLoading = false,
