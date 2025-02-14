@@ -1,6 +1,5 @@
 package com.whatever.caramel.feature.login
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.whatever.caramel.app.Route
@@ -33,7 +31,7 @@ class LoginScreenRoot : Screen {
 fun LoginScreen(modifier: Modifier = Modifier) {
     val navigator = LocalNavigator.currentOrThrow
     val profileNickNameScreen = rememberScreen(Route.ProfileNickName)
-    val homeScreen = rememberScreen(Route.Home)
+    val mainScreen = rememberScreen(Route.Main)
     val coupleInviteScreen = rememberScreen(Route.CoupleInvite)
 
     Column(
@@ -54,10 +52,10 @@ fun LoginScreen(modifier: Modifier = Modifier) {
 
         Button(
             content = {
-                Text("Home")
+                Text("main")
             },
             onClick = {
-                navigator.replace(homeScreen)
+                navigator.replace(mainScreen)
             }
         )
         Spacer(modifier = modifier.padding(top = 16.dp))

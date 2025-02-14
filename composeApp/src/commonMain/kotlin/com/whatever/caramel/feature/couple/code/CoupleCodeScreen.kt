@@ -30,7 +30,7 @@ class CoupleCodeScreenRoot : Screen {
 @Composable
 fun CoupleCodeScreen(modifier: Modifier = Modifier) {
     val navigator = LocalNavigator.currentOrThrow
-    val homeScreen = rememberScreen(Route.Home)
+    val mainScreen = rememberScreen(Route.Main)
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -47,11 +47,11 @@ fun CoupleCodeScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = modifier.padding(top = 16.dp))
         Button(
             content = {
-                Text("home")
+                Text("main")
             },
             onClick = {
                 navigator.popUntilRoot()
-                navigator.replace(homeScreen)
+                navigator.replace(mainScreen)
             }
         )
     }

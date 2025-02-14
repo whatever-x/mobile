@@ -9,8 +9,8 @@ import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
 import com.whatever.caramel.feature.couple.coupleScreenNavigator
-import com.whatever.caramel.feature.home.homeNavigator
 import com.whatever.caramel.feature.login.loginNavigator
+import com.whatever.caramel.feature.main.mainNavigator
 import com.whatever.caramel.feature.onboarding.onboardingNavigator
 import com.whatever.caramel.feature.profile.profileNavigator
 import com.whatever.caramel.feature.splash.SplashScreenRoot
@@ -24,7 +24,7 @@ fun App() {
             ScreenRegistry {
                 onboardingNavigator()
                 coupleScreenNavigator()
-                homeNavigator()
+                mainNavigator()
                 loginNavigator()
                 profileNavigator()
             }

@@ -1,5 +1,6 @@
-package com.whatever.caramel.feature.home
+package com.whatever.caramel.feature.main.editor
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,29 +11,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
+import cafe.adriel.voyager.navigator.internal.BackHandler
+import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
+import com.whatever.caramel.feature.main.home.HomeTab
 
-class HomeScreenRoot : Screen {
+class EditorScreenRoot : Screen{
     @Composable
     override fun Content() {
-        HomeScreen()
+        EditorScreen()
     }
 }
 
+@OptIn(InternalVoyagerApi::class)
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    val navigator = LocalNavigator.currentOrThrow
+fun EditorScreen(modifier: Modifier = Modifier) {
+    val tabNavigator = LocalTabNavigator.current
+
+    BackHandler(true) {
+        tabNavigator.current = HomeTab
+    }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Home",
+            text = "Editor",
             style = TextStyle(
                 color = Color.Black,
                 fontSize = 24.sp

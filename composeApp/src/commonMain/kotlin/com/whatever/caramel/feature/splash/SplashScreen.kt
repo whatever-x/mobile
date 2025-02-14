@@ -40,7 +40,7 @@ fun SplashScreen(
     val loginScreen = rememberScreen(provider = Route.Login)
     val profileScreen = rememberScreen(provider = Route.ProfileBirth)
     val coupleScreen = rememberScreen(provider = Route.CoupleInvite)
-    val homeScreen = rememberScreen(provider = Route.Home)
+    val mainScreen = rememberScreen(provider = Route.Main)
 
     Box(
         modifier = modifier.fillMaxSize(),
@@ -67,12 +67,12 @@ fun SplashScreen(
 
     when {
         state.isFirst -> navigator.replace(onBoardingScreen)
-        state.isSuccess -> navigator.push(homeScreen)
-        state.needLogin -> navigator.push(loginScreen)
+        state.isSuccess -> navigator.replace(mainScreen)
+        state.needLogin -> navigator.replace(loginScreen)
         state.needPermission -> {
             // do something..
         }
-        state.needCouple -> navigator.push(coupleScreen)
-        state.needProfile -> navigator.push(profileScreen)
+        state.needCouple -> navigator.replace(coupleScreen)
+        state.needProfile -> navigator.replace(profileScreen)
     }
 }

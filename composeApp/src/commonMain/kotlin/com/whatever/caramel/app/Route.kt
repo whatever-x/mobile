@@ -10,5 +10,5 @@ sealed class Route : ScreenProvider {
     data object ProfileTerms : Route()
     data object CoupleCode : Route()
     data object CoupleInvite : Route()
-    data object Home : Route()
+    data object Main : Route()
 }
