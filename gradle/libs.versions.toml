@@ -70,8 +70,8 @@ androidx-room-compiler = { group = "androidx.room", name = "room-compiler", vers
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 
-moko-permission-camera = {group = "dev.icerok.moko", name = "permissions-camera", version.ref = "moko"}
-moko-permission-multiplatform = {group = "dev.icerok.moko", name = "permissions-comopse", version.ref = "moko"}
+moko-permission-camera = {group = "dev.icerock.moko", name = "permissions-camera", version.ref = "moko"}
+moko-permission-multiplatform = {group = "dev.icerock.moko", name = "permissions-compose", version.ref = "moko"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -99,6 +99,6 @@ coil = [
     "coil-mp"
 ]
 moko = [
-    "moko-permission-camera",
-    "moko-permission-multiplatform"
+    "moko-permission-multiplatform",
+    "moko-permission-camera"
 ]
