@@ -8,12 +8,12 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
-import com.whatever.caramel.feature.couple.coupleScreenNavigator
-import com.whatever.caramel.feature.login.loginNavigator
-import com.whatever.caramel.feature.main.mainNavigator
-import com.whatever.caramel.feature.onboarding.onboardingNavigator
-import com.whatever.caramel.feature.profile.profileNavigator
-import com.whatever.caramel.feature.splash.SplashScreenRoot
+import com.whatever.caramel.feat.couple.coupleScreenNavigator
+import com.whatever.caramel.feat.login.loginNavigator
+import com.whatever.caramel.feat.main.mainNavigator
+import com.whatever.caramel.feat.onboarding.onboardingNavigator
+import com.whatever.caramel.feat.profile.profileNavigator
+import com.whatever.caramel.feat.splash.SplashScreenRoot
 
 @Composable
 fun App() {
