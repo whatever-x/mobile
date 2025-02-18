@@ -48,9 +48,24 @@ object HttpClientFactory {
                 handleResponseExceptionWithRequest { exception, _ ->
                     val clientException = exception as ResponseException
                     val exceptionResponse = clientException.response
-                    val baseResponse = exceptionResponse.body<BaseResponse<JsonElement>>()
-                    val errorResponse = baseResponse.error!!
-                    throw errorResponse.toCaramelException()
+                    val baseResponse =
+                        try {
+                            exceptionResponse.body<BaseResponse<JsonElement>>()
+                        } catch (e: Exception) {
+                            BaseResponse<JsonElement>(
+                                success = false,
+                                data = null,
+                                error = ErrorResponse(
+                                    code = clientException.response.status.value.toString(),
+                                    message = "예상치 못한 에러 발생",
+                                    debugMessage =
+                                    "Error Code : ${clientException.response.status}\n"
+                                            + "Error Message : ${clientException.message}",
+                                )
+                            )
+                        }
+
+                    throw baseResponse.error!!.toCaramelException()
                 }
             }
             defaultRequest {
