@@ -62,6 +62,7 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.core)
+            implementation(libs.napier)
 
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.coil)
