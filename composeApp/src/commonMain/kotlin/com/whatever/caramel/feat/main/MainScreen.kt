@@ -8,7 +8,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
@@ -27,7 +26,6 @@ class MainScreenRoot : Screen {
     }
 }
 
-@OptIn(InternalVoyagerApi::class)
 @Composable
 fun MainScreen() {
     TabNavigator(HomeTab,

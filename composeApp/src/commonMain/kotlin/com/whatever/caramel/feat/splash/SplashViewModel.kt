@@ -28,6 +28,7 @@ class SplashViewModel : ViewModel() {
             initialValue = SplashState()
         )
 
+    // @RyuSw-cs : 2025.02.12 샘플 State 설정 (필요한 flag를 설정)
     private fun checkAppStateData(
         needLogin : Boolean,
         needPermission : Boolean,
