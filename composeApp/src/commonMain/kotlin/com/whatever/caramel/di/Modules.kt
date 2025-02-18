@@ -7,9 +7,10 @@ import org.koin.dsl.module
 
 expect val platformModule: Module
 
-val sharedModule = module {
+val networkModule = module {
     single {
         HttpClientFactory.create(
+            isDebug = NetworkConfig.isDebug,
             engine = get(),
             baseUrl = NetworkConfig.BASE_URL
         )
