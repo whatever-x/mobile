@@ -16,7 +16,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
 
 object HttpClientFactory {
     fun create(
@@ -50,9 +49,9 @@ object HttpClientFactory {
                     val exceptionResponse = clientException.response
                     val baseResponse =
                         try {
-                            exceptionResponse.body<BaseResponse<JsonElement>>()
+                            exceptionResponse.body<BaseResponse<Unit>>()
                         } catch (e: Exception) {
-                            BaseResponse<JsonElement>(
+                            BaseResponse<Unit>(
                                 success = false,
                                 data = null,
                                 error = ErrorResponse(
