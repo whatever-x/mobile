@@ -17,12 +17,12 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.whatever.caramel.app.Route
-import org.koin.compose.viewmodel.koinViewModel
 
-class SplashScreenRoot : Screen {
+data class SplashScreenRoot(
+    val viewModel : SplashViewModel
+) : Screen {
     @Composable
     override fun Content() {
-        val viewModel = koinViewModel<SplashViewModel>()
         val state by viewModel.state.collectAsStateWithLifecycle()
         SplashScreen(
             state = state
