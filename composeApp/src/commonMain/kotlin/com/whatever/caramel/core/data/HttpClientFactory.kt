@@ -1,41 +1,74 @@
 package com.whatever.caramel.core.data
 
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 object HttpClientFactory {
-    fun create(engine: HttpClientEngine): HttpClient {
+    fun create(
+        isDebug: Boolean,
+        engine: HttpClientEngine,
+        baseUrl: String
+    ): HttpClient {
         return HttpClient(engine) {
+            expectSuccess = true
+
             install(ContentNegotiation) {
                 json(
                     json = Json {
                         ignoreUnknownKeys = true
+                        prettyPrint = true
                     }
                 )
             }
             install(HttpTimeout) {
-                socketTimeoutMillis = 20_000L
-                requestTimeoutMillis = 20_000L
+                requestTimeoutMillis = 30_000
+                connectTimeoutMillis = 10_000
+                socketTimeoutMillis = 10_000
             }
             install(Logging) {
-                logger = object : Logger {
-                    override fun log(message: String) {
-                        println(message)
-                    }
+                logger = Logger.SIMPLE
+                level = if (isDebug) LogLevel.ALL else LogLevel.NONE
+            }
+            HttpResponseValidator {
+                handleResponseExceptionWithRequest { exception, _ ->
+                    val clientException = exception as ResponseException
+                    val exceptionResponse = clientException.response
+                    val baseResponse =
+                        try {
+                            exceptionResponse.body<BaseResponse<Unit>>()
+                        } catch (e: Exception) {
+                            BaseResponse<Unit>(
+                                success = false,
+                                data = null,
+                                error = ErrorResponse(
+                                    code = clientException.response.status.value.toString(),
+                                    message = "예상치 못한 에러 발생",
+                                    debugMessage =
+                                    "Error Code : ${clientException.response.status}\n"
+                                            + "Error Message : ${clientException.message}",
+                                )
+                            )
+                        }
+
+                    throw baseResponse.error!!.toCaramelException()
                 }
-                level = LogLevel.ALL
             }
             defaultRequest {
+                url(baseUrl)
                 contentType(ContentType.Application.Json)
             }
         }
