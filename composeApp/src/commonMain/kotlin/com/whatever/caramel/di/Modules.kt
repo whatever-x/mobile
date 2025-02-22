@@ -1,12 +1,31 @@
 package com.whatever.caramel.di
 
 import com.whatever.caramel.core.data.HttpClientFactory
+import com.whatever.caramel.core.data.NetworkConfig
+import com.whatever.caramel.feat.sample.data.remote.RemoteSampleDataSource
+import com.whatever.caramel.feat.sample.data.remote.RemoteSampleDataSourceImpl
+import com.whatever.caramel.feat.sample.data.repository.SampleRepositoryImpl
+import com.whatever.caramel.feat.sample.domain.SampleRepository
+import com.whatever.caramel.feat.sample.presentation.SampleViewModel
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-// expect는 platform별로 패키지까지 동일하게 사용해야함
 expect val platformModule: Module
 
-val sharedModule = module {
-    single { HttpClientFactory.create(get()) }
+val networkModule = module {
+    single {
+        HttpClientFactory.create(
+            isDebug = NetworkConfig.isDebug,
+            engine = get(),
+            baseUrl = NetworkConfig.BASE_URL
+        )
+    }
+}
+
+val sampleFeatureModule = module {
+    single<RemoteSampleDataSource> { RemoteSampleDataSourceImpl(client = get()) }
+    single<SampleRepository> { SampleRepositoryImpl(remoteSampleDataSource = get()) }
+
+    viewModelOf(::SampleViewModel)
 }
