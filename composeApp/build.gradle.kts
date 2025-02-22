@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -17,6 +18,10 @@ kotlin {
         }
     }
 
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -27,10 +32,10 @@ kotlin {
             isStatic = true
         }
     }
+
     room {
         schemaDirectory("$projectDir/schemas")
     }
-
 
     sourceSets {
         androidMain.dependencies {
@@ -57,6 +62,7 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.core)
+            implementation(libs.napier)
 
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.coil)
@@ -71,6 +77,7 @@ kotlin {
 android {
     namespace = "com.whatever.caramel"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
+
     defaultConfig {
         applicationId = "com.whatever.caramel"
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -78,16 +85,41 @@ android {
         versionCode = libs.versions.version.code.get().toInt()
         versionName = libs.versions.version.name.get()
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
+        val properties =
+            Properties().apply { load(rootProject.file("local.properties").inputStream()) }
+        val debugUrl = "CARAMEL_DEBUG_URL"
+        val releaseUrl = "CARAMEL_RELEASE_URL"
+
         getByName("release") {
             isMinifyEnabled = false
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                properties.getProperty(releaseUrl)
+            )
+        }
+
+        getByName("debug") {
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                properties.getProperty(debugUrl)
+            )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

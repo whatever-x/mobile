@@ -27,6 +27,7 @@ ksp = "2.1.0-1.0.29"
 sqlite = "2.5.0-alpha12"
 room = "2.7.0-alpha12"
 moko = "0.19.0"
+napier = "2.7.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -69,6 +70,7 @@ coil-mp = { module = "io.coil-kt.coil3:coil", version.ref = "coil3" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 
 moko-permission-camera = {group = "dev.icerock.moko", name = "permissions-camera", version.ref = "moko"}
 moko-permission-multiplatform = {group = "dev.icerock.moko", name = "permissions-compose", version.ref = "moko"}
