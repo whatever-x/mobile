@@ -12,14 +12,18 @@ val LocalCaramelShape = compositionLocalOf<CaramelShape> { error("Shape Error") 
 
 val LocalCaramelSpacing = compositionLocalOf<CaramelSpacing> { error("Spacing Error") }
 
+val LocalCaramelColor = compositionLocalOf<CaramelColor> { error("Color Error") }
+
 @Composable
 fun CaramelTheme(
+    color: CaramelColor = CaramelColor.defaultColor(),
     typography: CaramelTypography = CaramelTypography.defaultTypography(fontFamily = IbmPlexSans()),
     shape: CaramelShape = CaramelShape.defaultRadius(),
     spacing: CaramelSpacing = CaramelSpacing.defaultSpacing(),
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(
+        LocalCaramelColor provides color,
         LocalCaramelTypography provides typography,
         LocalCaramelShape provides shape,
         LocalCaramelSpacing provides spacing
@@ -29,6 +33,11 @@ fun CaramelTheme(
 }
 
 object CaramelTheme {
+
+    val color: CaramelColor
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalCaramelColor.current
 
     val typography: CaramelTypography
         @Composable
