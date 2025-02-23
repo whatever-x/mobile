@@ -1,8 +1,19 @@
 package com.whatever.caramel.core.designSystem.themes
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designSystem.foundations.CaramelSpacingDefaults
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Immutable
 data class CaramelSpacing(
@@ -24,5 +35,34 @@ data class CaramelSpacing(
             xs = CaramelSpacingDefaults.SPACING_XS.spacing,
             xxs = CaramelSpacingDefaults.SPACING_XXS.spacing,
         )
+    }
+}
+
+@Composable
+fun CaramelSpacingPreview() {
+    CaramelTheme {
+        val spacings = listOf(
+            CaramelTheme.spacing.xxs,
+            CaramelTheme.spacing.xs,
+            CaramelTheme.spacing.s,
+            CaramelTheme.spacing.m,
+            CaramelTheme.spacing.l,
+            CaramelTheme.spacing.xl,
+            CaramelTheme.spacing.xxl,
+        )
+
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            for (spacing in spacings.listIterator()) {
+                HorizontalDivider(
+                    modifier = Modifier.width(30.dp),
+                    thickness = spacing,
+                    color = Color.Black
+                )
+            }
+        }
     }
 }
