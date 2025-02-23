@@ -1,0 +1,43 @@
+package com.whatever.caramel.app
+
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
+import androidx.navigation.compose.NavHost
+import com.whatever.caramel.feat.login.presentation.navigation.loginScreen
+import com.whatever.caramel.feat.login.presentation.navigation.navigateToLogin
+import com.whatever.caramel.feat.onboarding.presentation.navigation.navigateToOnboarding
+import com.whatever.caramel.feat.onboarding.presentation.navigation.onboardingScreen
+import com.whatever.caramel.feat.splash.presentation.navigation.SplashRoute
+import com.whatever.caramel.feat.splash.presentation.navigation.splashScreen
+
+@Composable
+internal fun CaramelNavHost(
+    navHostController: NavHostController
+) {
+    NavHost(
+        navController = navHostController,
+        startDestination = SplashRoute
+    ) {
+        with(navHostController) {
+            splashScreen(
+                navigateToLogin = {},
+                navigateToMain = {},
+                navigateToOnBoarding = {
+                    navigateToOnboarding(
+                        navOptions = NavOptions.Builder()
+                            .setPopUpTo<SplashRoute>(inclusive = true)
+                            .build()
+                    )
+                }
+            )
+            onboardingScreen(
+                navigateToLogin = { navigateToLogin() }
+            )
+            loginScreen(
+                navigateToConnectCouple = {},
+                navigateToCreateProfile = {}
+            )
+        }
+    }
+}

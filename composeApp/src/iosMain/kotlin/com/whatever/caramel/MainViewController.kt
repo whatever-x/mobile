@@ -3,8 +3,8 @@
 package com.whatever.caramel
 
 import androidx.compose.ui.window.ComposeUIViewController
-import com.whatever.caramel.app.App
-import com.whatever.caramel.core.data.NetworkConfig
+import androidx.navigation.compose.rememberNavController
+import com.whatever.caramel.app.CaramelComposeApp
 import com.whatever.caramel.di.initKoin
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
@@ -17,5 +17,9 @@ fun MainViewController() = ComposeUIViewController(
         Napier.base(DebugAntilog())
     }
 
-    App()
+    val navHostController = rememberNavController()
+
+    CaramelComposeApp(
+        navHostController = navHostController
+    )
 }
