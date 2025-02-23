@@ -9,7 +9,8 @@ fun initKoin(config: KoinAppDeclaration? = null) {
         modules(
             platformModule,
             networkModule,
-            sampleFeatureModule
+            sampleFeatureModule,
+            splashFeatureModule,
         )
     }
 }
