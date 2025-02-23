@@ -6,6 +6,7 @@ import com.whatever.caramel.core.designSystem.foundations.CaramelShapeDefaults
 
 @Immutable
 data class CaramelShape(
+    val doubleExtraSmall: Shape,
     val extraSmall: Shape,
     val small: Shape,
     val medium: Shape,
@@ -14,6 +15,7 @@ data class CaramelShape(
 ) {
     companion object {
         fun defaultRadius(): CaramelShape = CaramelShape (
+            doubleExtraSmall = CaramelShapeDefaults.RADIUS_XXS.shape,
             extraSmall = CaramelShapeDefaults.RADIUS_XS.shape,
             small = CaramelShapeDefaults.RADIUS_S.shape,
             medium = CaramelShapeDefaults.RADIUS_M.shape,
