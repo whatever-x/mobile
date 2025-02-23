@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
-import com.whatever.caramel.core.designSystem.foundations.LineSeedKrFontFamily
+import com.whatever.caramel.core.designSystem.foundations.IbmPlexSans
 
 val LocalCaramelTypography = compositionLocalOf<CaramelTypography> { error("Typography Error") }
 
@@ -14,7 +14,7 @@ val LocalCaramelSpacing = compositionLocalOf<CaramelSpacing> { error("Spacing Er
 
 @Composable
 fun CaramelTheme(
-    typography: CaramelTypography = CaramelTypography.defaultTypography(fontFamily = LineSeedKrFontFamily()),
+    typography: CaramelTypography = CaramelTypography.defaultTypography(fontFamily = IbmPlexSans()),
     shape: CaramelShape = CaramelShape.defaultRadius(),
     spacing: CaramelSpacing = CaramelSpacing.defaultSpacing(),
     content: @Composable () -> Unit
