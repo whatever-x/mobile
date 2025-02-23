@@ -44,6 +44,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera Permission required</string>
 	<key>UILaunchScreen</key>
 	<dict/>
 </dict>
