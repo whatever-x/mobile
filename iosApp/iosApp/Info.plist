@@ -22,6 +22,8 @@
 	<string>9999</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+    <key>CADisableMinimumFrameDurationOnPhone</key>
+    <true/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
