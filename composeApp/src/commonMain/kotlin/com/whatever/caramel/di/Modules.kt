@@ -2,6 +2,7 @@ package com.whatever.caramel.di
 
 import com.whatever.caramel.core.data.HttpClientFactory
 import com.whatever.caramel.core.data.NetworkConfig
+import com.whatever.caramel.feat.onboarding.presentation.OnboardingViewModel
 import com.whatever.caramel.feat.sample.data.remote.RemoteSampleDataSource
 import com.whatever.caramel.feat.sample.data.remote.RemoteSampleDataSourceImpl
 import com.whatever.caramel.feat.sample.data.repository.SampleRepositoryImpl
@@ -33,4 +34,8 @@ val sampleFeatureModule = module {
 
 val splashFeatureModule = module {
     viewModelOf(::SplashViewModel)
+}
+
+val onboardingFeatureModule = module {
+    viewModelOf(::OnboardingViewModel)
 }

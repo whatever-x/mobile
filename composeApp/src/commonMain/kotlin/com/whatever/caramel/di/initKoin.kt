@@ -11,6 +11,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             networkModule,
             sampleFeatureModule,
             splashFeatureModule,
+            onboardingFeatureModule,
         )
     }
 }
