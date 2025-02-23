@@ -6,23 +6,23 @@ import com.whatever.caramel.core.designSystem.foundations.CaramelSpacingDefaults
 
 @Immutable
 data class CaramelSpacing(
-    val doubleExtraLarge: Dp,
-    val extraLarge: Dp,
-    val large: Dp,
-    val medium: Dp,
-    val small: Dp,
-    val extraSmall: Dp,
-    val doubleExtraSmall: Dp,
+    val xxl: Dp,
+    val xl: Dp,
+    val l: Dp,
+    val m: Dp,
+    val s: Dp,
+    val xs: Dp,
+    val xxs: Dp,
 ) {
     companion object {
         fun defaultSpacing(): CaramelSpacing = CaramelSpacing(
-            doubleExtraLarge = CaramelSpacingDefaults.SPACING_XXL.spacing,
-            extraLarge = CaramelSpacingDefaults.SPACING_XL.spacing,
-            large = CaramelSpacingDefaults.SPACING_LG.spacing,
-            medium = CaramelSpacingDefaults.SPACING_MD.spacing,
-            small = CaramelSpacingDefaults.SPACING_SM.spacing,
-            extraSmall = CaramelSpacingDefaults.SPACING_XS.spacing,
-            doubleExtraSmall = CaramelSpacingDefaults.SPACING_XXS.spacing,
+            xxl = CaramelSpacingDefaults.SPACING_XXL.spacing,
+            xl = CaramelSpacingDefaults.SPACING_XL.spacing,
+            l = CaramelSpacingDefaults.SPACING_LG.spacing,
+            m = CaramelSpacingDefaults.SPACING_M.spacing,
+            s = CaramelSpacingDefaults.SPACING_S.spacing,
+            xs = CaramelSpacingDefaults.SPACING_XS.spacing,
+            xxs = CaramelSpacingDefaults.SPACING_XXS.spacing,
         )
     }
 }
