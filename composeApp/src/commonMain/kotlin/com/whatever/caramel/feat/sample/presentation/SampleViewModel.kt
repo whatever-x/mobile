@@ -35,10 +35,6 @@ class SampleViewModel(
         }
     }
 
-    override fun handleClientException(throwable: CaramelException) {
-        postSideEffect(SampleSideEffect.ShowError(throwable.message))
-    }
-
     fun getSampleData() {
         launch {
             val sampleData = sampleRepository.getSampleData()

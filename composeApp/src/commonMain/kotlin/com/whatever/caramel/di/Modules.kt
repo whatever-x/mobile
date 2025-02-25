@@ -37,8 +37,8 @@ val sampleFeatureModule = module {
     }
     single { get<SampleDatabase>().sampleDao }
     single<RemoteSampleDataSource> { RemoteSampleDataSourceImpl(client = get()) }
-    single<SampleRepository> { SampleRepositoryImpl(remoteSampleDataSource = get(), sampleDao = get(), localSampleDataSource = get()) }
-    single<LocalSampleDataSource> { LocalSampleDataSourceImpl(prefs = get()) }
+    single<SampleRepository> { SampleRepositoryImpl(remoteSampleDataSource = get(), localSampleDataSource = get()) }
+    single<LocalSampleDataSource> { LocalSampleDataSourceImpl(prefs = get(), sampleDao = get()) }
 
     viewModelOf(::SampleViewModel)
 }

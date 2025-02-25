@@ -12,21 +12,20 @@ import com.whatever.caramel.feat.sample.domain.SampleRepository
 class SampleRepositoryImpl(
     private val remoteSampleDataSource: RemoteSampleDataSource,
     private val localSampleDataSource: LocalSampleDataSource,
-    private val sampleDao: SampleDao
 ) : SampleRepository {
 
     override suspend fun getSampleData(): SampleModel =
         remoteSampleDataSource.getSampleData().toSampleModel()
 
     override suspend fun saveSampleDataToLocal(data: SampleModel) {
-        sampleDao.insertSampleWithDetail(
+        localSampleDataSource.saveSampleData(
             data.toSampleEntity(),
             data.detailArray.map { it.toSampleDetailEntity(data.name) }
         )
     }
 
     override suspend fun getSampleDataFromLocal(): List<SampleModel> =
-        sampleDao.getAllSamples().map { it.toSampleModel() }
+        localSampleDataSource.getSampleData().map { it.toSampleModel() }
 
     override suspend fun getSampleNameFromLocal(): String = localSampleDataSource.getSampleName()
 
