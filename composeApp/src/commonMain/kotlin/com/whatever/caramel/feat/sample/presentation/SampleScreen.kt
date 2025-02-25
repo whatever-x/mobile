@@ -55,9 +55,6 @@ internal fun SampleRoute(
                     // @ham2174 EX : 스낵바 호출, 네비게이션 이동 등 다른 사이드 이펙트 처리
                     Napier.d { "스낵바 호출" }
                 }
-                is SampleSideEffect.ShowError -> {
-                    Napier.e { "오류발생 = ${sideEffect.message}" }
-                }
             }
         }
     }
