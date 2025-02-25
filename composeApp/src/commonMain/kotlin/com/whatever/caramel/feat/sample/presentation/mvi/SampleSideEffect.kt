@@ -5,5 +5,6 @@ import com.whatever.caramel.core.presentation.UiSideEffect
 sealed interface SampleSideEffect : UiSideEffect {
 
     data object ShowSnackBar : SampleSideEffect
+    data class ShowError(val message : String) : SampleSideEffect
 
 }
