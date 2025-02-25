@@ -24,9 +24,11 @@ class SampleViewModel(
             is SampleIntent.ClickButton -> {
                 postSideEffect(SampleSideEffect.ShowSnackBar)
             }
+
             is SampleIntent.GetLocal -> {
                 getSampleDataInLocal()
             }
+
             is SampleIntent.SaveLocal -> {
                 saveSampleDataInLocal(intent.sampleModel)
             }
@@ -50,14 +52,16 @@ class SampleViewModel(
         }
     }
 
-    private fun saveSampleDataInLocal(data : SampleModel) {
+    private fun saveSampleDataInLocal(data: SampleModel) {
         Napier.d { "data = $data" }
         launch {
-           sampleRepository.saveSampleDataToLocal(data)
+            sampleRepository.saveSampleDataToLocal(data)
+            sampleRepository.saveSampleNameToLocal(data.name)
 
             reduce {
                 copy(
-                    localResult = "success"
+                    localResult = "success",
+                    saveNameResult = "success"
                 )
             }
         }
@@ -66,16 +70,19 @@ class SampleViewModel(
     private fun getSampleDataInLocal() {
         launch {
             val sampleData = sampleRepository.getSampleDataFromLocal()
+            val sampleName = sampleRepository.getSampleNameFromLocal()
 
             reduce {
                 copy(
-                    localResult = if(sampleData.isNotEmpty()) {
+                    localResult = if (sampleData.isNotEmpty()) {
                         sampleData.toString()
                     } else {
                         "no save"
-                    }
+                    },
+                    saveNameResult = sampleName
                 )
             }
         }
     }
+
 }

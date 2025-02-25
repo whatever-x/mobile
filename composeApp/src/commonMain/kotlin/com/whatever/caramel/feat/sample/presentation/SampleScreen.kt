@@ -123,6 +123,13 @@ private fun LocalSampleScreen(
             color = Color.Black
         )
         Spacer(modifier = Modifier.padding(16.dp))
+        Text("Local Name")
+        Text(
+            text = state.saveNameResult,
+            fontSize = 12.sp,
+            color = Color.Black
+        )
+        Spacer(modifier = Modifier.padding(16.dp))
         Row {
             Button(modifier = Modifier.weight(1f), onClick = {
                 onIntent.invoke(SampleIntent.ClickButton)

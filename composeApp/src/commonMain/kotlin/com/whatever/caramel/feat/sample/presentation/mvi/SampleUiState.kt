@@ -6,5 +6,6 @@ import com.whatever.caramel.feat.sample.domain.SampleModel
 data class SampleUiState(
     val networkResultData : SampleModel? = null,
     val networkResult: String = "",
-    val localResult: String = ""
+    val localResult: String = "",
+    val saveNameResult : String = ""
 ) : UiState
