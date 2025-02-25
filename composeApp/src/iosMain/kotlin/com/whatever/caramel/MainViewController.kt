@@ -10,6 +10,7 @@ import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import kotlin.experimental.ExperimentalNativeApi
 
+@OptIn(ExperimentalNativeApi::class)
 fun MainViewController() = ComposeUIViewController(
     configure = { initKoin() }
 ) {
