@@ -7,19 +7,19 @@ import com.whatever.caramel.core.designSystem.themes.CaramelSpacingPreview
 import com.whatever.caramel.core.designSystem.themes.CaramelTypographyPreview
 
 
-@Preview(widthDp = 600, heightDp = 1000)
+@Preview(widthDp = 600, heightDp = 1000, showBackground = true)
 @Composable
 private fun TypographyPreview() {
     CaramelTypographyPreview()
 }
 
-@Preview(widthDp = 300, heightDp = 300)
+@Preview(widthDp = 300, heightDp = 300, showBackground = true)
 @Composable
 private fun SpacingPreview() {
     CaramelSpacingPreview()
 }
 
-@Preview(widthDp = 300)
+@Preview(widthDp = 300, showBackground = true)
 @Composable
 private fun ShapePreview() {
     CaramelShapePreview()
