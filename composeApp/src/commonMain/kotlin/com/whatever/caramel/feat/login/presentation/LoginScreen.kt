@@ -41,7 +41,7 @@ internal fun LoginScreen(
                 onClick = { onIntent(LoginIntent.ClickKakaoLoginButton) }
             ) {
                 Text(
-                    text = "카카오 로그인",
+                    text = "프로필 생성",
                     fontSize = 18.sp
                 )
             }
@@ -52,7 +52,7 @@ internal fun LoginScreen(
                 onClick = { onIntent(LoginIntent.ClickAppleLoginButton) }
             ) {
                 Text(
-                    text = "애플 로그인",
+                    text = "커플 연결",
                     fontSize = 18.sp
                 )
             }

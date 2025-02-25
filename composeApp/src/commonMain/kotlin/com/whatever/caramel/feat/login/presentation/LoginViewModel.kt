@@ -17,20 +17,8 @@ class LoginViewModel(
 
     override suspend fun handleIntent(intent: LoginIntent) {
         when (intent) {
-            is LoginIntent.ClickAppleLoginButton -> isCreatedProfile()
-            is LoginIntent.ClickKakaoLoginButton -> isCreatedProfile()
-        }
-    }
-
-    private fun isCreatedProfile() {
-        launch {
-            val getProfileData = true // @ham2174 FIXME : 사용자 프로필 데이터 로직 구현시 뷰모델 로직 변경
-
-            if (getProfileData) {
-                postSideEffect(LoginSideEffect.NavigateToConnectCouple)
-            } else {
-                postSideEffect(LoginSideEffect.NavigateToCreateProfile)
-            }
+            is LoginIntent.ClickAppleLoginButton -> postSideEffect(LoginSideEffect.NavigateToConnectCouple)
+            is LoginIntent.ClickKakaoLoginButton -> postSideEffect(LoginSideEffect.NavigateToCreateProfile)
         }
     }
 
