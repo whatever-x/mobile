@@ -1,5 +1,6 @@
 package com.whatever.caramel.di
 
+import com.whatever.caramel.core.data.createDataStore
 import com.whatever.caramel.feat.sample.data.database.DatabaseFactory
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.darwin.Darwin
@@ -10,4 +11,5 @@ actual val platformModule: Module
     get() = module {
         single<HttpClientEngine> { Darwin.create() }
         single { DatabaseFactory() }
+        single { createDataStore() }
     }

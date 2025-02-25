@@ -6,6 +6,8 @@ import com.whatever.caramel.core.data.NetworkConfig
 import com.whatever.caramel.feat.sample.data.database.DatabaseFactory
 import com.whatever.caramel.feat.sample.data.database.SampleDao
 import com.whatever.caramel.feat.sample.data.database.SampleDatabase
+import com.whatever.caramel.feat.sample.data.local.LocalSampleDataSource
+import com.whatever.caramel.feat.sample.data.local.LocalSampleDataSourceImpl
 import com.whatever.caramel.feat.sample.data.remote.RemoteSampleDataSource
 import com.whatever.caramel.feat.sample.data.remote.RemoteSampleDataSourceImpl
 import com.whatever.caramel.feat.sample.data.repository.SampleRepositoryImpl
@@ -35,7 +37,8 @@ val sampleFeatureModule = module {
     }
     single { get<SampleDatabase>().sampleDao }
     single<RemoteSampleDataSource> { RemoteSampleDataSourceImpl(client = get()) }
-    single<SampleRepository> { SampleRepositoryImpl(remoteSampleDataSource = get(), sampleDao = get()) }
+    single<SampleRepository> { SampleRepositoryImpl(remoteSampleDataSource = get(), sampleDao = get(), localSampleDataSource = get()) }
+    single<LocalSampleDataSource> { LocalSampleDataSourceImpl(prefs = get()) }
 
     viewModelOf(::SampleViewModel)
 }
