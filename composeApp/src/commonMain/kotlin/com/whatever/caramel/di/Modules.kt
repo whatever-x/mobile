@@ -4,6 +4,7 @@ import com.whatever.caramel.core.data.HttpClientFactory
 import com.whatever.caramel.core.data.NetworkConfig
 import com.whatever.caramel.feat.login.presentation.LoginViewModel
 import com.whatever.caramel.feat.onboarding.presentation.OnboardingViewModel
+import com.whatever.caramel.feat.profile.presentation.create.ProfileCreateViewModel
 import com.whatever.caramel.feat.sample.data.remote.RemoteSampleDataSource
 import com.whatever.caramel.feat.sample.data.remote.RemoteSampleDataSourceImpl
 import com.whatever.caramel.feat.sample.data.repository.SampleRepositoryImpl
@@ -43,4 +44,8 @@ val onboardingFeatureModule = module {
 
 val loginFeatureModule = module {
     viewModelOf(::LoginViewModel)
+}
+
+val profileFeatureModule = module {
+    viewModelOf(::ProfileCreateViewModel)
 }

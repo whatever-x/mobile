@@ -8,6 +8,8 @@ import com.whatever.caramel.feat.login.presentation.navigation.loginScreen
 import com.whatever.caramel.feat.login.presentation.navigation.navigateToLogin
 import com.whatever.caramel.feat.onboarding.presentation.navigation.navigateToOnboarding
 import com.whatever.caramel.feat.onboarding.presentation.navigation.onboardingScreen
+import com.whatever.caramel.feat.profile.presentation.navigation.navigateToCreateProfile
+import com.whatever.caramel.feat.profile.presentation.navigation.createProfileScreen
 import com.whatever.caramel.feat.splash.presentation.navigation.SplashRoute
 import com.whatever.caramel.feat.splash.presentation.navigation.splashScreen
 
@@ -36,7 +38,11 @@ internal fun CaramelNavHost(
             )
             loginScreen(
                 navigateToConnectCouple = {},
-                navigateToCreateProfile = {}
+                navigateToCreateProfile = { navigateToCreateProfile() }
+            )
+            createProfileScreen(
+                navigateToLogin = { popBackStack() },
+                navigateToConnectCouple = {}
             )
         }
     }
