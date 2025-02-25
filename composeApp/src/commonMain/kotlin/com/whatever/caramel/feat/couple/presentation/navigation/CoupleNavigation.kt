@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.whatever.caramel.feat.couple.presentation.code.CoupleCodeRoute
 import com.whatever.caramel.feat.couple.presentation.invite.CoupleInviteRoute
 import kotlinx.serialization.Serializable
 
@@ -30,7 +31,8 @@ fun NavController.navigateToCoupleInvite(navOptions: NavOptionsBuilder.() -> Uni
 }
 
 fun NavGraphBuilder.coupleGraph(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    navigateToHome: () -> Unit
 ) {
     navigation<CoupleGraph.Route>(
         startDestination = CoupleGraph.Invite
@@ -44,7 +46,9 @@ fun NavGraphBuilder.coupleGraph(
         }
 
         composable<CoupleGraph.Code>() {
-
+            CoupleCodeRoute(
+                navigateToHome = navigateToHome
+            )
         }
     }
 }

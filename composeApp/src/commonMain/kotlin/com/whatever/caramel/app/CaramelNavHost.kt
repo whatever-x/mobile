@@ -54,7 +54,10 @@ internal fun CaramelNavHost(
                     }
                 }
             )
-            coupleGraph(navHostController = this)
+            coupleGraph(
+                navHostController = this,
+                navigateToHome = {}
+            )
         }
     }
 }
