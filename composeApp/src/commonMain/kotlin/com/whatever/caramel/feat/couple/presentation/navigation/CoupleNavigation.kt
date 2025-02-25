@@ -12,13 +12,13 @@ import kotlinx.serialization.Serializable
 sealed interface CoupleGraph {
 
     @Serializable
-    data object Route : CoupleGraph
+    data object Route
 
     @Serializable
-    data object Invite : CoupleGraph
+    data object Invite
 
     @Serializable
-    data object Code : CoupleGraph
+    data object Code
 
 }
 
