@@ -67,6 +67,7 @@ kotlin {
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.coil)
             implementation(libs.bundles.moko)
+            implementation(libs.bundles.datastore)
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
