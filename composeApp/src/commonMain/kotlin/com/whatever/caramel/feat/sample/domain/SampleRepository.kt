@@ -8,4 +8,7 @@ interface SampleRepository {
 
     suspend fun getSampleDataFromLocal() : List<SampleModel>
 
+    suspend fun getSampleNameFromLocal() : String
+
+    suspend fun saveSampleNameToLocal(name : String)
 }
