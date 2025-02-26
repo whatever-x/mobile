@@ -14,6 +14,8 @@ import com.whatever.caramel.feat.onboarding.presentation.navigation.navigateToOn
 import com.whatever.caramel.feat.onboarding.presentation.navigation.onboardingScreen
 import com.whatever.caramel.feat.profile.presentation.navigation.createProfileScreen
 import com.whatever.caramel.feat.profile.presentation.navigation.navigateToCreateProfile
+import com.whatever.caramel.feat.setting.navigation.navigateToSetting
+import com.whatever.caramel.feat.setting.navigation.settingScreen
 import com.whatever.caramel.feat.splash.presentation.navigation.SplashRoute
 import com.whatever.caramel.feat.splash.presentation.navigation.splashScreen
 
@@ -56,6 +58,11 @@ internal fun CaramelNavHost(
                     }
                 }
             )
+            settingScreen(
+                navigateToHome = { popBackStack() },
+                navigateToEditBirthday = {},
+                navigateToEditNickName = {}
+            )
             coupleGraph(
                 navHostController = this,
                 navigateToMain = {
@@ -65,7 +72,7 @@ internal fun CaramelNavHost(
                 }
             )
             mainGraph(
-                navigateToSetting = {},
+                navigateToSetting = { navigateToSetting() },
                 navigateToStaredCoupleDay = {},
                 navigateToTodoDetail = {},
                 navigateToCreateTodo = {}

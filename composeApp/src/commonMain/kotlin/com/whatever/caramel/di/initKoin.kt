@@ -15,7 +15,8 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             loginFeatureModule,
             profileFeatureModule,
             coupleFeatureModule,
-            mainFeatureModule
+            mainFeatureModule,
+            settingFeatureModule
         )
     }
 }

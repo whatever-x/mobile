@@ -15,6 +15,7 @@ import com.whatever.caramel.feat.sample.data.remote.RemoteSampleDataSourceImpl
 import com.whatever.caramel.feat.sample.data.repository.SampleRepositoryImpl
 import com.whatever.caramel.feat.sample.domain.SampleRepository
 import com.whatever.caramel.feat.sample.presentation.SampleViewModel
+import com.whatever.caramel.feat.setting.SettingViewModel
 import com.whatever.caramel.feat.splash.presentation.SplashViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModelOf
@@ -64,4 +65,8 @@ val mainFeatureModule = module {
     viewModelOf(::HomeViewModel)
     viewModelOf(::CalendarViewModel)
     viewModelOf(::MemoViewModel)
+}
+
+val settingFeatureModule = module {
+    viewModelOf(::SettingViewModel)
 }
