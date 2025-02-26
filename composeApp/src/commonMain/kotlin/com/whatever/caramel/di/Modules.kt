@@ -7,6 +7,7 @@ import com.whatever.caramel.feat.couple.presentation.invite.CoupleInviteViewMode
 import com.whatever.caramel.feat.login.presentation.LoginViewModel
 import com.whatever.caramel.feat.main.presentation.calendar.CalendarViewModel
 import com.whatever.caramel.feat.main.presentation.home.HomeViewModel
+import com.whatever.caramel.feat.main.presentation.memo.MemoViewModel
 import com.whatever.caramel.feat.onboarding.presentation.OnboardingViewModel
 import com.whatever.caramel.feat.profile.presentation.create.ProfileCreateViewModel
 import com.whatever.caramel.feat.sample.data.remote.RemoteSampleDataSource
@@ -62,4 +63,5 @@ val coupleFeatureModule = module {
 val mainFeatureModule = module {
     viewModelOf(::HomeViewModel)
     viewModelOf(::CalendarViewModel)
+    viewModelOf(::MemoViewModel)
 }
