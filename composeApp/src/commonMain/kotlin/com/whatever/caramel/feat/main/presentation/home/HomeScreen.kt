@@ -23,6 +23,12 @@ internal fun HomeScreen(
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
+        Text(
+            modifier = Modifier.align(alignment = Alignment.Center),
+            text = "홈 화면 입니다.",
+            fontSize = 32.sp
+        )
+
         Button(
             modifier = Modifier.align(alignment = Alignment.TopEnd),
             onClick = { onIntent(HomeIntent.ClickSettingButton) }
