@@ -32,7 +32,7 @@ fun NavController.navigateToCoupleInvite(navOptions: NavOptionsBuilder.() -> Uni
 
 fun NavGraphBuilder.coupleGraph(
     navHostController: NavHostController,
-    navigateToHome: () -> Unit
+    navigateToMain: () -> Unit
 ) {
     navigation<CoupleGraph.Route>(
         startDestination = CoupleGraph.Invite
@@ -47,7 +47,7 @@ fun NavGraphBuilder.coupleGraph(
 
         composable<CoupleGraph.Code>() {
             CoupleCodeRoute(
-                navigateToHome = navigateToHome
+                navigateToHome = navigateToMain
             )
         }
     }

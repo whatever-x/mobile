@@ -8,6 +8,8 @@ import com.whatever.caramel.feat.couple.presentation.navigation.coupleGraph
 import com.whatever.caramel.feat.couple.presentation.navigation.navigateToCoupleInvite
 import com.whatever.caramel.feat.login.presentation.navigation.loginScreen
 import com.whatever.caramel.feat.login.presentation.navigation.navigateToLogin
+import com.whatever.caramel.feat.main.presentation.navigation.mainGraph
+import com.whatever.caramel.feat.main.presentation.navigation.navigateToMain
 import com.whatever.caramel.feat.onboarding.presentation.navigation.navigateToOnboarding
 import com.whatever.caramel.feat.onboarding.presentation.navigation.onboardingScreen
 import com.whatever.caramel.feat.profile.presentation.navigation.createProfileScreen
@@ -56,7 +58,17 @@ internal fun CaramelNavHost(
             )
             coupleGraph(
                 navHostController = this,
-                navigateToHome = {}
+                navigateToMain = {
+                    navigateToMain {
+                        popUpTo(graph.id)
+                    }
+                }
+            )
+            mainGraph(
+                navigateToSetting = {},
+                navigateToStaredCoupleDay = {},
+                navigateToTodoDetail = {},
+                navigateToCreateTodo = {}
             )
         }
     }
