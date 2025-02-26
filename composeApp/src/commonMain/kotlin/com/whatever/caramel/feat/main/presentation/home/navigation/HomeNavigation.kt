@@ -1,12 +1,21 @@
 package com.whatever.caramel.feat.main.presentation.home.navigation
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.whatever.caramel.feat.main.presentation.home.HomeRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
 data object HomeRoute
+
+fun NavHostController.navigateToHome(builder: NavOptionsBuilder.() -> Unit) {
+    navigate(
+        route = HomeRoute,
+        builder = builder
+    )
+}
 
 fun NavGraphBuilder.homeContent(
     navigateToSetting: () -> Unit,
