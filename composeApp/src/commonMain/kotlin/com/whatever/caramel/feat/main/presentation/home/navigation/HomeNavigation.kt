@@ -3,7 +3,10 @@ package com.whatever.caramel.feat.main.presentation.home.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.whatever.caramel.feat.main.presentation.home.HomeRoute
-import com.whatever.caramel.feat.main.presentation.navigation.MainNavGraph
+import kotlinx.serialization.Serializable
+
+@Serializable
+data object HomeRoute
 
 fun NavGraphBuilder.homeContent(
     navigateToSetting: () -> Unit,
@@ -11,7 +14,7 @@ fun NavGraphBuilder.homeContent(
     navigateToTodoDetail: () -> Unit,
     navigateToCreateTodo: () -> Unit,
 ) {
-    composable<MainNavGraph.Home> {
+    composable<HomeRoute> {
         HomeRoute(
             navigateToSetting = navigateToSetting,
             navigateToStaredCoupleDay = navigateToStaredCoupleDay,
