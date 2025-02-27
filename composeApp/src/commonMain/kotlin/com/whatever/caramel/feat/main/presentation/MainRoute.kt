@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -22,6 +22,7 @@ import com.whatever.caramel.feat.main.presentation.home.navigation.homeContent
 import com.whatever.caramel.feat.main.presentation.home.navigation.navigateToHome
 import com.whatever.caramel.feat.main.presentation.memo.navigation.memoContent
 import com.whatever.caramel.feat.main.presentation.memo.navigation.navigateToMemo
+import io.github.aakira.napier.Napier
 
 @Composable
 internal fun MainRoute(
@@ -31,8 +32,10 @@ internal fun MainRoute(
     navigateToCreateTodo: () -> Unit,
 ) {
     val mainNavHostController = rememberNavController()
-    var selectedItem by remember { mutableIntStateOf(0) }
+    var selectedItem by rememberSaveable { mutableIntStateOf(0) }
     val items = listOf("홈", "캘린더", "메모", "만들기")
+
+    Napier.d { selectedItem.toString() }
 
     MainScaffold(
         bottomBar = {
