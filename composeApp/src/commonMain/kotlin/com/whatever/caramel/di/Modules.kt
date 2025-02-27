@@ -2,6 +2,7 @@ package com.whatever.caramel.di
 
 import com.whatever.caramel.core.data.HttpClientFactory
 import com.whatever.caramel.core.data.NetworkConfig
+import com.whatever.caramel.feat.content.ContentViewModel
 import com.whatever.caramel.feat.couple.presentation.code.CoupleCodeViewModel
 import com.whatever.caramel.feat.couple.presentation.invite.CoupleInviteViewModel
 import com.whatever.caramel.feat.login.presentation.LoginViewModel
@@ -69,4 +70,8 @@ val mainFeatureModule = module {
 
 val settingFeatureModule = module {
     viewModelOf(::SettingViewModel)
+}
+
+val contentFeatureModule = module {
+    viewModelOf(::ContentViewModel)
 }

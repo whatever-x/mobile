@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
+import com.whatever.caramel.feat.content.navigation.contentScreen
+import com.whatever.caramel.feat.content.navigation.navigateToContent
 import com.whatever.caramel.feat.couple.presentation.navigation.coupleGraph
 import com.whatever.caramel.feat.couple.presentation.navigation.navigateToCoupleInvite
 import com.whatever.caramel.feat.login.presentation.navigation.loginScreen
@@ -63,6 +65,9 @@ internal fun CaramelNavHost(
                 navigateToEditBirthday = {},
                 navigateToEditNickName = {}
             )
+            contentScreen(
+                navigateToBackStack = { popBackStack() }
+            )
             coupleGraph(
                 navHostController = this,
                 navigateToMain = {
@@ -74,8 +79,8 @@ internal fun CaramelNavHost(
             mainGraph(
                 navigateToSetting = { navigateToSetting() },
                 navigateToStaredCoupleDay = {},
-                navigateToTodoDetail = {},
-                navigateToCreateTodo = {}
+                navigateToTodoDetail = { navigateToContent() },
+                navigateToCreateTodo = { navigateToContent() }
             )
         }
     }
