@@ -1,6 +1,7 @@
 package com.whatever.caramel
 
 import android.app.Application
+import com.google.firebase.FirebaseApp
 import com.whatever.caramel.di.initKoin
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
@@ -13,6 +14,8 @@ class GlobalApplication : Application() {
         initKoin {
             androidContext(this@GlobalApplication)
         }
+
+        FirebaseApp.initializeApp(this)
 
         if (BuildConfig.DEBUG) {
             Napier.base(DebugAntilog())
