@@ -1,10 +1,13 @@
 package com.whatever.caramel.feat.main.presentation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,6 +16,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.whatever.caramel.feat.main.presentation.calendar.navigation.calendarContent
@@ -39,7 +43,12 @@ internal fun MainRoute(
 
     MainScaffold(
         bottomBar = {
-            NavigationBar {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = Color.Cyan)
+                    .navigationBarsPadding(),
+            ) {
                 items.forEachIndexed { index, item ->
                     NavigationBarItem(
                         icon = { Icon(Icons.Filled.Favorite, contentDescription = item) },
@@ -74,9 +83,9 @@ internal fun MainRoute(
                 }
             }
         }
-    ) { padding ->
+    ) { innerPadding ->
         NavHost(
-            modifier = Modifier.padding(paddingValues = padding),
+            modifier = Modifier.padding(paddingValues = innerPadding),
             navController = mainNavHostController,
             startDestination = HomeRoute
         ) {
