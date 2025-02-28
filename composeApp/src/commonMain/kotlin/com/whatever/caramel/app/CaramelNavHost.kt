@@ -1,6 +1,7 @@
 package com.whatever.caramel.app
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
@@ -23,9 +24,11 @@ import com.whatever.caramel.feat.splash.presentation.navigation.splashScreen
 
 @Composable
 internal fun CaramelNavHost(
-    navHostController: NavHostController
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController,
 ) {
     NavHost(
+        modifier = modifier,
         navController = navHostController,
         startDestination = SplashRoute
     ) {
