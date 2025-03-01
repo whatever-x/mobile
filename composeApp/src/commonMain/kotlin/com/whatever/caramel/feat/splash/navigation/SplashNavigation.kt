@@ -1,8 +1,8 @@
-package com.whatever.caramel.feat.splash.presentation.navigation
+package com.whatever.caramel.feat.splash.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.whatever.caramel.feat.splash.presentation.SplashRoute
+import com.whatever.caramel.feat.splash.SplashRoute
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,10 +1,10 @@
-package com.whatever.caramel.feat.splash.presentation
+package com.whatever.caramel.feat.splash
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.whatever.caramel.feat.splash.presentation.mvi.SplashSideEffect
+import com.whatever.caramel.feat.splash.mvi.SplashSideEffect
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

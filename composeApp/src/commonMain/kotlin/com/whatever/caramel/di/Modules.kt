@@ -18,7 +18,7 @@ import com.whatever.caramel.feat.sample.data.repository.SampleRepositoryImpl
 import com.whatever.caramel.feat.sample.domain.SampleRepository
 import com.whatever.caramel.feat.sample.presentation.SampleViewModel
 import com.whatever.caramel.feat.setting.SettingViewModel
-import com.whatever.caramel.feat.splash.presentation.SplashViewModel
+import com.whatever.caramel.feat.splash.SplashViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module

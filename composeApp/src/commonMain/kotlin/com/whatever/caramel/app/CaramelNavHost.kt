@@ -22,8 +22,8 @@ import com.whatever.caramel.feat.profile.create.navigation.createProfileScreen
 import com.whatever.caramel.feat.profile.create.navigation.navigateToCreateProfile
 import com.whatever.caramel.feat.setting.navigation.navigateToSetting
 import com.whatever.caramel.feat.setting.navigation.settingScreen
-import com.whatever.caramel.feat.splash.presentation.navigation.SplashRoute
-import com.whatever.caramel.feat.splash.presentation.navigation.splashScreen
+import com.whatever.caramel.feat.splash.navigation.SplashRoute
+import com.whatever.caramel.feat.splash.navigation.splashScreen
 
 @Composable
 internal fun CaramelNavHost(

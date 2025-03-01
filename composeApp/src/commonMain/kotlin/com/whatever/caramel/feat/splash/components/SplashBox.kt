@@ -1,4 +1,4 @@
-package com.whatever.caramel.feat.splash.presentation.components
+package com.whatever.caramel.feat.splash.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

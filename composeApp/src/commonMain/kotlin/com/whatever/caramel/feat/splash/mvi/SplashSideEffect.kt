@@ -1,4 +1,4 @@
-package com.whatever.caramel.feat.splash.presentation.mvi
+package com.whatever.caramel.feat.splash.mvi
 
 import com.whatever.caramel.core.presentation.UiSideEffect
 

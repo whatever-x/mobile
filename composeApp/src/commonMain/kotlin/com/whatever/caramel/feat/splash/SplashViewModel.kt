@@ -1,10 +1,10 @@
-package com.whatever.caramel.feat.splash.presentation
+package com.whatever.caramel.feat.splash
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.presentation.BaseViewModel
-import com.whatever.caramel.feat.splash.presentation.mvi.SplashIntent
-import com.whatever.caramel.feat.splash.presentation.mvi.SplashSideEffect
-import com.whatever.caramel.feat.splash.presentation.mvi.SplashState
+import com.whatever.caramel.feat.splash.mvi.SplashIntent
+import com.whatever.caramel.feat.splash.mvi.SplashSideEffect
+import com.whatever.caramel.feat.splash.mvi.SplashState
 import kotlinx.coroutines.delay
 
 class SplashViewModel(
