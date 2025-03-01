@@ -11,14 +11,14 @@ androidx-appcompat = "1.7.0"
 androidx-constraintlayout = "2.2.0"
 androidx-core-ktx = "1.15.0"
 androidx-espresso-core = "3.6.1"
-androidx-lifecycle = "2.8.3"
+androidx-lifecycle = "2.9.0-alpha03"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
-compose-plugin = "1.7.3"
+compose-plugin = "1.8.0-alpha03"
 junit = "4.13.2"
 kotlin = "2.1.0"
 kotlinx-coroutines = "1.9.0"
-navigationCompose = "2.8.0-alpha12"
+navigationCompose = "2.8.0-alpha13"
 kotlinSerialization = "1.7.3"
 koin = "4.0.0"
 ktor = "3.0.0"
@@ -31,6 +31,7 @@ napier = "2.7.1"
 gms = "4.4.2"
 firebase-crahslytics = "3.0.3"
 firebase = "33.10.0"
+datastore = "1.1.2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -82,6 +83,9 @@ firebase-bom-android = { group = "com.google.firebase", name = "firebase-bom", v
 firebase-analytics-ktx = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 firebase-crashlytics-ktx = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 
+datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
+datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
@@ -112,4 +116,8 @@ coil = [
 moko = [
     "moko-permission-multiplatform",
     "moko-permission-camera"
+]
+datastore = [
+    "datastore",
+    "datastore-preferences"
 ]
