@@ -1,4 +1,4 @@
-package com.whatever.caramel.feat.onboarding.presentation.components
+package com.whatever.caramel.feat.onboarding.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

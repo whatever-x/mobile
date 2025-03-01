@@ -1,10 +1,10 @@
-package com.whatever.caramel.feat.onboarding.presentation
+package com.whatever.caramel.feat.onboarding
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.presentation.BaseViewModel
-import com.whatever.caramel.feat.onboarding.presentation.mvi.OnboardingIntent
-import com.whatever.caramel.feat.onboarding.presentation.mvi.OnboardingSideEffect
-import com.whatever.caramel.feat.onboarding.presentation.mvi.OnboardingState
+import com.whatever.caramel.feat.onboarding.mvi.OnboardingIntent
+import com.whatever.caramel.feat.onboarding.mvi.OnboardingSideEffect
+import com.whatever.caramel.feat.onboarding.mvi.OnboardingState
 
 class OnboardingViewModel(
     savedStateHandle: SavedStateHandle

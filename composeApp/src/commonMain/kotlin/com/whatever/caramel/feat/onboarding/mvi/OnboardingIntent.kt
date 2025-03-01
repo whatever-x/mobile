@@ -1,4 +1,4 @@
-package com.whatever.caramel.feat.onboarding.presentation.mvi
+package com.whatever.caramel.feat.onboarding.mvi
 
 import com.whatever.caramel.core.presentation.UiIntent
 

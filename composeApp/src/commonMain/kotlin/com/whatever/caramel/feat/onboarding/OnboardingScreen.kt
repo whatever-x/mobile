@@ -1,4 +1,4 @@
-package com.whatever.caramel.feat.onboarding.presentation
+package com.whatever.caramel.feat.onboarding
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,9 +8,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-import com.whatever.caramel.feat.onboarding.presentation.components.OnBoardingBox
-import com.whatever.caramel.feat.onboarding.presentation.mvi.OnboardingIntent
-import com.whatever.caramel.feat.onboarding.presentation.mvi.OnboardingState
+import com.whatever.caramel.feat.onboarding.components.OnBoardingBox
+import com.whatever.caramel.feat.onboarding.mvi.OnboardingIntent
+import com.whatever.caramel.feat.onboarding.mvi.OnboardingState
 
 @Composable
 internal fun OnboardingScreen(
