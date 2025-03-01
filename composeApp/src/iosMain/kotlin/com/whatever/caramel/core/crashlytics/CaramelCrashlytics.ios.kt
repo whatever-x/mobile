@@ -1,8 +1,8 @@
 package com.whatever.caramel.core.crashlytics
 
 class CaramelCrashlyticsImpl : CaramelCrashlytics {
-    override fun sendCrashInfo(userId: String?, log: String, keys: Map<String, Any>?) {
-        iosCrashlyticsCallback?.sendCrashInfo(userId, log, keys.toString())
+    override fun sendCrashInfo(userId: String?, log: String, customs: Map<String, Any>?) {
+        iosCrashlyticsCallback?.sendCrashInfo(userId, log, customs.toString())
     }
 
     private fun Map<String, Any>?.toString(): String {
@@ -10,7 +10,7 @@ class CaramelCrashlyticsImpl : CaramelCrashlytics {
 
         val sb = StringBuilder()
         this.forEach { (key, value) ->
-            sb.append("${key}?:${value},")
+            sb.append("${key}:${value},")
         }
         return sb.toString()
     }
@@ -19,7 +19,7 @@ class CaramelCrashlyticsImpl : CaramelCrashlytics {
 actual fun getCaramelCrashlytics(): CaramelCrashlytics = CaramelCrashlyticsImpl()
 
 interface IosCrashlyticsCallback {
-    fun sendCrashInfo(userId : String?, log : String, custom : String)
+    fun sendCrashInfo(userId : String?, log : String, params : String)
 }
 
 private var iosCrashlyticsCallback : IosCrashlyticsCallback? = null
