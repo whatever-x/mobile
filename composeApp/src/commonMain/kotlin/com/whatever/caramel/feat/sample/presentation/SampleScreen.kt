@@ -114,7 +114,7 @@ private fun FirebaseSampleScreen(
                     getCaramelCrashlytics().sendCrashInfo(
                         userId = "test_user_1",
                         log = "test_log",
-                        keys = mapOf(
+                        customs = mapOf(
                             "test_key" to "test_value"
                         )
                     )

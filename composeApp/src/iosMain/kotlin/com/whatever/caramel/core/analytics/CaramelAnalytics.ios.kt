@@ -10,12 +10,11 @@ class CaramelAnalyticsImpl : CaramelAnalytics {
 
         val sb = StringBuilder()
         this.forEach { (key, value) ->
-            sb.append("${key}?:${value},")
+            sb.append("${key}:${value},")
         }
         return sb.toString()
     }
 }
-
 actual fun getCaramelAnalytics(): CaramelAnalytics = CaramelAnalyticsImpl()
 
 interface IosAnalyticsCallback {
