@@ -18,4 +18,4 @@ captures
 **/xcshareddata/WorkspaceSettings.xcsettings
 *.xcconfig
 composeApp/google-services.json
-iosApp/GoogleService-Info.plist
+iosApp/iosApp/GoogleService-Info.plist
