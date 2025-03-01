@@ -1,10 +1,10 @@
-package com.whatever.caramel.feat.login.presentation
+package com.whatever.caramel.feat.login
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.presentation.BaseViewModel
-import com.whatever.caramel.feat.login.presentation.mvi.LoginIntent
-import com.whatever.caramel.feat.login.presentation.mvi.LoginSideEffect
-import com.whatever.caramel.feat.login.presentation.mvi.LoginState
+import com.whatever.caramel.feat.login.mvi.LoginIntent
+import com.whatever.caramel.feat.login.mvi.LoginSideEffect
+import com.whatever.caramel.feat.login.mvi.LoginState
 
 class LoginViewModel(
     savedStateHandle: SavedStateHandle,

@@ -9,8 +9,8 @@ import com.whatever.caramel.feat.content.navigation.contentScreen
 import com.whatever.caramel.feat.content.navigation.navigateToContent
 import com.whatever.caramel.feat.couple.presentation.navigation.coupleGraph
 import com.whatever.caramel.feat.couple.presentation.navigation.navigateToCoupleInvite
-import com.whatever.caramel.feat.login.presentation.navigation.loginScreen
-import com.whatever.caramel.feat.login.presentation.navigation.navigateToLogin
+import com.whatever.caramel.feat.login.navigation.loginScreen
+import com.whatever.caramel.feat.login.navigation.navigateToLogin
 import com.whatever.caramel.feat.main.presentation.navigation.mainGraph
 import com.whatever.caramel.feat.main.presentation.navigation.navigateToMain
 import com.whatever.caramel.feat.onboarding.navigation.navigateToOnboarding

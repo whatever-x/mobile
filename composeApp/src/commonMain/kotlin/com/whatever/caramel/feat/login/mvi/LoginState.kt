@@ -1,4 +1,4 @@
-package com.whatever.caramel.feat.login.presentation.mvi
+package com.whatever.caramel.feat.login.mvi
 
 import com.whatever.caramel.core.presentation.UiState
 

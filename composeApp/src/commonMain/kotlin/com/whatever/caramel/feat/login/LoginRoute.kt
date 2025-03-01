@@ -1,10 +1,10 @@
-package com.whatever.caramel.feat.login.presentation
+package com.whatever.caramel.feat.login
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.whatever.caramel.feat.login.presentation.mvi.LoginSideEffect
+import com.whatever.caramel.feat.login.mvi.LoginSideEffect
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

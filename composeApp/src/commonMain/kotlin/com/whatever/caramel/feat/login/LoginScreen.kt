@@ -1,4 +1,4 @@
-package com.whatever.caramel.feat.login.presentation
+package com.whatever.caramel.feat.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,8 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.whatever.caramel.feat.login.presentation.mvi.LoginIntent
-import com.whatever.caramel.feat.login.presentation.mvi.LoginState
+import com.whatever.caramel.feat.login.mvi.LoginIntent
+import com.whatever.caramel.feat.login.mvi.LoginState
 
 @Composable
 internal fun LoginScreen(
