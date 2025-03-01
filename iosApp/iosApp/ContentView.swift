@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 import ComposeApp
+import Analytics
 
 struct ComposeView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
@@ -8,6 +9,68 @@ struct ComposeView: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        FirebaseApp.configure()
+        CaramelAnalytics_iosKt.firebaseCallback(callback: FirebaseLoggingCallback())
+        CaramelCrashlytics_iosKt.firebaseCallback(callback: FirebaseLoggingCallback())
+        return true
+    }
+}
+
+class FirebaseLoggingCallback: IosAnalyticsCallback {
+
+    func logEvent(eventId: String, params: String) {
+        let dict = splitStringToDictionary(params, ",", ":")
+        Analytics.logEvent(eventId, parameters: dict)
+    }
+
+    func splitStringToDictionary(_ input: String, _ pairDelimiter: Character, _ keyValueDelimiter: Character) -> [String: String] {
+        var result = [String: String]()
+
+        let pairs = input.split(separator: pairDelimiter)
+
+        for pair in pairs {
+            let keyValueArray = pair.split(separator: keyValueDelimiter, maxSplits: 1).map { String($0) }
+            if keyValueArray.count == 2 {
+                let key = keyValueArray[0].trimmingCharacters(in: .whitespacesAndNewlines)
+                let value = keyValueArray[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                result[key] = value
+            }
+        }
+
+        return result
+    }
+}
+
+class FirebaseCrashlyticsCallback: IosCrashlyticsCallback {
+
+    func sendCrashInfo(userId : String, log : String, custom : String) {
+        let dict = splitStringToDictionary(params, ",", ":")
+        Crashlytics.crashlytics().log(log)
+        Crashlytics.crashlytics().setUserId(userId)
+        Crashlytics.crashlytics().setCustomValue(dict)
+    }
+
+    func splitStringToDictionary(_ input: String, _ pairDelimiter: Character, _ keyValueDelimiter: Character) -> [String: String] {
+        var result = [String: String]()
+
+        let pairs = input.split(separator: pairDelimiter)
+
+        for pair in pairs {
+            let keyValueArray = pair.split(separator: keyValueDelimiter, maxSplits: 1).map { String($0) }
+            if keyValueArray.count == 2 {
+                let key = keyValueArray[0].trimmingCharacters(in: .whitespacesAndNewlines)
+                let value = keyValueArray[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                result[key] = value
+            }
+        }
+
+        return result
+    }
 }
 
 struct ContentView: View {
