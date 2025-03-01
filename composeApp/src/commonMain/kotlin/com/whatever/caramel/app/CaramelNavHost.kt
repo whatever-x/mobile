@@ -15,11 +15,11 @@ import com.whatever.caramel.feat.main.presentation.navigation.mainGraph
 import com.whatever.caramel.feat.main.presentation.navigation.navigateToMain
 import com.whatever.caramel.feat.onboarding.presentation.navigation.navigateToOnboarding
 import com.whatever.caramel.feat.onboarding.presentation.navigation.onboardingScreen
-import com.whatever.caramel.feat.profile.presentation.edit.mvi.ProfileEditType
-import com.whatever.caramel.feat.profile.presentation.edit.navigation.editProfileScreen
-import com.whatever.caramel.feat.profile.presentation.edit.navigation.navigateToEditProfile
-import com.whatever.caramel.feat.profile.presentation.navigation.createProfileScreen
-import com.whatever.caramel.feat.profile.presentation.navigation.navigateToCreateProfile
+import com.whatever.caramel.feat.profile.edit.mvi.ProfileEditType
+import com.whatever.caramel.feat.profile.edit.navigation.editProfileScreen
+import com.whatever.caramel.feat.profile.edit.navigation.navigateToEditProfile
+import com.whatever.caramel.feat.profile.create.navigation.createProfileScreen
+import com.whatever.caramel.feat.profile.create.navigation.navigateToCreateProfile
 import com.whatever.caramel.feat.setting.navigation.navigateToSetting
 import com.whatever.caramel.feat.setting.navigation.settingScreen
 import com.whatever.caramel.feat.splash.presentation.navigation.SplashRoute

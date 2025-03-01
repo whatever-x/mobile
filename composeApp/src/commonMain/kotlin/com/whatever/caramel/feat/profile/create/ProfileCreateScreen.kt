@@ -1,4 +1,4 @@
-package com.whatever.caramel.feat.profile.presentation.create
+package com.whatever.caramel.feat.profile.create
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-import com.whatever.caramel.feat.profile.presentation.create.mvi.ProfileCreateIntent
-import com.whatever.caramel.feat.profile.presentation.create.mvi.ProfileCreateState
+import com.whatever.caramel.feat.profile.create.mvi.ProfileCreateIntent
+import com.whatever.caramel.feat.profile.create.mvi.ProfileCreateState
 
 @Composable
 internal fun ProfileCreateScreen(

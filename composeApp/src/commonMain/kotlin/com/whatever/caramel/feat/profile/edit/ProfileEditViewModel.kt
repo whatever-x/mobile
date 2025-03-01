@@ -1,12 +1,12 @@
-package com.whatever.caramel.feat.profile.presentation.edit
+package com.whatever.caramel.feat.profile.edit
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.whatever.caramel.core.presentation.BaseViewModel
-import com.whatever.caramel.feat.profile.presentation.edit.mvi.ProfileEditIntent
-import com.whatever.caramel.feat.profile.presentation.edit.mvi.ProfileEditSideEffect
-import com.whatever.caramel.feat.profile.presentation.edit.mvi.ProfileEditState
-import com.whatever.caramel.feat.profile.presentation.edit.navigation.ProfileEditRoute
+import com.whatever.caramel.feat.profile.edit.mvi.ProfileEditIntent
+import com.whatever.caramel.feat.profile.edit.mvi.ProfileEditSideEffect
+import com.whatever.caramel.feat.profile.edit.mvi.ProfileEditState
+import com.whatever.caramel.feat.profile.edit.navigation.ProfileEditRoute
 
 class ProfileEditViewModel(
     savedStateHandle: SavedStateHandle

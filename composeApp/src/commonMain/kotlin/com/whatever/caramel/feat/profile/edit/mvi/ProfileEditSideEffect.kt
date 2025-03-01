@@ -1,4 +1,4 @@
-package com.whatever.caramel.feat.profile.presentation.edit.mvi
+package com.whatever.caramel.feat.profile.edit.mvi
 
 import com.whatever.caramel.core.presentation.UiSideEffect
 

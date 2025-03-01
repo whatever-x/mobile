@@ -1,10 +1,10 @@
-package com.whatever.caramel.feat.profile.presentation.navigation
+package com.whatever.caramel.feat.profile.create.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.whatever.caramel.feat.profile.presentation.create.ProfileCreateRoute
+import com.whatever.caramel.feat.profile.create.ProfileCreateRoute
 import kotlinx.serialization.Serializable
 
 @Serializable

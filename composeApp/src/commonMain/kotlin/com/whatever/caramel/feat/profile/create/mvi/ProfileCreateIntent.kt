@@ -1,4 +1,4 @@
-package com.whatever.caramel.feat.profile.presentation.create.mvi
+package com.whatever.caramel.feat.profile.create.mvi
 
 import com.whatever.caramel.core.presentation.UiIntent
 

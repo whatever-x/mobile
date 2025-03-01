@@ -1,10 +1,10 @@
-package com.whatever.caramel.feat.profile.presentation.create
+package com.whatever.caramel.feat.profile.create
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.whatever.caramel.feat.profile.presentation.create.mvi.ProfileCreateSideEffect
+import com.whatever.caramel.feat.profile.create.mvi.ProfileCreateSideEffect
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
