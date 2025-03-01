@@ -11,6 +11,7 @@ import com.whatever.caramel.feat.main.presentation.home.HomeViewModel
 import com.whatever.caramel.feat.main.presentation.memo.MemoViewModel
 import com.whatever.caramel.feat.onboarding.presentation.OnboardingViewModel
 import com.whatever.caramel.feat.profile.presentation.create.ProfileCreateViewModel
+import com.whatever.caramel.feat.profile.presentation.edit.ProfileEditViewModel
 import com.whatever.caramel.feat.sample.data.remote.RemoteSampleDataSource
 import com.whatever.caramel.feat.sample.data.remote.RemoteSampleDataSourceImpl
 import com.whatever.caramel.feat.sample.data.repository.SampleRepositoryImpl
@@ -55,6 +56,7 @@ val loginFeatureModule = module {
 
 val profileFeatureModule = module {
     viewModelOf(::ProfileCreateViewModel)
+    viewModelOf(::ProfileEditViewModel)
 }
 
 val coupleFeatureModule = module {

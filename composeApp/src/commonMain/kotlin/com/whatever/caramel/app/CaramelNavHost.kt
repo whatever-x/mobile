@@ -15,6 +15,9 @@ import com.whatever.caramel.feat.main.presentation.navigation.mainGraph
 import com.whatever.caramel.feat.main.presentation.navigation.navigateToMain
 import com.whatever.caramel.feat.onboarding.presentation.navigation.navigateToOnboarding
 import com.whatever.caramel.feat.onboarding.presentation.navigation.onboardingScreen
+import com.whatever.caramel.feat.profile.presentation.edit.mvi.ProfileEditType
+import com.whatever.caramel.feat.profile.presentation.edit.navigation.editProfileScreen
+import com.whatever.caramel.feat.profile.presentation.edit.navigation.navigateToEditProfile
 import com.whatever.caramel.feat.profile.presentation.navigation.createProfileScreen
 import com.whatever.caramel.feat.profile.presentation.navigation.navigateToCreateProfile
 import com.whatever.caramel.feat.setting.navigation.navigateToSetting
@@ -65,11 +68,22 @@ internal fun CaramelNavHost(
             )
             settingScreen(
                 navigateToHome = { popBackStack() },
-                navigateToEditBirthday = {},
-                navigateToEditNickName = {}
+                navigateToEditBirthday = {
+                    navigateToEditProfile(
+                        editType = ProfileEditType.BIRTHDAY
+                    )
+                },
+                navigateToEditNickName = {
+                    navigateToEditProfile(
+                        editType = ProfileEditType.NICK_NAME
+                    )
+                }
             )
             contentScreen(
                 navigateToBackStack = { popBackStack() }
+            )
+            editProfileScreen(
+                popBackStack = { popBackStack() }
             )
             coupleGraph(
                 navHostController = this,
@@ -81,7 +95,11 @@ internal fun CaramelNavHost(
             )
             mainGraph(
                 navigateToSetting = { navigateToSetting() },
-                navigateToStaredCoupleDay = {},
+                navigateToStaredCoupleDay = {
+                    navigateToEditProfile(
+                        editType = ProfileEditType.D_DAY
+                    )
+                },
                 navigateToTodoDetail = { navigateToContent() },
                 navigateToCreateTodo = { navigateToContent() }
             )
