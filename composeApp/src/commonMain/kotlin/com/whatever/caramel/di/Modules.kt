@@ -6,9 +6,9 @@ import com.whatever.caramel.feat.content.ContentViewModel
 import com.whatever.caramel.feat.couple.code.CoupleConnectViewModel
 import com.whatever.caramel.feat.couple.invite.CoupleInviteViewModel
 import com.whatever.caramel.feat.login.LoginViewModel
-import com.whatever.caramel.feat.main.presentation.calendar.CalendarViewModel
-import com.whatever.caramel.feat.main.presentation.home.HomeViewModel
-import com.whatever.caramel.feat.main.presentation.memo.MemoViewModel
+import com.whatever.caramel.feat.main.calendar.CalendarViewModel
+import com.whatever.caramel.feat.main.home.HomeViewModel
+import com.whatever.caramel.feat.main.memo.MemoViewModel
 import com.whatever.caramel.feat.onboarding.OnboardingViewModel
 import com.whatever.caramel.feat.profile.create.ProfileCreateViewModel
 import com.whatever.caramel.feat.profile.edit.ProfileEditViewModel

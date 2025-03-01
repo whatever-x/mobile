@@ -13,8 +13,8 @@ import com.whatever.caramel.feat.couple.invite.navigation.inviteCoupleScreen
 import com.whatever.caramel.feat.couple.invite.navigation.navigateToCoupleInvite
 import com.whatever.caramel.feat.login.navigation.loginScreen
 import com.whatever.caramel.feat.login.navigation.navigateToLogin
-import com.whatever.caramel.feat.main.presentation.navigation.mainGraph
-import com.whatever.caramel.feat.main.presentation.navigation.navigateToMain
+import com.whatever.caramel.feat.main.navigation.mainGraph
+import com.whatever.caramel.feat.main.navigation.navigateToMain
 import com.whatever.caramel.feat.onboarding.navigation.navigateToOnboarding
 import com.whatever.caramel.feat.onboarding.navigation.onboardingScreen
 import com.whatever.caramel.feat.profile.create.navigation.createProfileScreen
