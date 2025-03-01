@@ -28,6 +28,7 @@ sqlite = "2.5.0-alpha12"
 room = "2.7.0-alpha12"
 moko = "0.19.0"
 napier = "2.7.1"
+datastore = "1.1.2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -44,7 +45,7 @@ androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", nam
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 
-jetbrains-compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref= "navigationCompose"}
+jetbrains-compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
@@ -72,8 +73,11 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 
-moko-permission-camera = {group = "dev.icerock.moko", name = "permissions-camera", version.ref = "moko"}
-moko-permission-multiplatform = {group = "dev.icerock.moko", name = "permissions-compose", version.ref = "moko"}
+moko-permission-camera = { group = "dev.icerock.moko", name = "permissions-camera", version.ref = "moko" }
+moko-permission-multiplatform = { group = "dev.icerock.moko", name = "permissions-compose", version.ref = "moko" }
+
+datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
+datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -103,4 +107,8 @@ coil = [
 moko = [
     "moko-permission-multiplatform",
     "moko-permission-camera"
+]
+datastore = [
+    "datastore",
+    "datastore-preferences"
 ]

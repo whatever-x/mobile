@@ -1,7 +1,12 @@
 package com.whatever.caramel.feat.sample.presentation
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -53,9 +59,14 @@ internal fun SampleRoute(
         }
     }
 
-    SampleScreen(
+    /*
+    * @RyuSw-cs 2025.02.25
+    * SampleScreen - 네트워크 통신 불러오는 Screen
+    * LocalSampleScreen - 네트워크 + 로컬 데이터 불러오는 Screen
+    * */
+    LocalSampleScreen(
         state = uiState.value,
-        onIntent = { intent -> viewModel.intent(intent)}
+        onIntent = { intent -> viewModel.intent(intent) }
     )
 }
 
@@ -69,7 +80,7 @@ private fun SampleScreen(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = state.text,
+            text = state.networkResult,
             fontSize = 12.sp,
             color = Color.Black
         )
@@ -82,6 +93,60 @@ private fun SampleScreen(
             Text(
                 text = "Intent 테스트 버튼"
             )
+        }
+    }
+}
+
+@Composable
+private fun LocalSampleScreen(
+    state: SampleUiState,
+    onIntent: (SampleIntent) -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text("Network")
+        Text(
+            text = state.networkResult,
+            fontSize = 12.sp,
+            color = Color.Black
+        )
+        Spacer(modifier = Modifier.padding(16.dp))
+        Text("Local")
+        Text(
+            text = state.localResult,
+            fontSize = 12.sp,
+            color = Color.Black
+        )
+        Spacer(modifier = Modifier.padding(16.dp))
+        Text("Local Name")
+        Text(
+            text = state.saveNameResult,
+            fontSize = 12.sp,
+            color = Color.Black
+        )
+        Spacer(modifier = Modifier.padding(16.dp))
+        Row {
+            Button(modifier = Modifier.weight(1f), onClick = {
+                onIntent.invoke(SampleIntent.ClickButton)
+            }) {
+                Text("intent test")
+            }
+            Spacer(modifier = Modifier.padding(16.dp))
+            Button(modifier = Modifier.weight(1f), onClick = {
+                if(state.networkResultData != null){
+                    onIntent.invoke(SampleIntent.SaveLocal(state.networkResultData))
+                }
+            }) {
+                Text("save local")
+            }
+            Spacer(modifier = Modifier.padding(16.dp))
+            Button(modifier = Modifier.weight(1f), onClick = {
+                onIntent.invoke(SampleIntent.GetLocal)
+            }) {
+                Text("get local")
+            }
         }
     }
 }

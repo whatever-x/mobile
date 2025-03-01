@@ -1,7 +1,12 @@
 package com.whatever.caramel.di
 
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.whatever.caramel.core.data.HttpClientFactory
 import com.whatever.caramel.core.data.NetworkConfig
+import com.whatever.caramel.feat.sample.data.database.DatabaseFactory
+import com.whatever.caramel.feat.sample.data.database.SampleDatabase
+import com.whatever.caramel.feat.sample.data.local.LocalSampleDataSource
+import com.whatever.caramel.feat.sample.data.local.LocalSampleDataSourceImpl
 import com.whatever.caramel.feat.content.ContentViewModel
 import com.whatever.caramel.feat.couple.code.CoupleConnectViewModel
 import com.whatever.caramel.feat.couple.invite.CoupleInviteViewModel
@@ -36,8 +41,15 @@ val networkModule = module {
 }
 
 val sampleFeatureModule = module {
+    single {
+        get<DatabaseFactory>().create()
+            .setDriver(BundledSQLiteDriver())
+            .build()
+    }
+    single { get<SampleDatabase>().sampleDao }
     single<RemoteSampleDataSource> { RemoteSampleDataSourceImpl(client = get()) }
-    single<SampleRepository> { SampleRepositoryImpl(remoteSampleDataSource = get()) }
+    single<SampleRepository> { SampleRepositoryImpl(remoteSampleDataSource = get(), localSampleDataSource = get()) }
+    single<LocalSampleDataSource> { LocalSampleDataSourceImpl(prefs = get(), sampleDao = get()) }
 
     viewModelOf(::SampleViewModel)
 }
