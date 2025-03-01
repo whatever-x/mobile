@@ -1,28 +1,30 @@
-package com.whatever.caramel.feat.couple.presentation.code
+package com.whatever.caramel.feat.couple.invite
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.whatever.caramel.feat.couple.presentation.code.mvi.CoupleCodeSideEffect
+import com.whatever.caramel.feat.couple.invite.mvi.CoupleInviteSideEffect
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-internal fun CoupleCodeRoute(
-    viewModel: CoupleCodeViewModel = koinViewModel(),
-    navigateToHome: () -> Unit
+internal fun CoupleInviteRoute(
+    viewModel: CoupleInviteViewModel = koinViewModel(),
+    navigateToConnectCouple: () -> Unit,
+    navigateToLogin: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is CoupleCodeSideEffect.NavigateToHome -> navigateToHome()
+                is CoupleInviteSideEffect.NavigateToConnectCouple -> navigateToConnectCouple()
+                is CoupleInviteSideEffect.NavigateToLogin -> navigateToLogin()
             }
         }
     }
 
-    CoupleCodeScreen(
+    CoupleInviteScreen(
         state = state,
         onIntent = { intent -> viewModel.intent(intent) }
     )

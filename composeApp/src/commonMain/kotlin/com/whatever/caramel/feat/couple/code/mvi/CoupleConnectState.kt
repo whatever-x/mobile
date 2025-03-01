@@ -1,7 +1,7 @@
-package com.whatever.caramel.feat.couple.presentation.code.mvi
+package com.whatever.caramel.feat.couple.code.mvi
 
 import com.whatever.caramel.core.presentation.UiState
 
-data class CoupleCodeState(
+data class CoupleConnectState(
     val test: String = ""
 ) : UiState

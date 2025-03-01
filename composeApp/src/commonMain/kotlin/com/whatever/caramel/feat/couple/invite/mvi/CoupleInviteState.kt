@@ -1,4 +1,4 @@
-package com.whatever.caramel.feat.couple.presentation.invite.mvi
+package com.whatever.caramel.feat.couple.invite.mvi
 
 import com.whatever.caramel.core.presentation.UiState
 

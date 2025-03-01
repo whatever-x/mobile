@@ -10,11 +10,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object MainRoute
 
-fun NavController.navigateToMain(builder: NavOptionsBuilder.() -> Unit) {
-    navigate(
-        route = MainRoute,
-        builder = builder
-    )
+fun NavController.navigateToMain(builder: NavOptionsBuilder.() -> Unit = {}) {
+    navigate(route = MainRoute) {
+        popUpTo(graph.id)
+        builder()
+    }
 }
 
 fun NavGraphBuilder.mainGraph(

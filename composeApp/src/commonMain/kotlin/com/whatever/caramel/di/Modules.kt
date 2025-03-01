@@ -3,8 +3,8 @@ package com.whatever.caramel.di
 import com.whatever.caramel.core.data.HttpClientFactory
 import com.whatever.caramel.core.data.NetworkConfig
 import com.whatever.caramel.feat.content.ContentViewModel
-import com.whatever.caramel.feat.couple.presentation.code.CoupleCodeViewModel
-import com.whatever.caramel.feat.couple.presentation.invite.CoupleInviteViewModel
+import com.whatever.caramel.feat.couple.code.CoupleConnectViewModel
+import com.whatever.caramel.feat.couple.invite.CoupleInviteViewModel
 import com.whatever.caramel.feat.login.LoginViewModel
 import com.whatever.caramel.feat.main.presentation.calendar.CalendarViewModel
 import com.whatever.caramel.feat.main.presentation.home.HomeViewModel
@@ -60,7 +60,7 @@ val profileFeatureModule = module {
 }
 
 val coupleFeatureModule = module {
-    viewModelOf(::CoupleCodeViewModel)
+    viewModelOf(::CoupleConnectViewModel)
     viewModelOf(::CoupleInviteViewModel)
 }
 
