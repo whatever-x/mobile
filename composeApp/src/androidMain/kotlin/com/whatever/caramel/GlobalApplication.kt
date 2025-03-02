@@ -1,6 +1,7 @@
 package com.whatever.caramel
 
 import android.app.Application
+import com.kakao.sdk.common.KakaoSdk
 import com.whatever.caramel.di.initKoin
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
@@ -13,6 +14,7 @@ class GlobalApplication : Application() {
         initKoin {
             androidContext(this@GlobalApplication)
         }
+        KakaoSdk.init(this, "{NATIVE_APP_KEY}")
 
         if (BuildConfig.DEBUG) {
             Napier.base(DebugAntilog())

@@ -1,5 +1,7 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.konan.properties.Properties
+import java.io.FileInputStream
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -86,6 +88,11 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = libs.versions.version.code.get().toInt()
         versionName = libs.versions.version.name.get()
+
+        val kakaoNativeAppKey = gradleLocalProperties(rootDir, providers).getProperty("KAKAO_NATIVE_APP_KEY")
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", kakaoNativeAppKey)
+
+        manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] = kakaoNativeAppKey.replace("\"","")
     }
 
     packaging {
@@ -98,11 +105,26 @@ android {
         buildConfig = true
     }
 
+    signingConfigs {
+        create("release") {
+            Properties().apply {
+                load(FileInputStream(rootProject.file("local.properties")))
+                storeFile = rootProject.file(this["STORE_FILE"] as String)
+                keyAlias = this["KEY_ALIAS"] as String
+                keyPassword = this["KEY_PASSWORD"] as String
+                storePassword = this["STORE_PASSWORD"] as String
+            }
+        }
+    }
+
     buildTypes {
-        val properties =
-            Properties().apply { load(rootProject.file("local.properties").inputStream()) }
+        val properties = Properties().apply { load(rootProject.file("local.properties").inputStream()) }
         val debugUrl = "CARAMEL_DEBUG_URL"
         val releaseUrl = "CARAMEL_RELEASE_URL"
+
+        release {
+            signingConfig = signingConfigs.getByName("release")
+        }
 
         getByName("release") {
             isMinifyEnabled = false
