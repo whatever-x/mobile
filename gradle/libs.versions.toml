@@ -29,6 +29,7 @@ room = "2.7.0-alpha12"
 moko = "0.19.0"
 napier = "2.7.1"
 datastore = "1.1.2"
+kakao = "2.20.6"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -78,6 +79,8 @@ moko-permission-multiplatform = { group = "dev.icerock.moko", name = "permission
 
 datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+
+kakao-login = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
