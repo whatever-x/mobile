@@ -13,7 +13,7 @@ class AndroidLibraryPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target){
             with(pluginManager){
-                apply(libs.plugin("androidLibrary"))
+                apply("com.android.library")
             }
 
             androidLibrary {

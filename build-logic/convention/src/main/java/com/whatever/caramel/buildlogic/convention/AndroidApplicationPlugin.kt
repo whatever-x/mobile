@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.konan.properties.Properties
 class AndroidApplicationPlugin : Plugin<Project>{
     override fun apply(target: Project) {
         with(target){
-            apply(libs.plugin("androidApplication"))
+            apply("com.android.application")
 
             androidApplication {
                 android {

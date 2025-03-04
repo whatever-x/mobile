@@ -53,19 +53,18 @@ gradlePlugin {
             implementationClass =
                 "com.whatever.caramel.buildlogic.convention.KotlinSerializationPlugin"
         }
-
         register("androidApplication") {
             id = "caramel.android.application"
             implementationClass =
                 "com.whatever.caramel.buildlogic.convention.AndroidApplicationPlugin"
         }
         register("androidLibrary") {
-            id = "caramelandroid.library"
+            id = "caramel.android.library"
             implementationClass =
                 "com.whatever.caramel.buildlogic.convention.AndroidLibraryPlugin"
         }
         register("googleServices") {
-            id = "caramelgoogle.services"
+            id = "caramel.google.services"
             implementationClass =
                 "com.whatever.caramel.buildlogic.convention.GoogleServicesPlugin"
         }

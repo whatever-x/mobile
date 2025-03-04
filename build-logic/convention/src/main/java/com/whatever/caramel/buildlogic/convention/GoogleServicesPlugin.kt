@@ -10,7 +10,7 @@ class GoogleServicesPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target){
             with(pluginManager) {
-                apply(libs.plugin("googleServices"))
+                apply("com.google.gms.google-services")
             }
         }
     }
