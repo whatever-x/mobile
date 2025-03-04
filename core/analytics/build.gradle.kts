@@ -1,15 +1,22 @@
 plugins {
-    id("java-library")
-    alias(libs.plugins.jetbrains.kotlin.jvm)
+    id("caramel.kmp")
+    id("caramel.kmp.android")
+    id("caramel.kmp.ios")
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
+android.namespace = "com.whatever.caramel.core.analytics"
 
 kotlin {
-    compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+    sourceSets {
+        androidMain.dependencies {
+            implementation(libs.koin.android)
+            implementation(project.dependencies.platform(libs.firebase.bom.android))
+            implementation(libs.firebase.analytics.ktx)
+            implementation(libs.firebase.crashlytics.ktx)
+        }
+        commonMain.dependencies {
+            implementation(libs.koin.core)
+            implementation(libs.napier)
+        }
     }
 }
