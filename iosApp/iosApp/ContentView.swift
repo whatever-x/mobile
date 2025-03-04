@@ -3,7 +3,7 @@ import SwiftUI
 import Firebase
 import FirebaseAnalytics
 import FirebaseCrashlytics
-import ComposeApp
+import App
 
 struct ComposeView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {

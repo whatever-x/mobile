@@ -104,7 +104,7 @@ private fun FirebaseSampleScreen(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = state.text,
+            text = state.networkResult,
             fontSize = 12.sp,
             color = Color.Black
         )

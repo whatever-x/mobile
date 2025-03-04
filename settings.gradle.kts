@@ -27,5 +27,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "app"
-include(":composeApp")
+rootProject.name = "caramel"
+include(":app")

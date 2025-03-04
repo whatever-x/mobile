@@ -30,7 +30,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "ComposeApp"
+            baseName = "App"
             isStatic = true
             freeCompilerArgs += "-Xbinary=bundleId=com.whatever.caramel"
         }
