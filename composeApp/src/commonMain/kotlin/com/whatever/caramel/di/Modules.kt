@@ -11,6 +11,7 @@ import com.whatever.caramel.feat.content.ContentViewModel
 import com.whatever.caramel.feat.couple.code.CoupleConnectViewModel
 import com.whatever.caramel.feat.couple.invite.CoupleInviteViewModel
 import com.whatever.caramel.feat.login.LoginViewModel
+import com.whatever.caramel.feat.login.social.kakao.KakaoAuthProvider
 import com.whatever.caramel.feat.main.calendar.CalendarViewModel
 import com.whatever.caramel.feat.main.home.HomeViewModel
 import com.whatever.caramel.feat.main.memo.MemoViewModel
@@ -61,6 +62,8 @@ val splashFeatureModule = module {
 val onboardingFeatureModule = module {
     viewModelOf(::OnboardingViewModel)
 }
+
+expect val socialModule: Module
 
 val loginFeatureModule = module {
     viewModelOf(::LoginViewModel)

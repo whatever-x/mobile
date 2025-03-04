@@ -14,7 +14,7 @@ class GlobalApplication : Application() {
         initKoin {
             androidContext(this@GlobalApplication)
         }
-        KakaoSdk.init(this, "{NATIVE_APP_KEY}")
+        KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
 
         if (BuildConfig.DEBUG) {
             Napier.base(DebugAntilog())

@@ -14,11 +14,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.whatever.caramel.feat.login.mvi.LoginIntent
 import com.whatever.caramel.feat.login.mvi.LoginState
+import com.whatever.caramel.feat.login.mvi.SocialAuthType
 
 @Composable
 internal fun LoginScreen(
     state: LoginState,
-    onIntent: (LoginIntent) -> Unit
+    onIntent: (LoginIntent) -> Unit,
+    onLaunch: (SocialAuthType) -> Unit,
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -38,10 +40,10 @@ internal fun LoginScreen(
             Button(
                 modifier = Modifier
                     .fillMaxWidth(),
-                onClick = { onIntent(LoginIntent.ClickKakaoLoginButton) }
+                onClick = { onLaunch(SocialAuthType.KAKAO) }
             ) {
                 Text(
-                    text = "프로필 생성",
+                    text = "카카오 로그인",
                     fontSize = 18.sp
                 )
             }
@@ -49,10 +51,10 @@ internal fun LoginScreen(
             Button(
                 modifier = Modifier
                     .fillMaxWidth(),
-                onClick = { onIntent(LoginIntent.ClickAppleLoginButton) }
+                onClick = { onLaunch(SocialAuthType.KAKAO) }
             ) {
                 Text(
-                    text = "커플 연결",
+                    text = "애플 로그인 (커플 연결)",
                     fontSize = 18.sp
                 )
             }

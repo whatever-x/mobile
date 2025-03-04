@@ -13,3 +13,8 @@ actual val platformModule: Module
         single { DatabaseFactory() }
         single { createDataStore() }
     }
+
+actual val socialModule: Module
+    get() = module {
+
+    }
