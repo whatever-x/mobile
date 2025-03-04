@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.data
+package com.whatever.caramel.core.data.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory

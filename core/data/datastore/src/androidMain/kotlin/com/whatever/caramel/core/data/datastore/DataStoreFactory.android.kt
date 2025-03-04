@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.data
+package com.whatever.caramel.core.data.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore
