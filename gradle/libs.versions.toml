@@ -28,6 +28,9 @@ sqlite = "2.5.0-alpha12"
 room = "2.7.0-alpha12"
 moko = "0.19.0"
 napier = "2.7.1"
+gms = "4.4.2"
+firebase-crahslytics = "3.0.3"
+firebase = "33.10.0"
 datastore = "1.1.2"
 
 [libraries]
@@ -76,6 +79,10 @@ napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 moko-permission-camera = { group = "dev.icerock.moko", name = "permissions-camera", version.ref = "moko" }
 moko-permission-multiplatform = { group = "dev.icerock.moko", name = "permissions-compose", version.ref = "moko" }
 
+firebase-bom-android = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
+firebase-analytics-ktx = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
+firebase-crashlytics-ktx = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
+
 datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
@@ -88,6 +95,8 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
+googleServices = { id = "com.google.gms.google-services", version.ref = "gms" }
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crahslytics" }
 
 [bundles]
 ktor = [

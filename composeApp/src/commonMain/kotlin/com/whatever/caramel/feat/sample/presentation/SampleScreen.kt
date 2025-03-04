@@ -21,6 +21,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.whatever.caramel.core.analytics.getCaramelAnalytics
+import com.whatever.caramel.core.crashlytics.getCaramelCrashlytics
 import com.whatever.caramel.feat.sample.presentation.mvi.SampleIntent
 import com.whatever.caramel.feat.sample.presentation.mvi.SampleSideEffect
 import com.whatever.caramel.feat.sample.presentation.mvi.SampleUiState
@@ -59,12 +61,7 @@ internal fun SampleRoute(
         }
     }
 
-    /*
-    * @RyuSw-cs 2025.02.25
-    * SampleScreen - 네트워크 통신 불러오는 Screen
-    * LocalSampleScreen - 네트워크 + 로컬 데이터 불러오는 Screen
-    * */
-    LocalSampleScreen(
+    FirebaseSampleScreen(
         state = uiState.value,
         onIntent = { intent -> viewModel.intent(intent) }
     )
@@ -98,54 +95,57 @@ private fun SampleScreen(
 }
 
 @Composable
-private fun LocalSampleScreen(
+private fun FirebaseSampleScreen(
     state: SampleUiState,
     onIntent: (SampleIntent) -> Unit
 ) {
-    Column(
+    Box(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center
+        contentAlignment = Alignment.Center
     ) {
-        Text("Network")
         Text(
-            text = state.networkResult,
+            text = state.text,
             fontSize = 12.sp,
             color = Color.Black
         )
-        Spacer(modifier = Modifier.padding(16.dp))
-        Text("Local")
-        Text(
-            text = state.localResult,
-            fontSize = 12.sp,
-            color = Color.Black
-        )
-        Spacer(modifier = Modifier.padding(16.dp))
-        Text("Local Name")
-        Text(
-            text = state.saveNameResult,
-            fontSize = 12.sp,
-            color = Color.Black
-        )
-        Spacer(modifier = Modifier.padding(16.dp))
-        Row {
-            Button(modifier = Modifier.weight(1f), onClick = {
-                onIntent.invoke(SampleIntent.ClickButton)
-            }) {
-                Text("intent test")
-            }
-            Spacer(modifier = Modifier.padding(16.dp))
-            Button(modifier = Modifier.weight(1f), onClick = {
-                if(state.networkResultData != null){
-                    onIntent.invoke(SampleIntent.SaveLocal(state.networkResultData))
+
+        Column (
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+        ){
+            Button(
+                onClick = {
+                    onIntent(SampleIntent.ClickButton)
+                    getCaramelCrashlytics().sendCrashInfo(
+                        userId = "test_user_1",
+                        log = "test_log",
+                        customs = mapOf(
+                            "test_key" to "test_value"
+                        )
+                    )
+                    throw IllegalArgumentException("test crash")
                 }
-            }) {
-                Text("save local")
+            ) {
+                Text(
+                    text = "샘플 크래시 버튼"
+                )
             }
-            Spacer(modifier = Modifier.padding(16.dp))
-            Button(modifier = Modifier.weight(1f), onClick = {
-                onIntent.invoke(SampleIntent.GetLocal)
-            }) {
-                Text("get local")
+
+            Button(
+                onClick = {
+                    onIntent(SampleIntent.ClickButton)
+                    getCaramelAnalytics().logEvent(
+                        eventName = "Button Click",
+                        params = mapOf(
+                            "screen" to "sample"
+                        )
+                    )
+                    Napier.d { "Start Analytics logEvent" }
+                }
+            ) {
+                Text(
+                    text = "Analytics 버튼"
+                )
             }
         }
     }
