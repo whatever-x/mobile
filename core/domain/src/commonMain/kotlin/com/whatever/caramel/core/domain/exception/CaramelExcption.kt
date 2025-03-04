@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain
+package com.whatever.caramel.core.domain.exception
 
 data class CaramelException(
     override val message: String,

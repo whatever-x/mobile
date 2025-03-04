@@ -1,4 +1,4 @@
-package com.whatever.caramel.feat.sample.domain
+package com.whatever.caramel.core.domain.model
 
 import kotlinx.serialization.Serializable
 

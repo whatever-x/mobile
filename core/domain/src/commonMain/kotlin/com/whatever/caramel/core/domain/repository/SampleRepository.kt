@@ -1,4 +1,6 @@
-package com.whatever.caramel.feat.sample.domain
+package com.whatever.caramel.core.domain.repository
+
+import com.whatever.caramel.core.domain.model.SampleModel
 
 interface SampleRepository {
 
