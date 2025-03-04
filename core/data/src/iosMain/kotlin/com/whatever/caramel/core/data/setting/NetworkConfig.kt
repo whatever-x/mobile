@@ -1,7 +1,5 @@
-package com.whatever.caramel.core.data
+package com.whatever.caramel.core.data.setting
 
-import com.whatever.caramel.core.domain.CaramelException
-import com.whatever.caramel.core.domain.ErrorUiType
 import platform.Foundation.NSBundle
 import kotlin.experimental.ExperimentalNativeApi
 
