@@ -1,15 +1,16 @@
 plugins {
-    id("java-library")
-    alias(libs.plugins.jetbrains.kotlin.jvm)
+    id("caramel.kmp")
+    id("caramel.kmp.android")
+    id("caramel.kmp.ios")
+    id("caramel.room")
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
+android.namespace = "com.whatever.caramel.core.data.database"
 
 kotlin {
-    compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+    sourceSets {
+        commonMain.dependencies {
+
+        }
     }
 }
