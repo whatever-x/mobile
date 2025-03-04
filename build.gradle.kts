@@ -9,4 +9,5 @@ plugins {
     alias(libs.plugins.room) apply false
     alias(libs.plugins.googleServices) apply false
     alias(libs.plugins.crashlytics) apply false
+    alias(libs.plugins.jetbrainsKotlinJvm) apply false
 }

@@ -32,6 +32,7 @@ gms = "4.4.2"
 firebase-crahslytics = "3.0.3"
 firebase = "33.10.0"
 datastore = "1.1.2"
+jetbrainsKotlinJvm = "1.9.24"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -104,6 +105,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
 googleServices = { id = "com.google.gms.google-services", version.ref = "gms" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crahslytics" }
+jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
 [bundles]
 ktor = [
