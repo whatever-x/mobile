@@ -1,7 +1,9 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import io.github.frankois944.spmForKmp.definition.SwiftDependency
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.konan.properties.Properties
 import java.io.FileInputStream
+import java.net.URI
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -11,6 +13,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
+    alias(libs.plugins.kmp.spm)
 }
 
 kotlin {
@@ -32,6 +35,12 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+        }
+
+        iosTarget.compilations {
+            val main by getting {
+                cinterops.create("nativeIosShared")
+            }
         }
     }
 
@@ -75,6 +84,21 @@ kotlin {
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
+    }
+}
+
+swiftPackageConfig {
+    create("nativeIosShared") {
+        customPackageSourcePath = "../iosApp"
+        minIos = "15.0"
+
+        dependency(
+            SwiftDependency.Package.Remote.Version(
+                url = URI("https://github.com/kakao/kakao-ios-sdk"),
+                version = "2.23.0",
+                products = { add("KakaoSDK") }
+            ),
+        )
     }
 }
 

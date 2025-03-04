@@ -30,6 +30,7 @@ moko = "0.19.0"
 napier = "2.7.1"
 datastore = "1.1.2"
 kakao = "2.20.6"
+kmp-spm = "0.4.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -91,6 +92,7 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
+kmp-spm = { id = "io.github.frankois944.spmForKmp", version.ref = "kmp-spm" }
 
 [bundles]
 ktor = [
