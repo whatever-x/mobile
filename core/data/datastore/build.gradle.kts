@@ -8,8 +8,12 @@ android.namespace = "com.whatever.caramel.core.data.datastore"
 
 kotlin {
     sourceSets {
+        androidMain.dependencies {
+            implementation(libs.koin.android)
+        }
         commonMain.dependencies {
             implementation(libs.bundles.datastore)
+            implementation(libs.koin.core)
         }
     }
 }

@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     id("caramel.kmp")
     id("caramel.kmp.android")
@@ -8,37 +6,12 @@ plugins {
 
 android.namespace = "com.whatever.caramel.core.data"
 
-android {
-    buildFeatures {
-        buildConfig = true
-    }
-
-    buildTypes {
-        val properties = Properties().apply { load(rootProject.file("local.properties").inputStream()) }
-        val debugUrl = "CARAMEL_DEBUG_URL"
-        val releaseUrl = "CARAMEL_RELEASE_URL"
-        getByName("release") {
-            isMinifyEnabled = false
-            buildConfigField(
-                "String",
-                "BASE_URL",
-                properties.getProperty(releaseUrl)
-            )
-        }
-        getByName("debug") {
-            buildConfigField(
-                "String",
-                "BASE_URL",
-                properties.getProperty(debugUrl)
-            )
-        }
-    }
-}
 
 kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.koin.core)
+            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
             implementation(projects.core.domain)
@@ -47,6 +20,10 @@ kotlin {
             implementation(projects.core.data.datastore)
             implementation(projects.core.data.remote)
             implementation(libs.koin.core)
+            implementation(libs.bundles.ktor)
+        }
+        nativeMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
     }
 }
