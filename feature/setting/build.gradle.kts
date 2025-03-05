@@ -1,15 +1,26 @@
 plugins {
-    id("java-library")
-    alias(libs.plugins.jetbrainsKotlinJvm)
+    id("caramel.kmp")
+    id("caramel.kmp.android")
+    id("caramel.kmp.ios")
+    id("caramel.compose")
+    id("caramel.kotlin.serialization")
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
+android.namespace = "com.whatever.caramel.feature.setting"
 
 kotlin {
-    compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.koin.core)
+            implementation(projects.core.domain)
+            implementation(projects.core.designsystem)
+            implementation(projects.core.designsystem.ui)
+            implementation(projects.core.analytics)
+            implementation(projects.core.viewmodel)
+            implementation(libs.jetbrains.compose.navigation)
+            implementation(libs.androidx.lifecycle.runtime.compose)
+        }
     }
 }
