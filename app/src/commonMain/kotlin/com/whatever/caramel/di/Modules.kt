@@ -53,39 +53,3 @@ val sampleFeatureModule = module {
 
     viewModelOf(::SampleViewModel)
 }
-
-val splashFeatureModule = module {
-    viewModelOf(::SplashViewModel)
-}
-
-val onboardingFeatureModule = module {
-    viewModelOf(::OnboardingViewModel)
-}
-
-val loginFeatureModule = module {
-    viewModelOf(::LoginViewModel)
-}
-
-val profileFeatureModule = module {
-    viewModelOf(::ProfileCreateViewModel)
-    viewModelOf(::ProfileEditViewModel)
-}
-
-val coupleFeatureModule = module {
-    viewModelOf(::CoupleConnectViewModel)
-    viewModelOf(::CoupleInviteViewModel)
-}
-
-val mainFeatureModule = module {
-    viewModelOf(::HomeViewModel)
-    viewModelOf(::CalendarViewModel)
-    viewModelOf(::MemoViewModel)
-}
-
-val settingFeatureModule = module {
-    viewModelOf(::SettingViewModel)
-}
-
-val contentFeatureModule = module {
-    viewModelOf(::ContentViewModel)
-}

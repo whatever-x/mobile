@@ -37,8 +37,16 @@ android {
 
 kotlin {
     sourceSets {
+        androidMain.dependencies {
+            implementation(libs.koin.core)
+        }
         commonMain.dependencies {
             implementation(projects.core.domain)
+
+            implementation(projects.core.data.database)
+            implementation(projects.core.data.datastore)
+            implementation(projects.core.data.remote)
+            implementation(libs.koin.core)
         }
     }
 }
