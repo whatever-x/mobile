@@ -24,6 +24,8 @@ import com.whatever.caramel.feature.calendar.navigation.navigateToCalendar
 import com.whatever.caramel.feature.home.navigation.HomeRoute
 import com.whatever.caramel.feature.home.navigation.homeContent
 import com.whatever.caramel.feature.home.navigation.navigateToHome
+import com.whatever.caramel.feature.memo.navigation.memoContent
+import com.whatever.caramel.feature.memo.navigation.navigateToMemo
 import io.github.aakira.napier.Napier
 
 @Composable
