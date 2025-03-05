@@ -1,5 +1,6 @@
 package com.whatever.caramel.core.data.remote.dto.response
 
+import com.whatever.caramel.core.data.remote.exception.CaramelNetworkException
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -16,4 +17,12 @@ data class ErrorResponse(
     @SerialName("code") val code: String,
     @SerialName("message") val message: String,
     @SerialName("debugMessage") val debugMessage: String?,
-)
+) {
+    fun toException() : CaramelNetworkException {
+        return CaramelNetworkException(
+            code = this.code,
+            message = this.message,
+            debugMessage = this.debugMessage
+        )
+    }
+}

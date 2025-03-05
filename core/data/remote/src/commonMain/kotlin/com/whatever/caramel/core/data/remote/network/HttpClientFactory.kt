@@ -2,7 +2,7 @@ package com.whatever.caramel.core.data.remote.network
 
 import com.whatever.caramel.core.data.remote.dto.response.BaseResponse
 import com.whatever.caramel.core.data.remote.dto.response.ErrorResponse
-import com.whatever.caramel.core.data.remote.mapper.toCaramelException
+import com.whatever.caramel.core.data.remote.exception.CaramelNetworkException
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.HttpClientEngine
@@ -22,10 +22,7 @@ import kotlinx.serialization.json.Json
 
 object HttpClientFactory {
     fun create(
-        isDebug: Boolean,
-        engine: HttpClientEngine,
-        baseUrl: String,
-        token : String
+        engine: HttpClientEngine
     ): HttpClient {
         return HttpClient(engine) {
             expectSuccess = true
@@ -45,13 +42,12 @@ object HttpClientFactory {
             }
             install(Logging) {
                 logger = Logger.SIMPLE
-                level = if (isDebug) LogLevel.ALL else LogLevel.NONE
+                level = if (NetworkConfig.isDebug) LogLevel.ALL else LogLevel.NONE
             }
             HttpResponseValidator {
                 handleResponseExceptionWithRequest { exception, _ ->
                     val clientException = exception as ResponseException
                     val exceptionResponse = clientException.response
-
                     val baseResponse =
                         try {
                             exceptionResponse.body<BaseResponse<Unit>>()
@@ -68,11 +64,16 @@ object HttpClientFactory {
                                 )
                             )
                         }
-                    throw baseResponse.error!!.toCaramelException()
+
+                    throw CaramelNetworkException(
+                        baseResponse.error?.code!!,
+                        baseResponse.error.debugMessage,
+                        baseResponse.error.message
+                    )
                 }
             }
             defaultRequest {
-                url(baseUrl)
+                url(NetworkConfig.BASE_URL)
                 contentType(ContentType.Application.Json)
             }
         }
