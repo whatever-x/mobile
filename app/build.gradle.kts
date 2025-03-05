@@ -1,58 +1,51 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.jetbrains.kotlin.serialization)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.room)
-    alias(libs.plugins.googleServices)
-    alias(libs.plugins.crashlytics)
+    id("caramel.android.application")
+    id("caramel.kmp")
+    id("caramel.kmp.ios")
+    id("caramel.compose")
+    id("caramel.kotlin.serialization")
+    id("caramel.google.services")
 }
 
+android.namespace = "com.whatever.caramel.app"
+
 kotlin {
+
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
-    compilerOptions {
-        freeCompilerArgs.add("-Xexpect-actual-classes")
-    }
-
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "App"
-            isStatic = true
-            freeCompilerArgs += "-Xbinary=bundleId=com.whatever.caramel"
-        }
-    }
-
-    room {
-        schemaDirectory("$projectDir/schemas")
-    }
-
     sourceSets {
-        androidMain.dependencies {
-            implementation(compose.preview)
-            implementation(libs.androidx.activity.compose)
-
-            implementation(libs.koin.android)
-            implementation(libs.koin.androidx.compose)
-            implementation(libs.ktor.client.okhttp)
-            implementation(project.dependencies.platform(libs.firebase.bom.android))
-            implementation(libs.firebase.analytics.ktx)
-            implementation(libs.firebase.crashlytics.ktx)
-        }
         commonMain.dependencies {
+            // Project
+            implementation(projects.core.designsystem)
+            implementation(projects.core.designsystem.ui)
+            implementation(projects.core.domain)
+            implementation(projects.core.data)
+            implementation(projects.core.data.datastore)
+            implementation(projects.core.data.database)
+            implementation(projects.core.data.remote)
+            implementation(projects.core.analytics)
+            implementation(projects.core.viewmodel)
+            implementation(projects.feature.profile.edit)
+            implementation(projects.feature.profile.create)
+            implementation(projects.feature.splash)
+            implementation(projects.feature.setting)
+            implementation(projects.feature.onboarding)
+            implementation(projects.feature.calendar)
+            implementation(projects.feature.content)
+            implementation(projects.feature.couple.connect)
+            implementation(projects.feature.couple.invite)
+            implementation(projects.feature.home)
+            implementation(projects.feature.login)
+            implementation(projects.feature.main)
+            implementation(projects.feature.memo)
+
+            // Library
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -75,65 +68,5 @@ kotlin {
             implementation(libs.bundles.moko)
             implementation(libs.bundles.datastore)
         }
-        nativeMain.dependencies {
-            implementation(libs.ktor.client.darwin)
-        }
     }
-}
-
-android {
-    namespace = "com.whatever.caramel"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-    defaultConfig {
-        applicationId = "com.whatever.caramel"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = libs.versions.version.code.get().toInt()
-        versionName = libs.versions.version.name.get()
-    }
-
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-
-    buildFeatures {
-        buildConfig = true
-    }
-
-    buildTypes {
-        val properties =
-            Properties().apply { load(rootProject.file("local.properties").inputStream()) }
-        val debugUrl = "CARAMEL_DEBUG_URL"
-        val releaseUrl = "CARAMEL_RELEASE_URL"
-
-        getByName("release") {
-            isMinifyEnabled = false
-            buildConfigField(
-                "String",
-                "BASE_URL",
-                properties.getProperty(releaseUrl)
-            )
-        }
-
-        getByName("debug") {
-            buildConfigField(
-                "String",
-                "BASE_URL",
-                properties.getProperty(debugUrl)
-            )
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-}
-
-dependencies {
-    debugImplementation(compose.uiTooling)
-    ksp(libs.androidx.room.compiler)
 }
