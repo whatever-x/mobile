@@ -15,8 +15,9 @@ class KmpIosPlugin : Plugin<Project> {
                     iosSimulatorArm64()
                 ).forEach { iosTarget ->
                     iosTarget.binaries.framework {
-                        baseName = "app"
+                        baseName = "App"
                         isStatic = true
+                        export(project(":core:analytics"))
                         freeCompilerArgs += "-Xbinary=bundleId=com.whatever.caramel"
                     }
                 }

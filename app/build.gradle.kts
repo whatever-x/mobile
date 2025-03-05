@@ -40,7 +40,7 @@ kotlin {
             implementation(projects.core.data.datastore)
             implementation(projects.core.data.database)
             implementation(projects.core.data.remote)
-            implementation(projects.core.analytics)
+            api(projects.core.analytics)
             implementation(projects.core.viewmodel)
             implementation(projects.feature.profile.edit)
             implementation(projects.feature.profile.create)

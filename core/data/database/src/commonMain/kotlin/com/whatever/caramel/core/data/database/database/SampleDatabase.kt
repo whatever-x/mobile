@@ -1,5 +1,6 @@
 package com.whatever.caramel.core.data.database.database
 
+import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.whatever.caramel.core.data.database.dao.SampleDao
@@ -10,6 +11,7 @@ import com.whatever.caramel.core.data.database.entity.SampleEntity
     entities = [SampleEntity::class, SampleDetailEntity::class],
     version = 1
 )
+@ConstructedBy(DatabaseConstructor::class)
 abstract class SampleDatabase : RoomDatabase() {
     abstract val sampleDao : SampleDao
 

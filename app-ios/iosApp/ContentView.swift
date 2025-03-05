@@ -2,7 +2,6 @@ import UIKit
 import SwiftUI
 import Firebase
 import FirebaseAnalytics
-import FirebaseCrashlytics
 import App
 
 struct ComposeView: UIViewControllerRepresentable {
@@ -19,7 +18,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         FirebaseApp.configure()
     
         CaramelAnalytics_iosKt.firebaseCallback(callback: FirebaseLoggingCallback())
-        CaramelCrashlytics_iosKt.firebaseCallback(callback: FirebaseCrashlyticsCallback())
         return true
     }
 }
@@ -29,15 +27,6 @@ class FirebaseLoggingCallback: IosAnalyticsCallback {
     func logEvent(eventId: String, params: String) {
         let dict = splitStringToDictionary(params, ",", ":")
         Analytics.logEvent(eventId, parameters: dict)
-    }
-}
-
-class FirebaseCrashlyticsCallback: IosCrashlyticsCallback {
-    func sendCrashInfo(userId: String?, log: String, params: String) {
-        Crashlytics.crashlytics().log(log)
-        Crashlytics.crashlytics().setUserID(userId)
-        let dict = splitStringToDictionary(params, ",", ":")
-        Crashlytics.crashlytics().setCustomKeysAndValues(dict)
     }
 }
 
