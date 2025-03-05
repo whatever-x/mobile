@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.presentation
+package com.whatever.caramel.core.viewmodel
 
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.StringResource

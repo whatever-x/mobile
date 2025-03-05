@@ -1,9 +1,8 @@
-package com.whatever.caramel.core.presentation
+package com.whatever.caramel.core.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.whatever.caramel.core.domain.CaramelException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -36,7 +35,7 @@ abstract class BaseViewModel<S : UiState, SE : UiSideEffect, I : UiIntent>(
         get() = _state.value
 
     protected val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        handleClientException(throwable as CaramelException)
+        handleClientException(throwable)
     }
 
     fun intent(intent: I) {
@@ -64,5 +63,5 @@ abstract class BaseViewModel<S : UiState, SE : UiSideEffect, I : UiIntent>(
         }
     }
 
-    open fun handleClientException(throwable: CaramelException) {}
+    open fun handleClientException(throwable: Throwable) {}
 }
