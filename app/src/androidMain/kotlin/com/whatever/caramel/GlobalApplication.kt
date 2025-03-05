@@ -2,6 +2,7 @@ package com.whatever.caramel
 
 import android.app.Application
 import com.google.firebase.FirebaseApp
+import com.whatever.caramel.app.BuildConfig
 import com.whatever.caramel.di.initKoin
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
