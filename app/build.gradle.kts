@@ -20,6 +20,17 @@ kotlin {
     }
 
     sourceSets {
+        androidMain.dependencies {
+            implementation(compose.preview)
+            implementation(libs.androidx.activity.compose)
+
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
+            implementation(libs.ktor.client.okhttp)
+            implementation(project.dependencies.platform(libs.firebase.bom.android))
+            implementation(libs.firebase.analytics.ktx)
+            implementation(libs.firebase.crashlytics.ktx)
+        }
         commonMain.dependencies {
             // Project
             implementation(projects.core.designsystem)
@@ -36,6 +47,7 @@ kotlin {
             implementation(projects.feature.splash)
             implementation(projects.feature.setting)
             implementation(projects.feature.onboarding)
+            implementation(projects.feature.login)
             implementation(projects.feature.calendar)
             implementation(projects.feature.content)
             implementation(projects.feature.couple.connect)
@@ -67,6 +79,9 @@ kotlin {
             implementation(libs.bundles.coil)
             implementation(libs.bundles.moko)
             implementation(libs.bundles.datastore)
+        }
+        nativeMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
     }
 }
