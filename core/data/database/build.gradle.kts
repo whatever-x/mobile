@@ -8,9 +8,7 @@ plugins {
 android.namespace = "com.whatever.caramel.core.data.database"
 
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
-
-        }
+    room {
+        schemaDirectory("$projectDir/schemas")
     }
 }
