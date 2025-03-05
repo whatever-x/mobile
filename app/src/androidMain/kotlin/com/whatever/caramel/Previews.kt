@@ -2,9 +2,9 @@ package com.whatever.caramel
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.whatever.caramel.core.designSystem.themes.CaramelShapePreview
-import com.whatever.caramel.core.designSystem.themes.CaramelSpacingPreview
-import com.whatever.caramel.core.designSystem.themes.CaramelTypographyPreview
+import com.whatever.caramel.core.designsystem.themes.CaramelShapePreview
+import com.whatever.caramel.core.designsystem.themes.CaramelSpacingPreview
+import com.whatever.caramel.core.designsystem.themes.CaramelTypographyPreview
 
 
 @Preview(widthDp = 600, heightDp = 1000, showBackground = true)
