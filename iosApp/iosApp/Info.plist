@@ -33,6 +33,8 @@
 	<string>9999</string>
 	<key>CaramelBaseUrl</key>
 	<string>$(CARAMEL_BASE_URL)</string>
+	<key>KakaoNativeAppKey</key>
+	<string>$(KAKAO_NATIVE_APP_KEY)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
@@ -61,7 +63,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>KakaoNativeAppKey</key>
-	<string>$(KAKAO_NATIVE_APP_KEY)</string>
 </dict>
 </plist>
