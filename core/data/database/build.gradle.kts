@@ -2,7 +2,8 @@ plugins {
     id("caramel.kmp")
     id("caramel.kmp.android")
     id("caramel.kmp.ios")
-    id("caramel.room")
+    id("com.google.devtools.ksp")
+    id("androidx.room")
 }
 
 android.namespace = "com.whatever.caramel.core.data.database"
@@ -22,6 +23,12 @@ kotlin {
         }
         commonMain.dependencies {
             implementation(libs.koin.core)
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.sqlite.bundled)
         }
     }
+}
+
+dependencies {
+    ksp(libs.androidx.room.compiler)
 }

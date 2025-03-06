@@ -63,8 +63,5 @@ gradlePlugin {
             implementationClass =
                 "com.whatever.caramel.buildlogic.convention.GoogleServicesPlugin"
         }
-        register("room") {
-            id = "caramel.room"
-            implementationClass = "com.whatever.caramel.buildlogic.convention.RoomPlugin"
-        }    }
+    }
 }
