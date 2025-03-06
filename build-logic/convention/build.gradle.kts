@@ -58,11 +58,6 @@ gradlePlugin {
             implementationClass =
                 "com.whatever.caramel.buildlogic.convention.AndroidApplicationPlugin"
         }
-        register("androidLibrary") {
-            id = "caramel.android.library"
-            implementationClass =
-                "com.whatever.caramel.buildlogic.convention.AndroidLibraryPlugin"
-        }
         register("googleServices") {
             id = "caramel.google.services"
             implementationClass =
