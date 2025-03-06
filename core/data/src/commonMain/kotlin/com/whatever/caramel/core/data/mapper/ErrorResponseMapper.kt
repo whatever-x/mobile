@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.data.mapper
 
-import com.whatever.caramel.core.data.remote.dto.response.ErrorResponse
+import com.whatever.caramel.core.remote.dto.response.ErrorResponse
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 

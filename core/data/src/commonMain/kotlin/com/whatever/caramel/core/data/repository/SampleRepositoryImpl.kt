@@ -1,11 +1,11 @@
 package com.whatever.caramel.core.data.repository
 
-import com.whatever.caramel.core.data.database.dao.SampleDao
-import com.whatever.caramel.core.data.datastore.SampleDatastore
+import com.whatever.caramel.core.database.dao.SampleDao
+import com.whatever.caramel.core.datastore.SampleDatastore
 import com.whatever.caramel.core.data.mapper.toSampleDetailEntity
 import com.whatever.caramel.core.data.mapper.toSampleEntity
 import com.whatever.caramel.core.data.mapper.toSampleModel
-import com.whatever.caramel.core.data.remote.datasource.RemoteSampleDataSource
+import com.whatever.caramel.core.remote.datasource.RemoteSampleDataSource
 import com.whatever.caramel.core.domain.model.SampleModel
 import com.whatever.caramel.core.domain.repository.SampleRepository
 

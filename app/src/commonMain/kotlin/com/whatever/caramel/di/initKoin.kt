@@ -1,13 +1,13 @@
 package com.whatever.caramel.di
 
-import com.whatever.caramel.core.data.database.di.databaseModule
-import com.whatever.caramel.core.data.database.di.platformDatabaseModule
-import com.whatever.caramel.core.data.datastore.di.localDataSourceModule
-import com.whatever.caramel.core.data.datastore.di.platformDataStoreModule
+import com.whatever.caramel.core.database.di.databaseModule
+import com.whatever.caramel.core.database.di.platformDatabaseModule
+import com.whatever.caramel.core.datastore.di.localDataSourceModule
+import com.whatever.caramel.core.datastore.di.platformDataStoreModule
 import com.whatever.caramel.core.data.di.networkModule
 import com.whatever.caramel.core.data.di.repositoryModule
-import com.whatever.caramel.core.data.remote.di.networkClientModule
-import com.whatever.caramel.core.data.remote.di.remoteModule
+import com.whatever.caramel.core.remote.di.networkClientModule
+import com.whatever.caramel.core.remote.di.remoteModule
 import com.whatever.caramel.feature.calendar.di.calendarFeatureModule
 import com.whatever.caramel.feature.content.di.contentFeatureModule
 import com.whatever.caramel.feature.copule.invite.coupleInviteFeatureModule

@@ -15,9 +15,9 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.core.domain)
 
-            implementation(projects.core.data.database)
-            implementation(projects.core.data.datastore)
-            implementation(projects.core.data.remote)
+            implementation(projects.core.database)
+            implementation(projects.core.datastore)
+            implementation(projects.core.remote)
             implementation(libs.koin.core)
             implementation(libs.bundles.ktor)
         }

@@ -34,12 +34,12 @@ kotlin {
         commonMain.dependencies {
             // Project
             implementation(projects.core.designsystem)
-            implementation(projects.core.designsystem.ui)
+            implementation(projects.core.ui)
             implementation(projects.core.domain)
             implementation(projects.core.data)
-            implementation(projects.core.data.datastore)
-            implementation(projects.core.data.database)
-            implementation(projects.core.data.remote)
+            implementation(projects.core.datastore)
+            implementation(projects.core.database)
+            implementation(projects.core.remote)
             api(projects.core.analytics)
             implementation(projects.core.viewmodel)
             implementation(projects.feature.profile.edit)

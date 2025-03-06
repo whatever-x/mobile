@@ -19,4 +19,4 @@ captures
 *.xcconfig
 app/google-services.json
 app-ios/iosApp/GoogleService-Info.plist
-core/data/database/schemas
+core/database/schemas
