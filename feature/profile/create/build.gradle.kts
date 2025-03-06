@@ -11,16 +11,17 @@ android.namespace = "com.whatever.caramel.feature.profile.create"
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
-            implementation(libs.koin.core)
             implementation(projects.core.domain)
             implementation(projects.core.designsystem)
             implementation(projects.core.designsystem.ui)
             implementation(projects.core.analytics)
             implementation(projects.core.viewmodel)
-            implementation(libs.jetbrains.compose.navigation)
+
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+
+            implementation(libs.jetbrains.compose.navigation)
         }
     }
 }

@@ -71,6 +71,5 @@ gradlePlugin {
         register("room") {
             id = "caramel.room"
             implementationClass = "com.whatever.caramel.buildlogic.convention.RoomPlugin"
-        }
-    }
+        }    }
 }

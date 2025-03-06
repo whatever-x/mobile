@@ -14,15 +14,15 @@ kotlin {
             implementation(projects.feature.calendar)
             implementation(projects.feature.home)
             implementation(projects.feature.memo)
-
-            implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
-            implementation(libs.koin.core)
             implementation(projects.core.domain)
             implementation(projects.core.designsystem)
             implementation(projects.core.designsystem.ui)
             implementation(projects.core.analytics)
             implementation(projects.core.viewmodel)
+
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.koin.core)
+
             implementation(libs.jetbrains.compose.navigation)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.napier)
