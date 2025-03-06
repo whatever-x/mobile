@@ -1,8 +1,8 @@
 package com.whatever.caramel.core.data.database.di
 
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import com.whatever.caramel.core.data.database.database.DatabaseFactory
-import com.whatever.caramel.core.data.database.database.SampleDatabase
+import com.whatever.caramel.core.data.database.database.sample.DatabaseFactory
+import com.whatever.caramel.core.data.database.database.sample.SampleDatabase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 

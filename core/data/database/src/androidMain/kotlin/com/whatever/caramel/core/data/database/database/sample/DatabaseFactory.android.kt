@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.data.database.database
+package com.whatever.caramel.core.data.database.database.sample
 
 import android.content.Context
 import androidx.room.Room
