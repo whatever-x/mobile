@@ -7,7 +7,7 @@ data class SampleModel(
     val name: String = "",
     val localDateTime: String = "",
     val detail: SampleDetail = SampleDetail(),
-    val detailArray: List<SampleDetail> = emptyList(),
+    val detailArray: List<SampleDetail> = emptyList()
 )
 
 @Serializable
