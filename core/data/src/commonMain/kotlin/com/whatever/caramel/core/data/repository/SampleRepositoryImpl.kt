@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.data.repository
 
 import com.whatever.caramel.core.data.database.dao.SampleDao
-import com.whatever.caramel.core.data.datastore.LocalSampleDataSource
+import com.whatever.caramel.core.data.datastore.LocalSampleDatastore
 import com.whatever.caramel.core.data.mapper.toSampleDetailEntity
 import com.whatever.caramel.core.data.mapper.toSampleEntity
 import com.whatever.caramel.core.data.mapper.toSampleModel
@@ -11,7 +11,7 @@ import com.whatever.caramel.core.domain.repository.SampleRepository
 
 class SampleRepositoryImpl(
     private val remoteSampleDataSource: RemoteSampleDataSource,
-    private val localSampleDataSource: LocalSampleDataSource,
+    private val localSampleDatastore: LocalSampleDatastore,
     private val sampleDao: SampleDao
 ) : SampleRepository {
 
@@ -28,9 +28,9 @@ class SampleRepositoryImpl(
     override suspend fun getSampleDataFromLocal(): List<SampleModel> =
         sampleDao.getAllSamples().map { it.toSampleModel() }
 
-    override suspend fun getSampleNameFromLocal(): String = localSampleDataSource.getSampleName()
+    override suspend fun getSampleNameFromLocal(): String = localSampleDatastore.getSampleName()
 
     override suspend fun saveSampleNameToLocal(name: String) {
-        localSampleDataSource.setSampleName(name)
+        localSampleDatastore.setSampleName(name)
     }
 }
