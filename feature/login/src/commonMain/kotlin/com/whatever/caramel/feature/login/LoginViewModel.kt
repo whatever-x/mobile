@@ -32,7 +32,10 @@ class LoginViewModel(
                 // 1. 액세스 토큰 우리 서버로 보내기
                 // 2. 로그인 성공시 다음 화면 진입
                 Napier.d { "액세스 토큰 : ${result.data.accessToken}" }
-                result.data.accessToken
+
+                // 이미 프로필이 생성 여부에 따라 화면 이동 분기
+                // 프로필 생성 or 커플 연결로 이동
+                postSideEffect(LoginSideEffect.NavigateToCreateProfile)
             }
             is SocialAuthResult.Error -> {
                 // 카카오측 서버 에러

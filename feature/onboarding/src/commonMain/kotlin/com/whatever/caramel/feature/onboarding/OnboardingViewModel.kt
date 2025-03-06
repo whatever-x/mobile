@@ -37,6 +37,8 @@ class OnboardingViewModel(
                     } else {
                         Napier.d { localName }
                     }
+
+                    postSideEffect(OnboardingSideEffect.NavigateToLogin)
                 }
             }
         }
