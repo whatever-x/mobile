@@ -15,12 +15,12 @@ captures
 *.aab
 
 # ComposeApp
-composeApp/schemas/
-composeApp/google-services.json
-*/exported*/*
+app/google-services.json
+core/database/schemas
+*/*/exported*/*
 
 # Xcode
-iosApp/iosApp/GoogleService-Info.plist
+app-ios/iosApp/GoogleService-Info.plist
 *.xcworkspace
 *.xcuserdata/
 !*.xcworkspace/contents.xcworkspacedata
