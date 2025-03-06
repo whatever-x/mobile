@@ -40,7 +40,7 @@ kotlin {
 
         iosTarget.compilations {
             val main by getting {
-                cinterops.create("nativeIosShared")
+                cinterops.create("swiftBridge")
             }
         }
     }
@@ -89,7 +89,7 @@ kotlin {
 }
 
 swiftPackageConfig {
-    create("nativeIosShared") {
+    create("swiftBridge") {
         customPackageSourcePath = "../iosApp"
         minIos = "15.0"
 
