@@ -3,12 +3,16 @@ package com.whatever.caramel.core.data.remote.network
 import com.whatever.caramel.core.data.remote.dto.response.BaseResponse
 import com.whatever.caramel.core.data.remote.dto.response.ErrorResponse
 import com.whatever.caramel.core.data.remote.exception.CaramelNetworkException
+import com.whatever.caramel.core.data.remote.interceptor.TokenInterceptor
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.ResponseException
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BearerTokens
+import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
@@ -22,7 +26,8 @@ import kotlinx.serialization.json.Json
 
 object HttpClientFactory {
     fun create(
-        engine: HttpClientEngine
+        engine: HttpClientEngine,
+        tokenInterceptor: TokenInterceptor
     ): HttpClient {
         return HttpClient(engine) {
             expectSuccess = true
@@ -44,6 +49,24 @@ object HttpClientFactory {
                 logger = Logger.SIMPLE
                 level = if (NetworkConfig.isDebug) LogLevel.ALL else LogLevel.NONE
             }
+            install(Auth) {
+                bearer {
+                    loadTokens {
+                        BearerTokens(
+                            accessToken = tokenInterceptor.getAccessToken(),
+                            refreshToken = tokenInterceptor.getRefreshToken()
+                        )
+                    }
+
+                    refreshTokens {
+                        tokenInterceptor.refreshAccessToken()
+                        BearerTokens(
+                            accessToken = tokenInterceptor.getAccessToken(),
+                            refreshToken = tokenInterceptor.getRefreshToken()
+                        )
+                    }
+                }
+            }
             HttpResponseValidator {
                 handleResponseExceptionWithRequest { exception, _ ->
                     val clientException = exception as ResponseException
@@ -59,8 +82,8 @@ object HttpClientFactory {
                                     code = clientException.response.status.value.toString(),
                                     message = "예상치 못한 에러 발생",
                                     debugMessage =
-                                    "Error Code : ${clientException.response.status}\n"
-                                            + "Error Message : ${clientException.message}",
+                                        "Error Code : ${clientException.response.status}\n"
+                                                + "Error Message : ${clientException.message}",
                                 )
                             )
                         }
