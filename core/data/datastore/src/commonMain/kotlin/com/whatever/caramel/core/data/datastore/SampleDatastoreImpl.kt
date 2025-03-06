@@ -6,9 +6,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
 
-class LocalSampleDatastoreImpl(
+class SampleDatastoreImpl(
     private val prefs : DataStore<Preferences>
-) : LocalSampleDatastore {
+) : SampleDatastore {
     override suspend fun getSampleName(): String {
         prefs.data.first().let {
             val key = stringPreferencesKey(PREFS_KEY_NAME)

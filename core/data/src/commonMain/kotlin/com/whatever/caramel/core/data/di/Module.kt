@@ -10,7 +10,7 @@ import org.koin.dsl.module
 val networkModule = module {
     single<TokenInterceptor> {
         TokenInterceptorImpl(
-            localSampleDatastore = get()
+            sampleDatastore = get()
         )
     }
 
@@ -26,7 +26,7 @@ val repositoryModule = module {
     single<SampleRepository> {
         SampleRepositoryImpl(
             remoteSampleDataSource = get(),
-            localSampleDatastore = get(),
+            sampleDatastore = get(),
             sampleDao = get()
         )
     }
