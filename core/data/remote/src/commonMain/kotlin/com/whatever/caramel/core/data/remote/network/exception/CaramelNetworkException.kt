@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.data.remote.exception
+package com.whatever.caramel.core.data.remote.network.exception
 
 
 data class CaramelNetworkException(

@@ -2,7 +2,7 @@ package com.whatever.caramel.core.data.interceptor
 
 import com.whatever.caramel.core.data.datastore.LocalSampleDatastore
 import com.whatever.caramel.core.data.remote.datasource.RemoteSampleDataSource
-import com.whatever.caramel.core.data.remote.interceptor.TokenInterceptor
+import com.whatever.caramel.core.data.remote.network.interceptor.TokenInterceptor
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

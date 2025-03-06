@@ -2,8 +2,8 @@ package com.whatever.caramel.core.data.remote.network
 
 import com.whatever.caramel.core.data.remote.dto.response.BaseResponse
 import com.whatever.caramel.core.data.remote.dto.response.ErrorResponse
-import com.whatever.caramel.core.data.remote.exception.CaramelNetworkException
-import com.whatever.caramel.core.data.remote.interceptor.TokenInterceptor
+import com.whatever.caramel.core.data.remote.network.exception.CaramelNetworkException
+import com.whatever.caramel.core.data.remote.network.interceptor.TokenInterceptor
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.HttpClientEngine

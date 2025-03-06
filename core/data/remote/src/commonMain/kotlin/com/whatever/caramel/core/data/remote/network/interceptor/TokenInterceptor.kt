@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.data.remote.interceptor
+package com.whatever.caramel.core.data.remote.network.interceptor
 
 interface TokenInterceptor {
     suspend fun getAccessToken(): String
