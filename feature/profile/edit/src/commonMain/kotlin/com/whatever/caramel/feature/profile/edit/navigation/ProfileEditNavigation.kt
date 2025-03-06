@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ProfileEditRoute(
-    val editType: ProfileEditType
+    val editType: String
 )
 
 fun NavHostController.navigateToEditProfile(
@@ -19,7 +19,7 @@ fun NavHostController.navigateToEditProfile(
 ) {
     navigate(
         route = ProfileEditRoute(
-            editType = editType
+            editType = editType.name
         ),
         navOptions = navOptions
     )

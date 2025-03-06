@@ -6,6 +6,7 @@ import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditIntent
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditSideEffect
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditState
+import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditType
 import com.whatever.caramel.feature.profile.edit.navigation.ProfileEditRoute
 
 class ProfileEditViewModel(
@@ -16,7 +17,7 @@ class ProfileEditViewModel(
         val arguments = savedStateHandle.toRoute<ProfileEditRoute>()
 
         return ProfileEditState(
-            editUiType = arguments.editType
+            editUiType = ProfileEditType.valueOf(arguments.editType)
         )
     }
 
