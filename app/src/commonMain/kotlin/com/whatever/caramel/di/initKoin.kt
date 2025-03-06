@@ -11,14 +11,14 @@ import com.whatever.caramel.feature.calendar.di.calendarFeatureModule
 import com.whatever.caramel.feature.content.contentFeatureModule
 import com.whatever.caramel.feature.copule.invite.coupleInviteFeatureModule
 import com.whatever.caramel.feature.couple.connect.coupleConnectFeatureModule
-import com.whatever.caramel.feature.home.homeFeatureModule
-import com.whatever.caramel.feature.login.loginFeatureModule
-import com.whatever.caramel.feature.memo.memoFeatureModule
-import com.whatever.caramel.feature.onboarding.onboardingFeatureModule
-import com.whatever.caramel.feature.profile.create.profileCreateFeatureModule
-import com.whatever.caramel.feature.profile.edit.profileEditFeatureModule
-import com.whatever.caramel.feature.setting.settingFeatureModule
-import com.whatever.caramel.feature.splash.splashFeatureModule
+import com.whatever.caramel.feature.home.di.homeFeatureModule
+import com.whatever.caramel.feature.login.di.loginFeatureModule
+import com.whatever.caramel.feature.memo.di.memoFeatureModule
+import com.whatever.caramel.feature.onboarding.di.onboardingFeatureModule
+import com.whatever.caramel.feature.profile.create.di.profileCreateFeatureModule
+import com.whatever.caramel.feature.profile.edit.di.profileEditFeatureModule
+import com.whatever.caramel.feature.setting.di.settingFeatureModule
+import com.whatever.caramel.feature.splash.di.splashFeatureModule
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 

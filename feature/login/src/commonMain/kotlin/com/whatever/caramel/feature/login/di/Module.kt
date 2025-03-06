@@ -1,5 +1,6 @@
-package com.whatever.caramel.feature.login
+package com.whatever.caramel.feature.login.di
 
+import com.whatever.caramel.feature.login.LoginViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
