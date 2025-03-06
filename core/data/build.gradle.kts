@@ -6,7 +6,6 @@ plugins {
 
 android.namespace = "com.whatever.caramel.core.data"
 
-
 kotlin {
     sourceSets {
         androidMain.dependencies {

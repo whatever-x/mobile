@@ -1,6 +1,7 @@
 package com.whatever.caramel.di
 
 import com.whatever.caramel.core.data.database.di.databaseModule
+import com.whatever.caramel.core.data.database.di.platformDatabaseModule
 import com.whatever.caramel.core.data.datastore.di.localDataSourceModule
 import com.whatever.caramel.core.data.datastore.di.platformDataStoreModule
 import com.whatever.caramel.core.data.di.networkModule
@@ -28,6 +29,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
         modules(
             databaseModule,
             networkModule,
+            platformDatabaseModule,
             platformDataStoreModule,
             localDataSourceModule,
             networkClientModule,

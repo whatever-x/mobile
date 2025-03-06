@@ -17,6 +17,7 @@ kotlin {
             implementation(projects.core.analytics)
             implementation(projects.core.viewmodel)
 
+            implementation(libs.napier)
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
