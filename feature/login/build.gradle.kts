@@ -1,6 +1,7 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import io.github.frankois944.spmForKmp.definition.SwiftDependency
 import java.net.URI
+import java.util.Locale
 
 plugins {
     id("caramel.kmp")
@@ -12,14 +13,18 @@ plugins {
 }
 
 kotlin {
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.compilations {
-            val main by getting {
-                cinterops.create("swiftBridge")
+    val isWindow = System.getProperty("os.name").lowercase(Locale.getDefault()).contains("windows")
+
+    if (!isWindow) {
+        listOf(
+            iosX64(),
+            iosArm64(),
+            iosSimulatorArm64()
+        ).forEach { iosTarget ->
+            iosTarget.compilations {
+                val main by getting {
+                    cinterops.create("swiftBridge")
+                }
             }
         }
     }
