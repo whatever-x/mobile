@@ -21,14 +21,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             _ application: UIApplication,
             didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
         ) -> Bool {
+            FirebaseApp.configure()
+            CaramelAnalytics_iosKt.firebaseCallback(callback: FirebaseLoggingCallback())
+
             if let kakaoAppKey = Bundle.main.object(forInfoDictionaryKey: "KakaoNativeAppKey") as? String {
                 KakaoSDK.initSDK(appKey: kakaoAppKey)
             } else {
                 fatalError("❌ Kakao App Key is Not Found")
             }
-            
-            FirebaseApp.configure()
-            CaramelAnalytics_iosKt.firebaseCallback(callback: FirebaseLoggingCallback())
 
             return true
         }
