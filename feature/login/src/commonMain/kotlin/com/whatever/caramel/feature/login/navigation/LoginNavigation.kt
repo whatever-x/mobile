@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
-import com.whatever.caramel.feat.login.LoginRoute
+import com.whatever.caramel.feature.login.LoginRoute
 import kotlinx.serialization.Serializable
 
 @Serializable

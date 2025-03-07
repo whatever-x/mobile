@@ -1,4 +1,7 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id("caramel.android.application")
@@ -84,4 +87,19 @@ kotlin {
             implementation(libs.ktor.client.darwin)
         }
     }
+}
+
+android {
+    signingConfigs {
+        create("release") {
+            Properties().run {
+                load(FileInputStream(rootProject.file("local.properties")))
+                storeFile = rootProject.file(this["STORE_FILE"] as String)
+                keyAlias = this["KEY_ALIAS"] as String
+                keyPassword = this["KEY_PASSWORD"] as String
+                storePassword = this["STORE_PASSWORD"] as String
+            }
+        }
+    }
+
 }

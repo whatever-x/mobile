@@ -1,7 +1,5 @@
 import UIKit
 import SwiftUI
-import Firebase
-import FirebaseAnalytics
 import App
 
 struct ComposeView: UIViewControllerRepresentable {
@@ -10,24 +8,6 @@ struct ComposeView: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
-}
-
-class AppDelegate: NSObject, UIApplicationDelegate {
-    func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        FirebaseApp.configure()
-    
-        CaramelAnalytics_iosKt.firebaseCallback(callback: FirebaseLoggingCallback())
-        return true
-    }
-}
-
-class FirebaseLoggingCallback: IosAnalyticsCallback {
-
-    func logEvent(eventId: String, params: String) {
-        let dict = splitStringToDictionary(params, ",", ":")
-        Analytics.logEvent(eventId, parameters: dict)
-    }
 }
 
 func splitStringToDictionary(_ input: String, _ pairDelimiter: Character, _ keyValueDelimiter: Character) -> [String: String] {

@@ -16,7 +16,9 @@
 		BAA2B7AD2D72DA330017F868 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = BAA2B7AC2D72DA330017F868 /* FirebaseAnalyticsOnDeviceConversion */; };
 		BAA2B7AF2D72DA330017F868 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = BAA2B7AE2D72DA330017F868 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		BAA2B7B12D72DA330017F868 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = BAA2B7B02D72DA330017F868 /* FirebaseCrashlytics */; };
-		BABA8A5D2D732D8000E0C23B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BABA8A5C2D732D8000E0C23B /* GoogleService-Info.plist */; };
+		E94D12602D7A3F4E00262C39 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E94D125F2D7A3F4E00262C39 /* GoogleService-Info.plist */; };
+		E9A293E82D78E3E50060A927 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = E9A293E72D78E3E50060A927 /* KakaoSDK */; };
+		E9A293EA2D78E4930060A927 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A293E92D78E4930060A927 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,7 +43,8 @@
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BA981A902D6B7F0000F4630B /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		BA981A922D6B7F0A00F4630B /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
-		BABA8A5C2D732D8000E0C23B /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E94D125F2D7A3F4E00262C39 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E9A293E92D78E4930060A927 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9A293E82D78E3E50060A927 /* KakaoSDK in Frameworks */,
 				BAA2B7AB2D72DA330017F868 /* FirebaseAnalytics in Frameworks */,
 				BAA2B7B12D72DA330017F868 /* FirebaseCrashlytics in Frameworks */,
 				BAA2B7AF2D72DA330017F868 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
@@ -75,6 +79,7 @@
 				7555FFB0242A642200829871 /* Frameworks */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		7555FF7C242A565900829871 /* Products */ = {
 			isa = PBXGroup;
@@ -87,13 +92,14 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
-				BABA8A5C2D732D8000E0C23B /* GoogleService-Info.plist */,
 				BA981A8F2D6B7EEA00F4630B /* Configuration */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				7555FF82242A565900829871 /* ContentView.swift */,
 				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
+				E9A293E92D78E4930060A927 /* AppDelegate.swift */,
+				E94D125F2D7A3F4E00262C39 /* GoogleService-Info.plist */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -163,6 +169,7 @@
 			);
 			mainGroup = 7555FF72242A565900829871;
 			packageReferences = (
+				E9A293E62D78E3E50060A927 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				BAA2B7A92D72DA330017F868 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 7555FF7C242A565900829871 /* Products */;
@@ -180,7 +187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
-				BABA8A5D2D732D8000E0C23B /* GoogleService-Info.plist in Resources */,
+				E94D12602D7A3F4E00262C39 /* GoogleService-Info.plist in Resources */,
 				058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */,
 				BA981A912D6B7F0000F4630B /* Debug.xcconfig in Resources */,
 			);
@@ -237,6 +244,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9A293EA2D78E4930060A927 /* AppDelegate.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 			);
@@ -378,6 +386,7 @@
 					"$(SRCROOT)/../app/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
 				);
 				INFOPLIST_FILE = iosApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "[Dev] Caramel";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -408,6 +417,7 @@
 					"$(SRCROOT)/../app/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
 				);
 				INFOPLIST_FILE = iosApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Caramel;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -457,6 +467,14 @@
 				minimumVersion = 11.9.0;
 			};
 		};
+		E9A293E62D78E3E50060A927 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.23.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -479,6 +497,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BAA2B7A92D72DA330017F868 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
+		};
+		E9A293E72D78E3E50060A927 /* KakaoSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E9A293E62D78E3E50060A927 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDK;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

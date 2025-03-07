@@ -31,8 +31,10 @@ napier = "2.7.1"
 gms = "4.4.2"
 firebase-crahslytics = "3.0.3"
 firebase = "33.10.0"
-datastore = "1.1.2"
 jetbrainsKotlinJvm = "1.9.24"
+datastore = "1.1.2"
+kakao = "2.20.6"
+kmp-spm = "0.4.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -88,6 +90,8 @@ firebase-crashlytics-ktx = { group = "com.google.firebase", name = "firebase-cra
 datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
+kakao-login = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao"}
+
 kotlin-gradleplugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-serialization-gradleplugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 compose-compiler-gradleplugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
@@ -104,6 +108,7 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
+kmp-spm = { id = "io.github.frankois944.spmForKmp", version.ref = "kmp-spm" }
 googleServices = { id = "com.google.gms.google-services", version.ref = "gms" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crahslytics" }
 jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
