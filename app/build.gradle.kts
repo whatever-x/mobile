@@ -92,7 +92,7 @@ kotlin {
 android {
     signingConfigs {
         create("release") {
-            Properties().apply {
+            Properties().run {
                 load(FileInputStream(rootProject.file("local.properties")))
                 storeFile = rootProject.file(this["STORE_FILE"] as String)
                 keyAlias = this["KEY_ALIAS"] as String
