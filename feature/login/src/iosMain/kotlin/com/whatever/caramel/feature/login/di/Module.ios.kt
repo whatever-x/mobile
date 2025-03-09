@@ -1,6 +1,8 @@
 package com.whatever.caramel.feature.login.di
 
 import com.whatever.caramel.feature.login.social.KakaoAuthProviderImpl
+import com.whatever.caramel.feature.login.social.apple.AppleAuthProvider
+import com.whatever.caramel.feature.login.social.apple.AppleAuthProviderImpl
 import com.whatever.caramel.feature.login.social.kakao.KakaoAuthProvider
 import kotlinx.cinterop.ExperimentalForeignApi
 import org.koin.core.module.Module
@@ -15,4 +17,5 @@ actual val socialModule: Module
                 bridge = KakaoLoginBridge()
             )
         }
+        factory<AppleAuthProvider> { AppleAuthProviderImpl() }
     }
