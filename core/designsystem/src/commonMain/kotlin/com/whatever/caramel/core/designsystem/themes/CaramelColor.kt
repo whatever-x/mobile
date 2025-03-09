@@ -23,7 +23,7 @@ import com.whatever.caramel.core.designsystem.themes.CaramelColor.TextColor as T
 data class CaramelColor(
     val text: TextColor,
     val background: BackgroundColor,
-    val alpha: AlphaColor,
+    val dim: DimColor,
     val fill: FillColor,
     val divider: DividerColor,
     val icon: IconColor
@@ -51,7 +51,7 @@ data class CaramelColor(
     )
 
     @Immutable
-    data class AlphaColor(
+    data class DimColor(
         val primary: Color = Alpha100
     )
 
@@ -91,7 +91,7 @@ data class CaramelColor(
         fun defaultColor(): CaramelColor = CaramelColor(
             text = TextColor1(),
             background = BackgroundColor(),
-            alpha = AlphaColor(),
+            dim = DimColor(),
             fill = FillColor(),
             divider = DividerColor(),
             icon = IconColor(),
