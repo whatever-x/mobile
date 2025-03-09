@@ -20,5 +20,4 @@ class CalendarViewModel(
             is CalendarIntent.ClickCreateTodoButton -> postSideEffect(CalendarSideEffect.NavigateToTodoDetail)
         }
     }
-
 }

@@ -1,49 +1,61 @@
 package com.whatever.caramel.feature.calendar
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
+import com.whatever.caramel.core.domain.model.calendar.CalendarDayModel
+import com.whatever.caramel.core.domain.model.calendar.CalendarModel.Companion.createSampleCalendarModel
+import com.whatever.caramel.feature.calendar.component.CalendarYear
+import com.whatever.caramel.feature.calendar.component.CaramelCalendar
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 @Composable
 internal fun CalendarScreen(
     state: CalendarState,
     onIntent: (CalendarIntent) -> Unit
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Text(
-            modifier = Modifier.align(alignment = Alignment.Center),
-            text = "캘린더 화면 입니다.",
-            fontSize = 32.sp
+    // 현재 날짜로 캘린더 모델 생성
+    val currentDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+    val initialYear = currentDate.year
+    val initialMonth = currentDate.monthNumber
+
+    var calendarModel by remember {
+        mutableStateOf(
+            createSampleCalendarModel(initialYear, initialMonth)
         )
+    }
 
-        Button(
-            modifier = Modifier.align(alignment = Alignment.BottomEnd),
-            onClick = { onIntent(CalendarIntent.ClickTodoCard) }
-        ) {
-            Text(
-                text = "바텀 시트의 할 일 카드",
-                fontSize = 12.sp
-            )
-        }
+    var selectedDay by remember { mutableStateOf<CalendarDayModel?>(null) }
 
-        Button(
-            modifier = Modifier.align(alignment = Alignment.BottomStart),
-            onClick = { onIntent(CalendarIntent.ClickCreateTodoButton) }
-        ) {
-            Text(
-                text = "바텀 시트의 할 일 생성 버튼",
-                fontSize = 12.sp
-            )
-        }
+    Column {
+        // 년월 표시
+        CalendarYear(
+            modifier = Modifier
+                .padding(start = 20.dp)
+                .height(52.dp),
+            year = calendarModel.year,
+            month = calendarModel.month,
+            onYearSelected = { _, _ -> }
+        )
+        
 
+        CaramelCalendar(
+            modifier = Modifier.padding(horizontal = 20.dp),
+            calendarModel = calendarModel,
+            onDateClick = { dayModel ->
+                selectedDay = dayModel
+            }
+        )
     }
 }

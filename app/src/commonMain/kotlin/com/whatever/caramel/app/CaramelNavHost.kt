@@ -13,6 +13,7 @@ import com.whatever.caramel.feature.copule.invite.navigation.inviteCoupleScreen
 import com.whatever.caramel.feature.copule.invite.navigation.navigateToCoupleInvite
 import com.whatever.caramel.feature.login.navigation.loginScreen
 import com.whatever.caramel.feature.login.navigation.navigateToLogin
+import com.whatever.caramel.feature.main.navigation.MainRoute
 import com.whatever.caramel.feature.main.navigation.mainGraph
 import com.whatever.caramel.feature.main.navigation.navigateToMain
 import com.whatever.caramel.feature.onboarding.navigation.navigateToOnboarding
@@ -35,7 +36,8 @@ internal fun CaramelNavHost(
     NavHost(
         modifier = modifier,
         navController = navHostController,
-        startDestination = SplashRoute
+        // FIXME : SplashRoute로 변경!!
+        startDestination = MainRoute
     ) {
         with(navHostController) {
             splashScreen(

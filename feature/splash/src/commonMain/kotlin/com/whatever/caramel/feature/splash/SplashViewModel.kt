@@ -13,7 +13,7 @@ class SplashViewModel(
 
     init {
         launch {
-            delay(3000L)
+            delay(1000L)
             postSideEffect(SplashSideEffect.NavigateToOnBoarding)
         }
     }

@@ -20,6 +20,8 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.napier)
 
             implementation(libs.jetbrains.compose.navigation)
         }
