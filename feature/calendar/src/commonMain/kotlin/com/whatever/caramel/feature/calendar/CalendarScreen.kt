@@ -1,21 +1,37 @@
 package com.whatever.caramel.feature.calendar
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
+import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.model.calendar.CalendarDayModel
 import com.whatever.caramel.core.domain.model.calendar.CalendarModel.Companion.createSampleCalendarModel
+import com.whatever.caramel.feature.calendar.component.CalendarDatePicker
 import com.whatever.caramel.feature.calendar.component.CalendarYear
 import com.whatever.caramel.feature.calendar.component.CaramelCalendar
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
+import io.github.aakira.napier.Napier
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -26,36 +42,64 @@ internal fun CalendarScreen(
     onIntent: (CalendarIntent) -> Unit
 ) {
     // 현재 날짜로 캘린더 모델 생성
-    val currentDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-    val initialYear = currentDate.year
-    val initialMonth = currentDate.monthNumber
-
-    var calendarModel by remember {
-        mutableStateOf(
-            createSampleCalendarModel(initialYear, initialMonth)
-        )
+    val currentDate by remember {
+        mutableStateOf(Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date)
+    }
+    var initialYear by remember {
+        mutableStateOf(currentDate.year)
+    }
+    var initialMonth by remember {
+        mutableStateOf(currentDate.monthNumber)
     }
 
     var selectedDay by remember { mutableStateOf<CalendarDayModel?>(null) }
-
-    Column {
-        // 년월 표시
+    var isOpen by remember { mutableStateOf(false) }
+    Column(
+        modifier = Modifier
+            .background(CaramelTheme.color.background.primary)
+    ) {
         CalendarYear(
             modifier = Modifier
                 .padding(start = 20.dp)
-                .height(52.dp),
-            year = calendarModel.year,
-            month = calendarModel.month,
-            onYearSelected = { _, _ -> }
+                .height(52.dp)
+                .clickable { isOpen = !isOpen },
+            year = initialYear,
+            month = initialMonth,
+            isOpen = isOpen
         )
-        
-
-        CaramelCalendar(
-            modifier = Modifier.padding(horizontal = 20.dp),
-            calendarModel = calendarModel,
-            onDateClick = { dayModel ->
-                selectedDay = dayModel
+        Box {
+            androidx.compose.animation.AnimatedVisibility(
+                visible = isOpen,
+                enter = slideInVertically(initialOffsetY = { -it }) + fadeIn(),
+                exit = slideOutVertically(targetOffsetY = { -it }) + fadeOut(),
+                modifier = Modifier.zIndex(1f)
+            ) {
+                CalendarDatePicker(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp, bottom = 20.dp)
+                        .wrapContentSize(align = Alignment.Center)
+                        .background(color = CaramelTheme.color.dim.primary),
+                    currentYear = initialYear,
+                    currentMonth = initialMonth,
+                    dismiss = { cYear, cMonth ->
+                        isOpen = false
+                        initialYear = cYear
+                        initialMonth = cMonth
+                    }
+                )
             }
-        )
+            CaramelCalendar(
+                modifier = Modifier
+                    .zIndex(0f)
+                    .padding(horizontal = 20.dp),
+                calendarModel = createSampleCalendarModel(
+                    initialYear, initialMonth
+                ),
+                onDateClick = { dayModel ->
+                    selectedDay = dayModel
+                }
+            )
+        }
     }
 }
