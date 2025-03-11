@@ -35,6 +35,7 @@ jetbrainsKotlinJvm = "1.9.24"
 datastore = "1.1.2"
 kakao = "2.20.6"
 kmp-spm = "0.4.0"
+kotlinx-date-time = "0.6.2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -98,6 +99,8 @@ compose-compiler-gradleplugin = { group = "org.jetbrains.kotlin", name = "compos
 compose-multiplatform-gradleplugin = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "compose-plugin" }
 android-gradleplugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 ksp-gradleplugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+
+kotlinx-date-time = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-date-time" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

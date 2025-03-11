@@ -48,6 +48,7 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.bundles.ktor)
             implementation(libs.koin.core)
+            implementation(libs.kotlinx.date.time)
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
