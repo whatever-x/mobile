@@ -6,9 +6,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.whatever.caramel.core.domain.auth.model.SocialPlatform
 import com.whatever.caramel.feature.login.mvi.LoginIntent
 import com.whatever.caramel.feature.login.mvi.LoginSideEffect
-import com.whatever.caramel.feature.login.mvi.SocialAuthType
 import com.whatever.caramel.feature.login.social.kakao.KakaoAuthProvider
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -25,16 +25,16 @@ internal fun LoginRoute(
     val scope = rememberCoroutineScope()
     val kakaoAuthenticator = koinInject<KakaoAuthProvider>().get()
 
-    val socialAuthLaunch: (SocialAuthType) -> Unit = remember {
+    val socialAuthLaunch: (SocialPlatform) -> Unit = remember {
         { type ->
             scope.launch {
                 when (type) {
-                    SocialAuthType.KAKAO -> {
+                    SocialPlatform.KAKAO -> {
                         val result = kakaoAuthenticator.authenticate()
                         viewModel.intent(LoginIntent.ClickKakaoLoginButton(result = result))
                     }
 
-                    SocialAuthType.APPLE -> {
+                    SocialPlatform.APPLE -> {
 
                     }
                 }

@@ -12,15 +12,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.whatever.caramel.core.domain.auth.model.SocialPlatform
 import com.whatever.caramel.feature.login.mvi.LoginIntent
 import com.whatever.caramel.feature.login.mvi.LoginState
-import com.whatever.caramel.feature.login.mvi.SocialAuthType
 
 @Composable
 internal fun LoginScreen(
     state: LoginState,
     onIntent: (LoginIntent) -> Unit,
-    onLaunch: (SocialAuthType) -> Unit,
+    onLaunch: (SocialPlatform) -> Unit,
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -40,7 +40,7 @@ internal fun LoginScreen(
             Button(
                 modifier = Modifier
                     .fillMaxWidth(),
-                onClick = { onLaunch(SocialAuthType.KAKAO) }
+                onClick = { onLaunch(SocialPlatform.KAKAO) }
             ) {
                 Text(
                     text = "카카오 로그인",
@@ -51,7 +51,7 @@ internal fun LoginScreen(
             Button(
                 modifier = Modifier
                     .fillMaxWidth(),
-                onClick = { onLaunch(SocialAuthType.KAKAO) }
+                onClick = { onLaunch(SocialPlatform.APPLE) }
             ) {
                 Text(
                     text = "애플 로그인 (커플 연결)",
