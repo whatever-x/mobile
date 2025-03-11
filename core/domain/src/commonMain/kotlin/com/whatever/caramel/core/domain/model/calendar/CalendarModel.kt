@@ -7,9 +7,9 @@ data class CalendarModel(
     val id: Long,
     val year: Int,
     val month: Int,
-    var day : List<CalendarDayModel>
+    var day: List<CalendarDayModel>
 ) {
-    private fun getDaysInMonth(year : Int, month : Int) = when (month) {
+    private fun getDaysInMonth(year: Int, month: Int) = when (month) {
         2 -> if (isLeapYear(year)) 29 else 28
         4, 6, 9, 11 -> 30
         else -> 31
@@ -18,7 +18,7 @@ data class CalendarModel(
     companion object {
         // @RyuSw-cs 2025.03.10 샘플 캘린더 모델 생성 함수
         fun createSampleCalendarModel(year: Int, month: Int): CalendarModel {
-            val daysInMonth = when(month) {
+            val daysInMonth = when (month) {
                 2 -> if (isLeapYear(year)) 29 else 28
                 4, 6, 9, 11 -> 30
                 else -> 31
@@ -29,7 +29,23 @@ data class CalendarModel(
                     day = index + 1,
                     isNationalHoliday = false,
                     weekDay = LocalDate(year, month, index + 1).dayOfWeek,
-                    todos = emptyList()
+                    todos = listOf(
+                        CalendarTodoModel(
+                            id = 0L,
+                            type = CalendarTodoType.ANNIVERSARY,
+                            description = "ANNIVERSARY"
+                        ),
+                        CalendarTodoModel(
+                            id = 0L,
+                            type = CalendarTodoType.NATIONAL_HOLIDAY,
+                            description = "NATIONAL_HOLIDAY"
+                        ),
+                        CalendarTodoModel(
+                            id = 0L,
+                            type = CalendarTodoType.TODO,
+                            description = "TODO"
+                        )
+                    )
                 )
             }
 
@@ -41,7 +57,7 @@ data class CalendarModel(
             )
         }
 
-        fun isLeapYear(year : Int): Boolean {
+        fun isLeapYear(year: Int): Boolean {
             return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)
         }
     }

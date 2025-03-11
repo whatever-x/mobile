@@ -128,6 +128,7 @@ internal fun CalendarScreen(
                     ),
                     onDateClick = { dayModel ->
                         selectedDay = dayModel
+                        Napier.d { "Selected day: $selectedDay" }
                     }
                 )
             }
