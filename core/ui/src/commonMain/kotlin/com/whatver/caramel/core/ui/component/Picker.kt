@@ -44,7 +44,9 @@ fun Picker(
     startIndex: Int = 0,
     visibleItemCount: Int = 5,
     selectedTextStyle: TextStyle = LocalTextStyle.current,
+    selectedTextColor : Color = Color.Unspecified,
     textStyle: TextStyle = LocalTextStyle.current,
+    textColor : Color = Color.Unspecified,
     textModifier: Modifier = Modifier,
     content: @Composable (String) -> Unit
 ) {
@@ -116,8 +118,8 @@ fun Picker(
                             fraction
                         ),
                         color = lerp(
-                            selectedTextStyle.color,
-                            textStyle.color,
+                            selectedTextColor,
+                            textColor,
                             fraction
                         )
                     ),

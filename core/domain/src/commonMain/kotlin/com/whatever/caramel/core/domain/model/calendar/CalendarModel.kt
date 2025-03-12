@@ -7,23 +7,29 @@ data class CalendarModel(
     val id: Long,
     val year: Int,
     val month: Int,
-    var day: List<CalendarDayModel>
+    var day: List<CalendarDayModel>,
 ) {
-    private fun getDaysInMonth(year: Int, month: Int) = when (month) {
-        2 -> if (isLeapYear(year)) 29 else 28
-        4, 6, 9, 11 -> 30
-        else -> 31
-    }
-
     companion object {
-        // @RyuSw-cs 2025.03.10 샘플 캘린더 모델 생성 함수
+        val DAYS_OF_WEEK = listOf("일", "월", "화", "수", "목", "금", "토")
+        val MIN_YEAR = 1900
+        val MAX_YEAR = 2100
+        val YEAR_RANGE = MIN_YEAR..MAX_YEAR
+
+        private fun isLeapYear(year: Int): Boolean {
+            return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)
+        }
+
+        fun getWeekCnt() = DAYS_OF_WEEK.size
+
+        fun getDayOfMonth(year: Int, month: Int) = when (month) {
+            2 -> if (isLeapYear(year)) 29 else 28
+            4, 6, 9, 11 -> 30
+            else -> 31
+        }
+
+        // FIXME : API 생성 후 삭제 예정
         fun createSampleCalendarModel(year: Int, month: Int): CalendarModel {
-            val daysInMonth = when (month) {
-                2 -> if (isLeapYear(year)) 29 else 28
-                4, 6, 9, 11 -> 30
-                else -> 31
-            }
-            val updatedDays = List(daysInMonth) { index ->
+            val updatedDays = List(getDayOfMonth(year, month)) { index ->
                 CalendarDayModel(
                     id = 0L,
                     day = index + 1,
@@ -56,10 +62,6 @@ data class CalendarModel(
                 day = updatedDays.toList()
             )
         }
-
-        fun isLeapYear(year: Int): Boolean {
-            return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)
-        }
     }
 }
 
@@ -68,10 +70,14 @@ data class CalendarDayModel(
     val day: Int,
     val isNationalHoliday: Boolean,
     val weekDay: DayOfWeek,
-    val todos: List<CalendarTodoModel>
+    val todos: List<CalendarTodoModel>,
 ) {
     fun isHoliday(): Boolean {
         return weekDay == DayOfWeek.SUNDAY || isNationalHoliday
+    }
+
+    fun isSaturday(): Boolean {
+        return weekDay == DayOfWeek.SATURDAY
     }
 }
 
