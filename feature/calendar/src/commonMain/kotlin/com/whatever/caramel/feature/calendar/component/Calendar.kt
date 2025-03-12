@@ -19,7 +19,6 @@ import com.whatever.caramel.core.domain.model.calendar.CalendarModel
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
 import org.jetbrains.compose.resources.stringArrayResource
 
-// 셀 그려주기
 @Composable
 fun CaramelCalendar(
     modifier: Modifier = Modifier,
@@ -27,9 +26,8 @@ fun CaramelCalendar(
     onClickDay: (Int) -> Unit,
 ) {
     val totalWeek = state.calcWeekend()
-    // FIXME : Modifier 재사용이 내부 View에 대한 크기를 처리할때 재정의 해주나?
     Column(
-        modifier = modifier
+        modifier = modifier.fillMaxWidth()
     ) {
         for (week in 0 until totalWeek) {
             if (state.isFirstEmptyWeekendEmptyDay(week)) {
@@ -40,7 +38,8 @@ fun CaramelCalendar(
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 for (weekDay in 0 until CalendarModel.getWeekCnt()) {
-                    val day = (week * CalendarModel.getWeekCnt() + weekDay - state.getFirstDayOfWeekend().ordinal - 1)
+                    val day =
+                        (week * CalendarModel.getWeekCnt() + weekDay - state.getFirstDayOfWeekendOrdinal() - 1)
                     if (day in 0 until state.calendarDays.size) {
                         CalendarDay(
                             modifier = Modifier.weight(1f),

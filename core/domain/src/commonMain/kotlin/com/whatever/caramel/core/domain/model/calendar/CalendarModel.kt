@@ -14,6 +14,7 @@ data class CalendarModel(
         val MIN_YEAR = 1900
         val MAX_YEAR = 2100
         val YEAR_RANGE = MIN_YEAR..MAX_YEAR
+        val MONTH_RANGE = 1..12
 
         private fun isLeapYear(year: Int): Boolean {
             return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)

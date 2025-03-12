@@ -10,11 +10,12 @@ data class CalendarState(
     val isLoading: Boolean = false,
     val selectedYear: Int? = null,
     val selectedMonth: Int? = null,
+    val today: Int = 1,
     val calendarDays: List<CalendarDayState> = emptyList(),
     val datePickerState: CalendarDatePickerState = CalendarDatePickerState(),
     val todoSheetState: CalendarTodoSheetState = CalendarTodoSheetState(),
 ) : UiState {
-    val totalPage: Int = CalendarModel.YEAR_RANGE.count()
+    val totalPage: Int = (CalendarModel.YEAR_RANGE.count() * CalendarModel.MONTH_RANGE.count())
     val currentPage: Int
         get() {
             val yearPageCount = (this.selectedYear?.minus(CalendarModel.MIN_YEAR))?.times(12)
@@ -23,27 +24,27 @@ data class CalendarState(
             return yearPageCount?.plus(monthIndex) ?: 0
         }
 
-    fun calcPage(pageCount: Int): Pair<Int, Int> {
+    fun calcYearAndMonthByPageCount(pageCount: Int): Pair<Int, Int> {
         val year = CalendarModel.MIN_YEAR + (pageCount / 12)
         val month = (pageCount % 12) + 1
         return Pair(year, month)
     }
 
     fun calcWeekend(): Int {
-        val firstDayOfWeek = getFirstDayOfWeekend().ordinal
+        val firstDayOfWeek = getFirstDayOfWeekendOrdinal()
         return (calendarDays.size + firstDayOfWeek + (CalendarModel.getWeekCnt() - 1)) / CalendarModel.getWeekCnt()
     }
 
     fun isFirstEmptyWeekendEmptyDay(
         weekend: Int,
     ): Boolean {
-        val firstDayOfWeek = getFirstDayOfWeekend().ordinal
-        val emptyDay = (weekend * CalendarModel.getWeekCnt()) - (firstDayOfWeek - 1)
+        val firstDayOfWeek = getFirstDayOfWeekendOrdinal()
+        val emptyDay = (weekend * CalendarModel.getWeekCnt() - firstDayOfWeek - 1)
         return emptyDay == -(CalendarModel.getWeekCnt())
     }
 
-    fun getFirstDayOfWeekend(): DayOfWeek {
-        return calendarDays.firstOrNull()?.dayOfWeek ?: DayOfWeek.MONDAY
+    fun getFirstDayOfWeekendOrdinal(): Int {
+        return calendarDays.firstOrNull()?.dayOfWeek?.ordinal ?: 0
     }
 }
 

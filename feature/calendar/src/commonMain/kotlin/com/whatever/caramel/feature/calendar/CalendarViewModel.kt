@@ -33,17 +33,23 @@ class CalendarViewModel(
                 )
             }
 
-            is CalendarIntent.DismissDatePicker -> dismissDatePicker(intent.year, intent.month)
-            is CalendarIntent.SwipeCalendar -> swipeCalendar(intent.pageIndex)
+            is CalendarIntent.DismissDatePicker -> dismissDatePicker(intent.year, intent.month, intent.isInitPage)
+            is CalendarIntent.SwipeCalendar -> swipeCalendar(intent.pageIndex, intent.isInitPage)
         }
     }
 
     fun loadCalendar(year: Int, month: Int, day: Int = 1) {
         launch {
+            if (day != 1) {
+                reduce {
+                    copy(today = day)
+                }
+            }
+
             reduce {
                 copy(isLoading = true)
             }
-            // FIXME : 캘린더 API로 변경 필요
+            // @RyuSw-cs 2025.03.31 FIXME : 캘린더 API로 변경 필요
             val calendarResponse = CalendarModel.createSampleCalendarModel(year, month)
             reduce {
                 copy(
@@ -57,7 +63,7 @@ class CalendarViewModel(
                     ),
                     calendarDays = calendarResponse.day.mapIndexed { index, dayModel ->
                         CalendarDayState(
-                            isFocused = day == index + 1,
+                            isFocused = day == dayModel.day,
                             dayOfWeek = dayModel.weekDay,
                             isHoliday = dayModel.isHoliday(),
                             isSaturday = dayModel.isSaturday(),
@@ -70,16 +76,21 @@ class CalendarViewModel(
         }
     }
 
-    private fun swipeCalendar(pageIndex: Int) {
+    private fun swipeCalendar(pageIndex: Int, isInitPage: Boolean) {
         launch {
-            val calcDate = state.value.calcPage(pageIndex)
+            val calcDate = state.value.calcYearAndMonthByPageCount(pageIndex)
             reduce {
                 copy(
                     selectedYear = calcDate.first,
                     selectedMonth = calcDate.second,
                 )
             }
-            loadCalendar(calcDate.first, calcDate.second)
+            if (isInitPage) {
+                loadCalendar(calcDate.first, calcDate.second, state.value.today)
+            } else {
+                loadCalendar(calcDate.first, calcDate.second)
+            }
+
         }
     }
 
@@ -88,17 +99,16 @@ class CalendarViewModel(
             reduce {
                 copy(
                     datePickerState = datePickerState.copy(
-                        isOpen = true,
+                        isOpen = !state.value.datePickerState.isOpen,
                         selectedYear = year,
                         selectedMonth = month
                     )
                 )
             }
-            loadCalendar(year, month)
         }
     }
 
-    private fun dismissDatePicker(year: Int, month: Int) {
+    private fun dismissDatePicker(year: Int, month: Int, isInitDate : Boolean) {
         launch {
             reduce {
                 copy(
@@ -109,19 +119,22 @@ class CalendarViewModel(
                     )
                 )
             }
-            loadCalendar(year, month)
+            if (isInitDate) {
+                loadCalendar(year, month, state.value.today)
+            } else {
+                loadCalendar(year, month)
+            }
         }
     }
 
     private fun selectDay(day: Int) {
         reduce {
-            // 1개를 찾아서 그거 foucsed로 바꿔야해!
             copy(
                 calendarDays = calendarDays.map { dayState ->
                     if (dayState.day == day) {
                         dayState.copy(isFocused = true)
                     } else {
-                        dayState
+                        dayState.copy(isFocused = false)
                     }
                 }
             )
@@ -138,7 +151,7 @@ class CalendarViewModel(
                     todoSheetState = todoSheetState.copy(
                         isOpen = !todoSheetState.isOpen,
                         month = month,
-                        // FIXME : Todo 바텀시트 연동 시 구현
+                        // @RyuSw-cs 2025.03.31 FIXME : Todo 바텀시트 연동 시 구현
                         dayList = emptyList()
                     )
                 )

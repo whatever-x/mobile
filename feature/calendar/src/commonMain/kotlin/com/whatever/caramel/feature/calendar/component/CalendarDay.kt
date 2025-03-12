@@ -31,7 +31,7 @@ fun CalendarDay(
                 horizontal = CaramelTheme.spacing.xxs,
                 vertical = CaramelTheme.spacing.xs
             )
-            .clickable( // FIXME : 항상 이걸 해줘야할까?
+            .clickable(
                 indication = null,
                 interactionSource = null
             ) {
@@ -84,7 +84,7 @@ fun CalendarDayText(
     ) {
         Text(
             modifier = Modifier
-                .padding(horizontal = 8.dp, vertical = 4.dp),
+                .padding(horizontal = 8.dp, vertical = 3.dp),
             text = state.day.toString(),
             style = CaramelTheme.typography.body4.regular,
             color = when {
@@ -113,7 +113,6 @@ fun CalendarTodo(
                 },
                 shape = CaramelTheme.shape.xxs
             )
-            // FIXME : Padding도 spacing으로 처리하나?
             .padding(
                 horizontal = CaramelTheme.spacing.xxs,
                 vertical = CaramelTheme.spacing.xxs
