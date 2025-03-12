@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.login.social
+package com.whatever.caramel.feature.login.social.kakao
 
 import android.content.Context
 import androidx.compose.runtime.Composable
@@ -7,12 +7,10 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.whatever.caramel.feature.login.BuildConfig
-import com.whatever.caramel.feature.login.social.kakao.KakaoAuthProvider
-import com.whatever.caramel.feature.login.social.kakao.KakaoUser
-import io.github.aakira.napier.Napier
+import com.whatever.caramel.feature.login.social.SocialAuthResult
+import com.whatever.caramel.feature.login.social.SocialAuthenticator
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
@@ -32,7 +30,6 @@ private class KakaoAuthenticator(
 
     init {
         KakaoSdk.init(context, BuildConfig.KAKAO_NATIVE_APP_KEY)
-        Napier.d { "Hash!= " + Utility.getKeyHash(context) }
     }
 
     override suspend fun authenticate(): SocialAuthResult<KakaoUser> =
