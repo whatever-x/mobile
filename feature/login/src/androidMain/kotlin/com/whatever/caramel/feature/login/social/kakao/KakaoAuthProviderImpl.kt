@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.login.social
+package com.whatever.caramel.feature.login.social.kakao
 
 import android.content.Context
 import androidx.compose.runtime.Composable
@@ -9,8 +9,8 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.whatever.caramel.feature.login.BuildConfig
-import com.whatever.caramel.feature.login.social.kakao.KakaoAuthProvider
-import com.whatever.caramel.feature.login.social.kakao.KakaoUser
+import com.whatever.caramel.feature.login.social.SocialAuthResult
+import com.whatever.caramel.feature.login.social.SocialAuthenticator
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume

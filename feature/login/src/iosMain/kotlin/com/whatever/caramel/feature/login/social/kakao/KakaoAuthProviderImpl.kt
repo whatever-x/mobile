@@ -1,8 +1,8 @@
-package com.whatever.caramel.feature.login.social
+package com.whatever.caramel.feature.login.social.kakao
 
 import androidx.compose.runtime.Composable
-import com.whatever.caramel.feature.login.social.kakao.KakaoAuthProvider
-import com.whatever.caramel.feature.login.social.kakao.KakaoUser
+import com.whatever.caramel.feature.login.social.SocialAuthResult
+import com.whatever.caramel.feature.login.social.SocialAuthenticator
 import kotlinx.cinterop.ExperimentalForeignApi
 import swiftBridge.KakaoLoginBridge
 import kotlin.coroutines.resume
