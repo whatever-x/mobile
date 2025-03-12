@@ -5,6 +5,7 @@ import androidx.compose.ui.uikit.LocalUIViewController
 import com.whatever.caramel.feature.login.social.SocialAuthResult
 import com.whatever.caramel.feature.login.social.SocialAuthenticator
 import kotlinx.cinterop.BetaInteropApi
+import org.koin.core.component.KoinComponent
 import platform.AuthenticationServices.ASAuthorization
 import platform.AuthenticationServices.ASAuthorizationAppleIDCredential
 import platform.AuthenticationServices.ASAuthorizationAppleIDProvider
@@ -51,18 +52,29 @@ enum class ASAuthorizationErrorCode(val code: Int) {
 }
 
 private class AppleAuthenticatorImpl(
-    private val viewController: UIViewController
-) : SocialAuthenticator<AppleUser> {
+    private val viewController: UIViewController,
+) : SocialAuthenticator<AppleUser>, KoinComponent {
 
-    @OptIn(BetaInteropApi::class)
+    /**
+     * ASAuthorizationController의 Delegate는 기본적으로 Weak Reference로 저장됩니다.
+     * KMP 환경에서는 Kotlin 객체가 Swift/Objective-C 객체의 Delegate로 지정될 때 예상보다 빨리 해제될 수 있으므로 이를 방지하기 위해
+     * authorizationDelegate 클래스 변수로 유지하여 ARC에 의해 해제되지 않도록 Strong Reference로 유지합니다.
+     * @author GunHyung-Ham
+     * @since 2025.03.12
+     */
+    private var authorizationDelegate: ASAuthorizationControllerDelegateProtocol? = null
+
     override suspend fun authenticate(): SocialAuthResult<AppleUser> =
         suspendCoroutine { continuation ->
             val provider = ASAuthorizationAppleIDProvider()
             val request = provider.createRequest()
-            request.requestedScopes = listOf(ASAuthorizationScopeFullName, ASAuthorizationScopeEmail)
+            request.requestedScopes =
+                listOf(ASAuthorizationScopeFullName, ASAuthorizationScopeEmail)
             val controller = ASAuthorizationController(listOf(request))
 
-            controller.delegate = object : NSObject(), ASAuthorizationControllerDelegateProtocol {
+            authorizationDelegate = object : NSObject(), ASAuthorizationControllerDelegateProtocol {
+
+                @OptIn(BetaInteropApi::class)
                 override fun authorizationController(
                     controller: ASAuthorizationController,
                     didCompleteWithAuthorization: ASAuthorization
@@ -72,7 +84,13 @@ private class AppleAuthenticatorImpl(
                         NSString.create(data, NSUTF8StringEncoding)?.toString()
                     }
 
-                    continuation.resume(SocialAuthResult.Success(AppleUser(idToken = idToken!!)))
+                    if (idToken.isNullOrEmpty()) {
+                        continuation.resume(SocialAuthResult.Error)
+                    } else {
+                        continuation.resume(SocialAuthResult.Success(AppleUser(idToken)))
+                    }
+
+                    authorizationDelegate = null
                 }
 
                 override fun authorizationController(
@@ -80,19 +98,26 @@ private class AppleAuthenticatorImpl(
                     didCompleteWithError: NSError
                 ) {
                     val errorCode = didCompleteWithError.code.toInt()
-                    val socialAuthResult = when (errorCode) {
-                        ASAuthorizationErrorCode.CANCELED.code -> SocialAuthResult.UserCancelled
-                        else -> SocialAuthResult.Error
+
+                    when (errorCode) {
+                        ASAuthorizationErrorCode.CANCELED.code -> {
+                            continuation.resume(SocialAuthResult.UserCancelled)
+                        }
+                        else -> {
+                            continuation.resume(SocialAuthResult.Error)
+                        }
                     }
 
-                    continuation.resume(socialAuthResult)
+                    authorizationDelegate = null
                 }
             }
 
-            controller.presentationContextProvider = object : NSObject(), ASAuthorizationControllerPresentationContextProvidingProtocol {
-                override fun presentationAnchorForAuthorizationController(controller: ASAuthorizationController): ASPresentationAnchor =
-                    viewController.view.window
-            }
+            controller.delegate = authorizationDelegate
+            controller.presentationContextProvider =
+                object : NSObject(), ASAuthorizationControllerPresentationContextProvidingProtocol {
+                    override fun presentationAnchorForAuthorizationController(controller: ASAuthorizationController): ASPresentationAnchor =
+                        viewController.view.window
+                }
 
             controller.performRequests()
         }
