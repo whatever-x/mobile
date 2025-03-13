@@ -18,6 +18,7 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.model.calendar.CalendarTodoModel
 import com.whatever.caramel.core.domain.model.calendar.CalendarTodoType
 import com.whatever.caramel.feature.calendar.mvi.CalendarDayState
+import com.whatver.caramel.core.ui.clickableWithoutRipple
 
 @Composable
 fun CalendarDay(
@@ -31,10 +32,7 @@ fun CalendarDay(
                 horizontal = CaramelTheme.spacing.xxs,
                 vertical = CaramelTheme.spacing.xs
             )
-            .clickable(
-                indication = null,
-                interactionSource = null
-            ) {
+            .clickableWithoutRipple {
                 onClickDay(dayState.day!!)
             }
     ) {

@@ -48,7 +48,6 @@ data class CalendarState(
     }
 }
 
-// FIXME : ViewModel 초기화에서 사용되지 않는 State는 interface를 상속안해도 될까?
 data class CalendarDatePickerState(
     val isOpen: Boolean = false,
     val selectedYear: Int? = null,

@@ -31,6 +31,7 @@ import caramel.feature.calendar.generated.resources.month
 import caramel.feature.calendar.generated.resources.year
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.calendar.mvi.CalendarDatePickerState
+import com.whatver.caramel.core.ui.clickableWithoutRipple
 import com.whatver.caramel.core.ui.component.Picker
 import org.jetbrains.compose.resources.painterResource
 
@@ -43,12 +44,9 @@ fun CalendarYearText(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clickable(
-                indication = null,
-                interactionSource = null
-            ) {
+            .clickableWithoutRipple {
                 onClickDate(state.selectedYear!!, state.selectedMonth!!)
-            },
+            }
     ) {
         Row(
             modifier = Modifier
@@ -94,10 +92,7 @@ fun CalendarDatePicker(
         modifier = Modifier
             .fillMaxSize()
             .background(color = CaramelTheme.color.dim.primary)
-            .clickable(
-                indication = null,
-                interactionSource = null
-            ) {
+            .clickableWithoutRipple {
                 onClickDatePickerBackground(selectedYear!!, selectedMonth!!)
             }
     )
