@@ -2,7 +2,6 @@ package com.whatever.caramel.feature.calendar.component
 
 import UiText
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -30,6 +29,7 @@ import caramel.feature.calendar.generated.resources.arrow_up
 import caramel.feature.calendar.generated.resources.month
 import caramel.feature.calendar.generated.resources.year
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.domain.model.calendar.CalendarModel
 import com.whatever.caramel.feature.calendar.mvi.CalendarDatePickerState
 import com.whatver.caramel.core.ui.clickableWithoutRipple
 import com.whatver.caramel.core.ui.component.Picker
@@ -85,9 +85,6 @@ fun CalendarDatePicker(
     var selectedYear by remember { mutableStateOf(state.selectedYear) }
     var selectedMonth by remember { mutableStateOf(state.selectedMonth) }
 
-    val yearRange = 1900..2100
-    val monthRange = 1..12
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -116,12 +113,12 @@ fun CalendarDatePicker(
         ) {
             Picker(
                 modifier = Modifier.widthIn(100.dp),
-                startIndex = yearRange.indexOf(selectedYear),
+                startIndex = CalendarModel.YEAR_RANGE.indexOf(selectedYear),
                 selectedTextStyle = CaramelTheme.typography.heading1,
                 selectedTextColor = CaramelTheme.color.text.primary,
                 textStyle = CaramelTheme.typography.heading3,
                 textColor = CaramelTheme.color.text.tertiary,
-                items = yearRange.map {
+                items = CalendarModel.YEAR_RANGE.map {
                     "${it}${
                         UiText.StringResourceId(Res.string.year).asString()
                     }"
@@ -137,12 +134,12 @@ fun CalendarDatePicker(
 
             Picker(
                 modifier = Modifier.widthIn(100.dp),
-                startIndex = monthRange.indexOf(selectedMonth),
+                startIndex = CalendarModel.MONTH_RANGE.indexOf(selectedMonth),
                 selectedTextStyle = CaramelTheme.typography.heading1,
                 selectedTextColor = CaramelTheme.color.text.primary,
                 textStyle = CaramelTheme.typography.heading3,
                 textColor = CaramelTheme.color.text.tertiary,
-                items = monthRange.map {
+                items = CalendarModel.MONTH_RANGE.map {
                     "${it}${
                         UiText.StringResourceId(Res.string.month).asString()
                     }"
