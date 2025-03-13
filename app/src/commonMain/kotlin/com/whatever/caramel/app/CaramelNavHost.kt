@@ -36,8 +36,7 @@ internal fun CaramelNavHost(
     NavHost(
         modifier = modifier,
         navController = navHostController,
-        // FIXME : SplashRoute로 변경!!
-        startDestination = MainRoute
+        startDestination = SplashRoute
     ) {
         with(navHostController) {
             splashScreen(

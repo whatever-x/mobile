@@ -28,7 +28,7 @@ data class CalendarModel(
             else -> 31
         }
 
-        // FIXME : API 생성 후 삭제 예정
+        // @RyuSw-cs 2025.03.13 FIXME : API 생성 후 삭제 예정
         fun createSampleCalendarModel(year: Int, month: Int): CalendarModel {
             val updatedDays = List(getDayOfMonth(year, month)) { index ->
                 CalendarDayModel(
