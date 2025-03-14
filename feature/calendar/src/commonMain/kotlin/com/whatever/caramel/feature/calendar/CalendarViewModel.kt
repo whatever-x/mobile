@@ -7,10 +7,18 @@ import com.whatever.caramel.feature.calendar.mvi.CalendarDayState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class CalendarViewModel(
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(savedStateHandle) {
+
+    init {
+        val current = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        loadCalendar(current.year, current.month.ordinal + 1, current.dayOfMonth)
+    }
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): CalendarState {
         return CalendarState()
