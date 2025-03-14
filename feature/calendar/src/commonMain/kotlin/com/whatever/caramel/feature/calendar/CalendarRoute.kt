@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
@@ -19,14 +20,9 @@ internal fun CalendarRoute(
     navigateToCreateTodo: () -> Unit,
     navigateToTodoDetail: () -> Unit,
 ) {
-    val current = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-    var isLoaded by remember { mutableStateOf(false) }
-    if (!isLoaded) {
-        viewModel.loadCalendar(current.year, current.month.ordinal + 1, current.dayOfMonth)
-        isLoaded = true
-    }
-
     LaunchedEffect(Unit) {
+        val current = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        viewModel.intent(CalendarIntent.InitializeCalendar(current.year, current.month.ordinal + 1, current.dayOfMonth))
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is CalendarSideEffect.NavigateToCreateTodo -> navigateToCreateTodo()
