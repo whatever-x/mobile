@@ -43,7 +43,6 @@ class CalendarViewModel(
 
             is CalendarIntent.DismissDatePicker -> dismissDatePicker(intent.year, intent.month, intent.isInitPage)
             is CalendarIntent.SwipeCalendar -> swipeCalendar(intent.pageIndex, intent.isInitPage)
-            is CalendarIntent.InitializeCalendar -> loadCalendar(intent.year, intent.month, intent.day)
         }
     }
 
