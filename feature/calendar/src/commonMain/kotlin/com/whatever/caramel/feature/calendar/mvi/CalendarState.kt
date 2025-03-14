@@ -8,8 +8,8 @@ import kotlinx.datetime.DayOfWeek
 
 data class CalendarState(
     val isLoading: Boolean = false,
-    val selectedYear: Int? = null,
-    val selectedMonth: Int? = null,
+    val selectedYear: Int = 0,
+    val selectedMonth: Int = 0,
     val today: Int = 1,
     val calendarDays: List<CalendarDayState> = emptyList(),
     val datePickerState: CalendarDatePickerState = CalendarDatePickerState(),
@@ -18,10 +18,10 @@ data class CalendarState(
     val totalPage: Int = (CalendarModel.YEAR_RANGE.count() * CalendarModel.MONTH_RANGE.count())
     val currentPage: Int
         get() {
-            val yearPageCount = (this.selectedYear?.minus(CalendarModel.MIN_YEAR))?.times(12)
-            val monthIndex = (this.selectedMonth?.minus(1)) ?: 0
+            val yearPageCount = (this.selectedYear - CalendarModel.MIN_YEAR) * 12
+            val monthIndex = this.selectedMonth - 1
 
-            return yearPageCount?.plus(monthIndex) ?: 0
+            return yearPageCount + monthIndex
         }
 
     fun calcYearAndMonthByPageCount(pageCount: Int): Pair<Int, Int> {
@@ -50,20 +50,20 @@ data class CalendarState(
 
 data class CalendarDatePickerState(
     val isOpen: Boolean = false,
-    val selectedYear: Int? = null,
-    val selectedMonth: Int? = null,
+    val selectedYear: Int = 0,
+    val selectedMonth: Int = 0,
 ) : UiState
 
 data class CalendarTodoSheetState(
     val isOpen: Boolean = false,
-    val month: Int? = null,
-    val dayList: List<CalendarDayModel>? = null,
+    val month: Int = 0,
+    val dayList: List<CalendarDayModel> = emptyList(),
 ) : UiState
 
 data class CalendarDayState(
     val isFocused: Boolean = false,
-    val day: Int? = null,
-    val dayOfWeek: DayOfWeek? = null,
+    val day: Int = 0,
+    val dayOfWeek: DayOfWeek = DayOfWeek.MONDAY,
     val isHoliday: Boolean = false,
     val isSaturday: Boolean = false,
     val todos: List<CalendarTodoModel> = emptyList(),

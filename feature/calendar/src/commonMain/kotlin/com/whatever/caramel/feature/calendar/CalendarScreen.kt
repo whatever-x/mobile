@@ -31,8 +31,8 @@ internal fun CalendarScreen(
     state: CalendarState,
     onIntent: (CalendarIntent) -> Unit,
 ) {
-    val initYear = rememberSaveable { state.selectedYear!! }
-    val initMonth = rememberSaveable { state.selectedMonth!! }
+    val initYear = rememberSaveable { state.selectedYear }
+    val initMonth = rememberSaveable { state.selectedMonth }
     val initPage = rememberSaveable { state.currentPage }
     val totalPage = rememberSaveable { state.totalPage }
 
@@ -85,7 +85,7 @@ internal fun CalendarScreen(
                         onClickDay = { day ->
                             onIntent(
                                 CalendarIntent.ToggleDay(
-                                    month = state.selectedMonth!!,
+                                    month = state.selectedMonth,
                                     dayList = state.calendarDays,
                                     selectedDay = day
                                 )
