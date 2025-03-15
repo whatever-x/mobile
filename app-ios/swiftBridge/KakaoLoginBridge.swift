@@ -52,8 +52,8 @@ import KakaoSDKCommon
                 failure()
             }
         } else {
-            if let accessToken = oauthToken?.accessToken {
-                success(accessToken)
+            if let idToken = oauthToken?.idToken {
+                success(idToken)
             } else {
                 failure()
             }
