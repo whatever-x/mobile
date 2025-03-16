@@ -1,6 +1,6 @@
-package com.whatever.caramel.core.remote.network
+package com.whatever.caramel.core.remote.network.util
 
-import com.whatever.caramel.core.remote.dto.response.BaseResponse
+import com.whatever.caramel.core.remote.dto.base.BaseResponse
 import com.whatever.caramel.core.remote.network.exception.CaramelNetworkException
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
