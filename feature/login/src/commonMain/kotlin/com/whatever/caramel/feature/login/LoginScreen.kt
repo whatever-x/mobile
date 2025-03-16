@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.whatever.caramel.core.domain.auth.model.SocialPlatform
 import com.whatever.caramel.feature.login.mvi.LoginIntent
 import com.whatever.caramel.feature.login.mvi.LoginState
+import com.whatever.caramel.feature.login.util.Platform
 
 @Composable
 internal fun LoginScreen(
@@ -48,15 +49,17 @@ internal fun LoginScreen(
                 )
             }
 
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                onClick = { onLaunch(SocialPlatform.APPLE) }
-            ) {
-                Text(
-                    text = "애플 로그인 (커플 연결)",
-                    fontSize = 18.sp
-                )
+            if (Platform.isIos) {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    onClick = { onLaunch(SocialPlatform.APPLE) }
+                ) {
+                    Text(
+                        text = "애플 로그인 (커플 연결)",
+                        fontSize = 18.sp
+                    )
+                }
             }
         }
     }

@@ -9,7 +9,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.whatever.caramel.core.domain.auth.model.SocialPlatform
 import com.whatever.caramel.feature.login.mvi.LoginIntent
 import com.whatever.caramel.feature.login.mvi.LoginSideEffect
+import com.whatever.caramel.feature.login.social.SocialAuthenticator
+import com.whatever.caramel.feature.login.social.apple.AppleAuthProvider
+import com.whatever.caramel.feature.login.social.apple.AppleUser
 import com.whatever.caramel.feature.login.social.kakao.KakaoAuthProvider
+import com.whatever.caramel.feature.login.social.kakao.KakaoUser
+import com.whatever.caramel.feature.login.util.Platform
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
@@ -17,14 +22,13 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 internal fun LoginRoute(
     viewModel: LoginViewModel = koinViewModel(),
+    kakaoAuthenticator: SocialAuthenticator<KakaoUser> = koinInject<KakaoAuthProvider>().get(),
+    appleAuthenticator: SocialAuthenticator<AppleUser>? = if (Platform.isIos) koinInject<AppleAuthProvider>().get() else null,
     navigateToCreateProfile: () -> Unit,
     navigateToConnectCouple: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-
     val scope = rememberCoroutineScope()
-    val kakaoAuthenticator = koinInject<KakaoAuthProvider>().get()
-
     val socialAuthLaunch: (SocialPlatform) -> Unit = remember {
         { type ->
             scope.launch {
@@ -35,7 +39,8 @@ internal fun LoginRoute(
                     }
 
                     SocialPlatform.APPLE -> {
-
+                        val result = appleAuthenticator!!.authenticate()
+                        viewModel.intent(LoginIntent.ClickAppleLoginButton(result = result))
                     }
                 }
             }

@@ -10,8 +10,14 @@ import com.whatever.caramel.feature.login.mvi.LoginIntent
 import com.whatever.caramel.feature.login.mvi.LoginSideEffect
 import com.whatever.caramel.feature.login.mvi.LoginState
 import com.whatever.caramel.feature.login.social.SocialAuthResult
+import com.whatever.caramel.feature.login.social.apple.AppleUser
 import com.whatever.caramel.feature.login.social.kakao.KakaoUser
 import io.github.aakira.napier.Napier
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonObject
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 class LoginViewModel(
     savedStateHandle: SavedStateHandle,
@@ -25,6 +31,7 @@ class LoginViewModel(
     override suspend fun handleIntent(intent: LoginIntent) {
         when (intent) {
             is LoginIntent.ClickKakaoLoginButton -> kakaoLogin(result = intent.result)
+            is LoginIntent.ClickAppleLoginButton -> appleLogin(result = intent.result)
         }
     }
 
@@ -54,6 +61,21 @@ class LoginViewModel(
 
             is SocialAuthResult.UserCancelled -> {
                 // 사용자 취소
+                Napier.d { "사용자 취소" }
+            }
+        }
+    }
+
+    private fun appleLogin(result: SocialAuthResult<AppleUser>) {
+        when (result) {
+            is SocialAuthResult.Success -> {
+                Napier.d { "성공" }
+                Napier.d { result.data.idToken }
+            }
+            is SocialAuthResult.Error -> {
+                Napier.d { "에러" }
+            }
+            is SocialAuthResult.UserCancelled -> {
                 Napier.d { "사용자 취소" }
             }
         }
