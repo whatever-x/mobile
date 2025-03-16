@@ -2,16 +2,87 @@ package com.whatever.caramel.core.remote.di
 
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSourceImpl
-import com.whatever.caramel.core.remote.datasource.RemoteSampleDataSource
-import com.whatever.caramel.core.remote.datasource.RemoteSampleDataSourceImpl
+import com.whatever.caramel.core.remote.di.qualifier.AuthClient
+import com.whatever.caramel.core.remote.di.qualifier.DefaultClient
+import com.whatever.caramel.core.remote.di.qualifier.SampleClient
 import com.whatever.caramel.core.remote.network.HttpClientFactory
+import com.whatever.caramel.core.remote.network.config.NetworkConfig
+import com.whatever.caramel.core.remote.network.config.caramelDefaultRequest
+import com.whatever.caramel.core.remote.network.config.caramelResponseValidator
+import com.whatever.caramel.core.remote.network.interceptor.TokenInterceptor
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BearerTokens
+import io.ktor.client.plugins.auth.providers.bearer
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-expect val networkClientModule: Module
+expect val networkClientEngineModule: Module
 
-val remoteModule = module {
-    single<RemoteSampleDataSource> { RemoteSampleDataSourceImpl(client = get()) }
-    single<RemoteAuthDataSource> { RemoteAuthDataSourceImpl(client = get()) }
+val networkModule = module {
     single { HttpClientFactory.create(engine = get()) }
+
+    single(SampleClient) {
+        get<HttpClient>().config {
+            caramelResponseValidator()
+            defaultRequest {
+                url(NetworkConfig.SAMPLE_URL)
+                contentType(ContentType.Application.Json)
+            }
+        }
+    }
+
+    single(DefaultClient) {
+        get<HttpClient>().config {
+            caramelResponseValidator()
+            caramelDefaultRequest()
+        }
+    }
+
+    single(AuthClient) {
+        get<HttpClient>(DefaultClient).config {
+            install(Auth) {
+                bearer {
+                    loadTokens {
+                        val (accessToken, refreshToken) = get<TokenInterceptor>().getAuthToken()
+
+                        if (accessToken != null && refreshToken != null) {
+                            BearerTokens(accessToken, refreshToken)
+                        } else {
+                            null
+                        }
+                    }
+
+                    refreshTokens {
+                        val refreshed = get<TokenInterceptor>().refresh()
+
+                        if (refreshed) {
+                            val (accessToken, refreshToken) = get<TokenInterceptor>().getAuthToken()
+
+                            if (accessToken != null && refreshToken != null) {
+                                BearerTokens(accessToken, refreshToken)
+                            } else {
+                                null
+                            }
+                        } else {
+                            null
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+val remoteDataSourceModule = module {
+    single<RemoteAuthDataSource> {
+        RemoteAuthDataSourceImpl(
+            authClient = get(AuthClient),
+            defaultClient = get(DefaultClient),
+            sampleClient = get(SampleClient)
+        )
+    }
 }
