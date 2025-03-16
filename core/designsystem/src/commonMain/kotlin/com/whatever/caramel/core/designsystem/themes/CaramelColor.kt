@@ -35,6 +35,7 @@ data class CaramelColor(
         val tertiary: Color = Neutral400,
         val brand: Color = Orange500,
         val inverse: Color = White100,
+        val accent: Color = Orange500,
         val disabledPrimary: Color = Neutral400,
         val disabledBrand: Color = Orange400,
         val placeholder: Color = Neutral400,
@@ -67,7 +68,7 @@ data class CaramelColor(
         val disabledBrand: Color = Orange200,
         val labelBrand: Color = Orange300,
         val labelAccent1: Color = Red500,
-        val labelAccent2: Color = Orange500
+        val labelAccent2: Color = Orange500,
     )
 
     @Immutable
