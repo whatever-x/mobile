@@ -28,7 +28,8 @@ val repositoryModule = module {
 
     single<AuthRepository> {
         AuthRepositoryImpl(
-            remoteAuthDataSource = get()
+            remoteAuthDataSource = get(),
+            tokenDataSource = get()
         )
     }
 
