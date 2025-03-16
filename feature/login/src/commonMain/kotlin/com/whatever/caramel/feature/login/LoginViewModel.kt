@@ -13,11 +13,6 @@ import com.whatever.caramel.feature.login.social.SocialAuthResult
 import com.whatever.caramel.feature.login.social.apple.AppleUser
 import com.whatever.caramel.feature.login.social.kakao.KakaoUser
 import io.github.aakira.napier.Napier
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonObject
-import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingApi
 
 class LoginViewModel(
     savedStateHandle: SavedStateHandle,
@@ -38,20 +33,17 @@ class LoginViewModel(
     private suspend fun kakaoLogin(result: SocialAuthResult<KakaoUser>) {
         when (result) {
             is SocialAuthResult.Success -> {
-                Napier.d { "id 토큰 : ${result.data.idToken}" }
-
                 authRepository.loginWithSocialPlatform(
                     SocialLoginModel.Kakao(idToken = result.data.idToken)
                 )
 
-                // 이미 프로필이 생성 여부에 따라 화면 이동 분기
+                // @ham2174 TODO :프로필 생성 여부에 따라 화면 이동 분기
                 // 프로필 생성 or 커플 연결로 이동
                 postSideEffect(LoginSideEffect.NavigateToCreateProfile)
             }
 
             is SocialAuthResult.Error -> {
                 // 카카오측 서버 에러
-                Napier.d { "카카오측 서버 에러" }
                 throw CaramelException(
                     message = "카카오 서버 에러",
                     debugMessage = "카카오 서버 에러",
@@ -66,16 +58,29 @@ class LoginViewModel(
         }
     }
 
-    private fun appleLogin(result: SocialAuthResult<AppleUser>) {
+    private suspend fun appleLogin(result: SocialAuthResult<AppleUser>) {
         when (result) {
             is SocialAuthResult.Success -> {
-                Napier.d { "성공" }
-                Napier.d { result.data.idToken }
+                authRepository.loginWithSocialPlatform(
+                    SocialLoginModel.Apple(idToken = result.data.idToken)
+                )
+
+                // @ham2174 TODO : 프로필 생성 여부에 따라 화면 이동 분기
+                // 프로필 생성 or 커플 연결로 이동
+                postSideEffect(LoginSideEffect.NavigateToCreateProfile)
             }
+
             is SocialAuthResult.Error -> {
-                Napier.d { "에러" }
+                // 애플 서버 에러
+                throw CaramelException(
+                    message = "애플 서버 에러",
+                    debugMessage = "애플 서버 에러",
+                    errorUiType = ErrorUiType.SNACK_BAR
+                )
             }
+
             is SocialAuthResult.UserCancelled -> {
+                // 사용자 취소
                 Napier.d { "사용자 취소" }
             }
         }

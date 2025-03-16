@@ -56,7 +56,7 @@ internal fun LoginScreen(
                     onClick = { onLaunch(SocialPlatform.APPLE) }
                 ) {
                     Text(
-                        text = "애플 로그인 (커플 연결)",
+                        text = "애플 로그인",
                         fontSize = 18.sp
                     )
                 }
