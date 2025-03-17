@@ -4,13 +4,10 @@ import com.whatever.caramel.buildlogic.convention.extension.android
 import com.whatever.caramel.buildlogic.convention.extension.compose
 import com.whatever.caramel.buildlogic.convention.extension.debugImplementation
 import com.whatever.caramel.buildlogic.convention.extension.kotlin
-import com.whatever.caramel.buildlogic.convention.extension.kspKmp
 import com.whatever.caramel.buildlogic.convention.extension.library
 import com.whatever.caramel.buildlogic.convention.extension.libs
-import com.whatever.caramel.buildlogic.convention.extension.plugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 
 class KmpComposePlugin : Plugin<Project> {
@@ -43,13 +40,11 @@ class KmpComposePlugin : Plugin<Project> {
                             implementation(compose.dependencies.preview)
                         }
                     }
-
-                    find { it.name == "androidDebug" }?.apply {
-                        dependencies {
-                            implementation(compose.dependencies.uiTooling)
-                        }
-                    }
                 }
+            }
+
+            dependencies {
+                debugImplementation(libs.library("androidx-compose-ui-tooling"))
             }
         }
     }
