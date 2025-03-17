@@ -73,13 +73,11 @@ data class CalendarDayModel(
     val weekDay: DayOfWeek,
     val todos: List<CalendarTodoModel>,
 ) {
-    fun isHoliday(): Boolean {
-        return weekDay == DayOfWeek.SUNDAY || isNationalHoliday
-    }
+    val isHoliday
+        get() = weekDay == DayOfWeek.SUNDAY || isNationalHoliday
 
-    fun isSaturday(): Boolean {
-        return weekDay == DayOfWeek.SATURDAY
-    }
+    val isSaturday
+        get() = weekDay == DayOfWeek.SATURDAY
 }
 
 data class CalendarTodoModel(

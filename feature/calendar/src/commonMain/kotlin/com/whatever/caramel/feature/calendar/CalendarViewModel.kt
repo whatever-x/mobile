@@ -73,8 +73,8 @@ class CalendarViewModel(
                         CalendarDayState(
                             isFocused = day == dayModel.day,
                             dayOfWeek = dayModel.weekDay,
-                            isHoliday = dayModel.isHoliday(),
-                            isSaturday = dayModel.isSaturday(),
+                            isHoliday = dayModel.isHoliday,
+                            isSaturday = dayModel.isSaturday,
                             day = index + 1,
                             todos = dayModel.todos.sortedBy { it.type.priority }
                         )
