@@ -8,7 +8,6 @@ import com.whatever.caramel.core.remote.dto.sample.response.SampleGetMethodRespo
 import com.whatever.caramel.core.remote.dto.sample.response.SamplePostMethodResponseDto
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
-import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
@@ -24,8 +23,8 @@ internal class RemoteAuthDataSourceImpl(
 
     override suspend fun testSignIn(): SignInResponse =
         defaultClient.get(TEST_SIGN_IN_URL) {
-            parameter("gender", "MALE")
-            parameter("expSec", 10)
+            parameter("gender", "MALE") // @ham2174 임의의 설정 값
+            parameter("expSec", 10) // @ham2174 임의로 만든 토큰 만료 시간
         }.getBody()
 
     override suspend fun signIn(request: SignInRequest): SignInResponse =
@@ -33,10 +32,9 @@ internal class RemoteAuthDataSourceImpl(
             setBody(body = request)
         }.getBody()
 
-    // @ham2174 TODO : 리프레쉬 API 서버 로직 구현시 수정
-    override suspend fun refresh(refreshToken: String): ServiceToken =
+    override suspend fun refresh(request: ServiceToken): ServiceToken =
         defaultClient.post(POST_REFRESH_URL) {
-            bearerAuth(token = refreshToken)
+            setBody(body = request)
         }.getBody()
 
     // @ham2174 TODO : 샘플 로직 제거

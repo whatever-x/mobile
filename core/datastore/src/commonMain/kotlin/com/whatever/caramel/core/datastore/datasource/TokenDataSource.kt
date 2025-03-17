@@ -9,6 +9,4 @@ interface TokenDataSource {
 
     suspend fun fetchToken(): Pair<String?, String?>
 
-    suspend fun fetchRefreshToken(): String?
-
 }

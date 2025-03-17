@@ -9,15 +9,15 @@ import com.whatever.caramel.core.remote.dto.sample.response.SamplePostMethodResp
 
 interface RemoteAuthDataSource {
 
-    suspend fun testSignIn() : SignInResponse
+    suspend fun testSignIn(): SignInResponse
 
     suspend fun signIn(
         request: SignInRequest
-    ) : SignInResponse
+    ): SignInResponse
 
     suspend fun refresh(
-        refreshToken: String
-    ) : ServiceToken
+        request: ServiceToken
+    ): ServiceToken
 
     // @ham2174 TODO : 샘플 로직 제거
     /* Sample */

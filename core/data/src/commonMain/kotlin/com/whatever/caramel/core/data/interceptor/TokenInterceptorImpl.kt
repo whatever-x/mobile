@@ -2,6 +2,7 @@ package com.whatever.caramel.core.data.interceptor
 
 import com.whatever.caramel.core.datastore.datasource.TokenDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSource
+import com.whatever.caramel.core.remote.dto.auth.ServiceToken
 import com.whatever.caramel.core.remote.network.interceptor.TokenInterceptor
 
 class TokenInterceptorImpl(
@@ -27,10 +28,15 @@ class TokenInterceptorImpl(
      */
     override suspend fun refresh(): Boolean {
         try {
-            val refreshToken = tokenDataSource.fetchRefreshToken()
+            val (accessToken, refreshToken) = tokenDataSource.fetchToken()
 
-            if (refreshToken != null) {
-                val response = authDataSource.refresh(refreshToken = refreshToken)
+            if (accessToken != null && refreshToken != null) {
+                val response = authDataSource.refresh(
+                    request = ServiceToken(
+                        accessToken = accessToken,
+                        refreshToken = refreshToken
+                    )
+                )
 
                 tokenDataSource.createToken(
                     accessToken = response.accessToken,

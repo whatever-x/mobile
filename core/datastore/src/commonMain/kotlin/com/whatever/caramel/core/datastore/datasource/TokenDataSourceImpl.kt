@@ -32,14 +32,6 @@ class TokenDataSourceImpl(
         }
     }
 
-    override suspend fun fetchRefreshToken(): String? {
-        dataStore.data.first().let { prefs ->
-            val refreshToken = prefs[refreshTokenKey]
-
-            return refreshToken
-        }
-    }
-
     companion object {
         private const val PREFS_KEY_ACCESS_TOKEN = "accessToken"
         private const val PREFS_KEY_REFRESH_TOKEN = "refreshToken"
