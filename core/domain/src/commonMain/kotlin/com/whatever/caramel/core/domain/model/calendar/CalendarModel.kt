@@ -87,6 +87,10 @@ data class CalendarTodoModel(
 )
 
 enum class CalendarTodoType(val priority: Int) {
-    NATIONAL_HOLIDAY(1), ANNIVERSARY(2), TODO(3), OVER(4)
+    NATIONAL_HOLIDAY(1),
+    ANNIVERSARY(2),
+    TODO(3),
+    OVER(4)
+    ;
 }
 
