@@ -18,9 +18,6 @@ fun CaramelComposeApp(
         val snackBarHostState = remember { SnackbarHostState() }
 
         CaramelScaffold(
-            modifier = Modifier.background(
-                CaramelTheme.color.background.primary
-            ),
             snackBarHost = {
                 SnackbarHost(
                     hostState = snackBarHostState
