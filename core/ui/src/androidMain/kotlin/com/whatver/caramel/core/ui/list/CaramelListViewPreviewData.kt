@@ -1,18 +1,18 @@
-package com.whatever.core.ui.list
+package com.whatver.caramel.core.ui.list
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.whatever.caramel.core.designsystem.foundations.Resources
+import org.jetbrains.compose.resources.DrawableResource
 
 internal data class CaramelListViewPreviewData(
     val content : String,
-    val leadingIcon : ImageVector? = null,
+    val leadingIcon : DrawableResource? = null,
     val trailingIconVisible: Boolean = false,
     val trailingText : String? = null
 )
 
-internal class CaramelListItemPreviewProvider : PreviewParameterProvider<CaramelListViewPreviewData> {
+internal class CaramelListItemPreviewProvider :
+    PreviewParameterProvider<CaramelListViewPreviewData> {
     override val values: Sequence<CaramelListViewPreviewData> = sequenceOf(
         CaramelListViewPreviewData(
             content = "Text"
@@ -27,16 +27,16 @@ internal class CaramelListItemPreviewProvider : PreviewParameterProvider<Caramel
         ),
         CaramelListViewPreviewData(
             content = "Text",
-            leadingIcon = Icons.Filled.Favorite,
+            leadingIcon = Resources.Icon.profile,
         ),
         CaramelListViewPreviewData(
             content = "Text",
-            leadingIcon = Icons.Filled.Favorite,
+            leadingIcon = Resources.Icon.profile,
             trailingIconVisible = true
         ),
         CaramelListViewPreviewData(
             content = "Text",
-            leadingIcon = Icons.Filled.Favorite,
+            leadingIcon = Resources.Icon.profile,
             trailingText = "Button"
         ),
     )
