@@ -12,8 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import caramel.core.ui.generated.resources.Res
-import caramel.core.ui.generated.resources.arrow_right
+import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import org.jetbrains.compose.resources.vectorResource
 
@@ -61,7 +60,7 @@ fun CaramelListItem(
 
         if (scope.hasTrailingArrow) {
             Icon(
-                imageVector = vectorResource(Res.drawable.arrow_right),
+                imageVector = vectorResource(Resources.Icon.arrow_right),
                 contentDescription = null
             )
         }
