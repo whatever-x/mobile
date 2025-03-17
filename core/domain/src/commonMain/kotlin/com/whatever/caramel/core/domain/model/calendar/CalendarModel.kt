@@ -7,7 +7,7 @@ data class CalendarModel(
     val id: Long,
     val year: Int,
     val month: Int,
-    var day: List<CalendarDayModel>,
+    val day: List<CalendarDayModel>,
 ) {
     companion object {
         val DAYS_OF_WEEK = listOf("일", "월", "화", "수", "목", "금", "토")
