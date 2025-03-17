@@ -5,6 +5,7 @@ import com.whatever.caramel.buildlogic.convention.extension.compose
 import com.whatever.caramel.buildlogic.convention.extension.debugImplementation
 import com.whatever.caramel.buildlogic.convention.extension.kotlin
 import com.whatever.caramel.buildlogic.convention.extension.kspKmp
+import com.whatever.caramel.buildlogic.convention.extension.library
 import com.whatever.caramel.buildlogic.convention.extension.libs
 import com.whatever.caramel.buildlogic.convention.extension.plugin
 import org.gradle.api.Plugin
@@ -40,6 +41,12 @@ class KmpComposePlugin : Plugin<Project> {
                     find { it.name == "androidMain" }?.apply {
                         dependencies {
                             implementation(compose.dependencies.preview)
+                        }
+                    }
+
+                    find { it.name == "androidDebug" }?.apply {
+                        dependencies {
+                            implementation(compose.dependencies.uiTooling)
                         }
                     }
                 }

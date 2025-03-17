@@ -34,9 +34,6 @@ class KmpAndroidPlugin : Plugin<Project> {
             }
             android {
                 configureAndroid()
-                dependencies {
-                    debugImplementation(libs.library("androidx-compose-ui-tooling"))
-                }
             }
         }
     }
