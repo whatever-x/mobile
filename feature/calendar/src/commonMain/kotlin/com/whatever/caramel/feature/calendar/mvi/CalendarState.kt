@@ -52,13 +52,13 @@ data class CalendarDatePickerState(
     val isOpen: Boolean = false,
     val selectedYear: Int = 0,
     val selectedMonth: Int = 0,
-) : UiState
+)
 
 data class CalendarTodoSheetState(
     val isOpen: Boolean = false,
     val month: Int = 0,
     val dayList: List<CalendarDayModel> = emptyList(),
-) : UiState
+)
 
 data class CalendarDayState(
     val isFocused: Boolean = false,
@@ -67,4 +67,4 @@ data class CalendarDayState(
     val isHoliday: Boolean = false,
     val isSaturday: Boolean = false,
     val todos: List<CalendarTodoModel> = emptyList(),
-) : UiState
+)
