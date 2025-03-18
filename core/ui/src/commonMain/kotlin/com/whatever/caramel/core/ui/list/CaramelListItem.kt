@@ -1,4 +1,4 @@
-package com.whatver.caramel.core.ui.list
+package com.whatever.caramel.core.ui.list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

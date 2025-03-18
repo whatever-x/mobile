@@ -1,4 +1,4 @@
-package com.whatver.caramel.core.ui.list
+package com.whatever.caramel.core.ui.list
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
