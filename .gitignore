@@ -13,6 +13,7 @@ captures
 .cxx
 *.jks
 *.aab
+*.apk
 
 # ComposeApp
 app/google-services.json
