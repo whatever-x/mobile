@@ -34,11 +34,10 @@ internal fun CalendarScreen(
     val initYear = rememberSaveable { state.selectedYear }
     val initMonth = rememberSaveable { state.selectedMonth }
     val initPage = rememberSaveable { state.currentPage }
-    val totalPage = rememberSaveable { state.totalPage }
 
     val calendarPageState = rememberPagerState(
         initialPage = initPage,
-        pageCount = { totalPage }
+        pageCount = { state.totalPage }
     )
 
     LaunchedEffect(Unit) {
