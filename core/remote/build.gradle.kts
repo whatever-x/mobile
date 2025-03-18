@@ -61,20 +61,21 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.ktor.client.okhttp)
         }
-        commonMain.dependencies {
-            implementation(libs.bundles.ktor)
-            implementation(libs.koin.core)
-            implementation(libs.koin.annotation)
-            implementation(libs.kotlinx.date.time)
-            implementation(libs.napier)
+        with(commonMain) {
+            dependencies {
+                implementation(libs.bundles.ktor)
+                implementation(libs.koin.core)
+                implementation(libs.koin.annotation)
+                implementation(libs.kotlinx.date.time)
+                implementation(libs.napier)
+            }
+            configure {
+                kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+            }
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
-    }
-
-    sourceSets.named("commonMain").configure {
-        kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
     }
 }
 
