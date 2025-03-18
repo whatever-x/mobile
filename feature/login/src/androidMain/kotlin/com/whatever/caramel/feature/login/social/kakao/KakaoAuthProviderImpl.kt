@@ -56,11 +56,11 @@ private class KakaoAuthenticator(
                 resume(SocialAuthResult.Error)
             }
         } else {
-            val accessToken = token?.accessToken
-            if (accessToken.isNullOrEmpty()) {
+            val idToken = token?.idToken
+            if (idToken.isNullOrEmpty()) {
                 resume(SocialAuthResult.Error)
             } else {
-                resume(SocialAuthResult.Success(KakaoUser(accessToken)))
+                resume(SocialAuthResult.Success(KakaoUser(idToken)))
             }
         }
     }

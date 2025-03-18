@@ -5,12 +5,12 @@ import com.whatever.caramel.core.datastore.SampleDatastore
 import com.whatever.caramel.core.data.mapper.toSampleDetailEntity
 import com.whatever.caramel.core.data.mapper.toSampleEntity
 import com.whatever.caramel.core.data.mapper.toSampleModel
-import com.whatever.caramel.core.remote.datasource.RemoteSampleDataSource
 import com.whatever.caramel.core.domain.model.SampleModel
 import com.whatever.caramel.core.domain.repository.SampleRepository
+import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSource
 
 class SampleRepositoryImpl(
-    private val remoteSampleDataSource: RemoteSampleDataSource,
+    private val remoteSampleDataSource: RemoteAuthDataSource,
     private val sampleDatastore: SampleDatastore,
     private val sampleDao: SampleDao
 ) : SampleRepository {

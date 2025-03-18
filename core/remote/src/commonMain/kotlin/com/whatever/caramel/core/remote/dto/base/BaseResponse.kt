@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.remote.dto.response
+package com.whatever.caramel.core.remote.dto.base
 
 import com.whatever.caramel.core.remote.network.exception.CaramelNetworkException
 import kotlinx.serialization.SerialName

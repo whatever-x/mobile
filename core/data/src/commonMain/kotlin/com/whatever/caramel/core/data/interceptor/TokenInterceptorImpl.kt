@@ -1,27 +1,57 @@
 package com.whatever.caramel.core.data.interceptor
 
-import com.whatever.caramel.core.datastore.SampleDatastore
-import com.whatever.caramel.core.remote.datasource.RemoteSampleDataSource
+import com.whatever.caramel.core.datastore.datasource.TokenDataSource
+import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSource
+import com.whatever.caramel.core.remote.dto.auth.ServiceToken
 import com.whatever.caramel.core.remote.network.interceptor.TokenInterceptor
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
-// @RyuSw-cs 2025.03.06 TODO : 추후 토큰이 필요한 로직이 있다면 개발필요
 class TokenInterceptorImpl(
-    private val sampleDatastore: SampleDatastore,
-) : TokenInterceptor, KoinComponent {
+    private val tokenDataSource: TokenDataSource,
+    private val authDataSource: RemoteAuthDataSource
+) : TokenInterceptor {
 
-    private val sampleRemoteDataSource: RemoteSampleDataSource by inject()
+    override suspend fun getAuthToken(): Pair<String?, String?> {
+        val (accessToken, refreshToken) = tokenDataSource.fetchToken()
 
-    override suspend fun getAccessToken(): String {
-        return ""
+        return Pair(
+            first = accessToken,
+            second = refreshToken
+        )
     }
 
-    override suspend fun getRefreshToken(): String {
-        return ""
+    /**
+     * 401 에러 발생시 데이터스토어에 저장된 리프레쉬 토큰을 가져와 refresh API를 호출합니다.
+     * 가져온 리프레쉬 토큰이 Null이거나 예외가 발생할 경우 false를 반환합니다.
+     * refresh API 호출이 성공했을 경우 데이터 스토어에 반환된 토큰을 저장합니다.
+     * @author ham2174
+     * @since 2025.03.15
+     */
+    override suspend fun refresh(): Boolean {
+        try {
+            val (accessToken, refreshToken) = tokenDataSource.fetchToken()
+
+            if (accessToken != null && refreshToken != null) {
+                val response = authDataSource.refresh(
+                    request = ServiceToken(
+                        accessToken = accessToken,
+                        refreshToken = refreshToken
+                    )
+                )
+
+                tokenDataSource.createToken(
+                    accessToken = response.accessToken,
+                    refreshToken = response.refreshToken
+                )
+
+                return true
+            } else {
+                // @ham2174 TODO : 로그아웃 API 호출
+                return false
+            }
+        } catch (e: Exception) {
+            // @ham2174 TODO : 로그아웃 API 호출
+            return false
+        }
     }
 
-    override suspend fun refreshAccessToken(): String {
-        return ""
-    }
 }

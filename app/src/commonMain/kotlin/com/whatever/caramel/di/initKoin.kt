@@ -1,13 +1,14 @@
 package com.whatever.caramel.di
 
+import com.whatever.caramel.core.data.di.networkInterceptorModule
+import com.whatever.caramel.core.data.di.repositoryModule
 import com.whatever.caramel.core.database.di.databaseModule
 import com.whatever.caramel.core.database.di.platformDatabaseModule
-import com.whatever.caramel.core.datastore.di.localDataSourceModule
+import com.whatever.caramel.core.datastore.di.dataStoreModule
 import com.whatever.caramel.core.datastore.di.platformDataStoreModule
-import com.whatever.caramel.core.data.di.networkModule
-import com.whatever.caramel.core.data.di.repositoryModule
-import com.whatever.caramel.core.remote.di.networkClientModule
-import com.whatever.caramel.core.remote.di.remoteModule
+import com.whatever.caramel.core.remote.di.networkClientEngineModule
+import com.whatever.caramel.core.remote.di.networkModule
+import com.whatever.caramel.core.remote.di.remoteDataSourceModule
 import com.whatever.caramel.feature.calendar.di.calendarFeatureModule
 import com.whatever.caramel.feature.content.di.contentFeatureModule
 import com.whatever.caramel.feature.copule.invite.coupleInviteFeatureModule
@@ -28,27 +29,37 @@ fun initKoin(config: KoinAppDeclaration? = null) {
     startKoin {
         config?.invoke(this)
         modules(
-            databaseModule,
-            networkModule,
-            platformDatabaseModule,
-            platformDataStoreModule,
-            localDataSourceModule,
-            networkClientModule,
-            remoteModule,
+            /* ==== Data Layer ==== */
             repositoryModule,
+
+            /* Remote Module */
+            networkModule,
+            networkClientEngineModule,
+            networkInterceptorModule,
+            remoteDataSourceModule,
+
+            /* DataBase Module */
+            platformDatabaseModule,
+            databaseModule,
+
+            /* DataStore Module */
+            platformDataStoreModule,
+            dataStoreModule,
+
+            /* ==== Presentation Layer ==== */
             calendarFeatureModule,
             contentFeatureModule,
             coupleConnectFeatureModule,
             coupleInviteFeatureModule,
             homeFeatureModule,
             loginFeatureModule,
+            socialModule,
             memoFeatureModule,
             onboardingFeatureModule,
             profileCreateFeatureModule,
             profileEditFeatureModule,
             settingFeatureModule,
             splashFeatureModule,
-            socialModule
         )
     }
 }

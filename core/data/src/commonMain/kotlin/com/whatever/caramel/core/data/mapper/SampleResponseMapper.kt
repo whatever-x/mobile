@@ -3,8 +3,8 @@ package com.whatever.caramel.core.data.mapper
 import com.whatever.caramel.core.database.entity.SampleDetailEntity
 import com.whatever.caramel.core.database.entity.SampleEntity
 import com.whatever.caramel.core.database.entity.SampleEntityWithDetail
-import com.whatever.caramel.core.remote.dto.response.SampleDetailDto
-import com.whatever.caramel.core.remote.dto.response.SampleGetMethodResponseDto
+import com.whatever.caramel.core.remote.dto.sample.response.SampleDetailDto
+import com.whatever.caramel.core.remote.dto.sample.response.SampleGetMethodResponseDto
 import com.whatever.caramel.core.domain.model.SampleDetail
 import com.whatever.caramel.core.domain.model.SampleModel
 

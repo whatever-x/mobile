@@ -18,7 +18,10 @@ kotlin {
             implementation(projects.core.database)
             implementation(projects.core.datastore)
             implementation(projects.core.remote)
+
             implementation(libs.koin.core)
+            implementation(libs.napier)
+
             implementation(libs.bundles.ktor)
         }
         nativeMain.dependencies {
