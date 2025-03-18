@@ -31,7 +31,7 @@ import caramel.feature.calendar.generated.resources.year
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.model.calendar.CalendarModel
 import com.whatever.caramel.feature.calendar.mvi.CalendarDatePickerState
-import com.whatver.caramel.core.ui.clickableWithoutRipple
+import com.whatever.caramel.core.designsystem.util.clickableWithoutRipple
 import com.whatver.caramel.core.ui.component.Picker
 import org.jetbrains.compose.resources.painterResource
 

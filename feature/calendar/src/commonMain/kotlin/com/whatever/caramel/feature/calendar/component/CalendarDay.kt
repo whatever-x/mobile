@@ -1,7 +1,6 @@
 package com.whatever.caramel.feature.calendar.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +17,7 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.model.calendar.CalendarTodoModel
 import com.whatever.caramel.core.domain.model.calendar.CalendarTodoType
 import com.whatever.caramel.feature.calendar.mvi.CalendarDayState
-import com.whatver.caramel.core.ui.clickableWithoutRipple
+import com.whatever.caramel.core.designsystem.util.clickableWithoutRipple
 
 @Composable
 fun CalendarDay(
