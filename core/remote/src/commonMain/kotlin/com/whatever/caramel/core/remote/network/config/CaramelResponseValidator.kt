@@ -34,12 +34,6 @@ internal fun HttpClientConfig<*>.caramelResponseValidator() {
                     baseResponse.error.debugMessage,
                     baseResponse.error.message
                 )
-            } else {
-                throw CaramelNetworkException(
-                    "NETWORK_UNKNOWN",
-                    "Unknown network error",
-                    exception.message ?: "Unknown network error"
-                )
             }
         }
     }
