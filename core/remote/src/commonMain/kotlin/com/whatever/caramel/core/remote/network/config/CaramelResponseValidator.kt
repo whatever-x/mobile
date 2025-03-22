@@ -11,30 +11,30 @@ import io.ktor.client.plugins.ResponseException
 internal fun HttpClientConfig<*>.caramelResponseValidator() {
     install(HttpCallValidator) {
         handleResponseExceptionWithRequest { exception, _ ->
-            val clientException = exception as ResponseException
-            val exceptionResponse = clientException.response
-            val baseResponse =
-                try {
-                    exceptionResponse.body<BaseResponse<Unit>>()
-                } catch (e: Exception) {
-                    BaseResponse<Unit>(
-                        success = false,
-                        data = null,
-                        error = ErrorResponse(
-                            code = clientException.response.status.value.toString(),
-                            message = "예상치 못한 에러 발생",
-                            debugMessage =
-                                "Error Code : ${clientException.response.status}\n"
-                                        + "Error Message : ${clientException.message}",
+            if (exception is ResponseException) {
+                val exceptionResponse = exception.response
+                val baseResponse =
+                    try {
+                        exceptionResponse.body<BaseResponse<Unit>>()
+                    } catch (e: Exception) {
+                        BaseResponse<Unit>(
+                            success = false,
+                            data = null,
+                            error = ErrorResponse(
+                                code = exception.response.status.value.toString(),
+                                message = "예상치 못한 에러 발생",
+                                debugMessage =
+                                    "Error Code : ${exception.response.status}\n"
+                                            + "Error Message : ${exception.message}",
+                            )
                         )
-                    )
-                }
-
-            throw CaramelNetworkException(
-                baseResponse.error?.code!!,
-                baseResponse.error.debugMessage,
-                baseResponse.error.message
-            )
+                    }
+                throw CaramelNetworkException(
+                    baseResponse.error?.code!!,
+                    baseResponse.error.debugMessage,
+                    baseResponse.error.message
+                )
+            }
         }
     }
 }
