@@ -11,7 +11,7 @@ import org.koin.dsl.module
 val useCaseModule = module {
     // Auth
     factory { SignInWithSocialPlatformUseCase(get(), get()) }
-    factory { RefreshUserSessionUseCase(get()) }
+    factory { RefreshUserSessionUseCase(get(), get()) }
 
     // User
     factory { GetOnboardingCompletionUseCase(get()) }
