@@ -2,7 +2,7 @@ package com.whatever.caramel.core.data.mapper
 
 import com.whatever.caramel.core.domain.entity.auth.SocialLoginType
 import com.whatever.caramel.core.domain.entity.user.UserBasic
-import com.whatever.caramel.core.domain.model.aggregate.UserAuth
+import com.whatever.caramel.core.domain.model.aggregate.UserAuthAggregation
 import com.whatever.caramel.core.domain.model.auth.AuthToken
 import com.whatever.caramel.core.domain.usecase.auth.SocialLoginInputModel
 import com.whatever.caramel.core.remote.dto.auth.LoginPlatform
@@ -23,8 +23,8 @@ fun SocialLoginInputModel.toRemote() : SignInRequest {
     )
 }
 
-fun SignInResponse.toDomain() : UserAuth {
-    return UserAuth(
+fun SignInResponse.toDomain() : UserAuthAggregation {
+    return UserAuthAggregation(
         userBasic = UserBasic(
             id = 0L,
             userStatus = this.userStatus.toDomain(),

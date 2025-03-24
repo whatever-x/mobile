@@ -6,7 +6,7 @@ import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datastore.datasource.TokenDataSource
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
-import com.whatever.caramel.core.domain.model.aggregate.UserAuth
+import com.whatever.caramel.core.domain.model.aggregate.UserAuthAggregation
 import com.whatever.caramel.core.domain.model.auth.AuthToken
 import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.usecase.auth.SocialLoginInputModel
@@ -18,7 +18,7 @@ internal class AuthRepositoryImpl(
     private val tokenDataSource: TokenDataSource
 ) : AuthRepository {
 
-    override suspend fun loginWithSocialPlatform(inputModel: SocialLoginInputModel): UserAuth {
+    override suspend fun loginWithSocialPlatform(inputModel: SocialLoginInputModel): UserAuthAggregation {
         return safeCall {
             val request = inputModel.toRemote()
             val response = remoteAuthDataSource.signIn(request = request)
