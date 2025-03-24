@@ -2,9 +2,11 @@ package com.whatever.caramel.feature.profile.create
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.viewmodel.BaseViewModel
+import com.whatever.caramel.feature.profile.create.mvi.Gender
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateSideEffect
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateState
+import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateStep
 
 class ProfileCreateViewModel(
     savedStateHandle: SavedStateHandle
@@ -16,9 +18,71 @@ class ProfileCreateViewModel(
 
     override suspend fun handleIntent(intent: ProfileCreateIntent) {
         when (intent) {
-            is ProfileCreateIntent.ClickCreateButton -> postSideEffect(ProfileCreateSideEffect.NavigateToConnectCouple)
-            is ProfileCreateIntent.ClickBackButton -> postSideEffect(ProfileCreateSideEffect.NavigateToLogin)
+            is ProfileCreateIntent.ClickBackButton -> backStep()
+            is ProfileCreateIntent.ClickNextButton -> nextStep()
+            is ProfileCreateIntent.ClickSystemNavigationBackButton -> backStep()
+            is ProfileCreateIntent.ChangeNickname -> inputNickname(nickname = intent.nickname)
+            is ProfileCreateIntent.ClickGenderButton -> selectGender(gender = intent.gender)
+            is ProfileCreateIntent.TogglePersonalInfoTerm -> togglePersonalTermCheckBox()
+            is ProfileCreateIntent.ToggleServiceTerm -> toggleServiceTermCheckBox()
+            is ProfileCreateIntent.ClickPersonalInfoTermLabel -> postSideEffect(ProfileCreateSideEffect.NavigateToPersonalInfoTermNotion)
+            is ProfileCreateIntent.ClickServiceTermLabel -> postSideEffect(ProfileCreateSideEffect.NavigateToServiceTermNotion)
         }
     }
 
+    private fun backStep() {
+        if (currentState.currentStep != ProfileCreateStep.NICKNAME) {
+            reduce {
+                copy(
+                    currentStep = ProfileCreateStep.entries[currentIndex - 1]
+                )
+            }
+        } else {
+            postSideEffect(ProfileCreateSideEffect.NavigateToLogin)
+        }
+    }
+
+    private fun nextStep() {
+        if (currentState.currentStep != ProfileCreateStep.NEED_TERMS) {
+            reduce {
+                copy(
+                    currentStep = ProfileCreateStep.entries[currentIndex + 1]
+                )
+            }
+        } else {
+            postSideEffect(ProfileCreateSideEffect.NavigateToConnectCouple)
+        }
+    }
+
+    private fun inputNickname(nickname: String) { // @ham2174 TODO : 도메인 정의시 닉네임 검증 로직 구현
+        reduce {
+            copy(
+                nickname = nickname
+            )
+        }
+    }
+
+    private fun selectGender(gender: Gender) {
+        reduce {
+            copy(
+                gender = gender
+            )
+        }
+    }
+
+    private fun toggleServiceTermCheckBox() {
+        reduce {
+            copy(
+                isServiceTermChecked = !currentState.isServiceTermChecked
+            )
+        }
+    }
+    
+    private fun togglePersonalTermCheckBox() {
+        reduce {
+            copy(
+                isPersonalInfoTermChecked = !currentState.isPersonalInfoTermChecked
+            )
+        }
+    }
 }
