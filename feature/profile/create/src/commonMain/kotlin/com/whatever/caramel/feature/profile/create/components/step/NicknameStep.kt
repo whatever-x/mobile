@@ -45,28 +45,33 @@ internal fun NicknameStep(
         )
 
         BasicTextField(
-            modifier = Modifier.fillMaxSize(),
             value = nickname,
             onValueChange = onNicknameChange,
             cursorBrush = SolidColor(CaramelTheme.color.fill.brand),
             textStyle = CaramelTheme.typography.heading2.copy(
                 color = CaramelTheme.color.text.primary,
-                textAlign = TextAlign.Center
+                textAlign = if (nickname.isNotEmpty()) {
+                    TextAlign.Center
+                } else {
+                    TextAlign.Start
+                }
             ),
             singleLine = true,
         ) { innerTextField ->
             Box(
-                modifier = Modifier,
+                modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                innerTextField.invoke()
+                Box {
+                    innerTextField.invoke()
 
-                if (nickname.isEmpty()) {
-                    Text(
-                        text = "연인간의 애칭도 좋아요",
-                        style = CaramelTheme.typography.heading2,
-                        color = CaramelTheme.color.text.placeholder
-                    )
+                    if (nickname.isEmpty()) {
+                        Text(
+                            text = "연인간의 애칭도 좋아요",
+                            style = CaramelTheme.typography.heading2,
+                            color = CaramelTheme.color.text.placeholder
+                        )
+                    }
                 }
             }
         }
