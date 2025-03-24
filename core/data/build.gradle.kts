@@ -23,6 +23,7 @@ kotlin {
             implementation(libs.napier)
 
             implementation(libs.bundles.ktor)
+            implementation(libs.kotlinx.date.time)
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
