@@ -6,6 +6,7 @@ import com.whatever.caramel.core.database.di.databaseModule
 import com.whatever.caramel.core.database.di.platformDatabaseModule
 import com.whatever.caramel.core.datastore.di.dataStoreModule
 import com.whatever.caramel.core.datastore.di.platformDataStoreModule
+import com.whatever.caramel.core.domain.di.useCaseModule
 import com.whatever.caramel.core.remote.di.networkClientEngineModule
 import com.whatever.caramel.core.remote.di.networkModule
 import com.whatever.caramel.core.remote.di.remoteDataSourceModule
@@ -45,6 +46,9 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             /* DataStore Module */
             platformDataStoreModule,
             dataStoreModule,
+
+            /* ==== Domain Layer ==== */
+            useCaseModule,
 
             /* ==== Presentation Layer ==== */
             calendarFeatureModule,
