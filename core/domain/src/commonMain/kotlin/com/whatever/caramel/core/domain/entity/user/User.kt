@@ -1,5 +1,8 @@
 package com.whatever.caramel.core.domain.entity.user
 
+import kotlinx.serialization.Serializable
+import kotlin.jvm.JvmInline
+
 data class User(
     val userBasic: UserBasic,
     val userProfile: UserProfile? = null,
@@ -16,7 +19,7 @@ data class UserBasic(
 }
 
 data class UserProfile(
-    val nickName : String,
+    val nickName : Nickname,
     val gender : Gender,
     val birthday : String
 )
