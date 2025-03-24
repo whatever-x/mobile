@@ -105,6 +105,8 @@ ksp-gradleplugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.g
 
 kotlinx-date-time = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-date-time" }
 
+compose-ui-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose-plugin"}
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
