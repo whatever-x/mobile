@@ -20,6 +20,8 @@ internal fun ProfileCreateRoute(
             when (sideEffect) {
                 is ProfileCreateSideEffect.NavigateToLogin -> navigateToLogin()
                 is ProfileCreateSideEffect.NavigateToConnectCouple -> navigateToConnectCouple()
+                is ProfileCreateSideEffect.NavigateToPersonalInfoTermNotion -> {} // @ham2174 TODO : 노션 링크 이동
+                is ProfileCreateSideEffect.NavigateToServiceTermNotion -> {} // @ham2174 TODO : 노션 링크 이동
             }
         }
     }
