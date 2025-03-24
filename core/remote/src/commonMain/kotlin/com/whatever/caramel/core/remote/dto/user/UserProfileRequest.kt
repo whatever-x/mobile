@@ -1,0 +1,12 @@
+package com.whatever.caramel.core.remote.dto.user
+
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class UserProfileRequest(
+    @SerialName("nickname") val nickname : String,
+    @SerialName("birthday") val birthday : String,
+    @SerialName("agreementServiceTerms") val agreementServiceTerms : Boolean,
+    @SerialName("agreementPrivatePolicy") val agreementPrivatePolicy : Boolean
+)
