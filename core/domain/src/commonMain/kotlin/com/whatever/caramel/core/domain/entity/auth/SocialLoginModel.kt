@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain.auth.model
+package com.whatever.caramel.core.domain.entity.auth
 
 sealed interface SocialLoginModel {
 
