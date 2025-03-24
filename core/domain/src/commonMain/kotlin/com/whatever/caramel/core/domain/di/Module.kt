@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.domain.di
 
-import com.whatever.caramel.core.domain.usecase.auth.RefreshAuthTokenUseCase
+import com.whatever.caramel.core.domain.usecase.auth.RefreshUserSessionUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.domain.usecase.user.CheckUserStateUseCase
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
@@ -11,7 +11,7 @@ import org.koin.dsl.module
 val useCaseModule = module {
     // Auth
     factory { SignInWithSocialPlatformUseCase(get(), get()) }
-    factory { RefreshAuthTokenUseCase(get()) }
+    factory { RefreshUserSessionUseCase(get()) }
 
     // User
     factory { GetOnboardingCompletionUseCase(get()) }

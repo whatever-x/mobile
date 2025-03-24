@@ -4,8 +4,6 @@ import com.whatever.caramel.core.data.mapper.toDomain
 import com.whatever.caramel.core.data.mapper.toRemote
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datastore.datasource.TokenDataSource
-import com.whatever.caramel.core.domain.exception.CaramelException
-import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.model.aggregate.UserAuthAggregation
 import com.whatever.caramel.core.domain.model.auth.AuthToken
 import com.whatever.caramel.core.domain.repository.AuthRepository
@@ -26,19 +24,11 @@ internal class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun refreshAuthToken() : AuthToken{
+    override suspend fun refreshAuthToken(oldToken: AuthToken) {
         return safeCall {
-            val savedServiceToken = tokenDataSource.fetchToken()
-            if (savedServiceToken.first == null || savedServiceToken.second == null) {
-                throw CaramelException(
-                    message = "Token Not Found",
-                    debugMessage = null,
-                    errorUiType = ErrorUiType.EMPTY_UI
-                )
-            }
             val request = ServiceToken(
-                accessToken = savedServiceToken.first!!,
-                refreshToken = savedServiceToken.second!!
+                accessToken = oldToken.accessToken,
+                refreshToken = oldToken.refreshToken
             )
             remoteAuthDataSource.refresh(request).toDomain()
         }
@@ -47,6 +37,12 @@ internal class AuthRepositoryImpl(
     override suspend fun saveTokens(accessToken: String, refreshToken: String) {
         safeCall {
             tokenDataSource.createToken(accessToken, refreshToken)
+        }
+    }
+
+    override suspend fun getAuthToken(): AuthToken {
+        return safeCall {
+            tokenDataSource.fetchToken().toDomain()
         }
     }
 }
