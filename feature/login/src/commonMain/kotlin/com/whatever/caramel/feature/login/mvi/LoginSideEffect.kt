@@ -8,4 +8,8 @@ sealed interface LoginSideEffect : UiSideEffect {
 
     data object NavigateToConnectCouple : LoginSideEffect
 
+    data object NavigateToMain : LoginSideEffect
+
+    data class ShowErrorSnackBar(val message: String) : LoginSideEffect
+
 }

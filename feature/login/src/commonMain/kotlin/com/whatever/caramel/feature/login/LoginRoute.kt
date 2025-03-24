@@ -1,12 +1,14 @@
 package com.whatever.caramel.feature.login
 
+import UiText
+import androidx.compose.material3.Snackbar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.whatever.caramel.core.domain.auth.model.SocialPlatform
+import com.whatever.caramel.core.domain.entity.auth.SocialPlatform
 import com.whatever.caramel.feature.login.mvi.LoginIntent
 import com.whatever.caramel.feature.login.mvi.LoginSideEffect
 import com.whatever.caramel.feature.login.social.SocialAuthenticator
@@ -15,7 +17,9 @@ import com.whatever.caramel.feature.login.social.apple.AppleUser
 import com.whatever.caramel.feature.login.social.kakao.KakaoAuthProvider
 import com.whatever.caramel.feature.login.social.kakao.KakaoUser
 import com.whatever.caramel.feature.login.util.Platform
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -26,6 +30,7 @@ internal fun LoginRoute(
     appleAuthenticator: SocialAuthenticator<AppleUser>? = if (Platform.isIos) koinInject<AppleAuthProvider>().get() else null,
     navigateToCreateProfile: () -> Unit,
     navigateToConnectCouple: () -> Unit,
+    navigateToMain: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
@@ -52,6 +57,8 @@ internal fun LoginRoute(
             when (sideEffect) {
                 is LoginSideEffect.NavigateToCreateProfile -> navigateToCreateProfile()
                 is LoginSideEffect.NavigateToConnectCouple -> navigateToConnectCouple()
+                LoginSideEffect.NavigateToMain -> navigateToMain()
+                is LoginSideEffect.ShowErrorSnackBar -> Napier.e { "Error: ${sideEffect.message}" }
             }
         }
     }

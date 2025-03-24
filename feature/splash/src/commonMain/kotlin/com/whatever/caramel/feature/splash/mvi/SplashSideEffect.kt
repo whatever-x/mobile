@@ -10,4 +10,8 @@ sealed interface SplashSideEffect : UiSideEffect {
 
     data object NavigateToMain : SplashSideEffect
 
+    data object NavigateToCreateProfile : SplashSideEffect
+
+    data object NavigateToInviteCouple : SplashSideEffect
+
 }

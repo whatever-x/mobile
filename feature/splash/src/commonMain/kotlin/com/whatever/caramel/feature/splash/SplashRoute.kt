@@ -13,6 +13,8 @@ internal fun SplashRoute(
     navigateToOnBoarding: () -> Unit,
     navigateToLogin: () -> Unit,
     navigateToMain: () -> Unit,
+    navigateToCreateProfile: () -> Unit,
+    navigateToConnectCouple: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -22,6 +24,8 @@ internal fun SplashRoute(
                 is SplashSideEffect.NavigateToOnBoarding -> navigateToOnBoarding()
                 is SplashSideEffect.NavigateToLogin -> navigateToLogin()
                 is SplashSideEffect.NavigateToMain -> navigateToMain()
+                SplashSideEffect.NavigateToCreateProfile -> navigateToCreateProfile()
+                SplashSideEffect.NavigateToInviteCouple -> navigateToConnectCouple()
             }
         }
     }

@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.whatever.caramel.core.domain.auth.model.SocialPlatform
+import com.whatever.caramel.core.domain.entity.auth.SocialPlatform
 import com.whatever.caramel.feature.login.mvi.LoginIntent
 import com.whatever.caramel.feature.login.mvi.LoginState
 import com.whatever.caramel.feature.login.util.Platform

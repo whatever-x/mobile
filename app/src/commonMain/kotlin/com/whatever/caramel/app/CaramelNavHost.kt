@@ -47,14 +47,25 @@ internal fun CaramelNavHost(
                             .setPopUpTo<SplashRoute>(inclusive = true)
                             .build()
                     )
-                }
+                },
+                navigateToConnectCouple = { navigateToConnectCouple(
+                    navOptions = NavOptions.Builder()
+                        .setPopUpTo<SplashRoute>(inclusive = true)
+                        .build()
+                ) },
+                navigateToCreateProfile = { navigateToCreateProfile(
+                    navOptions = NavOptions.Builder()
+                        .setPopUpTo<SplashRoute>(inclusive = true)
+                        .build()
+                ) }
             )
             onboardingScreen(
                 navigateToLogin = { navigateToLogin() }
             )
             loginScreen(
                 navigateToConnectCouple = { navigateToCoupleInvite() },
-                navigateToCreateProfile = { navigateToCreateProfile() }
+                navigateToCreateProfile = { navigateToCreateProfile() },
+                navigateToMain = { navigateToMain() }
             )
             createProfileScreen(
                 navigateToLogin = { navigateToLogin() },
