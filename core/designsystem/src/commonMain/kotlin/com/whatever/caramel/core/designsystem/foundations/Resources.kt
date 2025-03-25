@@ -14,6 +14,7 @@ import caramel.core.designsystem.generated.resources.ic_male_90
 import caramel.core.designsystem.generated.resources.ic_send_25_24
 import caramel.core.designsystem.generated.resources.ic_uncheck_box_20
 import caramel.core.designsystem.generated.resources.ic_vertex_17_9
+import caramel.core.designsystem.generated.resources.img_mozzis
 import caramel.core.designsystem.generated.resources.img_terms
 import caramel.core.designsystem.generated.resources.profile
 
@@ -38,6 +39,7 @@ object Resources {
 
     object Image {
         val img_terms = Res.drawable.img_terms
+        val img_mozzis = Res.drawable.img_mozzis
     }
 
 }
