@@ -8,4 +8,6 @@ sealed interface CoupleInviteSideEffect : UiSideEffect {
 
     data object NavigateToLogin : CoupleInviteSideEffect
 
+    data class CopyToClipBoardWithShowSnackBar(val inviteCode: String) : CoupleInviteSideEffect
+
 }
