@@ -5,11 +5,14 @@ import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.copule.invite.mvi.CoupleInviteIntent
 import com.whatever.caramel.feature.copule.invite.mvi.CoupleInviteSideEffect
 import com.whatever.caramel.feature.copule.invite.mvi.CoupleInviteState
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class CoupleInviteViewModel(
     savedStateHandle: SavedStateHandle
 
 ) : BaseViewModel<CoupleInviteState, CoupleInviteSideEffect, CoupleInviteIntent>(savedStateHandle) {
+
+    private val inviteCode: MutableStateFlow<String> = MutableStateFlow("")
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): CoupleInviteState {
         return CoupleInviteState()
@@ -17,9 +20,22 @@ class CoupleInviteViewModel(
 
     override suspend fun handleIntent(intent: CoupleInviteIntent) {
         when (intent) {
-            is CoupleInviteIntent.ClickConnectCoupleButton -> postSideEffect(CoupleInviteSideEffect.NavigateToConnectCouple)
-            is CoupleInviteIntent.ClickCloseButton -> postSideEffect(CoupleInviteSideEffect.NavigateToLogin)
+            is CoupleInviteIntent.ClickConnectCoupleButton -> connectCouple()
+            is CoupleInviteIntent.ClickCloseButton -> close()
+            is CoupleInviteIntent.ClickCopyInviteCodeButton -> copyInviteCode()
+            is CoupleInviteIntent.ClickInviteButton -> TODO()
         }
     }
 
+    private fun connectCouple() {
+        postSideEffect(CoupleInviteSideEffect.NavigateToConnectCouple)
+    }
+
+    private fun close() {
+        postSideEffect(CoupleInviteSideEffect.NavigateToLogin)
+    }
+
+    private fun copyInviteCode() {
+
+    }
 }
