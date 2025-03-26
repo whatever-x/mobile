@@ -4,7 +4,7 @@ import com.whatever.caramel.core.domain.entity.user.Nickname
 import com.whatever.caramel.core.domain.repository.UserRepository
 
 data class UserProfileInputModel(
-    val nickname : String,
+    val nickname : Nickname,
     val birthDay : String,
     val agreementServiceTerms : Boolean,
     val agreementPrivacyPolicy: Boolean
@@ -14,7 +14,6 @@ class CreateUserProfileUseCase (
     private val userRepository: UserRepository
 ){
     suspend operator fun invoke(userProfileInputModel: UserProfileInputModel) {
-        Nickname.check(userProfileInputModel.nickname)
         userRepository.createUserProfile(userProfileInputModel = userProfileInputModel)
     }
 }

@@ -40,7 +40,7 @@ class UserRepositoryImpl(
     override suspend fun createUserProfile(userProfileInputModel: UserProfileInputModel) {
         safeCall {
             val request = UserProfileRequest(
-                nickname = userProfileInputModel.nickname,
+                nickname = userProfileInputModel.nickname.toString(),
                 birthday = userProfileInputModel.birthDay,
                 agreementServiceTerms = userProfileInputModel.agreementServiceTerms,
                 agreementPrivatePolicy = userProfileInputModel.agreementPrivacyPolicy
