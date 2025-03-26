@@ -3,9 +3,9 @@ package com.whatever.caramel.feature.copule.invite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.whatever.caramel.feature.copule.invite.clipboard.createPlatformClipEntry
 import com.whatever.caramel.feature.copule.invite.mvi.CoupleInviteSideEffect
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -39,10 +39,3 @@ internal fun CoupleInviteRoute(
         onIntent = { intent -> viewModel.intent(intent) }
     )
 }
-
-/**
- * 플랫폼별 Clipboard에 사용되는 ClipEntry 생성 로직
- * @author GunHyung Ham
- * @since 2025.03.26
- */
-expect fun createPlatformClipEntry(inviteCode: String): ClipEntry
