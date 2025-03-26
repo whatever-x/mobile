@@ -1,11 +1,9 @@
 package com.whatever.caramel.feature.login
 
 import androidx.lifecycle.SavedStateHandle
-import caramel.feature.login.generated.resources.Res
-import caramel.feature.login.generated.resources.error_social_login
-import caramel.feature.login.generated.resources.error_user_canceled
 import com.whatever.caramel.core.domain.entity.auth.SocialLoginType
 import com.whatever.caramel.core.domain.entity.user.UserStatus
+import com.whatever.caramel.core.domain.exception.AppExceptionCode
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SocialLoginInputModel
@@ -16,7 +14,6 @@ import com.whatever.caramel.feature.login.mvi.LoginState
 import com.whatever.caramel.feature.login.social.SocialAuthResult
 import com.whatever.caramel.feature.login.social.apple.AppleUser
 import com.whatever.caramel.feature.login.social.kakao.KakaoUser
-import org.jetbrains.compose.resources.getString
 
 class LoginViewModel(
     savedStateHandle: SavedStateHandle,
@@ -56,11 +53,11 @@ class LoginViewModel(
             }
 
             is SocialAuthResult.Error -> {
-                postSideEffect(LoginSideEffect.ShowErrorSnackBar(getString(Res.string.error_social_login)))
+                postSideEffect(LoginSideEffect.ShowErrorSnackBar(AppExceptionCode.LOGIN_FAILED))
             }
 
             is SocialAuthResult.UserCancelled -> {
-                postSideEffect(LoginSideEffect.ShowErrorSnackBar(getString(Res.string.error_user_canceled)))
+                postSideEffect(LoginSideEffect.ShowErrorSnackBar(AppExceptionCode.LOGIN_CANCELLED))
             }
         }
     }
@@ -77,11 +74,11 @@ class LoginViewModel(
             }
 
             is SocialAuthResult.Error -> {
-                postSideEffect(LoginSideEffect.ShowErrorSnackBar(getString(Res.string.error_social_login)))
+                postSideEffect(LoginSideEffect.ShowErrorSnackBar(AppExceptionCode.LOGIN_FAILED))
             }
 
             is SocialAuthResult.UserCancelled -> {
-                postSideEffect(LoginSideEffect.ShowErrorSnackBar(getString(Res.string.error_user_canceled)))
+                postSideEffect(LoginSideEffect.ShowErrorSnackBar(AppExceptionCode.LOGIN_CANCELLED))
             }
         }
     }

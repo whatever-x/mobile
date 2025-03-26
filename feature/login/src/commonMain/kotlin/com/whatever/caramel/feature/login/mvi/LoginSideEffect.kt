@@ -10,6 +10,6 @@ sealed interface LoginSideEffect : UiSideEffect {
 
     data object NavigateToMain : LoginSideEffect
 
-    data class ShowErrorSnackBar(val message: String) : LoginSideEffect
+    data class ShowErrorSnackBar(val code: String) : LoginSideEffect
 
 }
