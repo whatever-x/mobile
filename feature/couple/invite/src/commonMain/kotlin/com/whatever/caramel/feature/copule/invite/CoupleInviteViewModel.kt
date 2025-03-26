@@ -20,7 +20,7 @@ class CoupleInviteViewModel(
             is CoupleInviteIntent.ClickConnectCoupleButton -> connectCouple()
             is CoupleInviteIntent.ClickCloseButton -> close()
             is CoupleInviteIntent.ClickCopyInviteCodeButton -> copyInviteCode()
-            is CoupleInviteIntent.ClickInviteButton -> TODO()
+            is CoupleInviteIntent.ClickInviteButton -> sendInvite()
         }
     }
 
@@ -38,5 +38,8 @@ class CoupleInviteViewModel(
         postSideEffect(CoupleInviteSideEffect.CopyToClipBoardWithShowSnackBar(inviteCode = inviteCode))
     }
 
+    private fun sendInvite() {
+        postSideEffect(CoupleInviteSideEffect.ShareOfInvite)
     }
+
 }

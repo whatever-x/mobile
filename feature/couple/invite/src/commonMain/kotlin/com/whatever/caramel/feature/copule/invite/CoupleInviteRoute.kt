@@ -7,11 +7,14 @@ import androidx.compose.ui.platform.LocalClipboard
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.whatever.caramel.feature.copule.invite.clipboard.createPlatformClipEntry
 import com.whatever.caramel.feature.copule.invite.mvi.CoupleInviteSideEffect
+import com.whatever.caramel.feature.copule.invite.share.ShareService
+import org.koin.compose.getKoin
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun CoupleInviteRoute(
     viewModel: CoupleInviteViewModel = koinViewModel(),
+    shareService: ShareService = getKoin().get(),
     navigateToConnectCouple: () -> Unit,
     navigateToLogin: () -> Unit,
 ) {
@@ -28,6 +31,12 @@ internal fun CoupleInviteRoute(
                         clipEntry = createPlatformClipEntry(
                             inviteCode = sideEffect.inviteCode
                         )
+                    )
+                }
+                is CoupleInviteSideEffect.ShareOfInvite -> {
+                    shareService.shareContents(
+                        title = "타이틀 입니다.",
+                        url = "https://어쩌구저쩌구.com"
                     )
                 }
             }
