@@ -1,5 +1,7 @@
 package com.whatever.caramel.core.domain.entity.user
 
+import com.whatever.caramel.core.domain.exception.AppExceptionCode
+import com.whatever.caramel.core.domain.exception.CaramelException
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
@@ -15,7 +17,11 @@ data class UserBasic(
     val userStatus: UserStatus = UserStatus.NONE
 ) {
     val hasId get() = id != null
-    val requireId get() = id ?: throw NullPointerException("user id is null")
+    val requireId get() = id ?: throw CaramelException(
+        code = AppExceptionCode.NULL_VALUE,
+        message = "사용자 ID가 존재하지 않습니다",
+        debugMessage = null
+    )
 }
 
 data class UserProfile(
