@@ -86,10 +86,10 @@ class LoginViewModel(
     private suspend fun login(
         socialLoginInputModel: SocialLoginInputModel
     ) {
-        val userStatus = signInWithSocialPlatformUseCase(
+        val signInUserStatus = signInWithSocialPlatformUseCase(
             inputModel = socialLoginInputModel
         )
-        when (userStatus) {
+        when (signInUserStatus) {
             UserStatus.NONE -> {}
             UserStatus.NEW -> postSideEffect(LoginSideEffect.NavigateToCreateProfile)
             UserStatus.SINGLE -> postSideEffect(LoginSideEffect.NavigateToConnectCouple)
