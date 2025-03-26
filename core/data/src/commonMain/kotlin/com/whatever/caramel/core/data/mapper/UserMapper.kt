@@ -7,7 +7,7 @@ fun String.toUserStatus() : UserStatus {
     return UserStatus.entries.find { it.name == this } ?: UserStatus.NONE
 }
 
-fun UserStatusDto.toDomain() = when(this) {
+fun UserStatusDto.toUserStatus() = when(this) {
     UserStatusDto.NEW -> UserStatus.NEW
     UserStatusDto.SINGLE -> UserStatus.SINGLE
     UserStatusDto.COUPLED -> UserStatus.COUPLED

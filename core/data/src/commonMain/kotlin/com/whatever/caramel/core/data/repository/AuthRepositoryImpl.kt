@@ -1,7 +1,8 @@
 package com.whatever.caramel.core.data.repository
 
-import com.whatever.caramel.core.data.mapper.toDomain
-import com.whatever.caramel.core.data.mapper.toRemote
+import com.whatever.caramel.core.data.mapper.toAuthToken
+import com.whatever.caramel.core.data.mapper.toLoginPlatform
+import com.whatever.caramel.core.data.mapper.toUserAuthAggregation
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datastore.datasource.TokenDataSource
 import com.whatever.caramel.core.domain.model.aggregate.UserAuthAggregation
@@ -10,6 +11,7 @@ import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.usecase.auth.SocialLoginInputModel
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSource
 import com.whatever.caramel.core.remote.dto.auth.ServiceToken
+import com.whatever.caramel.core.remote.dto.auth.SignInRequest
 
 internal class AuthRepositoryImpl(
     private val remoteAuthDataSource: RemoteAuthDataSource,
@@ -18,9 +20,12 @@ internal class AuthRepositoryImpl(
 
     override suspend fun loginWithSocialPlatform(inputModel: SocialLoginInputModel): UserAuthAggregation {
         return safeCall {
-            val request = inputModel.toRemote()
+            val request = SignInRequest(
+                idToken = inputModel.idToken,
+                loginPlatform = inputModel.socialLoginType.toLoginPlatform()
+            )
             val response = remoteAuthDataSource.signIn(request = request)
-            response.toDomain()
+            response.toUserAuthAggregation()
         }
     }
 
@@ -30,7 +35,7 @@ internal class AuthRepositoryImpl(
                 accessToken = oldToken.accessToken,
                 refreshToken = oldToken.refreshToken
             )
-            remoteAuthDataSource.refresh(request).toDomain()
+            remoteAuthDataSource.refresh(request)
         }
     }
 
@@ -42,7 +47,7 @@ internal class AuthRepositoryImpl(
 
     override suspend fun getAuthToken(): AuthToken {
         return safeCall {
-            tokenDataSource.fetchToken().toDomain()
+            tokenDataSource.fetchToken().toAuthToken()
         }
     }
 }
