@@ -55,7 +55,7 @@ internal fun LoginRoute(
                 is LoginSideEffect.NavigateToCreateProfile -> navigateToCreateProfile()
                 is LoginSideEffect.NavigateToConnectCouple -> navigateToConnectCouple()
                 LoginSideEffect.NavigateToMain -> navigateToMain()
-                is LoginSideEffect.ShowErrorSnackBar -> Napier.e { "Error: ${sideEffect.message}" }
+                is LoginSideEffect.ShowErrorSnackBar -> Napier.e { "Error: ${sideEffect.code}" }
             }
         }
     }
