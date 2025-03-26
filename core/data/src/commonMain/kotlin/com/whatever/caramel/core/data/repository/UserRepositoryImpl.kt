@@ -13,18 +13,6 @@ class UserRepositoryImpl(
     private val userRemoteDataSource : RemoteUserDataSource,
     private val userDataSource: UserDataSource
 ) : UserRepository {
-    override suspend fun getOnboardingCompleted(): Boolean {
-        return safeCall {
-            userDataSource.getOnBoardingCompletion()
-        }
-    }
-
-    override suspend fun setOnboardingCompleted(completed: Boolean) {
-        safeCall {
-            userDataSource.setOnBoardingCompletion(completed)
-        }
-    }
-
     override suspend fun getUserStatus(): UserStatus {
         return safeCall {
             userDataSource.getUserStatus().toUserStatus()

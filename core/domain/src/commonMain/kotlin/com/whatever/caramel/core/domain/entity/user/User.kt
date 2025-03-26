@@ -2,8 +2,6 @@ package com.whatever.caramel.core.domain.entity.user
 
 import com.whatever.caramel.core.domain.exception.AppExceptionCode
 import com.whatever.caramel.core.domain.exception.CaramelException
-import kotlinx.serialization.Serializable
-import kotlin.jvm.JvmInline
 
 data class User(
     val userBasic: UserBasic,
