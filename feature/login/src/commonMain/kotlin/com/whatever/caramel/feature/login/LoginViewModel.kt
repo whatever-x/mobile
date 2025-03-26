@@ -5,10 +5,8 @@ import caramel.feature.login.generated.resources.Res
 import caramel.feature.login.generated.resources.error_social_login
 import caramel.feature.login.generated.resources.error_user_canceled
 import com.whatever.caramel.core.domain.entity.auth.SocialLoginType
-import com.whatever.caramel.core.domain.entity.auth.SocialPlatform
 import com.whatever.caramel.core.domain.entity.user.UserStatus
 import com.whatever.caramel.core.domain.exception.CaramelException
-import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SocialLoginInputModel
 import com.whatever.caramel.core.viewmodel.BaseViewModel
@@ -18,7 +16,6 @@ import com.whatever.caramel.feature.login.mvi.LoginState
 import com.whatever.caramel.feature.login.social.SocialAuthResult
 import com.whatever.caramel.feature.login.social.apple.AppleUser
 import com.whatever.caramel.feature.login.social.kakao.KakaoUser
-import io.github.aakira.napier.Napier
 import org.jetbrains.compose.resources.getString
 
 class LoginViewModel(
@@ -92,13 +89,9 @@ class LoginViewModel(
     private suspend fun login(
         socialLoginInputModel: SocialLoginInputModel
     ) {
-        val loginResponse = signInWithSocialPlatformUseCase(
+        val userStatus = signInWithSocialPlatformUseCase(
             inputModel = socialLoginInputModel
         )
-        handleUserStatus(loginResponse)
-    }
-
-    private fun handleUserStatus(userStatus: UserStatus) {
         when (userStatus) {
             UserStatus.NONE -> {}
             UserStatus.NEW -> postSideEffect(LoginSideEffect.NavigateToCreateProfile)
