@@ -49,7 +49,6 @@ kotlin {
             implementation(projects.feature.profile.create)
             implementation(projects.feature.splash)
             implementation(projects.feature.setting)
-            implementation(projects.feature.onboarding)
             implementation(projects.feature.login)
             implementation(projects.feature.calendar)
             implementation(projects.feature.content)

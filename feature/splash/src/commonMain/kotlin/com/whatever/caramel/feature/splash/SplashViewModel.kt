@@ -2,9 +2,7 @@ package com.whatever.caramel.feature.splash
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.entity.user.UserStatus
-import com.whatever.caramel.core.domain.usecase.auth.RefreshUserSessionUseCase
-import com.whatever.caramel.core.domain.usecase.user.CheckUserStateUseCase
-import com.whatever.caramel.core.domain.usecase.user.GetOnboardingCompletionUseCase
+import com.whatever.caramel.core.domain.usecase.user.RefreshUserSessionUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.splash.mvi.SplashIntent
 import com.whatever.caramel.feature.splash.mvi.SplashSideEffect
@@ -12,16 +10,14 @@ import com.whatever.caramel.feature.splash.mvi.SplashState
 import kotlinx.coroutines.delay
 
 class SplashViewModel(
-    private val getUserStateUseCase: CheckUserStateUseCase,
     private val refreshUserSessionUseCase: RefreshUserSessionUseCase,
-    private val getOnBoardingCompletionUseCase: GetOnboardingCompletionUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<SplashState, SplashSideEffect, SplashIntent>(savedStateHandle) {
 
     init {
         launch {
             delay(1000L)
-            checkUserState()
+            checkAppAuthToken()
         }
     }
 
@@ -36,30 +32,14 @@ class SplashViewModel(
 
     override suspend fun handleIntent(intent: SplashIntent) {}
 
-    private fun checkUserState() {
-        launch {
-            when (getUserStateUseCase()) {
-                UserStatus.NONE -> checkOnboardingCompletion()
-                UserStatus.NEW, UserStatus.SINGLE, UserStatus.COUPLED -> checkAppAuthToken()
-            }
-        }
-    }
-
     private suspend fun checkAppAuthToken() {
-        when(refreshUserSessionUseCase()){
-            // @RyuSw-cs 2025.03.24 NONE이 나올수는 없지만 아무것도 하지 않는 상태가 되면 안되므로 로그인으로 이동
+        val userStatus: UserStatus = refreshUserSessionUseCase()
+        when (userStatus) {
+            // @RyuSw-cs 2025.03.24 NONE인 경우 로그인을 하지 않은 초기 사용자
             UserStatus.NONE -> postSideEffect(SplashSideEffect.NavigateToLogin)
             UserStatus.NEW -> postSideEffect(SplashSideEffect.NavigateToCreateProfile)
             UserStatus.SINGLE -> postSideEffect(SplashSideEffect.NavigateToInviteCouple)
             UserStatus.COUPLED -> postSideEffect(SplashSideEffect.NavigateToMain)
-        }
-    }
-
-    private suspend fun checkOnboardingCompletion() {
-        if (getOnBoardingCompletionUseCase()) {
-            postSideEffect(SplashSideEffect.NavigateToLogin)
-        } else {
-            postSideEffect(SplashSideEffect.NavigateToOnBoarding)
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.domain.di
 
-import com.whatever.caramel.core.domain.usecase.auth.RefreshUserSessionUseCase
+import com.whatever.caramel.core.domain.usecase.user.RefreshUserSessionUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.domain.usecase.user.CheckUserStateUseCase
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase

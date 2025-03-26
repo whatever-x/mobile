@@ -9,7 +9,6 @@ import kotlinx.serialization.Serializable
 data object SplashRoute
 
 fun NavGraphBuilder.splashScreen(
-    navigateToOnBoarding: () -> Unit,
     navigateToLogin: () -> Unit,
     navigateToMain: () -> Unit,
     navigateToCreateProfile: () -> Unit,
@@ -17,7 +16,6 @@ fun NavGraphBuilder.splashScreen(
 ) {
     composable<SplashRoute>() {
         SplashRoute(
-            navigateToOnBoarding = navigateToOnBoarding,
             navigateToLogin = navigateToLogin,
             navigateToMain = navigateToMain,
             navigateToCreateProfile = navigateToCreateProfile,

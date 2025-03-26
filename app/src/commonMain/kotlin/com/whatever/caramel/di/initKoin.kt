@@ -18,7 +18,6 @@ import com.whatever.caramel.feature.home.di.homeFeatureModule
 import com.whatever.caramel.feature.login.di.loginFeatureModule
 import com.whatever.caramel.feature.login.di.socialModule
 import com.whatever.caramel.feature.memo.di.memoFeatureModule
-import com.whatever.caramel.feature.onboarding.di.onboardingFeatureModule
 import com.whatever.caramel.feature.profile.create.di.profileCreateFeatureModule
 import com.whatever.caramel.feature.profile.edit.di.profileEditFeatureModule
 import com.whatever.caramel.feature.setting.di.settingFeatureModule
@@ -59,7 +58,6 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             loginFeatureModule,
             socialModule,
             memoFeatureModule,
-            onboardingFeatureModule,
             profileCreateFeatureModule,
             profileEditFeatureModule,
             settingFeatureModule,

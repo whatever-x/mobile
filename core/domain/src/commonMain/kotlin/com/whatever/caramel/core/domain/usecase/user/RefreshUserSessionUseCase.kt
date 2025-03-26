@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain.usecase.auth
+package com.whatever.caramel.core.domain.usecase.user
 
 import com.whatever.caramel.core.domain.entity.user.UserStatus
 import com.whatever.caramel.core.domain.exception.AppExceptionCode

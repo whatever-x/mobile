@@ -15,8 +15,6 @@ import com.whatever.caramel.feature.login.navigation.loginScreen
 import com.whatever.caramel.feature.login.navigation.navigateToLogin
 import com.whatever.caramel.feature.main.navigation.mainGraph
 import com.whatever.caramel.feature.main.navigation.navigateToMain
-import com.whatever.caramel.feature.onboarding.navigation.navigateToOnboarding
-import com.whatever.caramel.feature.onboarding.navigation.onboardingScreen
 import com.whatever.caramel.feature.profile.create.navigation.createProfileScreen
 import com.whatever.caramel.feature.profile.create.navigation.navigateToCreateProfile
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditType
@@ -41,13 +39,6 @@ internal fun CaramelNavHost(
             splashScreen(
                 navigateToLogin = { navigateToLogin() },
                 navigateToMain = { navigateToMain() },
-                navigateToOnBoarding = {
-                    navigateToOnboarding(
-                        navOptions = NavOptions.Builder()
-                            .setPopUpTo<SplashRoute>(inclusive = true)
-                            .build()
-                    )
-                },
                 navigateToConnectCouple = { navigateToConnectCouple(
                     navOptions = NavOptions.Builder()
                         .setPopUpTo<SplashRoute>(inclusive = true)
@@ -58,9 +49,6 @@ internal fun CaramelNavHost(
                         .setPopUpTo<SplashRoute>(inclusive = true)
                         .build()
                 ) }
-            )
-            onboardingScreen(
-                navigateToLogin = { navigateToLogin() }
             )
             loginScreen(
                 navigateToConnectCouple = { navigateToCoupleInvite() },
