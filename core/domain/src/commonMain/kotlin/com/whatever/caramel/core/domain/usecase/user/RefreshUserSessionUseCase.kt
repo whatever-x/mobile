@@ -11,15 +11,15 @@ class RefreshUserSessionUseCase (
     private val userRepository: UserRepository
 ){
     suspend operator fun invoke() : UserStatus {
-        val oldToken = authRepository.getAuthToken()
-        if(oldToken.isEmpty){
+        val localSavedToken = authRepository.getAuthToken()
+        if(localSavedToken.accessToken.isEmpty() || localSavedToken.refreshToken.isEmpty()){
             throw CaramelException(
                 code = AppExceptionCode.EMPTY_VALUE,
                 message = "토큰이 만료되었습니다.",
                 debugMessage = "Authentication token is empty",
             )
         }
-        authRepository.refreshAuthToken(oldToken)
+        authRepository.refreshAuthToken(localSavedToken)
         return userRepository.getUserStatus()
     }
 }
