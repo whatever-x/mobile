@@ -1,14 +1,12 @@
 package com.whatever.caramel.feature.login
 
-import UiText
-import androidx.compose.material3.Snackbar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.whatever.caramel.core.domain.entity.auth.SocialPlatform
+import com.whatever.caramel.core.domain.entity.auth.SocialLoginType
 import com.whatever.caramel.feature.login.mvi.LoginIntent
 import com.whatever.caramel.feature.login.mvi.LoginSideEffect
 import com.whatever.caramel.feature.login.social.SocialAuthenticator
@@ -19,7 +17,6 @@ import com.whatever.caramel.feature.login.social.kakao.KakaoUser
 import com.whatever.caramel.feature.login.util.Platform
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.getString
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -34,16 +31,16 @@ internal fun LoginRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
-    val socialAuthLaunch: (SocialPlatform) -> Unit = remember {
+    val socialAuthLaunch: (SocialLoginType) -> Unit = remember {
         { type ->
             scope.launch {
                 when (type) {
-                    SocialPlatform.KAKAO -> {
+                    SocialLoginType.KAKAO -> {
                         val result = kakaoAuthenticator.authenticate()
                         viewModel.intent(LoginIntent.ClickKakaoLoginButton(result = result))
                     }
 
-                    SocialPlatform.APPLE -> {
+                    SocialLoginType.APPLE -> {
                         val result = appleAuthenticator!!.authenticate()
                         viewModel.intent(LoginIntent.ClickAppleLoginButton(result = result))
                     }
