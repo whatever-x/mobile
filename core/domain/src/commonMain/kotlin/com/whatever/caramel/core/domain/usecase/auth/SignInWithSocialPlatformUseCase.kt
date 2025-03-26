@@ -2,6 +2,7 @@ package com.whatever.caramel.core.domain.usecase.auth
 
 import com.whatever.caramel.core.domain.entity.auth.SocialLoginType
 import com.whatever.caramel.core.domain.entity.user.UserStatus
+import com.whatever.caramel.core.domain.model.aggregate.UserAuthAggregation
 import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.repository.UserRepository
 
@@ -15,11 +16,11 @@ class SignInWithSocialPlatformUseCase (
     private val userRepository: UserRepository,
 ){
     suspend operator fun invoke(inputModel : SocialLoginInputModel) : UserStatus {
-        val loginResponse = authRepository.loginWithSocialPlatform(inputModel)
-        with(loginResponse){
+        val signInUserAuth : UserAuthAggregation = authRepository.loginWithSocialPlatform(inputModel)
+        with(signInUserAuth){
             authRepository.saveTokens(accessToken = authToken.accessToken, refreshToken = authToken.refreshToken)
             userRepository.setUserStatus(userBasic.userStatus)
         }
-        return loginResponse.userBasic.userStatus
+        return signInUserAuth.userBasic.userStatus
     }
 }
