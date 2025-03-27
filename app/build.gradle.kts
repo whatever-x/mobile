@@ -49,7 +49,6 @@ kotlin {
             implementation(projects.feature.profile.create)
             implementation(projects.feature.splash)
             implementation(projects.feature.setting)
-            implementation(projects.feature.onboarding)
             implementation(projects.feature.login)
             implementation(projects.feature.calendar)
             implementation(projects.feature.content)
@@ -91,6 +90,16 @@ kotlin {
 
 android {
     signingConfigs {
+        getByName("debug") {
+            Properties().run {
+                load(FileInputStream(rootProject.file("local.properties")))
+                storeFile = rootProject.file(this["STORE_FILE"] as String)
+                keyAlias = this["KEY_ALIAS"] as String
+                keyPassword = this["KEY_PASSWORD"] as String
+                storePassword = this["STORE_PASSWORD"] as String
+            }
+        }
+
         create("release") {
             Properties().run {
                 load(FileInputStream(rootProject.file("local.properties")))
