@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.profile.create
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.domain.entity.user.Nickname
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.profile.create.mvi.Gender
@@ -56,10 +57,12 @@ class ProfileCreateViewModel(
         }
     }
 
-    private fun inputNickname(nickname: String) { // @ham2174 TODO : 도메인 정의시 닉네임 검증 로직 구현
+    private fun inputNickname(nickname: String) {
+        val validatedNickname = Nickname(nickname)
+
         reduce {
             copy(
-                nickname = nickname
+                nickname = validatedNickname.toString()
             )
         }
     }
