@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain.exception
+package com.whatever.caramel.core.domain.exception.code
 
 data object NetworkExceptionCode {
     /* NETWORK(GLOBAL) */

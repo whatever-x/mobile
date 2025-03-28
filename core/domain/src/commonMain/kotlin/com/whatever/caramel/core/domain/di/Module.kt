@@ -1,6 +1,8 @@
 package com.whatever.caramel.core.domain.di
 
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
+import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
+import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInvitationCodeUseCase
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
 import com.whatever.caramel.core.domain.usecase.user.RefreshUserSessionUseCase
 import org.koin.dsl.module
@@ -12,4 +14,8 @@ val useCaseModule = module {
 
     // User
     factory { CreateUserProfileUseCase(get()) }
+
+    // Couple
+    factory { GetCoupleInvitationCodeUseCase(get(), get()) }
+    factory { ConnectCoupleUseCase(get(), get()) }
 }

@@ -3,7 +3,7 @@ package com.whatever.caramel.feature.login
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.entity.auth.SocialLoginType
 import com.whatever.caramel.core.domain.entity.user.UserStatus
-import com.whatever.caramel.core.domain.exception.AppExceptionCode
+import com.whatever.caramel.core.domain.exception.code.AppExceptionCode
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SocialLoginInputModel
