@@ -6,7 +6,7 @@ import com.whatever.caramel.core.domain.usecase.auth.SocialLoginInputModel
 
 interface AuthRepository {
     suspend fun loginWithSocialPlatform(inputModel: SocialLoginInputModel)  : UserAuthAggregation
-    suspend fun refreshAuthToken(oldToken: AuthToken)
-    suspend fun saveTokens(accessToken : String, refreshToken : String)
+    suspend fun refreshAuthToken(oldToken: AuthToken) : AuthToken
+    suspend fun saveTokens(authToken: AuthToken)
     suspend fun getAuthToken() : AuthToken
 }

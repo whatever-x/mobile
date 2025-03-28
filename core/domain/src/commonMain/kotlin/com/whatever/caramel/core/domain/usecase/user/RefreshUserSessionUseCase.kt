@@ -12,6 +12,7 @@ class RefreshUserSessionUseCase (
 ){
     suspend operator fun invoke() : UserStatus {
         val localSavedToken = authRepository.getAuthToken()
+
         if(localSavedToken.accessToken.isEmpty() || localSavedToken.refreshToken.isEmpty()){
             throw CaramelException(
                 code = AppExceptionCode.EMPTY_VALUE,
@@ -19,7 +20,11 @@ class RefreshUserSessionUseCase (
                 debugMessage = "Authentication token is empty",
             )
         }
-        authRepository.refreshAuthToken(localSavedToken)
+
+        val newToken = authRepository.refreshAuthToken(localSavedToken)
+
+        authRepository.saveTokens(newToken)
+
         return userRepository.getUserStatus()
     }
 }

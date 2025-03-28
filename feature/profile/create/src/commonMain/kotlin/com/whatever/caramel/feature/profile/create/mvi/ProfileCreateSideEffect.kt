@@ -8,4 +8,8 @@ sealed interface ProfileCreateSideEffect : UiSideEffect {
 
     data object NavigateToConnectCouple : ProfileCreateSideEffect
 
+    data object NavigateToServiceTermNotion : ProfileCreateSideEffect
+
+    data object NavigateToPersonalInfoTermNotion : ProfileCreateSideEffect
+
 }

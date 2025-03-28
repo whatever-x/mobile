@@ -18,7 +18,7 @@ class SignInWithSocialPlatformUseCase (
     suspend operator fun invoke(inputModel : SocialLoginInputModel) : UserStatus {
         val signInUserAuth : UserAuthAggregation = authRepository.loginWithSocialPlatform(inputModel)
         with(signInUserAuth){
-            authRepository.saveTokens(accessToken = authToken.accessToken, refreshToken = authToken.refreshToken)
+            authRepository.saveTokens(authToken = authToken)
             userRepository.setUserStatus(userBasic.userStatus)
         }
         return signInUserAuth.userBasic.userStatus

@@ -1,51 +1,129 @@
 package com.whatever.caramel.feature.profile.create
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
+import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.feature.profile.create.components.ProfileCreateBottomBar
+import com.whatever.caramel.feature.profile.create.components.ProfileCreateTopBar
+import com.whatever.caramel.feature.profile.create.components.Stepper
+import com.whatever.caramel.feature.profile.create.components.step.BirthdayStep
+import com.whatever.caramel.feature.profile.create.components.step.GenderStep
+import com.whatever.caramel.feature.profile.create.components.step.NeedTermsStep
+import com.whatever.caramel.feature.profile.create.components.step.NicknameStep
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateState
+import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateStep
 
 @Composable
 internal fun ProfileCreateScreen(
     state: ProfileCreateState,
     onIntent: (ProfileCreateIntent) -> Unit
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Button(
-            modifier = Modifier.align(alignment = Alignment.TopStart),
-            onClick = { onIntent(ProfileCreateIntent.ClickBackButton) }
-        ) {
-            Text(
-                text = "뒤로가기",
-                fontSize = 12.sp
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize(),
+        containerColor = CaramelTheme.color.background.primary,
+        bottomBar = {
+            ProfileCreateBottomBar(
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .imePadding(),
+                buttonEnabled = state.isNextButtonEnabled,
+                buttonText = state.buttonText,
+                onClickButton = { onIntent(ProfileCreateIntent.ClickNextButton) }
+            )
+        },
+        topBar = {
+            ProfileCreateTopBar(
+                modifier = Modifier.statusBarsPadding(),
+                onClickBackButton = { onIntent(ProfileCreateIntent.ClickBackButton) }
             )
         }
-
-        Text(
-            modifier = Modifier.align(alignment = Alignment.Center),
-            text = "프로필 생성 화면입니다.",
-            fontSize = 32.sp
-        )
-
-        Button(
+    ) { innerPadding ->
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .align(alignment = Alignment.BottomCenter),
-            onClick = { onIntent(ProfileCreateIntent.ClickCreateButton) }
+                .fillMaxSize()
+                .padding(paddingValues = innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "프로필 생성 완료 하기",
-                fontSize = 18.sp
-            )
+            Stepper(currentIndex = state.currentIndex)
+
+            AnimatedContent(
+                transitionSpec = {
+                    if (targetState > initialState) {
+                        (slideInHorizontally { width -> width } + fadeIn()).togetherWith(
+                            slideOutHorizontally { width -> -width } + fadeOut())
+                    } else {
+                        (slideInHorizontally { width -> -width } + fadeIn()).togetherWith(
+                            slideOutHorizontally { width -> width } + fadeOut())
+                    }.using(
+                        SizeTransform(clip = false)
+                    )
+                },
+                targetState = state.currentStep,
+            ) { currentStep ->
+                when (currentStep) {
+                    ProfileCreateStep.NICKNAME -> {
+                        NicknameStep(
+                            nickname = state.nickname,
+                            onNicknameChange = { nickname ->
+                                onIntent(
+                                    ProfileCreateIntent.ChangeNickname(
+                                        nickname = nickname
+                                    )
+                                )
+                            }
+                        )
+                    }
+
+                    ProfileCreateStep.GENDER -> {
+                        GenderStep(
+                            selectedGender = state.gender,
+                            onClickGenderButton = { selectedGender ->
+                                onIntent(
+                                    ProfileCreateIntent.ClickGenderButton(
+                                        gender = selectedGender
+                                    )
+                                )
+                            },
+                        )
+                    }
+
+                    ProfileCreateStep.BIRTHDAY -> {
+                        BirthdayStep(
+                            year = state.birthday.year,
+                            month = state.birthday.month,
+                            day = state.birthday.day
+                        )
+                    }
+
+                    ProfileCreateStep.NEED_TERMS -> {
+                        NeedTermsStep(
+                            isPersonalInfoTermChecked = state.isPersonalInfoTermChecked,
+                            isServiceTermChecked = state.isServiceTermChecked,
+                            onClickServiceTerm = { onIntent(ProfileCreateIntent.ToggleServiceTerm) },
+                            onClickPersonalInfoTerm = { onIntent(ProfileCreateIntent.TogglePersonalInfoTerm) },
+                            onClickServiceTermLabel = { onIntent(ProfileCreateIntent.ClickServiceTermLabel) },
+                            onClickPersonalInfoLabel = { onIntent(ProfileCreateIntent.ClickPersonalInfoTermLabel) }
+                        )
+                    }
+                }
+            }
         }
     }
 }

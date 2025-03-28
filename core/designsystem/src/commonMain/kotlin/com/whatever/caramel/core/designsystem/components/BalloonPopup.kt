@@ -1,6 +1,5 @@
 package com.whatever.caramel.core.designsystem.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,22 +10,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun CaramelBalloonPopupWithImage(
     modifier: Modifier = Modifier,
-    imageModifier: Modifier = Modifier,
+    balloonPopupModifier: Modifier = Modifier,
     text: String,
-    image: DrawableResource,
-    contentScale: ContentScale,
-    contentDescription: String? = null
+    image: @Composable () -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -36,14 +31,12 @@ fun CaramelBalloonPopupWithImage(
         ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CaramelBalloonPopup(text = text)
-
-        Image(
-            modifier = imageModifier,
-            painter = painterResource(resource = image),
-            contentScale = contentScale,
-            contentDescription = contentDescription
+        CaramelBalloonPopup(
+            modifier = balloonPopupModifier,
+            text = text
         )
+
+        image.invoke()
     }
 }
 

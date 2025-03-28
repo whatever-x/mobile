@@ -27,7 +27,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.whatever.caramel.core.designsystem.components.CaramelBalloonPopup
+import com.whatever.caramel.core.designsystem.components.CaramelBalloonPopupWithImage
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
@@ -94,47 +94,39 @@ internal fun CoupleInviteScreen(
                 textAlign = TextAlign.Center
             )
 
-            Column(
-                modifier = Modifier
-                    .weight(weight = 1f),
-                verticalArrangement = Arrangement.spacedBy(
-                    space = CaramelTheme.spacing.s,
-                    alignment = Alignment.CenterVertically
-                ),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CaramelBalloonPopup(
-                    text = "상대방이 초대장을 수락해야\n시작할 수 있어요."
-                )
-
-                Box {
-                    Box(
-                        modifier = Modifier
-                            .offset(y = 55.dp)
-                            .fillMaxWidth()
-                            .height(height = 125.dp)
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color(0xFFFFE6C3),
-                                        Color(0xFFFFE6C3).copy(alpha = 0f)
+            CaramelBalloonPopupWithImage(
+                modifier = Modifier.weight(weight = 1f),
+                text = "상대방이 초대장을 수락해야\n시작할 수 있어요.",
+                image = {
+                    Box {
+                        Box(
+                            modifier = Modifier
+                                .offset(y = 55.dp)
+                                .fillMaxWidth()
+                                .height(height = 125.dp)
+                                .background(
+                                    brush = Brush.verticalGradient(
+                                        colors = listOf(
+                                            Color(0xFFFFE6C3),
+                                            Color(0xFFFFE6C3).copy(alpha = 0f)
+                                        )
                                     )
                                 )
-                            )
-                    )
+                        )
 
-                    Image(
-                        modifier = Modifier
-                            .align(alignment = Alignment.TopCenter)
-                            .size(
-                                width = 170.dp,
-                                height = 80.dp
-                            ),
-                        painter = painterResource(resource = Resources.Image.img_mozzis),
-                        contentDescription = null
-                    )
+                        Image(
+                            modifier = Modifier
+                                .align(alignment = Alignment.TopCenter)
+                                .size(
+                                    width = 170.dp,
+                                    height = 80.dp
+                                ),
+                            painter = painterResource(resource = Resources.Image.img_mozzis),
+                            contentDescription = null
+                        )
+                    }
                 }
-            }
+            )
 
             Row(
                 modifier = Modifier

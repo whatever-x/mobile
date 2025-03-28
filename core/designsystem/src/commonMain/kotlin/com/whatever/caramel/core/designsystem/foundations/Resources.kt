@@ -2,24 +2,23 @@ package com.whatever.caramel.core.designsystem.foundations
 
 import caramel.core.designsystem.generated.resources.Res
 import caramel.core.designsystem.generated.resources.arrow_right
-import caramel.core.designsystem.generated.resources.ic_calendar_24
-import caramel.core.designsystem.generated.resources.ic_circle_plus_24
-import caramel.core.designsystem.generated.resources.ic_home_24
-import caramel.core.designsystem.generated.resources.ic_memo_24
 import caramel.core.designsystem.generated.resources.ic_active_step_18
 import caramel.core.designsystem.generated.resources.ic_arrow_left_24
 import caramel.core.designsystem.generated.resources.ic_arrow_right_14
+import caramel.core.designsystem.generated.resources.ic_calendar_24
 import caramel.core.designsystem.generated.resources.ic_check_box_20
+import caramel.core.designsystem.generated.resources.ic_circle_plus_24
 import caramel.core.designsystem.generated.resources.ic_close_24
 import caramel.core.designsystem.generated.resources.ic_female_90
+import caramel.core.designsystem.generated.resources.ic_home_24
 import caramel.core.designsystem.generated.resources.ic_inactive_step_18
 import caramel.core.designsystem.generated.resources.ic_link_24
 import caramel.core.designsystem.generated.resources.ic_male_90
+import caramel.core.designsystem.generated.resources.ic_memo_24
 import caramel.core.designsystem.generated.resources.ic_send_25_24
 import caramel.core.designsystem.generated.resources.ic_uncheck_box_20
 import caramel.core.designsystem.generated.resources.ic_vertex_17_9
 import caramel.core.designsystem.generated.resources.img_mozzis
-import caramel.core.designsystem.generated.resources.img_terms
 import caramel.core.designsystem.generated.resources.profile
 
 object Resources {
@@ -46,7 +45,6 @@ object Resources {
     }
 
     object Image {
-        val img_terms = Res.drawable.img_terms
         val img_mozzis = Res.drawable.img_mozzis
     }
 
