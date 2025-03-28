@@ -9,4 +9,8 @@ sealed interface CoupleInviteIntent : UiIntent {
 
     data object ClickCloseButton : CoupleInviteIntent
 
+    data object ClickCopyInviteCodeButton : CoupleInviteIntent
+
+    data object ClickInviteButton : CoupleInviteIntent
+
 }
