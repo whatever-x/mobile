@@ -1,17 +1,23 @@
 package com.whatever.caramel.feature.profile.create.components.step
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
@@ -44,13 +50,37 @@ internal fun NeedTermsStep(
         )
 
         CaramelBalloonPopupWithImage(
-            modifier = Modifier.weight(1f),
-            imageModifier = Modifier
-                .fillMaxWidth()
-                .height(height = 163.dp),
-            contentScale = ContentScale.Fit,
+            modifier = Modifier.weight(weight = 1f),
             text = "동의만 하면 가입 끝!\n연인과 함께 똑똑하고 달달한 연애해봐요!",
-            image = Resources.Image.img_mozzis // @ham2174 FIXME : 디자인 변경시 이미지 변경
+            image = {
+                Box {
+                    Box(
+                        modifier = Modifier
+                            .offset(y = 55.dp)
+                            .fillMaxWidth()
+                            .height(height = 125.dp)
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color(0xFFFFE6C3),
+                                        Color(0xFFFFE6C3).copy(alpha = 0f)
+                                    )
+                                )
+                            )
+                    )
+
+                    Image(
+                        modifier = Modifier
+                            .align(alignment = Alignment.TopCenter)
+                            .size(
+                                width = 170.dp,
+                                height = 80.dp
+                            ),
+                        painter = painterResource(resource = Resources.Image.img_mozzis),
+                        contentDescription = null
+                    )
+                }
+            }
         )
 
         Column(
