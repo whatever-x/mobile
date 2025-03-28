@@ -29,13 +29,14 @@ internal class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun refreshAuthToken(oldToken: AuthToken) {
+    override suspend fun refreshAuthToken(oldToken: AuthToken) : AuthToken {
         return safeCall {
             val request = ServiceToken(
                 accessToken = oldToken.accessToken,
                 refreshToken = oldToken.refreshToken
             )
-            remoteAuthDataSource.refresh(request)
+            val response = remoteAuthDataSource.refresh(request)
+            response.toAuthToken()
         }
     }
 
