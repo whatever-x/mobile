@@ -30,7 +30,7 @@ class TokenInterceptorImpl(
         try {
             val (accessToken, refreshToken) = tokenDataSource.fetchToken()
 
-            if (accessToken != null && refreshToken != null) {
+            if (accessToken.isNotEmpty() && refreshToken.isNotEmpty()) {
                 val response = authDataSource.refresh(
                     request = ServiceToken(
                         accessToken = accessToken,

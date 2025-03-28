@@ -2,6 +2,8 @@ package com.whatever.caramel.core.remote.di
 
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSourceImpl
+import com.whatever.caramel.core.remote.datasource.RemoteUserDataSource
+import com.whatever.caramel.core.remote.datasource.RemoteUserDataSourceImpl
 import com.whatever.caramel.core.remote.di.qualifier.AuthClient
 import com.whatever.caramel.core.remote.di.qualifier.DefaultClient
 import com.whatever.caramel.core.remote.di.qualifier.SampleClient
@@ -80,9 +82,13 @@ val networkModule = module {
 val remoteDataSourceModule = module {
     single<RemoteAuthDataSource> {
         RemoteAuthDataSourceImpl(
-            authClient = get(AuthClient),
-            defaultClient = get(DefaultClient),
-            sampleClient = get(SampleClient)
+            defaultClient = get(DefaultClient)
+        )
+    }
+
+    single<RemoteUserDataSource> {
+        RemoteUserDataSourceImpl(
+            authClient = get(AuthClient)
         )
     }
 }

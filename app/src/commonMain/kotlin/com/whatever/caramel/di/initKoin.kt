@@ -6,18 +6,19 @@ import com.whatever.caramel.core.database.di.databaseModule
 import com.whatever.caramel.core.database.di.platformDatabaseModule
 import com.whatever.caramel.core.datastore.di.dataStoreModule
 import com.whatever.caramel.core.datastore.di.platformDataStoreModule
+import com.whatever.caramel.core.domain.di.useCaseModule
 import com.whatever.caramel.core.remote.di.networkClientEngineModule
 import com.whatever.caramel.core.remote.di.networkModule
 import com.whatever.caramel.core.remote.di.remoteDataSourceModule
 import com.whatever.caramel.feature.calendar.di.calendarFeatureModule
 import com.whatever.caramel.feature.content.di.contentFeatureModule
-import com.whatever.caramel.feature.copule.invite.coupleInviteFeatureModule
+import com.whatever.caramel.feature.copule.invite.di.coupleInviteFeatureModule
+import com.whatever.caramel.feature.copule.invite.di.shareServiceModule
 import com.whatever.caramel.feature.couple.connect.coupleConnectFeatureModule
 import com.whatever.caramel.feature.home.di.homeFeatureModule
 import com.whatever.caramel.feature.login.di.loginFeatureModule
 import com.whatever.caramel.feature.login.di.socialModule
 import com.whatever.caramel.feature.memo.di.memoFeatureModule
-import com.whatever.caramel.feature.onboarding.di.onboardingFeatureModule
 import com.whatever.caramel.feature.profile.create.di.profileCreateFeatureModule
 import com.whatever.caramel.feature.profile.edit.di.profileEditFeatureModule
 import com.whatever.caramel.feature.setting.di.settingFeatureModule
@@ -46,16 +47,19 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             platformDataStoreModule,
             dataStoreModule,
 
+            /* ==== Domain Layer ==== */
+            useCaseModule,
+
             /* ==== Presentation Layer ==== */
             calendarFeatureModule,
             contentFeatureModule,
             coupleConnectFeatureModule,
             coupleInviteFeatureModule,
+            shareServiceModule,
             homeFeatureModule,
             loginFeatureModule,
             socialModule,
             memoFeatureModule,
-            onboardingFeatureModule,
             profileCreateFeatureModule,
             profileEditFeatureModule,
             settingFeatureModule,

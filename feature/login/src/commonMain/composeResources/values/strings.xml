@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="error_social_login">로그인 오류가 발생했습니다.</string>
+    <string name="error_user_canceled">취소되었습니다.</string>
+</resources>

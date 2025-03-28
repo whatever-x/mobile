@@ -50,7 +50,7 @@ internal fun NeedTermsStep(
                 .height(height = 163.dp),
             contentScale = ContentScale.Fit,
             text = "동의만 하면 가입 끝!\n연인과 함께 똑똑하고 달달한 연애해봐요!",
-            image = Resources.Image.img_terms // @ham2174 FIXME : 디자인 변경시 이미지 변경
+            image = Resources.Image.img_mozzis // @ham2174 FIXME : 디자인 변경시 이미지 변경
         )
 
         Column(

@@ -20,14 +20,14 @@ class TokenDataSourceImpl(
         }
     }
 
-    override suspend fun fetchToken(): Pair<String?, String?> {
+    override suspend fun fetchToken(): Pair<String, String> {
         dataStore.data.first().let { prefs ->
             val accessToken = prefs[accessTokenKey]
             val refreshToken = prefs[refreshTokenKey]
 
             return Pair(
-                first = accessToken,
-                second = refreshToken
+                first = accessToken ?: "",
+                second = refreshToken ?: ""
             )
         }
     }

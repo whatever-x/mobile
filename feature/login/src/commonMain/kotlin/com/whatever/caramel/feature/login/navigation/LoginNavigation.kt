@@ -22,11 +22,13 @@ fun NavController.navigateToLogin(
 fun NavGraphBuilder.loginScreen(
     navigateToCreateProfile: () -> Unit,
     navigateToConnectCouple: () -> Unit,
+    navigateToMain : () -> Unit
 ) {
     composable<LoginRoute>() {
         LoginRoute(
             navigateToConnectCouple = navigateToConnectCouple,
-            navigateToCreateProfile = navigateToCreateProfile
+            navigateToCreateProfile = navigateToCreateProfile,
+            navigateToMain = navigateToMain
         )
     }
 }
