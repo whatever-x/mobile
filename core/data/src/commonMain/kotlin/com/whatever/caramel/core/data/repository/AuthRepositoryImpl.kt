@@ -40,9 +40,12 @@ internal class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun saveTokens(accessToken: String, refreshToken: String) {
+    override suspend fun saveTokens(authToken: AuthToken) {
         safeCall {
-            tokenDataSource.createToken(accessToken, refreshToken)
+            tokenDataSource.createToken(
+                accessToken = authToken.accessToken,
+                refreshToken = authToken.refreshToken
+            )
         }
     }
 
