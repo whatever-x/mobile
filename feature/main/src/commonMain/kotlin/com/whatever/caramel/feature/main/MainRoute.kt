@@ -8,6 +8,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.whatever.caramel.core.designsystem.components.BottomNavItem
@@ -28,6 +30,7 @@ internal fun MainRoute(
     navigateToTodoDetail: () -> Unit,
     navigateToCreateTodo: () -> Unit,
 ) {
+    val hapticFeedback = LocalHapticFeedback.current
     val mainNavHostController = rememberNavController()
     var currentItem by rememberSaveable { mutableStateOf(BottomNavItem.HOME) }
 
@@ -38,6 +41,7 @@ internal fun MainRoute(
                 currentItem = currentItem,
                 onClickNavItem = { bottomNavItem ->
                     currentItem = bottomNavItem
+                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
 
                     when (bottomNavItem) {
                         BottomNavItem.HOME -> {
