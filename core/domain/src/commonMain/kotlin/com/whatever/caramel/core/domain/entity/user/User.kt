@@ -23,7 +23,7 @@ data class UserBasic(
 }
 
 data class UserProfile(
-    val nickName : Nickname,
+    val nickName : String,
     val gender : Gender,
     val birthday : String
 )
