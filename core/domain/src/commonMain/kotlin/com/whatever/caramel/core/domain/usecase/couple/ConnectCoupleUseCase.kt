@@ -27,16 +27,16 @@ class ConnectCoupleUseCase(
         if (expirationMillisecond <= currentMillisecond) {
             throw CaramelException(
                 code = CoupleErrorCode.EXPIRED_INVITATION_CODE,
-                message = "Invitation code has expired",
-                debugMessage = "만료된 커플 초대 코드입니다."
+                message = "만료된 커플 초대 코드입니다.",
+                debugMessage = "Invitation code has expired",
             )
         }
         val userStatus = userRepository.getUserStatus()
         if (userStatus != UserStatus.SINGLE) {
             throw CaramelException(
                 code = UserErrorCode.INVALID_USER_STATUS,
-                message = "User is not single, cannot connect couple",
-                debugMessage = "유효하지 않은 사용자 상태입니다. 커플 연결을 위해 사용자는 싱글 상태여야 합니다."
+                message = "유효하지 않은 사용자 상태입니다. 커플 연결을 위해 사용자는 싱글 상태여야 합니다.",
+                debugMessage = "User is not single, cannot connect couple"
             )
         }
         coupleRepository.connectCouple(invitationCode)

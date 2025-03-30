@@ -16,8 +16,8 @@ class RefreshUserSessionUseCase (
         if(localSavedToken.accessToken.isEmpty() || localSavedToken.refreshToken.isEmpty()){
             throw CaramelException(
                 code = AppErrorCode.EMPTY_VALUE,
-                message = "Authentication token is empty",
-                debugMessage = "로컬에 저장된 인증 토큰이 존재하지 않습니다."
+                message = "로컬에 저장된 인증 토큰이 존재하지 않습니다.",
+                debugMessage = "Authentication token is empty"
             )
         }
 

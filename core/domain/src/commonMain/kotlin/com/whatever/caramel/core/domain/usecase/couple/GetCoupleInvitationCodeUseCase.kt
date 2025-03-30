@@ -16,8 +16,8 @@ class GetCoupleInvitationCodeUseCase(
         if (currentUserStatus != UserStatus.SINGLE) {
             throw CaramelException(
                 code = UserErrorCode.INVALID_USER_STATUS,
-                message = "User is not single",
-                debugMessage = "유저의 상태가 싱글이 아니므로 커플 초대코드를 생성할 수 없습니다."
+                message = "유저의 상태가 싱글이 아니므로 커플 초대코드를 생성할 수 없습니다.",
+                debugMessage = "User is not single"
             )
         }
         return coupleRepository.getCoupleInvitationCode()
