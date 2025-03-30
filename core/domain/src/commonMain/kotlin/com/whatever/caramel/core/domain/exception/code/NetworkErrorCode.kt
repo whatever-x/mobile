@@ -1,27 +1,13 @@
 package com.whatever.caramel.core.domain.exception.code
 
 data object NetworkErrorCode {
-    /* NETWORK(GLOBAL) */
-    private const val NETWORK_GLOBAL_PREFIX = "GLOBAL"
-    const val UNKNOWN = NETWORK_GLOBAL_PREFIX + "000"
+    private const val PREFIX = "GLOBAL"
 
-    /* USER */
-    const val INVALID_NICKNAME_LENGTH = "001"
-    const val INVALID_NICKNAME_CHARACTER = "002"
-    const val NICKNAME_REQUIRED = "003"
-    const val SERVICE_TERMS_AGREEMENT_REQUIRED = "005"
-    const val PRIVATE_POLICY_AGREEMENT_REQUIRED = "006"
-    const val ALREADY_EXIST_COUPLE = "007"
-
-    /* COUPLE */
-    private const val COUPLE_PREFIX = "COUPLE"
-    const val INVALID_USER_STATUS = COUPLE_PREFIX + "001"
-    const val INVITATION_CODE_GENERATION_FAIL = COUPLE_PREFIX + "002"
-    const val INVITATION_CODE_EXPIRED = COUPLE_PREFIX + "003"
-    const val INVITATION_CODE_SELF_GENERATED = COUPLE_PREFIX + "004"
-    const val MEMBER_NOT_FOUND = COUPLE_PREFIX + "005"
-    const val COUPLE_NOT_FOUND = COUPLE_PREFIX + "006"
-    const val NOT_A_MEMBER = COUPLE_PREFIX + "007"
-    const val ILLEGAL_MEMBER_SIZE = COUPLE_PREFIX + "008"
-    const val UPDATE_FAIL = COUPLE_PREFIX + "009"
+    const val UNKNOWN = PREFIX + "000"
+    const val NO_RESOURCE = PREFIX + "001"
+    const val ARGS_VALIDATION_FAILED = PREFIX + "002"
+    const val ARGS_TYPE_MISMATCH = PREFIX + "003"
+    const val INVALID_ARGUMENT = PREFIX + "004"
+    const val ILLEGAL_STATE = PREFIX + "005"
+    const val ACCESS_DENIED = PREFIX + "006"
 }
