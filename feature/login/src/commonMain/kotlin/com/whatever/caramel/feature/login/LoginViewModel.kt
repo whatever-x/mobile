@@ -1,12 +1,11 @@
 package com.whatever.caramel.feature.login
 
 import androidx.lifecycle.SavedStateHandle
-import com.whatever.caramel.core.domain.entity.auth.SocialLoginType
-import com.whatever.caramel.core.domain.entity.user.UserStatus
+import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
+import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.domain.exception.code.AppExceptionCode
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
-import com.whatever.caramel.core.domain.usecase.auth.SocialLoginInputModel
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.login.mvi.LoginIntent
 import com.whatever.caramel.feature.login.mvi.LoginSideEffect
@@ -45,10 +44,8 @@ class LoginViewModel(
         when (result) {
             is SocialAuthResult.Success -> {
                 login(
-                    socialLoginInputModel = SocialLoginInputModel(
-                        idToken = result.data.idToken,
-                        socialLoginType = SocialLoginType.KAKAO
-                    )
+                    idToken = result.data.idToken,
+                    socialLoginType = SocialLoginType.KAKAO
                 )
             }
 
@@ -66,10 +63,8 @@ class LoginViewModel(
         when (result) {
             is SocialAuthResult.Success -> {
                 login(
-                    socialLoginInputModel = SocialLoginInputModel(
-                        idToken = result.data.idToken,
-                        socialLoginType = SocialLoginType.APPLE
-                    )
+                    idToken = result.data.idToken,
+                    socialLoginType = SocialLoginType.APPLE
                 )
             }
 
@@ -84,10 +79,12 @@ class LoginViewModel(
     }
 
     private suspend fun login(
-        socialLoginInputModel: SocialLoginInputModel
+        idToken: String,
+        socialLoginType: SocialLoginType
     ) {
         val signInUserStatus = signInWithSocialPlatformUseCase(
-            inputModel = socialLoginInputModel
+            idToken = idToken,
+            socialLoginType = socialLoginType
         )
         when (signInUserStatus) {
             UserStatus.NONE -> {}

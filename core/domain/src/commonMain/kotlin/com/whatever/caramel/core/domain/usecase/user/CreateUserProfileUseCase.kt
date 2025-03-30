@@ -3,20 +3,23 @@ package com.whatever.caramel.core.domain.usecase.user
 import com.whatever.caramel.core.domain.repository.UserRepository
 import com.whatever.caramel.core.domain.validator.UserValidator
 
-data class UserProfileInputModel(
-    val nickname: String,
-    val birthDay: String,
-    val agreementServiceTerms: Boolean,
-    val agreementPrivacyPolicy: Boolean
-)
-
 class CreateUserProfileUseCase(
     private val userRepository: UserRepository
 ) {
-    suspend operator fun invoke(userProfileInputModel: UserProfileInputModel) {
-        UserValidator.checkNicknameValidate(userProfileInputModel.nickname)
+    suspend operator fun invoke(
+        nickname: String,
+        birthDay: String,
+        agreementServiceTerms: Boolean,
+        agreementPrivacyPolicy: Boolean
+    ) {
+        UserValidator.checkNicknameValidate(nickname)
             .onSuccess {
-                userRepository.createUserProfile(userProfileInputModel = userProfileInputModel)
+                userRepository.createUserProfile(
+                    nickname = nickname,
+                    birthDay = birthDay,
+                    agreementServiceTerms = agreementServiceTerms,
+                    agreementPrivacyPolicy = agreementPrivacyPolicy
+                )
             }.onFailure {
                 throw it
             }

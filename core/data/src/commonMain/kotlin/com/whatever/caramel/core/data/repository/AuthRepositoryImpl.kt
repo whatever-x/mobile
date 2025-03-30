@@ -18,18 +18,21 @@ internal class AuthRepositoryImpl(
     private val tokenDataSource: TokenDataSource
 ) : AuthRepository {
 
-    override suspend fun loginWithSocialPlatform(inputModel: SocialLoginInputModel): UserAuthAggregation {
+    override suspend fun loginWithSocialPlatform(
+        idToken: String,
+        socialLoginType: SocialLoginType
+    ): UserAuth {
         return safeCall {
             val request = SignInRequest(
-                idToken = inputModel.idToken,
-                loginPlatform = inputModel.socialLoginType.toLoginPlatform()
+                idToken = idToken,
+                loginPlatform = LoginPlatform.valueOf(socialLoginType.name)
             )
             val response = remoteAuthDataSource.signIn(request = request)
-            response.toUserAuthAggregation()
+            response.toUserAuth()
         }
     }
 
-    override suspend fun refreshAuthToken(oldToken: AuthToken) : AuthToken {
+    override suspend fun refreshAuthToken(oldToken: AuthToken): AuthToken {
         return safeCall {
             val request = ServiceToken(
                 accessToken = oldToken.accessToken,

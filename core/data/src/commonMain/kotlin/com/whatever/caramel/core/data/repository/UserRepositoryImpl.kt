@@ -3,9 +3,8 @@ package com.whatever.caramel.core.data.repository
 import com.whatever.caramel.core.data.mapper.toUserStatus
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datastore.datasource.UserDataSource
-import com.whatever.caramel.core.domain.entity.user.UserStatus
 import com.whatever.caramel.core.domain.repository.UserRepository
-import com.whatever.caramel.core.domain.usecase.user.UserProfileInputModel
+import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.remote.datasource.RemoteUserDataSource
 import com.whatever.caramel.core.remote.dto.user.UserProfileRequest
 
@@ -25,13 +24,18 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun createUserProfile(userProfileInputModel: UserProfileInputModel) {
+    override suspend fun createUserProfile(
+        nickname: String,
+        birthDay: String,
+        agreementServiceTerms: Boolean,
+        agreementPrivacyPolicy: Boolean
+    ) {
         safeCall {
             val request = UserProfileRequest(
-                nickname = userProfileInputModel.nickname.toString(),
-                birthday = userProfileInputModel.birthDay,
-                agreementServiceTerms = userProfileInputModel.agreementServiceTerms,
-                agreementPrivatePolicy = userProfileInputModel.agreementPrivacyPolicy
+                nickname = nickname,
+                birthday = birthDay,
+                agreementServiceTerms = agreementServiceTerms,
+                agreementPrivatePolicy = agreementPrivacyPolicy
             )
             userRemoteDataSource.createUserProfile(request)
         }

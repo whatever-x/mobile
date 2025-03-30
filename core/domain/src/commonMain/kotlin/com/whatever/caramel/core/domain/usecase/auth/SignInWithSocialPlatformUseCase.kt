@@ -1,26 +1,27 @@
 package com.whatever.caramel.core.domain.usecase.auth
 
-import com.whatever.caramel.core.domain.entity.auth.SocialLoginType
-import com.whatever.caramel.core.domain.entity.user.UserStatus
-import com.whatever.caramel.core.domain.model.aggregate.UserAuthAggregation
 import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.repository.UserRepository
+import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
+import com.whatever.caramel.core.domain.vo.auth.UserAuth
+import com.whatever.caramel.core.domain.vo.user.UserStatus
 
-data class SocialLoginInputModel(
-    val idToken : String,
-    val socialLoginType: SocialLoginType
-)
-
-class SignInWithSocialPlatformUseCase (
+class SignInWithSocialPlatformUseCase(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
-){
-    suspend operator fun invoke(inputModel : SocialLoginInputModel) : UserStatus {
-        val signInUserAuth : UserAuthAggregation = authRepository.loginWithSocialPlatform(inputModel)
-        with(signInUserAuth){
+) {
+    suspend operator fun invoke(
+        idToken: String,
+        socialLoginType: SocialLoginType
+    ): UserStatus {
+        val signInUserAuth: UserAuth = authRepository.loginWithSocialPlatform(
+            idToken = idToken,
+            socialLoginType = socialLoginType
+        )
+        with(signInUserAuth) {
             authRepository.saveTokens(authToken = authToken)
-            userRepository.setUserStatus(userBasic.userStatus)
+            userRepository.setUserStatus(userStatus)
         }
-        return signInUserAuth.userBasic.userStatus
+        return signInUserAuth.userStatus
     }
 }
