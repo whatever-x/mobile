@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.domain.usecase.couple
 
-import com.whatever.caramel.core.domain.entity.user.UserStatus
+import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.domain.exception.couple.ExpiredInvitationCodeException
 import com.whatever.caramel.core.domain.exception.couple.InvalidInvitationCodeException
 import com.whatever.caramel.core.domain.exception.user.InvalidUserStatusException

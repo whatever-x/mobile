@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.domain.repository
 
-import com.whatever.caramel.core.domain.model.couple.CoupleInvitationCode
+import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
 
 interface CoupleRepository {
     suspend fun getCoupleInvitationCode() : CoupleInvitationCode

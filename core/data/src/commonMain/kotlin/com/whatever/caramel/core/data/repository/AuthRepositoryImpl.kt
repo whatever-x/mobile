@@ -1,15 +1,15 @@
 package com.whatever.caramel.core.data.repository
 
 import com.whatever.caramel.core.data.mapper.toAuthToken
-import com.whatever.caramel.core.data.mapper.toLoginPlatform
-import com.whatever.caramel.core.data.mapper.toUserAuthAggregation
+import com.whatever.caramel.core.data.mapper.toUserAuth
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datastore.datasource.TokenDataSource
-import com.whatever.caramel.core.domain.model.aggregate.UserAuthAggregation
-import com.whatever.caramel.core.domain.model.auth.AuthToken
 import com.whatever.caramel.core.domain.repository.AuthRepository
-import com.whatever.caramel.core.domain.usecase.auth.SocialLoginInputModel
+import com.whatever.caramel.core.domain.vo.auth.AuthToken
+import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
+import com.whatever.caramel.core.domain.vo.auth.UserAuth
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSource
+import com.whatever.caramel.core.remote.dto.auth.LoginPlatform
 import com.whatever.caramel.core.remote.dto.auth.ServiceToken
 import com.whatever.caramel.core.remote.dto.auth.SignInRequest
 

@@ -1,7 +1,6 @@
 package com.whatever.caramel.core.domain.repository
 
-import com.whatever.caramel.core.domain.entity.user.UserStatus
-import com.whatever.caramel.core.domain.usecase.user.UserProfileInputModel
+import com.whatever.caramel.core.domain.vo.user.UserStatus
 
 interface UserRepository {
     suspend fun getUserStatus() : UserStatus

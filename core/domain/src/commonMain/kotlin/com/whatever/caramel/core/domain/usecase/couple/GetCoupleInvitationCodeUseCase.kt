@@ -1,8 +1,8 @@
 package com.whatever.caramel.core.domain.usecase.couple
 
-import com.whatever.caramel.core.domain.entity.user.UserStatus
+import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.domain.exception.user.InvalidUserStatusException
-import com.whatever.caramel.core.domain.model.couple.CoupleInvitationCode
+import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
 import com.whatever.caramel.core.domain.repository.CoupleRepository
 import com.whatever.caramel.core.domain.repository.UserRepository
 

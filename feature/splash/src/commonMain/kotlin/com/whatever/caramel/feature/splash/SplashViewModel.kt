@@ -1,7 +1,7 @@
 package com.whatever.caramel.feature.splash
 
 import androidx.lifecycle.SavedStateHandle
-import com.whatever.caramel.core.domain.entity.user.UserStatus
+import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.domain.usecase.user.RefreshUserSessionUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.splash.mvi.SplashIntent
