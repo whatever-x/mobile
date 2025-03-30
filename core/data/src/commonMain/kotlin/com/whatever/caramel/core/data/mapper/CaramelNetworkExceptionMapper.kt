@@ -9,8 +9,10 @@ import com.whatever.caramel.core.remote.network.exception.CaramelNetworkExceptio
 
 fun CaramelNetworkException.toCaramelException(): CaramelException {
     val appErrorCode = when (code) {
-        NetworkErrorCode.INVITATION_CODE_EXPIRED -> CoupleErrorCode.EXPIRED_INVITATION_CODE
+        NetworkErrorCode.INVALID_NICKNAME_LENGTH -> UserErrorCode.INVALID_NICKNAME_SIZE
+        NetworkErrorCode.INVALID_NICKNAME_CHARACTER -> UserErrorCode.INVALID_NICKNAME_FORMAT
         NetworkErrorCode.INVALID_USER_STATUS -> UserErrorCode.INVALID_USER_STATUS
+        NetworkErrorCode.INVITATION_CODE_EXPIRED -> CoupleErrorCode.EXPIRED_INVITATION_CODE
         else -> AppErrorCode.UNKNOWN
     }
     return CaramelException(

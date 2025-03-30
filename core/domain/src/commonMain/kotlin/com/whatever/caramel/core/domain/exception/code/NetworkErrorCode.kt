@@ -5,6 +5,14 @@ data object NetworkErrorCode {
     private const val NETWORK_GLOBAL_PREFIX = "GLOBAL"
     const val UNKNOWN = NETWORK_GLOBAL_PREFIX + "000"
 
+    /* USER */
+    const val INVALID_NICKNAME_LENGTH = "001"
+    const val INVALID_NICKNAME_CHARACTER = "002"
+    const val NICKNAME_REQUIRED = "003"
+    const val SERVICE_TERMS_AGREEMENT_REQUIRED = "005"
+    const val PRIVATE_POLICY_AGREEMENT_REQUIRED = "006"
+    const val ALREADY_EXIST_COUPLE = "007"
+
     /* COUPLE */
     private const val COUPLE_PREFIX = "COUPLE"
     const val INVALID_USER_STATUS = COUPLE_PREFIX + "001"
