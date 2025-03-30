@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.data.util
 
 import com.whatever.caramel.core.data.mapper.toCaramelException
-import com.whatever.caramel.core.domain.exception.code.AppExceptionCode
+import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.remote.network.exception.CaramelNetworkException
 
@@ -13,7 +13,7 @@ suspend fun <T> safeCall(block: suspend () -> T): T =
         throw e.toCaramelException()
     } catch (e: Exception) {
         throw CaramelException(
-            code = AppExceptionCode.UNKNOWN,
+            code = AppErrorCode.UNKNOWN,
             message = "예상치 못한 에러 발생",
             debugMessage = e.message
         )

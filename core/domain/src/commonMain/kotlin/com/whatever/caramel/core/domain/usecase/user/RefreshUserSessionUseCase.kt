@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.domain.usecase.user
 
 import com.whatever.caramel.core.domain.vo.user.UserStatus
-import com.whatever.caramel.core.domain.exception.code.AppExceptionCode
+import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.repository.UserRepository
@@ -15,7 +15,7 @@ class RefreshUserSessionUseCase (
 
         if(localSavedToken.accessToken.isEmpty() || localSavedToken.refreshToken.isEmpty()){
             throw CaramelException(
-                code = AppExceptionCode.EMPTY_VALUE,
+                code = AppErrorCode.EMPTY_VALUE,
                 message = "로컬에 저장된 인증 토큰이 존재하지 않습니다.",
                 debugMessage = "Authentication token is empty",
             )

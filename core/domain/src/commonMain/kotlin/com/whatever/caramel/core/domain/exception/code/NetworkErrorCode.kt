@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.domain.exception.code
 
-data object NetworkExceptionCode {
+data object NetworkErrorCode {
     /* NETWORK(GLOBAL) */
     private const val NETWORK_GLOBAL_PREFIX = "GLOBAL"
     const val UNKNOWN = NETWORK_GLOBAL_PREFIX + "000"

@@ -3,8 +3,9 @@ package com.whatever.caramel.feature.login
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
 import com.whatever.caramel.core.domain.vo.user.UserStatus
-import com.whatever.caramel.core.domain.exception.code.AppExceptionCode
+import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.code.AuthErrorCode
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.login.mvi.LoginIntent
@@ -50,11 +51,11 @@ class LoginViewModel(
             }
 
             is SocialAuthResult.Error -> {
-                postSideEffect(LoginSideEffect.ShowErrorSnackBar(AppExceptionCode.LOGIN_FAILED))
+                postSideEffect(LoginSideEffect.ShowErrorSnackBar(AuthErrorCode.LOGIN_FAILED))
             }
 
             is SocialAuthResult.UserCancelled -> {
-                postSideEffect(LoginSideEffect.ShowErrorSnackBar(AppExceptionCode.LOGIN_CANCELLED))
+                postSideEffect(LoginSideEffect.ShowErrorSnackBar(AuthErrorCode.LOGIN_CANCELLED))
             }
         }
     }
@@ -69,11 +70,11 @@ class LoginViewModel(
             }
 
             is SocialAuthResult.Error -> {
-                postSideEffect(LoginSideEffect.ShowErrorSnackBar(AppExceptionCode.LOGIN_FAILED))
+                postSideEffect(LoginSideEffect.ShowErrorSnackBar(AuthErrorCode.LOGIN_FAILED))
             }
 
             is SocialAuthResult.UserCancelled -> {
-                postSideEffect(LoginSideEffect.ShowErrorSnackBar(AppExceptionCode.LOGIN_CANCELLED))
+                postSideEffect(LoginSideEffect.ShowErrorSnackBar(AuthErrorCode.LOGIN_CANCELLED))
             }
         }
     }
