@@ -1,8 +1,9 @@
 package com.whatever.caramel.feature.profile.create
 
 import androidx.lifecycle.SavedStateHandle
-import com.whatever.caramel.core.domain.entity.user.Nickname
+import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
+import com.whatever.caramel.core.domain.validator.UserValidator
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.profile.create.mvi.Gender
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
@@ -58,11 +59,10 @@ class ProfileCreateViewModel(
     }
 
     private fun inputNickname(nickname: String) {
-        val validatedNickname = Nickname(nickname)
-
+        UserValidator.checkInputNicknameValidate(nickname).getOrThrow()
         reduce {
             copy(
-                nickname = validatedNickname.toString()
+                nickname = nickname
             )
         }
     }

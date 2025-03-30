@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.domain.entity.user
 
-import com.whatever.caramel.core.domain.exception.AppExceptionCode
+import com.whatever.caramel.core.domain.exception.code.AppExceptionCode
 import com.whatever.caramel.core.domain.exception.CaramelException
 
 data class User(
@@ -23,7 +23,7 @@ data class UserBasic(
 }
 
 data class UserProfile(
-    val nickName : Nickname,
+    val nickName : String,
     val gender : Gender,
     val birthday : String
 )

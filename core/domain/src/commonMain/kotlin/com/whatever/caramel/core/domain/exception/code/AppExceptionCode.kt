@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain.exception
+package com.whatever.caramel.core.domain.exception.code
 
 data object AppExceptionCode {
     private const val APP_BASE_PREFIX = "APP"

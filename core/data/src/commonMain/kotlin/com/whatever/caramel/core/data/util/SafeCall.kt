@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.data.util
 
 import com.whatever.caramel.core.data.mapper.toCaramelException
-import com.whatever.caramel.core.domain.exception.AppExceptionCode
+import com.whatever.caramel.core.domain.exception.code.AppExceptionCode
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.remote.network.exception.CaramelNetworkException
 
