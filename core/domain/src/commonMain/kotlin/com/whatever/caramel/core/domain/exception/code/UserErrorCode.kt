@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.domain.exception.code
 
-object UserErrorCode {
+data object UserErrorCode {
     private const val PREFIX = "USER"
 
     const val INVALID_USER_STATUS = PREFIX + "100"
