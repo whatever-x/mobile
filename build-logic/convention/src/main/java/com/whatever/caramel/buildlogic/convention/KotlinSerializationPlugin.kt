@@ -1,6 +1,5 @@
 package com.whatever.caramel.buildlogic.convention
 
-import com.whatever.caramel.buildlogic.convention.extension.compose
 import com.whatever.caramel.buildlogic.convention.extension.kotlin
 import com.whatever.caramel.buildlogic.convention.extension.library
 import com.whatever.caramel.buildlogic.convention.extension.libs
