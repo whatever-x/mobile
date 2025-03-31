@@ -26,7 +26,12 @@ fun CaramelComposeApp(
             CaramelScaffold(
                 snackBarHost = {
                     CaramelSnackBarHost(
-                        modifier = Modifier.padding(bottom = 20.dp),
+                        modifier = Modifier
+                            .padding(
+                                start = 20.dp,
+                                end = 20.dp,
+                                bottom = 20.dp
+                            ),
                         hostState = LocalSnackbarHostState.current,
                         snackbar = { snackbarData ->
                             CaramelSnackbar(
