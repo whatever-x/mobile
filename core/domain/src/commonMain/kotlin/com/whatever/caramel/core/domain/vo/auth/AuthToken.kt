@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain.model.auth
+package com.whatever.caramel.core.domain.vo.auth
 
 data class AuthToken(
     val accessToken : String,

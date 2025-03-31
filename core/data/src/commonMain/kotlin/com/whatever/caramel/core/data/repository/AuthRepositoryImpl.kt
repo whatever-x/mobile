@@ -1,15 +1,15 @@
 package com.whatever.caramel.core.data.repository
 
 import com.whatever.caramel.core.data.mapper.toAuthToken
-import com.whatever.caramel.core.data.mapper.toLoginPlatform
-import com.whatever.caramel.core.data.mapper.toUserAuthAggregation
+import com.whatever.caramel.core.data.mapper.toUserAuth
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datastore.datasource.TokenDataSource
-import com.whatever.caramel.core.domain.model.aggregate.UserAuthAggregation
-import com.whatever.caramel.core.domain.model.auth.AuthToken
 import com.whatever.caramel.core.domain.repository.AuthRepository
-import com.whatever.caramel.core.domain.usecase.auth.SocialLoginInputModel
+import com.whatever.caramel.core.domain.vo.auth.AuthToken
+import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
+import com.whatever.caramel.core.domain.vo.auth.UserAuth
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSource
+import com.whatever.caramel.core.remote.dto.auth.LoginPlatform
 import com.whatever.caramel.core.remote.dto.auth.ServiceToken
 import com.whatever.caramel.core.remote.dto.auth.SignInRequest
 
@@ -18,18 +18,21 @@ internal class AuthRepositoryImpl(
     private val tokenDataSource: TokenDataSource
 ) : AuthRepository {
 
-    override suspend fun loginWithSocialPlatform(inputModel: SocialLoginInputModel): UserAuthAggregation {
+    override suspend fun loginWithSocialPlatform(
+        idToken: String,
+        socialLoginType: SocialLoginType
+    ): UserAuth {
         return safeCall {
             val request = SignInRequest(
-                idToken = inputModel.idToken,
-                loginPlatform = inputModel.socialLoginType.toLoginPlatform()
+                idToken = idToken,
+                loginPlatform = LoginPlatform.valueOf(socialLoginType.name)
             )
             val response = remoteAuthDataSource.signIn(request = request)
-            response.toUserAuthAggregation()
+            response.toUserAuth()
         }
     }
 
-    override suspend fun refreshAuthToken(oldToken: AuthToken) : AuthToken {
+    override suspend fun refreshAuthToken(oldToken: AuthToken): AuthToken {
         return safeCall {
             val request = ServiceToken(
                 accessToken = oldToken.accessToken,

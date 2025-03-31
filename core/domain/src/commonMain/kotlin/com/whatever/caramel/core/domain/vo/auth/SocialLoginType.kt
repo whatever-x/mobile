@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain.entity.auth
+package com.whatever.caramel.core.domain.vo.auth
 
 enum class SocialLoginType {
     APPLE,

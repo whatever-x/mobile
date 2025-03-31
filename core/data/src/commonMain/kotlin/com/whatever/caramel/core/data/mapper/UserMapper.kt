@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.data.mapper
 
-import com.whatever.caramel.core.domain.entity.user.UserStatus
+import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.remote.dto.user.UserStatusDto
 
 fun String.toUserStatus() : UserStatus {

@@ -10,6 +10,6 @@ data class SignInResponse(
     @SerialName("serviceToken") val serviceToken: ServiceToken,
     @SerialName("userStatus") val userStatus: UserStatusDto,
     @SerialName("nickname") val nickname: String?,
-    @SerialName("birthDay") val birthDay: LocalDate?,
+    @SerialName("birthDay") val birthDay: String?,
     @SerialName("coupleId") val coupleId: Long?,
 )

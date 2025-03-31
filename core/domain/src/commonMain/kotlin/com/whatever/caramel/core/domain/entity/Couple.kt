@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain.entity.couple
+package com.whatever.caramel.core.domain.entity
 
 data class Couple(
     val id: Long,
