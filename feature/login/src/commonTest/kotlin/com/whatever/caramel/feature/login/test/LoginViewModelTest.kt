@@ -15,6 +15,7 @@ import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
 import com.whatever.caramel.core.domain.vo.auth.UserAuth
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.testing.domain.AuthTestFactory
+import com.whatever.caramel.core.testing.util.TestConstants
 import com.whatever.caramel.core.testing.util.assertEqualsWithMessage
 import com.whatever.caramel.feature.login.LoginViewModel
 import com.whatever.caramel.feature.login.mvi.LoginIntent
@@ -136,7 +137,7 @@ class LoginViewModelTest {
 }
 
 class FakeUserRepository : UserRepository {
-    var userStatus = UserStatus.NONE
+    private var userStatus = UserStatus.NONE
 
     override suspend fun getUserStatus(): UserStatus {
         return userStatus
@@ -173,13 +174,13 @@ class FakeAuthRepository : AuthRepository {
         }
         return loginWithSocialPlatformResponse
             ?: throw CaramelException(
-                code = AppErrorCode.NULL_VALUE,
-                "테스트에서 loginWithSocialPlatformResponse 설정 필요"
+                code = NetworkErrorCode.UNKNOWN,
+                message = TestConstants.REQUIRE_INIT_FOR_TEST
             )
     }
 
     override suspend fun refreshAuthToken(oldToken: AuthToken): AuthToken {
-        throw UnsupportedOperationException("테스트에서 사용되지 않음")
+        throw UnsupportedOperationException(TestConstants.NOT_USE_IN_TEST)
     }
 
     override suspend fun saveTokens(authToken: AuthToken) {
@@ -188,6 +189,9 @@ class FakeAuthRepository : AuthRepository {
 
     override suspend fun getAuthToken(): AuthToken {
         return storedAuthToken
-            ?: throw CaramelException(code = AppErrorCode.NULL_VALUE, "")
+            ?: throw CaramelException(
+                code = NetworkErrorCode.UNKNOWN,
+                message = TestConstants.REQUIRE_INIT_FOR_TEST
+            )
     }
 }
