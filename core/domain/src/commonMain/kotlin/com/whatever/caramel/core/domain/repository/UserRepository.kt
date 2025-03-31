@@ -1,5 +1,6 @@
 package com.whatever.caramel.core.domain.repository
 
+import com.whatever.caramel.core.domain.entity.User
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 
 interface UserRepository {
@@ -10,5 +11,5 @@ interface UserRepository {
         birthDay : String,
         agreementServiceTerms: Boolean,
         agreementPrivacyPolicy: Boolean
-    )
+    ) : User
 }
