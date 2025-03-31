@@ -19,13 +19,15 @@ object UserValidator {
             input.length > NICKNAME_MAX_LENGTH -> Result.failure(
                 CaramelException(
                     code = UserErrorCode.INVALID_NICKNAME_SIZE,
-                    message = "닉네임은 $NICKNAME_MAX_LENGTH 자리 이하여야 합니다."
+                    message = "Nickname is limited to $NICKNAME_MAX_LENGTH characters.",
+                    debugMessage = "닉네임은 $NICKNAME_MAX_LENGTH 자리 이하여야 합니다."
                 )
             )
             !input.matches(NICKNAME_VALID_PATTERN) -> Result.failure(
                 CaramelException(
                     code = UserErrorCode.INVALID_NICKNAME_FORMAT,
-                    message = "닉네임은 영문, 숫자, 한글만 사용할 수 있습니다."
+                    message = "Nickname should only contain English letters, numbers, and Korean characters.",
+                    debugMessage = "닉네임은 영문, 숫자, 한글만 사용할 수 있습니다."
                 )
             )
             else -> Result.success(Unit)
@@ -42,13 +44,15 @@ object UserValidator {
             input.length > NICKNAME_MAX_LENGTH -> Result.failure(
                 CaramelException(
                     code = UserErrorCode.INVALID_NICKNAME_SIZE,
-                    message = "닉네임은 $NICKNAME_MIN_LENGTH 자리 이상, $NICKNAME_MAX_LENGTH 자리 이하여야 합니다."
+                    message = "닉네임은 $NICKNAME_MIN_LENGTH 자리 이상, $NICKNAME_MAX_LENGTH 자리 이하여야 합니다.",
+                    debugMessage = "Nicknames must have at least $NICKNAME_MIN_LENGTH character and no more than $NICKNAME_MAX_LENGTH characters."
                 )
             )
             !input.matches(NICKNAME_VALID_PATTERN) -> Result.failure(
                 CaramelException(
                     code = UserErrorCode.INVALID_NICKNAME_FORMAT,
-                    message = "닉네임은 영문, 숫자, 한글만 사용할 수 있습니다."
+                    message = "닉네임은 영문, 숫자, 한글만 사용할 수 있습니다.",
+                    debugMessage = "Nickname should only contain English letters, numbers, and Korean characters."
                 )
             )
             else -> Result.success(Unit)
