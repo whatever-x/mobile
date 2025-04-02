@@ -6,6 +6,7 @@ import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datastore.datasource.UserDataSource
 import com.whatever.caramel.core.domain.entity.User
 import com.whatever.caramel.core.domain.repository.UserRepository
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.remote.datasource.RemoteUserDataSource
 import com.whatever.caramel.core.remote.dto.user.UserProfileRequest
@@ -29,13 +30,15 @@ class UserRepositoryImpl(
     override suspend fun createUserProfile(
         nickname: String,
         birthDay: String,
+        gender: Gender,
         agreementServiceTerms: Boolean,
         agreementPrivacyPolicy: Boolean
-    ) : User {
+    ): User {
         return safeCall {
             val request = UserProfileRequest(
                 nickname = nickname,
                 birthday = birthDay,
+                gender = gender.name,
                 agreementServiceTerms = agreementServiceTerms,
                 agreementPrivatePolicy = agreementPrivacyPolicy
             )
