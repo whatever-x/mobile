@@ -2,20 +2,10 @@ package com.whatever.caramel.feature.login.test
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
-import com.whatever.caramel.core.domain.entity.User
-import com.whatever.caramel.core.domain.exception.CaramelException
-import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.exception.code.AuthErrorCode
 import com.whatever.caramel.core.domain.exception.code.NetworkErrorCode
-import com.whatever.caramel.core.domain.repository.AuthRepository
-import com.whatever.caramel.core.domain.repository.UserRepository
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
-import com.whatever.caramel.core.domain.vo.auth.AuthToken
-import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
-import com.whatever.caramel.core.domain.vo.auth.UserAuth
-import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.testing.domain.AuthTestFactory
-import com.whatever.caramel.core.testing.util.TestConstants
 import com.whatever.caramel.core.testing.util.assertEqualsWithMessage
 import com.whatever.caramel.feature.login.LoginViewModel
 import com.whatever.caramel.feature.login.mvi.LoginIntent
@@ -133,65 +123,5 @@ class LoginViewModelTest {
         const val VALID_ID_TOKEN = "valid_token"
         const val INVALID_ID_TOKEN = "invalid_token"
         const val NETWORK_INVALID_TOKEN_ERROR_MSG = "invalid_token_error_message"
-    }
-}
-
-class FakeUserRepository : UserRepository {
-    private var userStatus = UserStatus.NONE
-
-    override suspend fun getUserStatus(): UserStatus {
-        return userStatus
-    }
-
-    override suspend fun setUserStatus(status: UserStatus) {
-        userStatus = status
-    }
-
-    override suspend fun createUserProfile(
-        nickname: String,
-        birthDay: String,
-        agreementServiceTerms: Boolean,
-        agreementPrivacyPolicy: Boolean
-    ): User {
-        return User()
-    }
-}
-
-class FakeAuthRepository : AuthRepository {
-    var isInvalidIdToken = false
-    var loginWithSocialPlatformResponse: UserAuth? = null
-    private var storedAuthToken: AuthToken? = null
-
-    override suspend fun loginWithSocialPlatform(
-        idToken: String,
-        socialLoginType: SocialLoginType
-    ): UserAuth {
-        if (isInvalidIdToken) {
-            throw CaramelException(
-                code = NetworkErrorCode.INVALID_ARGUMENT,
-                message = LoginViewModelTest.NETWORK_INVALID_TOKEN_ERROR_MSG
-            )
-        }
-        return loginWithSocialPlatformResponse
-            ?: throw CaramelException(
-                code = NetworkErrorCode.UNKNOWN,
-                message = TestConstants.REQUIRE_INIT_FOR_TEST
-            )
-    }
-
-    override suspend fun refreshAuthToken(oldToken: AuthToken): AuthToken {
-        throw UnsupportedOperationException(TestConstants.NOT_USE_IN_TEST)
-    }
-
-    override suspend fun saveTokens(authToken: AuthToken) {
-        storedAuthToken = authToken
-    }
-
-    override suspend fun getAuthToken(): AuthToken {
-        return storedAuthToken
-            ?: throw CaramelException(
-                code = NetworkErrorCode.UNKNOWN,
-                message = TestConstants.REQUIRE_INIT_FOR_TEST
-            )
     }
 }
