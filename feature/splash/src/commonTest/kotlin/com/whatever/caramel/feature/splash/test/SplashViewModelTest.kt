@@ -7,7 +7,6 @@ import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.testing.factory.AuthTestFactory
 import com.whatever.caramel.core.testing.repository.TestAuthRepository
 import com.whatever.caramel.core.testing.repository.TestUserRepository
-import com.whatever.caramel.core.testing.util.assertEquals
 import com.whatever.caramel.feature.splash.SplashViewModel
 import com.whatever.caramel.feature.splash.mvi.SplashSideEffect
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +19,7 @@ import kotlinx.coroutines.test.setMain
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SplashViewModelTest {

@@ -8,7 +8,6 @@ import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUse
 import com.whatever.caramel.core.testing.factory.AuthTestFactory
 import com.whatever.caramel.core.testing.repository.TestAuthRepository
 import com.whatever.caramel.core.testing.repository.TestUserRepository
-import com.whatever.caramel.core.testing.util.assertEquals
 import com.whatever.caramel.feature.login.LoginViewModel
 import com.whatever.caramel.feature.login.mvi.LoginIntent
 import com.whatever.caramel.feature.login.mvi.LoginSideEffect
@@ -24,6 +23,7 @@ import kotlinx.coroutines.test.setMain
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class LoginViewModelTest {

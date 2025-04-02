@@ -7,7 +7,7 @@ import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.vo.auth.AuthToken
 import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
 import com.whatever.caramel.core.domain.vo.auth.UserAuth
-import com.whatever.caramel.core.testing.util.TestMessage
+import com.whatever.caramel.core.testing.constant.TestMessage
 
 class TestAuthRepository : AuthRepository {
     var isRefreshFail = false

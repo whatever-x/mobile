@@ -5,7 +5,7 @@ import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.code.NetworkErrorCode
 import com.whatever.caramel.core.domain.repository.CoupleRepository
 import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
-import com.whatever.caramel.core.testing.util.TestMessage
+import com.whatever.caramel.core.testing.constant.TestMessage
 
 class TestCoupleRepository : CoupleRepository {
     var coupleInvitationCodeResponse: CoupleInvitationCode? = null

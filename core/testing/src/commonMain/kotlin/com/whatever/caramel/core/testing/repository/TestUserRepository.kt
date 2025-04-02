@@ -8,7 +8,7 @@ import com.whatever.caramel.core.domain.validator.UserValidator
 import com.whatever.caramel.core.domain.vo.user.Gender
 
 import com.whatever.caramel.core.domain.vo.user.UserStatus
-import com.whatever.caramel.core.testing.util.TestMessage
+import com.whatever.caramel.core.testing.constant.TestMessage
 
 class TestUserRepository : UserRepository {
     var savedUserStatus: UserStatus? = null

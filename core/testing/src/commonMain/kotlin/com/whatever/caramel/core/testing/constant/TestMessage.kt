@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.testing.util
+package com.whatever.caramel.core.testing.constant
 
 data object TestMessage {
     const val NOT_USE_IN_TEST = "테스트에서 사용하지 않는 메소드입니다."
