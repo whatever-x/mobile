@@ -54,7 +54,7 @@ class ProfileCreateViewModelTest {
         val currentIndex = steps.indexOf(currentStep)
         val targetIndex = steps.indexOf(targetStep)
 
-        require(targetIndex >= currentIndex) { "뒤로가기는 제공하지 않음" }
+        require(targetIndex >= currentIndex) { "유효한 테스트 케이스가 아닙니다" }
 
         if (currentStep == ProfileCreateStep.NICKNAME && viewModel.state.value.nickname.isEmpty()) {
             viewModel.intent(ProfileCreateIntent.ChangeNickname(VALID_NICKNAME))
@@ -136,7 +136,7 @@ class ProfileCreateViewModelTest {
     }
 
     @Test
-    fun `닉네임 입력 시 8글자이하 만 입력되야 합니다`() = runTest {
+    fun `닉네임 입력 시 8글자 이하만 입력되야 합니다`() = runTest {
         viewModel.intent(ProfileCreateIntent.ChangeNickname(VALID_NICKNAME))
         viewModel.intent(ProfileCreateIntent.ChangeNickname(INVALID_SIZE_NICKNAME))
         testDispatcher.scheduler.advanceUntilIdle()
@@ -160,10 +160,7 @@ class ProfileCreateViewModelTest {
 
     @Test
     fun `생일 화면은 항상 다음 버튼이 활성화되어 있습니다`() = runTest {
-        repeat(2) {
-            viewModel.intent(ProfileCreateIntent.ClickNextButton)
-        }
-        testDispatcher.scheduler.advanceUntilIdle()
+        progressToStep(ProfileCreateStep.BIRTHDAY)
         assertEquals(
             expected = viewModel.state.value.currentStep,
             actual = ProfileCreateStep.BIRTHDAY
@@ -177,8 +174,7 @@ class ProfileCreateViewModelTest {
 
     @Test
     fun `성별이 선택 되어야 다음 버튼이 활성화 됩니다`() = runTest {
-        viewModel.intent(ProfileCreateIntent.ClickNextButton)
-        testDispatcher.scheduler.advanceUntilIdle()
+        progressToStep(ProfileCreateStep.GENDER)
         assertEquals(
             expected = false,
             actual = viewModel.state.value.isNextButtonEnabled
@@ -211,9 +207,7 @@ class ProfileCreateViewModelTest {
 
     @Test
     fun `약관 동의가 전부 되어야 가입 버튼이 활성화 됩니다`() = runTest {
-        repeat(3) {
-            viewModel.intent(ProfileCreateIntent.ClickNextButton)
-        }
+        progressToStep(ProfileCreateStep.NEED_TERMS)
         viewModel.intent(ProfileCreateIntent.TogglePersonalInfoTerm)
         viewModel.intent(ProfileCreateIntent.ToggleServiceTerm)
         testDispatcher.scheduler.advanceUntilIdle()
