@@ -22,7 +22,7 @@ fun UserProfileResponse.toUser() = User(
     userStatus = this.userStatus.toUserStatus(),
     userProfile = UserProfile(
         nickName = this.nickname,
-        gender = Gender.NONE,
+        gender = Gender.IDLE,
         birthdayMillisecond = 0L
     )
 )

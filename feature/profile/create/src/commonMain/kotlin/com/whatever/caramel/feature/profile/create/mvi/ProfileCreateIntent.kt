@@ -1,5 +1,6 @@
 package com.whatever.caramel.feature.profile.create.mvi
 
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.viewmodel.UiIntent
 
 sealed interface ProfileCreateIntent : UiIntent {
