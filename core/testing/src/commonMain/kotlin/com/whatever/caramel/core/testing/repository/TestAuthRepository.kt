@@ -9,7 +9,7 @@ import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
 import com.whatever.caramel.core.domain.vo.auth.UserAuth
 import com.whatever.caramel.core.testing.util.TestMessage
 
-class FakeAuthRepository : AuthRepository {
+class TestAuthRepository : AuthRepository {
     var isRefreshFail = false
     var isInvalidIdToken = false
     var saveAuthToken: AuthToken? = null

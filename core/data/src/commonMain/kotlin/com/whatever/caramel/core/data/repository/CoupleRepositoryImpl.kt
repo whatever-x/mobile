@@ -1,7 +1,9 @@
 package com.whatever.caramel.core.data.repository
 
+import com.whatever.caramel.core.data.mapper.toCouple
 import com.whatever.caramel.core.data.mapper.toCoupleInvitationCode
 import com.whatever.caramel.core.data.util.safeCall
+import com.whatever.caramel.core.domain.entity.Couple
 import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
 import com.whatever.caramel.core.domain.repository.CoupleRepository
 import com.whatever.caramel.core.remote.datasource.RemoteCoupleDataSource
@@ -16,12 +18,12 @@ class CoupleRepositoryImpl(
         }
     }
 
-    override suspend fun connectCouple(invitationCode: String) {
-        safeCall {
+    override suspend fun connectCouple(invitationCode: String) : Couple {
+        return safeCall {
             val request = CoupleConnectRequest(
                 invitationCode = invitationCode
             )
-            remoteCoupleDataSource.connectCouple(request)
+            remoteCoupleDataSource.connectCouple(request).toCouple()
         }
     }
 }

@@ -5,8 +5,8 @@ import app.cash.turbine.test
 import com.whatever.caramel.core.domain.entity.User
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
 import com.whatever.caramel.core.domain.vo.user.Gender
-import com.whatever.caramel.core.testing.repository.FakeAuthRepository
-import com.whatever.caramel.core.testing.repository.FakeUserRepository
+import com.whatever.caramel.core.testing.repository.TestAuthRepository
+import com.whatever.caramel.core.testing.repository.TestUserRepository
 import com.whatever.caramel.feature.profile.create.ProfileCreateViewModel
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateSideEffect
@@ -26,8 +26,8 @@ import kotlin.test.assertEquals
 @OptIn(ExperimentalCoroutinesApi::class)
 class ProfileCreateViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
-    private lateinit var fakeUserRepository: FakeUserRepository
-    private lateinit var fakeAuthRepository: FakeAuthRepository
+    private lateinit var testUserRepository: TestUserRepository
+    private lateinit var testAuthRepository: TestAuthRepository
     private lateinit var viewModel: ProfileCreateViewModel
     private lateinit var createUserProfileUseCase: CreateUserProfileUseCase
     private lateinit var savedStateHandle: SavedStateHandle
@@ -36,9 +36,9 @@ class ProfileCreateViewModelTest {
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         savedStateHandle = SavedStateHandle()
-        fakeAuthRepository = FakeAuthRepository()
-        fakeUserRepository = FakeUserRepository()
-        createUserProfileUseCase = CreateUserProfileUseCase(fakeUserRepository)
+        testAuthRepository = TestAuthRepository()
+        testUserRepository = TestUserRepository()
+        createUserProfileUseCase = CreateUserProfileUseCase(testUserRepository)
         viewModel = ProfileCreateViewModel(createUserProfileUseCase, savedStateHandle)
     }
 
@@ -86,7 +86,7 @@ class ProfileCreateViewModelTest {
 
     @Test
     fun `프로필 생성에 성공하면 커플 연결 페이지로 이동합니다`() = runTest {
-        fakeUserRepository.createdUser = User()
+        testUserRepository.createdUser = User()
         viewModel.sideEffect.test {
             progressToStep(ProfileCreateStep.NEED_TERMS)
             viewModel.intent(ProfileCreateIntent.ToggleServiceTerm)

@@ -10,7 +10,7 @@ import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.testing.util.TestMessage
 
-class FakeUserRepository : UserRepository {
+class TestUserRepository : UserRepository {
     var savedUserStatus: UserStatus? = null
     var createdUser: User? = null
 

@@ -6,8 +6,8 @@ import com.whatever.caramel.core.domain.exception.code.AuthErrorCode
 import com.whatever.caramel.core.domain.exception.code.NetworkErrorCode
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.testing.factory.AuthTestFactory
-import com.whatever.caramel.core.testing.repository.FakeAuthRepository
-import com.whatever.caramel.core.testing.repository.FakeUserRepository
+import com.whatever.caramel.core.testing.repository.TestAuthRepository
+import com.whatever.caramel.core.testing.repository.TestUserRepository
 import com.whatever.caramel.core.testing.util.assertEquals
 import com.whatever.caramel.feature.login.LoginViewModel
 import com.whatever.caramel.feature.login.mvi.LoginIntent
@@ -28,8 +28,8 @@ import kotlin.test.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class LoginViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
-    private lateinit var fakeAuthRepository: FakeAuthRepository
-    private lateinit var fakeUserRepository: FakeUserRepository
+    private lateinit var testAuthRepository: TestAuthRepository
+    private lateinit var testUserRepository: TestUserRepository
     private lateinit var signInWithSocialPlatformUseCase: SignInWithSocialPlatformUseCase
     private lateinit var savedStateHandle: SavedStateHandle
     private lateinit var loginViewModel: LoginViewModel
@@ -38,12 +38,12 @@ class LoginViewModelTest {
     fun setup() {
         Dispatchers.setMain(testDispatcher)
 
-        fakeUserRepository = FakeUserRepository()
-        fakeAuthRepository = FakeAuthRepository()
+        testUserRepository = TestUserRepository()
+        testAuthRepository = TestAuthRepository()
         savedStateHandle = SavedStateHandle()
 
         signInWithSocialPlatformUseCase =
-            SignInWithSocialPlatformUseCase(fakeAuthRepository, fakeUserRepository)
+            SignInWithSocialPlatformUseCase(testAuthRepository, testUserRepository)
         loginViewModel = LoginViewModel(savedStateHandle, signInWithSocialPlatformUseCase)
     }
 
@@ -68,7 +68,7 @@ class LoginViewModelTest {
 
     @Test
     fun `회원가입을 한 사용자는 프로필 생성 화면으로 이동한다`() = runTest {
-        fakeAuthRepository.loginWithSocialPlatformResponse = AuthTestFactory.createNewUserAuth()
+        testAuthRepository.loginWithSocialPlatformResponse = AuthTestFactory.createNewUserAuth()
         verifyLoginIntent(
             socialAuthResult = SocialAuthResult.Success(KakaoUser(idToken = VALID_ID_TOKEN)),
             expectedSideEffect = LoginSideEffect.NavigateToCreateProfile
@@ -77,7 +77,7 @@ class LoginViewModelTest {
 
     @Test
     fun `커플이 연결되지 않은 사용자는 로그인을 하면 커플 연결 화면으로 이동한다`() = runTest {
-        fakeAuthRepository.loginWithSocialPlatformResponse = AuthTestFactory.createSingleUserAuth()
+        testAuthRepository.loginWithSocialPlatformResponse = AuthTestFactory.createSingleUserAuth()
         verifyLoginIntent(
             socialAuthResult = SocialAuthResult.Success(KakaoUser(idToken = VALID_ID_TOKEN)),
             expectedSideEffect = LoginSideEffect.NavigateToConnectCouple
@@ -86,7 +86,7 @@ class LoginViewModelTest {
 
     @Test
     fun `커플 연결된 사용자는 로그인을 하면 메인 화면으로 이동한다`() = runTest {
-        fakeAuthRepository.loginWithSocialPlatformResponse = AuthTestFactory.createCoupleUserAuth()
+        testAuthRepository.loginWithSocialPlatformResponse = AuthTestFactory.createCoupleUserAuth()
         verifyLoginIntent(
             socialAuthResult = SocialAuthResult.Success(KakaoUser(idToken = VALID_ID_TOKEN)),
             expectedSideEffect = LoginSideEffect.NavigateToMain
@@ -111,7 +111,7 @@ class LoginViewModelTest {
 
     @Test
     fun `로그인 서버 통신 중 오류가 발생한 경우 서버에서 내려준 메세지를 기반으로 SnackBar에 표시한다`() = runTest {
-        fakeAuthRepository.isInvalidIdToken = true
+        testAuthRepository.isInvalidIdToken = true
         verifyLoginIntent(
             socialAuthResult = SocialAuthResult.Success(KakaoUser(idToken = INVALID_ID_TOKEN)),
             expectedSideEffect = LoginSideEffect.ShowErrorSnackBar(
