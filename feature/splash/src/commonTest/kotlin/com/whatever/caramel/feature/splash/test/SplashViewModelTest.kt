@@ -4,8 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.whatever.caramel.core.domain.usecase.user.RefreshUserSessionUseCase
 import com.whatever.caramel.core.domain.vo.user.UserStatus
-import com.whatever.caramel.core.testing.domain.AuthTestFactory
-import com.whatever.caramel.core.testing.util.assertEqualsWithMessage
+import com.whatever.caramel.core.testing.factory.AuthTestFactory
+import com.whatever.caramel.core.testing.repository.FakeAuthRepository
+import com.whatever.caramel.core.testing.repository.FakeUserRepository
+import com.whatever.caramel.core.testing.util.assertEquals
 import com.whatever.caramel.feature.splash.SplashViewModel
 import com.whatever.caramel.feature.splash.mvi.SplashSideEffect
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +43,7 @@ class SplashViewModelTest {
     }
 
     @AfterTest
-    fun tearDown() {
+    fun teardown() {
         Dispatchers.resetMain()
         testDispatcher.cancel()
     }
@@ -53,7 +55,7 @@ class SplashViewModelTest {
             refreshUserSessionUseCase, savedStateHandle
         )
         splashViewModel?.sideEffect?.test {
-            assertEqualsWithMessage(
+            assertEquals(
                 expected = expectedSplashSideEffect,
                 actual = awaitItem()
             )
@@ -98,9 +100,5 @@ class SplashViewModelTest {
         verifySplashSideEffect(
             expectedSplashSideEffect = SplashSideEffect.NavigateToCreateProfile
         )
-    }
-
-    companion object {
-        const val REFRESH_TOKEN_ERROR_MSG = "refresh token error"
     }
 }

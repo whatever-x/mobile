@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.splash.test
+package com.whatever.caramel.core.testing.repository
 
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.code.AuthErrorCode
@@ -10,28 +10,40 @@ import com.whatever.caramel.core.domain.vo.auth.UserAuth
 import com.whatever.caramel.core.testing.util.TestMessage
 
 class FakeAuthRepository : AuthRepository {
+    var isRefreshFail = false
+    var isInvalidIdToken = false
     var saveAuthToken: AuthToken? = null
     var refreshAuthTokenResponse: AuthToken? = null
-    var isRefreshFail = false
+    var loginWithSocialPlatformResponse: UserAuth? = null
 
     override suspend fun loginWithSocialPlatform(
         idToken: String,
         socialLoginType: SocialLoginType
     ): UserAuth {
-        throw UnsupportedOperationException(TestMessage.NOT_USE_IN_TEST)
+        if (isInvalidIdToken) {
+            throw CaramelException(
+                code = NetworkErrorCode.INVALID_ARGUMENT,
+                message = TestMessage.INVALID_ARGUMENT
+            )
+        }
+        return loginWithSocialPlatformResponse
+            ?: throw CaramelException(
+                code = NetworkErrorCode.UNKNOWN,
+                message = TestMessage.REQUIRE_INIT_FOR_TEST
+            )
     }
 
     override suspend fun refreshAuthToken(oldToken: AuthToken): AuthToken {
         if(isRefreshFail){
             throw CaramelException(
                 code = AuthErrorCode.UNAUTHORIZED,
-                message = SplashViewModelTest.REFRESH_TOKEN_ERROR_MSG
+                message = TestMessage.TOKEN_REFRESH_FAIL
             )
         }
         return refreshAuthTokenResponse
             ?: throw CaramelException(
                 code = NetworkErrorCode.UNKNOWN,
-                message = TestMessage.REQUIRE_INIT_FOR_TEST
+                message = TestMessage.UNKNOWN_ERROR
             )
     }
 
@@ -42,7 +54,7 @@ class FakeAuthRepository : AuthRepository {
     override suspend fun getAuthToken(): AuthToken {
         return saveAuthToken ?: throw CaramelException(
             code = NetworkErrorCode.UNKNOWN,
-            message = TestMessage.REQUIRE_INIT_FOR_TEST
+            message = TestMessage.UNKNOWN_ERROR
         )
     }
 }

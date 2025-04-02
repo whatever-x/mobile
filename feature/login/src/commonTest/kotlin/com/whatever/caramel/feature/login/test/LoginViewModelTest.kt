@@ -5,8 +5,10 @@ import app.cash.turbine.test
 import com.whatever.caramel.core.domain.exception.code.AuthErrorCode
 import com.whatever.caramel.core.domain.exception.code.NetworkErrorCode
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
-import com.whatever.caramel.core.testing.domain.AuthTestFactory
-import com.whatever.caramel.core.testing.util.assertEqualsWithMessage
+import com.whatever.caramel.core.testing.factory.AuthTestFactory
+import com.whatever.caramel.core.testing.repository.FakeAuthRepository
+import com.whatever.caramel.core.testing.repository.FakeUserRepository
+import com.whatever.caramel.core.testing.util.assertEquals
 import com.whatever.caramel.feature.login.LoginViewModel
 import com.whatever.caramel.feature.login.mvi.LoginIntent
 import com.whatever.caramel.feature.login.mvi.LoginSideEffect
@@ -46,7 +48,7 @@ class LoginViewModelTest {
     }
 
     @AfterTest
-    fun tearDown() {
+    fun teardown() {
         Dispatchers.resetMain()
         testDispatcher.cancel()
     }
@@ -57,7 +59,7 @@ class LoginViewModelTest {
     ) {
         loginViewModel.sideEffect.test {
             loginViewModel.intent(LoginIntent.ClickKakaoLoginButton(socialAuthResult))
-            assertEqualsWithMessage(
+            assertEquals(
                 expected = expectedSideEffect,
                 actual = awaitItem()
             )
