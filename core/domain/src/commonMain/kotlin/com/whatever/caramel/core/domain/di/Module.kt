@@ -16,6 +16,6 @@ val useCaseModule = module {
     factory { CreateUserProfileUseCase(get()) }
 
     // Couple
-    factory { GetCoupleInvitationCodeUseCase(get(), get()) }
+    factory { GetCoupleInvitationCodeUseCase(get()) }
     factory { ConnectCoupleUseCase(get(), get()) }
 }

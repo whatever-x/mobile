@@ -1,5 +1,7 @@
 package com.whatever.caramel.core.domain.repository
 
+import com.whatever.caramel.core.domain.entity.User
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 
 interface UserRepository {
@@ -8,7 +10,8 @@ interface UserRepository {
     suspend fun createUserProfile(
         nickname : String,
         birthDay : String,
+        gender: Gender,
         agreementServiceTerms: Boolean,
         agreementPrivacyPolicy: Boolean
-    )
+    ) : User
 }

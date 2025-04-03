@@ -1,11 +1,12 @@
 package com.whatever.caramel.feature.login
 
 import androidx.lifecycle.SavedStateHandle
-import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
-import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.exception.code.AuthErrorCode
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
+import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
+import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.login.mvi.LoginIntent
 import com.whatever.caramel.feature.login.mvi.LoginSideEffect
@@ -32,12 +33,12 @@ class LoginViewModel(
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
-        val message = if (throwable is CaramelException) {
-            throwable.message
+        val (code, message) = if (throwable is CaramelException) {
+            throwable.code to throwable.message
         } else {
-            "Unknown error occurred"
+            AppErrorCode.UNKNOWN to null
         }
-        postSideEffect(LoginSideEffect.ShowErrorSnackBar(message))
+        postSideEffect(LoginSideEffect.ShowErrorSnackBar(code = code, message = message))
     }
 
     private suspend fun kakaoLogin(result: SocialAuthResult<KakaoUser>) {
@@ -50,11 +51,11 @@ class LoginViewModel(
             }
 
             is SocialAuthResult.Error -> {
-                postSideEffect(LoginSideEffect.ShowErrorSnackBar(AuthErrorCode.LOGIN_FAILED))
+                postSideEffect(LoginSideEffect.ShowErrorSnackBar(code = AuthErrorCode.LOGIN_FAILED))
             }
 
             is SocialAuthResult.UserCancelled -> {
-                postSideEffect(LoginSideEffect.ShowErrorSnackBar(AuthErrorCode.LOGIN_CANCELLED))
+                postSideEffect(LoginSideEffect.ShowErrorSnackBar(code = AuthErrorCode.LOGIN_CANCELLED))
             }
         }
     }
@@ -69,11 +70,11 @@ class LoginViewModel(
             }
 
             is SocialAuthResult.Error -> {
-                postSideEffect(LoginSideEffect.ShowErrorSnackBar(AuthErrorCode.LOGIN_FAILED))
+                postSideEffect(LoginSideEffect.ShowErrorSnackBar(code = AuthErrorCode.LOGIN_FAILED))
             }
 
             is SocialAuthResult.UserCancelled -> {
-                postSideEffect(LoginSideEffect.ShowErrorSnackBar(AuthErrorCode.LOGIN_CANCELLED))
+                postSideEffect(LoginSideEffect.ShowErrorSnackBar(code = AuthErrorCode.LOGIN_CANCELLED))
             }
         }
     }

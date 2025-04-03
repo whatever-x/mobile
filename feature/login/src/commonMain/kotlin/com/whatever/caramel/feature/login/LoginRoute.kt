@@ -55,7 +55,8 @@ internal fun LoginRoute(
                 is LoginSideEffect.NavigateToCreateProfile -> navigateToCreateProfile()
                 is LoginSideEffect.NavigateToConnectCouple -> navigateToConnectCouple()
                 LoginSideEffect.NavigateToMain -> navigateToMain()
-                is LoginSideEffect.ShowErrorSnackBar -> Napier.e { "Error: ${sideEffect.code}" }
+                // @RyuSw-cs 2025.04.01 FIXME : 로컬에서 발생하면 코드, 서버라면 메세지를 받고 있어 분기 처리 필요
+                is LoginSideEffect.ShowErrorSnackBar -> Napier.e { "Error: ${sideEffect.message}" }
             }
         }
     }

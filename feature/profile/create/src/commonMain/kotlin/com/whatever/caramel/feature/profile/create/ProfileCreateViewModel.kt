@@ -1,11 +1,10 @@
 package com.whatever.caramel.feature.profile.create
 
 import androidx.lifecycle.SavedStateHandle
-import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
 import com.whatever.caramel.core.domain.validator.UserValidator
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.viewmodel.BaseViewModel
-import com.whatever.caramel.feature.profile.create.mvi.Gender
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateSideEffect
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateState
@@ -46,7 +45,7 @@ class ProfileCreateViewModel(
         }
     }
 
-    private fun nextStep() {
+    private suspend fun nextStep() {
         if (currentState.currentStep != ProfileCreateStep.NEED_TERMS) {
             reduce {
                 copy(
@@ -54,7 +53,16 @@ class ProfileCreateViewModel(
                 )
             }
         } else {
-            postSideEffect(ProfileCreateSideEffect.NavigateToConnectCouple)
+            launch {
+                createUserProfileUseCase(
+                    nickname = currentState.nickname,
+                    birthDay = "${currentState.birthday.year}-${currentState.birthday.month}-${currentState.birthday.day}",
+                    gender = currentState.gender,
+                    agreementServiceTerms = currentState.isServiceTermChecked,
+                    agreementPrivacyPolicy = currentState.isPersonalInfoTermChecked
+                )
+                postSideEffect(ProfileCreateSideEffect.NavigateToConnectCouple)
+            }
         }
     }
 

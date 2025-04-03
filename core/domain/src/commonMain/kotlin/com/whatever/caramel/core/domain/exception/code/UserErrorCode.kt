@@ -3,7 +3,10 @@ package com.whatever.caramel.core.domain.exception.code
 data object UserErrorCode {
     private const val PREFIX = "USER"
 
-    const val INVALID_USER_STATUS = PREFIX + "100"
-    const val INVALID_NICKNAME_SIZE = PREFIX + "101"
-    const val INVALID_NICKNAME_FORMAT = PREFIX + "102"
+    const val INVALID_NICKNAME_LENGTH = PREFIX + "001"
+    const val INVALID_NICKNAME_CHARACTER = PREFIX + "002"
+    const val NICKNAME_REQUIRED = PREFIX + "003"
+    const val SERVICE_TERMS_AGREEMENT_REQUIRED = PREFIX + "005"
+    const val PRIVATE_POLICY_AGREEMENT_REQUIRED = PREFIX + "006"
+    const val ALREADY_EXIST_COUPLE = PREFIX + "007"
 }

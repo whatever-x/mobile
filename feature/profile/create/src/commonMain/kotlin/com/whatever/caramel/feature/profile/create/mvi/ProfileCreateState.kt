@@ -1,5 +1,6 @@
 package com.whatever.caramel.feature.profile.create.mvi
 
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.viewmodel.UiState
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
@@ -41,13 +42,6 @@ enum class ProfileCreateStep {
     ;
 }
 
-enum class Gender {
-    IDLE,
-    MALE,
-    FEMALE,
-    ;
-}
-
 data class Birthday(
     val year: String = "",
     val month: String = "",
@@ -55,7 +49,8 @@ data class Birthday(
 ) {
     companion object {
         fun currentDay(): Birthday {
-            val currentDay = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+            val currentDay =
+                Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
             return Birthday(
                 year = currentDay.year.toString(),
