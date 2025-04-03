@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelBalloonPopupWithImage
@@ -76,7 +75,7 @@ internal fun NeedTermsStep(
                                 width = 170.dp,
                                 height = 80.dp
                             ),
-                        painter = painterResource(resource = Resources.Image.img_mozzis),
+                        painter = painterResource(resource = Resources.Image.img_couple_on_ground),
                         contentDescription = null
                     )
                 }

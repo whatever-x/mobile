@@ -27,16 +27,16 @@ internal class CaramelListItemPreviewProvider :
         ),
         CaramelListViewPreviewData(
             content = "Text",
-            leadingIcon = Resources.Icon.profile,
+            leadingIcon = Resources.Icon.ic_profile_20,
         ),
         CaramelListViewPreviewData(
             content = "Text",
-            leadingIcon = Resources.Icon.profile,
+            leadingIcon = Resources.Icon.ic_profile_20,
             trailingIconVisible = true
         ),
         CaramelListViewPreviewData(
             content = "Text",
-            leadingIcon = Resources.Icon.profile,
+            leadingIcon = Resources.Icon.ic_profile_20,
             trailingText = "Button"
         ),
     )

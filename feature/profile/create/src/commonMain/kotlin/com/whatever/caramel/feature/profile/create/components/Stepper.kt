@@ -33,9 +33,9 @@ internal fun Stepper(
                 modifier = Modifier.size(size = 18.dp),
                 painter = painterResource(
                     resource = if (step.ordinal <= currentIndex) {
-                        Resources.Icon.ic_active_step_18
+                        Resources.Icon.ic_progress_dot_active_18
                     } else {
-                        Resources.Icon.ic_inactive_step_18
+                        Resources.Icon.ic_progress_dot_inactive_18
                     }
                 ),
                 tint = Color.Unspecified,

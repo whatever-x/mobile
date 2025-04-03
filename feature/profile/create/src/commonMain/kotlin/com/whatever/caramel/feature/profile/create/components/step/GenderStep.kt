@@ -68,7 +68,7 @@ internal fun GenderStep(
                         }
                     ),
                 text = "남자에요",
-                icon = Resources.Icon.ic_male_90,
+                icon = Resources.Image.img_gender_man,
                 onClick = { onClickGenderButton(Gender.MALE) },
             )
 
@@ -86,7 +86,7 @@ internal fun GenderStep(
                         }
                     ),
                 text = "여자에요",
-                icon = Resources.Icon.ic_female_90,
+                icon = Resources.Image.img_gender_woman,
                 onClick = { onClickGenderButton(Gender.FEMALE) },
             )
         }
@@ -104,7 +104,7 @@ internal fun GenderButton(
         modifier = modifier
             .width(width = 160.dp)
             .background(
-                color = CaramelTheme.color.text.inverse, // TODO : 디자인 컬러 변경 확인
+                color = CaramelTheme.color.background.tertiary,
                 shape = CaramelTheme.shape.xl
             )
             .clip(shape = CaramelTheme.shape.xl)

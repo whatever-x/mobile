@@ -53,14 +53,14 @@ private fun TrailingText(text: String) {
     Text(
         text = text,
         style = CaramelTheme.typography.body3.regular,
-        color = CaramelTheme.color.text.accent
+        color = CaramelTheme.color.text.primary
     )
 }
 
 @Composable
 private fun TrailingArrow() {
     Icon(
-        imageVector = vectorResource(Resources.Icon.arrow_right),
+        imageVector = vectorResource(Resources.Icon.ic_arrow_right_14),
         contentDescription = null
     )
 }

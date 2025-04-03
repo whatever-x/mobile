@@ -55,7 +55,7 @@ internal fun CoupleInviteScreen(
                             indication = null,
                             interactionSource = null
                         ),
-                        painter = painterResource(resource = Resources.Icon.ic_close_24),
+                        painter = painterResource(resource = Resources.Icon.ic_cancel_24),
                         tint = CaramelTheme.color.icon.primary,
                         contentDescription = null
                     )
@@ -121,7 +121,7 @@ internal fun CoupleInviteScreen(
                                     width = 170.dp,
                                     height = 80.dp
                                 ),
-                            painter = painterResource(resource = Resources.Image.img_mozzis),
+                            painter = painterResource(resource = Resources.Image.img_couple_on_ground),
                             contentDescription = null
                         )
                     }
@@ -148,7 +148,7 @@ internal fun CoupleInviteScreen(
 
                 InviteButton(
                     text = "카라멜\n초대장 보내기",
-                    icon = Resources.Icon.ic_send_25_24,
+                    icon = Resources.Icon.ic_send_24,
                     onClickButton = { onIntent(CoupleInviteIntent.ClickInviteButton) }
                 )
             }
