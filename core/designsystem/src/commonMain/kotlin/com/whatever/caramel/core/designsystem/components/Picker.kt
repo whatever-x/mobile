@@ -63,7 +63,6 @@ enum class PickerScrollMode {
  * @param visibleItemsCount 화면에 동시에 보여질 아이템 개수입니다.
  * @param itemSpacing 아이템 간의 간격입니다.
  * @param textStyle 선택되지 않은 아이템에 적용할 [TextStyle]입니다.
- * @param dividerThickness 선택된 아이템 위아래에 그려지는 구분선의 두께입니다.
  * @param dividerColor Divider의 색상입니다.
  * @param scrollMode 피커의 스크롤 동작 모드입니다.
  * @param onHapticFeedback 아이템 변경 시 실행되는 햅틱 피드백 콜백입니다. [HapticController]를 주입받아 사용합니다.
