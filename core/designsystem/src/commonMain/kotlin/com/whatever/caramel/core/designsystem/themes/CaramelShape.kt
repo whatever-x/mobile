@@ -25,6 +25,7 @@ data class CaramelShape(
     val m: Shape,
     val l: Shape,
     val xl: Shape,
+    val xxl: Shape,
 ) {
     companion object {
         fun defaultRadius(): CaramelShape = CaramelShape (
@@ -34,6 +35,7 @@ data class CaramelShape(
             m = CaramelShapeDefaults.RADIUS_M.shape,
             l = CaramelShapeDefaults.RADIUS_L.shape,
             xl = CaramelShapeDefaults.RADIUS_XL.shape,
+            xxl = CaramelShapeDefaults.RADIUS_XXL.shape
         )
     }
 }
