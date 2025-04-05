@@ -97,7 +97,7 @@ fun SlideInSlideOutSnackbarHost(
 }
 
 private class FadeInFadeOutState<T> {
-    var current: Any? = Any()
+    var current: SnackbarData? = null
     var items = mutableListOf<FadeInFadeOutAnimationItem<T>>()
     var scope: RecomposeScope? = null
 }
