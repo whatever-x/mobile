@@ -9,6 +9,7 @@ plugins {
     id("caramel.kmp.ios")
     id("caramel.compose")
     id("caramel.kotlin.serialization")
+    id("caramel.kmp.test")
     alias(libs.plugins.kmp.spm)
 }
 
