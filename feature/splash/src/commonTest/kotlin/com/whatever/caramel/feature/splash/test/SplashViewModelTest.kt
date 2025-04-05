@@ -2,13 +2,21 @@ package com.whatever.caramel.feature.splash.test
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
-import com.whatever.caramel.core.domain.usecase.user.RefreshUserSessionUseCase
+import com.whatever.caramel.core.domain.di.useCaseModule
+import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.code.AuthErrorCode
+import com.whatever.caramel.core.domain.repository.AuthRepository
+import com.whatever.caramel.core.domain.repository.UserRepository
+import com.whatever.caramel.core.domain.vo.auth.AuthToken
 import com.whatever.caramel.core.domain.vo.user.UserStatus
-import com.whatever.caramel.core.testing.factory.AuthTestFactory
-import com.whatever.caramel.core.testing.repository.TestAuthRepository
-import com.whatever.caramel.core.testing.repository.TestUserRepository
 import com.whatever.caramel.feature.splash.SplashViewModel
+import com.whatever.caramel.feature.splash.di.splashFeatureModule
 import com.whatever.caramel.feature.splash.mvi.SplashSideEffect
+import dev.mokkery.answering.returns
+import dev.mokkery.answering.throws
+import dev.mokkery.everySuspend
+import dev.mokkery.matcher.any
+import dev.mokkery.mock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
@@ -16,45 +24,50 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class SplashViewModelTest {
+class SplashViewModelTest : KoinComponent {
     private val testDispatcher = StandardTestDispatcher()
-    private lateinit var testAuthRepository: TestAuthRepository
-    private lateinit var testUserRepository: TestUserRepository
-    private lateinit var savedStateHandle: SavedStateHandle
-    private lateinit var refreshUserSessionUseCase: RefreshUserSessionUseCase
-    private var splashViewModel: SplashViewModel? = null
+    private val authRepository = mock<AuthRepository>()
+    private val userRepository = mock<UserRepository>()
 
     @BeforeTest
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        savedStateHandle = SavedStateHandle()
-
-        testAuthRepository = TestAuthRepository()
-        testUserRepository = TestUserRepository()
-        refreshUserSessionUseCase =
-            RefreshUserSessionUseCase(testAuthRepository, testUserRepository)
-        splashViewModel = null
+        startKoin {
+            modules(
+                module {
+                    single<AuthRepository> { authRepository }
+                    single<UserRepository> { userRepository }
+                    single<SavedStateHandle> { SavedStateHandle() }
+                },
+                splashFeatureModule,
+                useCaseModule
+            )
+        }
     }
 
     @AfterTest
     fun teardown() {
         Dispatchers.resetMain()
         testDispatcher.cancel()
+        stopKoin()
     }
 
     private suspend fun verifySplashSideEffect(
         expectedSplashSideEffect: SplashSideEffect
     ) {
-        splashViewModel = SplashViewModel(
-            refreshUserSessionUseCase, savedStateHandle
-        )
-        splashViewModel?.sideEffect?.test {
+        val viewModel = get<SplashViewModel>()
+        viewModel.sideEffect.test {
             assertEquals(
                 expected = expectedSplashSideEffect,
                 actual = awaitItem()
@@ -62,41 +75,60 @@ class SplashViewModelTest {
         }
     }
 
+    private fun determineUserStatusAfterTokenRefresh(userStatus: UserStatus) {
+        val oldToken = AuthToken(accessToken = "old_access_token", refreshToken = "old_refresh_token")
+        val newToken = AuthToken(accessToken = "new_access_token", refreshToken = "new_refresh_token")
+
+        everySuspend {
+            authRepository.getAuthToken()
+        } returns oldToken
+
+        everySuspend {
+            authRepository.refreshAuthToken(oldToken = oldToken)
+        } returns newToken
+
+        everySuspend {
+            authRepository.saveTokens(newToken)
+        } returns Unit
+
+        everySuspend {
+            userRepository.getUserStatus()
+        } returns userStatus
+    }
+
     @Test
     fun `토큰 갱신이 실패한 경우 로그인 화면으로 이동한다`() = runTest {
-        testAuthRepository.isRefreshFail = true
+        everySuspend {
+            authRepository.refreshAuthToken(any())
+        } throws CaramelException(
+            code = AuthErrorCode.UNAUTHORIZED,
+            message = "토큰 갱신에 실패했습니다."
+        )
+
         verifySplashSideEffect(
             expectedSplashSideEffect = SplashSideEffect.NavigateToLogin
         )
     }
 
     @Test
-    fun `토큰 갱신이 성공한 경우 로컬 저장소에 저장된 유저 상태가 커플인 경우 메인 페이지로 이동한다`() = runTest {
-        testUserRepository.savedUserStatus = UserStatus.COUPLED
-        testAuthRepository.saveAuthToken = AuthTestFactory.createValidAuthToken()
-        testAuthRepository.refreshAuthTokenResponse = AuthTestFactory.createValidAuthToken()
+    fun `토큰 갱신이 성공한 경우 로컬 저장소에 저장된 유저 상태가 커플이라면 메인 페이지로 이동한다`() = runTest {
+        determineUserStatusAfterTokenRefresh(userStatus = UserStatus.COUPLED)
         verifySplashSideEffect(
             expectedSplashSideEffect = SplashSideEffect.NavigateToMain
         )
     }
 
     @Test
-    fun `토큰 갱신이 성공한 경우 로컬 저장소에 저장된 유저 상태가 싱글인 경우 커플 초대로 이동한다`() = runTest {
-        testUserRepository.savedUserStatus = UserStatus.SINGLE
-        testAuthRepository.saveAuthToken = AuthTestFactory.createValidAuthToken()
-        testAuthRepository.refreshAuthTokenResponse = AuthTestFactory.createValidAuthToken()
-
+    fun `토큰 갱신이 성공한 경우 로컬 저장소에 저장된 유저 상태가 싱글이라면 커플 초대로 이동한다`() = runTest {
+        determineUserStatusAfterTokenRefresh(userStatus = UserStatus.SINGLE)
         verifySplashSideEffect(
             expectedSplashSideEffect = SplashSideEffect.NavigateToInviteCouple
         )
     }
 
     @Test
-    fun `토큰 갱신이 성공한 경우 로컬 저장소에 저장된 유저 상태가 회원가입 이후 아무것도 안한 경우 프로필 생성으로 이동한다`() = runTest {
-        testUserRepository.savedUserStatus = UserStatus.NEW
-        testAuthRepository.saveAuthToken = AuthTestFactory.createEmptyAuthToken()
-        testAuthRepository.refreshAuthTokenResponse = AuthTestFactory.createValidAuthToken()
-
+    fun `토큰 갱신이 성공한 경우 로컬 저장소에 저장된 유저 상태가 회원가입 이후 아무것도 안한 상태라면 프로필 생성으로 이동한다`() = runTest {
+        determineUserStatusAfterTokenRefresh(userStatus = UserStatus.NEW)
         verifySplashSideEffect(
             expectedSplashSideEffect = SplashSideEffect.NavigateToCreateProfile
         )
