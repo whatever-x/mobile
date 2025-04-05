@@ -6,6 +6,7 @@ import com.whatever.caramel.core.designsystem.foundations.Alpha100
 import com.whatever.caramel.core.designsystem.foundations.Green600
 import com.whatever.caramel.core.designsystem.foundations.Neutral100
 import com.whatever.caramel.core.designsystem.foundations.Neutral200
+import com.whatever.caramel.core.designsystem.foundations.Neutral300
 import com.whatever.caramel.core.designsystem.foundations.Neutral400
 import com.whatever.caramel.core.designsystem.foundations.Neutral600
 import com.whatever.caramel.core.designsystem.foundations.Neutral900
@@ -23,7 +24,7 @@ import com.whatever.caramel.core.designsystem.themes.CaramelColor.TextColor as T
 data class CaramelColor(
     val text: TextColor,
     val background: BackgroundColor,
-    val alpha: AlphaColor,
+    val alpha: DimColor,
     val fill: FillColor,
     val divider: DividerColor,
     val icon: IconColor
@@ -35,7 +36,6 @@ data class CaramelColor(
         val tertiary: Color = Neutral400,
         val brand: Color = Orange500,
         val inverse: Color = White100,
-        val accent: Color = Orange500,
         val disabledPrimary: Color = Neutral400,
         val disabledBrand: Color = Orange400,
         val placeholder: Color = Neutral400,
@@ -52,7 +52,7 @@ data class CaramelColor(
     )
 
     @Immutable
-    data class AlphaColor(
+    data class DimColor(
         val primary: Color = Alpha100
     )
 
@@ -62,6 +62,7 @@ data class CaramelColor(
         val secondary: Color = Neutral600,
         val tertiary: Color = Neutral400,
         val quaternary: Color = Neutral200,
+        val quinary: Color = Orange200,
         val inverse: Color = White100,
         val brand: Color = Orange500,
         val disabledPrimary: Color = Neutral200,
@@ -74,7 +75,8 @@ data class CaramelColor(
     @Immutable
     data class DividerColor(
         val primary: Color = Neutral200,
-        val secondary: Color = White100
+        val secondary: Color = White100,
+        val tertiary: Color = Neutral300,
     )
 
     @Immutable
@@ -92,7 +94,7 @@ data class CaramelColor(
         fun defaultColor(): CaramelColor = CaramelColor(
             text = TextColor1(),
             background = BackgroundColor(),
-            alpha = AlphaColor(),
+            alpha = DimColor(),
             fill = FillColor(),
             divider = DividerColor(),
             icon = IconColor(),

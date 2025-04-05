@@ -109,7 +109,7 @@ fun CaramelNavItemCreateButton(
         modifier = modifier
             .size(40.dp)
             .background(
-                color = Color(0xFFFEF3E5), // @ham2174 TODO : 디자인 토큰으로 변경시 변경
+                color = CaramelTheme.color.fill.quinary,
                 shape = CaramelTheme.shape.s
             )
             .clip(shape = CaramelTheme.shape.s)
@@ -121,7 +121,7 @@ fun CaramelNavItemCreateButton(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            painter = painterResource(resource = Resources.Icon.ic_circle_plus_24),
+            painter = painterResource(resource = Resources.Icon.ic_circle_plus_solid_24),
             tint = CaramelTheme.color.icon.brand,
             contentDescription = null
         )
