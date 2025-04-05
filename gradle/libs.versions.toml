@@ -38,6 +38,7 @@ kakao = "2.20.6"
 kmp-spm = "0.4.0"
 kotlinx-date-time = "0.6.2"
 turbine = "1.2.0"
+mokkery = "2.7.2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -109,6 +110,7 @@ kotlinx-date-time = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime"
 
 compose-ui-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose-plugin" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+mokkery = { group = "dev.mokkery", name = "mokkery-gradle", version.ref = "mokkery" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -123,6 +125,7 @@ kmp-spm = { id = "io.github.frankois944.spmForKmp", version.ref = "kmp-spm" }
 googleServices = { id = "com.google.gms.google-services", version.ref = "gms" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crahslytics" }
 jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
 
 [bundles]
 ktor = [
