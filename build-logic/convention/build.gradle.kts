@@ -63,5 +63,10 @@ gradlePlugin {
             implementationClass =
                 "com.whatever.caramel.buildlogic.convention.GoogleServicesPlugin"
         }
+        register("kmpTest") {
+            id = "caramel.kmp.test"
+            implementationClass =
+                "com.whatever.caramel.buildlogic.convention.KmpTestPlugin"
+        }
     }
 }
