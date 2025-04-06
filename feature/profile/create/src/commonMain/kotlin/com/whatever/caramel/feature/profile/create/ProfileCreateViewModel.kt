@@ -56,7 +56,7 @@ class ProfileCreateViewModel(
             launch {
                 createUserProfileUseCase(
                     nickname = currentState.nickname,
-                    birthDay = "${currentState.birthday.year}-${currentState.birthday.month}-${currentState.birthday.day}",
+                    birthDay = currentState.birthday.toDateFormat(),
                     gender = currentState.gender,
                     agreementServiceTerms = currentState.isServiceTermChecked,
                     agreementPrivacyPolicy = currentState.isPersonalInfoTermChecked

@@ -12,9 +12,7 @@ fun SignInResponse.toUserAuth(): UserAuth {
         coupleId = this.coupleId,
         nickname = this.nickname,
         userStatus = UserStatus.valueOf(this.userStatus.name),
-        birthDayMillisecond = this.birthDay?.let {
-            Instant.parse(it).toEpochMilliseconds()
-        },
+        birthDayMillisecond = this.birthDay?.toTimezoneMillisecond(),
         authToken = serviceToken.toAuthToken()
     )
 }
@@ -23,10 +21,3 @@ fun ServiceToken.toAuthToken() = AuthToken(
     accessToken = this.accessToken,
     refreshToken = this.refreshToken
 )
-
-fun Pair<String, String>.toAuthToken(): AuthToken {
-    return AuthToken(
-        accessToken = this.first,
-        refreshToken = this.second
-    )
-}
