@@ -3,10 +3,12 @@ package com.whatever.caramel.feature.profile.create.test
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.whatever.caramel.core.domain.di.useCaseModule
-import com.whatever.caramel.core.domain.entity.User
 import com.whatever.caramel.core.domain.repository.UserRepository
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.domain.vo.user.UserStatus
+import com.whatever.caramel.core.testing.constants.TestMessage
+import com.whatever.caramel.core.testing.constants.TestUserInfo
+import com.whatever.caramel.core.testing.factory.UserTestFactory
 import com.whatever.caramel.feature.profile.create.ProfileCreateViewModel
 import com.whatever.caramel.feature.profile.create.di.profileCreateFeatureModule
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
@@ -32,7 +34,6 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.time.Duration
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ProfileCreateViewModelTest : KoinComponent {
@@ -69,10 +70,10 @@ class ProfileCreateViewModelTest : KoinComponent {
         val currentIndex = steps.indexOf(currentStep)
         val targetIndex = steps.indexOf(targetStep)
 
-        require(targetIndex >= currentIndex) { "유효한 테스트 케이스가 아닙니다" }
+        require(targetIndex >= currentIndex) { TestMessage.REQUIRE_TEST_DATA }
 
         if (currentStep == ProfileCreateStep.NICKNAME && viewModel.state.value.nickname.isEmpty()) {
-            viewModel.intent(ProfileCreateIntent.ChangeNickname(VALID_NICKNAME))
+            viewModel.intent(ProfileCreateIntent.ChangeNickname(TestUserInfo.TEST_USER_NICKNAME))
         }
 
         for (i in currentIndex until targetIndex) {
@@ -109,7 +110,7 @@ class ProfileCreateViewModelTest : KoinComponent {
                 agreementServiceTerms = any(),
                 agreementPrivacyPolicy = any()
             )
-        } returns User()
+        } returns UserTestFactory.createNewUser()
 
         everySuspend {
             userRepository.setUserStatus(UserStatus.SINGLE)
@@ -166,19 +167,19 @@ class ProfileCreateViewModelTest : KoinComponent {
 
     @Test
     fun `닉네임 입력 시 8글자 이하만 입력되야 합니다`() = runTest {
-        viewModel.intent(ProfileCreateIntent.ChangeNickname(VALID_NICKNAME))
-        viewModel.intent(ProfileCreateIntent.ChangeNickname(INVALID_SIZE_NICKNAME))
+        viewModel.intent(ProfileCreateIntent.ChangeNickname(TestUserInfo.TEST_USER_NICKNAME))
+        viewModel.intent(ProfileCreateIntent.ChangeNickname(TestUserInfo.INVALID_LENGTH_NICKNAME))
         testDispatcher.scheduler.advanceUntilIdle()
 
         assertEquals(
-            expected = VALID_NICKNAME,
+            expected = TestUserInfo.TEST_USER_NICKNAME,
             actual = viewModel.state.value.nickname
         )
     }
 
     @Test
     fun `닉네임 입력 시 특수문자와 공백은 입력되지 않습니다`() = runTest {
-        viewModel.intent(ProfileCreateIntent.ChangeNickname(INVALID_NICKNAME_CHARACTER))
+        viewModel.intent(ProfileCreateIntent.ChangeNickname(TestUserInfo.INVALID_PATTERN_NICKNAME))
         testDispatcher.scheduler.advanceUntilIdle()
 
         assertEquals(
@@ -226,7 +227,7 @@ class ProfileCreateViewModelTest : KoinComponent {
             expected = false,
             actual = viewModel.state.value.isNextButtonEnabled
         )
-        viewModel.intent(ProfileCreateIntent.ChangeNickname(VALID_NICKNAME))
+        viewModel.intent(ProfileCreateIntent.ChangeNickname(TestUserInfo.TEST_USER_NICKNAME))
         testDispatcher.scheduler.advanceUntilIdle()
         assertEquals(
             expected = true,
@@ -254,11 +255,5 @@ class ProfileCreateViewModelTest : KoinComponent {
             expected = false,
             actual = viewModel.state.value.isNextButtonEnabled
         )
-    }
-
-    companion object {
-        private const val VALID_NICKNAME = "12345678"
-        private const val INVALID_SIZE_NICKNAME = "123456789"
-        private const val INVALID_NICKNAME_CHARACTER = "   !@#$"
     }
 }

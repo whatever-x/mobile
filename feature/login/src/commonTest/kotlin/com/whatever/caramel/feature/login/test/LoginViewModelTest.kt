@@ -8,9 +8,10 @@ import com.whatever.caramel.core.domain.exception.code.AuthErrorCode
 import com.whatever.caramel.core.domain.exception.code.NetworkErrorCode
 import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.repository.UserRepository
-import com.whatever.caramel.core.domain.vo.auth.AuthToken
-import com.whatever.caramel.core.domain.vo.auth.UserAuth
 import com.whatever.caramel.core.domain.vo.user.UserStatus
+import com.whatever.caramel.core.testing.constants.TestAuthInfo
+import com.whatever.caramel.core.testing.constants.TestMessage
+import com.whatever.caramel.core.testing.factory.AuthTestFactory
 import com.whatever.caramel.feature.login.LoginViewModel
 import com.whatever.caramel.feature.login.di.loginFeatureModule
 import com.whatever.caramel.feature.login.mvi.LoginIntent
@@ -84,16 +85,7 @@ class LoginViewModelTest : KoinComponent {
     }
 
     private fun determineUserStatusAfterLogin(userStatus: UserStatus) {
-        val loginResponse = UserAuth(
-            coupleId = 1L,
-            userStatus = userStatus,
-            nickname = "nickname",
-            birthDayMillisecond = 1L,
-            authToken = AuthToken(
-                accessToken = "valid_access_token",
-                refreshToken = "valid_refresh_token",
-            )
-        )
+        val loginResponse = AuthTestFactory.createCoupleUserAuth()
         everySuspend {
             authRepository.loginWithSocialPlatform(idToken = any(), socialLoginType = any())
         } returns loginResponse
@@ -111,7 +103,7 @@ class LoginViewModelTest : KoinComponent {
     fun `회원가입을 한 사용자는 프로필 생성 화면으로 이동한다`() = runTest {
         determineUserStatusAfterLogin(userStatus = UserStatus.NEW)
         verifyLoginIntent(
-            socialAuthResult = SocialAuthResult.Success(KakaoUser(idToken = "")),
+            socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
             expectedSideEffect = LoginSideEffect.NavigateToCreateProfile
         )
     }
@@ -120,7 +112,7 @@ class LoginViewModelTest : KoinComponent {
     fun `커플이 연결되지 않은 사용자는 로그인을 하면 커플 연결 화면으로 이동한다`() = runTest {
         determineUserStatusAfterLogin(userStatus = UserStatus.SINGLE)
         verifyLoginIntent(
-            socialAuthResult = SocialAuthResult.Success(KakaoUser(idToken = "")),
+            socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
             expectedSideEffect = LoginSideEffect.NavigateToConnectCouple
         )
     }
@@ -129,7 +121,7 @@ class LoginViewModelTest : KoinComponent {
     fun `커플 연결된 사용자는 로그인을 하면 메인 화면으로 이동한다`() = runTest {
         determineUserStatusAfterLogin(userStatus = UserStatus.COUPLED)
         verifyLoginIntent(
-            socialAuthResult = SocialAuthResult.Success(KakaoUser(idToken = "")),
+            socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
             expectedSideEffect = LoginSideEffect.NavigateToMain
         )
     }
@@ -156,19 +148,15 @@ class LoginViewModelTest : KoinComponent {
             authRepository.loginWithSocialPlatform(idToken = any(), socialLoginType = any())
         } throws CaramelException(
             code = NetworkErrorCode.UNKNOWN,
-            message = ERROR_MESSAGE
+            message = TestMessage.FAIL_LOGIN
         )
 
         verifyLoginIntent(
-            socialAuthResult = SocialAuthResult.Success(KakaoUser(idToken = "")),
+            socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
             expectedSideEffect = LoginSideEffect.ShowErrorSnackBar(
                 code = NetworkErrorCode.UNKNOWN,
-                message = ERROR_MESSAGE
+                message = TestMessage.FAIL_LOGIN
             )
         )
-    }
-
-    companion object {
-        private const val ERROR_MESSAGE = "UNKNOWN_ERROR"
     }
 }

@@ -9,6 +9,8 @@ import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.repository.UserRepository
 import com.whatever.caramel.core.domain.vo.auth.AuthToken
 import com.whatever.caramel.core.domain.vo.user.UserStatus
+import com.whatever.caramel.core.testing.constants.TestMessage
+import com.whatever.caramel.core.testing.factory.AuthTestFactory
 import com.whatever.caramel.feature.splash.SplashViewModel
 import com.whatever.caramel.feature.splash.di.splashFeatureModule
 import com.whatever.caramel.feature.splash.mvi.SplashSideEffect
@@ -76,19 +78,16 @@ class SplashViewModelTest : KoinComponent {
     }
 
     private fun determineUserStatusAfterTokenRefresh(userStatus: UserStatus) {
-        val oldToken = AuthToken(accessToken = "old_access_token", refreshToken = "old_refresh_token")
-        val newToken = AuthToken(accessToken = "new_access_token", refreshToken = "new_refresh_token")
-
         everySuspend {
             authRepository.getAuthToken()
-        } returns oldToken
+        } returns AuthTestFactory.createExpiredToken()
 
         everySuspend {
-            authRepository.refreshAuthToken(oldToken = oldToken)
-        } returns newToken
+            authRepository.refreshAuthToken(oldToken = AuthTestFactory.createExpiredToken())
+        } returns AuthTestFactory.createValidToken()
 
         everySuspend {
-            authRepository.saveTokens(newToken)
+            authRepository.saveTokens(AuthTestFactory.createValidToken())
         } returns Unit
 
         everySuspend {
@@ -102,7 +101,7 @@ class SplashViewModelTest : KoinComponent {
             authRepository.refreshAuthToken(any())
         } throws CaramelException(
             code = AuthErrorCode.UNAUTHORIZED,
-            message = "토큰 갱신에 실패했습니다."
+            message = TestMessage.FAIL_REFRESH_TOKEN
         )
 
         verifySplashSideEffect(
