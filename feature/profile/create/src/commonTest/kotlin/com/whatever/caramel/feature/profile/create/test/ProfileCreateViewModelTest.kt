@@ -2,15 +2,20 @@ package com.whatever.caramel.feature.profile.create.test
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
+import com.whatever.caramel.core.domain.di.useCaseModule
 import com.whatever.caramel.core.domain.entity.User
-import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
+import com.whatever.caramel.core.domain.repository.UserRepository
 import com.whatever.caramel.core.domain.vo.user.Gender
-import com.whatever.caramel.core.testing.repository.TestAuthRepository
-import com.whatever.caramel.core.testing.repository.TestUserRepository
+import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.feature.profile.create.ProfileCreateViewModel
+import com.whatever.caramel.feature.profile.create.di.profileCreateFeatureModule
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateSideEffect
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateStep
+import dev.mokkery.answering.returns
+import dev.mokkery.everySuspend
+import dev.mokkery.matcher.any
+import dev.mokkery.mock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
@@ -18,34 +23,44 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.time.Duration
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class ProfileCreateViewModelTest {
+class ProfileCreateViewModelTest : KoinComponent {
     private val testDispatcher = StandardTestDispatcher()
-    private lateinit var testUserRepository: TestUserRepository
-    private lateinit var testAuthRepository: TestAuthRepository
+    private val userRepository = mock<UserRepository>()
     private lateinit var viewModel: ProfileCreateViewModel
-    private lateinit var createUserProfileUseCase: CreateUserProfileUseCase
-    private lateinit var savedStateHandle: SavedStateHandle
 
     @BeforeTest
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        savedStateHandle = SavedStateHandle()
-        testAuthRepository = TestAuthRepository()
-        testUserRepository = TestUserRepository()
-        createUserProfileUseCase = CreateUserProfileUseCase(testUserRepository)
-        viewModel = ProfileCreateViewModel(createUserProfileUseCase, savedStateHandle)
+        startKoin {
+            modules(
+                module {
+                    single<UserRepository> { userRepository }
+                    single<SavedStateHandle> { SavedStateHandle() }
+                },
+                profileCreateFeatureModule,
+                useCaseModule
+            )
+        }
+        viewModel = get<ProfileCreateViewModel>()
     }
 
     @AfterTest
     fun teardown() {
         Dispatchers.resetMain()
         testDispatcher.cancel()
+        stopKoin()
     }
 
     private fun progressToStep(targetStep: ProfileCreateStep) {
@@ -86,12 +101,26 @@ class ProfileCreateViewModelTest {
 
     @Test
     fun `프로필 생성에 성공하면 커플 연결 페이지로 이동합니다`() = runTest {
-        testUserRepository.createdUser = User()
+        everySuspend {
+            userRepository.createUserProfile(
+                nickname = any(),
+                birthDay = any(),
+                gender = any(),
+                agreementServiceTerms = any(),
+                agreementPrivacyPolicy = any()
+            )
+        } returns User()
+
+        everySuspend {
+            userRepository.setUserStatus(UserStatus.SINGLE)
+        } returns Unit
+
+        progressToStep(ProfileCreateStep.NEED_TERMS)
+        viewModel.intent(ProfileCreateIntent.ToggleServiceTerm)
+        viewModel.intent(ProfileCreateIntent.TogglePersonalInfoTerm)
+        viewModel.intent(ProfileCreateIntent.ClickNextButton)
+
         viewModel.sideEffect.test {
-            progressToStep(ProfileCreateStep.NEED_TERMS)
-            viewModel.intent(ProfileCreateIntent.ToggleServiceTerm)
-            viewModel.intent(ProfileCreateIntent.TogglePersonalInfoTerm)
-            viewModel.intent(ProfileCreateIntent.ClickNextButton)
             assertEquals(
                 expected = ProfileCreateSideEffect.NavigateToConnectCouple,
                 actual = awaitItem()
