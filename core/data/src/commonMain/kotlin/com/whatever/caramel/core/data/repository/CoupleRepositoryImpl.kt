@@ -14,7 +14,7 @@ class CoupleRepositoryImpl(
 ) : CoupleRepository {
     override suspend fun getCoupleInvitationCode(): CoupleInvitationCode {
         return safeCall {
-            remoteCoupleDataSource.generateCoupleInvitaionCode().toCoupleInvitationCode()
+            remoteCoupleDataSource.generateCoupleInvitationCode().toCoupleInvitationCode()
         }
     }
 
