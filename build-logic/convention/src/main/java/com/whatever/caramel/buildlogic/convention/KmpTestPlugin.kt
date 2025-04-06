@@ -19,6 +19,8 @@ class KmpTestPlugin : Plugin<Project> {
                 with(sourceSets) {
                     getByName("commonTest") {
                         dependencies {
+                            implementation(project(":core:testing"))
+
                             implementation(kotlin("test"))
                             implementation(kotlin("test-common"))
                             implementation(kotlin("test-annotations-common"))
