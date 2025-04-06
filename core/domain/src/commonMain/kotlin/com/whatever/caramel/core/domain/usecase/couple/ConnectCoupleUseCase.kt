@@ -6,10 +6,10 @@ import com.whatever.caramel.core.domain.vo.user.UserStatus
 
 class ConnectCoupleUseCase(
     private val userRepository: UserRepository,
-    private val coupleRepository: CoupleRepository
+    private val coupleRepository: CoupleRepository,
 ) {
     suspend operator fun invoke(
-        invitationCode: String
+        invitationCode: String,
     ) {
         coupleRepository.connectCouple(invitationCode)
         userRepository.setUserStatus(UserStatus.COUPLED)
