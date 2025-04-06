@@ -9,14 +9,12 @@ class TokenInterceptorImpl(
     private val tokenDataSource: TokenDataSource,
     private val authDataSource: RemoteAuthDataSource
 ) : TokenInterceptor {
+    override suspend fun getAccessToken(): String {
+        return tokenDataSource.fetchAccessToken()
+    }
 
-    override suspend fun getAuthToken(): Pair<String?, String?> {
-        val (accessToken, refreshToken) = tokenDataSource.fetchToken()
-
-        return Pair(
-            first = accessToken,
-            second = refreshToken
-        )
+    override suspend fun getRefreshToken(): String {
+        return tokenDataSource.fetchRefreshToken()
     }
 
     /**
@@ -28,7 +26,8 @@ class TokenInterceptorImpl(
      */
     override suspend fun refresh(): Boolean {
         try {
-            val (accessToken, refreshToken) = tokenDataSource.fetchToken()
+            val accessToken = tokenDataSource.fetchAccessToken()
+            val refreshToken = tokenDataSource.fetchRefreshToken()
 
             if (accessToken.isNotEmpty() && refreshToken.isNotEmpty()) {
                 val response = authDataSource.refresh(
