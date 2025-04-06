@@ -3,74 +3,42 @@ package com.whatever.caramel.core.testing.factory
 import com.whatever.caramel.core.domain.vo.auth.AuthToken
 import com.whatever.caramel.core.domain.vo.auth.UserAuth
 import com.whatever.caramel.core.domain.vo.user.UserStatus
+import com.whatever.caramel.core.testing.constants.TestAuthInfo
+import com.whatever.caramel.core.testing.constants.TestCoupleInfo
+import com.whatever.caramel.core.testing.constants.TestUserInfo
 
 object AuthTestFactory {
-    fun createEmptyAuthToken() = AuthToken(
-        accessToken = "",
-        refreshToken = "",
+    fun createExpiredToken() = AuthToken(
+        accessToken = TestAuthInfo.EXPIRED_ACCESS_TOKEN,
+        refreshToken = TestAuthInfo.EXPIRED_REFRESH_TOKEN
     )
 
-    fun createValidAuthToken() = AuthToken(
-        accessToken = "valid_access_token",
-        refreshToken = "valid_refresh_token",
+    fun createValidToken() = AuthToken(
+        accessToken = TestAuthInfo.VALID_ACCESS_TOKEN,
+        refreshToken = TestAuthInfo.VALID_REFRESH_TOKEN
     )
 
-    fun createSingleUserAuth(isValidToken: Boolean = true) = UserAuth(
+    fun createSingleUserAuth() = UserAuth(
         coupleId = null,
         userStatus = UserStatus.SINGLE,
-        nickname = "test_user",
-        birthDayMillisecond = 123456789L,
-        authToken = if (isValidToken) {
-            createEmptyAuthToken()
-        } else {
-            createValidAuthToken()
-        }
+        nickname = TestUserInfo.TEST_USER_NICKNAME,
+        birthDayMillisecond = TestUserInfo.TEST_BIRTH_DAY_MILLISECOND,
+        authToken = createValidToken()
     )
 
-    fun createNewUserAuth(isValidToken: Boolean = true) = UserAuth(
+    fun createNewUserAuth() = UserAuth(
         coupleId = null,
         userStatus = UserStatus.NEW,
         nickname = null,
         birthDayMillisecond = null,
-        authToken = if (isValidToken) {
-            createEmptyAuthToken()
-        } else {
-            createValidAuthToken()
-        }
+        authToken = createValidToken()
     )
 
-    fun createCoupleUserAuth(isValidToken: Boolean = true) = UserAuth(
-        coupleId = 123L,
+    fun createCoupleUserAuth() = UserAuth(
+        coupleId = TestCoupleInfo.TEST_COUPLE_ID,
         userStatus = UserStatus.COUPLED,
-        nickname = "test_user",
-        birthDayMillisecond = 123456789L,
-        authToken = if (isValidToken) {
-            createEmptyAuthToken()
-        } else {
-            createValidAuthToken()
-        }
-    )
-
-    fun createInvalidUserAuth(isValidToken: Boolean = true) = UserAuth(
-        coupleId = null,
-        userStatus = UserStatus.COUPLED,
-        nickname = "test_user",
-        birthDayMillisecond = 123456789L,
-        authToken = if (isValidToken) {
-            createEmptyAuthToken()
-        } else {
-            createValidAuthToken()
-        }
-    )
-
-    fun createDefaultUserAuth() = UserAuth(
-        userStatus = UserStatus.NONE,
-        authToken = createEmptyAuthToken()
-    )
-
-    fun createSocialLoginScenario() = listOf(
-        createNewUserAuth(),
-        createSingleUserAuth(),
-        createCoupleUserAuth()
+        nickname = TestUserInfo.TEST_USER_NICKNAME,
+        birthDayMillisecond = TestUserInfo.TEST_BIRTH_DAY_MILLISECOND,
+        authToken = createValidToken()
     )
 }

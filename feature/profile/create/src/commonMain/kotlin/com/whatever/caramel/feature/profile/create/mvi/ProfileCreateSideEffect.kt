@@ -12,4 +12,6 @@ sealed interface ProfileCreateSideEffect : UiSideEffect {
 
     data object NavigateToPersonalInfoTermNotion : ProfileCreateSideEffect
 
+    data class ShowErrorSnackBar(val message: String) : ProfileCreateSideEffect
+
 }

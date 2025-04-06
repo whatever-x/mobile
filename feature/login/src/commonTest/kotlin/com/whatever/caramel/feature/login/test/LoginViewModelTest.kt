@@ -2,17 +2,27 @@ package com.whatever.caramel.feature.login.test
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
+import com.whatever.caramel.core.domain.di.useCaseModule
+import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.code.AuthErrorCode
 import com.whatever.caramel.core.domain.exception.code.NetworkErrorCode
-import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
+import com.whatever.caramel.core.domain.repository.AuthRepository
+import com.whatever.caramel.core.domain.repository.UserRepository
+import com.whatever.caramel.core.domain.vo.user.UserStatus
+import com.whatever.caramel.core.testing.constants.TestAuthInfo
+import com.whatever.caramel.core.testing.constants.TestMessage
 import com.whatever.caramel.core.testing.factory.AuthTestFactory
-import com.whatever.caramel.core.testing.repository.TestAuthRepository
-import com.whatever.caramel.core.testing.repository.TestUserRepository
 import com.whatever.caramel.feature.login.LoginViewModel
+import com.whatever.caramel.feature.login.di.loginFeatureModule
 import com.whatever.caramel.feature.login.mvi.LoginIntent
 import com.whatever.caramel.feature.login.mvi.LoginSideEffect
 import com.whatever.caramel.feature.login.social.SocialAuthResult
 import com.whatever.caramel.feature.login.social.kakao.KakaoUser
+import dev.mokkery.answering.returns
+import dev.mokkery.answering.throws
+import dev.mokkery.everySuspend
+import dev.mokkery.matcher.any
+import dev.mokkery.mock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
@@ -20,37 +30,45 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class LoginViewModelTest {
+class LoginViewModelTest : KoinComponent {
     private val testDispatcher = StandardTestDispatcher()
-    private lateinit var testAuthRepository: TestAuthRepository
-    private lateinit var testUserRepository: TestUserRepository
-    private lateinit var signInWithSocialPlatformUseCase: SignInWithSocialPlatformUseCase
-    private lateinit var savedStateHandle: SavedStateHandle
+    private val authRepository = mock<AuthRepository>()
+    private val userRepository = mock<UserRepository>()
     private lateinit var loginViewModel: LoginViewModel
 
     @BeforeTest
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-
-        testUserRepository = TestUserRepository()
-        testAuthRepository = TestAuthRepository()
-        savedStateHandle = SavedStateHandle()
-
-        signInWithSocialPlatformUseCase =
-            SignInWithSocialPlatformUseCase(testAuthRepository, testUserRepository)
-        loginViewModel = LoginViewModel(savedStateHandle, signInWithSocialPlatformUseCase)
+        startKoin {
+            modules(
+                module {
+                    single<AuthRepository> { authRepository }
+                    single<UserRepository> { userRepository }
+                    single<SavedStateHandle> { SavedStateHandle() }
+                },
+                loginFeatureModule,
+                useCaseModule
+            )
+        }
+        loginViewModel = get<LoginViewModel>()
     }
 
     @AfterTest
     fun teardown() {
         Dispatchers.resetMain()
         testDispatcher.cancel()
+        stopKoin()
     }
 
     private suspend fun verifyLoginIntent(
@@ -66,29 +84,44 @@ class LoginViewModelTest {
         }
     }
 
+    private fun determineUserStatusAfterLogin(userStatus: UserStatus) {
+        val loginResponse = AuthTestFactory.createCoupleUserAuth()
+        everySuspend {
+            authRepository.loginWithSocialPlatform(idToken = any(), socialLoginType = any())
+        } returns loginResponse
+
+        everySuspend {
+            authRepository.saveTokens(loginResponse.authToken)
+        } returns Unit
+
+        everySuspend {
+            userRepository.setUserStatus(userStatus)
+        } returns Unit
+    }
+
     @Test
     fun `회원가입을 한 사용자는 프로필 생성 화면으로 이동한다`() = runTest {
-        testAuthRepository.loginWithSocialPlatformResponse = AuthTestFactory.createNewUserAuth()
+        determineUserStatusAfterLogin(userStatus = UserStatus.NEW)
         verifyLoginIntent(
-            socialAuthResult = SocialAuthResult.Success(KakaoUser(idToken = VALID_ID_TOKEN)),
+            socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
             expectedSideEffect = LoginSideEffect.NavigateToCreateProfile
         )
     }
 
     @Test
     fun `커플이 연결되지 않은 사용자는 로그인을 하면 커플 연결 화면으로 이동한다`() = runTest {
-        testAuthRepository.loginWithSocialPlatformResponse = AuthTestFactory.createSingleUserAuth()
+        determineUserStatusAfterLogin(userStatus = UserStatus.SINGLE)
         verifyLoginIntent(
-            socialAuthResult = SocialAuthResult.Success(KakaoUser(idToken = VALID_ID_TOKEN)),
+            socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
             expectedSideEffect = LoginSideEffect.NavigateToConnectCouple
         )
     }
 
     @Test
     fun `커플 연결된 사용자는 로그인을 하면 메인 화면으로 이동한다`() = runTest {
-        testAuthRepository.loginWithSocialPlatformResponse = AuthTestFactory.createCoupleUserAuth()
+        determineUserStatusAfterLogin(userStatus = UserStatus.COUPLED)
         verifyLoginIntent(
-            socialAuthResult = SocialAuthResult.Success(KakaoUser(idToken = VALID_ID_TOKEN)),
+            socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
             expectedSideEffect = LoginSideEffect.NavigateToMain
         )
     }
@@ -111,19 +144,19 @@ class LoginViewModelTest {
 
     @Test
     fun `로그인 서버 통신 중 오류가 발생한 경우 서버에서 내려준 메세지를 기반으로 SnackBar에 표시한다`() = runTest {
-        testAuthRepository.isInvalidIdToken = true
+        everySuspend {
+            authRepository.loginWithSocialPlatform(idToken = any(), socialLoginType = any())
+        } throws CaramelException(
+            code = NetworkErrorCode.UNKNOWN,
+            message = TestMessage.FAIL_LOGIN
+        )
+
         verifyLoginIntent(
-            socialAuthResult = SocialAuthResult.Success(KakaoUser(idToken = INVALID_ID_TOKEN)),
+            socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
             expectedSideEffect = LoginSideEffect.ShowErrorSnackBar(
-                code = NetworkErrorCode.INVALID_ARGUMENT,
-                message = NETWORK_INVALID_TOKEN_ERROR_MSG
+                code = NetworkErrorCode.UNKNOWN,
+                message = TestMessage.FAIL_LOGIN
             )
         )
-    }
-
-    companion object {
-        const val VALID_ID_TOKEN = "valid_token"
-        const val INVALID_ID_TOKEN = "invalid_token"
-        const val NETWORK_INVALID_TOKEN_ERROR_MSG = "invalid_token_error_message"
     }
 }
