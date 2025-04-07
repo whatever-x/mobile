@@ -20,10 +20,3 @@ fun ServiceToken.toAuthToken() = AuthToken(
     accessToken = this.accessToken,
     refreshToken = this.refreshToken
 )
-
-fun Pair<String, String>.toAuthToken(): AuthToken {
-    return AuthToken(
-        accessToken = this.first,
-        refreshToken = this.second
-    )
-}

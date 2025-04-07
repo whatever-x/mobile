@@ -12,7 +12,7 @@ import org.koin.core.annotation.Named
 class RemoteCoupleDatsSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient
 ) : RemoteCoupleDataSource {
-    override suspend fun generateCoupleInvitaionCode(): CoupleInvitationCodeResponse {
+    override suspend fun generateCoupleInvitationCode(): CoupleInvitationCodeResponse {
         return authClient.post(POST_COUPLE_INVITATION_CODE_URL).getBody()
     }
 

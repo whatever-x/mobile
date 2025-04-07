@@ -51,10 +51,10 @@ val networkModule = module {
             install(Auth) {
                 bearer {
                     loadTokens {
-                        val (accessToken, refreshToken) = get<TokenInterceptor>().getAuthToken()
+                        val accessToken = get<TokenInterceptor>().getAccessToken()
 
-                        if (accessToken != null && refreshToken != null) {
-                            BearerTokens(accessToken, refreshToken)
+                        if (accessToken.isNotEmpty()) {
+                            BearerTokens(accessToken, null)
                         } else {
                             null
                         }
@@ -64,9 +64,10 @@ val networkModule = module {
                         val refreshed = get<TokenInterceptor>().refresh()
 
                         if (refreshed) {
-                            val (accessToken, refreshToken) = get<TokenInterceptor>().getAuthToken()
+                            val accessToken = get<TokenInterceptor>().getAccessToken()
+                            val refreshToken = get<TokenInterceptor>().getRefreshToken()
 
-                            if (accessToken != null && refreshToken != null) {
+                            if (accessToken.isNotEmpty() && refreshToken.isNotEmpty()) {
                                 BearerTokens(accessToken, refreshToken)
                             } else {
                                 null

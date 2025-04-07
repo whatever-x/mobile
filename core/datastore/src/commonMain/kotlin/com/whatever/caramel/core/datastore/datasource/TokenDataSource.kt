@@ -7,6 +7,6 @@ interface TokenDataSource {
         refreshToken: String,
     )
 
-    suspend fun fetchToken(): Pair<String, String>
-
+    suspend fun fetchAccessToken() : String
+    suspend fun fetchRefreshToken(): String
 }

@@ -5,6 +5,6 @@ import com.whatever.caramel.core.remote.dto.couple.CoupleConnectResponse
 import com.whatever.caramel.core.remote.dto.couple.CoupleInvitationCodeResponse
 
 interface RemoteCoupleDataSource {
-    suspend fun generateCoupleInvitaionCode(): CoupleInvitationCodeResponse
+    suspend fun generateCoupleInvitationCode(): CoupleInvitationCodeResponse
     suspend fun connectCouple(request: CoupleConnectRequest): CoupleConnectResponse
 }
