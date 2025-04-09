@@ -47,15 +47,12 @@ data class Birthday(
     val month: String = "",
     val day: String = ""
 ) {
-    fun toDateFormat() : String {
-        fun toFormatNumber(number : String) = if(number.toInt() in 1..9){
-            "0$number"
-        } else {
-            number
-        }
+    val formattedMonth : String
+        get() = if (month.length < 2) "0$month" else month
 
-        return "${year}-${toFormatNumber(month)}-${toFormatNumber(day)}"
-    }
+    val formattedDay : String
+        get() = if (month.length < 2) "0$day" else day
+
 
     companion object {
         fun currentDay(): Birthday {
