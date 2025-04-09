@@ -24,28 +24,28 @@ class DateUtilTest {
         // 날짜 형식이 아님
         assertEquals(
             expected = "",
-            actual = createDateFormat(
-                year = "1234",
-                month = "56",
-                day = "177"
+            actual = createDateString(
+                year = 1234,
+                month = 56,
+                day = 78
             )
         )
         // 일이 없음
         assertEquals(
             expected = "",
-            actual = createDateFormat(
-                year = "2025",
-                month = "04",
-                day = ""
+            actual = createDateString(
+                year = 2025,
+                month = 4,
+                day = 0
             )
         )
         // 2월은 31일이 없음
         assertEquals(
             expected = "",
-            actual = createDateFormat(
-                year = "2025",
-                month = "02",
-                day = "31"
+            actual = createDateString(
+                year = 2025,
+                month = 2,
+                day = 31
             )
         )
     }
@@ -54,26 +54,26 @@ class DateUtilTest {
     fun `createDateFormat은 년월일에 올바른 값이 적용됐다면 날짜형식으로 반환한다`() {
         assertEquals(
             expected = "2025-04-09",
-            actual = createDateFormat(
-                year = "2025",
-                month = "4",
-                day = "9"
+            actual = createDateString(
+                year = 2025,
+                month = 4,
+                day = 9
             )
         )
         assertEquals(
             expected = "2025-04-09",
-            actual = createDateFormat(
-                year = "2025",
-                month = "04",
-                day = "09"
+            actual = createDateString(
+                year = 2025,
+                month = 4,
+                day = 9
             )
         )
         assertEquals(
             expected = "2025-12-13",
-            actual = createDateFormat(
-                year = "2025",
-                month = "12",
-                day = "13"
+            actual = createDateString(
+                year = 2025,
+                month = 12,
+                day = 13
             )
         )
     }

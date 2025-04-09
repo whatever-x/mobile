@@ -29,17 +29,17 @@ fun Long.toFormattedDate(separator: String = "-") = try {
  * @param year 년
  * @param month 월
  * @param day 일
- * @exception IllegalStateException 유효하지 않는 문자열
- * @return 밀리초를 날짜 문자열로 변환한 결과
+ * @return 밀리초를 날짜 문자열로 변환한 결과, 변환 실패 시 빈 문자열
+ * @author RyuSw-cs
  * */
-fun createDateFormat(
-    year: String,
-    month: String,
-    day: String,
+fun createDateString(
+    year: Int,
+    month: Int,
+    day: Int,
 ) = try {
-    check(year.toInt() in 1..9999 && month.toInt() in 1..12 && day.toInt() in 1..31) { "날짜 형식이 잘못되었습니다." }
+    check(year in 1..9999 && month in 1..12 && day in 1..31) { "날짜 형식이 잘못되었습니다." }
 
-    val localDate = LocalDate(year.toInt(), month.toInt(), day.toInt())
+    val localDate = LocalDate(year, month, day)
     val formattedMonth = localDate.monthNumber.toString().padStart(2, '0')
     val formattedDay = localDate.dayOfMonth.toString().padStart(2, '0')
     "$year-$formattedMonth-$formattedDay"

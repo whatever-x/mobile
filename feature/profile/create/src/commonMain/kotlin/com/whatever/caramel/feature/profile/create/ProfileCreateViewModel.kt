@@ -5,7 +5,7 @@ import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
 import com.whatever.caramel.core.domain.validator.UserValidator
 import com.whatever.caramel.core.domain.vo.user.Gender
-import com.whatever.caramel.core.util.createDateFormat
+import com.whatever.caramel.core.util.createDateString
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateSideEffect
@@ -70,10 +70,10 @@ class ProfileCreateViewModel(
             launch {
                 createUserProfileUseCase(
                     nickname = currentState.nickname,
-                    birthDay = createDateFormat(
-                        currentState.birthday.year,
-                        currentState.birthday.month,
-                        currentState.birthday.day
+                    birthDay = createDateString(
+                        currentState.birthday.year.toInt(),
+                        currentState.birthday.month.toInt(),
+                        currentState.birthday.day.toInt()
                     ),
                     gender = currentState.gender,
                     agreementServiceTerms = currentState.isServiceTermChecked,
