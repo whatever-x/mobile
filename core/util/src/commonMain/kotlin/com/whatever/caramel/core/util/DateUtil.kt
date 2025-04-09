@@ -8,8 +8,8 @@ import kotlinx.datetime.toLocalDateTime
 /**
  * 밀리초를 날짜 문자열로 변환
  * @param separator 날짜 문자열의 구분자 (기본값: '-')
- * @return 밀리초를 날짜 문자열로 변환한 결과
- * @exception IllegalArgumentException 밀리초를 날짜로 파싱하지 못하면 빈값을 반환
+ * @return 밀리초를 날짜 문자열로 변환한 결과, 실패 시 null
+ * @author RyuSw-cs
  * */
 fun Long.toFormattedDate(separator: String = "-") = try {
     val instant = Instant.fromEpochMilliseconds(this)
@@ -21,7 +21,7 @@ fun Long.toFormattedDate(separator: String = "-") = try {
 
     "$year$separator$month$separator$day"
 } catch (e: Exception) {
-    ""
+    null
 }
 
 /**
@@ -50,9 +50,9 @@ fun createDateFormat(
 /**
  * 날짜 문자열을 밀리초로 변환
  * Timezone형식으로 사용한다면 해당 Timezone을 기준으로 변환, Timezone이 존재하지 않는다면 시스템 기본 Timezone을 사용.
- * @return 현재 날짜 기준의 밀리초
+ * @return 현재 날짜 기준의 밀리초, 변환 실패 시 null
  * */
-fun String.toMillisecond(): Long = try {
+fun String.toMillisecond(): Long? = try {
     val timeZone = this.extractTimeZonePart() ?: "T00:00:00.000Z"
 
     val rawDate = this.replace(Regex("[^0-9]"), "")
@@ -66,7 +66,7 @@ fun String.toMillisecond(): Long = try {
     val dateStr = "${localDate.year}-${formattedMonth}-${formattedDay}${timeZone}"
     Instant.parse(dateStr).toEpochMilliseconds()
 } catch (e: Exception) {
-    0L
+    null
 }
 
 /**

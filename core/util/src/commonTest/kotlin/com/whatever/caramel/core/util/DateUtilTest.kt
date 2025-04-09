@@ -102,26 +102,26 @@ class DateUtilTest {
     }
 
     @Test
-    fun `toMillisecond에 올바른 날짜형식이 아니라면 0L을 반환한다`() {
+    fun `toMillisecond에 올바른 날짜형식이 아니라면 null을 반환한다`() {
         // 올바른 날짜 형식 아님
         assertEquals(
-            expected = 0L,
+            expected = null,
             actual = "20254999".toMillisecond()
         )
         assertEquals(
-            expected = 0L,
+            expected = null,
             actual = "202549".toMillisecond()
         )
         assertEquals(
-            expected = 0L,
+            expected = null,
             actual = "20254999T00:00:00.000Z".toMillisecond()
         )
         assertEquals(
-            expected = 0L,
+            expected = null,
             actual = "adfdnfdlkT00:00:00.000Z".toMillisecond()
         )
         assertEquals(
-            expected = 0L,
+            expected = null,
             actual = "2025-4-12".toMillisecond()
         )
     }
