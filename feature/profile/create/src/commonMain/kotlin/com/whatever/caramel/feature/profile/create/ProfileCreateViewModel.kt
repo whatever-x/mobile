@@ -5,6 +5,7 @@ import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
 import com.whatever.caramel.core.domain.validator.UserValidator
 import com.whatever.caramel.core.domain.vo.user.Gender
+import com.whatever.caramel.core.util.createDateString
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateSideEffect
@@ -13,7 +14,7 @@ import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateStep
 
 class ProfileCreateViewModel(
     private val createUserProfileUseCase: CreateUserProfileUseCase,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProfileCreateState, ProfileCreateSideEffect, ProfileCreateIntent>(savedStateHandle) {
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): ProfileCreateState {
@@ -42,7 +43,7 @@ class ProfileCreateViewModel(
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
-        if(throwable is CaramelException){
+        if (throwable is CaramelException) {
             postSideEffect(ProfileCreateSideEffect.ShowErrorSnackBar(throwable.message))
         } else {
             postSideEffect(ProfileCreateSideEffect.ShowErrorSnackBar("알 수 없는 오류가 발생했습니다."))
@@ -72,7 +73,11 @@ class ProfileCreateViewModel(
             launch {
                 createUserProfileUseCase(
                     nickname = currentState.nickname,
-                    birthDay = currentState.birthday.toDateFormat(),
+                    birthDay = createDateString(
+                        currentState.birthday.year,
+                        currentState.birthday.month,
+                        currentState.birthday.day
+                    ),
                     gender = currentState.gender,
                     agreementServiceTerms = currentState.isServiceTermChecked,
                     agreementPrivacyPolicy = currentState.isPersonalInfoTermChecked

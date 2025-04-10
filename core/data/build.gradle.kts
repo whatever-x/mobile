@@ -19,6 +19,8 @@ kotlin {
             implementation(projects.core.datastore)
             implementation(projects.core.remote)
 
+            implementation(projects.core.util)
+
             implementation(libs.koin.core)
             implementation(libs.napier)
 
