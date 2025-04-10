@@ -28,8 +28,14 @@ class ProfileCreateViewModel(
             is ProfileCreateIntent.ClickGenderButton -> selectGender(gender = intent.gender)
             is ProfileCreateIntent.TogglePersonalInfoTerm -> togglePersonalTermCheckBox()
             is ProfileCreateIntent.ToggleServiceTerm -> toggleServiceTermCheckBox()
-            is ProfileCreateIntent.ClickPersonalInfoTermLabel -> postSideEffect(ProfileCreateSideEffect.NavigateToPersonalInfoTermNotion)
+            is ProfileCreateIntent.ClickPersonalInfoTermLabel -> postSideEffect(
+                ProfileCreateSideEffect.NavigateToPersonalInfoTermNotion
+            )
+
             is ProfileCreateIntent.ClickServiceTermLabel -> postSideEffect(ProfileCreateSideEffect.NavigateToServiceTermNotion)
+            is ProfileCreateIntent.ChangeDayPicker -> changeDay(day = intent.day)
+            is ProfileCreateIntent.ChangeMonthPicker -> changeMonth(month = intent.month)
+            is ProfileCreateIntent.ChangeYearPicker -> changeYear(year = intent.year)
         }
     }
 
@@ -90,12 +96,48 @@ class ProfileCreateViewModel(
             )
         }
     }
-    
+
     private fun togglePersonalTermCheckBox() {
         reduce {
             copy(
                 isPersonalInfoTermChecked = !currentState.isPersonalInfoTermChecked
             )
         }
+    }
+
+    private fun changeYear(year: Int) {
+        reduce {
+            copy(
+                birthday = birthday.copy(
+                    year = year
+                )
+            )
+        }
+
+        postSideEffect(ProfileCreateSideEffect.PerformHapticFeedback)
+    }
+
+    private fun changeMonth(month: Int) {
+        reduce {
+            copy(
+                birthday = birthday.copy(
+                    month = month
+                )
+            )
+        }
+
+        postSideEffect(ProfileCreateSideEffect.PerformHapticFeedback)
+    }
+
+    private fun changeDay(day: Int) {
+        reduce {
+            copy(
+                birthday = birthday.copy(
+                    day = day
+                )
+            )
+        }
+
+        postSideEffect(ProfileCreateSideEffect.PerformHapticFeedback)
     }
 }

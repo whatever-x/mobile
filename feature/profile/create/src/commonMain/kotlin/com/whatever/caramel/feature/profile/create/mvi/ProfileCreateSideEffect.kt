@@ -12,4 +12,6 @@ sealed interface ProfileCreateSideEffect : UiSideEffect {
 
     data object NavigateToPersonalInfoTermNotion : ProfileCreateSideEffect
 
+    data object PerformHapticFeedback : ProfileCreateSideEffect
+
 }

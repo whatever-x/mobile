@@ -2,7 +2,7 @@ package com.whatever.caramel.feature.profile.create
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.whatever.caramel.core.domain.vo.user.Gender
-import com.whatever.caramel.feature.profile.create.mvi.Birthday
+import com.whatever.caramel.core.ui.picker.DateUiState
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateState
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateStep
 
@@ -45,7 +45,7 @@ internal class ProfileCreateScreenPreviewProvider :
         ),
         ProfileCreateScreenPreviewData(
             state = ProfileCreateState(
-                birthday = Birthday.currentDay(), // @ham2174 TODO : Birthday 피커 구현시 추가
+                birthday = DateUiState.today(),
                 currentStep = ProfileCreateStep.BIRTHDAY
             )
         ),
