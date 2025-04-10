@@ -14,4 +14,6 @@ sealed interface ProfileCreateSideEffect : UiSideEffect {
 
     data object PerformHapticFeedback : ProfileCreateSideEffect
 
+    data class ShowErrorSnackBar(val message: String) : ProfileCreateSideEffect
+
 }

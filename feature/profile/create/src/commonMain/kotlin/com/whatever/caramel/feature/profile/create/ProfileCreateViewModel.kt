@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.profile.create
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
 import com.whatever.caramel.core.domain.validator.UserValidator
 import com.whatever.caramel.core.domain.vo.user.Gender
@@ -39,6 +40,15 @@ class ProfileCreateViewModel(
         }
     }
 
+    override fun handleClientException(throwable: Throwable) {
+        super.handleClientException(throwable)
+        if(throwable is CaramelException){
+            postSideEffect(ProfileCreateSideEffect.ShowErrorSnackBar(throwable.message))
+        } else {
+            postSideEffect(ProfileCreateSideEffect.ShowErrorSnackBar("알 수 없는 오류가 발생했습니다."))
+        }
+    }
+
     private fun backStep() {
         if (currentState.currentStep != ProfileCreateStep.NICKNAME) {
             reduce {
@@ -62,7 +72,7 @@ class ProfileCreateViewModel(
             launch {
                 createUserProfileUseCase(
                     nickname = currentState.nickname,
-                    birthDay = "${currentState.birthday.year}-${currentState.birthday.month}-${currentState.birthday.day}",
+                    birthDay = currentState.birthday.toDateFormat(),
                     gender = currentState.gender,
                     agreementServiceTerms = currentState.isServiceTermChecked,
                     agreementPrivacyPolicy = currentState.isPersonalInfoTermChecked

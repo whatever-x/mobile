@@ -4,6 +4,7 @@ plugins {
     id("caramel.kmp.ios")
     id("caramel.compose")
     id("caramel.kotlin.serialization")
+    id("caramel.kmp.test")
 }
 
 android.namespace = "com.whatever.caramel.feature.splash"

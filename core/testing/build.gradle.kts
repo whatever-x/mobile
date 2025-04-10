@@ -7,13 +7,12 @@ kotlin {
     iosX64()
     iosArm64()
     iosSimulatorArm64()
-}
 
-kotlin {
     sourceSets {
-        commonMain.dependencies {
-            implementation(project(":core:domain"))
-            implementation(kotlin("test"))
+        getByName("commonMain") {
+            dependencies {
+                implementation(projects.core.domain)
+            }
         }
     }
 }

@@ -5,16 +5,13 @@ import com.whatever.caramel.core.domain.vo.auth.UserAuth
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.remote.dto.auth.ServiceToken
 import com.whatever.caramel.core.remote.dto.auth.SignInResponse
-import kotlinx.datetime.Instant
 
 fun SignInResponse.toUserAuth(): UserAuth {
     return UserAuth(
         coupleId = this.coupleId,
         nickname = this.nickname,
         userStatus = UserStatus.valueOf(this.userStatus.name),
-        birthDayMillisecond = this.birthDay?.let {
-            Instant.parse(it).toEpochMilliseconds()
-        },
+        birthDayMillisecond = this.birthDay?.toTimezoneMillisecond(),
         authToken = serviceToken.toAuthToken()
     )
 }
@@ -23,10 +20,3 @@ fun ServiceToken.toAuthToken() = AuthToken(
     accessToken = this.accessToken,
     refreshToken = this.refreshToken
 )
-
-fun Pair<String, String>.toAuthToken(): AuthToken {
-    return AuthToken(
-        accessToken = this.first,
-        refreshToken = this.second
-    )
-}

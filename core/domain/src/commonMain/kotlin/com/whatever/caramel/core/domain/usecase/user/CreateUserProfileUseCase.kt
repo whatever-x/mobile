@@ -17,14 +17,14 @@ class CreateUserProfileUseCase(
     ) {
         UserValidator.checkNicknameValidate(nickname)
             .onSuccess {
-                userRepository.createUserProfile(
+                val createProfileResult = userRepository.createUserProfile(
                     nickname = nickname,
                     birthDay = birthDay,
                     gender = gender,
                     agreementServiceTerms = agreementServiceTerms,
                     agreementPrivacyPolicy = agreementPrivacyPolicy
                 )
-                userRepository.setUserStatus(UserStatus.SINGLE)
+                userRepository.setUserStatus(createProfileResult.userStatus)
             }.onFailure {
                 throw it
             }

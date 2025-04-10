@@ -11,6 +11,7 @@ import com.whatever.caramel.core.designsystem.util.HapticStyle
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateSideEffect
 import org.koin.compose.getKoin
+import io.github.aakira.napier.Napier
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -35,6 +36,7 @@ internal fun ProfileCreateRoute(
                 is ProfileCreateSideEffect.NavigateToPersonalInfoTermNotion -> {} // @ham2174 TODO : 노션 링크 이동
                 is ProfileCreateSideEffect.NavigateToServiceTermNotion -> {} // @ham2174 TODO : 노션 링크 이동
                 is ProfileCreateSideEffect.PerformHapticFeedback -> hapticController.performImpact(HapticStyle.GestureThresholdActivate)
+                is ProfileCreateSideEffect.ShowErrorSnackBar -> Napier.d { "error ${sideEffect.message}" } // @RyuSw-cs TODO : 스낵바 표시
             }
         }
     }

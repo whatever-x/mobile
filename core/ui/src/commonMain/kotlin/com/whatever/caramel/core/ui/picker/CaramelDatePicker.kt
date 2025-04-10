@@ -24,6 +24,16 @@ data class DateUiState(
     val month: Int,
     val day: Int
 ) {
+    fun toDateFormat() : String {
+        fun toFormatNumber(number : Int) = if(number in 1..9){
+            "0$number"
+        } else {
+            number
+        }
+
+        return "${year}-${toFormatNumber(month)}-${toFormatNumber(day)}"
+    }
+
     companion object {
         fun today(): DateUiState {
             val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date

@@ -3,9 +3,6 @@ package com.whatever.caramel.feature.profile.create.mvi
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.ui.picker.DateUiState
 import com.whatever.caramel.core.viewmodel.UiState
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 data class ProfileCreateState(
     val nickname: String = "",

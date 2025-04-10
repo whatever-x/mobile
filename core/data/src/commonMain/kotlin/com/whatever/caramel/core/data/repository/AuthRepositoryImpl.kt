@@ -54,7 +54,10 @@ internal class AuthRepositoryImpl(
 
     override suspend fun getAuthToken(): AuthToken {
         return safeCall {
-            tokenDataSource.fetchToken().toAuthToken()
+            AuthToken(
+                accessToken = tokenDataSource.fetchAccessToken(),
+                refreshToken = tokenDataSource.fetchRefreshToken()
+            )
         }
     }
 }
