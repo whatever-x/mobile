@@ -51,7 +51,7 @@ internal fun SettingScreen(
         ) {
             SettingProfileChangeBottomSheet(
                 navigateToProfileEditNickName = { onIntent(SettingIntent.ClickEditNicknameButton) },
-                navigateToProfileEditBrithDay = { onIntent(SettingIntent.ClickEditBirthdayButton) }
+                navigateToProfileEditBrithDay = { onIntent(SettingIntent.ClickEditBirthDayButton) }
             )
         }
     }
@@ -103,7 +103,7 @@ internal fun SettingScreen(
                             vertical = CaramelTheme.spacing.xxs
                         )
                         .clickable(
-                            onClick = { onIntent(SettingIntent.ClickEditBirthdayButton) },
+                            onClick = { onIntent(SettingIntent.ClickEditCountDownButton) },
                             interactionSource = null,
                             indication = null
                         )
@@ -190,13 +190,13 @@ internal fun SettingScreen(
                     SettingListText(
                         mainText = "로그아웃",
                         mainTextColor = CaramelTheme.color.text.tertiary,
-                        onClick = { onIntent(SettingIntent.ClickLogoutButton) },
+                        onClick = { onIntent(SettingIntent.ToggleLogout) },
                     )
 
                     SettingListText(
                         mainText = "탈퇴하기",
                         mainTextColor = CaramelTheme.color.text.tertiary,
-                        onClick = { onIntent(SettingIntent.ClickCancelButton) },
+                        onClick = { onIntent(SettingIntent.ToggleUserCancelledButton) },
                     )
                 }
             }

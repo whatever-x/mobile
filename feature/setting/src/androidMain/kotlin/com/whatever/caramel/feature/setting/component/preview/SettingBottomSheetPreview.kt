@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.setting.component.SettingProfileChangeBottomSheet
-import com.whatever.caramel.feature.setting.component.SettingProfileChangeMenu
+import com.whatever.caramel.feature.setting.component.SettingProfileChangeMenuItem
 
 @Preview(showBackground = true)
 @Composable
@@ -25,7 +25,7 @@ fun SettingBottomSheetMenuPreview() {
 @Composable
 fun SettingProfileChangeMenuPreview() {
     CaramelTheme {
-        SettingProfileChangeMenu(
+        SettingProfileChangeMenuItem(
             modifier = Modifier
                 .padding(
                     horizontal = 20.dp,

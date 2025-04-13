@@ -33,14 +33,14 @@ internal fun SettingProfileChangeBottomSheet(
             color = CaramelTheme.color.text.primary
         )
         Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.s))
-        SettingProfileChangeMenu(
+        SettingProfileChangeMenuItem(
             modifier = Modifier
                 .padding(vertical = 14.dp),
             iconRes = Resources.Icon.ic_nickname_20,
             menu = "닉네임",
             onClick = navigateToProfileEditNickName
         )
-        SettingProfileChangeMenu(
+        SettingProfileChangeMenuItem(
             modifier = Modifier
                 .padding(vertical = 14.dp),
             iconRes = Resources.Icon.ic_gift_20,
@@ -52,7 +52,7 @@ internal fun SettingProfileChangeBottomSheet(
 }
 
 @Composable
-internal fun SettingProfileChangeMenu(
+internal fun SettingProfileChangeMenuItem(
     modifier: Modifier = Modifier,
     iconRes: DrawableResource,
     menu: String,

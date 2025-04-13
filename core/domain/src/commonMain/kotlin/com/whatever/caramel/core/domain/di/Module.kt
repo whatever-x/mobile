@@ -1,5 +1,6 @@
 package com.whatever.caramel.core.domain.di
 
+import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInfoUseCase
@@ -12,6 +13,7 @@ val useCaseModule = module {
     // Auth
     factory { SignInWithSocialPlatformUseCase(get(), get(), get()) }
     factory { RefreshUserSessionUseCase(get(), get()) }
+    factory { LogoutUseCase(get()) }
 
     // User
     factory { CreateUserProfileUseCase(get()) }

@@ -20,6 +20,13 @@ class TokenDataSourceImpl(
         }
     }
 
+    override suspend fun deleteToken() {
+        dataStore.edit { prefs ->
+            prefs[accessTokenKey] = ""
+            prefs[refreshTokenKey] = ""
+        }
+    }
+
     override suspend fun fetchAccessToken(): String {
         return dataStore.data.first().let { prefs ->
             prefs[accessTokenKey] ?: ""

@@ -60,4 +60,10 @@ internal class AuthRepositoryImpl(
             )
         }
     }
+
+    override suspend fun deleteToken() {
+        safeCall {
+            tokenDataSource.deleteToken()
+        }
+    }
 }

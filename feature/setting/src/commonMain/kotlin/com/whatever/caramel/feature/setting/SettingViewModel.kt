@@ -1,7 +1,9 @@
 package com.whatever.caramel.feature.setting
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInfoUseCase
+import com.whatever.caramel.core.util.toMillisecond
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.setting.mvi.CoupleUser
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
@@ -10,6 +12,7 @@ import com.whatever.caramel.feature.setting.mvi.SettingState
 
 class SettingViewModel(
     private val getCoupleInfoUseCase: GetCoupleInfoUseCase,
+    private val logoutUseCase: LogoutUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<SettingState, SettingSideEffect, SettingIntent>(savedStateHandle) {
 
@@ -24,12 +27,46 @@ class SettingViewModel(
     override suspend fun handleIntent(intent: SettingIntent) {
         when (intent) {
             is SettingIntent.ClickSettingBackButton -> postSideEffect(SettingSideEffect.NavigateToHome)
-            is SettingIntent.ClickEditBirthdayButton -> postSideEffect(SettingSideEffect.NavigateToEditBirthday)
-            is SettingIntent.ClickEditNicknameButton -> postSideEffect(SettingSideEffect.NavigateToEditNickName)
-            SettingIntent.ClickCancelButton -> TODO()
-            SettingIntent.ClickLogoutButton -> TODO()
-            SettingIntent.ClickPrivacyPolicyButton -> TODO()
-            SettingIntent.ClickTermsOfServiceButtons -> TODO()
+            is SettingIntent.ToggleEditProfile -> toggleEditProfile()
+            SettingIntent.ToggleLogout -> toggleLogoutButton()
+            SettingIntent.ClickPrivacyPolicyButton -> postSideEffect(SettingSideEffect.NavigateToPersonalInfoTermNotion)
+            SettingIntent.ClickTermsOfServiceButtons -> postSideEffect(SettingSideEffect.NavigateToServiceTermNotion)
+            SettingIntent.ClickLogoutConfirmButton -> logout()
+            SettingIntent.ClickEditBirthDayButton -> postSideEffect(SettingSideEffect.NavigateToEditBirthDay)
+            SettingIntent.ClickEditNicknameButton -> postSideEffect(SettingSideEffect.NavigateToEditNickname)
+            SettingIntent.ClickEditCountDownButton -> postSideEffect(SettingSideEffect.NavigateToEditCountDown(currentState.startDate.toMillisecond()))
+            SettingIntent.ToggleUserCancelledButton -> toggleUserCancelledButton()
+        }
+    }
+
+    private fun toggleUserCancelledButton() {
+        reduce {
+            copy(
+                isShowUserCancelledDialog = !isShowUserCancelledDialog
+            )
+        }
+    }
+
+    private fun toggleLogoutButton(){
+        reduce {
+            copy(
+                isShowLogoutDialog = !isShowLogoutDialog
+            )
+        }
+    }
+
+    private fun toggleEditProfile() {
+        reduce {
+            copy(
+                isShowProfileChangeBottomSheet = !isShowProfileChangeBottomSheet
+            )
+        }
+    }
+
+    private fun logout() {
+        launch {
+            logoutUseCase()
+            postSideEffect(SettingSideEffect.NavigateLogin)
         }
     }
 
