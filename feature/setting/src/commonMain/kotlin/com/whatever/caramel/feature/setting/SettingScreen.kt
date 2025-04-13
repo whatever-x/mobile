@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.whatever.caramel.feature.setting
 
 import androidx.compose.foundation.background
@@ -16,7 +18,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,30 +32,15 @@ import com.whatever.caramel.feature.setting.mvi.SettingIntent
 import com.whatever.caramel.feature.setting.mvi.SettingState
 import org.jetbrains.compose.resources.painterResource
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SettingScreen(
     state: SettingState,
     onIntent: (SettingIntent) -> Unit
 ) {
-    val sheetState = rememberModalBottomSheetState()
-    if (state.isShowProfileChangeBottomSheet) {
-        ModalBottomSheet(
-            onDismissRequest = {},
-            sheetState = sheetState,
-            dragHandle = null,
-            shape = RoundedCornerShape(
-                topStart = 24.dp,
-                topEnd = 24.dp
-            ),
-            scrimColor = CaramelTheme.color.alpha.primary
-        ) {
-            SettingProfileChangeBottomSheet(
-                navigateToProfileEditNickName = { onIntent(SettingIntent.ClickEditNicknameButton) },
-                navigateToProfileEditBrithDay = { onIntent(SettingIntent.ClickEditBirthDayButton) }
-            )
-        }
-    }
+    SettingDialogHost(
+        state = state,
+        onIntent = onIntent
+    )
     Box(
         modifier = Modifier
             .background(color = CaramelTheme.color.background.primary)
@@ -201,5 +187,36 @@ internal fun SettingScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun SettingDialogHost(
+    state: SettingState,
+    onIntent: (SettingIntent) -> Unit
+) {
+    if (state.isShowProfileChangeBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = {},
+            dragHandle = null,
+            shape = RoundedCornerShape(
+                topStart = 24.dp,
+                topEnd = 24.dp
+            ),
+            scrimColor = CaramelTheme.color.alpha.primary
+        ) {
+            SettingProfileChangeBottomSheet(
+                navigateToProfileEditNickName = { onIntent(SettingIntent.ClickEditNicknameButton) },
+                navigateToProfileEditBrithDay = { onIntent(SettingIntent.ClickEditBirthDayButton) }
+            )
+        }
+    }
+
+    if (state.isShowLogoutDialog) {
+        // TODO : 다이얼로그 컴포넌트 추가후 구현
+    }
+
+    if (state.isShowUserCancelledDialog) {
+        // TODO : 다이얼로그 컴포넌트 추가후 구현
     }
 }
