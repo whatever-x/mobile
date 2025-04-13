@@ -9,5 +9,4 @@ sealed interface SettingSideEffect : UiSideEffect {
     data object NavigateToEditNickName : SettingSideEffect
 
     data object NavigateToEditBirthday : SettingSideEffect
-
 }
