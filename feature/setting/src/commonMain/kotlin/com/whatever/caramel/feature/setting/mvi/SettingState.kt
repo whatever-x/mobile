@@ -29,7 +29,7 @@ data class CoupleUser(
     val gender: Gender = Gender.IDLE
 ) {
     val birthDate: String
-        get() = birthDayTimeMillisecond.toFormattedDate()
+        get() = birthDayTimeMillisecond.ㅅ()
 
     companion object {
         fun toCoupleInfo(user: User) = CoupleUser(
@@ -39,16 +39,4 @@ data class CoupleUser(
             gender = user.requireProfile.gender
         )
     }
-}
-
-// @RyuSw-cs 2025.04.08 FIXME : core-util에서 관리될 예정
-fun Long.toFormattedDate(): String {
-    val instant = Instant.fromEpochMilliseconds(this)
-    val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-
-    val year = localDateTime.year.toString().padStart(4, '0')
-    val month = localDateTime.month.ordinal.plus(1).toString().padStart(2, '0')
-    val day = localDateTime.dayOfMonth.toString().padStart(2, '0')
-
-    return "$year.$month.$day"
 }
