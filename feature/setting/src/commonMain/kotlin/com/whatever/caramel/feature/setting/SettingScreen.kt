@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -25,7 +25,6 @@ import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.setting.component.SettingListText
 import com.whatever.caramel.feature.setting.component.SettingProfileChangeBottomSheet
-import com.whatever.caramel.feature.setting.component.SettingTopBar
 import com.whatever.caramel.feature.setting.component.SettingUserProfile
 import com.whatever.caramel.feature.setting.component.SettingUserProfileSkeleton
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
@@ -39,7 +38,7 @@ internal fun SettingScreen(
     onIntent: (SettingIntent) -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
-    if(state.isShowProfileChangeBottomSheet){
+    if (state.isShowProfileChangeBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = {},
             sheetState = sheetState,
@@ -62,23 +61,32 @@ internal fun SettingScreen(
             .fillMaxSize()
     ) {
         Column {
-            SettingTopBar(
-                modifier = Modifier.statusBarsPadding(),
-                leadingContent = {
-                    Icon(
-                        modifier = Modifier
-                            .clickable(
-                                indication = null,
-                                interactionSource = null,
-                                onClick = { onIntent(SettingIntent.ClickSettingBackButton) }
-                            ),
-                        painter = painterResource(Resources.Icon.ic_gift_20),
-                        contentDescription = null
+            Row(
+                modifier = Modifier
+                    .padding(
+                        start = 16.dp
                     )
-                },
-                text = "설정"
+                    .fillMaxWidth()
+                    .height(52.dp)
             ) {
-
+                Icon(
+                    modifier = Modifier
+                        .padding(
+                            vertical = 14.dp
+                        ),
+                    painter = painterResource(Resources.Icon.ic_arrow_left_24),
+                    contentDescription = null
+                )
+                Box(
+                    modifier = Modifier,
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "설정",
+                        style = CaramelTheme.typography.heading2,
+                        color = CaramelTheme.color.text.primary
+                    )
+                }
             }
             Column(
                 modifier = Modifier.padding(all = CaramelTheme.spacing.xl)
