@@ -3,12 +3,14 @@ package com.whatever.caramel.core.designsystem.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +18,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -96,7 +99,7 @@ fun CaramelDialogScope.DefaultCaramelDialogLayout() {
     val hasMessage = !message.isNullOrBlank()
     val hasSubButton = !subButtonText.isNullOrBlank() && onSubButtonClick != null
     Column(
-        modifier = Modifier,
+        modifier = Modifier.padding(all = CaramelTheme.spacing.xl),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CaramelDialogTitle()
@@ -108,8 +111,7 @@ fun CaramelDialogScope.DefaultCaramelDialogLayout() {
         if (hasSubButton) {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = CaramelTheme.spacing.xl),
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s),
             ) {
                 CaramelDialogMainButton(modifier = Modifier.weight(1f))
@@ -151,14 +153,20 @@ fun CaramelDialogScope.CaramelDialogMainButton(
     modifier: Modifier = Modifier,
 ) {
     Button(
-        modifier = modifier
-            .background(color = CaramelTheme.color.fill.brand, shape = CaramelTheme.shape.xxl),
-        onClick = { this.onMainButtonClick() }
+        modifier = modifier,
+        contentPadding = PaddingValues(vertical = 11.dp),
+        onClick = { this.onMainButtonClick() },
+        colors = ButtonColors(
+            containerColor = CaramelTheme.color.fill.brand,
+            contentColor = CaramelTheme.color.text.inverse,
+            disabledContentColor = CaramelTheme.color.text.disabledPrimary,
+            disabledContainerColor = CaramelTheme.color.fill.disabledPrimary
+        ),
+        shape = CaramelTheme.shape.xxl
     ) {
         Text(
             text = mainButtonText,
-            style = CaramelTheme.typography.body3.bold,
-            color = CaramelTheme.color.text.inverse
+            style = CaramelTheme.typography.body3.bold
         )
     }
 }
@@ -172,12 +180,19 @@ fun CaramelDialogScope.CaramelDialogSubButton(
 
     Button(
         modifier = modifier,
-        onClick = { subButtonClickEvent() }
+        contentPadding = PaddingValues(vertical = 11.dp),
+        onClick = { subButtonClickEvent() },
+        colors = ButtonColors(
+            containerColor = CaramelTheme.color.fill.quinary,
+            contentColor = CaramelTheme.color.text.brand,
+            disabledContentColor = CaramelTheme.color.text.disabledPrimary,
+            disabledContainerColor = CaramelTheme.color.fill.disabledPrimary
+        ),
+        shape = CaramelTheme.shape.xxl
     ) {
         Text(
             text = subButtonText,
-            style = CaramelTheme.typography.body3.bold,
-            color = CaramelTheme.color.text.brand
+            style = CaramelTheme.typography.body3.bold
         )
     }
 }
