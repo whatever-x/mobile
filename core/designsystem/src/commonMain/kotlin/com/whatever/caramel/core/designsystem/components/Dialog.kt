@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
@@ -101,10 +102,10 @@ fun CaramelDialogScope.DefaultCaramelDialogLayout() {
     ) {
         CaramelDialogTitle()
         if (hasMessage) {
-            Spacer(Modifier.padding(bottom = CaramelTheme.spacing.xs))
+            Spacer(Modifier.height(CaramelTheme.spacing.xs))
             CaramelDialogContent()
         }
-        Spacer(Modifier.padding(bottom = CaramelTheme.spacing.xl))
+        Spacer(Modifier.height(CaramelTheme.spacing.xl))
         if (hasSubButton) {
             Row(
                 modifier = Modifier
