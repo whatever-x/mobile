@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.setting.component.SettingListText
-import com.whatever.caramel.feature.setting.component.SettingProfileChangeBottomSheet
+import com.whatever.caramel.feature.setting.component.SettingEditProfileBottomSheet
 import com.whatever.caramel.feature.setting.component.SettingUserProfile
 import com.whatever.caramel.feature.setting.component.SettingUserProfileSkeleton
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
@@ -57,8 +57,11 @@ internal fun SettingScreen(
             ) {
                 Icon(
                     modifier = Modifier
-                        .padding(
-                            vertical = 14.dp
+                        .padding(vertical = 14.dp)
+                        .clickable(
+                            indication = null,
+                            interactionSource = null,
+                            onClick = { onIntent(SettingIntent.ClickSettingBackButton) }
                         ),
                     painter = painterResource(Resources.Icon.ic_arrow_left_24),
                     contentDescription = null
@@ -109,7 +112,6 @@ internal fun SettingScreen(
                     )
                 }
             }
-            // userProfile
             if (state.isLoading) {
                 SettingUserProfileSkeleton()
                 Spacer(modifier = Modifier.padding(bottom = CaramelTheme.spacing.m))
@@ -119,7 +121,8 @@ internal fun SettingScreen(
                     gender = state.myInfo.gender,
                     nickname = state.myInfo.nickname,
                     birthDay = state.myInfo.birthDate,
-                    isEditable = true
+                    isEditable = true,
+                    onClickEditProfile = { onIntent(SettingIntent.ToggleEditProfile) }
                 )
                 Spacer(modifier = Modifier.padding(bottom = CaramelTheme.spacing.m))
                 SettingUserProfile(
@@ -134,7 +137,6 @@ internal fun SettingScreen(
                 color = CaramelTheme.color.divider.primary
             )
 
-            // 서비스 소개
             Text(
                 modifier = Modifier
                     .padding(start = CaramelTheme.spacing.xl),
@@ -151,18 +153,17 @@ internal fun SettingScreen(
                 mainText = "앱 버전",
                 tailText = "업데이트",
                 mainTextColor = CaramelTheme.color.text.primary,
-                onClick = { },
-                onTailClick = { /* handle update click */ }
+                onClickTailText = { onIntent(SettingIntent.ClickAppUpdateButton) }
             )
             SettingListText(
                 mainText = "서비스 이용약관",
                 mainTextColor = CaramelTheme.color.text.primary,
-                onClick = { onIntent(SettingIntent.ClickTermsOfServiceButtons) }
+                onClickListItem = { onIntent(SettingIntent.ClickTermsOfServiceButtons) }
             )
             SettingListText(
                 mainText = "개인정보 처리방침",
                 mainTextColor = CaramelTheme.color.text.primary,
-                onClick = { onIntent(SettingIntent.ClickPrivacyPolicyButton) },
+                onClickListItem = { onIntent(SettingIntent.ClickPrivacyPolicyButton) },
             )
             Box(
                 modifier = Modifier
@@ -176,13 +177,13 @@ internal fun SettingScreen(
                     SettingListText(
                         mainText = "로그아웃",
                         mainTextColor = CaramelTheme.color.text.tertiary,
-                        onClick = { onIntent(SettingIntent.ToggleLogout) },
+                        onClickListItem = { onIntent(SettingIntent.ToggleLogout) },
                     )
 
                     SettingListText(
                         mainText = "탈퇴하기",
                         mainTextColor = CaramelTheme.color.text.tertiary,
-                        onClick = { onIntent(SettingIntent.ToggleUserCancelledButton) },
+                        onClickListItem = { onIntent(SettingIntent.ToggleUserCancelledButton) },
                     )
                 }
             }
@@ -190,14 +191,15 @@ internal fun SettingScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingDialogHost(
     state: SettingState,
     onIntent: (SettingIntent) -> Unit
 ) {
-    if (state.isShowProfileChangeBottomSheet) {
+    if (state.isShowEditProfileBottomSheet) {
         ModalBottomSheet(
-            onDismissRequest = {},
+            onDismissRequest = { onIntent(SettingIntent.ToggleEditProfile) },
             dragHandle = null,
             shape = RoundedCornerShape(
                 topStart = 24.dp,
@@ -205,7 +207,7 @@ fun SettingDialogHost(
             ),
             scrimColor = CaramelTheme.color.alpha.primary
         ) {
-            SettingProfileChangeBottomSheet(
+            SettingEditProfileBottomSheet(
                 navigateToProfileEditNickName = { onIntent(SettingIntent.ClickEditNicknameButton) },
                 navigateToProfileEditBrithDay = { onIntent(SettingIntent.ClickEditBirthDayButton) }
             )

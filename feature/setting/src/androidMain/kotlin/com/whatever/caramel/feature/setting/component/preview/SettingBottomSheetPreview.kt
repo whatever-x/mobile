@@ -7,14 +7,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.feature.setting.component.SettingProfileChangeBottomSheet
+import com.whatever.caramel.feature.setting.component.SettingEditProfileBottomSheet
 import com.whatever.caramel.feature.setting.component.SettingProfileChangeMenuItem
 
 @Preview(showBackground = true)
 @Composable
 fun SettingBottomSheetMenuPreview() {
     CaramelTheme {
-        SettingProfileChangeBottomSheet(
+        SettingEditProfileBottomSheet(
             navigateToProfileEditBrithDay = {},
             navigateToProfileEditNickName = {}
         )

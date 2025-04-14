@@ -36,6 +36,7 @@ class SettingViewModel(
             SettingIntent.ClickEditNicknameButton -> postSideEffect(SettingSideEffect.NavigateToEditNickname)
             SettingIntent.ClickEditCountDownButton -> postSideEffect(SettingSideEffect.NavigateToEditCountDown(currentState.startDate.toMillisecond()))
             SettingIntent.ToggleUserCancelledButton -> toggleUserCancelledButton()
+            SettingIntent.ClickAppUpdateButton -> TODO("앱 업데이트 기능 확인 필요")
         }
     }
 
@@ -58,7 +59,7 @@ class SettingViewModel(
     private fun toggleEditProfile() {
         reduce {
             copy(
-                isShowProfileChangeBottomSheet = !isShowProfileChangeBottomSheet
+                isShowEditProfileBottomSheet = !isShowEditProfileBottomSheet
             )
         }
     }

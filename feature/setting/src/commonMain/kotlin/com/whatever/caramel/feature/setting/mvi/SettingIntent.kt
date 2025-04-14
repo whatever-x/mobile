@@ -18,6 +18,8 @@ sealed interface SettingIntent : UiIntent {
 
     data object ClickTermsOfServiceButtons : SettingIntent
 
+    data object ClickAppUpdateButton : SettingIntent
+
     data object ClickPrivacyPolicyButton : SettingIntent
 
     data object ClickLogoutConfirmButton : SettingIntent

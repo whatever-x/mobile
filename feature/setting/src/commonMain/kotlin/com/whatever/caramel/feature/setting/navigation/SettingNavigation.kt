@@ -21,12 +21,16 @@ fun NavGraphBuilder.settingScreen(
     navigateToHome: () -> Unit,
     navigateToEditBirthday: () -> Unit,
     navigateToEditNickName: () -> Unit,
+    navigateToEditCountDown: () -> Unit,
+    navigateToLogin: () -> Unit
 ) {
     composable<SettingRoute> {
         SettingRoute(
             navigateToHome = navigateToHome,
             navigateToEditBirthday = navigateToEditBirthday,
-            navigateToEditNickName = navigateToEditNickName
+            navigateToEditNickName = navigateToEditNickName,
+            navigateToEditCountDown = navigateToEditCountDown,
+            navigateToLogin = navigateToLogin
         )
     }
 }

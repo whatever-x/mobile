@@ -6,6 +6,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,7 +33,8 @@ internal fun SettingUserProfile(
     gender: Gender,
     nickname: String,
     birthDay: String,
-    isEditable: Boolean
+    isEditable: Boolean,
+    onClickEditProfile: (() -> Unit)? = null
 ) {
     val genderImageResource = when (gender) {
         Gender.IDLE, Gender.MALE -> Resources.Image.img_gender_man
@@ -76,6 +78,10 @@ internal fun SettingUserProfile(
                 ).padding(
                     vertical = CaramelTheme.spacing.s,
                     horizontal = CaramelTheme.spacing.m
+                ).clickable(
+                    indication = null,
+                    interactionSource = null,
+                    onClick = { onClickEditProfile?.invoke() }
                 )
             ) {
                 Text(

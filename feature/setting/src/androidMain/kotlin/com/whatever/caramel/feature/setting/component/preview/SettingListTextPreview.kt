@@ -18,14 +18,14 @@ private fun SettingListTextPreview(
             mainText = data.text,
             tailText = data.tailText,
             mainTextColor = CaramelTheme.color.text.primary,
-            onClick = {},
-            onTailClick = null
+            onClickListItem = {},
+            onClickTailText = null
         )
 
         SettingListText(
             mainText = data.text,
             mainTextColor = CaramelTheme.color.text.tertiary,
-            onClick = {}
+            onClickListItem = {}
         )
     }
 }

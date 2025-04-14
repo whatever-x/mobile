@@ -16,7 +16,7 @@ internal class SettingScreenPreviewDataProvider :
         SettingScreenPreviewData(
             state = SettingState(
                 isLoading = false,
-                isShowProfileChangeBottomSheet = true,
+                isShowEditProfileBottomSheet = true,
                 startDateTimeMillisecond = 1743897600000L,
                 myInfo = CoupleUser(
                     id = 123L,

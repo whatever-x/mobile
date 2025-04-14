@@ -10,7 +10,7 @@ data class SettingState(
     val startDateTimeMillisecond: Long = 0L,
     val myInfo: CoupleUser = CoupleUser(),
     val partnerInfo: CoupleUser = CoupleUser(),
-    val isShowProfileChangeBottomSheet: Boolean = false,
+    val isShowEditProfileBottomSheet: Boolean = false,
     val isShowLogoutDialog : Boolean = false,
     val isShowUserCancelledDialog : Boolean = false
 ) : UiState {

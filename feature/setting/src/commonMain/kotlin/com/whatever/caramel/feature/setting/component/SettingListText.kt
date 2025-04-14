@@ -17,8 +17,8 @@ internal fun SettingListText(
     mainText: String,
     mainTextColor: Color,
     tailText: String? = null,
-    onClick: () -> Unit,
-    onTailClick: (() -> Unit)? = null
+    onClickListItem: (() -> Unit)? = null,
+    onClickTailText: (() -> Unit)? = null
 ) {
     Row(
         modifier = modifier
@@ -33,7 +33,7 @@ internal fun SettingListText(
                 .clickable(
                     interactionSource = null,
                     indication = null,
-                    onClick = onClick
+                    onClick = { onClickListItem?.invoke() }
                 )
         ) {
             Text(
@@ -51,7 +51,7 @@ internal fun SettingListText(
                     .clickable(
                         interactionSource = null,
                         indication = null,
-                        onClick = { onTailClick?.invoke() }
+                        onClick = { onClickTailText?.invoke() }
                     ),
                 text = tailText,
                 style = CaramelTheme.typography.body3.regular,

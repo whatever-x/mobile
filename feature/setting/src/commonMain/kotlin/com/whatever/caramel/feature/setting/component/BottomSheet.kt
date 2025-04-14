@@ -18,7 +18,7 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-internal fun SettingProfileChangeBottomSheet(
+internal fun SettingEditProfileBottomSheet(
     navigateToProfileEditNickName : () -> Unit,
     navigateToProfileEditBrithDay : () -> Unit,
 ) {
