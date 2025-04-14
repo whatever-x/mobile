@@ -49,13 +49,13 @@ class CaramelDefaultDialogScope(
 @Composable
 fun CaramelDialog(
     show: Boolean,
-    onDismissRequest: () -> Unit,
     title: String,
     message: String? = null,
-    onSubButtonClick: (() -> Unit)? = null,
     subButtonText: String? = null,
     mainButtonText: String,
+    onDismissRequest: () -> Unit,
     onMainButtonClick: () -> Unit,
+    onSubButtonClick: (() -> Unit)? = null,
     content: @Composable CaramelDialogScope.() -> Unit,
 ) {
     if (!show) return
