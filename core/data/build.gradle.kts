@@ -22,7 +22,6 @@ kotlin {
             implementation(projects.core.util)
 
             implementation(libs.koin.core)
-            implementation(libs.napier)
 
             implementation(libs.bundles.ktor)
             implementation(libs.kotlinx.date.time)
