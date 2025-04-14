@@ -1,6 +1,5 @@
 package com.whatever.caramel.core.designsystem.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,8 +17,6 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
@@ -155,7 +152,7 @@ fun CaramelDialogScope.CaramelDialogMainButton(
     Button(
         modifier = modifier,
         contentPadding = PaddingValues(vertical = 11.dp),
-        onClick = { this.onMainButtonClick() },
+        onClick = this.onMainButtonClick,
         colors = ButtonColors(
             containerColor = CaramelTheme.color.fill.brand,
             contentColor = CaramelTheme.color.text.inverse,
@@ -181,7 +178,7 @@ fun CaramelDialogScope.CaramelDialogSubButton(
     Button(
         modifier = modifier,
         contentPadding = PaddingValues(vertical = 11.dp),
-        onClick = { subButtonClickEvent() },
+        onClick = subButtonClickEvent,
         colors = ButtonColors(
             containerColor = CaramelTheme.color.fill.quinary,
             contentColor = CaramelTheme.color.text.brand,
