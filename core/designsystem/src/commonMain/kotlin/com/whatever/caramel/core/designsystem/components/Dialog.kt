@@ -105,8 +105,8 @@ fun CaramelDialogScope.DefaultCaramelDialogLayout() {
             Spacer(Modifier.height(CaramelTheme.spacing.xs))
             CaramelDialogContent()
         }
+        Spacer(Modifier.height(CaramelTheme.spacing.xl))
         if (hasSubButton) {
-            Spacer(Modifier.height(CaramelTheme.spacing.xl))
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
