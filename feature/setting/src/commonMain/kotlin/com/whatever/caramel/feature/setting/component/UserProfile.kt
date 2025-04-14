@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -43,6 +44,11 @@ internal fun SettingUserProfile(
 
     Row(
         modifier = modifier
+            .fillMaxWidth()
+            .background(
+                color = CaramelTheme.color.fill.inverse,
+                shape = CaramelTheme.shape.xl
+            )
             .padding(all = CaramelTheme.spacing.m),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -120,8 +126,7 @@ internal fun SettingUserProfileSkeleton(
         end = Offset(x = translateAnim.value, y = translateAnim.value),
     )
     Row(
-        modifier = modifier
-            .padding(all = CaramelTheme.spacing.m),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(

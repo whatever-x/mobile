@@ -11,14 +11,14 @@ data class SettingState(
     val myInfo: CoupleUser = CoupleUser(),
     val partnerInfo: CoupleUser = CoupleUser(),
     val isShowEditProfileBottomSheet: Boolean = false,
-    val isShowLogoutDialog : Boolean = false,
-    val isShowUserCancelledDialog : Boolean = false
+    val isShowLogoutDialog: Boolean = false,
+    val isShowUserCancelledDialog: Boolean = false
 ) : UiState {
     val startDate: String
         get() = if (startDateTimeMillisecond == 0L) {
             "언제부터 사귀기 시작했나요?"
         } else {
-            startDateTimeMillisecond.toFormattedDate() ?: ""
+            startDateTimeMillisecond.toFormattedDate(separator = ".") ?: ""
         }
 }
 
@@ -29,7 +29,7 @@ data class CoupleUser(
     val gender: Gender = Gender.IDLE
 ) {
     val birthDate: String
-        get() = birthDayTimeMillisecond.toFormattedDate() ?: ""
+        get() = birthDayTimeMillisecond.toFormattedDate(separator = ".") ?: ""
 
     companion object {
         fun toCoupleInfo(user: User) = CoupleUser(

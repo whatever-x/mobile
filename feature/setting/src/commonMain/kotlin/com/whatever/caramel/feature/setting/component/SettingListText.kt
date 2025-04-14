@@ -22,10 +22,7 @@ internal fun SettingListText(
 ) {
     Row(
         modifier = modifier
-            .padding(
-                vertical = 14.dp,
-                horizontal = 20.dp
-            )
+            .padding(vertical = 14.dp)
     ) {
         Box(
             modifier = Modifier

@@ -2,7 +2,6 @@
 
 package com.whatever.caramel.feature.setting
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,12 +10,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,8 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.feature.setting.component.SettingListText
 import com.whatever.caramel.feature.setting.component.SettingEditProfileBottomSheet
+import com.whatever.caramel.feature.setting.component.SettingListText
 import com.whatever.caramel.feature.setting.component.SettingUserProfile
 import com.whatever.caramel.feature.setting.component.SettingUserProfileSkeleton
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
@@ -41,23 +43,41 @@ internal fun SettingScreen(
         state = state,
         onIntent = onIntent
     )
-    Box(
+    Scaffold(
         modifier = Modifier
-            .background(color = CaramelTheme.color.background.primary)
-            .fillMaxSize()
-    ) {
-        Column {
-            Row(
+            .fillMaxSize(),
+        containerColor = CaramelTheme.color.background.primary,
+        bottomBar = {
+            Column(
                 modifier = Modifier
-                    .padding(
-                        start = 16.dp
-                    )
                     .fillMaxWidth()
-                    .height(52.dp)
+                    .navigationBarsPadding()
+                    .padding(horizontal = 20.dp)
+            ) {
+                SettingListText(
+                    mainText = "로그아웃",
+                    mainTextColor = CaramelTheme.color.text.tertiary,
+                    onClickListItem = { onIntent(SettingIntent.ToggleLogout) },
+                )
+
+                SettingListText(
+                    mainText = "탈퇴하기",
+                    mainTextColor = CaramelTheme.color.text.tertiary,
+                    onClickListItem = { onIntent(SettingIntent.ToggleUserCancelledButton) },
+                )
+            }
+        },
+        topBar = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding(),
             ) {
                 Icon(
                     modifier = Modifier
                         .padding(vertical = 14.dp)
+                        .padding(start = 16.dp)
+                        .align(Alignment.CenterStart)
                         .clickable(
                             indication = null,
                             interactionSource = null,
@@ -66,19 +86,24 @@ internal fun SettingScreen(
                     painter = painterResource(Resources.Icon.ic_arrow_left_24),
                     contentDescription = null
                 )
-                Box(
-                    modifier = Modifier,
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "설정",
-                        style = CaramelTheme.typography.heading2,
-                        color = CaramelTheme.color.text.primary
-                    )
-                }
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.Center),
+                    text = "설정",
+                    style = CaramelTheme.typography.heading2,
+                    color = CaramelTheme.color.text.primary
+                )
             }
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues = paddingValues)
+        ) {
             Column(
-                modifier = Modifier.padding(all = CaramelTheme.spacing.xl)
+                modifier = Modifier
+                    .padding(all = CaramelTheme.spacing.xl)
             ) {
                 Text(
                     text = "우리의 시작",
@@ -87,10 +112,6 @@ internal fun SettingScreen(
                 )
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            vertical = CaramelTheme.spacing.xxs
-                        )
                         .clickable(
                             onClick = { onIntent(SettingIntent.ClickEditCountDownButton) },
                             interactionSource = null,
@@ -111,81 +132,66 @@ internal fun SettingScreen(
                         contentDescription = null
                     )
                 }
-            }
-            if (state.isLoading) {
-                SettingUserProfileSkeleton()
-                Spacer(modifier = Modifier.padding(bottom = CaramelTheme.spacing.m))
-                SettingUserProfileSkeleton()
-            } else {
-                SettingUserProfile(
-                    gender = state.myInfo.gender,
-                    nickname = state.myInfo.nickname,
-                    birthDay = state.myInfo.birthDate,
-                    isEditable = true,
-                    onClickEditProfile = { onIntent(SettingIntent.ToggleEditProfile) }
-                )
-                Spacer(modifier = Modifier.padding(bottom = CaramelTheme.spacing.m))
-                SettingUserProfile(
-                    gender = state.partnerInfo.gender,
-                    nickname = state.partnerInfo.nickname,
-                    birthDay = state.partnerInfo.birthDate,
-                    isEditable = false
-                )
-            }
-            HorizontalDivider(
-                modifier = Modifier.padding(vertical = 30.dp),
-                color = CaramelTheme.color.divider.primary
-            )
-
-            Text(
-                modifier = Modifier
-                    .padding(start = CaramelTheme.spacing.xl),
-                text = "서비스 소개",
-                style = CaramelTheme.typography.heading3,
-                color = CaramelTheme.color.text.primary
-            )
-            Spacer(
-                modifier = Modifier.padding(
-                    bottom = CaramelTheme.spacing.s
-                )
-            )
-            SettingListText(
-                mainText = "앱 버전",
-                tailText = "업데이트",
-                mainTextColor = CaramelTheme.color.text.primary,
-                onClickTailText = { onIntent(SettingIntent.ClickAppUpdateButton) }
-            )
-            SettingListText(
-                mainText = "서비스 이용약관",
-                mainTextColor = CaramelTheme.color.text.primary,
-                onClickListItem = { onIntent(SettingIntent.ClickTermsOfServiceButtons) }
-            )
-            SettingListText(
-                mainText = "개인정보 처리방침",
-                mainTextColor = CaramelTheme.color.text.primary,
-                onClickListItem = { onIntent(SettingIntent.ClickPrivacyPolicyButton) },
-            )
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-            ) {
-                Column(
-                    modifier = Modifier.align(
-                        Alignment.BottomStart
+                Spacer(modifier = Modifier.padding(bottom = 20.dp))
+                if (state.isLoading) {
+                    SettingUserProfileSkeleton()
+                    Spacer(modifier = Modifier.padding(bottom = CaramelTheme.spacing.m))
+                    SettingUserProfileSkeleton()
+                } else {
+                    SettingUserProfile(
+                        gender = state.myInfo.gender,
+                        nickname = state.myInfo.nickname,
+                        birthDay = state.myInfo.birthDate,
+                        isEditable = true,
+                        onClickEditProfile = { onIntent(SettingIntent.ToggleEditProfile) }
                     )
-                ) {
-                    SettingListText(
-                        mainText = "로그아웃",
-                        mainTextColor = CaramelTheme.color.text.tertiary,
-                        onClickListItem = { onIntent(SettingIntent.ToggleLogout) },
-                    )
-
-                    SettingListText(
-                        mainText = "탈퇴하기",
-                        mainTextColor = CaramelTheme.color.text.tertiary,
-                        onClickListItem = { onIntent(SettingIntent.ToggleUserCancelledButton) },
+                    Spacer(modifier = Modifier.padding(bottom = CaramelTheme.spacing.m))
+                    SettingUserProfile(
+                        gender = state.partnerInfo.gender,
+                        nickname = state.partnerInfo.nickname,
+                        birthDay = state.partnerInfo.birthDate,
+                        isEditable = false
                     )
                 }
+            }
+
+            HorizontalDivider(
+                modifier = Modifier.padding(
+                    top = 10.dp,
+                    bottom = 30.dp
+                ),
+                color = CaramelTheme.color.divider.primary
+            )
+            Column(
+                modifier = Modifier.padding(horizontal = CaramelTheme.spacing.xl)
+            ) {
+                Text(
+                    modifier = Modifier,
+                    text = "서비스 소개",
+                    style = CaramelTheme.typography.heading3,
+                    color = CaramelTheme.color.text.primary
+                )
+                Spacer(
+                    modifier = Modifier.padding(
+                        bottom = CaramelTheme.spacing.s
+                    )
+                )
+                SettingListText(
+                    mainText = "앱 버전",
+                    tailText = "업데이트",
+                    mainTextColor = CaramelTheme.color.text.primary,
+                    onClickTailText = { onIntent(SettingIntent.ClickAppUpdateButton) }
+                )
+                SettingListText(
+                    mainText = "서비스 이용약관",
+                    mainTextColor = CaramelTheme.color.text.primary,
+                    onClickListItem = { onIntent(SettingIntent.ClickTermsOfServiceButtons) }
+                )
+                SettingListText(
+                    mainText = "개인정보 처리방침",
+                    mainTextColor = CaramelTheme.color.text.primary,
+                    onClickListItem = { onIntent(SettingIntent.ClickPrivacyPolicyButton) },
+                )
             }
         }
     }
