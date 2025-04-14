@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -28,6 +27,7 @@ import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.setting.component.SettingEditProfileBottomSheet
 import com.whatever.caramel.feature.setting.component.SettingListText
+import com.whatever.caramel.feature.setting.component.SettingTopBar
 import com.whatever.caramel.feature.setting.component.SettingUserProfile
 import com.whatever.caramel.feature.setting.component.SettingUserProfileSkeleton
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
@@ -68,32 +68,13 @@ internal fun SettingScreen(
             }
         },
         topBar = {
-            Box(
+            SettingTopBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .statusBarsPadding(),
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .padding(vertical = 14.dp)
-                        .padding(start = 16.dp)
-                        .align(Alignment.CenterStart)
-                        .clickable(
-                            indication = null,
-                            interactionSource = null,
-                            onClick = { onIntent(SettingIntent.ClickSettingBackButton) }
-                        ),
-                    painter = painterResource(Resources.Icon.ic_arrow_left_24),
-                    contentDescription = null
-                )
-                Text(
-                    modifier = Modifier
-                        .align(Alignment.Center),
-                    text = "설정",
-                    style = CaramelTheme.typography.heading2,
-                    color = CaramelTheme.color.text.primary
-                )
-            }
+                appbarText = "설정",
+                onClickBackButton = { onIntent(SettingIntent.ClickSettingBackButton) }
+            )
         }
     ) { paddingValues ->
         Column(
