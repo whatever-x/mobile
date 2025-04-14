@@ -38,8 +38,7 @@ class CaramelDialogPreviewProvider : PreviewParameterProvider<CaramelDialogPrevi
                 title = "Default Title",
                 mainButtonText = "OK",
                 subButtonText = "Cancel",
-                mainButtonClickEvent = {},
-                subButtonClickEvent = {}
+                mainButtonClickEvent = {}
             ),
             CaramelDialogPreviewData(
                 title = "Default Title",
