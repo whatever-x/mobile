@@ -1,80 +1,42 @@
 package com.whatever.caramel.core.util
 
-import kotlinx.datetime.Instant
+import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
-/**
- * 밀리초를 날짜 문자열로 변환
- * @param separator 날짜 문자열의 구분자 (기본값: '-')
- * @return 밀리초를 날짜 문자열로 변환한 결과, 실패 시 null
- * @author RyuSw-cs
- * */
-fun Long.toFormattedDate(separator: String = "-") = try {
-    val instant = Instant.fromEpochMilliseconds(this)
-    val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
+object DateUtil {
 
-    val year = localDateTime.year.toString().padStart(4, '0')
-    val month = localDateTime.monthNumber.toString().padStart(2, '0')
-    val day = localDateTime.dayOfMonth.toString().padStart(2, '0')
+    /**
+     * 년, 월에 따른 마지막 일자 구하는 함수
+     * @param year 년
+     * @param month 월
+     * @return 마지막 일자
+     * @author GunHyung-Ham
+     */
+    fun getLastDayOfMonth(year: Int, month: Int): Int =
+        when (month) {
+            1, 3, 5, 7, 8, 10, 12 -> 31
+            4, 6, 9, 11 -> 30
+            2 -> if (isLeapYear(year)) 29 else 28
+            else -> 30
+        }
 
-    "$year$separator$month$separator$day"
-} catch (e: Exception) {
-    null
-}
+    /**
+     * 파라미터의 연도가 윤년인지 여부를 판단하는 함수
+     * @param year 년
+     * @return Boolean
+     * @author GunHyung-Ham
+     */
+    private fun isLeapYear(year: Int): Boolean =
+        (year % 4 == 0 && year % 100 != 0) || year % 400 == 0
 
-/**
- * 년, 월, 일을 Date 형식으로 변환 (구분자 '-')
- * @param year 년
- * @param month 월
- * @param day 일
- * @return 밀리초를 날짜 문자열로 변환한 결과, 변환 실패 시 빈 문자열
- * @author RyuSw-cs
- * */
-fun createDateString(
-    year: Int,
-    month: Int,
-    day: Int,
-) = try {
-    check(year in 1..9999 && month in 1..12 && day in 1..31) { "날짜 형식이 잘못되었습니다." }
+    /**
+     * 오늘 날짜를 구하는 함수
+     * @return LocalDate 형식의 오늘 날짜
+     * @author GunHyung-Ham
+     */
+    fun today(): LocalDate =
+        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
-    val localDate = LocalDate(year, month, day)
-    val formattedMonth = localDate.monthNumber.toString().padStart(2, '0')
-    val formattedDay = localDate.dayOfMonth.toString().padStart(2, '0')
-    "$year-$formattedMonth-$formattedDay"
-} catch (e: Exception) {
-    ""
-}
-
-/**
- * 날짜 문자열을 밀리초로 변환
- * Timezone형식으로 사용한다면 해당 Timezone을 기준으로 변환, Timezone이 존재하지 않는다면 시스템 기본 Timezone을 사용.
- * @return 현재 날짜 기준의 밀리초, 변환 실패 시 null
- * */
-fun String.toMillisecond(): Long? = try {
-    val timeZone = this.extractTimeZonePart() ?: "T00:00:00.000Z"
-
-    val rawDate = this.replace(Regex("[^0-9]"), "")
-    val year = rawDate.substring(0, 4)
-    val month = rawDate.substring(4, 6)
-    val day = rawDate.substring(6, 8)
-
-    val localDate = LocalDate(year.toInt(), month.toInt(), day.toInt())
-    val formattedMonth = localDate.monthNumber.toString().padStart(2, '0')
-    val formattedDay = localDate.dayOfMonth.toString().padStart(2, '0')
-    val dateStr = "${localDate.year}-${formattedMonth}-${formattedDay}${timeZone}"
-    Instant.parse(dateStr).toEpochMilliseconds()
-} catch (e: Exception) {
-    null
-}
-
-/**
- * 타임존 추출
- * @return 타임존 문자열, 없으면 null
- * */
-private fun String.extractTimeZonePart(): String? {
-    val regex = Regex("(T.*?(Z|[+-]\\d{2}:?\\d{2}))")
-    val matchResult = regex.find(this) ?: return null
-    return matchResult.groupValues[1]
 }

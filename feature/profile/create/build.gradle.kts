@@ -24,7 +24,6 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
 
             implementation(libs.jetbrains.compose.navigation)
-            implementation(libs.napier)
             implementation(libs.compose.ui.backhandler)
             implementation(libs.kotlinx.date.time)
         }

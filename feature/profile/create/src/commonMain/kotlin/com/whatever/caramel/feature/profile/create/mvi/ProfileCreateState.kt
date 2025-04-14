@@ -1,15 +1,13 @@
 package com.whatever.caramel.feature.profile.create.mvi
 
 import com.whatever.caramel.core.domain.vo.user.Gender
+import com.whatever.caramel.core.ui.picker.DateUiState
 import com.whatever.caramel.core.viewmodel.UiState
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 data class ProfileCreateState(
     val nickname: String = "",
     val gender: Gender = Gender.IDLE,
-    val birthday: Birthday = Birthday.currentDay(),
+    val birthday: DateUiState = DateUiState.currentDate(),
     val isServiceTermChecked: Boolean = false,
     val isPersonalInfoTermChecked: Boolean = false,
     val currentStep: ProfileCreateStep = ProfileCreateStep.NICKNAME,
@@ -40,30 +38,4 @@ enum class ProfileCreateStep {
     BIRTHDAY,
     NEED_TERMS,
     ;
-}
-
-data class Birthday(
-    val year: String = "",
-    val month: String = "",
-    val day: String = ""
-) {
-    val formattedMonth : String
-        get() = if (month.length < 2) "0$month" else month
-
-    val formattedDay : String
-        get() = if (month.length < 2) "0$day" else day
-
-
-    companion object {
-        fun currentDay(): Birthday {
-            val currentDay =
-                Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-
-            return Birthday(
-                year = currentDay.year.toString(),
-                month = (currentDay.month.ordinal + 1).toString(),
-                day = currentDay.dayOfMonth.toString()
-            )
-        }
-    }
 }

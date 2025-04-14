@@ -10,7 +10,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.kotlinx.date.time)
+            api(libs.kotlinx.date.time)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))

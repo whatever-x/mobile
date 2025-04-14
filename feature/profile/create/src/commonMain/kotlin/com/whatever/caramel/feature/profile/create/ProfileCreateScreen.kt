@@ -32,7 +32,7 @@ import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateStep
 @Composable
 internal fun ProfileCreateScreen(
     state: ProfileCreateState,
-    onIntent: (ProfileCreateIntent) -> Unit
+    onIntent: (ProfileCreateIntent) -> Unit,
 ) {
     Scaffold(
         modifier = Modifier
@@ -106,9 +106,10 @@ internal fun ProfileCreateScreen(
 
                     ProfileCreateStep.BIRTHDAY -> {
                         BirthdayStep(
-                            year = state.birthday.year,
-                            month = state.birthday.month,
-                            day = state.birthday.day
+                            dateUiState = state.birthday,
+                            onDayChanged = { day -> onIntent(ProfileCreateIntent.ChangeDayPicker(day)) },
+                            onYearChanged = { year -> onIntent(ProfileCreateIntent.ChangeYearPicker(year)) },
+                            onMonthChanged = { month -> onIntent(ProfileCreateIntent.ChangeMonthPicker(month)) },
                         )
                     }
 

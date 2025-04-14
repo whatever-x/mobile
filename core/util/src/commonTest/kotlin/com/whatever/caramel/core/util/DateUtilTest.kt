@@ -1,5 +1,8 @@
 package com.whatever.caramel.core.util
 
+import com.whatever.caramel.core.util.DateFormatter.createDateString
+import com.whatever.caramel.core.util.DateFormatter.toFormattedDate
+import com.whatever.caramel.core.util.DateParser.toMillisecond
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
