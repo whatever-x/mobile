@@ -11,8 +11,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.designsystem)
-            implementation(libs.kotlinx.date.time)
-            implementation(libs.napier)
+            implementation(projects.core.util)
         }
     }
 }

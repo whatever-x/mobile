@@ -45,7 +45,7 @@ internal class ProfileCreateScreenPreviewProvider :
         ),
         ProfileCreateScreenPreviewData(
             state = ProfileCreateState(
-                birthday = DateUiState.today(),
+                birthday = DateUiState.currentDate(),
                 currentStep = ProfileCreateStep.BIRTHDAY
             )
         ),

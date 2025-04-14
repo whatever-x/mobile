@@ -20,7 +20,7 @@ private fun CaramelDatePickerPreview() {
             contentAlignment = Alignment.Center
         ) {
             CaramelDatePicker(
-                dateUiState = DateUiState.today(),
+                dateUiState = DateUiState.currentDate(),
                 onYearChanged = { year -> Napier.d { year.toString() } },
                 onMonthChanged = { month -> Napier.d { month.toString() } },
                 onDayChanged = { day -> Napier.d { day.toString() } },

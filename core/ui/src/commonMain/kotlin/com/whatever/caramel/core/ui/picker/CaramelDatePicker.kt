@@ -15,9 +15,7 @@ import com.whatever.caramel.core.designsystem.components.PickerScrollMode.BOUNDE
 import com.whatever.caramel.core.designsystem.components.PickerScrollMode.LOOPING
 import com.whatever.caramel.core.designsystem.components.rememberPickerState
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import com.whatever.caramel.core.util.DateUtil
 
 data class DateUiState(
     val year: Int,
@@ -25,13 +23,13 @@ data class DateUiState(
     val day: Int
 ) {
     companion object {
-        fun today(): DateUiState {
-            val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        fun currentDate(): DateUiState {
+            val today = DateUtil.today()
 
             return DateUiState(
-                year = now.year,
-                month = now.monthNumber,
-                day = now.dayOfMonth
+                year = today.year,
+                month = today.monthNumber,
+                day = today.dayOfMonth
             )
         }
     }
@@ -53,7 +51,7 @@ fun CaramelDatePicker(
 
     val days by remember(yearState.selectedItem, monthState.selectedItem) {
         derivedStateOf {
-            val lastDay = getLastDayOfMonth(yearState.selectedItem, monthState.selectedItem)
+            val lastDay = DateUtil.getLastDayOfMonth(yearState.selectedItem, monthState.selectedItem)
             (1..lastDay).toList()
         }
     }
@@ -93,16 +91,4 @@ fun CaramelDatePicker(
             onItemSelected = { day -> onDayChanged(day) }
         )
     }
-}
-
-fun getLastDayOfMonth(year: Int, month: Int): Int = // 년, 월에 따른 day 리스트 구하는 함수
-    when (month) {
-        1, 3, 5, 7, 8, 10, 12 -> 31
-        4, 6, 9, 11 -> 30
-        2 -> if (isLeapYear(year)) 29 else 28
-        else -> 30
-    }
-
-fun isLeapYear(year: Int): Boolean { // 윤년 여부 함수
-    return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0
 }

@@ -7,7 +7,7 @@ import com.whatever.caramel.core.viewmodel.UiState
 data class ProfileCreateState(
     val nickname: String = "",
     val gender: Gender = Gender.IDLE,
-    val birthday: DateUiState = DateUiState.today(),
+    val birthday: DateUiState = DateUiState.currentDate(),
     val isServiceTermChecked: Boolean = false,
     val isPersonalInfoTermChecked: Boolean = false,
     val currentStep: ProfileCreateStep = ProfileCreateStep.NICKNAME,
