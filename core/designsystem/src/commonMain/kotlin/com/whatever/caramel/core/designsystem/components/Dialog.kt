@@ -98,14 +98,13 @@ fun CaramelDialogScope.DefaultCaramelDialogLayout() {
     val hasSubButton = !subButtonText.isNullOrBlank() && onSubButtonClick != null
     Column(
         modifier = Modifier.padding(all = CaramelTheme.spacing.xl),
+        verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xs),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CaramelDialogTitle()
         if (hasMessage) {
-            Spacer(Modifier.height(CaramelTheme.spacing.xs))
             CaramelDialogContent()
         }
-        Spacer(Modifier.height(CaramelTheme.spacing.xl))
         if (hasSubButton) {
             Row(
                 modifier = Modifier
@@ -152,7 +151,7 @@ fun CaramelDialogScope.CaramelDialogMainButton(
 ) {
     Button(
         modifier = modifier,
-        contentPadding = PaddingValues(vertical = 11.dp),
+        contentPadding = PaddingValues(vertical = 11.dp, horizontal = CaramelTheme.spacing.l),
         onClick = this.onMainButtonClick,
         colors = ButtonColors(
             containerColor = CaramelTheme.color.fill.brand,
@@ -178,7 +177,7 @@ fun CaramelDialogScope.CaramelDialogSubButton(
 
     Button(
         modifier = modifier,
-        contentPadding = PaddingValues(vertical = 11.dp),
+        contentPadding = PaddingValues(vertical = 11.dp, horizontal = CaramelTheme.spacing.l),
         onClick = subButtonClickEvent,
         colors = ButtonColors(
             containerColor = CaramelTheme.color.fill.quinary,
