@@ -34,7 +34,7 @@ class SettingViewModel(
             SettingIntent.ClickLogoutConfirmButton -> logout()
             SettingIntent.ClickEditBirthDayButton -> postSideEffect(SettingSideEffect.NavigateToEditBirthDay)
             SettingIntent.ClickEditNicknameButton -> postSideEffect(SettingSideEffect.NavigateToEditNickname)
-            SettingIntent.ClickEditCountDownButton -> postSideEffect(SettingSideEffect.NavigateToEditCountDown(currentState.startDate.toMillisecond()))
+            SettingIntent.ClickEditCountDownButton -> postSideEffect(SettingSideEffect.NavigateToEditCountDown(currentState.startDateTimeMillisecond))
             SettingIntent.ToggleUserCancelledButton -> toggleUserCancelledButton()
             SettingIntent.ClickAppUpdateButton -> TODO("앱 업데이트 기능 확인 필요")
         }

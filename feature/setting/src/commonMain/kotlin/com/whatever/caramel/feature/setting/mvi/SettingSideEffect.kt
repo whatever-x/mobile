@@ -16,5 +16,5 @@ sealed interface SettingSideEffect : UiSideEffect {
 
     data object NavigateLogin : SettingSideEffect
 
-    data class NavigateToEditCountDown(val startDateMillisecond : Long?) : SettingSideEffect
+    data class NavigateToEditCountDown(val startDateMillisecond : Long) : SettingSideEffect
 }
