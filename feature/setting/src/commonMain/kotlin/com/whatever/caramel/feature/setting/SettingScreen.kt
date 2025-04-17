@@ -40,8 +40,12 @@ internal fun SettingScreen(
     onIntent: (SettingIntent) -> Unit
 ) {
     SettingDialogHost(
-        state = state,
-        onIntent = onIntent
+        isShowUserCancelledDialog = state.isShowUserCancelledDialog,
+        isShowLogoutDialog = state.isShowLogoutDialog,
+        isShowEditProfileBottomSheet = state.isShowEditProfileBottomSheet,
+        toggleEditProfileDialog = { onIntent(SettingIntent.ToggleEditProfile) },
+        onClickEditNickname = { onIntent(SettingIntent.ClickEditNicknameButton) },
+        onClickEditBrithDay = { onIntent(SettingIntent.ClickEditBirthDayButton) }
     )
     Scaffold(
         modifier = Modifier
@@ -181,12 +185,16 @@ internal fun SettingScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingDialogHost(
-    state: SettingState,
-    onIntent: (SettingIntent) -> Unit
+    isShowEditProfileBottomSheet: Boolean,
+    isShowLogoutDialog: Boolean,
+    isShowUserCancelledDialog: Boolean,
+    toggleEditProfileDialog: () -> Unit,
+    onClickEditNickname: () -> Unit,
+    onClickEditBrithDay: () -> Unit
 ) {
-    if (state.isShowEditProfileBottomSheet) {
+    if (isShowEditProfileBottomSheet) {
         ModalBottomSheet(
-            onDismissRequest = { onIntent(SettingIntent.ToggleEditProfile) },
+            onDismissRequest = toggleEditProfileDialog,
             dragHandle = null,
             shape = RoundedCornerShape(
                 topStart = 24.dp,
@@ -195,17 +203,17 @@ fun SettingDialogHost(
             scrimColor = CaramelTheme.color.alpha.primary
         ) {
             SettingEditProfileBottomSheet(
-                navigateToProfileEditNickName = { onIntent(SettingIntent.ClickEditNicknameButton) },
-                navigateToProfileEditBrithDay = { onIntent(SettingIntent.ClickEditBirthDayButton) }
+                navigateToProfileEditNickName = onClickEditNickname,
+                navigateToProfileEditBrithDay = onClickEditBrithDay
             )
         }
     }
 
-    if (state.isShowLogoutDialog) {
+    if (isShowLogoutDialog) {
         // TODO : 다이얼로그 컴포넌트 추가후 구현
     }
 
-    if (state.isShowUserCancelledDialog) {
+    if (isShowUserCancelledDialog) {
         // TODO : 다이얼로그 컴포넌트 추가후 구현
     }
 }
