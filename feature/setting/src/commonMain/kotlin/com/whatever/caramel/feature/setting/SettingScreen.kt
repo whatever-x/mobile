@@ -3,7 +3,6 @@
 package com.whatever.caramel.feature.setting
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,14 +19,13 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.setting.component.SettingEditProfileBottomSheet
 import com.whatever.caramel.feature.setting.component.SettingListText
-import com.whatever.caramel.feature.setting.component.SettingTopBar
 import com.whatever.caramel.feature.setting.component.SettingUserProfile
 import com.whatever.caramel.feature.setting.component.SettingUserProfileSkeleton
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
@@ -72,12 +70,28 @@ internal fun SettingScreen(
             }
         },
         topBar = {
-            SettingTopBar(
+            CaramelTopBar(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .statusBarsPadding(),
-                appbarText = "설정",
-                onClickBackButton = { onIntent(SettingIntent.ClickSettingBackButton) }
+                centerContents = {
+                    Text(
+                        text = "설정",
+                        style = CaramelTheme.typography.heading3,
+                        color = CaramelTheme.color.text.primary
+                    )
+                },
+                leadingIcon = {
+                    Icon(
+                        modifier = Modifier
+                            .clickable(
+                                indication = null,
+                                interactionSource = null,
+                                onClick = { onIntent(SettingIntent.ClickSettingBackButton) }
+                            ),
+                        painter = painterResource(Resources.Icon.ic_arrow_left_24),
+                        contentDescription = null
+                    )
+                }
             )
         }
     ) { paddingValues ->
