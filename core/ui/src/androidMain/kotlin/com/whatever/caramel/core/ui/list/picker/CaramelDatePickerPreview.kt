@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.ui.picker.CaramelDatePicker
-import com.whatever.caramel.core.ui.picker.DateUiState
+import com.whatever.caramel.core.ui.picker.model.DateUiState
 import io.github.aakira.napier.Napier
 
 @Preview

@@ -15,25 +15,8 @@ import com.whatever.caramel.core.designsystem.components.PickerScrollMode.BOUNDE
 import com.whatever.caramel.core.designsystem.components.PickerScrollMode.LOOPING
 import com.whatever.caramel.core.designsystem.components.rememberPickerState
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.util.DateUtil
-
-data class DateUiState(
-    val year: Int,
-    val month: Int,
-    val day: Int
-) {
-    companion object {
-        fun currentDate(): DateUiState {
-            val today = DateUtil.today()
-
-            return DateUiState(
-                year = today.year,
-                month = today.monthNumber,
-                day = today.dayOfMonth
-            )
-        }
-    }
-}
 
 @Composable
 fun CaramelDatePicker(

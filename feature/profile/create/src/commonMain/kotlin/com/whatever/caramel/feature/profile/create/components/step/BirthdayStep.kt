@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.ui.picker.CaramelDatePicker
-import com.whatever.caramel.core.ui.picker.DateUiState
+import com.whatever.caramel.core.ui.picker.model.DateUiState
 
 @Composable
 internal fun BirthdayStep(
