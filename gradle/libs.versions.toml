@@ -39,6 +39,7 @@ kmp-spm = "0.4.0"
 kotlinx-date-time = "0.6.2"
 turbine = "1.2.0"
 mokkery = "2.7.2"
+animationCoreAndroid = "1.7.8"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -111,6 +112,7 @@ kotlinx-date-time = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime"
 compose-ui-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose-plugin" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 mokkery = { group = "dev.mokkery", name = "mokkery-gradle", version.ref = "mokkery" }
+androidx-animation-core-android = { group = "androidx.compose.animation", name = "animation-core-android", version.ref = "animationCoreAndroid" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
