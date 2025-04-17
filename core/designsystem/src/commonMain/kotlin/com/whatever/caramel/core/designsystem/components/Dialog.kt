@@ -33,17 +33,17 @@ interface CaramelDialogScope {
     val onMainButtonClick: () -> Unit
 
     val subButtonText: String?
-    val onSubButtonClick: (() -> Unit)?
+    val onSubButtonClick: () -> Unit
 }
 
 class CaramelDefaultDialogScope(
-    override val onDismissRequest: () -> Unit,
     override val title: String,
     override val message: String?,
     override val mainButtonText: String,
-    override val onMainButtonClick: () -> Unit,
     override val subButtonText: String?,
-    override val onSubButtonClick: (() -> Unit)?,
+    override val onDismissRequest: () -> Unit,
+    override val onMainButtonClick: () -> Unit,
+    override val onSubButtonClick: () -> Unit
 ) : CaramelDialogScope
 
 @Composable
@@ -55,7 +55,7 @@ fun CaramelDialog(
     mainButtonText: String,
     onDismissRequest: () -> Unit,
     onMainButtonClick: () -> Unit,
-    onSubButtonClick: (() -> Unit)? = null,
+    onSubButtonClick: () -> Unit = {},
     content: @Composable CaramelDialogScope.() -> Unit,
 ) {
     if (!show) return
@@ -95,7 +95,7 @@ fun CaramelDialog(
 @Composable
 fun CaramelDialogScope.DefaultCaramelDialogLayout() {
     val hasMessage = !message.isNullOrBlank()
-    val hasSubButton = !subButtonText.isNullOrBlank() && onSubButtonClick != null
+    val hasSubButton = !subButtonText.isNullOrBlank()
     Column(
         modifier = Modifier.padding(all = CaramelTheme.spacing.xl),
         verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xs),
@@ -173,12 +173,11 @@ fun CaramelDialogScope.CaramelDialogSubButton(
     modifier: Modifier = Modifier,
 ) {
     val subButtonText = this.subButtonText ?: return
-    val subButtonClickEvent = this.onSubButtonClick ?: return
 
     Button(
         modifier = modifier,
         contentPadding = PaddingValues(vertical = 11.dp, horizontal = CaramelTheme.spacing.l),
-        onClick = subButtonClickEvent,
+        onClick = this.onSubButtonClick,
         colors = ButtonColors(
             containerColor = CaramelTheme.color.fill.quinary,
             contentColor = CaramelTheme.color.text.brand,
