@@ -5,7 +5,7 @@ import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
 import com.whatever.caramel.core.domain.validator.UserValidator
 import com.whatever.caramel.core.domain.vo.user.Gender
-import com.whatever.caramel.core.util.createDateString
+import com.whatever.caramel.core.util.DateFormatter.createDateString
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateSideEffect
@@ -35,6 +35,9 @@ class ProfileCreateViewModel(
             )
 
             is ProfileCreateIntent.ClickServiceTermLabel -> postSideEffect(ProfileCreateSideEffect.NavigateToServiceTermNotion)
+            is ProfileCreateIntent.ChangeDayPicker -> changeDay(day = intent.day)
+            is ProfileCreateIntent.ChangeMonthPicker -> changeMonth(month = intent.month)
+            is ProfileCreateIntent.ChangeYearPicker -> changeYear(year = intent.year)
         }
     }
 
@@ -71,9 +74,9 @@ class ProfileCreateViewModel(
                 createUserProfileUseCase(
                     nickname = currentState.nickname,
                     birthDay = createDateString(
-                        currentState.birthday.year.toInt(),
-                        currentState.birthday.month.toInt(),
-                        currentState.birthday.day.toInt()
+                        currentState.birthday.year,
+                        currentState.birthday.month,
+                        currentState.birthday.day
                     ),
                     gender = currentState.gender,
                     agreementServiceTerms = currentState.isServiceTermChecked,
@@ -115,5 +118,41 @@ class ProfileCreateViewModel(
                 isPersonalInfoTermChecked = !currentState.isPersonalInfoTermChecked
             )
         }
+    }
+
+    private fun changeYear(year: Int) {
+        reduce {
+            copy(
+                birthday = birthday.copy(
+                    year = year
+                )
+            )
+        }
+
+        postSideEffect(ProfileCreateSideEffect.PerformHapticFeedback)
+    }
+
+    private fun changeMonth(month: Int) {
+        reduce {
+            copy(
+                birthday = birthday.copy(
+                    month = month
+                )
+            )
+        }
+
+        postSideEffect(ProfileCreateSideEffect.PerformHapticFeedback)
+    }
+
+    private fun changeDay(day: Int) {
+        reduce {
+            copy(
+                birthday = birthday.copy(
+                    day = day
+                )
+            )
+        }
+
+        postSideEffect(ProfileCreateSideEffect.PerformHapticFeedback)
     }
 }

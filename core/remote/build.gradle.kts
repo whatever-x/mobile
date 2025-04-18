@@ -67,7 +67,6 @@ kotlin {
                 implementation(libs.koin.core)
                 implementation(libs.koin.annotation)
                 implementation(libs.kotlinx.date.time)
-                implementation(libs.napier)
             }
             configure {
                 kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")

@@ -5,7 +5,7 @@ import com.whatever.caramel.core.domain.vo.auth.UserAuth
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.remote.dto.auth.ServiceToken
 import com.whatever.caramel.core.remote.dto.auth.SignInResponse
-import com.whatever.caramel.core.util.toMillisecond
+import com.whatever.caramel.core.util.DateParser.toMillisecond
 
 fun SignInResponse.toUserAuth(): UserAuth {
     return UserAuth(

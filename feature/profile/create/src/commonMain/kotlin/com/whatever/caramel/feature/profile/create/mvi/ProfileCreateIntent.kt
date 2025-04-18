@@ -23,4 +23,10 @@ sealed interface ProfileCreateIntent : UiIntent {
 
     data object ClickPersonalInfoTermLabel : ProfileCreateIntent
 
+    data class ChangeYearPicker(val year: Int) : ProfileCreateIntent
+
+    data class ChangeMonthPicker(val month: Int) : ProfileCreateIntent
+
+    data class ChangeDayPicker(val day: Int) : ProfileCreateIntent
+
 }

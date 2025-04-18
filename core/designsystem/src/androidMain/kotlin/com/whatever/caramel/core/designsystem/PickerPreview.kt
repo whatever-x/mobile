@@ -2,12 +2,10 @@ package com.whatever.caramel.core.designsystem
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelTextWheelPicker
 import com.whatever.caramel.core.designsystem.components.PickerScrollMode
 import com.whatever.caramel.core.designsystem.components.rememberPickerState
@@ -21,15 +19,13 @@ private fun CaramelWheelPickerPreview() {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            val items = List(1002) { it.toString() }
+            val items = listOf("갉", "나", "다", "라", "마", "바", "사", "아", "자", "차", "카", "타", "파", "하")
 
             CaramelTextWheelPicker(
-                modifier = Modifier.width(50.dp),
                 items = items,
-                itemSpacing = 8.dp,
-                state = rememberPickerState(items),
+                state = rememberPickerState("나"),
                 scrollMode = PickerScrollMode.LOOPING,
-                onHapticFeedback = { }
+                onItemSelected = {}
             )
         }
     }
