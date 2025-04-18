@@ -10,7 +10,7 @@ import com.whatever.caramel.core.domain.vo.user.UserProfile
 import com.whatever.caramel.core.remote.dto.couple.CoupleConnectResponse
 import com.whatever.caramel.core.remote.dto.couple.CoupleInfoResponse
 import com.whatever.caramel.core.remote.dto.couple.CoupleInvitationCodeResponse
-import com.whatever.caramel.core.util.toMillisecond
+import com.whatever.caramel.core.util.DateParser.toMillisecond
 import kotlinx.datetime.Instant
 
 fun CoupleInvitationCodeResponse.toCoupleInvitationCode() = CoupleInvitationCode(

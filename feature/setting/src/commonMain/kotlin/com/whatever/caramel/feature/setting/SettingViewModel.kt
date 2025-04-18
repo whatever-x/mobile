@@ -3,7 +3,6 @@ package com.whatever.caramel.feature.setting
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInfoUseCase
-import com.whatever.caramel.core.util.toMillisecond
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.setting.mvi.CoupleUser
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
@@ -37,6 +36,7 @@ class SettingViewModel(
             SettingIntent.ClickEditCountDownButton -> postSideEffect(SettingSideEffect.NavigateToEditCountDown(currentState.startDateTimeMillisecond))
             SettingIntent.ToggleUserCancelledButton -> toggleUserCancelledButton()
             SettingIntent.ClickAppUpdateButton -> TODO("앱 업데이트 기능 확인 필요")
+            SettingIntent.ClickUserCancelledConfirmButton -> TODO("탈퇴하기 API 추가 후 연동")
         }
     }
 

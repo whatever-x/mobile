@@ -14,7 +14,7 @@ data class CaramelDialogPreviewData(
     val mainButtonText: String,
     val subButtonText: String? = null,
     val mainButtonClickEvent: () -> Unit,
-    val subButtonClickEvent: (() -> Unit)? = null,
+    val subButtonClickEvent: () -> Unit = {},
 )
 
 class CaramelDialogPreviewProvider : PreviewParameterProvider<CaramelDialogPreviewData> {

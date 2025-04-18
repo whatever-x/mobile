@@ -23,7 +23,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.whatever.caramel.core.designsystem.components.CaramelDialog
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
+import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLayout
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.setting.component.SettingEditProfileBottomSheet
@@ -45,7 +47,11 @@ internal fun SettingScreen(
         isShowEditProfileBottomSheet = state.isShowEditProfileBottomSheet,
         toggleEditProfileDialog = { onIntent(SettingIntent.ToggleEditProfile) },
         onClickEditNickname = { onIntent(SettingIntent.ClickEditNicknameButton) },
-        onClickEditBrithDay = { onIntent(SettingIntent.ClickEditBirthDayButton) }
+        onClickEditBrithDay = { onIntent(SettingIntent.ClickEditBirthDayButton) },
+        toggleLogoutDialog = { onIntent(SettingIntent.ToggleLogout) },
+        toggleUserCancelledDialog = { onIntent(SettingIntent.ToggleUserCancelledButton) },
+        onClickLogout = { onIntent(SettingIntent.ClickLogoutConfirmButton) },
+        onClickUserCancelled = { onIntent(SettingIntent.ClickUserCancelledConfirmButton) }
     )
 
     Column(
@@ -204,8 +210,12 @@ fun SettingDialogHost(
     isShowLogoutDialog: Boolean,
     isShowUserCancelledDialog: Boolean,
     toggleEditProfileDialog: () -> Unit,
+    toggleLogoutDialog: () -> Unit,
+    toggleUserCancelledDialog: () -> Unit,
     onClickEditNickname: () -> Unit,
-    onClickEditBrithDay: () -> Unit
+    onClickEditBrithDay: () -> Unit,
+    onClickLogout: () -> Unit,
+    onClickUserCancelled: () -> Unit
 ) {
     if (isShowEditProfileBottomSheet) {
         ModalBottomSheet(
@@ -224,11 +234,28 @@ fun SettingDialogHost(
         }
     }
 
-    if (isShowLogoutDialog) {
-        // TODO : 다이얼로그 컴포넌트 추가후 구현
+    CaramelDialog(
+        show = isShowLogoutDialog,
+        title = "로그아웃하시겠어요?",
+        mainButtonText = "로그아웃",
+        subButtonText = "유지하기",
+        onMainButtonClick = onClickLogout,
+        onSubButtonClick = toggleEditProfileDialog,
+        onDismissRequest = toggleLogoutDialog
+    ) {
+        DefaultCaramelDialogLayout()
     }
 
-    if (isShowUserCancelledDialog) {
-        // TODO : 다이얼로그 컴포넌트 추가후 구현
+    CaramelDialog(
+        show = isShowUserCancelledDialog,
+        title = "탈퇴하시겠어요?",
+        message = "탈퇴하면 이 공간에 다시 들어올 수 없어요.",
+        mainButtonText = "탈퇴하기",
+        subButtonText = "유지하기",
+        onMainButtonClick = onClickUserCancelled,
+        onSubButtonClick = toggleUserCancelledDialog,
+        onDismissRequest = toggleUserCancelledDialog
+    ) {
+        DefaultCaramelDialogLayout()
     }
 }

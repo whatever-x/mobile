@@ -2,7 +2,7 @@ package com.whatever.caramel.feature.setting.mvi
 
 import com.whatever.caramel.core.domain.entity.User
 import com.whatever.caramel.core.domain.vo.user.Gender
-import com.whatever.caramel.core.util.toFormattedDate
+import com.whatever.caramel.core.util.DateFormatter.toFormattedDate
 import com.whatever.caramel.core.viewmodel.UiState
 
 data class SettingState(
