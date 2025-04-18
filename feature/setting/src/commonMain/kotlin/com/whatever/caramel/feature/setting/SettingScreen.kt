@@ -239,7 +239,10 @@ fun SettingDialogHost(
         title = "로그아웃하시겠어요?",
         mainButtonText = "로그아웃",
         subButtonText = "유지하기",
-        onMainButtonClick = onClickLogout,
+        onMainButtonClick = {
+            toggleLogoutDialog()
+            onClickLogout()
+        },
         onSubButtonClick = toggleEditProfileDialog,
         onDismissRequest = toggleLogoutDialog
     ) {
@@ -252,7 +255,10 @@ fun SettingDialogHost(
         message = "탈퇴하면 이 공간에 다시 들어올 수 없어요.",
         mainButtonText = "탈퇴하기",
         subButtonText = "유지하기",
-        onMainButtonClick = onClickUserCancelled,
+        onMainButtonClick = {
+            toggleUserCancelledDialog()
+            onClickUserCancelled()
+        },
         onSubButtonClick = toggleUserCancelledDialog,
         onDismissRequest = toggleUserCancelledDialog
     ) {
