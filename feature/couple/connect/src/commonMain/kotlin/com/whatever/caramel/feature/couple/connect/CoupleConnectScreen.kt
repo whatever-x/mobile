@@ -1,51 +1,64 @@
 package com.whatever.caramel.feature.couple.connect
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
+import com.whatever.caramel.core.designsystem.components.CaramelTopBar
+import com.whatever.caramel.core.designsystem.foundations.Resources
+import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.feature.couple.connect.components.CoupleConnectBottomBar
+import com.whatever.caramel.feature.couple.connect.components.CoupleConnectContents
 import com.whatever.caramel.feature.couple.connect.mvi.CoupleConnectIntent
 import com.whatever.caramel.feature.couple.connect.mvi.CoupleConnectState
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 internal fun CoupleConnectScreen(
     state: CoupleConnectState,
     onIntent: (CoupleConnectIntent) -> Unit
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Button(
-            modifier = Modifier.align(alignment = Alignment.TopStart),
-            onClick = { onIntent(CoupleConnectIntent.ClickBackButton) }
-        ) {
-            Text(
-                text = "뒤로가기",
-                fontSize = 12.sp
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        containerColor = CaramelTheme.color.background.primary,
+        bottomBar = {
+            CoupleConnectBottomBar(
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .imePadding(),
+                buttonEnabled = state.isButtonEnabled,
+                buttonText = "연결하기",
+                onClickButton = { onIntent(CoupleConnectIntent.ClickConnectButton) }
+            )
+        },
+        topBar = {
+            CaramelTopBar(
+                modifier = Modifier.systemBarsPadding(),
+                leadingIcon = {
+                    Icon(
+                        modifier = Modifier
+                            .clickable(
+                                onClick = { onIntent(CoupleConnectIntent.ClickBackButton) },
+                                interactionSource = null,
+                                indication = null
+                            ),
+                        painter = painterResource(resource = Resources.Icon.ic_arrow_left_24),
+                        contentDescription = null
+                    )
+                }
             )
         }
-
-        Text(
-            modifier = Modifier.align(alignment = Alignment.Center),
-            text = "코드 입력 화면 입니다.",
-            fontSize = 32.sp
+    ) { innerPadding ->
+        CoupleConnectContents(
+            modifier = Modifier.padding(paddingValues = innerPadding),
+            code = state.invitationCode,
+            onCodeChange = { code -> onIntent(CoupleConnectIntent.ChangeInvitationCode(code)) }
         )
-
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(alignment = Alignment.BottomCenter),
-            onClick = { onIntent(CoupleConnectIntent.ClickConnectButton) }
-        ) {
-            Text(
-                text = "연결하기",
-                fontSize = 12.sp
-            )
-        }
     }
 }
