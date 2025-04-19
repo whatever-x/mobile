@@ -39,8 +39,8 @@ internal fun CaramelNavHost(
             splashScreen(
                 navigateToLogin = { navigateToLogin() },
                 navigateToMain = { navigateToMain() },
-                navigateToConnectCouple = {
-                    navigateToConnectCouple {
+                navigateToInviteCouple = {
+                    navigateToCoupleInvite {
                         popUpTo(route = SplashRoute) {
                             inclusive = true
                         }

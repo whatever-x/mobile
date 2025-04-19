@@ -12,14 +12,14 @@ fun NavGraphBuilder.splashScreen(
     navigateToLogin: () -> Unit,
     navigateToMain: () -> Unit,
     navigateToCreateProfile: () -> Unit,
-    navigateToConnectCouple : () -> Unit
+    navigateToInviteCouple : () -> Unit
 ) {
     composable<SplashRoute>() {
         SplashRoute(
             navigateToLogin = navigateToLogin,
             navigateToMain = navigateToMain,
             navigateToCreateProfile = navigateToCreateProfile,
-            navigateToConnectCouple = navigateToConnectCouple
+            navigateToInviteCouple = navigateToInviteCouple
         )
     }
 }
