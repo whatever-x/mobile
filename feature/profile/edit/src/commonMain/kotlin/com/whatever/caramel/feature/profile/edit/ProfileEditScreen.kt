@@ -1,56 +1,88 @@
 package com.whatever.caramel.feature.profile.edit
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
-import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditType
+import com.whatever.caramel.core.designsystem.components.CaramelTopBar
+import com.whatever.caramel.core.designsystem.foundations.Resources
+import com.whatever.caramel.feature.profile.edit.component.EditBirthday
+import com.whatever.caramel.feature.profile.edit.component.EditStartDate
+import com.whatever.caramel.feature.profile.edit.component.EditNickname
+import com.whatever.caramel.feature.profile.edit.component.ProfileEditBottomBar
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditIntent
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditState
+import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditType
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 internal fun ProfileEditScreen(
     state: ProfileEditState,
     onIntent: (ProfileEditIntent) -> Unit
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Button(
-            modifier = Modifier.align(alignment = Alignment.TopStart),
-            onClick = { onIntent(ProfileEditIntent.ClickCloseButton) }
-        ) {
-            Text(
-                text = "닫기",
-                fontSize = 12.sp
+    Scaffold(
+        topBar = {
+            CaramelTopBar(
+                modifier = Modifier
+                    .statusBarsPadding(),
+                trailingIcon = {
+                    Icon(
+                        modifier = Modifier.clickable(
+                            interactionSource = null,
+                            indication = null,
+                            onClick = { onIntent(ProfileEditIntent.ClickCloseButton) }
+                        ),
+                        painter = painterResource(Resources.Icon.ic_cancel_24),
+                        contentDescription = null
+                    )
+                }
+            )
+        },
+        bottomBar = {
+            ProfileEditBottomBar(
+                modifier = Modifier
+                    .navigationBarsPadding(),
+                buttonEnabled = state.isSaveButtonEnabled,
+                buttonText = "저장하기",
+                onClickButton = { onIntent(ProfileEditIntent.ClickSaveButton) }
             )
         }
-
-        Text(
-            modifier = Modifier.align(alignment = Alignment.Center),
-            text = when (state.editUiType) {
-                ProfileEditType.D_DAY -> "디데이 수정 화면 입니다."
-                ProfileEditType.BIRTHDAY -> "생일 수정 화면 입니다."
-                ProfileEditType.NICK_NAME -> "닉네임 수정 화면 입니다."
-            },
-            fontSize = 32.sp
-        )
-
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(alignment = Alignment.BottomCenter),
-            onClick = { onIntent(ProfileEditIntent.ClickSaveButton) }
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier.padding(paddingValues = innerPadding)
         ) {
-            Text(
-                text = "저장하기",
-                fontSize = 18.sp
-            )
+            when (state.editUiType) {
+                ProfileEditType.NONE -> {}
+                ProfileEditType.NICKNAME -> {
+                    EditNickname(
+                        nickname = state.nickName,
+                        onNicknameChange = { onIntent(ProfileEditIntent.ChangeNickname(it)) }
+                    )
+                }
+
+                ProfileEditType.BIRTHDAY -> {
+                    EditBirthday(
+                        dateUiState = state.birthDay,
+                        onYearChange = { onIntent(ProfileEditIntent.ChangeBirthDayYearPicker(it)) },
+                        onMonthChange = { onIntent(ProfileEditIntent.ChangeBirthDayMonthPicker(it)) },
+                        onDayChange = { onIntent(ProfileEditIntent.ChangeBirthDayDayPicker(it)) }
+                    )
+                }
+
+                ProfileEditType.START_DATE -> {
+                    EditStartDate(
+                        dateUiState = state.startDate,
+                        onYearChange = { onIntent(ProfileEditIntent.ChangeDDayYearPicker(it)) },
+                        onMonthChange = { onIntent(ProfileEditIntent.ChangeDDayMonthPicker(it)) },
+                        onDayChange = { onIntent(ProfileEditIntent.ChangeDDayDayPicker(it)) }
+                    )
+                }
+            }
         }
     }
 }
