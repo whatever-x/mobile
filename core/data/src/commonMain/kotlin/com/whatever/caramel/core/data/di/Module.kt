@@ -36,6 +36,7 @@ val repositoryModule = module {
 
     single<CoupleRepository> {
         CoupleRepositoryImpl(
+            localCoupleDataSource = get(),
             remoteCoupleDataSource = get()
         )
     }

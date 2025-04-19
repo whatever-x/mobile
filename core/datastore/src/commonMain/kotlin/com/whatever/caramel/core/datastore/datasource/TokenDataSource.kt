@@ -6,7 +6,7 @@ interface TokenDataSource {
         accessToken: String,
         refreshToken: String,
     )
-
+    suspend fun deleteToken()
     suspend fun fetchAccessToken() : String
     suspend fun fetchRefreshToken(): String
 }
