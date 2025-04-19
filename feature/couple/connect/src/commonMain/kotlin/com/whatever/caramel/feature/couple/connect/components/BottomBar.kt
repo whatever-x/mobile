@@ -38,9 +38,9 @@ internal fun CoupleConnectBottomBar(
     Box(
         modifier = modifier
             .padding(
-                start = 20.dp,
-                end = 20.dp,
-                bottom = 20.dp
+                start = CaramelTheme.spacing.xl,
+                end = CaramelTheme.spacing.xl,
+                bottom = CaramelTheme.spacing.xl,
             ),
         contentAlignment = Alignment.Center
     ) {
