@@ -13,6 +13,8 @@ internal fun SettingRoute(
     navigateToHome: () -> Unit,
     navigateToEditBirthday: () -> Unit,
     navigateToEditNickName: () -> Unit,
+    navigateToLogin : () -> Unit,
+    navigateToEditCountDown: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -20,8 +22,12 @@ internal fun SettingRoute(
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is SettingSideEffect.NavigateToHome -> navigateToHome()
-                is SettingSideEffect.NavigateToEditNickName -> navigateToEditNickName()
-                is SettingSideEffect.NavigateToEditBirthday -> navigateToEditBirthday()
+                is SettingSideEffect.NavigateToEditCountDown -> navigateToEditCountDown() // TODO : D-day 설정 시 millisecond 사용
+                SettingSideEffect.NavigateToPersonalInfoTermNotion -> TODO()
+                SettingSideEffect.NavigateToServiceTermNotion -> TODO()
+                SettingSideEffect.NavigateLogin -> navigateToLogin()
+                SettingSideEffect.NavigateToEditNickname -> navigateToEditNickName()
+                SettingSideEffect.NavigateToEditBirthDay -> navigateToEditBirthday()
             }
         }
     }

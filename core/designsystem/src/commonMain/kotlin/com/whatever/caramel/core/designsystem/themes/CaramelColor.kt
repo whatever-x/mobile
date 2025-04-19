@@ -27,7 +27,8 @@ data class CaramelColor(
     val alpha: DimColor,
     val fill: FillColor,
     val divider: DividerColor,
-    val icon: IconColor
+    val icon: IconColor,
+    val skeleton : SkeletonColor
 ) {
     @Immutable
     data class TextColor(
@@ -90,6 +91,12 @@ data class CaramelColor(
         val disabledBrand: Color = Orange400
     )
 
+    @Immutable
+    data class SkeletonColor(
+        val primary: Color = Neutral200,
+        val secondary: Color = Neutral100,
+    )
+
     companion object {
         fun defaultColor(): CaramelColor = CaramelColor(
             text = TextColor1(),
@@ -98,6 +105,7 @@ data class CaramelColor(
             fill = FillColor(),
             divider = DividerColor(),
             icon = IconColor(),
+            skeleton = SkeletonColor()
         )
     }
 }

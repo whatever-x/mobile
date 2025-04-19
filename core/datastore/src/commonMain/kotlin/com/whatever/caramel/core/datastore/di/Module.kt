@@ -1,5 +1,7 @@
 package com.whatever.caramel.core.datastore.di
 
+import com.whatever.caramel.core.datastore.datasource.CoupleDataSource
+import com.whatever.caramel.core.datastore.datasource.CoupleDataSourceImpl
 import com.whatever.caramel.core.datastore.datasource.TokenDataSource
 import com.whatever.caramel.core.datastore.datasource.TokenDataSourceImpl
 import com.whatever.caramel.core.datastore.datasource.UserDataSource
@@ -12,4 +14,5 @@ expect val platformDataStoreModule: Module
 val dataStoreModule = module {
     single<TokenDataSource> { TokenDataSourceImpl(dataStore = get()) }
     single<UserDataSource> { UserDataSourceImpl(dataStore = get()) }
+    single<CoupleDataSource> { CoupleDataSourceImpl(dataStore = get()) }
 }
