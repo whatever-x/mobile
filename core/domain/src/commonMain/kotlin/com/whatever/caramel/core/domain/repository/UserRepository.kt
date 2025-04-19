@@ -14,4 +14,8 @@ interface UserRepository {
         agreementServiceTerms: Boolean,
         agreementPrivacyPolicy: Boolean
     ) : User
+    suspend fun updateUserProfile(
+        nickname: String,
+        birthday: String
+    ) : User
 }

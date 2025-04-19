@@ -9,10 +9,11 @@ import com.whatever.caramel.core.domain.repository.UserRepository
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.remote.datasource.RemoteUserDataSource
+import com.whatever.caramel.core.remote.dto.user.EditUserProfileRequest
 import com.whatever.caramel.core.remote.dto.user.UserProfileRequest
 
 class UserRepositoryImpl(
-    private val userRemoteDataSource : RemoteUserDataSource,
+    private val userRemoteDataSource: RemoteUserDataSource,
     private val userDataSource: UserDataSource
 ) : UserRepository {
     override suspend fun getUserStatus(): UserStatus {
@@ -43,6 +44,16 @@ class UserRepositoryImpl(
                 agreementPrivatePolicy = agreementPrivacyPolicy
             )
             userRemoteDataSource.createUserProfile(request).toUser()
+        }
+    }
+
+    override suspend fun updateUserProfile(nickname: String, birthday: String): User {
+        return safeCall {
+            val request = EditUserProfileRequest(
+                nickname = nickname,
+                birthday = birthday
+            )
+            userRemoteDataSource.editUserProfile(request).toUser()
         }
     }
 }
