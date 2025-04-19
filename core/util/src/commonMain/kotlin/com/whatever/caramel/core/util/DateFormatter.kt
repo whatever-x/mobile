@@ -1,7 +1,9 @@
 package com.whatever.caramel.core.util
 
+import com.whatever.caramel.core.util.DateFormatter.toFormattedDate
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
@@ -15,8 +17,7 @@ object DateFormatter {
      * */
     fun Long.toFormattedDate(separator: String = "-"): String? =
         try {
-            val instant = Instant.fromEpochMilliseconds(this)
-            val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
+            val localDateTime = this.toLocalDateTime()
 
             val year = localDateTime.year.toString().padStart(4, '0')
             val month = localDateTime.monthNumber.toString().padStart(2, '0')
@@ -26,6 +27,16 @@ object DateFormatter {
         } catch (e: Exception) {
             null
         }
+
+    /**
+     * 밀리초를 LocalDateTime 형식으로 변환
+     * @return 밀리초를 LocalDateTime 형식으로 변환한 결과
+     * @author RyuSw-cs
+     * */
+    fun Long.toLocalDateTime(): LocalDateTime {
+        val instant = Instant.fromEpochMilliseconds(this)
+        return instant.toLocalDateTime(TimeZone.currentSystemDefault())
+    }
 
     /**
      * 년, 월, 일을 Date 형식으로 변환 (구분자 '-')

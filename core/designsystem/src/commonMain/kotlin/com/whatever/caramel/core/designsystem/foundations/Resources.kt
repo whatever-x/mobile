@@ -23,6 +23,7 @@ import caramel.core.designsystem.generated.resources.ic_edit_16
 import caramel.core.designsystem.generated.resources.ic_edit_24
 import caramel.core.designsystem.generated.resources.ic_gift_20
 import caramel.core.designsystem.generated.resources.ic_gift_24
+import caramel.core.designsystem.generated.resources.ic_gift_36
 import caramel.core.designsystem.generated.resources.ic_home_24
 import caramel.core.designsystem.generated.resources.ic_link_14
 import caramel.core.designsystem.generated.resources.ic_link_16
@@ -30,6 +31,7 @@ import caramel.core.designsystem.generated.resources.ic_link_24
 import caramel.core.designsystem.generated.resources.ic_memo_24
 import caramel.core.designsystem.generated.resources.ic_nickname_20
 import caramel.core.designsystem.generated.resources.ic_nickname_24
+import caramel.core.designsystem.generated.resources.ic_nickname_36
 import caramel.core.designsystem.generated.resources.ic_plus_16
 import caramel.core.designsystem.generated.resources.ic_plus_20
 import caramel.core.designsystem.generated.resources.ic_plus_24
@@ -71,6 +73,7 @@ object Resources {
         val ic_edit_24 = Res.drawable.ic_edit_24
         val ic_gift_20 = Res.drawable.ic_gift_20
         val ic_gift_24 = Res.drawable.ic_gift_24
+        val ic_gift_36 = Res.drawable.ic_gift_36
         val ic_home_24 = Res.drawable.ic_home_24
         val ic_link_14 = Res.drawable.ic_link_14
         val ic_link_16 = Res.drawable.ic_link_16
@@ -78,6 +81,7 @@ object Resources {
         val ic_memo_24 = Res.drawable.ic_memo_24
         val ic_nickname_20 = Res.drawable.ic_nickname_20
         val ic_nickname_24 = Res.drawable.ic_nickname_24
+        val ic_nickname_36 = Res.drawable.ic_nickname_36
         val ic_plus_16 = Res.drawable.ic_plus_16
         val ic_plus_20 = Res.drawable.ic_plus_20
         val ic_plus_24 = Res.drawable.ic_plus_24
