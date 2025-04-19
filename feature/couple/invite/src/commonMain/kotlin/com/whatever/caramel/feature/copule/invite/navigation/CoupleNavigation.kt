@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object CoupleInviteRote
 
-fun NavController.navigateToCoupleInvite(builder: NavOptionsBuilder.() -> Unit = {}) {
+fun NavController.navigateToInviteCouple(builder: NavOptionsBuilder.() -> Unit = {}) {
     navigate(route = CoupleInviteRote) {
         popUpTo(graph.id)
         builder()

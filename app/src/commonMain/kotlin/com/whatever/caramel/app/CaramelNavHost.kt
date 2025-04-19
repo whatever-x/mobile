@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import com.whatever.caramel.feature.content.navigation.contentScreen
 import com.whatever.caramel.feature.content.navigation.navigateToContent
 import com.whatever.caramel.feature.copule.invite.navigation.inviteCoupleScreen
-import com.whatever.caramel.feature.copule.invite.navigation.navigateToCoupleInvite
+import com.whatever.caramel.feature.copule.invite.navigation.navigateToInviteCouple
 import com.whatever.caramel.feature.couple.connect.navigation.connectCoupleScreen
 import com.whatever.caramel.feature.couple.connect.navigation.navigateToConnectCouple
 import com.whatever.caramel.feature.login.navigation.loginScreen
@@ -40,7 +40,7 @@ internal fun CaramelNavHost(
                 navigateToLogin = { navigateToLogin() },
                 navigateToMain = { navigateToMain() },
                 navigateToInviteCouple = {
-                    navigateToCoupleInvite {
+                    navigateToInviteCouple {
                         popUpTo(route = SplashRoute) {
                             inclusive = true
                         }
@@ -55,13 +55,13 @@ internal fun CaramelNavHost(
                 }
             )
             loginScreen(
-                navigateToConnectCouple = { navigateToCoupleInvite() },
+                navigateToConnectCouple = { navigateToInviteCouple() },
                 navigateToCreateProfile = { navigateToCreateProfile() },
                 navigateToMain = { navigateToMain() }
             )
             createProfileScreen(
                 navigateToLogin = { navigateToLogin() },
-                navigateToConnectCouple = { navigateToCoupleInvite() }
+                navigateToConnectCouple = { navigateToInviteCouple() }
             )
             settingScreen(
                 navigateToHome = { popBackStack() },
