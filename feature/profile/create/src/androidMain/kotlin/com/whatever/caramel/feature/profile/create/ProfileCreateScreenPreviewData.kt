@@ -2,7 +2,7 @@ package com.whatever.caramel.feature.profile.create
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.whatever.caramel.core.domain.vo.user.Gender
-import com.whatever.caramel.core.ui.picker.DateUiState
+import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateState
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateStep
 
