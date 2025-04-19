@@ -15,6 +15,7 @@ import com.whatever.caramel.core.designsystem.components.PickerScrollMode.BOUNDE
 import com.whatever.caramel.core.designsystem.components.PickerScrollMode.LOOPING
 import com.whatever.caramel.core.designsystem.components.rememberPickerState
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.util.DateFormatter.toLocalDateTime
 import com.whatever.caramel.core.util.DateUtil
 
 data class DateUiState(
@@ -30,6 +31,15 @@ data class DateUiState(
                 year = today.year,
                 month = today.monthNumber,
                 day = today.dayOfMonth
+            )
+        }
+
+        fun get(millisecond: Long) : DateUiState {
+            val localDateTime = millisecond.toLocalDateTime()
+            return DateUiState(
+                year = localDateTime.year,
+                month = localDateTime.monthNumber,
+                day = localDateTime.dayOfMonth
             )
         }
     }
@@ -51,7 +61,8 @@ fun CaramelDatePicker(
 
     val days by remember(yearState.selectedItem, monthState.selectedItem) {
         derivedStateOf {
-            val lastDay = DateUtil.getLastDayOfMonth(yearState.selectedItem, monthState.selectedItem)
+            val lastDay =
+                DateUtil.getLastDayOfMonth(yearState.selectedItem, monthState.selectedItem)
             (1..lastDay).toList()
         }
     }

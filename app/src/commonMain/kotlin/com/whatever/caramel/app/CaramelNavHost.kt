@@ -5,7 +5,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
-import androidx.navigation.navOptions
 import com.whatever.caramel.feature.content.navigation.contentScreen
 import com.whatever.caramel.feature.content.navigation.navigateToContent
 import com.whatever.caramel.feature.couple.connect.navigation.connectCoupleScreen
@@ -41,16 +40,20 @@ internal fun CaramelNavHost(
             splashScreen(
                 navigateToLogin = { navigateToLogin() },
                 navigateToMain = { navigateToMain() },
-                navigateToConnectCouple = { navigateToConnectCouple(
-                    navOptions = NavOptions.Builder()
-                        .setPopUpTo<SplashRoute>(inclusive = true)
-                        .build()
-                ) },
-                navigateToCreateProfile = { navigateToCreateProfile(
-                    navOptions = NavOptions.Builder()
-                        .setPopUpTo<SplashRoute>(inclusive = true)
-                        .build()
-                ) }
+                navigateToConnectCouple = {
+                    navigateToConnectCouple(
+                        navOptions = NavOptions.Builder()
+                            .setPopUpTo<SplashRoute>(inclusive = true)
+                            .build()
+                    )
+                },
+                navigateToCreateProfile = {
+                    navigateToCreateProfile(
+                        navOptions = NavOptions.Builder()
+                            .setPopUpTo<SplashRoute>(inclusive = true)
+                            .build()
+                    )
+                }
             )
             loginScreen(
                 navigateToConnectCouple = { navigateToCoupleInvite() },
@@ -63,26 +66,29 @@ internal fun CaramelNavHost(
             )
             settingScreen(
                 navigateToHome = { popBackStack() },
-                navigateToEditBirthday = {
+                navigateToEditBirthday = { birthdayMillisecond ->
                     navigateToEditProfile(
-                        editType = ProfileEditType.BIRTHDAY
+                        editType = ProfileEditType.BIRTHDAY,
+                        birthdayMillisecond = birthdayMillisecond
                     )
                 },
-                navigateToEditNickName = {
+                navigateToEditNickName = { nickname ->
                     navigateToEditProfile(
-                        editType = ProfileEditType.NICK_NAME
+                        editType = ProfileEditType.NICKNAME,
+                        nickname = nickname
                     )
                 },
                 navigateToLogin = {
                     navigateToLogin {
-                        popUpTo(SettingRoute){
+                        popUpTo(SettingRoute) {
                             inclusive = true
                         }
                     }
                 },
-                navigateToEditCountDown = {
+                navigateToEditCountDown = { startDateMillisecond ->
                     navigateToEditProfile(
-                        editType = ProfileEditType.D_DAY
+                        editType = ProfileEditType.START_DATE,
+                        startDateMillisecond = startDateMillisecond
                     )
                 }
             )
@@ -104,7 +110,7 @@ internal fun CaramelNavHost(
                 navigateToSetting = { navigateToSetting() },
                 navigateToStaredCoupleDay = {
                     navigateToEditProfile(
-                        editType = ProfileEditType.D_DAY
+                        editType = ProfileEditType.START_DATE
                     )
                 },
                 navigateToTodoDetail = { navigateToContent() },
