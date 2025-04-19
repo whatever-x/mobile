@@ -49,7 +49,8 @@ internal fun CoupleConnectScreen(
                                 indication = null
                             ),
                         painter = painterResource(resource = Resources.Icon.ic_arrow_left_24),
-                        contentDescription = null
+                        contentDescription = null,
+                        tint = CaramelTheme.color.icon.primary
                     )
                 }
             )
