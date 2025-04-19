@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.BasicTextField
@@ -41,7 +42,7 @@ internal fun EditNickname(
             tint = Color.Unspecified
         )
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
@@ -59,16 +60,17 @@ internal fun EditNickname(
         }
 
         BasicTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .padding(vertical = CaramelTheme.spacing.xl),
             value = nickname,
             onValueChange = onNicknameChange,
             cursorBrush = SolidColor(CaramelTheme.color.fill.brand),
             textStyle = CaramelTheme.typography.heading2.copy(
                 color = CaramelTheme.color.text.primary,
-                textAlign = if (nickname.isNotEmpty()) {
-                    TextAlign.End
-                } else {
+                textAlign = if(nickname.isEmpty()){
                     TextAlign.Start
+                } else {
+                    TextAlign.Center
                 }
             ),
             singleLine = true
@@ -77,7 +79,7 @@ internal fun EditNickname(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                Box (modifier = Modifier.wrapContentWidth()){
+                Box {
                     innerTextField()
                     if (nickname.isEmpty()) {
                         Text(

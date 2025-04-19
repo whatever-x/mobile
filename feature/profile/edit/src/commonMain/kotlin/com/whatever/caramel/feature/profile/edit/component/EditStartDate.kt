@@ -45,6 +45,7 @@ internal fun EditStartDate(
             color = CaramelTheme.color.text.primary
         )
         Text(
+            modifier = Modifier.padding(vertical = CaramelTheme.spacing.xl),
             text = "${dateUiState.year}년 ${dateUiState.month}월 ${dateUiState.day}일",
             style = CaramelTheme.typography.heading2,
             color = CaramelTheme.color.text.primary

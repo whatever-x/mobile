@@ -31,7 +31,7 @@ internal fun EditBirthday(
     Column(
         modifier = modifier
             .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.l),
+        verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xl),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
@@ -48,6 +48,8 @@ internal fun EditBirthday(
         )
 
         Text(
+            modifier = Modifier
+                .padding(vertical = CaramelTheme.spacing.xl),
             text = "${dateUiState.year}년 ${dateUiState.month}월 ${dateUiState.day}일",
             style = CaramelTheme.typography.heading2,
             color = CaramelTheme.color.text.primary
