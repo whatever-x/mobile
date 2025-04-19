@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.profile.edit
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -46,7 +47,8 @@ internal fun ProfileEditScreen(
         bottomBar = {
             ProfileEditBottomBar(
                 modifier = Modifier
-                    .navigationBarsPadding(),
+                    .navigationBarsPadding()
+                    .imePadding(),
                 buttonEnabled = state.isSaveButtonEnabled,
                 buttonText = "저장하기",
                 onClickButton = { onIntent(ProfileEditIntent.ClickSaveButton) }
