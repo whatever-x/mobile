@@ -11,23 +11,23 @@ import org.koin.compose.viewmodel.koinViewModel
 internal fun SettingRoute(
     viewModel: SettingViewModel = koinViewModel(),
     navigateToHome: () -> Unit,
-    navigateToEditBirthday: () -> Unit,
-    navigateToEditNickName: () -> Unit,
     navigateToLogin : () -> Unit,
-    navigateToEditCountDown: () -> Unit,
+    navigateToEditCountDown: (Long) -> Unit,
+    navigateToEditBirthday: (Long) -> Unit,
+    navigateToEditNickName: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is SettingSideEffect.NavigateToHome -> navigateToHome()
-                is SettingSideEffect.NavigateToEditCountDown -> navigateToEditCountDown() // TODO : D-day 설정 시 millisecond 사용
                 SettingSideEffect.NavigateToPersonalInfoTermNotion -> TODO()
                 SettingSideEffect.NavigateToServiceTermNotion -> TODO()
                 SettingSideEffect.NavigateLogin -> navigateToLogin()
-                SettingSideEffect.NavigateToEditNickname -> navigateToEditNickName()
-                SettingSideEffect.NavigateToEditBirthDay -> navigateToEditBirthday()
+                is SettingSideEffect.NavigateToHome -> navigateToHome()
+                is SettingSideEffect.NavigateToEditCountDown -> navigateToEditCountDown(sideEffect.startDateMillisecond)
+                is SettingSideEffect.NavigateToEditNickname -> navigateToEditNickName(sideEffect.nickname)
+                is SettingSideEffect.NavigateToEditBirthDay -> navigateToEditBirthday(sideEffect.birthdayMillisecond)
             }
         }
     }

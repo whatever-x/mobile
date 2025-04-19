@@ -6,9 +6,9 @@ sealed interface SettingSideEffect : UiSideEffect {
 
     data object NavigateToHome : SettingSideEffect
 
-    data object NavigateToEditNickname : SettingSideEffect
+    data class NavigateToEditNickname(val nickname: String) : SettingSideEffect
 
-    data object NavigateToEditBirthDay : SettingSideEffect
+    data class NavigateToEditBirthDay(val birthdayMillisecond: Long) : SettingSideEffect
 
     data object NavigateToServiceTermNotion : SettingSideEffect
 
@@ -16,5 +16,5 @@ sealed interface SettingSideEffect : UiSideEffect {
 
     data object NavigateLogin : SettingSideEffect
 
-    data class NavigateToEditCountDown(val startDateMillisecond : Long) : SettingSideEffect
+    data class NavigateToEditCountDown(val startDateMillisecond: Long) : SettingSideEffect
 }

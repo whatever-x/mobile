@@ -31,9 +31,24 @@ class SettingViewModel(
             SettingIntent.ClickPrivacyPolicyButton -> postSideEffect(SettingSideEffect.NavigateToPersonalInfoTermNotion)
             SettingIntent.ClickTermsOfServiceButtons -> postSideEffect(SettingSideEffect.NavigateToServiceTermNotion)
             SettingIntent.ClickLogoutConfirmButton -> logout()
-            SettingIntent.ClickEditBirthDayButton -> postSideEffect(SettingSideEffect.NavigateToEditBirthDay)
-            SettingIntent.ClickEditNicknameButton -> postSideEffect(SettingSideEffect.NavigateToEditNickname)
-            SettingIntent.ClickEditCountDownButton -> postSideEffect(SettingSideEffect.NavigateToEditCountDown(currentState.startDateTimeMillisecond))
+            SettingIntent.ClickEditBirthDayButton -> postSideEffect(
+                SettingSideEffect.NavigateToEditBirthDay(
+                    birthdayMillisecond = currentState.myInfo.birthDayTimeMillisecond
+                )
+            )
+
+            SettingIntent.ClickEditNicknameButton -> postSideEffect(
+                SettingSideEffect.NavigateToEditNickname(
+                    nickname = currentState.myInfo.nickname
+                )
+            )
+
+            SettingIntent.ClickEditCountDownButton -> postSideEffect(
+                SettingSideEffect.NavigateToEditCountDown(
+                    startDateMillisecond = currentState.startDateTimeMillisecond
+                )
+            )
+
             SettingIntent.ToggleUserCancelledButton -> toggleUserCancelledButton()
             SettingIntent.ClickAppUpdateButton -> TODO("앱 업데이트 기능 확인 필요")
             SettingIntent.ClickUserCancelledConfirmButton -> TODO("탈퇴하기 API 추가 후 연동")
@@ -48,7 +63,7 @@ class SettingViewModel(
         }
     }
 
-    private fun toggleLogoutButton(){
+    private fun toggleLogoutButton() {
         reduce {
             copy(
                 isShowLogoutDialog = !isShowLogoutDialog
@@ -78,13 +93,13 @@ class SettingViewModel(
                     isLoading = true
                 )
             }
-            val info = getCoupleInfoUseCase()
+            val couple = getCoupleInfoUseCase()
             reduce {
                 copy(
                     isLoading = false,
-                    startDateTimeMillisecond = info.startDateMillis,
-                    myInfo = CoupleUser.toCoupleInfo(info.myInfo),
-                    partnerInfo = CoupleUser.toCoupleInfo(info.partnerInfo),
+                    startDateTimeMillisecond = couple.info.startDateMillis,
+                    myInfo = CoupleUser.toCoupleInfo(couple.myInfo),
+                    partnerInfo = CoupleUser.toCoupleInfo(couple.partnerInfo),
                 )
             }
         }
