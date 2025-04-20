@@ -2,7 +2,7 @@ package com.whatever.caramel.feature.couple.connect.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.whatever.caramel.feature.couple.connect.CoupleConnectRoute
 import kotlinx.serialization.Serializable
@@ -10,11 +10,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object ConnectCoupleRoute
 
-fun NavHostController.navigateToConnectCouple(navOptions: NavOptions? = null) {
-    navigate(
-        route = ConnectCoupleRoute,
-        navOptions = navOptions
-    )
+fun NavHostController.navigateToConnectCouple(builder: NavOptionsBuilder.() -> Unit = {}) {
+    navigate(route = ConnectCoupleRoute) {
+        builder()
+    }
 }
 
 fun NavGraphBuilder.connectCoupleScreen(

@@ -9,11 +9,11 @@ import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLay
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 
 data class CaramelDialogPreviewData(
-    val title: String,
+    val title: String = "",
     val message: String? = null,
-    val mainButtonText: String,
+    val mainButtonText: String = "",
     val subButtonText: String? = null,
-    val mainButtonClickEvent: () -> Unit,
+    val mainButtonClickEvent: () -> Unit = {},
     val subButtonClickEvent: () -> Unit = {},
 )
 
@@ -32,13 +32,15 @@ class CaramelDialogPreviewProvider : PreviewParameterProvider<CaramelDialogPrevi
                 title = "Default Title",
                 message = "This is a default message",
                 mainButtonText = "OK",
-                mainButtonClickEvent = {}
+                mainButtonClickEvent = {},
+                subButtonClickEvent = {}
             ),
             CaramelDialogPreviewData(
                 title = "Default Title",
                 mainButtonText = "OK",
                 subButtonText = "Cancel",
-                mainButtonClickEvent = {}
+                mainButtonClickEvent = {},
+                subButtonClickEvent = {}
             ),
             CaramelDialogPreviewData(
                 title = "Default Title",
