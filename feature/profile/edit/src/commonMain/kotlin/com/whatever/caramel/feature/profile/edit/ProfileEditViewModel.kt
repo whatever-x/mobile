@@ -4,13 +4,16 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.whatever.caramel.core.domain.usecase.couple.EditCoupleStartDateUseCase
 import com.whatever.caramel.core.domain.usecase.user.EditProfileUseCase
+import com.whatever.caramel.core.domain.validator.UserValidator
 import com.whatever.caramel.core.ui.picker.DateUiState
+import com.whatever.caramel.core.util.DateFormatter
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditIntent
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditSideEffect
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditState
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditType
 import com.whatever.caramel.feature.profile.edit.navigation.ProfileEditRoute
+import io.github.aakira.napier.Napier
 
 class ProfileEditViewModel(
     private val editProfileUseCase: EditProfileUseCase,
@@ -50,12 +53,20 @@ class ProfileEditViewModel(
         }
     }
 
+    override fun handleClientException(throwable: Throwable) {
+        super.handleClientException(throwable)
+        Napier.e { "throwable: $throwable" }
+    }
+
     private fun updateNickname(nickname: String) {
-        reduce {
-            copy(
-                nickName = nickname,
-            )
-        }
+        UserValidator.checkInputNicknameValidate(nickname)
+            .onSuccess {
+                reduce {
+                    copy(
+                        nickName = nickname,
+                    )
+                }
+            }
     }
 
     private fun updateBirthdayYear(year: Int) {
@@ -110,18 +121,25 @@ class ProfileEditViewModel(
         when (currentState.editUiType) {
             ProfileEditType.NONE -> {}
             ProfileEditType.NICKNAME -> editProfileUseCase(
-                nickname = currentState.nickName,
-                birthday = ""
+                nickname = currentState.nickName
             )
 
             ProfileEditType.BIRTHDAY -> editProfileUseCase(
-                nickname = "",
-                birthday = "${currentState.birthDay.year}-${currentState.birthDay.month}-${currentState.birthDay.day}"
+                birthday = DateFormatter.createDateString(
+                    year = currentState.birthDay.year,
+                    month = currentState.birthDay.month,
+                    day = currentState.birthDay.day
+                )
             )
 
             ProfileEditType.START_DATE -> editCoupleStartDateUseCase(
-                startDate = "${currentState.startDate.year}-${currentState.startDate.month}-${currentState.startDate.day}"
+                startDate = DateFormatter.createDateString(
+                    year = currentState.startDate.year,
+                    month = currentState.startDate.month,
+                    day = currentState.startDate.day
+                )
             )
         }
+        postSideEffect(ProfileEditSideEffect.PopBackStack)
     }
 }
