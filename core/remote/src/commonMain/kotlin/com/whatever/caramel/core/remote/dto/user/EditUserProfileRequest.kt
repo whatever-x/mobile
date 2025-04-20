@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EditUserProfileRequest(
-    @SerialName("nickname") val nickname : String,
-    @SerialName("birthday") val birthday : String
+    @SerialName("nickname") val nickname : String?,
+    @SerialName("birthday") val birthday : String?
 )

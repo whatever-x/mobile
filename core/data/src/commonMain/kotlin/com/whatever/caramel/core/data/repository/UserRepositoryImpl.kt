@@ -47,7 +47,7 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun updateUserProfile(nickname: String, birthday: String): User {
+    override suspend fun updateUserProfile(nickname: String?, birthday: String?): User {
         return safeCall {
             val request = EditUserProfileRequest(
                 nickname = nickname,

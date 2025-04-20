@@ -7,18 +7,15 @@ class EditProfileUseCase(
     private val userRepository: UserRepository
 ) {
     suspend operator fun invoke(
-        nickname: String,
-        birthday: String
+        nickname: String? = null,
+        birthday: String? = null
     ) {
-        UserValidator.checkNicknameValidate(nickname)
-            .onSuccess {
-                userRepository.updateUserProfile(
-                    nickname = nickname,
-                    birthday = birthday
-                )
-            }
-            .onFailure {
-                throw it
-            }
+        if(nickname != null){
+            UserValidator.checkNicknameValidate(nickname)
+                .onFailure {
+                    throw it
+                }
+        }
+        userRepository.updateUserProfile(nickname, birthday)
     }
 }
