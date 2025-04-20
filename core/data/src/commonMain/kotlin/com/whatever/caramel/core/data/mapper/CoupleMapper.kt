@@ -23,11 +23,7 @@ fun CoupleInvitationCodeResponse.toCoupleInvitationCode() = CoupleInvitationCode
 fun CoupleConnectResponse.toCouple() = Couple(
     info = CoupleInfo(
         id = this.coupleId,
-        startDateMillis = this.startDate.toMillisecond() ?: throw CaramelException(
-            code = AppErrorCode.INVALID_PARAMS,
-            message = "알 수 없는 오류입니다.",
-            debugMessage = "날짜 형식 변환에 실패했습니다."
-        ),
+        startDateMillis = this.startDate.toMillisecond() ?: 0L,
         sharedMessage = this.sharedMessage,
     ),
     myInfo = User(
@@ -51,18 +47,14 @@ fun CoupleConnectResponse.toCouple() = Couple(
 fun CoupleInfoResponse.toCouple() = Couple(
     info = CoupleInfo(
         id = this.coupleId,
-        startDateMillis = this.startDate.toMillisecond() ?: throw CaramelException(
-            code = AppErrorCode.INVALID_PARAMS,
-            message = "알 수 없는 오류입니다.",
-            debugMessage = "날짜 형식 변환에 실패했습니다."
-        ),
-        sharedMessage = this.sharedMessage,
+        startDateMillis = this.startDate?.toMillisecond() ?: 0L,
+        sharedMessage = this.sharedMessage ?: "",
     ),
     myInfo = User(
         id = this.myInfo.id,
         userProfile = UserProfile(
             nickName = this.myInfo.nickname,
-            birthdayMillisecond = Instant.parse(this.myInfo.birthDate).toEpochMilliseconds(),
+            birthdayMillisecond = this.myInfo.birthDate.toMillisecond() ?: 0L,
             gender = Gender.valueOf(this.myInfo.gender)
         )
     ),
@@ -70,7 +62,7 @@ fun CoupleInfoResponse.toCouple() = Couple(
         id = this.partnerInfo.id,
         userProfile = UserProfile(
             nickName = this.partnerInfo.nickname,
-            birthdayMillisecond = Instant.parse(this.partnerInfo.birthDate).toEpochMilliseconds(),
+            birthdayMillisecond = this.partnerInfo.birthDate.toMillisecond() ?: 0L,
             gender = Gender.valueOf(this.myInfo.gender)
         )
     )
@@ -83,5 +75,5 @@ fun CoupleStartDateUpdateResponse.toCoupleInfo() = CoupleInfo(
         message = "알 수 없는 오류입니다.",
         debugMessage = "날짜 형식 변환에 실패했습니다."
     ),
-    sharedMessage = this.sharedMessage
+    sharedMessage = this.sharedMessage ?: ""
 )

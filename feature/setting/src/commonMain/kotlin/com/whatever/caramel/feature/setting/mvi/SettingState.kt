@@ -6,7 +6,7 @@ import com.whatever.caramel.core.util.DateFormatter.toFormattedDate
 import com.whatever.caramel.core.viewmodel.UiState
 
 data class SettingState(
-    val isLoading: Boolean = true,
+    val isLoading: Boolean = false,
     val startDateTimeMillisecond: Long = 0L,
     val myInfo: CoupleUser = CoupleUser(),
     val partnerInfo: CoupleUser = CoupleUser(),
@@ -29,7 +29,11 @@ data class CoupleUser(
     val gender: Gender = Gender.IDLE
 ) {
     val birthDate: String
-        get() = birthDayTimeMillisecond.toFormattedDate(separator = ".") ?: ""
+        get() = if(birthDayTimeMillisecond == 0L) {
+            ""
+        } else {
+            birthDayTimeMillisecond.toFormattedDate(separator = ".") ?: ""
+        }
 
     companion object {
         fun toCoupleInfo(user: User) = CoupleUser(

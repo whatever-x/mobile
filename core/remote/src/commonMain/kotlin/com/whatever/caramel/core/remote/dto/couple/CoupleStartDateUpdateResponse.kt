@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class CoupleStartDateUpdateResponse(
     @SerialName("coupleId") val coupleId: Long,
     @SerialName("startDate") val startDate: String,
-    @SerialName("sharedMessage") val sharedMessage: String,
+    @SerialName("sharedMessage") val sharedMessage: String?,
 )

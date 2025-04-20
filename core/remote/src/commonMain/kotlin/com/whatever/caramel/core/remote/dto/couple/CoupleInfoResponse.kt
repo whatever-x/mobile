@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CoupleInfoResponse(
     @SerialName("coupleId") val coupleId: Long,
-    @SerialName("startDate") val startDate: String,
-    @SerialName("sharedMessage") val sharedMessage: String,
+    @SerialName("startDate") val startDate: String?,
+    @SerialName("sharedMessage") val sharedMessage: String?,
     @SerialName("myInfo") val myInfo: CoupleUserInfoResponse,
     @SerialName("partnerInfo") val partnerInfo: CoupleUserInfoResponse
 )

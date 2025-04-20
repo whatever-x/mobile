@@ -35,7 +35,7 @@ class RemoteCoupleDatsSourceImpl(
         coupleId : Long,
         request : CoupleStartDateUpdateRequest
     ): CoupleStartDateUpdateResponse {
-        return authClient.patch("$COUPLE_BASE_URL/$coupleId/$PATCH_COUPLE_START_DATE_POSTFIX"){
+        return authClient.patch("$COUPLE_BASE_URL/$coupleId$PATCH_COUPLE_START_DATE_POSTFIX"){
             setBody(request)
         }.getBody()
     }
