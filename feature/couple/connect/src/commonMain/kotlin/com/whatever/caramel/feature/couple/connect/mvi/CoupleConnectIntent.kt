@@ -8,4 +8,6 @@ sealed interface CoupleConnectIntent : UiIntent {
 
     data object ClickBackButton : CoupleConnectIntent
 
+    data class ChangeInvitationCode(val invitationCode: String) : CoupleConnectIntent
+
 }

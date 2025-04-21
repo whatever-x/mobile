@@ -3,14 +3,13 @@ package com.whatever.caramel.app
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import com.whatever.caramel.feature.content.navigation.contentScreen
 import com.whatever.caramel.feature.content.navigation.navigateToContent
+import com.whatever.caramel.feature.copule.invite.navigation.inviteCoupleScreen
+import com.whatever.caramel.feature.copule.invite.navigation.navigateToInviteCouple
 import com.whatever.caramel.feature.couple.connect.navigation.connectCoupleScreen
 import com.whatever.caramel.feature.couple.connect.navigation.navigateToConnectCouple
-import com.whatever.caramel.feature.copule.invite.navigation.inviteCoupleScreen
-import com.whatever.caramel.feature.copule.invite.navigation.navigateToCoupleInvite
 import com.whatever.caramel.feature.login.navigation.loginScreen
 import com.whatever.caramel.feature.login.navigation.navigateToLogin
 import com.whatever.caramel.feature.main.navigation.mainGraph
@@ -40,29 +39,29 @@ internal fun CaramelNavHost(
             splashScreen(
                 navigateToLogin = { navigateToLogin() },
                 navigateToMain = { navigateToMain() },
-                navigateToConnectCouple = {
-                    navigateToConnectCouple(
-                        navOptions = NavOptions.Builder()
-                            .setPopUpTo<SplashRoute>(inclusive = true)
-                            .build()
-                    )
+                navigateToInviteCouple = {
+                    navigateToInviteCouple {
+                        popUpTo(route = SplashRoute) {
+                            inclusive = true
+                        }
+                    }
                 },
                 navigateToCreateProfile = {
-                    navigateToCreateProfile(
-                        navOptions = NavOptions.Builder()
-                            .setPopUpTo<SplashRoute>(inclusive = true)
-                            .build()
-                    )
+                    navigateToCreateProfile {
+                        popUpTo(route = SplashRoute) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
             loginScreen(
-                navigateToConnectCouple = { navigateToCoupleInvite() },
+                navigateToConnectCouple = { navigateToInviteCouple() },
                 navigateToCreateProfile = { navigateToCreateProfile() },
                 navigateToMain = { navigateToMain() }
             )
             createProfileScreen(
                 navigateToLogin = { navigateToLogin() },
-                navigateToConnectCouple = { navigateToCoupleInvite() }
+                navigateToConnectCouple = { navigateToInviteCouple() }
             )
             settingScreen(
                 navigateToHome = { popBackStack() },
