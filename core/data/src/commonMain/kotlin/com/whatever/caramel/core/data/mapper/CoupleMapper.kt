@@ -63,7 +63,7 @@ fun CoupleInfoResponse.toCouple() = Couple(
         userProfile = UserProfile(
             nickName = this.partnerInfo.nickname,
             birthdayMillisecond = this.partnerInfo.birthDate.toMillisecond() ?: 0L,
-            gender = Gender.valueOf(this.myInfo.gender)
+            gender = Gender.valueOf(this.partnerInfo.gender)
         )
     )
 )
