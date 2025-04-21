@@ -6,6 +6,7 @@ import com.whatever.caramel.core.remote.dto.couple.CoupleInfoResponse
 import com.whatever.caramel.core.remote.dto.couple.CoupleInvitationCodeResponse
 import com.whatever.caramel.core.remote.dto.couple.CoupleStartDateUpdateRequest
 import com.whatever.caramel.core.remote.dto.couple.CoupleStartDateUpdateResponse
+import com.whatever.caramel.core.remote.network.config.Header
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
@@ -38,8 +39,8 @@ class RemoteCoupleDatsSourceImpl(
         request: CoupleStartDateUpdateRequest
     ): CoupleStartDateUpdateResponse {
         return authClient.patch("$COUPLE_BASE_URL/$coupleId$PATCH_COUPLE_START_DATE_POSTFIX") {
+            header(Header.TIME_ZONE, timeZone)
             setBody(request)
-            header("Time-Zone", timeZone)
         }.getBody()
     }
 
