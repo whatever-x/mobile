@@ -13,6 +13,7 @@ import com.whatever.caramel.core.remote.datasource.RemoteCoupleDataSource
 import com.whatever.caramel.core.remote.dto.couple.CoupleConnectRequest
 import com.whatever.caramel.core.remote.dto.couple.CoupleStartDateUpdateRequest
 import com.whatever.caramel.core.remote.dto.couple.CoupleStartDateUpdateResponse
+import kotlinx.datetime.TimeZone
 
 class CoupleRepositoryImpl(
     private val localCoupleDataSource: CoupleDataSource,
@@ -60,6 +61,7 @@ class CoupleRepositoryImpl(
             )
             remoteCoupleDataSource.updateCoupleStartDate(
                 coupleId = coupleId,
+                timeZone = TimeZone.currentSystemDefault().id,
                 request = request
             ).toCoupleInfo()
         }

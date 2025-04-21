@@ -9,6 +9,7 @@ import com.whatever.caramel.core.remote.dto.couple.CoupleStartDateUpdateResponse
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -32,11 +33,13 @@ class RemoteCoupleDatsSourceImpl(
     }
 
     override suspend fun updateCoupleStartDate(
-        coupleId : Long,
-        request : CoupleStartDateUpdateRequest
+        coupleId: Long,
+        timeZone: String,
+        request: CoupleStartDateUpdateRequest
     ): CoupleStartDateUpdateResponse {
-        return authClient.patch("$COUPLE_BASE_URL/$coupleId$PATCH_COUPLE_START_DATE_POSTFIX"){
+        return authClient.patch("$COUPLE_BASE_URL/$coupleId$PATCH_COUPLE_START_DATE_POSTFIX") {
             setBody(request)
+            header("Time-Zone", timeZone)
         }.getBody()
     }
 
