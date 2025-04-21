@@ -1,7 +1,6 @@
 package com.whatever.caramel.core.remote.dto.auth
 
 import com.whatever.caramel.core.remote.dto.user.UserStatusDto
-import kotlinx.datetime.LocalDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
