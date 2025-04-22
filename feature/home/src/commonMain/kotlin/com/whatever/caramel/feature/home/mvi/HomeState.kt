@@ -1,6 +1,5 @@
 package com.whatever.caramel.feature.home.mvi
 
-import androidx.compose.runtime.Immutable
 import com.whatever.caramel.core.viewmodel.UiState
 
 data class HomeState(
