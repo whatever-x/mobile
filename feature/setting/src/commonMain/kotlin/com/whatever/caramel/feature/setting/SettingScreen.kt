@@ -243,7 +243,7 @@ fun SettingDialogHost(
             toggleLogoutDialog()
             onClickLogout()
         },
-        onSubButtonClick = toggleEditProfileDialog,
+        onSubButtonClick = toggleLogoutDialog,
         onDismissRequest = toggleLogoutDialog
     ) {
         DefaultCaramelDialogLayout()
