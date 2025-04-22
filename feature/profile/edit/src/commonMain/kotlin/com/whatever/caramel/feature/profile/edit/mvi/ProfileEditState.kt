@@ -1,6 +1,6 @@
 package com.whatever.caramel.feature.profile.edit.mvi
 
-import com.whatever.caramel.core.ui.picker.DateUiState
+import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.viewmodel.UiState
 
 data class ProfileEditState(

@@ -5,7 +5,7 @@ import androidx.navigation.toRoute
 import com.whatever.caramel.core.domain.usecase.couple.EditCoupleStartDateUseCase
 import com.whatever.caramel.core.domain.usecase.user.EditProfileUseCase
 import com.whatever.caramel.core.domain.validator.UserValidator
-import com.whatever.caramel.core.ui.picker.DateUiState
+import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.util.DateFormatter
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditIntent

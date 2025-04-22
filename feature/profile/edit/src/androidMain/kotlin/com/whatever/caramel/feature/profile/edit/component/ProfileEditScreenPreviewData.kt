@@ -1,7 +1,7 @@
 package com.whatever.caramel.feature.profile.edit.component
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.whatever.caramel.core.ui.picker.DateUiState
+import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditState
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditType
 
