@@ -8,6 +8,7 @@ data class CoupleConnectResponse(
     @SerialName("coupleId") val coupleId : Long,
     @SerialName("startDate") val startDate : String,
     @SerialName("sharedMessage") val sharedMessage : String,
+    @SerialName("status") val status : String,
     @SerialName("myInfo") val myInfo : CoupleConnectUserResponse,
     @SerialName("partnerInfo") val partnerInfo : CoupleConnectUserResponse
 )
