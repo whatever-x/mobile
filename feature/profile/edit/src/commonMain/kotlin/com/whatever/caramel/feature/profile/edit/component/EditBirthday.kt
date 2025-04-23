@@ -57,7 +57,7 @@ internal fun EditBirthday(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 40.dp)
+                .padding(bottom = CaramelTheme.spacing.xxl)
         ) {
             CaramelDatePicker(
                 modifier = Modifier.align(Alignment.BottomCenter),
