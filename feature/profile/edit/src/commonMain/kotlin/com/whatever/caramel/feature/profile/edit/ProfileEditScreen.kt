@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.foundations.Resources
+import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.profile.edit.component.EditBirthday
 import com.whatever.caramel.feature.profile.edit.component.EditStartDate
 import com.whatever.caramel.feature.profile.edit.component.EditNickname
@@ -53,7 +54,8 @@ internal fun ProfileEditScreen(
                 buttonText = "저장하기",
                 onClickButton = { onIntent(ProfileEditIntent.ClickSaveButton) }
             )
-        }
+        },
+        containerColor = CaramelTheme.color.background.primary
     ) { innerPadding ->
         Box(
             modifier = Modifier.padding(paddingValues = innerPadding)
