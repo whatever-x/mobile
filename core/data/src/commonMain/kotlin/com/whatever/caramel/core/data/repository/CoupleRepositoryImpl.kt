@@ -11,6 +11,7 @@ import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
 import com.whatever.caramel.core.domain.vo.couple.CoupleRelationship
 import com.whatever.caramel.core.remote.datasource.RemoteCoupleDataSource
 import com.whatever.caramel.core.remote.dto.couple.request.CoupleConnectRequest
+import com.whatever.caramel.core.remote.dto.couple.request.CoupleSharedMessageRequest
 
 class CoupleRepositoryImpl(
     private val localCoupleDataSource: CoupleDataSource,
@@ -50,9 +51,18 @@ class CoupleRepositoryImpl(
             remoteCoupleDataSource.getCoupleInfo(coupleId = coupleId).toCoupleRelationship()
         }
     }
+
+    override suspend fun updateShareMessage(
+        coupleId: Long,
+        shareMessage: String
     ): Couple {
         return safeCall {
-            remoteCoupleDataSource.getCoupleInfo(coupleId = coupleId).toCouple()
+            val request = CoupleSharedMessageRequest(sharedMessage = shareMessage)
+
+            remoteCoupleDataSource.patchShareMessage(
+                coupleId = coupleId,
+                request = request
+            ).toCouple()
         }
     }
 }

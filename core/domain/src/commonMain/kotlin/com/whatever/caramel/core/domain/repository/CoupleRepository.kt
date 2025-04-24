@@ -10,4 +10,8 @@ interface CoupleRepository {
     suspend fun setCoupleId(coupleId: Long)
     suspend fun getCoupleId() : Long
     suspend fun getCoupleInfo(coupleId : Long) : CoupleRelationship
+    suspend fun updateShareMessage(
+        coupleId: Long,
+        shareMessage: String
+    ) : Couple
 }
