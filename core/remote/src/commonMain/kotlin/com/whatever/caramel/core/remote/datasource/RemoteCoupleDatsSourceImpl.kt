@@ -1,12 +1,14 @@
 package com.whatever.caramel.core.remote.datasource
 
 import com.whatever.caramel.core.remote.dto.couple.request.CoupleConnectRequest
+import com.whatever.caramel.core.remote.dto.couple.request.CoupleSharedMessageRequest
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleBasicResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleDetailResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleInvitationCodeResponse
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
+import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import org.koin.core.annotation.Named
@@ -28,6 +30,13 @@ class RemoteCoupleDatsSourceImpl(
         return authClient.get(COUPLE_BASE_URL + "$coupleId").getBody()
     }
 
+    override suspend fun patchShareMessage(
+        coupleId: Long,
+        request: CoupleSharedMessageRequest
+    ): CoupleBasicResponse {
+        return authClient.patch(COUPLE_BASE_URL + "${coupleId}/shared-message") {
+            setBody(body = request)
+        }.getBody()
     }
 
     companion object {
