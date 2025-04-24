@@ -1,14 +1,16 @@
 package com.whatever.caramel.core.data.repository
 
 import com.whatever.caramel.core.data.mapper.toCouple
+import com.whatever.caramel.core.data.mapper.toCoupleRelationship
 import com.whatever.caramel.core.data.mapper.toCoupleInvitationCode
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datastore.datasource.CoupleDataSource
 import com.whatever.caramel.core.domain.entity.Couple
-import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
 import com.whatever.caramel.core.domain.repository.CoupleRepository
+import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
+import com.whatever.caramel.core.domain.vo.couple.CoupleRelationship
 import com.whatever.caramel.core.remote.datasource.RemoteCoupleDataSource
-import com.whatever.caramel.core.remote.dto.couple.CoupleConnectRequest
+import com.whatever.caramel.core.remote.dto.couple.request.CoupleConnectRequest
 
 class CoupleRepositoryImpl(
     private val localCoupleDataSource: CoupleDataSource,
@@ -20,12 +22,12 @@ class CoupleRepositoryImpl(
         }
     }
 
-    override suspend fun connectCouple(invitationCode: String): Couple {
+    override suspend fun connectCouple(invitationCode: String): CoupleRelationship {
         return safeCall {
             val request = CoupleConnectRequest(
                 invitationCode = invitationCode
             )
-            remoteCoupleDataSource.connectCouple(request).toCouple()
+            remoteCoupleDataSource.connectCouple(request).toCoupleRelationship()
         }
     }
 
@@ -43,6 +45,11 @@ class CoupleRepositoryImpl(
 
     override suspend fun getCoupleInfo(
         coupleId: Long
+    ): CoupleRelationship {
+        return safeCall {
+            remoteCoupleDataSource.getCoupleInfo(coupleId = coupleId).toCoupleRelationship()
+        }
+    }
     ): Couple {
         return safeCall {
             remoteCoupleDataSource.getCoupleInfo(coupleId = coupleId).toCouple()
