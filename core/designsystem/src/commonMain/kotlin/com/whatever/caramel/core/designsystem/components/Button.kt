@@ -47,7 +47,7 @@ fun CaramelButton(
     }
     val buttonShape = when (buttonSize) {
         CaramelButtonSize.Large -> CaramelTheme.shape.xl
-        CaramelButtonSize.Medium -> CaramelTheme.shape.l
+        CaramelButtonSize.Medium -> CaramelTheme.shape.xl
         CaramelButtonSize.Small -> CaramelTheme.shape.s
     }
 
