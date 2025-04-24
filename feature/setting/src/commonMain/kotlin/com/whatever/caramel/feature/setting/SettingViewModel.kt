@@ -78,13 +78,13 @@ class SettingViewModel(
                     isLoading = true
                 )
             }
-            val info = getCoupleInfoUseCase()
+            val couple = getCoupleInfoUseCase()
             reduce {
                 copy(
                     isLoading = false,
-                    startDateTimeMillisecond = info.startDateMillis,
-                    myInfo = CoupleUser.toCoupleInfo(info.myInfo),
-                    partnerInfo = CoupleUser.toCoupleInfo(info.partnerInfo),
+                    startDateTimeMillisecond = couple.info.startDateMillis,
+                    myInfo = CoupleUser.toCoupleInfo(couple.myInfo),
+                    partnerInfo = CoupleUser.toCoupleInfo(couple.partnerInfo),
                 )
             }
         }
