@@ -11,6 +11,7 @@ import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
 import com.whatever.caramel.core.domain.vo.couple.CoupleRelationship
 import com.whatever.caramel.core.remote.datasource.RemoteCoupleDataSource
 import com.whatever.caramel.core.remote.dto.couple.request.CoupleConnectRequest
+import com.whatever.caramel.core.remote.dto.couple.request.CoupleSharedMessageRequest
 import com.whatever.caramel.core.remote.dto.couple.CoupleStartDateUpdateRequest
 import kotlinx.datetime.TimeZone
 
@@ -61,6 +62,20 @@ class CoupleRepositoryImpl(
             remoteCoupleDataSource.updateCoupleStartDate(
                 coupleId = coupleId,
                 timeZone = TimeZone.currentSystemDefault().id,
+                request = request
+            ).toCouple()
+        }
+    }
+
+    override suspend fun updateShareMessage(
+        coupleId: Long,
+        shareMessage: String
+    ): Couple {
+        return safeCall {
+            val request = CoupleSharedMessageRequest(sharedMessage = shareMessage)
+
+            remoteCoupleDataSource.patchShareMessage(
+                coupleId = coupleId,
                 request = request
             ).toCouple()
         }
