@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.home
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.home.mvi.HomeIntent
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect
@@ -9,6 +10,7 @@ import io.github.aakira.napier.Napier
 import kotlinx.coroutines.delay
 
 class HomeViewModel(
+    private val updateShareMessageUseCase: UpdateShareMessageUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle) {
 
@@ -34,11 +36,11 @@ class HomeViewModel(
     private suspend fun saveShareMessage() {
         launch {
             val message = currentState.bottomSheetMessage
-            // @ham2174 TODO : 기억할 말 저장 유스케이스 연결
-            // 저장 성공 시
+            val updatedMessage = updateShareMessageUseCase(shareMessage = message)
+
             reduce {
                 copy(
-                    savedShareMessage = message,
+                    savedShareMessage = updatedMessage,
                     isShowBottomSheet = false
                 )
             }
@@ -76,7 +78,10 @@ class HomeViewModel(
 
     private fun showBottomSheet() {
         reduce {
-            copy(isShowBottomSheet = true)
+            copy(
+                isShowBottomSheet = true,
+                bottomSheetMessage = savedShareMessage
+            )
         }
     }
 
