@@ -1,18 +1,17 @@
 package com.whatever.caramel.core.data.repository
 
 import com.whatever.caramel.core.data.mapper.toCouple
-import com.whatever.caramel.core.data.mapper.toCoupleInfo
+import com.whatever.caramel.core.data.mapper.toCoupleRelationship
 import com.whatever.caramel.core.data.mapper.toCoupleInvitationCode
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datastore.datasource.CoupleDataSource
 import com.whatever.caramel.core.domain.entity.Couple
-import com.whatever.caramel.core.domain.entity.CoupleInfo
-import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
 import com.whatever.caramel.core.domain.repository.CoupleRepository
+import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
+import com.whatever.caramel.core.domain.vo.couple.CoupleRelationship
 import com.whatever.caramel.core.remote.datasource.RemoteCoupleDataSource
-import com.whatever.caramel.core.remote.dto.couple.CoupleConnectRequest
+import com.whatever.caramel.core.remote.dto.couple.request.CoupleConnectRequest
 import com.whatever.caramel.core.remote.dto.couple.CoupleStartDateUpdateRequest
-import com.whatever.caramel.core.remote.dto.couple.CoupleStartDateUpdateResponse
 import kotlinx.datetime.TimeZone
 
 class CoupleRepositoryImpl(
@@ -25,12 +24,12 @@ class CoupleRepositoryImpl(
         }
     }
 
-    override suspend fun connectCouple(invitationCode: String): Couple {
+    override suspend fun connectCouple(invitationCode: String): CoupleRelationship {
         return safeCall {
             val request = CoupleConnectRequest(
                 invitationCode = invitationCode
             )
-            remoteCoupleDataSource.connectCouple(request).toCouple()
+            remoteCoupleDataSource.connectCouple(request).toCoupleRelationship()
         }
     }
 
@@ -46,15 +45,15 @@ class CoupleRepositoryImpl(
         }
     }
 
-    override suspend fun getCouple(
+    override suspend fun getCoupleInfo(
         coupleId: Long
-    ): Couple {
+    ): CoupleRelationship {
         return safeCall {
-            remoteCoupleDataSource.getCoupleInfo(coupleId = coupleId).toCouple()
+            remoteCoupleDataSource.getCoupleInfo(coupleId = coupleId).toCoupleRelationship()
         }
     }
 
-    override suspend fun editCoupleStartDate(coupleId: Long, startDate: String): CoupleInfo {
+    override suspend fun editCoupleStartDate(coupleId: Long, startDate: String): Couple {
         return safeCall {
             val request = CoupleStartDateUpdateRequest(
                 startDate = startDate
@@ -63,7 +62,7 @@ class CoupleRepositoryImpl(
                 coupleId = coupleId,
                 timeZone = TimeZone.currentSystemDefault().id,
                 request = request
-            ).toCoupleInfo()
+            ).toCouple()
         }
     }
 }

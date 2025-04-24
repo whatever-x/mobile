@@ -1,11 +1,10 @@
 package com.whatever.caramel.core.remote.datasource
 
-import com.whatever.caramel.core.remote.dto.couple.CoupleConnectRequest
-import com.whatever.caramel.core.remote.dto.couple.CoupleConnectResponse
-import com.whatever.caramel.core.remote.dto.couple.CoupleInfoResponse
-import com.whatever.caramel.core.remote.dto.couple.CoupleInvitationCodeResponse
 import com.whatever.caramel.core.remote.dto.couple.CoupleStartDateUpdateRequest
 import com.whatever.caramel.core.remote.dto.couple.CoupleStartDateUpdateResponse
+import com.whatever.caramel.core.remote.dto.couple.request.CoupleConnectRequest
+import com.whatever.caramel.core.remote.dto.couple.response.CoupleDetailResponse
+import com.whatever.caramel.core.remote.dto.couple.response.CoupleInvitationCodeResponse
 import com.whatever.caramel.core.remote.network.config.Header
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
@@ -20,17 +19,17 @@ class RemoteCoupleDatsSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient
 ) : RemoteCoupleDataSource {
     override suspend fun generateCoupleInvitationCode(): CoupleInvitationCodeResponse {
-        return authClient.post(POST_COUPLE_INVITATION_CODE_URL).getBody()
+        return authClient.post(COUPLE_BASE_URL + "invitation-code").getBody()
     }
 
-    override suspend fun connectCouple(request: CoupleConnectRequest): CoupleConnectResponse {
-        return authClient.post(POST_CONNECT_COUPLE_URL) {
+    override suspend fun connectCouple(request: CoupleConnectRequest): CoupleDetailResponse {
+        return authClient.post(COUPLE_BASE_URL + "connect") {
             setBody(request)
         }.getBody()
     }
 
-    override suspend fun getCoupleInfo(coupleId: Long): CoupleInfoResponse {
-        return authClient.get("$COUPLE_BASE_URL/$coupleId").getBody()
+    override suspend fun getCoupleInfo(coupleId: Long): CoupleDetailResponse {
+        return authClient.get(COUPLE_BASE_URL + "$coupleId").getBody()
     }
 
     override suspend fun updateCoupleStartDate(
@@ -38,16 +37,13 @@ class RemoteCoupleDatsSourceImpl(
         timeZone: String,
         request: CoupleStartDateUpdateRequest
     ): CoupleStartDateUpdateResponse {
-        return authClient.patch("$COUPLE_BASE_URL/$coupleId$PATCH_COUPLE_START_DATE_POSTFIX") {
+        return authClient.patch(COUPLE_BASE_URL + "${coupleId}/start-date") {
             header(Header.TIME_ZONE, timeZone)
             setBody(request)
         }.getBody()
     }
 
     companion object {
-        private const val COUPLE_BASE_URL = "v1/couples"
-        private const val POST_COUPLE_INVITATION_CODE_URL = "$COUPLE_BASE_URL/invitation-code"
-        private const val POST_CONNECT_COUPLE_URL = "$COUPLE_BASE_URL/connect"
-        private const val PATCH_COUPLE_START_DATE_POSTFIX = "/start-date"
+        private const val COUPLE_BASE_URL = "v1/couples/"
     }
 }
