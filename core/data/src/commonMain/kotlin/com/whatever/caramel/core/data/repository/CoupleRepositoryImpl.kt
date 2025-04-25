@@ -1,14 +1,19 @@
 package com.whatever.caramel.core.data.repository
 
 import com.whatever.caramel.core.data.mapper.toCouple
+import com.whatever.caramel.core.data.mapper.toCoupleInfo
 import com.whatever.caramel.core.data.mapper.toCoupleInvitationCode
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datastore.datasource.CoupleDataSource
 import com.whatever.caramel.core.domain.entity.Couple
+import com.whatever.caramel.core.domain.entity.CoupleInfo
 import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
 import com.whatever.caramel.core.domain.repository.CoupleRepository
 import com.whatever.caramel.core.remote.datasource.RemoteCoupleDataSource
 import com.whatever.caramel.core.remote.dto.couple.CoupleConnectRequest
+import com.whatever.caramel.core.remote.dto.couple.CoupleStartDateUpdateRequest
+import com.whatever.caramel.core.remote.dto.couple.CoupleStartDateUpdateResponse
+import kotlinx.datetime.TimeZone
 
 class CoupleRepositoryImpl(
     private val localCoupleDataSource: CoupleDataSource,
@@ -41,11 +46,24 @@ class CoupleRepositoryImpl(
         }
     }
 
-    override suspend fun getCoupleInfo(
+    override suspend fun getCouple(
         coupleId: Long
     ): Couple {
         return safeCall {
             remoteCoupleDataSource.getCoupleInfo(coupleId = coupleId).toCouple()
+        }
+    }
+
+    override suspend fun editCoupleStartDate(coupleId: Long, startDate: String): CoupleInfo {
+        return safeCall {
+            val request = CoupleStartDateUpdateRequest(
+                startDate = startDate
+            )
+            remoteCoupleDataSource.updateCoupleStartDate(
+                coupleId = coupleId,
+                timeZone = TimeZone.currentSystemDefault().id,
+                request = request
+            ).toCoupleInfo()
         }
     }
 }

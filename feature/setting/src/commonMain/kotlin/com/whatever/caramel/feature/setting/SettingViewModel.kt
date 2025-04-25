@@ -8,16 +8,13 @@ import com.whatever.caramel.feature.setting.mvi.CoupleUser
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
 import com.whatever.caramel.feature.setting.mvi.SettingSideEffect
 import com.whatever.caramel.feature.setting.mvi.SettingState
+import io.github.aakira.napier.Napier
 
 class SettingViewModel(
     private val getCoupleInfoUseCase: GetCoupleInfoUseCase,
     private val logoutUseCase: LogoutUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<SettingState, SettingSideEffect, SettingIntent>(savedStateHandle) {
-
-    init {
-        getCoupleInfo()
-    }
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): SettingState {
         return SettingState()
@@ -26,17 +23,46 @@ class SettingViewModel(
     override suspend fun handleIntent(intent: SettingIntent) {
         when (intent) {
             is SettingIntent.ClickSettingBackButton -> postSideEffect(SettingSideEffect.NavigateToHome)
-            is SettingIntent.ToggleEditProfile -> toggleEditProfile()
+            is SettingIntent.ToggleEditProfile -> toggleEditProfileBottomSheet()
+            SettingIntent.RefreshCoupleData -> getCoupleInfo()
             SettingIntent.ToggleLogout -> toggleLogoutButton()
             SettingIntent.ClickPrivacyPolicyButton -> postSideEffect(SettingSideEffect.NavigateToPersonalInfoTermNotion)
             SettingIntent.ClickTermsOfServiceButtons -> postSideEffect(SettingSideEffect.NavigateToServiceTermNotion)
             SettingIntent.ClickLogoutConfirmButton -> logout()
-            SettingIntent.ClickEditBirthDayButton -> postSideEffect(SettingSideEffect.NavigateToEditBirthDay)
-            SettingIntent.ClickEditNicknameButton -> postSideEffect(SettingSideEffect.NavigateToEditNickname)
-            SettingIntent.ClickEditCountDownButton -> postSideEffect(SettingSideEffect.NavigateToEditCountDown(currentState.startDateTimeMillisecond))
+            SettingIntent.ClickEditBirthDayButton -> naviateEditBirthday()
+            SettingIntent.ClickEditNicknameButton -> navigateEditNickname()
+            SettingIntent.ClickEditCountDownButton -> postSideEffect(
+                SettingSideEffect.NavigateToEditCountDown(
+                    startDateMillisecond = currentState.startDateTimeMillisecond
+                )
+            )
             SettingIntent.ToggleUserCancelledButton -> toggleUserCancelledButton()
             SettingIntent.ClickAppUpdateButton -> TODO("앱 업데이트 기능 확인 필요")
             SettingIntent.ClickUserCancelledConfirmButton -> TODO("탈퇴하기 API 추가 후 연동")
+        }
+    }
+
+    override fun handleClientException(throwable: Throwable) {
+        super.handleClientException(throwable)
+        Napier.e { "exception: $throwable" }
+    }
+
+    private fun getCoupleInfo() {
+        launch {
+            reduce {
+                copy(
+                    isLoading = true
+                )
+            }
+            val couple = getCoupleInfoUseCase()
+            reduce {
+                copy(
+                    isLoading = false,
+                    startDateTimeMillisecond = couple.info.startDateMillis,
+                    myInfo = CoupleUser.toCoupleInfo(couple.myInfo),
+                    partnerInfo = CoupleUser.toCoupleInfo(couple.partnerInfo),
+                )
+            }
         }
     }
 
@@ -48,7 +74,7 @@ class SettingViewModel(
         }
     }
 
-    private fun toggleLogoutButton(){
+    private fun toggleLogoutButton() {
         reduce {
             copy(
                 isShowLogoutDialog = !isShowLogoutDialog
@@ -56,7 +82,7 @@ class SettingViewModel(
         }
     }
 
-    private fun toggleEditProfile() {
+    private fun toggleEditProfileBottomSheet() {
         reduce {
             copy(
                 isShowEditProfileBottomSheet = !isShowEditProfileBottomSheet
@@ -64,29 +90,28 @@ class SettingViewModel(
         }
     }
 
+    private fun navigateEditNickname(){
+        toggleEditProfileBottomSheet()
+        postSideEffect(
+            SettingSideEffect.NavigateToEditNickname(
+                nickname = currentState.myInfo.nickname
+            )
+        )
+    }
+
+    private fun naviateEditBirthday(){
+        toggleEditProfileBottomSheet()
+        postSideEffect(
+            SettingSideEffect.NavigateToEditBirthDay(
+                birthdayMillisecond = currentState.myInfo.birthDayTimeMillisecond
+            )
+        )
+    }
+
     private fun logout() {
         launch {
             logoutUseCase()
             postSideEffect(SettingSideEffect.NavigateLogin)
-        }
-    }
-
-    private fun getCoupleInfo() {
-        launch {
-            reduce {
-                copy(
-                    isLoading = true
-                )
-            }
-            val info = getCoupleInfoUseCase()
-            reduce {
-                copy(
-                    isLoading = false,
-                    startDateTimeMillisecond = info.startDateMillis,
-                    myInfo = CoupleUser.toCoupleInfo(info.myInfo),
-                    partnerInfo = CoupleUser.toCoupleInfo(info.partnerInfo),
-                )
-            }
         }
     }
 }

@@ -65,14 +65,16 @@ internal fun CaramelNavHost(
             )
             settingScreen(
                 navigateToHome = { popBackStack() },
-                navigateToEditBirthday = {
+                navigateToEditBirthday = { birthdayMillisecond ->
                     navigateToEditProfile(
-                        editType = ProfileEditType.BIRTHDAY
+                        editType = ProfileEditType.BIRTHDAY,
+                        birthdayMillisecond = birthdayMillisecond
                     )
                 },
-                navigateToEditNickName = {
+                navigateToEditNickName = { nickname ->
                     navigateToEditProfile(
-                        editType = ProfileEditType.NICK_NAME
+                        editType = ProfileEditType.NICKNAME,
+                        nickname = nickname
                     )
                 },
                 navigateToLogin = {
@@ -82,9 +84,10 @@ internal fun CaramelNavHost(
                         }
                     }
                 },
-                navigateToEditCountDown = {
+                navigateToEditCountDown = { startDateMillisecond ->
                     navigateToEditProfile(
-                        editType = ProfileEditType.D_DAY
+                        editType = ProfileEditType.START_DATE,
+                        startDateMillisecond = startDateMillisecond
                     )
                 }
             )
@@ -106,7 +109,7 @@ internal fun CaramelNavHost(
                 navigateToSetting = { navigateToSetting() },
                 navigateToStaredCoupleDay = {
                     navigateToEditProfile(
-                        editType = ProfileEditType.D_DAY
+                        editType = ProfileEditType.START_DATE
                     )
                 },
                 navigateToTodoDetail = { navigateToContent() },

@@ -4,6 +4,8 @@ import com.whatever.caramel.core.viewmodel.UiIntent
 
 sealed interface SettingIntent : UiIntent {
 
+    data object RefreshCoupleData : SettingIntent
+
     data object ClickEditCountDownButton : SettingIntent
 
     data object ClickSettingBackButton : SettingIntent

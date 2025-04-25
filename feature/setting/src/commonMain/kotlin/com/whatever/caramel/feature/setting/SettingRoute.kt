@@ -2,8 +2,12 @@ package com.whatever.caramel.feature.setting
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.whatever.caramel.feature.setting.mvi.SettingIntent
 import com.whatever.caramel.feature.setting.mvi.SettingSideEffect
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -11,23 +15,31 @@ import org.koin.compose.viewmodel.koinViewModel
 internal fun SettingRoute(
     viewModel: SettingViewModel = koinViewModel(),
     navigateToHome: () -> Unit,
-    navigateToEditBirthday: () -> Unit,
-    navigateToEditNickName: () -> Unit,
     navigateToLogin : () -> Unit,
-    navigateToEditCountDown: () -> Unit,
+    navigateToEditCountDown: (Long) -> Unit,
+    navigateToEditBirthday: (Long) -> Unit,
+    navigateToEditNickName: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
+
+    LaunchedEffect(lifecycleState) {
+        if (lifecycleState == Lifecycle.State.STARTED) {
+            viewModel.intent(SettingIntent.RefreshCoupleData)
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is SettingSideEffect.NavigateToHome -> navigateToHome()
-                is SettingSideEffect.NavigateToEditCountDown -> navigateToEditCountDown() // TODO : D-day 설정 시 millisecond 사용
                 SettingSideEffect.NavigateToPersonalInfoTermNotion -> TODO()
                 SettingSideEffect.NavigateToServiceTermNotion -> TODO()
                 SettingSideEffect.NavigateLogin -> navigateToLogin()
-                SettingSideEffect.NavigateToEditNickname -> navigateToEditNickName()
-                SettingSideEffect.NavigateToEditBirthDay -> navigateToEditBirthday()
+                is SettingSideEffect.NavigateToHome -> navigateToHome()
+                is SettingSideEffect.NavigateToEditCountDown -> navigateToEditCountDown(sideEffect.startDateMillisecond)
+                is SettingSideEffect.NavigateToEditNickname -> navigateToEditNickName(sideEffect.nickname)
+                is SettingSideEffect.NavigateToEditBirthDay -> navigateToEditBirthday(sideEffect.birthdayMillisecond)
             }
         }
     }
