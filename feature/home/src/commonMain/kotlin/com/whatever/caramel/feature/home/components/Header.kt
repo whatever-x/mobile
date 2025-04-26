@@ -71,7 +71,7 @@ internal fun LazyListScope.Header(
                         Icon(
                             painter = painterResource(resource = Resources.Icon.ic_edit_16),
                             contentDescription = null,
-                            tint = CaramelTheme.color.text.secondary
+                            tint = CaramelTheme.color.icon.secondary
                         )
                     },
                 )
