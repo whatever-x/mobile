@@ -22,39 +22,22 @@ class HomeViewModel(
             is HomeIntent.ClickSettingButton -> postSideEffect(HomeSideEffect.NavigateToSetting)
             is HomeIntent.ClickTodoContent -> postSideEffect(HomeSideEffect.NavigateToContentDetail(contentId = intent.todoContentId))
             is HomeIntent.CreateTodoContent -> postSideEffect(HomeSideEffect.NavigateToCreateContent)
-            is HomeIntent.ClearShareMessage -> clearShareMessage()
-            is HomeIntent.SaveShareMessage -> saveShareMessage()
+            is HomeIntent.SaveShareMessage -> saveShareMessage(newShareMessage = intent.newShareMessage)
             is HomeIntent.ShowShareMessageEditBottomSheet -> showBottomSheet()
             is HomeIntent.HideShareMessageEditBottomSheet -> hideBottomSheet()
             is HomeIntent.PullToRefresh -> refreshHomeData()
-            is HomeIntent.ChangeShareMessage -> changeShareMessage(message = intent.message)
         }
     }
 
-    private suspend fun saveShareMessage() {
+    private suspend fun saveShareMessage(newShareMessage: String) {
         launch {
-            val message = currentState.bottomSheetMessage
             // @ham2174 TODO : 기억할 말 저장 유스케이스 연결
             // 저장 성공 시
             reduce {
                 copy(
-                    savedShareMessage = message,
+                    shareMessage = newShareMessage,
                     isShowBottomSheet = false
                 )
-            }
-        }
-    }
-
-    private fun clearShareMessage() {
-        reduce {
-            copy(bottomSheetMessage = "")
-        }
-    }
-
-    private fun changeShareMessage(message: String) {
-        if (!message.contains("\n") && message.length <= 24) {
-            reduce {
-                copy(bottomSheetMessage = message)
             }
         }
     }
@@ -82,10 +65,7 @@ class HomeViewModel(
 
     private fun hideBottomSheet() {
         reduce {
-            copy(
-                isShowBottomSheet = false,
-                bottomSheetMessage = savedShareMessage
-            )
+            copy(isShowBottomSheet = false)
         }
     }
 

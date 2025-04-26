@@ -5,8 +5,7 @@ import com.whatever.caramel.core.viewmodel.UiState
 
 data class HomeState(
     val daysTogether: Int = 0,
-    val savedShareMessage: String = "",
-    val bottomSheetMessage: String = "",
+    val shareMessage: String = "",
     val todos: List<TodoState> = emptyList(),
     val isSetAnniversary: Boolean = false,
     val isShowBottomSheet: Boolean = false,

@@ -15,12 +15,17 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelButton
 import com.whatever.caramel.core.designsystem.components.CaramelButtonSize
@@ -32,20 +37,11 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 internal fun ShareMessageBottomSheet(
     modifier: Modifier = Modifier,
     bottomSheetContentModifier: Modifier = Modifier,
-    shareMessage: String,
+    initialShareMessage: String,
     sheetState: SheetState,
     onDismiss: () -> Unit,
-    onChangeShareMessage: (String) -> Unit,
-    onClickSave: () -> Unit,
-    onClickClear: () -> Unit
+    onClickSave: (String) -> Unit,
 ) {
-    val focusRequester = remember { FocusRequester() }
-    val keyboardController = LocalSoftwareKeyboardController.current
-
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
-    }
-
     ModalBottomSheet(
         modifier = modifier,
         onDismissRequest = onDismiss,
@@ -56,14 +52,8 @@ internal fun ShareMessageBottomSheet(
     ) {
         BottomSheetContent(
             modifier = bottomSheetContentModifier,
-            shareMessage = shareMessage,
-            focusRequester = focusRequester,
-            onChangeShareMessage = onChangeShareMessage,
-            onClickSave = {
-                keyboardController?.hide()
-                onClickSave()
-            },
-            onClickClear = onClickClear
+            initialShareMessage = initialShareMessage,
+            onClickSave = { newShareMessage -> onClickSave(newShareMessage) },
         )
     }
 }
@@ -71,17 +61,33 @@ internal fun ShareMessageBottomSheet(
 @Composable
 private fun BottomSheetContent(
     modifier: Modifier = Modifier,
-    shareMessage: String,
-    focusRequester: FocusRequester,
-    onChangeShareMessage: (String) -> Unit,
-    onClickSave: () -> Unit,
-    onClickClear: () -> Unit
+    initialShareMessage: String,
+    onClickSave: (String) -> Unit,
 ) {
+    val focusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    var newShareMessage by remember {
+        mutableStateOf(
+            TextFieldValue(
+                text = initialShareMessage,
+                selection = TextRange(initialShareMessage.length)
+            )
+        )
+    }
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+
     Column(modifier = modifier) {
         BasicTextField(
             modifier = Modifier.focusRequester(focusRequester = focusRequester),
-            value = shareMessage,
-            onValueChange = { newValue -> onChangeShareMessage(newValue) },
+            value = newShareMessage,
+            onValueChange = { newValue ->
+                if (!newValue.text.contains("\n") && newValue.text.length <= 24) {
+                    newShareMessage = newValue
+                }
+            },
             minLines = 1,
             maxLines = 2,
             textStyle = CaramelTheme.typography.heading3.copy(
@@ -96,7 +102,7 @@ private fun BottomSheetContent(
             ) {
                 innerTextField()
 
-                if (shareMessage.isEmpty()) {
+                if (newShareMessage.text.isEmpty()) {
                     Text(
                         text = "기억하고 싶은 말을 남겨보세요",
                         style = CaramelTheme.typography.heading3,
@@ -109,7 +115,7 @@ private fun BottomSheetContent(
         Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.l))
 
         Text(
-            text = "${shareMessage.length}/24",
+            text = "${newShareMessage.text.length}/24",
             style = CaramelTheme.typography.body3.bold,
             color = CaramelTheme.color.text.placeholder
         )
@@ -127,7 +133,10 @@ private fun BottomSheetContent(
                 buttonType = CaramelButtonType.Enabled2,
                 buttonSize = CaramelButtonSize.Large,
                 text = "비우기",
-                onClick = onClickClear
+                onClick = {
+                    newShareMessage =
+                        TextFieldValue(selection = TextRange(initialShareMessage.length))
+                }
             )
 
             CaramelButton(
@@ -135,7 +144,10 @@ private fun BottomSheetContent(
                 buttonType = CaramelButtonType.Enabled1,
                 buttonSize = CaramelButtonSize.Large,
                 text = "저장하기",
-                onClick = onClickSave
+                onClick = {
+                    keyboardController?.hide()
+                    onClickSave(newShareMessage.text)
+                }
             )
         }
     }
