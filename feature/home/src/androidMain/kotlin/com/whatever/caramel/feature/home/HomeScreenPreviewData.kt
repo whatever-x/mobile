@@ -34,7 +34,7 @@ internal class HoeScreenPreviewProvider :
         HomeState(
             daysTogether = 1120,
             shareMessage = "내일 여기서 만나",
-            todos = listOf(TodoState(id = 1, title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다.")),
+            todos = listOf(TodoState(id = 1, title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?")),
             isShowBottomSheet = false,
             isLoading = false,
             isSetAnniversary = true
@@ -42,7 +42,7 @@ internal class HoeScreenPreviewProvider :
         HomeState(
             daysTogether = 1120,
             shareMessage = "내일 여기서 만나",
-            todos = (0..7).map { TodoState(it.toLong(), "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다.") },
+            todos = (0..7).map { TodoState(it.toLong(), "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?") },
             isShowBottomSheet = false,
             isLoading = false,
             isSetAnniversary = true
@@ -50,7 +50,7 @@ internal class HoeScreenPreviewProvider :
         HomeState(
             daysTogether = 1120,
             shareMessage = "내일 여기서 만나",
-            todos = (0..7).map { TodoState(it.toLong(), "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다.") },
+            todos = (0..7).map { TodoState(it.toLong(), "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?") },
             isShowBottomSheet = false,
             isLoading = true,
             isSetAnniversary = true

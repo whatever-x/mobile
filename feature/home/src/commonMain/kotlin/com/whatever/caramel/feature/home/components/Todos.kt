@@ -136,10 +136,13 @@ private fun TodoItem(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.spacedBy(
+            space = CaramelTheme.spacing.m
+        ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
+            modifier = Modifier.weight(weight = 1f),
             text = title,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
