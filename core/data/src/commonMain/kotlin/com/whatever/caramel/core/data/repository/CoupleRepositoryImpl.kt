@@ -12,7 +12,7 @@ import com.whatever.caramel.core.domain.vo.couple.CoupleRelationship
 import com.whatever.caramel.core.remote.datasource.RemoteCoupleDataSource
 import com.whatever.caramel.core.remote.dto.couple.request.CoupleConnectRequest
 import com.whatever.caramel.core.remote.dto.couple.request.CoupleSharedMessageRequest
-import com.whatever.caramel.core.remote.dto.couple.CoupleStartDateUpdateRequest
+import com.whatever.caramel.core.remote.dto.couple.request.CoupleStartDateUpdateRequest
 import kotlinx.datetime.TimeZone
 
 class CoupleRepositoryImpl(

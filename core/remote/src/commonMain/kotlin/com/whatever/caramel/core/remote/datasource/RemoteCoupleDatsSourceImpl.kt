@@ -1,7 +1,6 @@
 package com.whatever.caramel.core.remote.datasource
 
-import com.whatever.caramel.core.remote.dto.couple.CoupleStartDateUpdateRequest
-import com.whatever.caramel.core.remote.dto.couple.CoupleStartDateUpdateResponse
+import com.whatever.caramel.core.remote.dto.couple.request.CoupleStartDateUpdateRequest
 import com.whatever.caramel.core.remote.dto.couple.request.CoupleConnectRequest
 import com.whatever.caramel.core.remote.dto.couple.request.CoupleSharedMessageRequest
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleBasicResponse
@@ -47,7 +46,7 @@ class RemoteCoupleDatsSourceImpl(
         coupleId: Long,
         timeZone: String,
         request: CoupleStartDateUpdateRequest
-    ): CoupleStartDateUpdateResponse {
+    ): CoupleBasicResponse {
         return authClient.patch(COUPLE_BASE_URL + "${coupleId}/start-date") {
             header(Header.TIME_ZONE, timeZone)
             setBody(request)
