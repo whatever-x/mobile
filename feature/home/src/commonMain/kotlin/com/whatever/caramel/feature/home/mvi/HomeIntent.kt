@@ -6,10 +6,18 @@ sealed interface HomeIntent : UiIntent {
 
     data object ClickSettingButton : HomeIntent
 
-    data object ClickStartedCoupleDayButton : HomeIntent
+    data object ShowShareMessageEditBottomSheet : HomeIntent
 
-    data object ClickCreateTodoItem : HomeIntent
+    data object HideShareMessageEditBottomSheet : HomeIntent
 
-    data object ClickTodoItem : HomeIntent
+    data class SaveShareMessage(val newShareMessage: String) : HomeIntent
+
+    data object CreateTodoContent : HomeIntent
+
+    data class ClickTodoContent(val todoContentId: Long) : HomeIntent
+
+    data object PullToRefresh : HomeIntent
+
+    data object ClickAnniversaryNudgeCard : HomeIntent
 
 }

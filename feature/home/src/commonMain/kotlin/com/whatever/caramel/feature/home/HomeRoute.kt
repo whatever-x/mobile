@@ -22,9 +22,9 @@ internal fun HomeRoute(
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is HomeSideEffect.NavigateToSetting -> navigateToSetting()
-                is HomeSideEffect.NavigateToStartedCoupleDay -> navigateToStaredCoupleDay()
-                is HomeSideEffect.NavigateToCreateTodo -> navigateToCreateTodo()
-                is HomeSideEffect.NavigateToTodoDetail -> navigateToTodoDetail()
+                is HomeSideEffect.NavigateToCreateContent -> navigateToCreateTodo()
+                is HomeSideEffect.NavigateToContentDetail -> navigateToTodoDetail()
+                is HomeSideEffect.NavigateToEditAnniversary -> navigateToStaredCoupleDay()
             }
         }
     }

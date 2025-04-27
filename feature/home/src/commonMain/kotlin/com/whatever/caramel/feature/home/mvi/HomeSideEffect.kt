@@ -6,10 +6,10 @@ sealed interface HomeSideEffect : UiSideEffect {
 
     data object NavigateToSetting : HomeSideEffect
 
-    data object NavigateToCreateTodo : HomeSideEffect
+    data object NavigateToCreateContent : HomeSideEffect
 
-    data object NavigateToTodoDetail : HomeSideEffect
+    data class NavigateToContentDetail(val contentId: Long) : HomeSideEffect
 
-    data object NavigateToStartedCoupleDay : HomeSideEffect
+    data object NavigateToEditAnniversary : HomeSideEffect
 
 }
