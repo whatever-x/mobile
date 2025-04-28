@@ -53,7 +53,7 @@ internal fun SettingUserProfile(
             tint = Color.Unspecified
         )
 
-        Spacer(modifier = Modifier.padding(end = CaramelTheme.spacing.m))
+        Spacer(modifier = Modifier.size(size = CaramelTheme.spacing.m))
         Column(
             modifier = Modifier
                 .weight(1f),
@@ -109,7 +109,7 @@ internal fun SettingUserProfileSkeleton(
                 .size(50.dp)
                 .shimmer(shape = CaramelTheme.shape.l)
         )
-        Spacer(modifier = Modifier.padding(end = CaramelTheme.spacing.m))
+        Spacer(modifier = Modifier.size(size = CaramelTheme.spacing.m))
         Column(
             modifier = Modifier
                 .weight(1f),
