@@ -41,6 +41,7 @@ turbine = "1.2.0"
 mokkery = "2.7.2"
 animationCoreAndroid = "1.7.8"
 kotlinx-collections-immutable = "0.3.8"
+apps-flyer = "6.17.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -115,6 +116,8 @@ compose-ui-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backha
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 mokkery = { group = "dev.mokkery", name = "mokkery-gradle", version.ref = "mokkery" }
 androidx-animation-core-android = { group = "androidx.compose.animation", name = "animation-core-android", version.ref = "animationCoreAndroid" }
+
+apps-flyer = { group = "com.appsflyer", name = "af-android-sdk", version.ref = "apps-flyer"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
