@@ -74,6 +74,7 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.core)
+            implementation(libs.apps.flyer)
 
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.coil)
@@ -109,4 +110,26 @@ android {
         }
     }
 
+    buildTypes {
+        val properties = Properties().apply { load(rootProject.file("local.properties").inputStream()) }
+        val appsFlyerKey = "APPS_FLYER_KEY"
+
+        getByName("release") {
+            isMinifyEnabled = false
+
+            buildConfigField(
+                type = "String",
+                name = appsFlyerKey,
+                value = properties.getProperty(appsFlyerKey)
+            )
+        }
+
+        getByName("debug") {
+            buildConfigField(
+                type = "String",
+                name = appsFlyerKey,
+                value = properties.getProperty(appsFlyerKey)
+            )
+        }
+    }
 }
