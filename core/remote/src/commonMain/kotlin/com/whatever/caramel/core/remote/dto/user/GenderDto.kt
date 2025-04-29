@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.remote.dto.user.response
+package com.whatever.caramel.core.remote.dto.user
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

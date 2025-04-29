@@ -1,8 +1,8 @@
 package com.whatever.caramel.core.remote.datasource
 
-import com.whatever.caramel.core.remote.dto.auth.ServiceToken
-import com.whatever.caramel.core.remote.dto.auth.SignInRequest
-import com.whatever.caramel.core.remote.dto.auth.SignInResponse
+import com.whatever.caramel.core.remote.dto.auth.ServiceTokenDto
+import com.whatever.caramel.core.remote.dto.auth.request.SignInRequest
+import com.whatever.caramel.core.remote.dto.auth.response.SignInResponse
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
@@ -17,7 +17,7 @@ internal class RemoteAuthDataSourceImpl(
             setBody(body = request)
         }.getBody()
 
-    override suspend fun refresh(request: ServiceToken): ServiceToken =
+    override suspend fun refresh(request: ServiceTokenDto): ServiceTokenDto =
         defaultClient.post(POST_REFRESH_URL) {
             setBody(body = request)
         }.getBody()
