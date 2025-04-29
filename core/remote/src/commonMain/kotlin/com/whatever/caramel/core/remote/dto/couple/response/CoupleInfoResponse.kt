@@ -1,5 +1,6 @@
 package com.whatever.caramel.core.remote.dto.couple.response
 
+import com.whatever.caramel.core.remote.dto.user.response.GenderDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -34,10 +35,4 @@ enum class CoupleStatusDto {
     @SerialName("ACTIVE") ACTIVE,
     @SerialName("INACTIVE") INACTIVE,
     ;
-}
-
-@Serializable
-enum class GenderDto {
-    @SerialName("MALE") MALE,
-    @SerialName("FEMALE") FEMALE,
 }
