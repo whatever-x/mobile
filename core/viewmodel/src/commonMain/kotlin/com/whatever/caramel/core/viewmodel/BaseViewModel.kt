@@ -3,6 +3,7 @@ package com.whatever.caramel.core.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -63,5 +64,7 @@ abstract class BaseViewModel<S : UiState, SE : UiSideEffect, I : UiIntent>(
         }
     }
 
-    open fun handleClientException(throwable: Throwable) {}
+    open fun handleClientException(throwable: Throwable) {
+        Napier.d { throwable.message.toString() }
+    }
 }
