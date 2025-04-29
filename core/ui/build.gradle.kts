@@ -12,6 +12,8 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.core.designsystem)
             implementation(projects.core.util)
+
+            api(libs.androidx.lifecycle.runtime.compose)
         }
     }
 }
