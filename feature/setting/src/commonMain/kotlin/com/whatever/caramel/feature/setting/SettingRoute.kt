@@ -7,8 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
 import com.whatever.caramel.feature.setting.mvi.SettingSideEffect
-import com.whatever.caramel.feature.setting.util.OnLifecycleEvent
-import io.github.aakira.napier.Napier
+import com.whatever.caramel.core.ui.util.ObserveLifecycleEvent
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -22,7 +21,7 @@ internal fun SettingRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    OnLifecycleEvent { event ->
+    ObserveLifecycleEvent { event ->
         if (event == Lifecycle.Event.ON_START) {
             viewModel.intent(SettingIntent.RefreshCoupleData)
         }

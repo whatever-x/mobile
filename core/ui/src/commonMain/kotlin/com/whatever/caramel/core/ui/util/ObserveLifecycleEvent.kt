@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.setting.util
+package com.whatever.caramel.core.ui.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -8,7 +8,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 
 @Composable
-fun OnLifecycleEvent(
+fun ObserveLifecycleEvent(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     onEvent: (Lifecycle.Event) -> Unit
 ) {
