@@ -20,8 +20,8 @@ fun NavController.navigateToSetting(navOptions: NavOptions? = null) {
 fun NavGraphBuilder.settingScreen(
     navigateToHome: () -> Unit,
     navigateToLogin: () -> Unit,
-    navigateToEditCountDown: (Long) -> Unit,
-    navigateToEditBirthday: (Long) -> Unit,
+    navigateToEditCountDown: (String) -> Unit,
+    navigateToEditBirthday: (String) -> Unit,
     navigateToEditNickName: (String) -> Unit
 ) {
     composable<SettingRoute> {

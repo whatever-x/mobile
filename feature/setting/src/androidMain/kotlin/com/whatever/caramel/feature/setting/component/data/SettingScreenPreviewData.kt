@@ -17,17 +17,17 @@ internal class SettingScreenPreviewDataProvider :
             state = SettingState(
                 isLoading = false,
                 isShowEditProfileBottomSheet = true,
-                startDateTimeMillisecond = 1743897600000L,
+                startDate = "2025.04.03",
                 myInfo = CoupleUser(
                     id = 123L,
                     nickname = "닉네임",
-                    birthDayTimeMillisecond = 1743897600000L,
+                    birthday = "2025.04.03",
                     gender = Gender.MALE
                 ),
                 partnerInfo = CoupleUser(
                     id = 1234L,
                     nickname = "상대 닉네임",
-                    birthDayTimeMillisecond = 1743897600000L,
+                    birthday = "2025.04.03",
                     gender = Gender.FEMALE
                 )
             )
@@ -35,17 +35,17 @@ internal class SettingScreenPreviewDataProvider :
         SettingScreenPreviewData(
             state = SettingState(
                 isLoading = false,
-                startDateTimeMillisecond = 1743897600000L,
+                startDate = "2025.04.03",
                 myInfo = CoupleUser(
                     id = 123L,
                     nickname = "닉네임",
-                    birthDayTimeMillisecond = 1743897600000L,
+                    birthday = "2025.04.03",
                     gender = Gender.MALE
                 ),
                 partnerInfo = CoupleUser(
                     id = 1234L,
                     nickname = "상대 닉네임",
-                    birthDayTimeMillisecond = 1743897600000L,
+                    birthday = "2025.04.03",
                     gender = Gender.FEMALE
                 )
             )

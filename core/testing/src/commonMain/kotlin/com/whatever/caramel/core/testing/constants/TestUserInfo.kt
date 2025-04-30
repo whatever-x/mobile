@@ -9,7 +9,7 @@ object TestUserInfo {
     const val INVALID_LENGTH_NICKNAME = "testUserUser"
     const val INVALID_PATTERN_NICKNAME = "test_use"
 
-    const val TEST_BIRTH_DAY_MILLISECOND = 879724800000L
+    const val TEST_BIRTH_DAY = "2025.04.03"
 
     val TEST_USER_GENDER = Gender.MALE
 }

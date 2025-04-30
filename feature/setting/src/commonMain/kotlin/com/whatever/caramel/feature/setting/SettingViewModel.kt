@@ -29,11 +29,11 @@ class SettingViewModel(
             SettingIntent.ClickPrivacyPolicyButton -> postSideEffect(SettingSideEffect.NavigateToPersonalInfoTermNotion)
             SettingIntent.ClickTermsOfServiceButtons -> postSideEffect(SettingSideEffect.NavigateToServiceTermNotion)
             SettingIntent.ClickLogoutConfirmButton -> logout()
-            SettingIntent.ClickEditBirthDayButton -> naviateEditBirthday()
+            SettingIntent.ClickEditBirthDayButton -> navigateEditBirthday()
             SettingIntent.ClickEditNicknameButton -> navigateEditNickname()
             SettingIntent.ClickEditCountDownButton -> postSideEffect(
                 SettingSideEffect.NavigateToEditCountDown(
-                    startDateMillisecond = currentState.startDateTimeMillisecond
+                    startDate = currentState.startDate
                 )
             )
             SettingIntent.ToggleUserCancelledButton -> toggleUserCancelledButton()
@@ -58,7 +58,7 @@ class SettingViewModel(
             reduce {
                 copy(
                     isLoading = false,
-                    startDateTimeMillisecond = couple.info.startDateMillis,
+                    startDate = couple.info.startDate,
                     myInfo = CoupleUser.toCoupleInfo(couple.myInfo),
                     partnerInfo = CoupleUser.toCoupleInfo(couple.partnerInfo),
                 )
@@ -99,11 +99,11 @@ class SettingViewModel(
         )
     }
 
-    private fun naviateEditBirthday(){
+    private fun navigateEditBirthday(){
         toggleEditProfileBottomSheet()
         postSideEffect(
-            SettingSideEffect.NavigateToEditBirthDay(
-                birthdayMillisecond = currentState.myInfo.birthDayTimeMillisecond
+            SettingSideEffect.NavigateToEditBirthday(
+                birthday = currentState.myInfo.birthday
             )
         )
     }

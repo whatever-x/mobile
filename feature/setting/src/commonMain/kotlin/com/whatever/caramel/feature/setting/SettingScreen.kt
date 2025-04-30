@@ -101,7 +101,9 @@ internal fun SettingScreen(
                     )
             ) {
                 Text(
-                    text = state.startDate,
+                    text = state.startDate.ifEmpty {
+                        "언제부터 사귀기 시작했나요?"
+                    },
                     style = CaramelTheme.typography.body2.regular,
                     color = CaramelTheme.color.text.secondary
                 )
@@ -123,7 +125,7 @@ internal fun SettingScreen(
                 SettingUserProfile(
                     gender = state.myInfo.gender,
                     nickname = state.myInfo.nickname,
-                    birthDay = state.myInfo.birthDate,
+                    birthDay = state.myInfo.birthday,
                     isEditable = true,
                     onClickEditProfile = { onIntent(SettingIntent.ToggleEditProfile) }
                 )
@@ -131,7 +133,7 @@ internal fun SettingScreen(
                 SettingUserProfile(
                     gender = state.partnerInfo.gender,
                     nickname = state.partnerInfo.nickname,
-                    birthDay = state.partnerInfo.birthDate,
+                    birthDay = state.partnerInfo.birthday,
                     isEditable = false
                 )
             }
