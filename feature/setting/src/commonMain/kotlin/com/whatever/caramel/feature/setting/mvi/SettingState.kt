@@ -7,38 +7,24 @@ import com.whatever.caramel.core.viewmodel.UiState
 
 data class SettingState(
     val isLoading: Boolean = false,
-    val startDateTimeMillisecond: Long = 0L,
+    val startDate: String = "",
     val myInfo: CoupleUser = CoupleUser(),
     val partnerInfo: CoupleUser = CoupleUser(),
     val isShowEditProfileBottomSheet: Boolean = false,
     val isShowLogoutDialog: Boolean = false,
     val isShowUserCancelledDialog: Boolean = false
-) : UiState {
-    val startDate: String
-        get() = if (startDateTimeMillisecond == 0L) {
-            "언제부터 사귀기 시작했나요?"
-        } else {
-            startDateTimeMillisecond.toFormattedDate(separator = ".") ?: ""
-        }
-}
+) : UiState
 
 data class CoupleUser(
     val id: Long = 0L,
     val nickname: String = "",
-    val birthDayTimeMillisecond: Long = 0L,
+    val birthday: String = "",
     val gender: Gender = Gender.IDLE
 ) {
-    val birthDate: String
-        get() = if(birthDayTimeMillisecond == 0L) {
-            ""
-        } else {
-            birthDayTimeMillisecond.toFormattedDate(separator = ".") ?: ""
-        }
-
     companion object {
         fun toCoupleInfo(user: User) = CoupleUser(
             id = user.requireId,
-            birthDayTimeMillisecond = user.requireProfile.birthdayMillisecond,
+            birthday = user.requireProfile.birthday,
             nickname = user.requireProfile.nickName,
             gender = user.requireProfile.gender
         )

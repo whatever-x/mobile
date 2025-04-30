@@ -2,8 +2,6 @@ package com.whatever.caramel.core.data.mapper
 
 import com.whatever.caramel.core.domain.entity.Couple
 import com.whatever.caramel.core.domain.entity.User
-import com.whatever.caramel.core.domain.exception.CaramelException
-import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
 import com.whatever.caramel.core.domain.vo.couple.CoupleRelationship
 import com.whatever.caramel.core.domain.vo.couple.CoupleStatus
@@ -13,19 +11,17 @@ import com.whatever.caramel.core.remote.dto.couple.CoupleUserInfoDto
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleBasicResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleDetailResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleInvitationCodeResponse
-import com.whatever.caramel.core.util.DateParser.toMillisecond
-import kotlinx.datetime.Instant
 
 fun CoupleInvitationCodeResponse.toCoupleInvitationCode() = CoupleInvitationCode(
     invitationCode = this.invitationCode,
-    expirationMillisecond = Instant.parse(expirationDateTime).toEpochMilliseconds()
+    expirationDateTime = expirationDateTime
 )
 
 fun CoupleDetailResponse.toCoupleRelationship(): CoupleRelationship =
     CoupleRelationship(
         info = Couple(
             id = this.coupleId,
-            startDateMillis = this.startDate?.toMillisecond() ?: 0L,
+            startDate = this.startDate?.replace("-", ".") ?: "",
             sharedMessage = this.sharedMessage ?: "",
             status = CoupleStatus.valueOf(this.status.name)
         ),
@@ -38,7 +34,7 @@ fun CoupleUserInfoDto.toUser(): User =
         id = this.id,
         userProfile = UserProfile(
             nickName = this.nickname,
-            birthdayMillisecond = this.birthDate.toMillisecond() ?: 0L,
+            birthday = this.birthDate.replace("-", "."),
             gender = Gender.valueOf(this.gender.name)
         )
     )
@@ -46,15 +42,7 @@ fun CoupleUserInfoDto.toUser(): User =
 fun CoupleBasicResponse.toCouple(): Couple =
     Couple(
         id = this.coupleId,
-        startDateMillis = this.startDate?.toMillisecond() ?: throw CaramelException(
-            code = AppErrorCode.INVALID_PARAMS,
-            message = "알 수 없는 오류입니다.",
-            debugMessage = "날짜 형식 변환에 실패했습니다."
-        ),
-        sharedMessage = this.sharedMessage ?: throw CaramelException(
-            code = AppErrorCode.INVALID_PARAMS,
-            message = "알 수 없는 오류입니다.",
-            debugMessage = "공유 메시지 형식 변환에 실패했습니다."
-        ),
+        startDate = this.startDate?.replace("-", ".") ?: "",
+        sharedMessage = this.sharedMessage ?: "",
         status = CoupleStatus.valueOf(this.status.name)
     )

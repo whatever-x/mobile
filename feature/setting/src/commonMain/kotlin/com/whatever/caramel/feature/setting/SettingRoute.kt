@@ -15,8 +15,8 @@ internal fun SettingRoute(
     viewModel: SettingViewModel = koinViewModel(),
     navigateToHome: () -> Unit,
     navigateToLogin: () -> Unit,
-    navigateToEditCountDown: (Long) -> Unit,
-    navigateToEditBirthday: (Long) -> Unit,
+    navigateToEditCountDown: (String) -> Unit,
+    navigateToEditBirthday: (String) -> Unit,
     navigateToEditNickName: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -34,9 +34,9 @@ internal fun SettingRoute(
                 SettingSideEffect.NavigateToServiceTermNotion -> TODO()
                 SettingSideEffect.NavigateLogin -> navigateToLogin()
                 is SettingSideEffect.NavigateToHome -> navigateToHome()
-                is SettingSideEffect.NavigateToEditCountDown -> navigateToEditCountDown(sideEffect.startDateMillisecond)
+                is SettingSideEffect.NavigateToEditCountDown -> navigateToEditCountDown(sideEffect.startDate)
                 is SettingSideEffect.NavigateToEditNickname -> navigateToEditNickName(sideEffect.nickname)
-                is SettingSideEffect.NavigateToEditBirthDay -> navigateToEditBirthday(sideEffect.birthdayMillisecond)
+                is SettingSideEffect.NavigateToEditBirthday -> navigateToEditBirthday(sideEffect.birthday)
             }
         }
     }

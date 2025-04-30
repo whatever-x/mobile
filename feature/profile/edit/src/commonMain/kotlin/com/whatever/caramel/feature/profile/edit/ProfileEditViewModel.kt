@@ -26,15 +26,15 @@ class ProfileEditViewModel(
         return ProfileEditState(
             editUiType = ProfileEditType.valueOf(arguments.editType),
             nickName = arguments.nickname,
-            birthDay = if (arguments.birthdayMillisecond == 0L) {
+            birthDay = if (arguments.birthday.isEmpty()) {
                 DateUiState.currentDate()
             } else {
-                DateUiState.get(arguments.birthdayMillisecond)
+                DateUiState.get(arguments.birthday)
             },
-            startDate = if (arguments.startDateMillisecond == 0L) {
+            startDate = if (arguments.startDate.isEmpty()) {
                 DateUiState.currentDate()
             } else {
-                DateUiState.get(arguments.startDateMillisecond)
+                DateUiState.get(arguments.startDate)
             }
         )
     }

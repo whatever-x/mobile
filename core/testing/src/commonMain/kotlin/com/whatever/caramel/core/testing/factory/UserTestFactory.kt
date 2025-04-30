@@ -12,7 +12,7 @@ object UserTestFactory {
         userStatus = UserStatus.SINGLE,
         userProfile = UserProfile(
             nickName = TestUserInfo.TEST_USER_NICKNAME,
-            birthdayMillisecond = TestUserInfo.TEST_BIRTH_DAY_MILLISECOND,
+            birthday = TestUserInfo.TEST_BIRTH_DAY,
             gender = TestUserInfo.TEST_USER_GENDER,
         ),
         userMetaData = UserMetaData(

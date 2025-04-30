@@ -6,6 +6,6 @@ data class UserAuth(
     val coupleId : Long? = null,
     val userStatus: UserStatus,
     val nickname : String? = null,
-    val birthDayMillisecond : Long? = null,
+    val birthday : String? = null,
     val authToken : AuthToken,
 )

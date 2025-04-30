@@ -22,7 +22,7 @@ object AuthTestFactory {
         coupleId = null,
         userStatus = UserStatus.SINGLE,
         nickname = TestUserInfo.TEST_USER_NICKNAME,
-        birthDayMillisecond = TestUserInfo.TEST_BIRTH_DAY_MILLISECOND,
+        birthday = TestUserInfo.TEST_BIRTH_DAY,
         authToken = createValidToken()
     )
 
@@ -30,7 +30,7 @@ object AuthTestFactory {
         coupleId = null,
         userStatus = UserStatus.NEW,
         nickname = null,
-        birthDayMillisecond = null,
+        birthday = null,
         authToken = createValidToken()
     )
 
@@ -38,7 +38,7 @@ object AuthTestFactory {
         coupleId = TestCoupleInfo.TEST_COUPLE_ID,
         userStatus = UserStatus.COUPLED,
         nickname = TestUserInfo.TEST_USER_NICKNAME,
-        birthDayMillisecond = TestUserInfo.TEST_BIRTH_DAY_MILLISECOND,
+        birthday = TestUserInfo.TEST_BIRTH_DAY,
         authToken = createValidToken()
     )
 }
