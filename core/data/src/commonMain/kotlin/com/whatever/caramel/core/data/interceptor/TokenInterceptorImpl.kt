@@ -2,7 +2,7 @@ package com.whatever.caramel.core.data.interceptor
 
 import com.whatever.caramel.core.datastore.datasource.TokenDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSource
-import com.whatever.caramel.core.remote.dto.auth.ServiceToken
+import com.whatever.caramel.core.remote.dto.auth.ServiceTokenDto
 import com.whatever.caramel.core.remote.network.interceptor.TokenInterceptor
 
 class TokenInterceptorImpl(
@@ -31,7 +31,7 @@ class TokenInterceptorImpl(
 
             if (accessToken.isNotEmpty() && refreshToken.isNotEmpty()) {
                 val response = authDataSource.refresh(
-                    request = ServiceToken(
+                    request = ServiceTokenDto(
                         accessToken = accessToken,
                         refreshToken = refreshToken
                     )

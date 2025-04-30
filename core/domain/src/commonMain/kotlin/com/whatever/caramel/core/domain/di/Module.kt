@@ -6,6 +6,7 @@ import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
 import com.whatever.caramel.core.domain.usecase.couple.EditCoupleStartDateUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInvitationCodeUseCase
+import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
 import com.whatever.caramel.core.domain.usecase.user.EditProfileUseCase
 import com.whatever.caramel.core.domain.usecase.user.RefreshUserSessionUseCase
@@ -26,4 +27,6 @@ val useCaseModule = module {
     factory { ConnectCoupleUseCase(get(), get()) }
     factory { GetCoupleInfoUseCase(get()) }
     factory { EditCoupleStartDateUseCase(get()) }
+    factory { UpdateShareMessageUseCase(get()) }
+
 }

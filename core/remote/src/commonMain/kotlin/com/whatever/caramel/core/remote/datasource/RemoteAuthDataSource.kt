@@ -1,8 +1,8 @@
 package com.whatever.caramel.core.remote.datasource
 
-import com.whatever.caramel.core.remote.dto.auth.ServiceToken
-import com.whatever.caramel.core.remote.dto.auth.SignInRequest
-import com.whatever.caramel.core.remote.dto.auth.SignInResponse
+import com.whatever.caramel.core.remote.dto.auth.ServiceTokenDto
+import com.whatever.caramel.core.remote.dto.auth.request.SignInRequest
+import com.whatever.caramel.core.remote.dto.auth.response.SignInResponse
 
 interface RemoteAuthDataSource {
     suspend fun signIn(
@@ -10,6 +10,6 @@ interface RemoteAuthDataSource {
     ): SignInResponse
 
     suspend fun refresh(
-        request: ServiceToken
-    ): ServiceToken
+        request: ServiceTokenDto
+    ): ServiceTokenDto
 }

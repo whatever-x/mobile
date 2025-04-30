@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class EditUserProfileRequest(
-    @SerialName("nickname") val nickname : String?,
-    @SerialName("birthday") val birthday : String?
-)
+enum class GenderDto {
+    @SerialName("MALE") MALE,
+    @SerialName("FEMALE") FEMALE,
+}

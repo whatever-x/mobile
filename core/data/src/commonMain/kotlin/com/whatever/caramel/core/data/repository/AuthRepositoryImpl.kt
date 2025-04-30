@@ -9,9 +9,9 @@ import com.whatever.caramel.core.domain.vo.auth.AuthToken
 import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
 import com.whatever.caramel.core.domain.vo.auth.UserAuth
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSource
-import com.whatever.caramel.core.remote.dto.auth.LoginPlatform
-import com.whatever.caramel.core.remote.dto.auth.ServiceToken
-import com.whatever.caramel.core.remote.dto.auth.SignInRequest
+import com.whatever.caramel.core.remote.dto.auth.LoginPlatformDto
+import com.whatever.caramel.core.remote.dto.auth.ServiceTokenDto
+import com.whatever.caramel.core.remote.dto.auth.request.SignInRequest
 
 internal class AuthRepositoryImpl(
     private val remoteAuthDataSource: RemoteAuthDataSource,
@@ -25,7 +25,7 @@ internal class AuthRepositoryImpl(
         return safeCall {
             val request = SignInRequest(
                 idToken = idToken,
-                loginPlatform = LoginPlatform.valueOf(socialLoginType.name)
+                loginPlatform = LoginPlatformDto.valueOf(socialLoginType.name)
             )
             val response = remoteAuthDataSource.signIn(request = request)
             response.toUserAuth()
@@ -34,7 +34,7 @@ internal class AuthRepositoryImpl(
 
     override suspend fun refreshAuthToken(oldToken: AuthToken): AuthToken {
         return safeCall {
-            val request = ServiceToken(
+            val request = ServiceTokenDto(
                 accessToken = oldToken.accessToken,
                 refreshToken = oldToken.refreshToken
             )
