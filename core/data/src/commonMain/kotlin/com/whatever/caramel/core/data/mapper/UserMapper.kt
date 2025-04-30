@@ -4,8 +4,8 @@ import com.whatever.caramel.core.domain.entity.User
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.domain.vo.user.UserProfile
 import com.whatever.caramel.core.domain.vo.user.UserStatus
-import com.whatever.caramel.core.remote.dto.user.EditUserProfileResponse
-import com.whatever.caramel.core.remote.dto.user.UserProfileResponse
+import com.whatever.caramel.core.remote.dto.user.response.EditUserProfileResponse
+import com.whatever.caramel.core.remote.dto.user.response.UserProfileResponse
 import com.whatever.caramel.core.remote.dto.user.UserStatusDto
 import com.whatever.caramel.core.util.DateParser.toMillisecond
 

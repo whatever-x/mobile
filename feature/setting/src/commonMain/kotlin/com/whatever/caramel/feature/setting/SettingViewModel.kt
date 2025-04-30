@@ -114,4 +114,5 @@ class SettingViewModel(
             postSideEffect(SettingSideEffect.NavigateLogin)
         }
     }
+
 }

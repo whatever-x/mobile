@@ -4,6 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CoupleConnectRequest(
-    @SerialName("invitationCode") val invitationCode: String
-)
+enum class CoupleStatusDto {
+    @SerialName("ACTIVE") ACTIVE,
+    @SerialName("INACTIVE") INACTIVE,
+    ;
+}

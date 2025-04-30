@@ -1,5 +1,6 @@
-package com.whatever.caramel.core.remote.dto.user
+package com.whatever.caramel.core.remote.dto.user.response
 
+import com.whatever.caramel.core.remote.dto.user.UserStatusDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
