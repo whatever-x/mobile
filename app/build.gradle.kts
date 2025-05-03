@@ -32,6 +32,7 @@ kotlin {
             implementation(project.dependencies.platform(libs.firebase.bom.android))
             implementation(libs.firebase.analytics.ktx)
             implementation(libs.firebase.crashlytics.ktx)
+            implementation(libs.apps.flyer)
         }
         commonMain.dependencies {
             // Project
@@ -74,7 +75,6 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.core)
-            implementation(libs.apps.flyer)
 
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.coil)
