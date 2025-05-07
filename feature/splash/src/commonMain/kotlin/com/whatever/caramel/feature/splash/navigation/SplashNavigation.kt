@@ -10,16 +10,12 @@ data object SplashRoute
 
 fun NavGraphBuilder.splashScreen(
     navigateToLogin: () -> Unit,
-    navigateToMain: () -> Unit,
-    navigateToCreateProfile: () -> Unit,
-    navigateToInviteCouple : () -> Unit
+    navigateToStartDestination: () -> Unit
 ) {
-    composable<SplashRoute>() {
+    composable<SplashRoute> {
         SplashRoute(
             navigateToLogin = navigateToLogin,
-            navigateToMain = navigateToMain,
-            navigateToCreateProfile = navigateToCreateProfile,
-            navigateToInviteCouple = navigateToInviteCouple
+            navigateToStartDestination = navigateToStartDestination
         )
     }
 }

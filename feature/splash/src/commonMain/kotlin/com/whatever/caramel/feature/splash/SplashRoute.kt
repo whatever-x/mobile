@@ -10,10 +10,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 internal fun SplashRoute(
     viewModel: SplashViewModel = koinViewModel(),
+    navigateToStartDestination: () -> Unit,
     navigateToLogin: () -> Unit,
-    navigateToMain: () -> Unit,
-    navigateToCreateProfile: () -> Unit,
-    navigateToInviteCouple: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -21,9 +19,7 @@ internal fun SplashRoute(
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is SplashSideEffect.NavigateToLogin -> navigateToLogin()
-                is SplashSideEffect.NavigateToMain -> navigateToMain()
-                is SplashSideEffect.NavigateToCreateProfile -> navigateToCreateProfile()
-                is SplashSideEffect.NavigateToInviteCouple -> navigateToInviteCouple()
+                is SplashSideEffect.NavigateToStartDestination -> navigateToStartDestination()
             }
         }
     }
