@@ -1,0 +1,175 @@
+package com.whatever.caramel.feature.calendar.component.todo
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.whatever.caramel.core.designsystem.foundations.Resources
+import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import org.jetbrains.compose.resources.painterResource
+
+@Stable
+internal interface CaramelTodoScope {
+    val id: Long
+    val title: String
+    val description: String?
+    val url: String?
+    val onClickUrl: (String?) -> Unit
+    val onClickTodo: (Long) -> Unit
+}
+
+internal class CaramelDefaultTodoScope(
+    override val id: Long,
+    override val title: String,
+    override val description: String?,
+    override val url: String?,
+    override val onClickUrl: (String?) -> Unit,
+    override val onClickTodo: (Long) -> Unit
+) : CaramelTodoScope
+
+@Composable
+internal fun CaramelTodoItem(
+    id: Long,
+    title: String,
+    description: String? = null,
+    url: String? = null,
+    onClickTodo: (Long) -> Unit = {},
+    onClickUrl: (String?) -> Unit = {},
+    content: @Composable CaramelTodoScope.() -> Unit
+) {
+    val scope = remember(
+        id,
+        title,
+        description,
+        url,
+        onClickTodo,
+        onClickUrl
+    ) {
+        CaramelDefaultTodoScope(
+            id = id,
+            title = title,
+            description = description,
+            url = url,
+            onClickTodo = onClickTodo,
+            onClickUrl = onClickUrl
+        )
+    }
+    scope.content()
+}
+
+@Composable
+internal fun CaramelTodoScope.DefaultCaramelTodoItem(
+    modifier: Modifier = Modifier
+) {
+    val hasDescription = this.description.isNullOrEmpty()
+    val hasUrl = this.url.isNullOrEmpty()
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            // FIXME : 디자인 토큰 적용 필요
+            .background(
+                color = CaramelTheme.color.background.primary,
+                shape = CaramelTheme.shape.m
+            )
+            .padding(all = CaramelTheme.spacing.l),
+        verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.l)
+    ) {
+        TodoTitle()
+        if (hasDescription) TodoDescription()
+        if (hasUrl) TodoUrl()
+    }
+}
+
+@Composable
+internal fun CaramelTodoScope.TodoTitle(
+    modifier: Modifier = Modifier
+) {
+    Text(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(
+                indication = null,
+                interactionSource = null,
+                onClick = { onClickTodo(id) }
+            ),
+        text = this.title,
+        style = CaramelTheme.typography.body3.regular,
+        color = CaramelTheme.color.text.primary
+    )
+}
+
+@Composable
+internal fun CaramelTodoScope.TodoDescription(
+    modifier: Modifier = Modifier
+) {
+    val descriptionText = this.description ?: return
+
+    Text(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(
+                indication = null,
+                interactionSource = null,
+                onClick = { onClickTodo(id) }
+            ),
+        text = descriptionText,
+        style = CaramelTheme.typography.body3.regular,
+        color = CaramelTheme.color.text.secondary
+    )
+}
+
+@Composable
+internal fun CaramelTodoScope.TodoUrl(
+    modifier: Modifier = Modifier
+) {
+    val urlText = this.url ?: return
+
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = CaramelTheme.color.divider.tertiary
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(
+                    interactionSource = null,
+                    indication = null,
+                    onClick = { onClickUrl(urlText) }
+                ),
+            horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xs)
+        ) {
+            Icon(
+                painter = painterResource(Resources.Icon.ic_link_16),
+                tint = CaramelTheme.color.icon.secondary,
+                contentDescription = null
+            )
+            Text(
+                modifier = Modifier
+                    .weight(1f),
+                text = urlText,
+                style = CaramelTheme.typography.body4.regular,
+                color = CaramelTheme.color.text.secondary
+            )
+            Icon(
+                painter = painterResource(Resources.Icon.ic_arrow_right_14),
+                tint = CaramelTheme.color.icon.tertiary,
+                contentDescription = null
+            )
+        }
+    }
+}
