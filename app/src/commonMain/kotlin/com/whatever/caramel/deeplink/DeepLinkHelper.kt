@@ -7,14 +7,16 @@ data class ParsedUri(
 
 object DeepLinkHelper {
 
+    private const val INVITE_CODE_KEY = "invite_code"
+    private val INVITATION_PATH = setOf("7nAT", "invitation")
+
     private fun parseUri(uri: String): ParsedUri {
         val urlParts = uri.split("?", limit = 2)
         val base = urlParts.getOrNull(0)?.substringAfter("://")?.trimEnd('/')
-        val path = base?.substringAfter("/")?.lowercase()
+        val path = base?.split("/")?.getOrNull(1)
         val query = urlParts.getOrNull(1)
 
-        val queryParams = query
-            ?.split("&")
+        val queryParams = query?.split("&")
             ?.mapNotNull {
                 val (key, value) = it.split("=", limit = 2).let { parts ->
                     parts.getOrNull(0) to parts.getOrNull(1)
@@ -33,8 +35,8 @@ object DeepLinkHelper {
         val parsed = parseUri(uri)
 
         return when (parsed.path) {
-            "invite", "invitation" -> {
-                parsed.queryParams["invite_code"]?.let {
+            in INVITATION_PATH -> {
+                parsed.queryParams[INVITE_CODE_KEY]?.let {
                     CaramelDeepLink.InviteCode(it)
                 } ?: CaramelDeepLink.Unknown
             }
