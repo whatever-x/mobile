@@ -100,7 +100,7 @@ class DateUtilTest {
 
         assertEquals(
             expected = VALID_MILLISECOND,
-            actual = "2025-04-12".toMillisecond()
+            actual = "1900-04-12".toMillisecond()
         )
     }
 

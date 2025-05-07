@@ -4,7 +4,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import com.whatever.caramel.feature.profile.edit.ProfileEditRoute
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditType
 import kotlinx.serialization.Serializable
@@ -13,23 +12,23 @@ import kotlinx.serialization.Serializable
 data class ProfileEditRoute(
     val editType: String,
     val nickname: String,
-    val birthdayMillisecond: Long,
-    val startDateMillisecond: Long
+    val birthday: String,
+    val startDate: String
 )
 
 fun NavHostController.navigateToEditProfile(
     editType: ProfileEditType,
     nickname: String = "",
-    birthdayMillisecond: Long = 0L,
-    startDateMillisecond: Long = 0L,
+    birthday: String = "",
+    startDate: String = "",
     navOptions: NavOptions? = null
 ) {
     navigate(
         route = ProfileEditRoute(
             editType = editType.name,
             nickname = nickname,
-            birthdayMillisecond = birthdayMillisecond,
-            startDateMillisecond = startDateMillisecond
+            birthday = birthday,
+            startDate = startDate
         ),
         navOptions = navOptions
     )
