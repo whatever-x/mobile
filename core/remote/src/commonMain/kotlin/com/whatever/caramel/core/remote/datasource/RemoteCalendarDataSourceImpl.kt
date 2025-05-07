@@ -1,0 +1,28 @@
+package com.whatever.caramel.core.remote.datasource
+
+import com.whatever.caramel.core.remote.dto.calendar.CalendarDetailResponse
+import com.whatever.caramel.core.remote.network.util.getBody
+import io.ktor.client.HttpClient
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
+import org.koin.core.annotation.Named
+
+class RemoteCalendarDataSourceImpl(
+    @Named("AuthClient") private val authClient: HttpClient,
+) : RemoteCalendarDataSource {
+    override suspend fun getSchedules(
+        startDate: String,
+        endDate: String,
+        userTimeZone: String?
+    ): CalendarDetailResponse {
+        return authClient.get(CALENDAR_BASE_URL) {
+            parameter("startDate", startDate)
+            parameter("endDate", endDate)
+            parameter("userTimeZone", userTimeZone)
+        }.getBody()
+    }
+
+    companion object {
+        private const val CALENDAR_BASE_URL = "v1/calendar"
+    }
+}
