@@ -9,6 +9,7 @@ import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInvitationCodeUs
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
 import com.whatever.caramel.core.domain.usecase.user.EditProfileUseCase
+import com.whatever.caramel.core.domain.usecase.user.GetUserStatusUseCase
 import com.whatever.caramel.core.domain.usecase.user.RefreshUserSessionUseCase
 import org.koin.dsl.module
 
@@ -21,6 +22,7 @@ val useCaseModule = module {
     // User
     factory { CreateUserProfileUseCase(get()) }
     factory { EditProfileUseCase(get()) }
+    factory { GetUserStatusUseCase(get()) }
 
     // Couple
     factory { GetCoupleInvitationCodeUseCase(get()) }
