@@ -1,0 +1,28 @@
+package com.whatever.caramel.feature.calendar.util
+
+import androidx.compose.runtime.Composable
+import caramel.feature.calendar.generated.resources.Res
+import caramel.feature.calendar.generated.resources.friday
+import caramel.feature.calendar.generated.resources.monday
+import caramel.feature.calendar.generated.resources.saturday
+import caramel.feature.calendar.generated.resources.sunday
+import caramel.feature.calendar.generated.resources.tuesday
+import caramel.feature.calendar.generated.resources.wednesday
+import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.code.AppErrorCode
+import kotlinx.datetime.DayOfWeek
+import org.jetbrains.compose.resources.stringResource
+
+@Composable
+internal fun DayOfWeek.toUiText(): String = stringResource(
+    when (this) {
+        DayOfWeek.MONDAY -> Res.string.monday
+        DayOfWeek.TUESDAY -> Res.string.tuesday
+        DayOfWeek.WEDNESDAY -> Res.string.wednesday
+        DayOfWeek.THURSDAY -> Res.string.tuesday
+        DayOfWeek.FRIDAY -> Res.string.friday
+        DayOfWeek.SATURDAY -> Res.string.saturday
+        DayOfWeek.SUNDAY -> Res.string.sunday
+        else -> throw CaramelException(code = AppErrorCode.INVALID_PARAMS, message = "날짜 오류가 발생하였습니다", debugMessage = "DayOfWeek 변환 오류")
+    }
+)
