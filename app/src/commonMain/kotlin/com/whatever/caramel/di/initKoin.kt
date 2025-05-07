@@ -32,6 +32,9 @@ fun initKoin(config: KoinAppDeclaration? = null) {
     startKoin {
         config?.invoke(this)
         modules(
+            /* === App Layer === */
+            appModule,
+
             /* ==== Data Layer ==== */
             repositoryModule,
 
