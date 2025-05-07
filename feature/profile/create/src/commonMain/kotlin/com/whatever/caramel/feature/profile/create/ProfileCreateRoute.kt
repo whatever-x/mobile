@@ -19,7 +19,7 @@ import org.koin.compose.viewmodel.koinViewModel
 internal fun ProfileCreateRoute(
     viewModel: ProfileCreateViewModel = koinViewModel(),
     navigateToLogin: () -> Unit,
-    navigateToConnectCouple: () -> Unit
+    navigateToStartDestination: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val hapticController: HapticController = getKoin().get()
@@ -32,7 +32,7 @@ internal fun ProfileCreateRoute(
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is ProfileCreateSideEffect.NavigateToLogin -> navigateToLogin()
-                is ProfileCreateSideEffect.NavigateToConnectCouple -> navigateToConnectCouple()
+                is ProfileCreateSideEffect.NavigateToStartDestination -> navigateToStartDestination()
                 is ProfileCreateSideEffect.NavigateToPersonalInfoTermNotion -> {} // @ham2174 TODO : 노션 링크 이동
                 is ProfileCreateSideEffect.NavigateToServiceTermNotion -> {} // @ham2174 TODO : 노션 링크 이동
                 is ProfileCreateSideEffect.PerformHapticFeedback -> hapticController.performImpact(HapticStyle.GestureThresholdActivate)

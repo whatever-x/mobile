@@ -123,7 +123,7 @@ class ProfileCreateViewModelTest : KoinComponent {
 
         viewModel.sideEffect.test {
             assertEquals(
-                expected = ProfileCreateSideEffect.NavigateToConnectCouple,
+                expected = ProfileCreateSideEffect.NavigateToStartDestination,
                 actual = awaitItem()
             )
         }
