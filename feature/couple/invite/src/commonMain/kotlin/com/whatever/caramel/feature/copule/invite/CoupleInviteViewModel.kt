@@ -41,8 +41,11 @@ class CoupleInviteViewModel(
         }
     }
 
-    private fun sendInvite() {
-        postSideEffect(CoupleInviteSideEffect.ShareOfInvite)
+    private suspend fun sendInvite() {
+        launch {
+            val inviteCode = coupleRepository.getCoupleInvitationCode().invitationCode
+            postSideEffect(CoupleInviteSideEffect.ShareOfInvite(inviteCode = inviteCode))
+        }
     }
 
 }
