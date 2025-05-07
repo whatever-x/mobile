@@ -104,11 +104,10 @@ class CaramelViewModel(
         savedStateHandle[INVITE_CODE] = inviteCode
     }
 
-    private fun setUserStatus() { // @ham2174 FIXME : 추후 RoomDB 확장 시 Flow 데이터로 변경
-        launch {
-            val userStatus = getUserStatusUseCase()
-            reduce { copy(userStatus = userStatus) }
-        }
+    private suspend fun setUserStatus() { // @ham2174 FIXME : 추후 RoomDB 확장 시 Flow 데이터로 변경
+        val userStatus = getUserStatusUseCase()
+
+        reduce { copy(userStatus = userStatus) }
     }
 
     private suspend fun tryToConnectCouple(inviteCode: String) {
