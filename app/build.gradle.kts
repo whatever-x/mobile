@@ -54,6 +54,7 @@ kotlin {
             implementation(projects.feature.content)
             implementation(projects.feature.couple.connect)
             implementation(projects.feature.couple.invite)
+            implementation(projects.feature.couple.connecting)
             implementation(projects.feature.home)
             implementation(projects.feature.login)
             implementation(projects.feature.main)
