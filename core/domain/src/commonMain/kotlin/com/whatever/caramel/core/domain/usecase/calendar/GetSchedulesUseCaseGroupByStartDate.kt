@@ -15,6 +15,7 @@ class GetSchedulesUseCaseGroupByStartDate(
         endDate: String,
         userTimezone: String? = null
     ): List<TodoList> {
+        val result = mutableListOf<TodoList>()
         val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
             .date
             .atTime(hour = 0, minute = 0)
@@ -24,10 +25,12 @@ class GetSchedulesUseCaseGroupByStartDate(
             userTimezone = userTimezone
         ).groupBy { it.startDate }
             .map { (date, todos) -> TodoList(date, todos) }
-            .sortedBy { it.dateTime }
+
+        result.addAll(schedules)
         if (schedules.find { it.dateTime.date == today.date } == null) {
-            schedules.toMutableList().add(TodoList(dateTime = today, todos = emptyList()))
+            result.add(TodoList(dateTime = today, todos = emptyList()))
         }
-        return schedules
+        result.sortBy { it.dateTime }
+        return result
     }
 }
