@@ -1,8 +1,11 @@
 package com.whatever.caramel.feature.calendar.component
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOut
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,9 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
@@ -37,12 +38,8 @@ internal fun CurrentDateMenu(
     year: Int,
     month: Month,
     isShowDropMenu: Boolean,
-    onShowDropMenu: () -> Unit,
-    onDismissDropMenu: (Int, Int) -> Unit
+    onShowDropMenu: () -> Unit
 ) {
-    var selectedYear by remember { mutableStateOf(year) }
-    var selectedMonth by remember { mutableStateOf(month.number) }
-
     Box(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = modifier
@@ -69,35 +66,59 @@ internal fun CurrentDateMenu(
                 tint = CaramelTheme.color.icon.primary
             )
         }
+    }
+}
 
-        AnimatedVisibility(
-            visible = isShowDropMenu,
-            modifier = modifier
-                .fillMaxWidth()
-                .align(alignment = Alignment.TopStart)
+@Composable
+internal fun CalendarDatePicker(
+    modifier: Modifier = Modifier,
+    year: Int,
+    month: Month,
+    isShowDropMenu: Boolean,
+    onDismiss: (Int, Int) -> Unit,
+) {
+    var selectedYear by remember { mutableStateOf(year) }
+    var selectedMonth by remember { mutableStateOf(month.number) }
+
+    AnimatedVisibility(
+        modifier = modifier,
+        visible = isShowDropMenu,
+        enter = slideInVertically(initialOffsetY = { -it }),
+        exit = slideOutVertically(targetOffsetY = { -it })
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(CaramelTheme.color.alpha.primary)
                 .padding(top = 52.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clickable(
-                        indication = null,
-                        interactionSource = null,
-                        onClick = { onDismissDropMenu(selectedYear, selectedMonth) }
-                    )
-            )
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .pointerInput(Unit) { detectTapGestures { } }
-            ) {
-                CaramelDateMonthPicker(
-                    dateUiState = DateUiState(year = year, month = month.number, day = 1),
-                    onYearChanged = { selectedYear = it },
-                    onMonthChanged = { selectedMonth = it }
+                .clickable(
+                    indication = null,
+                    interactionSource = null,
+                    onClick = {
+                        onDismiss(selectedYear, selectedMonth)
+                    }
                 )
-            }
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = CaramelTheme.color.background.primary,
+                    shape = RoundedCornerShape(bottomEnd = 24.dp, bottomStart = 24.dp)
+                )
+                .padding(top = CaramelTheme.spacing.s, bottom = CaramelTheme.spacing.l)
+        ) {
+            CaramelDateMonthPicker(
+                modifier = Modifier.align(Alignment.TopCenter),
+                dateUiState = DateUiState(
+                    year = year,
+                    month = month.number,
+                    day = 1
+                ),
+                onYearChanged = { selectedYear = it },
+                onMonthChanged = { selectedMonth = it }
+            )
         }
     }
 }
+
