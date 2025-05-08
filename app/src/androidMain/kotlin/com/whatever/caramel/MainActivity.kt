@@ -34,18 +34,15 @@ class MainActivity : ComponentActivity() {
                     val deepLinkObj: DeepLink = deeplinkResult.deepLink
 
                     try {
-                        val appsFlyerDeepLinkValue = deepLinkObj.deepLinkValue
+                        val appsFlyerDeepLinkValue = deepLinkObj.deepLinkValue ?: return@subscribeForDeepLink
+                        val deepLinkValue = CaramelAppsFlyerDeepLinkValues.valueOf(appsFlyerDeepLinkValue)
 
-                        if (appsFlyerDeepLinkValue != null) {
-                            val deepLinkValue = CaramelAppsFlyerDeepLinkValues.valueOf(appsFlyerDeepLinkValue)
+                        when (deepLinkValue) {
+                            CaramelAppsFlyerDeepLinkValues.INVITE_CODE -> {
+                                val inviteCode = deepLinkObj.getStringValue(deepLinkValue.path)
 
-                            when(deepLinkValue) {
-                                CaramelAppsFlyerDeepLinkValues.INVITE_CODE -> {
-                                    val inviteCode = deepLinkObj.getStringValue(deepLinkValue.path)
-
-                                    if (inviteCode != null) {
-                                        viewModel.intent(AppIntent.AcceptInvitation(inviteCode = inviteCode))
-                                    }
+                                if (inviteCode != null) {
+                                    viewModel.intent(AppIntent.AcceptInvitation(inviteCode = inviteCode))
                                 }
                             }
                         }
