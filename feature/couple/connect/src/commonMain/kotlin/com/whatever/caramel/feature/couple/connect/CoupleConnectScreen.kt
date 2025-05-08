@@ -40,7 +40,7 @@ internal fun CoupleConnectScreen(
         topBar = {
             CaramelTopBar(
                 modifier = Modifier.systemBarsPadding(),
-                leadingIcon = {
+                leadingContent = {
                     Icon(
                         modifier = Modifier
                             .clickable(
