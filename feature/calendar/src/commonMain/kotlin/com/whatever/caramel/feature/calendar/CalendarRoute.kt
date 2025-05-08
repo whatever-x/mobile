@@ -18,8 +18,9 @@ internal fun CalendarRoute(
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is CalendarSideEffect.NavigateToCreateTodo -> navigateToCreateTodo()
                 is CalendarSideEffect.NavigateToTodoDetail -> navigateToTodoDetail()
+                is CalendarSideEffect.NavigateToAddSchedule -> navigateToCreateTodo()
+                is CalendarSideEffect.OpenWebView -> TODO()
             }
         }
     }

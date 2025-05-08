@@ -1,49 +1,148 @@
 package com.whatever.caramel.feature.calendar
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetValue
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
+import com.whatever.caramel.core.designsystem.components.CaramelTopBar
+import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.ui.picker.CaramelDateMonthPicker
+import com.whatever.caramel.core.ui.picker.model.DateUiState
+import com.whatever.caramel.feature.calendar.component.CalendarDatePicker
+import com.whatever.caramel.feature.calendar.component.CaramelBottomSheetHandle
+import com.whatever.caramel.feature.calendar.component.CurrentDateMenu
+import com.whatever.caramel.feature.calendar.component.todo.CaramelTodoItem
+import com.whatever.caramel.feature.calendar.component.todo.CaramelTodoListHeader
+import com.whatever.caramel.feature.calendar.component.todo.DefaultCaramelTodoItem
+import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
+import kotlinx.datetime.number
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CalendarScreen(
     state: CalendarState,
     onIntent: (CalendarIntent) -> Unit
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize()
+    val bottomSheetState = rememberStandardBottomSheetState()
+    val bottomSheetScaffoldState =
+        rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
+
+    LaunchedEffect(bottomSheetState.currentValue) {
+        val sheetState = when (bottomSheetState.currentValue) {
+            SheetValue.Hidden -> BottomSheetState.HIDDEN
+            SheetValue.Expanded -> BottomSheetState.EXPANDED
+            SheetValue.PartiallyExpanded -> BottomSheetState.PARTIALLY_EXPANDED
+        }
+        onIntent(CalendarIntent.ToggleCalendarBottomSheet(sheetState))
+    }
+
+    BottomSheetScaffold(
+        scaffoldState = bottomSheetScaffoldState,
+        sheetPeekHeight = 62.dp,
+        sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
+        sheetContainerColor = CaramelTheme.color.background.primary,
+        sheetContentColor = CaramelTheme.color.background.tertiary,
+        sheetDragHandle = {
+            CaramelBottomSheetHandle(
+                bottomSheetState = state.bottomSheetState
+            )
+        },
+        topBar = {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                CaramelTopBar(
+                    modifier = Modifier.background(color = CaramelTheme.color.background.primary),
+                    leadingContent = {
+                        CurrentDateMenu(
+                            year = state.year,
+                            month = state.month,
+                            isShowDropMenu = state.isShownDateSelectDropDown,
+                            onShowDropMenu = { onIntent(CalendarIntent.OpenCalendarDatePicker) }
+                        )
+                    }
+                )
+                CalendarDatePicker(
+                    year = state.year,
+                    month = state.month,
+                    isShowDropMenu = state.isShownDateSelectDropDown,
+                    onDismiss = { year, monthNumber ->
+                        onIntent(
+                            CalendarIntent.DismissCalendarDatePicker(
+                                year = year,
+                                monthNumber = monthNumber
+                            )
+                        )
+                    }
+                )
+            }
+        },
+        sheetContent = {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = CaramelTheme.color.background.tertiary)
+                    .padding(
+                        top = CaramelTheme.spacing.xs,
+                        bottom = 36.dp,
+                        start = 20.dp,
+                        end = 20.dp
+                    )
+            ) {
+                state.schedules.forEach { schedule ->
+                    item {
+                        CaramelTodoListHeader(
+                            modifier = Modifier,
+                            startDate = schedule.dateTime,
+                            onClickAddSchedule = {
+                                onIntent(
+                                    CalendarIntent.ClickAddScheduleButton(
+                                        it.date.toString()
+                                    )
+                                )
+                            },
+                            isToday = schedule.dateTime.date == state.today,
+                            isEmpty = schedule.todos.isEmpty()
+                        )
+                    }
+
+                    items(schedule.todos) { todo ->
+                        CaramelTodoItem(
+                            id = todo.id,
+                            title = todo.title,
+                            description = todo.description,
+                            url = todo.url,
+                            onClickUrl = { onIntent(CalendarIntent.ClickTodoUrl(it)) },
+                            onClickTodo = { onIntent(CalendarIntent.ClickTodoItem(it)) }
+                        ) {
+                            DefaultCaramelTodoItem()
+                        }
+                    }
+                }
+            }
+        }
     ) {
-        Text(
-            modifier = Modifier.align(alignment = Alignment.Center),
-            text = "캘린더 화면 입니다.",
-            fontSize = 32.sp
-        )
-
-        Button(
-            modifier = Modifier.align(alignment = Alignment.BottomEnd),
-            onClick = { onIntent(CalendarIntent.ClickTodoCard) }
-        ) {
-            Text(
-                text = "바텀 시트의 할 일 카드",
-                fontSize = 12.sp
-            )
-        }
-
-        Button(
-            modifier = Modifier.align(alignment = Alignment.BottomStart),
-            onClick = { onIntent(CalendarIntent.ClickCreateTodoButton) }
-        ) {
-            Text(
-                text = "바텀 시트의 할 일 생성 버튼",
-                fontSize = 12.sp
-            )
-        }
 
     }
 }
