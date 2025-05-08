@@ -89,6 +89,17 @@ kotlin {
 }
 
 android {
+    defaultConfig {
+        val properties = Properties().apply { load(rootProject.file("local.properties").inputStream()) }
+        val appsFlyerKey = "APPS_FLYER_KEY"
+
+        buildConfigField(
+            type = "String",
+            name = appsFlyerKey,
+            value = properties.getProperty(appsFlyerKey)
+        )
+    }
+
     signingConfigs {
         getByName("debug") {
             Properties().run {
@@ -108,29 +119,6 @@ android {
                 keyPassword = this["KEY_PASSWORD"] as String
                 storePassword = this["STORE_PASSWORD"] as String
             }
-        }
-    }
-
-    buildTypes {
-        val properties = Properties().apply { load(rootProject.file("local.properties").inputStream()) }
-        val appsFlyerKey = "APPS_FLYER_KEY"
-
-        getByName("release") {
-            isMinifyEnabled = false
-
-            buildConfigField(
-                type = "String",
-                name = appsFlyerKey,
-                value = properties.getProperty(appsFlyerKey)
-            )
-        }
-
-        getByName("debug") {
-            buildConfigField(
-                type = "String",
-                name = appsFlyerKey,
-                value = properties.getProperty(appsFlyerKey)
-            )
         }
     }
 }
