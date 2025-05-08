@@ -23,6 +23,5 @@ internal fun DayOfWeek.toUiText(): String = stringResource(
         DayOfWeek.FRIDAY -> Res.string.friday
         DayOfWeek.SATURDAY -> Res.string.saturday
         DayOfWeek.SUNDAY -> Res.string.sunday
-        else -> throw CaramelException(code = AppErrorCode.INVALID_PARAMS, message = "날짜 오류가 발생하였습니다", debugMessage = "DayOfWeek 변환 오류")
     }
 )
