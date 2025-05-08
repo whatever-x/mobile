@@ -17,7 +17,7 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 abstract class BaseViewModel<S : UiState, SE : UiSideEffect, I : UiIntent>(
-    private val savedStateHandle: SavedStateHandle,
+    val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val initialState: S by lazy { createInitialState(savedStateHandle) }

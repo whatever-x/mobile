@@ -7,6 +7,7 @@ import com.whatever.caramel.core.domain.vo.couple.CoupleRelationship
 import com.whatever.caramel.core.domain.vo.couple.CoupleStatus
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.domain.vo.user.UserProfile
+import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.remote.dto.couple.CoupleUserInfoDto
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleBasicResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleDetailResponse
@@ -32,6 +33,7 @@ fun CoupleDetailResponse.toCoupleRelationship(): CoupleRelationship =
 fun CoupleUserInfoDto.toUser(): User =
     User(
         id = this.id,
+        userStatus = UserStatus.valueOf(this.userStatus.name),
         userProfile = UserProfile(
             nickName = this.nickname,
             birthday = this.birthDate.replace("-", "."),

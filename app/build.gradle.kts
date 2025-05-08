@@ -32,6 +32,7 @@ kotlin {
             implementation(project.dependencies.platform(libs.firebase.bom.android))
             implementation(libs.firebase.analytics.ktx)
             implementation(libs.firebase.crashlytics.ktx)
+            implementation(libs.apps.flyer)
         }
         commonMain.dependencies {
             // Project
@@ -53,6 +54,7 @@ kotlin {
             implementation(projects.feature.content)
             implementation(projects.feature.couple.connect)
             implementation(projects.feature.couple.invite)
+            implementation(projects.feature.couple.connecting)
             implementation(projects.feature.home)
             implementation(projects.feature.login)
             implementation(projects.feature.main)
@@ -87,6 +89,17 @@ kotlin {
 }
 
 android {
+    defaultConfig {
+        val properties = Properties().apply { load(rootProject.file("local.properties").inputStream()) }
+        val appsFlyerKey = "APPS_FLYER_KEY"
+
+        buildConfigField(
+            type = "String",
+            name = appsFlyerKey,
+            value = properties.getProperty(appsFlyerKey)
+        )
+    }
+
     signingConfigs {
         getByName("debug") {
             Properties().run {
@@ -108,5 +121,4 @@ android {
             }
         }
     }
-
 }

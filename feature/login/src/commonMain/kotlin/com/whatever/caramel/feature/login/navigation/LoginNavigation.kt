@@ -20,15 +20,11 @@ fun NavController.navigateToLogin(
 }
 
 fun NavGraphBuilder.loginScreen(
-    navigateToCreateProfile: () -> Unit,
-    navigateToConnectCouple: () -> Unit,
-    navigateToMain : () -> Unit
+    navigateToStartDestination: () -> Unit
 ) {
-    composable<LoginRoute>() {
+    composable<LoginRoute> {
         LoginRoute(
-            navigateToConnectCouple = navigateToConnectCouple,
-            navigateToCreateProfile = navigateToCreateProfile,
-            navigateToMain = navigateToMain
+            navigateToStartDestination = navigateToStartDestination
         )
     }
 }

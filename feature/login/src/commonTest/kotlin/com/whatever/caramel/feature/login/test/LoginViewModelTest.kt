@@ -113,7 +113,7 @@ class LoginViewModelTest : KoinComponent {
         determineUserStatusAfterLogin(userStatus = UserStatus.SINGLE)
         verifyLoginIntent(
             socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
-            expectedSideEffect = LoginSideEffect.NavigateToConnectCouple
+            expectedSideEffect = LoginSideEffect.NavigateToInviteCouple
         )
     }
 

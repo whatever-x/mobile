@@ -1,6 +1,7 @@
 package com.whatever.caramel
 
 import android.app.Application
+import com.appsflyer.AppsFlyerLib
 import com.google.firebase.FirebaseApp
 import com.whatever.caramel.app.BuildConfig
 import com.whatever.caramel.di.initKoin
@@ -18,8 +19,12 @@ class GlobalApplication : Application() {
 
         FirebaseApp.initializeApp(this)
 
+        AppsFlyerLib.getInstance().init(BuildConfig.APPS_FLYER_KEY, null, this)
+        AppsFlyerLib.getInstance().start(this)
+
         if (BuildConfig.DEBUG) {
             Napier.base(DebugAntilog())
+            AppsFlyerLib.getInstance().setDebugLog(true)
         }
     }
 }
