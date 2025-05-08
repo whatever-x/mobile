@@ -6,7 +6,7 @@ sealed interface AppIntent : UiIntent {
 
     data class AcceptInvitation(val inviteCode: String) : AppIntent
     
-    data class ReceiveNewIntentData(val data: String) : AppIntent
+    data class ReceiveNewIntentData(val data: String?) : AppIntent
 
     data object NavigateToStartDestination : AppIntent
 

@@ -2,6 +2,7 @@ package com.whatever.caramel.app
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
 import com.whatever.caramel.core.domain.usecase.user.GetUserStatusUseCase
@@ -36,6 +37,9 @@ class CaramelViewModel(
                     )
                 }
             }
+            AppErrorCode.NULL_VALUE -> {
+                // @ham2174 FIXME : 딥링크 데이터 존재하지 않을 시 예외 처리
+            }
         }
 
         when (currentState.userStatus) { // @ham2174 FIXME : 예외 코드 분기 로직 내부에 처리
@@ -54,22 +58,36 @@ class CaramelViewModel(
         }
     }
 
-    private suspend fun handleNewIntentData(data: String) {
+    private suspend fun handleNewIntentData(data: String?) {
         launch {
-            val caramelDeepLink = parseCaramelDeepLink(uri = data)
+            if (data != null) {
+                val caramelDeepLink = parseCaramelDeepLink(uri = data)
 
-            when (caramelDeepLink) {
-                is CaramelDeepLink.InviteCode -> {
-                    setUserStatus()
+                when (caramelDeepLink) {
+                    is CaramelDeepLink.InviteCode -> {
+                        setUserStatus()
 
-                    when (currentState.userStatus) {
-                        UserStatus.NONE,
-                        UserStatus.NEW -> { setDeepLinkInviteCode(inviteCode = caramelDeepLink.code) }
-                        UserStatus.SINGLE,
-                        UserStatus.COUPLED-> { tryToConnectCouple(inviteCode = caramelDeepLink.code) }
+                        when (currentState.userStatus) {
+                            UserStatus.NONE,
+                            UserStatus.NEW -> {
+                                setDeepLinkInviteCode(inviteCode = caramelDeepLink.code)
+                            }
+
+                            UserStatus.SINGLE,
+                            UserStatus.COUPLED -> {
+                                tryToConnectCouple(inviteCode = caramelDeepLink.code)
+                            }
+                        }
                     }
+
+                    is CaramelDeepLink.Unknown -> {} // @ham2174 FIXME : 존재하지 않는 딥링크 처리
                 }
-                is CaramelDeepLink.Unknown -> { } // @ham2174 FIXME : 존재하지 않는 딥링크 처리
+            } else {
+                throw CaramelException( // @ham2174 FIXME : 딥링크 데이터 존재하지 않을 시 예외 처리
+                    code = AppErrorCode.NULL_VALUE,
+                    message = "딥링크 데이터가 존재하지 않습니다.",
+                    debugMessage = "딥링크 데이터가 존재하지 않습니다."
+                )
             }
         }
     }

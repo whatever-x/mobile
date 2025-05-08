@@ -66,22 +66,8 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
-        try {
-            if (intent.data != null) {
-                val intentData = intent.data.toString()
-                Napier.d { intentData }
-
-                viewModel.intent(AppIntent.ReceiveNewIntentData(data = intentData))
-            } else {
-                throw CaramelException(
-                    code = "1000", // @ham2174 FIXME : 인텐트 데이터가 null 인 경우의 에러 코드 정의
-                    message = "intent data came back null",
-                    debugMessage = "intent data came back null"
-                )
-            }
-        } catch (e: Exception) {
-            Napier.d { "intent data came back null" }
-        }
+        val intentData = intent.dataString
+        viewModel.intent(AppIntent.ReceiveNewIntentData(data = intentData))
     }
 
 }
