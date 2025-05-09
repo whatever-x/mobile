@@ -1,10 +1,8 @@
-
 package com.whatever.caramel.core.domain.vo.calendar
 
 import kotlinx.datetime.LocalDate
 
-data class Holiday(
+data class HolidayList(
     val date: LocalDate,
-    val name: String,
-    val isHoliday: Boolean
+    val holidays: List<Holiday>
 )

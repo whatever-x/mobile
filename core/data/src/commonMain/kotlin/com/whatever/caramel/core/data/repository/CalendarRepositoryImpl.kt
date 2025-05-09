@@ -5,6 +5,7 @@ import com.whatever.caramel.core.data.mapper.toSchedules
 import com.whatever.caramel.core.domain.entity.Todo
 import com.whatever.caramel.core.domain.repository.CalendarRepository
 import com.whatever.caramel.core.domain.vo.calendar.Holiday
+import com.whatever.caramel.core.domain.vo.calendar.HolidayList
 import com.whatever.caramel.core.remote.datasource.RemoteCalendarDataSource
 
 class CalendarRepositoryImpl(
@@ -18,8 +19,8 @@ class CalendarRepositoryImpl(
         return remoteCalendarDataSource.getSchedules(startDate, endDate, userTimezone).toSchedules()
     }
 
-    override suspend fun getHolidays(year: Int, month: Int): List<Holiday> {
-        val yearMonth = "$year-$month"
+    override suspend fun getHolidays(year: Int, monthString: String): List<Holiday> {
+        val yearMonth = "$year-$monthString"
         return remoteCalendarDataSource.getHolidays(yearMonth).toHoliday()
     }
 }

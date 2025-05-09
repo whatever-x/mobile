@@ -3,7 +3,7 @@ package com.whatever.caramel.core.domain.di
 import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetHolidaysUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.GetSchedulesUseCaseGroupByStartDate
+import com.whatever.caramel.core.domain.usecase.calendar.GetSchedulesGroupByStartDateUseCase
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
 import com.whatever.caramel.core.domain.usecase.couple.EditCoupleStartDateUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInfoUseCase
@@ -32,6 +32,6 @@ val useCaseModule = module {
     factory { UpdateShareMessageUseCase(get()) }
 
     // Schedule
-    factory { GetSchedulesUseCaseGroupByStartDate(get()) }
+    factory { GetSchedulesGroupByStartDateUseCase(get()) }
     factory { GetHolidaysUseCase(get()) }
 }

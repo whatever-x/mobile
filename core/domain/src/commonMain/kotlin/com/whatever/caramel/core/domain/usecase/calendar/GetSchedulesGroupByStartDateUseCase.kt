@@ -7,7 +7,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
 import kotlinx.datetime.toLocalDateTime
 
-class GetSchedulesUseCaseGroupByStartDate(
+class GetSchedulesGroupByStartDateUseCase(
     private val calendarRepository: CalendarRepository
 ) {
     suspend operator fun invoke(
@@ -18,19 +18,18 @@ class GetSchedulesUseCaseGroupByStartDate(
         val result = mutableListOf<TodoList>()
         val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
             .date
-            .atTime(hour = 0, minute = 0)
         val schedules = calendarRepository.getSchedules(
             startDate = startDate,
             endDate = endDate,
             userTimezone = userTimezone
         ).groupBy { it.startDate }
-            .map { (date, todos) -> TodoList(date, todos) }
+            .map { (date, todos) -> TodoList(date.date, todos) }
 
         result.addAll(schedules)
-        if (schedules.find { it.dateTime.date == today.date } == null) {
-            result.add(TodoList(dateTime = today, todos = emptyList()))
+        if (schedules.find { it.date == today } == null) {
+            result.add(TodoList(date = today, todos = emptyList()))
         }
-        result.sortBy { it.dateTime }
+        result.sortBy { it.date }
         return result
     }
 }

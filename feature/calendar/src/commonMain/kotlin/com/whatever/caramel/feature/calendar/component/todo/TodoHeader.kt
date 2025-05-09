@@ -20,6 +20,7 @@ import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.calendar.util.toUiText
 import io.github.aakira.napier.Napier
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.number
 import org.jetbrains.compose.resources.painterResource
@@ -27,8 +28,8 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 internal fun CaramelTodoListHeader(
     modifier: Modifier = Modifier,
-    startDate: LocalDateTime,
-    onClickAddSchedule: (LocalDateTime) -> Unit,
+    startDate: LocalDate,
+    onClickAddSchedule: (LocalDate) -> Unit,
     isToday: Boolean,
     isEmpty : Boolean
 ) {

@@ -1,7 +1,8 @@
 package com.whatever.caramel.feature.calendar
 
 import androidx.lifecycle.SavedStateHandle
-import com.whatever.caramel.core.domain.usecase.calendar.GetSchedulesUseCaseGroupByStartDate
+import com.whatever.caramel.core.domain.usecase.calendar.GetHolidaysUseCase
+import com.whatever.caramel.core.domain.usecase.calendar.GetSchedulesGroupByStartDateUseCase
 import com.whatever.caramel.core.util.DateFormatter
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.BaseViewModel
@@ -18,16 +19,18 @@ import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 
 class CalendarViewModel(
-    private val getSchedulesUseCaseGroupByStartDate: GetSchedulesUseCaseGroupByStartDate,
+    private val getSchedulesGroupByStartDateUseCase: GetSchedulesGroupByStartDateUseCase,
+    private val getHolidaysUseCase: GetHolidaysUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(savedStateHandle) {
 
     init {
         getSchedules()
+        getHolidays()
     }
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): CalendarState {
-        val currentDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        val currentDate = DateUtil.today()
         return CalendarState(
             year = currentDate.year,
             month = currentDate.month,
@@ -85,6 +88,19 @@ class CalendarViewModel(
             )
         }
         getSchedules()
+        getHolidays()
+    }
+
+    private fun getHolidays() {
+        launch {
+            val year = currentState.year
+            val monthNumber = currentState.month.number
+            val holidays = getHolidaysUseCase(year = year, monthNumber = monthNumber)
+            Napier.d { "holidays : $holidays" }
+            reduce {
+                copy(holidays = holidays)
+            }
+        }
     }
 
     private fun getSchedules() {
@@ -102,11 +118,12 @@ class CalendarViewModel(
                 month = monthNumber,
                 day = lastDay
             )
-            val schedules = getSchedulesUseCaseGroupByStartDate(
+            val schedules = getSchedulesGroupByStartDateUseCase(
                 startDate = firstDayOfMonth,
                 endDate = lastDayOfMonth,
                 userTimezone = TimeZone.currentSystemDefault().toString()
             )
+
             reduce {
                 copy(
                     schedules = schedules

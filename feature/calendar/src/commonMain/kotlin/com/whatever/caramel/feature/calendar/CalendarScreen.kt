@@ -1,11 +1,7 @@
 package com.whatever.caramel.feature.calendar
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,17 +14,10 @@ import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.ui.picker.CaramelDateMonthPicker
-import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.feature.calendar.component.CalendarDatePicker
 import com.whatever.caramel.feature.calendar.component.CaramelBottomSheetHandle
 import com.whatever.caramel.feature.calendar.component.CurrentDateMenu
@@ -38,7 +27,6 @@ import com.whatever.caramel.feature.calendar.component.todo.DefaultCaramelTodoIt
 import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
-import kotlinx.datetime.number
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -114,15 +102,15 @@ internal fun CalendarScreen(
                     item {
                         CaramelTodoListHeader(
                             modifier = Modifier,
-                            startDate = schedule.dateTime,
+                            startDate = schedule.date,
                             onClickAddSchedule = {
                                 onIntent(
                                     CalendarIntent.ClickAddScheduleButton(
-                                        it.date.toString()
+                                        it.toString()
                                     )
                                 )
                             },
-                            isToday = schedule.dateTime.date == state.today,
+                            isToday = schedule.date == state.today,
                             isEmpty = schedule.todos.isEmpty()
                         )
                     }
