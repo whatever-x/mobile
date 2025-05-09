@@ -1,6 +1,7 @@
 package com.whatever.caramel.core.remote.datasource
 
 import com.whatever.caramel.core.remote.dto.calendar.CalendarDetailResponse
+import com.whatever.caramel.core.remote.dto.calendar.HolidayDetailListResponse
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
@@ -19,6 +20,12 @@ class RemoteCalendarDataSourceImpl(
             parameter("startDate", startDate)
             parameter("endDate", endDate)
             parameter("userTimeZone", userTimeZone)
+        }.getBody()
+    }
+
+    override suspend fun getHolidays(yearMonth: String): HolidayDetailListResponse {
+        return authClient.get("$CALENDAR_BASE_URL/holidays") {
+            parameter("yearMonth", yearMonth)
         }.getBody()
     }
 
