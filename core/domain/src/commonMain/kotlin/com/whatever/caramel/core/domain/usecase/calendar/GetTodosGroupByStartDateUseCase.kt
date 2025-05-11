@@ -4,10 +4,9 @@ import com.whatever.caramel.core.domain.repository.CalendarRepository
 import com.whatever.caramel.core.domain.vo.calendar.TodoList
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.atTime
 import kotlinx.datetime.toLocalDateTime
 
-class GetSchedulesGroupByStartDateUseCase(
+class GetTodosGroupByStartDateUseCase(
     private val calendarRepository: CalendarRepository
 ) {
     suspend operator fun invoke(
@@ -29,7 +28,6 @@ class GetSchedulesGroupByStartDateUseCase(
         if (schedules.find { it.date == today } == null) {
             result.add(TodoList(date = today, todos = emptyList()))
         }
-        result.sortBy { it.date }
         return result
     }
 }

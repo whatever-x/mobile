@@ -2,7 +2,7 @@ package com.whatever.caramel.feature.calendar
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.usecase.calendar.GetHolidaysUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.GetSchedulesGroupByStartDateUseCase
+import com.whatever.caramel.core.domain.usecase.calendar.GetTodosGroupByStartDateUseCase
 import com.whatever.caramel.core.util.DateFormatter
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.BaseViewModel
@@ -10,23 +10,21 @@ import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
+import com.whatever.caramel.feature.calendar.mvi.Schedule
 import io.github.aakira.napier.Napier
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
-import kotlinx.datetime.toLocalDateTime
 
 class CalendarViewModel(
-    private val getSchedulesGroupByStartDateUseCase: GetSchedulesGroupByStartDateUseCase,
+    private val getTodosGroupByStartDateUseCase: GetTodosGroupByStartDateUseCase,
     private val getHolidaysUseCase: GetHolidaysUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(savedStateHandle) {
 
     init {
         getSchedules()
-        getHolidays()
     }
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): CalendarState {
@@ -88,19 +86,6 @@ class CalendarViewModel(
             )
         }
         getSchedules()
-        getHolidays()
-    }
-
-    private fun getHolidays() {
-        launch {
-            val year = currentState.year
-            val monthNumber = currentState.month.number
-            val holidays = getHolidaysUseCase(year = year, monthNumber = monthNumber)
-            Napier.d { "holidays : $holidays" }
-            reduce {
-                copy(holidays = holidays)
-            }
-        }
     }
 
     private fun getSchedules() {
@@ -118,15 +103,34 @@ class CalendarViewModel(
                 month = monthNumber,
                 day = lastDay
             )
-            val schedules = getSchedulesGroupByStartDateUseCase(
+            val todos = getTodosGroupByStartDateUseCase(
                 startDate = firstDayOfMonth,
                 endDate = lastDayOfMonth,
                 userTimezone = TimeZone.currentSystemDefault().toString()
             )
-
+            val holidays = getHolidaysUseCase(year = year, monthNumber = monthNumber)
+            val schedules = todos.map {
+                Schedule.Todos(
+                    date = it.date,
+                    it.todos
+                )
+            } + holidays.map {
+                Schedule.Holidays(
+                    date = it.date,
+                    holidays = it.holidays
+                )
+            }
             reduce {
                 copy(
-                    schedules = schedules
+                    schedulesByDate = schedules.sortedBy { it.date },
+                    schedulesByPriority = schedules.sortedWith(
+                        compareBy<Schedule> {
+                            when (it) {
+                                is Schedule.Holidays -> 1
+                                is Schedule.Todos -> 0
+                            }
+                        }.thenBy { it.date }
+                    )
                 )
             }
         }

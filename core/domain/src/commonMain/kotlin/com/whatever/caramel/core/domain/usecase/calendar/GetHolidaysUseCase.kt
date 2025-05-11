@@ -13,6 +13,5 @@ class GetHolidaysUseCase(
             monthString = monthString
         ).groupBy { it.date }
             .map { (date, holidayList) -> HolidayList(date, holidayList) }
-            .sortedBy { it.date }
     }
 }
