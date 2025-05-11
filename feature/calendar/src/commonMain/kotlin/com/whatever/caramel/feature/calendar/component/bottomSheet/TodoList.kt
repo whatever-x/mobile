@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.calendar.component.todo
+package com.whatever.caramel.feature.calendar.component.bottomSheet
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,7 +20,7 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import org.jetbrains.compose.resources.painterResource
 
 @Stable
-internal interface CaramelTodoScope {
+internal interface CaramelBottomTodoScope {
     val id: Long
     val title: String
     val description: String?
@@ -29,24 +29,24 @@ internal interface CaramelTodoScope {
     val onClickTodo: (Long) -> Unit
 }
 
-internal class CaramelDefaultTodoScope(
+internal class CaramelDefaultBottomTodoScope(
     override val id: Long,
     override val title: String,
     override val description: String?,
     override val url: String?,
     override val onClickUrl: (String?) -> Unit,
     override val onClickTodo: (Long) -> Unit
-) : CaramelTodoScope
+) : CaramelBottomTodoScope
 
 @Composable
-internal fun CaramelTodoItem(
+internal fun BottomSheetTodoItem(
     id: Long,
     title: String,
     description: String? = null,
     url: String? = null,
     onClickTodo: (Long) -> Unit = {},
     onClickUrl: (String?) -> Unit = {},
-    content: @Composable CaramelTodoScope.() -> Unit
+    content: @Composable CaramelBottomTodoScope.() -> Unit
 ) {
     val scope = remember(
         id,
@@ -56,7 +56,7 @@ internal fun CaramelTodoItem(
         onClickTodo,
         onClickUrl
     ) {
-        CaramelDefaultTodoScope(
+        CaramelDefaultBottomTodoScope(
             id = id,
             title = title,
             description = description,
@@ -69,7 +69,7 @@ internal fun CaramelTodoItem(
 }
 
 @Composable
-internal fun CaramelTodoScope.DefaultCaramelTodoItem(
+internal fun CaramelBottomTodoScope.DefaultBottomSheetTodoItem(
     modifier: Modifier = Modifier
 ) {
     val hasDescription = this.description.isNullOrEmpty()
@@ -93,7 +93,7 @@ internal fun CaramelTodoScope.DefaultCaramelTodoItem(
 }
 
 @Composable
-internal fun CaramelTodoScope.TodoTitle(
+internal fun CaramelBottomTodoScope.TodoTitle(
     modifier: Modifier = Modifier
 ) {
     Text(
@@ -111,7 +111,7 @@ internal fun CaramelTodoScope.TodoTitle(
 }
 
 @Composable
-internal fun CaramelTodoScope.TodoDescription(
+internal fun CaramelBottomTodoScope.TodoDescription(
     modifier: Modifier = Modifier
 ) {
     val descriptionText = this.description ?: return
@@ -131,7 +131,7 @@ internal fun CaramelTodoScope.TodoDescription(
 }
 
 @Composable
-internal fun CaramelTodoScope.TodoUrl(
+internal fun CaramelBottomTodoScope.TodoUrl(
     modifier: Modifier = Modifier
 ) {
     val urlText = this.url ?: return
