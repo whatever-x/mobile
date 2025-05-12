@@ -37,4 +37,5 @@ sealed interface Schedule {
 
     data class Todos(override val date: LocalDate, val todos: List<Todo>) : Schedule
     data class Holidays(override val date: LocalDate, val holidays: List<Holiday>) : Schedule
+
 }

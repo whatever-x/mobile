@@ -126,8 +126,8 @@ class CalendarViewModel(
                     schedulesByPriority = schedules.sortedWith(
                         compareBy<Schedule> {
                             when (it) {
-                                is Schedule.Holidays -> 1
-                                is Schedule.Todos -> 0
+                                is Schedule.Holidays -> 0
+                                is Schedule.Todos -> 1
                             }
                         }.thenBy { it.date }
                     )
