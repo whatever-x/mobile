@@ -14,7 +14,7 @@ import caramel.feature.calendar.generated.resources.Res
 import caramel.feature.calendar.generated.resources.day_of_week
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.util.DateUtil
-import com.whatever.caramel.feature.calendar.mvi.Schedule
+import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
@@ -26,7 +26,7 @@ fun CaramelCalendar(
     modifier: Modifier = Modifier,
     year: Int,
     month: Month,
-    schedules: List<Schedule>
+    schedules: List<DaySchedule>
 ) {
     val firstDay = LocalDate(year = year, month = month, dayOfMonth = 1)
     val firstDayOfWeek =
@@ -55,7 +55,7 @@ fun CaramelCalendar(
                             if (dayOfMonth in 1..lastDay) {
                                 val date = LocalDate(year, month, dayOfMonth)
                                 CalendarDayOfMonthCell(
-                                    schedules = schedules.filter { it.date == date },
+                                    schedule = schedules.find { it.date == date },
                                     date = date,
                                     isFocus = false,
                                     onClickCell = {},

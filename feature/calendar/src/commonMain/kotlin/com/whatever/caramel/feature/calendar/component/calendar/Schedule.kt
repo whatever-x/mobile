@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.platform.LocalDensity
@@ -16,12 +15,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.entity.Todo
 import com.whatever.caramel.core.domain.vo.calendar.Holiday
-import com.whatever.caramel.feature.calendar.mvi.Schedule
+import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 
 @Composable
 fun CalendarScheduleList(
     modifier: Modifier = Modifier,
-    schedules: List<Schedule>,
+    schedule: DaySchedule,
     onClickTodo: (Long) -> Unit
 ) {
     val density = LocalDensity.current
@@ -39,49 +38,35 @@ fun CalendarScheduleList(
         var totalHeight = 0
         val itemsToPlace = mutableListOf<Pair<Placeable, Int>>()
         var visibleItemCount = 0
-        var totalListSize = 0
-        schedules.forEach { schedule ->
-            totalListSize += when (schedule) {
-                is Schedule.Holidays -> schedule.holidays.size
-                is Schedule.Todos -> schedule.todos.size
+        val totalListSize = schedule.totalScheduleCount
+
+        schedule.holidays.forEachIndexed { index, holiday ->
+            val placeable = subcompose("holiday_$index") {
+                CalendarHolidayItem(holiday = holiday)
+            }.first().measure(constraints)
+
+            val newHeight = totalHeight + placeable.height + spacingBetweenItems
+            if (newHeight + placeable.height <= parentHeight) {
+                visibleItemCount++
+                itemsToPlace.add(placeable to totalHeight)
+                totalHeight = newHeight
+            } else {
+                return@forEachIndexed
             }
         }
 
-        schedules.forEach { schedule ->
-            when (schedule) {
-                is Schedule.Holidays -> {
-                    schedule.holidays.forEachIndexed { index, holiday ->
-                        val placeable = subcompose("holiday_$index") {
-                            CalendarHolidayItem(holiday = holiday)
-                        }.first().measure(constraints)
+        schedule.todos.forEachIndexed { index, todo ->
+            val placeable = subcompose("todo_$index") {
+                CalendarTodoItem(todo = todo, onClickTodo = onClickTodo)
+            }.first().measure(constraints)
 
-                        val newHeight = totalHeight + placeable.height + spacingBetweenItems
-                        if (newHeight + placeable.height <= parentHeight) {
-                            visibleItemCount++
-                            itemsToPlace.add(placeable to totalHeight)
-                            totalHeight = newHeight
-                        } else {
-                            return@forEachIndexed
-                        }
-                    }
-                }
-
-                is Schedule.Todos -> {
-                    schedule.todos.forEachIndexed { index, todo ->
-                        val placeable = subcompose("todo_$index") {
-                            CalendarTodoItem(todo = todo, onClickTodo = onClickTodo)
-                        }.first().measure(constraints)
-
-                        val newHeight = totalHeight + placeable.height + spacingBetweenItems
-                        if (newHeight + placeable.height <= parentHeight) {
-                            itemsToPlace.add(placeable to totalHeight)
-                            totalHeight = newHeight
-                            visibleItemCount++
-                        } else {
-                            return@forEachIndexed
-                        }
-                    }
-                }
+            val newHeight = totalHeight + placeable.height + spacingBetweenItems
+            if (newHeight + placeable.height <= parentHeight) {
+                itemsToPlace.add(placeable to totalHeight)
+                totalHeight = newHeight
+                visibleItemCount++
+            } else {
+                return@forEachIndexed
             }
         }
 
@@ -140,8 +125,7 @@ private fun CalendarTodoItem(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                // FIXME : 디자인 토큰 적용 필요
-                color = Color(0xFFFFE6C3),
+                color = CaramelTheme.color.fill.labelBrand,
                 shape = CaramelTheme.shape.xxs
             )
             .padding(horizontal = CaramelTheme.spacing.xxs)

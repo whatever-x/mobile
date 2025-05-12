@@ -14,6 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
@@ -78,9 +80,8 @@ internal fun CaramelBottomTodoScope.DefaultBottomSheetTodoItem(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            // FIXME : 디자인 토큰 적용 필요
             .background(
-                color = CaramelTheme.color.background.primary,
+                color = Color(color = 0xFFF7F2EC), // 자주 사용하지 않는 컬러, 디자인 토큰 제외
                 shape = CaramelTheme.shape.m
             )
             .padding(all = CaramelTheme.spacing.l),

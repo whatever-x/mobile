@@ -21,16 +21,15 @@ import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.calendar.component.CalendarDatePicker
-import com.whatever.caramel.feature.calendar.component.bottomSheet.CaramelBottomSheetHandle
 import com.whatever.caramel.feature.calendar.component.CurrentDateMenu
 import com.whatever.caramel.feature.calendar.component.bottomSheet.BottomSheetTodoItem
 import com.whatever.caramel.feature.calendar.component.bottomSheet.BottomSheetTodoListHeader
+import com.whatever.caramel.feature.calendar.component.bottomSheet.CaramelBottomSheetHandle
 import com.whatever.caramel.feature.calendar.component.bottomSheet.DefaultBottomSheetTodoItem
 import com.whatever.caramel.feature.calendar.component.calendar.CaramelCalendar
 import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
-import com.whatever.caramel.feature.calendar.mvi.Schedule
 import io.github.aakira.napier.Napier
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -103,7 +102,7 @@ internal fun CalendarScreen(
                         end = 20.dp
                     )
             ) {
-                state.schedulesByDate.forEach { schedule ->
+                state.schedules.forEach { schedule ->
                     Napier.e { "update: $schedule" }
                     Napier.e { "today: ${state.today}" }
                     item {
@@ -118,23 +117,21 @@ internal fun CalendarScreen(
                                 )
                             },
                             isToday = schedule.date == state.today,
-                            isEmpty = schedule.listSize == 0,
-                            holidays = if (schedule is Schedule.Holidays) schedule.holidays else null
+                            isEmpty = schedule.todos.isEmpty(),
+                            holidays = schedule.holidays
                         )
                     }
 
-                    if (schedule is Schedule.Todos) {
-                        items(items = schedule.todos) { todo ->
-                            BottomSheetTodoItem(
-                                id = todo.id,
-                                title = todo.title,
-                                description = todo.description,
-                                url = todo.url,
-                                onClickUrl = { onIntent(CalendarIntent.ClickTodoUrl(it)) },
-                                onClickTodo = { onIntent(CalendarIntent.ClickTodoItem(it)) }
-                            ) {
-                                DefaultBottomSheetTodoItem()
-                            }
+                    items(items = schedule.todos) { todo ->
+                        BottomSheetTodoItem(
+                            id = todo.id,
+                            title = todo.title,
+                            description = todo.description,
+                            url = todo.url,
+                            onClickUrl = { onIntent(CalendarIntent.ClickTodoUrl(it)) },
+                            onClickTodo = { onIntent(CalendarIntent.ClickTodoItem(it)) }
+                        ) {
+                            DefaultBottomSheetTodoItem()
                         }
                     }
                 }
@@ -149,7 +146,7 @@ internal fun CalendarScreen(
                     .background(color = CaramelTheme.color.background.primary),
                 year = state.year,
                 month = state.month,
-                schedules = state.schedulesByPriority
+                schedules = state.schedules
             )
         }
     }

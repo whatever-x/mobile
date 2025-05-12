@@ -15,8 +15,7 @@ data class CalendarState(
     val selectedDate: LocalDate = DateUtil.today(),
     val isShownDateSelectDropDown: Boolean = false,
     val bottomSheetState: BottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
-    val schedulesByDate: List<Schedule> = emptyList(),
-    val schedulesByPriority: List<Schedule> = emptyList(),
+    val schedules: List<DaySchedule> = emptyList()
 ) : UiState
 
 enum class BottomSheetState {
@@ -25,17 +24,11 @@ enum class BottomSheetState {
     PARTIALLY_EXPANDED
 }
 
-sealed interface Schedule {
-    val date: LocalDate
-    val listSize: Int
-        get() {
-            return when (this) {
-                is Holidays -> 0
-                is Todos -> todos.size
-            }
-        }
-
-    data class Todos(override val date: LocalDate, val todos: List<Todo>) : Schedule
-    data class Holidays(override val date: LocalDate, val holidays: List<Holiday>) : Schedule
-
+data class DaySchedule(
+    val date : LocalDate,
+    val todos : List<Todo> = emptyList(),
+    val holidays : List<Holiday> = emptyList()
+) {
+    val totalScheduleCount : Int
+        get() = todos.size + holidays.size
 }

@@ -3,6 +3,8 @@ package com.whatever.caramel.feature.calendar
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.usecase.calendar.GetHolidaysUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodosGroupByStartDateUseCase
+import com.whatever.caramel.core.domain.vo.calendar.HolidayList
+import com.whatever.caramel.core.domain.vo.calendar.TodoList
 import com.whatever.caramel.core.util.DateFormatter
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.BaseViewModel
@@ -10,7 +12,7 @@ import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
-import com.whatever.caramel.feature.calendar.mvi.Schedule
+import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 import io.github.aakira.napier.Napier
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
@@ -109,28 +111,9 @@ class CalendarViewModel(
                 userTimezone = TimeZone.currentSystemDefault().toString()
             )
             val holidays = getHolidaysUseCase(year = year, monthNumber = monthNumber)
-            val schedules = todos.map {
-                Schedule.Todos(
-                    date = it.date,
-                    it.todos
-                )
-            } + holidays.map {
-                Schedule.Holidays(
-                    date = it.date,
-                    holidays = it.holidays
-                )
-            }
             reduce {
                 copy(
-                    schedulesByDate = schedules.sortedBy { it.date },
-                    schedulesByPriority = schedules.sortedWith(
-                        compareBy<Schedule> {
-                            when (it) {
-                                is Schedule.Holidays -> 0
-                                is Schedule.Todos -> 1
-                            }
-                        }.thenBy { it.date }
-                    )
+                    schedules = createDaySchedules(todoList = todos, holidayList =  holidays)
                 )
             }
         }
@@ -196,5 +179,26 @@ class CalendarViewModel(
             dateList.add(LocalDate(year = year, month = month, dayOfMonth = day))
         }
         return dateList.toList()
+    }
+
+    private fun createDaySchedules(
+        todoList: List<TodoList>,
+        holidayList: List<HolidayList>
+    ): List<DaySchedule> {
+        val scheduleMap = mutableMapOf<LocalDate, DaySchedule>()
+
+        todoList.forEach { list ->
+            val date = list.date
+            val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
+            scheduleMap[date] = existingSchedule.copy(todos = list.todos)
+        }
+
+        holidayList.forEach { list ->
+            val date = list.date
+            val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
+            scheduleMap[date] = existingSchedule.copy(holidays = list.holidays)
+        }
+
+        return scheduleMap.values.sortedBy { it.date }
     }
 }

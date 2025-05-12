@@ -14,14 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.feature.calendar.mvi.Schedule
+import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 
 @Composable
 internal fun CalendarDayOfMonthCell(
     modifier: Modifier = Modifier,
-    schedules: List<Schedule>,
+    schedule: DaySchedule?,
     date: LocalDate,
     isFocus: Boolean,
     onClickCell: (LocalDate) -> Unit = {},
@@ -43,12 +43,14 @@ internal fun CalendarDayOfMonthCell(
                 dayOfWeek = date.dayOfWeek,
                 dayOfMonth = date.dayOfMonth,
                 isFocus = isFocus,
-                isHoliday = schedules.find { it is Schedule.Holidays } != null
+                isHoliday = schedule?.holidays?.isNotEmpty() ?: false
             )
-            CalendarScheduleList(
-                schedules = schedules,
-                onClickTodo = { onClickTodo(it) }
-            )
+            if (schedule != null) {
+                CalendarScheduleList(
+                    schedule = schedule,
+                    onClickTodo = { onClickTodo(it) }
+                )
+            }
         }
     }
 }
