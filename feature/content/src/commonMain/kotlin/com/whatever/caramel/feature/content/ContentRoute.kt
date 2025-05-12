@@ -24,6 +24,6 @@ internal fun ContentRoute(
 
     ContentScreen(
         state = state,
-        onIntent = { intent -> viewModel.intent(intent) }
+        onIntent = viewModel::intent
     )
 }
