@@ -74,8 +74,8 @@ internal fun BottomSheetTodoItem(
 internal fun CaramelBottomTodoScope.DefaultBottomSheetTodoItem(
     modifier: Modifier = Modifier
 ) {
-    val hasDescription = this.description.isNullOrEmpty()
-    val hasUrl = this.url.isNullOrEmpty()
+    val hasDescription = !this.description.isNullOrEmpty()
+    val hasUrl = !this.url.isNullOrEmpty()
 
     Column(
         modifier = modifier
@@ -89,7 +89,14 @@ internal fun CaramelBottomTodoScope.DefaultBottomSheetTodoItem(
     ) {
         TodoTitle()
         if (hasDescription) TodoDescription()
-        if (hasUrl) TodoUrl()
+        if (hasUrl) {
+            HorizontalDivider(
+                modifier = Modifier.fillMaxWidth(),
+                thickness = 1.dp,
+                color = Color(color = 0xFFE3DBD1)
+            )
+            TodoUrl()
+        }
     }
 }
 

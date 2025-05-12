@@ -34,7 +34,11 @@ internal fun BottomSheetTodoListHeader(
     isEmpty: Boolean,
     holidays: List<Holiday>? = null
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = CaramelTheme.spacing.xs)
+    ) {
         Box {
             Row(
                 modifier = Modifier

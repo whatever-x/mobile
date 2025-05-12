@@ -1,5 +1,6 @@
 package com.whatever.caramel.feature.calendar.component.calendar
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import caramel.feature.calendar.generated.resources.Res
 import caramel.feature.calendar.generated.resources.day_of_week
@@ -34,8 +36,6 @@ fun CaramelCalendar(
     val lastDay = DateUtil.getLastDayOfMonth(year, month.number)
 
     Column(modifier = modifier) {
-        CalendarDayOfWeek()
-
         val totalCells = firstDayOfWeek + lastDay
         val totalRows = (totalCells + 6) / 7
         repeat(totalRows) { row ->
@@ -71,10 +71,13 @@ fun CaramelCalendar(
 }
 
 @Composable
-fun CalendarDayOfWeek() {
+fun CalendarDayOfWeek(
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
+            .background(CaramelTheme.color.background.primary)
             .padding(top = CaramelTheme.spacing.s, bottom = CaramelTheme.spacing.m),
         horizontalArrangement = Arrangement.SpaceAround
     ) {
