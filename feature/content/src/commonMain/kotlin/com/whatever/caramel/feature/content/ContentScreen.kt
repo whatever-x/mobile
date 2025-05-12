@@ -1,63 +1,158 @@
 package com.whatever.caramel.feature.content
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.unit.dp
+import com.whatever.caramel.core.designsystem.components.CaramelButton
+import com.whatever.caramel.core.designsystem.components.CaramelButtonSize
+import com.whatever.caramel.core.designsystem.components.CaramelButtonType
+import com.whatever.caramel.core.designsystem.components.CaramelTopBar
+import com.whatever.caramel.core.designsystem.foundations.Resources
+import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.feature.content.components.ContentTextArea
+import com.whatever.caramel.feature.content.components.CreateModeSwitch
+import com.whatever.caramel.feature.content.components.SelectableTagChipRow
+import com.whatever.caramel.feature.content.components.TitleTextField
 import com.whatever.caramel.feature.content.mvi.ContentIntent
 import com.whatever.caramel.feature.content.mvi.ContentState
+import kotlinx.collections.immutable.toImmutableList
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 internal fun ContentScreen(
     state: ContentState,
     onIntent: (ContentIntent) -> Unit
 ) {
+    val uriHandler = LocalUriHandler.current
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(CaramelTheme.color.background.primary)
+            .systemBarsPadding()
     ) {
-        Text(
-            modifier = Modifier.align(alignment = Alignment.Center),
-            text = "컨텐츠 생성/수정 화면 입니다.",
-            fontSize = 32.sp
-        )
-
-        Button(
-            modifier = Modifier.align(alignment = Alignment.TopEnd),
-            onClick = { onIntent(ContentIntent.ClickCloseButton) }
-        ) {
-            Text(
-                text = "닫기",
-                fontSize = 12.sp
+        Column(modifier = Modifier.fillMaxSize()) {
+            CaramelTopBar(
+                trailingIcon = {
+                    Icon(
+                        modifier = Modifier.clickable(
+                            onClick = { onIntent(ContentIntent.ClickCloseButton) },
+                            indication = null,
+                            interactionSource = null
+                        ),
+                        painter = painterResource(resource = Resources.Icon.ic_cancel_24),
+                        tint = CaramelTheme.color.icon.primary,
+                        contentDescription = null
+                    )
+                }
             )
-        }
-
-        Row(
-            modifier = Modifier.align(alignment = Alignment.BottomCenter)
-        ) {
-            Button(
-                onClick = { onIntent(ContentIntent.ClickDeleteButton) }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = CaramelTheme.spacing.xl)
+                    .padding(bottom = 50.dp)
+                    .padding(bottom = CaramelTheme.spacing.xl * 2)
             ) {
-                Text(
-                    text = "삭제하기",
-                    fontSize = 12.sp
+                TitleTextField(
+                    value = state.title,
+                    onValueChange = {
+                        onIntent(ContentIntent.InputTitle(it))
+                    }
                 )
-            }
+                HorizontalDivider(
+                    modifier = Modifier.padding(vertical = CaramelTheme.spacing.xl),
+                    color = CaramelTheme.color.divider.primary
+                )
+                ContentTextArea(
+                    modifier = Modifier.weight(1f),
+                    value = state.content,
+                    onValueChanged = {
+                        onIntent(ContentIntent.InputContent(it))
+                    },
+                    placeholder = "함께 하고 싶거나 기억하면 좋은 것들을 자유롭게 입력해 주세요.",
+                    onLinkPreviewClick = {
+                        uriHandler.openUri(it)
+                    },
+                )
+                Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.xl))
+                SelectableTagChipRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    tags = state.tags,
+                    selectedTags = state.selectedTags.toImmutableList(),
+                    onTagClick = {
+                        onIntent(ContentIntent.ClickTag(it))
+                    }
+                )
+                Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.xl))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    CreateModeSwitch(
+                        createMode = state.createMode,
+                        onCreateModeSelect = {
+                            onIntent(ContentIntent.SelectCreateMode(it))
+                        }
+                    )
+                    when (state.createMode) {
+                        ContentState.CreateMode.MEMO -> {
+                            Text(
+                                text = "정해진 일정이 없어요",
+                                style = CaramelTheme.typography.body2.regular,
+                                color = CaramelTheme.color.text.disabledPrimary
+                            )
+                        }
 
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { onIntent(ContentIntent.ClickSaveButton) }
-            ) {
-                Text(
-                    text = "저장하기",
-                    fontSize = 12.sp
-                )
+                        ContentState.CreateMode.CALENDAR -> {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s)
+                            ) {
+                                Text(
+                                    text = state.date,
+                                    style = CaramelTheme.typography.body2.regular,
+                                    color = CaramelTheme.color.text.primary
+                                )
+                                Text(
+                                    text = state.time,
+                                    style = CaramelTheme.typography.body2.regular,
+                                    color = CaramelTheme.color.text.primary
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
+        CaramelButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = CaramelTheme.spacing.xl)
+                .align(Alignment.BottomCenter)
+                .imePadding(),
+            buttonType = CaramelButtonType.Enabled1,
+            buttonSize = CaramelButtonSize.Large,
+            text = "저장",
+            onClick = {
+                onIntent(ContentIntent.ClickSaveButton)
+            }
+        )
     }
 }
