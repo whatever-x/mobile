@@ -9,6 +9,7 @@ import com.whatever.caramel.feature.content.mvi.ContentSideEffect
 import com.whatever.caramel.feature.content.mvi.ContentState
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.datetime.LocalDateTime
 import com.whatever.caramel.feature.content.navigation.ContentRoute
 
 class ContentViewModel(
@@ -37,23 +38,21 @@ class ContentViewModel(
             is ContentIntent.ClickCloseButton -> postSideEffect(ContentSideEffect.NavigateToBackStack)
             is ContentIntent.ClickSaveButton -> postSideEffect(ContentSideEffect.NavigateToBackStack)
             is ContentIntent.ClickDeleteButton -> postSideEffect(ContentSideEffect.NavigateToBackStack)
-            is ContentIntent.InputTitle -> {
-                inputTitle(intent)
-            }
-
-            is ContentIntent.InputContent -> {
-                inputContent(intent)
-            }
-
+            is ContentIntent.InputTitle -> inputTitle(intent)
+            is ContentIntent.InputContent -> inputContent(intent)
             is ContentIntent.RecognizeLink -> {
-
+                // TODO: Handle link recognition
             }
 
-            is ContentIntent.ClickTag -> {
-                toggleTagSelection(intent)
-            }
-
+            is ContentIntent.ClickTag -> toggleTagSelection(intent)
             is ContentIntent.SelectCreateMode -> selectCreateMode(intent)
+            is ContentIntent.HideDateTimeDialog -> hideDateTimeDialog(intent)
+            is ContentIntent.OnYearChanged -> updateYear(intent)
+            is ContentIntent.OnMonthChanged -> updateMonth(intent)
+            is ContentIntent.OnDayChanged -> updateDay(intent)
+            is ContentIntent.OnPeriodChanged -> updatePeriod(intent)
+            is ContentIntent.OnHourChanged -> updateHour(intent)
+            is ContentIntent.OnMinuteChanged -> updateMinute(intent)
         }
     }
 
@@ -88,9 +87,85 @@ class ContentViewModel(
     private fun selectCreateMode(intent: ContentIntent.SelectCreateMode) {
         reduce {
             copy(
-                createMode = intent.createMode
+                createMode = intent.createMode,
+                showDateDialog = if (intent.createMode == ContentState.CreateMode.CALENDAR && createMode != ContentState.CreateMode.CALENDAR) true else false,
+                showTimeDialog = false
             )
         }
     }
 
+    private fun hideDateTimeDialog(intent: ContentIntent.HideDateTimeDialog) {
+        reduce {
+            copy(showDateDialog = false, showTimeDialog = false)
+        }
+    }
+
+    private fun updateYear(intent: ContentIntent.OnYearChanged) {
+        reduce { copy(dateTime = dateTime.copy(year = intent.year)) }
+    }
+
+    private fun updateMonth(intent: ContentIntent.OnMonthChanged) {
+        reduce { copy(dateTime = dateTime.copy(monthNumber = intent.month)) }
+    }
+
+    private fun updateDay(intent: ContentIntent.OnDayChanged) {
+        reduce { copy(dateTime = dateTime.copy(dayOfMonth = intent.day)) }
+    }
+
+    private fun updateMinute(intent: ContentIntent.OnMinuteChanged) {
+        val minute = intent.minute.toIntOrNull() ?: currentState.dateTime.minute
+        reduce { copy(dateTime = dateTime.copy(minute = minute)) }
+    }
+
+    private fun updateHour(intent: ContentIntent.OnHourChanged) {
+        val newHour12 = intent.hour.toIntOrNull() ?: return
+
+        reduce {
+            val currentDateTime = dateTime
+            val currentHour24 = currentDateTime.hour
+            val newHour24 = when {
+                currentHour24 < 12 -> { // 현재 AM
+                    if (newHour12 == 12) 0 else newHour12 // 12 AM은 0시, 나머지는 그대로
+                }
+
+                else -> { // 현재 PM
+                    if (newHour12 == 12) 12 else newHour12 + 12 // 12 PM은 12시, 나머지는 +12
+                }
+            }
+            copy(dateTime = currentDateTime.copy(hour = newHour24))
+        }
+    }
+
+    private fun updatePeriod(intent: ContentIntent.OnPeriodChanged) {
+        reduce {
+            val currentDateTime = dateTime
+            val currentHour24 = currentDateTime.hour
+            val finalNewHour24 = when (intent.period) {
+                "오전" -> if (currentHour24 >= 12) currentHour24 - 12 else currentHour24 // PM -> AM
+                "오후" -> if (currentHour24 < 12) currentHour24 + 12 else currentHour24  // AM -> PM
+                else -> currentHour24
+            }
+            copy(dateTime = currentDateTime.copy(hour = finalNewHour24))
+        }
+    }
+}
+
+private fun LocalDateTime.copy(
+    year: Int = this.year,
+    monthNumber: Int = this.monthNumber,
+    dayOfMonth: Int = this.dayOfMonth,
+    hour: Int = this.hour,
+    minute: Int = this.minute,
+    second: Int = this.second,
+    nanosecond: Int = this.nanosecond
+): LocalDateTime {
+    return LocalDateTime(
+        year = year,
+        monthNumber = monthNumber,
+        dayOfMonth = dayOfMonth,
+        hour = hour,
+        minute = minute,
+        second = second,
+        nanosecond = nanosecond
+    )
 }

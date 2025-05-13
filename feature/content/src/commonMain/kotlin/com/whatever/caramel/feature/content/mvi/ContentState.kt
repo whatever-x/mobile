@@ -18,6 +18,8 @@ data class ContentState(
     val tags: ImmutableList<Tag> = persistentListOf(),
     val selectedTags: ImmutableSet<Tag> = persistentSetOf(),
     val createMode: CreateMode = CreateMode.MEMO,
+    val showDateDialog: Boolean = false,
+    val showTimeDialog: Boolean = false,
     val dateTime: LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
     val id : Long,
 ) : UiState {

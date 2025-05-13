@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.whatever.caramel.feature.content
 
 import androidx.compose.foundation.background
@@ -12,9 +14,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,13 +31,19 @@ import com.whatever.caramel.core.designsystem.components.CaramelButtonType
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.ui.picker.CaramelDatePicker
+import com.whatever.caramel.core.ui.picker.CaramelTimePicker
+import com.whatever.caramel.core.ui.picker.TimeUiState
+import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.feature.content.components.ContentTextArea
 import com.whatever.caramel.feature.content.components.CreateModeSwitch
+import com.whatever.caramel.feature.content.components.DateBottomSheet
 import com.whatever.caramel.feature.content.components.SelectableTagChipRow
 import com.whatever.caramel.feature.content.components.TitleTextField
 import com.whatever.caramel.feature.content.mvi.ContentIntent
 import com.whatever.caramel.feature.content.mvi.ContentState
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -41,6 +52,11 @@ internal fun ContentScreen(
     onIntent: (ContentIntent) -> Unit
 ) {
     val uriHandler = LocalUriHandler.current
+    val sheetState = rememberStandardBottomSheetState(
+        initialValue = SheetValue.PartiallyExpanded,
+        skipHiddenState = false
+    )
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -141,6 +157,52 @@ internal fun ContentScreen(
                 }
             }
         }
+        if (state.showDateDialog || state.showTimeDialog) {
+            DateBottomSheet(
+                modifier = Modifier
+//                    .padding(
+//                        top = CaramelTheme.spacing.l + 24.dp,
+//                        start = CaramelTheme.spacing.xl,
+//                        end = CaramelTheme.spacing.xl
+//                    ),
+                ,
+                sheetState = sheetState,
+                onDismiss = { onIntent(ContentIntent.HideDateTimeDialog) },
+                slot = {
+                    when {
+                        state.showDateDialog -> {
+                            CaramelDatePicker(
+                                dateUiState = state.dateTime.toDateUiState(),
+                                onYearChanged = { year ->
+                                    onIntent(ContentIntent.OnYearChanged(year))
+                                },
+                                onDayChanged = { day ->
+                                    onIntent(ContentIntent.OnDayChanged(day))
+                                },
+                                onMonthChanged = { month ->
+                                    onIntent(ContentIntent.OnMonthChanged(month))
+                                }
+                            )
+                        }
+
+                        state.showTimeDialog -> {
+                            CaramelTimePicker(
+                                timeUiState = state.dateTime.toTimeUiState(),
+                                onPeriodChanged = { period ->
+                                    onIntent(ContentIntent.OnPeriodChanged(period))
+                                },
+                                onHourChanged = { hour ->
+                                    onIntent(ContentIntent.OnHourChanged(hour))
+                                },
+                                onMinuteChanged = { minute ->
+                                    onIntent(ContentIntent.OnMinuteChanged(minute))
+                                }
+                            )
+                        }
+                    }
+                }
+            )
+        }
         CaramelButton(
             modifier = Modifier
                 .fillMaxWidth()
@@ -155,4 +217,23 @@ internal fun ContentScreen(
             }
         )
     }
+}
+
+private fun LocalDateTime.toDateUiState(): DateUiState {
+    return DateUiState(
+        year = this.year,
+        month = this.monthNumber,
+        day = this.dayOfMonth
+    )
+}
+
+private fun LocalDateTime.toTimeUiState(): TimeUiState {
+    val currentHour = this.hour
+    val period = if (currentHour < 12) "오전" else "오후"
+    val hourIn12 = if (currentHour == 0 || currentHour == 12) 12 else currentHour % 12
+    return TimeUiState(
+        period = period,
+        hour = hourIn12.toString(),
+        minute = this.minute.toString().padStart(2, '0')
+    )
 }

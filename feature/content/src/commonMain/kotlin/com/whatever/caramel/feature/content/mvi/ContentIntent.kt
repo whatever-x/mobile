@@ -20,4 +20,14 @@ sealed interface ContentIntent : UiIntent {
     data class SelectCreateMode(val createMode: ContentState.CreateMode) : ContentIntent
 
     data class RecognizeLink(val link: String) : ContentIntent
+
+    data object HideDateTimeDialog : ContentIntent
+
+    data class OnYearChanged(val year: Int) : ContentIntent
+    data class OnMonthChanged(val month: Int) : ContentIntent
+    data class OnDayChanged(val day: Int) : ContentIntent
+
+    data class OnPeriodChanged(val period: String) : ContentIntent
+    data class OnHourChanged(val hour: String) : ContentIntent
+    data class OnMinuteChanged(val minute: String) : ContentIntent
 }
