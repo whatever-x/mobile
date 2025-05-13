@@ -53,9 +53,9 @@ class CalendarViewModel(
                 )
             )
 
-            is CalendarIntent.ClickTodoItem -> postSideEffect(
+            is CalendarIntent.ClickTodoItemInBottomSheet -> postSideEffect(
                 CalendarSideEffect.NavigateToTodoDetail(
-                    intent.id
+                    intent.todoId
                 )
             )
 
@@ -64,6 +64,9 @@ class CalendarViewModel(
                 year = intent.year,
                 monthNumber = intent.monthNumber
             )
+
+            is CalendarIntent.ClickCalendarCell -> clickCalendarCell(intent.selectedDate)
+            is CalendarIntent.ClickTodoItemInCalendar -> TODO()
         }
     }
 
@@ -75,6 +78,28 @@ class CalendarViewModel(
     private fun clickTodoUrl(url: String?) {
         if (url == null) return
         postSideEffect(CalendarSideEffect.OpenWebView(url))
+    }
+
+    private fun clickCalendarCell(selectedDate: LocalDate) {
+        reduce {
+            val newSchedule = currentState.schedules.toMutableList()
+            // 이전 선택 스케츌에 todo도 없고 휴일도 없다면 리스트에서 제거
+            newSchedule.find { it.date == currentState.selectedDate }?.let {
+                if (it.holidays.isEmpty() && it.todos.isEmpty()) {
+                    newSchedule.remove(it)
+                }
+            }
+            // 새로 선택된 날짜에 스케쥴이 없으면 빈 스케쥴 추가
+            if (!newSchedule.any { it.date == selectedDate }) {
+                newSchedule.add(DaySchedule(date = selectedDate))
+            }
+
+            copy(
+                bottomSheetState = BottomSheetState.EXPANDED,
+                selectedDate = selectedDate,
+                schedules = newSchedule.sortedBy { it.date }
+            )
+        }
     }
 
     private fun updateCalendarDate(year: Int, monthNumber: Int) {
@@ -113,9 +138,16 @@ class CalendarViewModel(
             val holidays = getHolidaysUseCase(year = year, monthNumber = monthNumber)
             reduce {
                 copy(
-                    schedules = createDaySchedules(todoList = todos, holidayList =  holidays)
+                    schedules = createDaySchedules(todoList = todos, holidayList = holidays)
                 )
             }
+            clickCalendarCell(
+                if (currentState.today == currentState.selectedDate) {
+                    currentState.today
+                } else {
+                    LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
+                },
+            )
         }
     }
 
@@ -199,6 +231,9 @@ class CalendarViewModel(
             scheduleMap[date] = existingSchedule.copy(holidays = list.holidays)
         }
 
+        if (!scheduleMap.containsKey(currentState.selectedDate)) {
+            scheduleMap[currentState.selectedDate] = DaySchedule(date = currentState.selectedDate)
+        }
         return scheduleMap.values.sortedBy { it.date }
     }
 }

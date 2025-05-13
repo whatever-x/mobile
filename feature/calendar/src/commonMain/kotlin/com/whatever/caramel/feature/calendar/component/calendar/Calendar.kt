@@ -28,7 +28,10 @@ fun CaramelCalendar(
     modifier: Modifier = Modifier,
     year: Int,
     month: Month,
-    schedules: List<DaySchedule>
+    selectedDate : LocalDate,
+    schedules: List<DaySchedule>,
+    onClickCell: (LocalDate) -> Unit,
+    onClickTodo: (Long) -> Unit
 ) {
     val firstDay = LocalDate(year = year, month = month, dayOfMonth = 1)
     val firstDayOfWeek =
@@ -57,9 +60,9 @@ fun CaramelCalendar(
                                 CalendarDayOfMonthCell(
                                     schedule = schedules.find { it.date == date },
                                     date = date,
-                                    isFocus = false,
-                                    onClickCell = {},
-                                    onClickTodo = {}
+                                    isFocus = selectedDate == date,
+                                    onClickCell = { onClickCell(it) },
+                                    onClickTodo = { onClickTodo(it) }
                                 )
                             }
                         }
