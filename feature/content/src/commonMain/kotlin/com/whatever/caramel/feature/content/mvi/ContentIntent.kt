@@ -19,6 +19,9 @@ sealed interface ContentIntent : UiIntent {
 
     data class SelectCreateMode(val createMode: ContentState.CreateMode) : ContentIntent
 
+    data object ClickDate: ContentIntent
+    data object ClickTime: ContentIntent
+
     data class RecognizeLink(val link: String) : ContentIntent
 
     data object HideDateTimeDialog : ContentIntent

@@ -53,6 +53,8 @@ class ContentViewModel(
             is ContentIntent.OnPeriodChanged -> updatePeriod(intent)
             is ContentIntent.OnHourChanged -> updateHour(intent)
             is ContentIntent.OnMinuteChanged -> updateMinute(intent)
+            is ContentIntent.ClickDate -> clickDate(intent)
+            is ContentIntent.ClickTime -> clickTime(intent)
         }
     }
 
@@ -88,9 +90,19 @@ class ContentViewModel(
         reduce {
             copy(
                 createMode = intent.createMode,
-                showDateDialog = if (intent.createMode == ContentState.CreateMode.CALENDAR && createMode != ContentState.CreateMode.CALENDAR) true else false,
-                showTimeDialog = false
             )
+        }
+    }
+
+    private fun clickDate(intent: ContentIntent.ClickDate) {
+        reduce {
+            copy(showDateDialog = true)
+        }
+    }
+
+    private fun clickTime(intent: ContentIntent.ClickTime) {
+        reduce {
+            copy(showTimeDialog = true)
         }
     }
 

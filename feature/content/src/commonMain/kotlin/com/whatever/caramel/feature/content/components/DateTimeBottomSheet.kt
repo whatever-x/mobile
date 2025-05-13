@@ -1,5 +1,6 @@
 package com.whatever.caramel.feature.content.components
 
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -13,7 +14,7 @@ internal fun DateBottomSheet(
     modifier: Modifier = Modifier,
     sheetState: SheetState,
     onDismiss: () -> Unit,
-    slot: @Composable () -> Unit,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     ModalBottomSheet(
         modifier = modifier,
@@ -22,7 +23,6 @@ internal fun DateBottomSheet(
         containerColor = CaramelTheme.color.background.tertiary,
         scrimColor = CaramelTheme.color.alpha.primary,
         sheetState = sheetState,
-    ) {
-        slot()
-    }
+        content = content
+    )
 }

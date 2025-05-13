@@ -142,11 +142,13 @@ internal fun ContentScreen(
                                 horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s)
                             ) {
                                 Text(
+                                    modifier = Modifier.clickable { onIntent(ContentIntent.ClickDate) },
                                     text = state.date,
                                     style = CaramelTheme.typography.body2.regular,
                                     color = CaramelTheme.color.text.primary
                                 )
                                 Text(
+                                    modifier = Modifier.clickable { onIntent(ContentIntent.ClickTime) },
                                     text = state.time,
                                     style = CaramelTheme.typography.body2.regular,
                                     color = CaramelTheme.color.text.primary
@@ -159,19 +161,15 @@ internal fun ContentScreen(
         }
         if (state.showDateDialog || state.showTimeDialog) {
             DateBottomSheet(
-                modifier = Modifier
-//                    .padding(
-//                        top = CaramelTheme.spacing.l + 24.dp,
-//                        start = CaramelTheme.spacing.xl,
-//                        end = CaramelTheme.spacing.xl
-//                    ),
-                ,
                 sheetState = sheetState,
                 onDismiss = { onIntent(ContentIntent.HideDateTimeDialog) },
-                slot = {
+                content = {
                     when {
                         state.showDateDialog -> {
                             CaramelDatePicker(
+                                modifier = Modifier
+                                    .padding(top = CaramelTheme.spacing.xxl)
+                                    .align(Alignment.CenterHorizontally),
                                 dateUiState = state.dateTime.toDateUiState(),
                                 onYearChanged = { year ->
                                     onIntent(ContentIntent.OnYearChanged(year))
@@ -187,6 +185,9 @@ internal fun ContentScreen(
 
                         state.showTimeDialog -> {
                             CaramelTimePicker(
+                                modifier = Modifier
+                                    .padding(top = CaramelTheme.spacing.xxl)
+                                    .align(Alignment.CenterHorizontally),
                                 timeUiState = state.dateTime.toTimeUiState(),
                                 onPeriodChanged = { period ->
                                     onIntent(ContentIntent.OnPeriodChanged(period))
@@ -200,6 +201,19 @@ internal fun ContentScreen(
                             )
                         }
                     }
+                    Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.l))
+                    CaramelButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(all = CaramelTheme.spacing.xl)
+                            .imePadding(),
+                        buttonType = CaramelButtonType.Enabled1,
+                        buttonSize = CaramelButtonSize.Large,
+                        text = "완료",
+                        onClick = {
+                            onIntent(ContentIntent.HideDateTimeDialog)
+                        }
+                    )
                 }
             )
         }
