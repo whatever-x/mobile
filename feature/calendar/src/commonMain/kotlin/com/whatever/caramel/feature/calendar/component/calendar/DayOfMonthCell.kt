@@ -63,18 +63,21 @@ private fun CalendarDayOfMonthText(
     isFocus: Boolean,
     isHoliday: Boolean
 ) {
-    Box(
-        modifier = modifier
-            .size(24.dp)
-            .background(
-                color = if (isFocus) {
-                    CaramelTheme.color.fill.primary
-                } else {
-                    Color.Unspecified
-                },
-                shape = CaramelTheme.shape.s
-            )
-    ) {
+    Box(modifier = modifier) {
+        Box(
+            modifier = Modifier
+                .background(
+                    color = if (isFocus) {
+                        CaramelTheme.color.fill.primary
+                    } else {
+                        Color.Unspecified
+                    },
+                    shape = CaramelTheme.shape.s
+                )
+                .align(Alignment.Center)
+                .size(24.dp)
+        )
+
         Text(
             modifier = Modifier
                 .align(Alignment.Center),

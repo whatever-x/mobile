@@ -2,7 +2,6 @@ package com.whatever.caramel.feature.calendar.component
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOut
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,6 +27,7 @@ import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.ui.picker.CaramelDateMonthPicker
 import com.whatever.caramel.core.ui.picker.model.DateUiState
+import com.whatever.caramel.feature.calendar.dimension.CalendarDimension
 import kotlinx.datetime.Month
 import kotlinx.datetime.number
 import org.jetbrains.compose.resources.painterResource
@@ -90,7 +90,7 @@ internal fun CalendarDatePicker(
             modifier = Modifier
                 .fillMaxSize()
                 .background(CaramelTheme.color.alpha.primary)
-                .padding(top = 52.dp)
+                .padding(top = CalendarDimension.datePickerHeight)
                 .clickable(
                     indication = null,
                     interactionSource = null,
