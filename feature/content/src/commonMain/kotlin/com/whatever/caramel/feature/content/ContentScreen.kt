@@ -223,7 +223,11 @@ internal fun ContentScreen(
                 .padding(all = CaramelTheme.spacing.xl)
                 .align(Alignment.BottomCenter)
                 .imePadding(),
-            buttonType = CaramelButtonType.Enabled1,
+            buttonType = if (state.isSaveButtonEnable) {
+                CaramelButtonType.Enabled1
+            } else {
+                CaramelButtonType.Disabled
+            },
             buttonSize = CaramelButtonSize.Large,
             text = "저장",
             onClick = {

@@ -24,6 +24,9 @@ data class ContentState(
     val id : Long,
 ) : UiState {
 
+    val isSaveButtonEnable: Boolean
+        get() = title.isNotBlank() || content.isNotBlank()
+
     val date: String
         get() = "${dateTime.year}년 ${dateTime.monthNumber}월 ${dateTime.dayOfMonth}일"
 
