@@ -18,12 +18,12 @@ fun NavController.navigateToCreateProfile(builder: NavOptionsBuilder.() -> Unit 
 
 fun NavGraphBuilder.createProfileScreen(
     navigateToLogin: () -> Unit,
-    navigateToConnectCouple: () -> Unit
+    navigateToStartDestination: () -> Unit
 ) {
     composable<ProfileCreateRoute>() {
         ProfileCreateRoute(
             navigateToLogin = navigateToLogin,
-            navigateToConnectCouple = navigateToConnectCouple
+            navigateToStartDestination = navigateToStartDestination
         )
     }
 }

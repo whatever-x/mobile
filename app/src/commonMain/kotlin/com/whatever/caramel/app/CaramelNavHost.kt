@@ -6,8 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.whatever.caramel.feature.content.navigation.contentScreen
 import com.whatever.caramel.feature.content.navigation.navigateToContent
+import com.whatever.caramel.feature.copule.connecting.navigation.connectingScreen
 import com.whatever.caramel.feature.copule.invite.navigation.inviteCoupleScreen
-import com.whatever.caramel.feature.copule.invite.navigation.navigateToInviteCouple
 import com.whatever.caramel.feature.couple.connect.navigation.connectCoupleScreen
 import com.whatever.caramel.feature.couple.connect.navigation.navigateToConnectCouple
 import com.whatever.caramel.feature.login.navigation.loginScreen
@@ -15,7 +15,6 @@ import com.whatever.caramel.feature.login.navigation.navigateToLogin
 import com.whatever.caramel.feature.main.navigation.mainGraph
 import com.whatever.caramel.feature.main.navigation.navigateToMain
 import com.whatever.caramel.feature.profile.create.navigation.createProfileScreen
-import com.whatever.caramel.feature.profile.create.navigation.navigateToCreateProfile
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditType
 import com.whatever.caramel.feature.profile.edit.navigation.editProfileScreen
 import com.whatever.caramel.feature.profile.edit.navigation.navigateToEditProfile
@@ -24,11 +23,13 @@ import com.whatever.caramel.feature.setting.navigation.navigateToSetting
 import com.whatever.caramel.feature.setting.navigation.settingScreen
 import com.whatever.caramel.feature.splash.navigation.SplashRoute
 import com.whatever.caramel.feature.splash.navigation.splashScreen
+import com.whatever.caramel.mvi.AppIntent
 
 @Composable
 internal fun CaramelNavHost(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
+    onIntent: (AppIntent) -> Unit,
 ) {
     NavHost(
         modifier = modifier,
@@ -37,31 +38,26 @@ internal fun CaramelNavHost(
     ) {
         with(navHostController) {
             splashScreen(
+                navigateToStartDestination = { onIntent(AppIntent.NavigateToStartDestination)},
                 navigateToLogin = { navigateToLogin() },
-                navigateToMain = { navigateToMain() },
-                navigateToInviteCouple = {
-                    navigateToInviteCouple {
-                        popUpTo(route = SplashRoute) {
-                            inclusive = true
-                        }
-                    }
-                },
-                navigateToCreateProfile = {
-                    navigateToCreateProfile {
-                        popUpTo(route = SplashRoute) {
-                            inclusive = true
-                        }
-                    }
-                }
             )
             loginScreen(
-                navigateToConnectCouple = { navigateToInviteCouple() },
-                navigateToCreateProfile = { navigateToCreateProfile() },
-                navigateToMain = { navigateToMain() }
+                navigateToStartDestination = { onIntent(AppIntent.NavigateToStartDestination)},
             )
             createProfileScreen(
                 navigateToLogin = { navigateToLogin() },
-                navigateToConnectCouple = { navigateToInviteCouple() }
+                navigateToStartDestination = { onIntent(AppIntent.NavigateToStartDestination) }
+            )
+            connectingScreen(
+                navigateToMain = { navigateToMain() }
+            )
+            connectCoupleScreen(
+                navigateToMain = { navigateToMain() },
+                navigateToInviteCouple = { popBackStack() }
+            )
+            inviteCoupleScreen(
+                navigateToConnectCouple = { navigateToConnectCouple() },
+                navigateToLogin = { navigateToLogin() }
             )
             settingScreen(
                 navigateToHome = { popBackStack() },
@@ -96,14 +92,6 @@ internal fun CaramelNavHost(
             )
             editProfileScreen(
                 popBackStack = { popBackStack() }
-            )
-            inviteCoupleScreen(
-                navigateToConnectCouple = { navigateToConnectCouple() },
-                navigateToLogin = { navigateToLogin() }
-            )
-            connectCoupleScreen(
-                navigateToMain = { navigateToMain() },
-                navigateToInviteCouple = { popBackStack() }
             )
             mainGraph(
                 navigateToSetting = { navigateToSetting() },

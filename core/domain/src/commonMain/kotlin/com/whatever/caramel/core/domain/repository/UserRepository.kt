@@ -5,7 +5,7 @@ import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 
 interface UserRepository {
-    suspend fun getUserStatus() : UserStatus
+    suspend fun getUserStatus(): UserStatus
     suspend fun setUserStatus(status: UserStatus)
     suspend fun createUserProfile(
         nickname : String,

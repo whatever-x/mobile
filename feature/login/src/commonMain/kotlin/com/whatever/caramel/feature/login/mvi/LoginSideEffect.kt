@@ -4,11 +4,7 @@ import com.whatever.caramel.core.viewmodel.UiSideEffect
 
 sealed interface LoginSideEffect : UiSideEffect {
 
-    data object NavigateToCreateProfile : LoginSideEffect
-
-    data object NavigateToConnectCouple : LoginSideEffect
-
-    data object NavigateToMain : LoginSideEffect
+    data object NavigateToStartDestination : LoginSideEffect
 
     data class ShowErrorSnackBar(val code: String, val message: String? = null) : LoginSideEffect
 

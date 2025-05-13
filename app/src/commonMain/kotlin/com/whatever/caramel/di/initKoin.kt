@@ -8,11 +8,13 @@ import com.whatever.caramel.core.datastore.di.dataStoreModule
 import com.whatever.caramel.core.datastore.di.platformDataStoreModule
 import com.whatever.caramel.core.designsystem.di.hapticControllerModule
 import com.whatever.caramel.core.domain.di.useCaseModule
+import com.whatever.caramel.core.remote.di.deviceIdModule
 import com.whatever.caramel.core.remote.di.networkClientEngineModule
 import com.whatever.caramel.core.remote.di.networkModule
 import com.whatever.caramel.core.remote.di.remoteDataSourceModule
 import com.whatever.caramel.feature.calendar.di.calendarFeatureModule
 import com.whatever.caramel.feature.content.di.contentFeatureModule
+import com.whatever.caramel.feature.copule.connecting.di.coupleConnectingFeatureModule
 import com.whatever.caramel.feature.copule.invite.di.coupleInviteFeatureModule
 import com.whatever.caramel.feature.copule.invite.di.shareServiceModule
 import com.whatever.caramel.feature.couple.connect.coupleConnectFeatureModule
@@ -31,6 +33,9 @@ fun initKoin(config: KoinAppDeclaration? = null) {
     startKoin {
         config?.invoke(this)
         modules(
+            /* === App Layer === */
+            appModule,
+
             /* ==== Data Layer ==== */
             repositoryModule,
 
@@ -39,6 +44,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             networkClientEngineModule,
             networkInterceptorModule,
             remoteDataSourceModule,
+            deviceIdModule,
 
             /* DataBase Module */
             platformDatabaseModule,
@@ -61,6 +67,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             contentFeatureModule,
             coupleConnectFeatureModule,
             coupleInviteFeatureModule,
+            coupleConnectingFeatureModule,
             shareServiceModule,
             homeFeatureModule,
             loginFeatureModule,

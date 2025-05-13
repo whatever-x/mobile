@@ -5,9 +5,11 @@ package com.whatever.caramel
 import androidx.compose.ui.window.ComposeUIViewController
 import androidx.navigation.compose.rememberNavController
 import com.whatever.caramel.app.CaramelComposeApp
+import com.whatever.caramel.app.CaramelViewModel
 import com.whatever.caramel.di.initKoin
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
+import org.koin.compose.viewmodel.koinViewModel
 import kotlin.experimental.ExperimentalNativeApi
 
 @OptIn(ExperimentalNativeApi::class)
@@ -19,8 +21,10 @@ fun MainViewController() = ComposeUIViewController(
     }
 
     val navHostController = rememberNavController()
+    val viewModel: CaramelViewModel = koinViewModel()
 
     CaramelComposeApp(
-        navHostController = navHostController
+        navHostController = navHostController,
+        viewModel = viewModel
     )
 }

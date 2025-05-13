@@ -10,6 +10,6 @@ sealed interface CoupleInviteSideEffect : UiSideEffect {
 
     data class CopyToClipBoardWithShowSnackBar(val inviteCode: String) : CoupleInviteSideEffect
 
-    data object ShareOfInvite : CoupleInviteSideEffect
+    data class ShareOfInvite(val inviteCode: String) : CoupleInviteSideEffect
 
 }

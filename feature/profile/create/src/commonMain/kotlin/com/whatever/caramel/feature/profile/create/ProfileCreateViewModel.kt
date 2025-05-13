@@ -82,7 +82,7 @@ class ProfileCreateViewModel(
                     agreementServiceTerms = currentState.isServiceTermChecked,
                     agreementPrivacyPolicy = currentState.isPersonalInfoTermChecked
                 )
-                postSideEffect(ProfileCreateSideEffect.NavigateToConnectCouple)
+                postSideEffect(ProfileCreateSideEffect.NavigateToStartDestination)
             }
         }
     }

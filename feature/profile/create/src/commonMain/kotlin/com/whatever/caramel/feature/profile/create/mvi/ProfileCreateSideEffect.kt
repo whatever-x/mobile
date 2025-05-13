@@ -6,7 +6,7 @@ sealed interface ProfileCreateSideEffect : UiSideEffect {
 
     data object NavigateToLogin : ProfileCreateSideEffect
 
-    data object NavigateToConnectCouple : ProfileCreateSideEffect
+    data object NavigateToStartDestination : ProfileCreateSideEffect
 
     data object NavigateToServiceTermNotion : ProfileCreateSideEffect
 

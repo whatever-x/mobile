@@ -25,9 +25,7 @@ internal fun LoginRoute(
     viewModel: LoginViewModel = koinViewModel(),
     kakaoAuthenticator: SocialAuthenticator<KakaoUser> = koinInject<KakaoAuthProvider>().get(),
     appleAuthenticator: SocialAuthenticator<AppleUser>? = if (Platform.isIos) koinInject<AppleAuthProvider>().get() else null,
-    navigateToCreateProfile: () -> Unit,
-    navigateToConnectCouple: () -> Unit,
-    navigateToMain: () -> Unit
+    navigateToStartDestination: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
@@ -52,11 +50,9 @@ internal fun LoginRoute(
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is LoginSideEffect.NavigateToCreateProfile -> navigateToCreateProfile()
-                is LoginSideEffect.NavigateToConnectCouple -> navigateToConnectCouple()
-                LoginSideEffect.NavigateToMain -> navigateToMain()
                 // @RyuSw-cs 2025.04.01 FIXME : 로컬에서 발생하면 코드, 서버라면 메세지를 받고 있어 분기 처리 필요
                 is LoginSideEffect.ShowErrorSnackBar -> Napier.e { "Error: ${sideEffect.message}" }
+                is LoginSideEffect.NavigateToStartDestination -> navigateToStartDestination()
             }
         }
     }

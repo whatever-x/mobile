@@ -1,7 +1,6 @@
 package com.whatever.caramel.feature.splash
 
 import androidx.lifecycle.SavedStateHandle
-import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.domain.usecase.user.RefreshUserSessionUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.splash.mvi.SplashIntent
@@ -17,7 +16,8 @@ class SplashViewModel(
     init {
         launch {
             delay(1000L)
-            checkAppAuthToken()
+            refreshUserSessionUseCase()
+            postSideEffect(SplashSideEffect.NavigateToStartDestination)
         }
     }
 
@@ -32,14 +32,4 @@ class SplashViewModel(
 
     override suspend fun handleIntent(intent: SplashIntent) {}
 
-    private suspend fun checkAppAuthToken() {
-        val userStatus: UserStatus = refreshUserSessionUseCase()
-        when (userStatus) {
-            // @RyuSw-cs 2025.03.24 NONE인 경우 로그인을 하지 않은 초기 사용자
-            UserStatus.NONE -> postSideEffect(SplashSideEffect.NavigateToLogin)
-            UserStatus.NEW -> postSideEffect(SplashSideEffect.NavigateToCreateProfile)
-            UserStatus.SINGLE -> postSideEffect(SplashSideEffect.NavigateToInviteCouple)
-            UserStatus.COUPLED -> postSideEffect(SplashSideEffect.NavigateToMain)
-        }
-    }
 }

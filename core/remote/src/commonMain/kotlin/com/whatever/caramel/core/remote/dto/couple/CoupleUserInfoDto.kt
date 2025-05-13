@@ -1,6 +1,7 @@
 package com.whatever.caramel.core.remote.dto.couple
 
 import com.whatever.caramel.core.remote.dto.user.GenderDto
+import com.whatever.caramel.core.remote.dto.user.UserStatusDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -10,4 +11,5 @@ data class CoupleUserInfoDto(
     @SerialName("nickname") val nickname: String,
     @SerialName("birthDate") val birthDate: String,
     @SerialName("gender") val gender: GenderDto,
+    @SerialName("userStatus") val userStatus: UserStatusDto,
 )
