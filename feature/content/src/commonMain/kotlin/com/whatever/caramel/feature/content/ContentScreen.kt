@@ -248,6 +248,6 @@ private fun LocalDateTime.toTimeUiState(): TimeUiState {
     return TimeUiState(
         period = period,
         hour = hourIn12.toString(),
-        minute = this.minute.toString().padStart(2, '0')
+        minute = this.minute.toString()
     )
 }
