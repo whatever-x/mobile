@@ -14,20 +14,11 @@ class GetTodosGroupByStartDateUseCase(
         endDate: String,
         userTimezone: String? = null
     ): List<TodoList> {
-        val result = mutableListOf<TodoList>()
-        val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-            .date
-        val schedules = calendarRepository.getSchedules(
+        return calendarRepository.getSchedules(
             startDate = startDate,
             endDate = endDate,
             userTimezone = userTimezone
         ).groupBy { it.startDate }
             .map { (date, todos) -> TodoList(date.date, todos) }
-
-        result.addAll(schedules)
-        if (schedules.find { it.date == today } == null) {
-            result.add(TodoList(date = today, todos = emptyList()))
-        }
-        return result
     }
 }
