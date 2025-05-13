@@ -11,6 +11,7 @@ import com.whatever.caramel.core.remote.di.qualifier.DefaultClient
 import com.whatever.caramel.core.remote.di.qualifier.SampleClient
 import com.whatever.caramel.core.remote.network.HttpClientFactory
 import com.whatever.caramel.core.remote.network.config.NetworkConfig
+import com.whatever.caramel.core.remote.network.config.addDeviceIdHeader
 import com.whatever.caramel.core.remote.network.config.caramelDefaultRequest
 import com.whatever.caramel.core.remote.network.config.caramelResponseValidator
 import com.whatever.caramel.core.remote.network.interceptor.TokenInterceptor
@@ -25,12 +26,14 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 expect val networkClientEngineModule: Module
+expect val deviceIdModule: Module
 
 val networkModule = module {
     single { HttpClientFactory.create(engine = get()) }
 
     single(SampleClient) {
         get<HttpClient>().config {
+            addDeviceIdHeader(get())
             caramelResponseValidator()
             defaultRequest {
                 url(NetworkConfig.SAMPLE_URL)
@@ -41,6 +44,7 @@ val networkModule = module {
 
     single(DefaultClient) {
         get<HttpClient>().config {
+            addDeviceIdHeader(get())
             caramelResponseValidator()
             caramelDefaultRequest()
         }

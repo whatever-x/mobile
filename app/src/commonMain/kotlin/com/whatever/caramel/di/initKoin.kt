@@ -8,6 +8,7 @@ import com.whatever.caramel.core.datastore.di.dataStoreModule
 import com.whatever.caramel.core.datastore.di.platformDataStoreModule
 import com.whatever.caramel.core.designsystem.di.hapticControllerModule
 import com.whatever.caramel.core.domain.di.useCaseModule
+import com.whatever.caramel.core.remote.di.deviceIdModule
 import com.whatever.caramel.core.remote.di.networkClientEngineModule
 import com.whatever.caramel.core.remote.di.networkModule
 import com.whatever.caramel.core.remote.di.remoteDataSourceModule
@@ -43,6 +44,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             networkClientEngineModule,
             networkInterceptorModule,
             remoteDataSourceModule,
+            deviceIdModule,
 
             /* DataBase Module */
             platformDatabaseModule,
