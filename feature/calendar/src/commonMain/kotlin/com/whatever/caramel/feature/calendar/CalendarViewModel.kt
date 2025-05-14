@@ -3,6 +3,7 @@ package com.whatever.caramel.feature.calendar
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.usecase.calendar.GetHolidaysUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodosGroupByStartDateUseCase
+import com.whatever.caramel.core.domain.vo.calendar.Calendar
 import com.whatever.caramel.core.domain.vo.calendar.HolidayList
 import com.whatever.caramel.core.domain.vo.calendar.TodoList
 import com.whatever.caramel.core.util.DateFormatter
@@ -37,7 +38,8 @@ class CalendarViewModel(
             currentDateList = createCurrentDateList(
                 year = currentDate.year,
                 month = currentDate.month
-            )
+            ),
+            pageIndex = calcPageIndex(currentDate.year, currentDate.month)
         )
     }
 
@@ -67,12 +69,28 @@ class CalendarViewModel(
 
             is CalendarIntent.ClickCalendarCell -> clickCalendarCell(intent.selectedDate)
             is CalendarIntent.ClickTodoItemInCalendar -> TODO()
+            is CalendarIntent.UpdatePageIndex -> updatePageIndex(intent.index)
         }
     }
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
         Napier.e { "exception : $throwable" }
+    }
+
+    private fun updatePageIndex(pageIndex: Int) {
+        if (pageIndex == currentState.pageIndex) return
+
+        val year = (pageIndex / 12) + 1900
+        val monthNumber = pageIndex % 12
+        reduce {
+            copy(
+                year = year,
+                month = Month.entries[monthNumber],
+                pageIndex = pageIndex
+            )
+        }
+        getSchedules(dateChange = true)
     }
 
     private fun clickTodoUrl(url: String?) {
@@ -108,14 +126,15 @@ class CalendarViewModel(
             copy(
                 year = year,
                 month = month,
+                pageIndex = calcPageIndex(year, month),
                 isShownDateSelectDropDown = false,
                 currentDateList = createCurrentDateList(year = year, month = month)
             )
         }
-        getSchedules()
+        getSchedules(dateChange = true)
     }
 
-    private fun getSchedules() {
+    private fun getSchedules(dateChange: Boolean = false) {
         launch {
             val year = currentState.year
             val monthNumber = currentState.month.number
@@ -141,12 +160,13 @@ class CalendarViewModel(
                     schedules = createDaySchedules(todoList = todos, holidayList = holidays)
                 )
             }
+            // 날짜가 변경됐다면 실행
             clickCalendarCell(
-                if (currentState.today == currentState.selectedDate) {
-                    currentState.today
-                } else {
+                if (dateChange) {
                     LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
-                },
+                } else {
+                    currentState.today
+                }
             )
         }
     }
@@ -235,5 +255,10 @@ class CalendarViewModel(
             scheduleMap[currentState.selectedDate] = DaySchedule(date = currentState.selectedDate)
         }
         return scheduleMap.values.sortedBy { it.date }
+    }
+
+    private fun calcPageIndex(year: Int, month: Month): Int {
+        val index = Calendar.YEAR_RANGE.indexOf(year)
+        return index * 12 + (month.number - 1)
     }
 }

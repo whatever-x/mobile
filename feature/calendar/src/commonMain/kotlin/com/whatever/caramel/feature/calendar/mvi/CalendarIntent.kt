@@ -14,4 +14,5 @@ sealed interface CalendarIntent : UiIntent {
     data class ToggleCalendarBottomSheet(val sheetState: BottomSheetState) : CalendarIntent
     data class ClickCalendarCell(val selectedDate: LocalDate) : CalendarIntent
     data class ClickTodoItemInCalendar(val todoId : Long) : CalendarIntent
+    data class UpdatePageIndex(val index : Int) : CalendarIntent
 }

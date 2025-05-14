@@ -10,10 +10,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -31,7 +32,6 @@ import com.whatever.caramel.feature.calendar.component.bottomSheet.DefaultBottom
 import com.whatever.caramel.feature.calendar.component.calendar.CalendarDayOfWeek
 import com.whatever.caramel.feature.calendar.component.calendar.CaramelCalendar
 import com.whatever.caramel.feature.calendar.dimension.CalendarDimension
-import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
 
@@ -41,24 +41,19 @@ internal fun CalendarScreen(
     state: CalendarState,
     onIntent: (CalendarIntent) -> Unit
 ) {
+    val pagerState = rememberPagerState(initialPage = state.pageIndex) {
+        200 * 12
+    }
     val bottomSheetState = rememberStandardBottomSheetState()
     val bottomSheetScaffoldState =
         rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
 
     LaunchedEffect(state.bottomSheetState) {
-        val targetState = when (state.bottomSheetState) {
-            BottomSheetState.HIDDEN -> SheetValue.Hidden
-            BottomSheetState.EXPANDED -> SheetValue.Expanded
-            BottomSheetState.PARTIALLY_EXPANDED -> SheetValue.PartiallyExpanded
-        }
 
-        if (bottomSheetState.currentValue != targetState) {
-            when (targetState) {
-                SheetValue.Hidden -> bottomSheetState.hide()
-                SheetValue.Expanded -> bottomSheetState.expand()
-                SheetValue.PartiallyExpanded -> bottomSheetState.partialExpand()
-            }
-        }
+    }
+
+    LaunchedEffect(pagerState.currentPage) {
+        onIntent(CalendarIntent.UpdatePageIndex(pagerState.currentPage))
     }
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
@@ -165,22 +160,27 @@ internal fun CalendarScreen(
                 }
             }
         ) {
-            Column {
-                CalendarDayOfWeek(
-                    modifier = Modifier.height(height = CalendarDimension.datePickerHeight)
-                )
-                CaramelCalendar(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = CalendarDimension.sheetPeekHeight)
-                        .background(color = CaramelTheme.color.background.primary),
-                    year = state.year,
-                    month = state.month,
-                    schedules = state.schedules,
-                    selectedDate = state.selectedDate,
-                    onClickTodo = {},
-                    onClickCell = { onIntent(CalendarIntent.ClickCalendarCell(it)) }
-                )
+            HorizontalPager(
+                modifier = Modifier.fillMaxSize(),
+                state = pagerState
+            ) {
+                Column {
+                    CalendarDayOfWeek(
+                        modifier = Modifier.height(height = CalendarDimension.datePickerHeight)
+                    )
+                    CaramelCalendar(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(bottom = CalendarDimension.sheetPeekHeight)
+                            .background(color = CaramelTheme.color.background.primary),
+                        year = state.year,
+                        month = state.month,
+                        schedules = state.schedules,
+                        selectedDate = state.selectedDate,
+                        onClickTodo = { onIntent(CalendarIntent.ClickTodoItemInCalendar(it)) },
+                        onClickCell = { onIntent(CalendarIntent.ClickCalendarCell(it)) }
+                    )
+                }
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.calendar.mvi
 
 import com.whatever.caramel.core.domain.entity.Todo
+import com.whatever.caramel.core.domain.vo.calendar.Calendar
 import com.whatever.caramel.core.domain.vo.calendar.Holiday
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.UiState
@@ -11,6 +12,7 @@ data class CalendarState(
     val year: Int,
     val month: Month,
     val currentDateList: List<LocalDate>,
+    val pageIndex : Int,
     val today: LocalDate = DateUtil.today(),
     val selectedDate: LocalDate = DateUtil.today(),
     val isShownDateSelectDropDown: Boolean = false,
