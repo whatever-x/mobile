@@ -34,7 +34,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
         config?.invoke(this)
         modules(
             /* === App Layer === */
-            appModule,
+            appViewModelModule,
             deepLinkModule,
 
             /* ==== Data Layer ==== */

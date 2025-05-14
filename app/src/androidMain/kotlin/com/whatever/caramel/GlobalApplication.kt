@@ -10,6 +10,7 @@ import io.github.aakira.napier.Napier
 import org.koin.android.ext.koin.androidContext
 
 class GlobalApplication : Application() {
+
     override fun onCreate() {
         super.onCreate()
 
