@@ -55,13 +55,13 @@ swiftPackageConfig {
         customPackageSourcePath = "../../app-ios"
         minIos = "15.0"
 
-        dependency(
-            SwiftDependency.Package.Remote.Version(
+        dependency {
+            remotePackageVersion(
                 url = URI("https://github.com/kakao/kakao-ios-sdk"),
                 version = "2.23.0",
                 products = { add("KakaoSDK") }
-            ),
-        )
+            )
+        }
     }
 }
 
