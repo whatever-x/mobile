@@ -37,7 +37,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="caramel"
-                    android:host="invitation" />
+                    android:host="onelink" />
             </intent-filter>
 
             <intent-filter  android:autoVerify="true">

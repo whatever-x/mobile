@@ -10,55 +10,27 @@ import com.appsflyer.AppsFlyerLib
 import com.appsflyer.deeplink.DeepLink
 import com.appsflyer.deeplink.DeepLinkResult
 import com.whatever.caramel.app.CaramelComposeApp
-import com.whatever.caramel.app.CaramelViewModel
-import com.whatever.caramel.core.domain.exception.CaramelException
-import com.whatever.caramel.deeplink.CaramelAppsFlyerDeepLinkValues
-import com.whatever.caramel.mvi.AppIntent
+import com.whatever.caramel.core.deeplink.DeepLinkHandler
+import com.whatever.caramel.core.deeplink.model.AppsFlyerDeepLinkParameter
 import io.github.aakira.napier.Napier
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: CaramelViewModel by viewModel()
+    private val deepLinkHandler: DeepLinkHandler by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
 
-        AppsFlyerLib.getInstance().subscribeForDeepLink { deeplinkResult ->
-            when (deeplinkResult.status) {
-                DeepLinkResult.Status.NOT_FOUND -> Napier.d { "Deep link not found" }
-                DeepLinkResult.Status.ERROR -> Napier.d { "Deep link error" }
-                DeepLinkResult.Status.FOUND -> {
-                    val deepLinkObj: DeepLink = deeplinkResult.deepLink
-
-                    try {
-                        val appsFlyerDeepLinkValue = deepLinkObj.deepLinkValue ?: return@subscribeForDeepLink
-                        val deepLinkValue = CaramelAppsFlyerDeepLinkValues.valueOf(appsFlyerDeepLinkValue)
-
-                        when (deepLinkValue) {
-                            CaramelAppsFlyerDeepLinkValues.INVITE_CODE -> {
-                                val inviteCode = deepLinkObj.getStringValue(deepLinkValue.path)
-
-                                if (inviteCode != null) {
-                                    viewModel.intent(AppIntent.AcceptInvitation(inviteCode = inviteCode))
-                                }
-                            }
-                        }
-                    } catch (e: Exception) {
-                        Napier.d { "DeepLink data came back null" }
-                    }
-                }
-            }
-        }
+        initAppsFlyer()
 
         setContent {
             val navHostController = rememberNavController()
 
             CaramelComposeApp(
                 navHostController = navHostController,
-                viewModel = viewModel
             )
         }
     }
@@ -66,8 +38,30 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
-        val intentData = intent.dataString
-        viewModel.intent(AppIntent.ReceiveNewIntentData(data = intentData))
+        setIntent(intent)
+    }
+
+    private fun initAppsFlyer() {
+        AppsFlyerLib.getInstance().subscribeForDeepLink { deeplinkResult ->
+            when (deeplinkResult.status) {
+                DeepLinkResult.Status.NOT_FOUND -> Napier.d { "Deep link not found" }
+                DeepLinkResult.Status.ERROR -> Napier.d { "Deep link error" }
+                DeepLinkResult.Status.FOUND -> {
+                    val deepLinkObj: DeepLink = deeplinkResult.deepLink
+                    val deepLinkValue = deepLinkObj.deepLinkValue ?: return@subscribeForDeepLink
+
+                    val params: Map<AppsFlyerDeepLinkParameter, String?> =
+                        AppsFlyerDeepLinkParameter.entries.associateWith {
+                            deepLinkObj.getStringValue(it.parameterName)
+                        }
+
+                    deepLinkHandler.handleAppsFlyerData(
+                        deepLinkValue = deepLinkValue,
+                        params = params
+                    )
+                }
+            }
+        }
     }
 
 }
