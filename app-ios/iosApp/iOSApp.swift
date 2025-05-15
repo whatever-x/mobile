@@ -1,4 +1,5 @@
 import SwiftUI
+import AppsFlyerLib
 
 @main
 struct iOSApp: App {
@@ -8,6 +9,9 @@ struct iOSApp: App {
 	var body: some Scene {
 		WindowGroup {
 			ContentView()
+                .onOpenURL { url in
+                    AppsFlyerLib.shared().handleOpen(url, options: [:])
+                }
 		}
 	}
 }
