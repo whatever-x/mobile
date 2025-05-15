@@ -14,6 +14,8 @@ interface DeepLinkHandler {
 
     fun handleAppsFlyerData(deepLinkValue: String, params: Map<AppsFlyerDeepLinkParameter, String?>)
 
+    fun handleAppsFlyerDataRaw(deepLinkValue: String, rawParams: Map<String, String?>)
+
     fun clearDeepLinkData()
 
     fun runningApp()

@@ -45,6 +45,17 @@ class DeepLinkHandlerImpl : DeepLinkHandler {
         }
     }
 
+    override fun handleAppsFlyerDataRaw(
+        deepLinkValue: String,
+        rawParams: Map<String, String?>
+    ) {
+        val mappedParams = AppsFlyerDeepLinkParameter.entries.associateWith { param ->
+            rawParams[param.parameterName]
+        }
+
+        handleAppsFlyerData(deepLinkValue, mappedParams)
+    }
+
     override fun clearDeepLinkData() {
         _deepLinkData = null
     }
