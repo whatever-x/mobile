@@ -28,7 +28,9 @@ class CaramelViewModel(
             deepLinkHandler.deepLinkFlow.collect { deepLink ->
                 when (deepLink) {
                     is CaramelDeepLink.Invite -> {
-                        tryToConnectCouple(inviteCode = deepLink.code)
+                        this@CaramelViewModel.launch {
+                            tryToConnectCouple(inviteCode = deepLink.code)
+                        }
                     }
                     is CaramelDeepLink.Unknown -> TODO()
                 }
@@ -77,7 +79,12 @@ class CaramelViewModel(
                 UserStatus.SINGLE -> {
                     if (deepLinkHandler.deepLinkData?.first == AppsFlyerDeepLinkValue.INVITE) {
                         val inviteCode = deepLinkHandler.deepLinkData?.second?.get(0)?: ""
-                        tryToConnectCouple(inviteCode = inviteCode)
+                        runCatching {
+                            tryToConnectCouple(inviteCode = inviteCode)
+                        }.onFailure { throwable ->
+                            postSideEffect(AppSideEffect.NavigateToInviteCoupleScreen)
+                            throw throwable
+                        }
                     } else {
                         postSideEffect(AppSideEffect.NavigateToInviteCoupleScreen)
                     }
@@ -85,7 +92,12 @@ class CaramelViewModel(
                 UserStatus.COUPLED -> {
                     if (deepLinkHandler.deepLinkData?.first == AppsFlyerDeepLinkValue.INVITE) {
                         val inviteCode = deepLinkHandler.deepLinkData?.second?.get(0)?: ""
-                        tryToConnectCouple(inviteCode = inviteCode)
+                        runCatching {
+                            tryToConnectCouple(inviteCode = inviteCode)
+                        }.onFailure { throwable ->
+                            postSideEffect(AppSideEffect.NavigateToMain)
+                            throw throwable
+                        }
                     } else {
                         postSideEffect(AppSideEffect.NavigateToMain)
                     }
@@ -95,11 +107,9 @@ class CaramelViewModel(
     }
 
     private suspend fun tryToConnectCouple(inviteCode: String) {
-        launch {
-            connectCoupleUseCase(invitationCode = inviteCode)
-            deepLinkHandler.clearDeepLinkData()
-            postSideEffect(AppSideEffect.NavigateToConnectingCoupleScreen)
-        }
+        connectCoupleUseCase(invitationCode = inviteCode)
+        deepLinkHandler.clearDeepLinkData()
+        postSideEffect(AppSideEffect.NavigateToConnectingCoupleScreen)
     }
 
 }
