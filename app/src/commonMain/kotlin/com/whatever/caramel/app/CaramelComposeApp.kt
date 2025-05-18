@@ -24,11 +24,12 @@ import com.whatever.caramel.feature.main.navigation.navigateToMain
 import com.whatever.caramel.feature.profile.create.navigation.navigateToCreateProfile
 import com.whatever.caramel.mvi.AppIntent
 import com.whatever.caramel.mvi.AppSideEffect
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CaramelComposeApp(
     navHostController: NavHostController,
-    viewModel: CaramelViewModel
+    viewModel: CaramelViewModel = koinViewModel()
 ) {
     CaramelTheme {
         val snackBarHostState = remember { SnackbarHostState() }
@@ -78,6 +79,7 @@ fun CaramelComposeApp(
                                     }
                                 }
                             }
+
                             is AppSideEffect.NavigateToConnectingCoupleScreen -> {
                                 navHostController.navigateToConnectingCouple {
                                     popUpTo(navHostController.graph.id) {
@@ -85,12 +87,15 @@ fun CaramelComposeApp(
                                     }
                                 }
                             }
+
                             is AppSideEffect.NavigateToCreateProfile -> {
                                 navHostController.navigateToCreateProfile()
                             }
+
                             is AppSideEffect.NavigateToLogin -> {
                                 navHostController.navigateToLogin()
                             }
+
                             is AppSideEffect.NavigateToMain -> {
                                 navHostController.navigateToMain()
                             }

@@ -38,11 +38,11 @@ internal fun CaramelNavHost(
     ) {
         with(navHostController) {
             splashScreen(
-                navigateToStartDestination = { onIntent(AppIntent.NavigateToStartDestination)},
+                navigateToStartDestination = { onIntent(AppIntent.NavigateToStartDestination) },
                 navigateToLogin = { navigateToLogin() },
             )
             loginScreen(
-                navigateToStartDestination = { onIntent(AppIntent.NavigateToStartDestination)},
+                navigateToStartDestination = { onIntent(AppIntent.NavigateToStartDestination) },
             )
             createProfileScreen(
                 navigateToLogin = { navigateToLogin() },
