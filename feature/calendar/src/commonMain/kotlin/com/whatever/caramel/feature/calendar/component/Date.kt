@@ -38,7 +38,7 @@ internal fun CurrentDateMenu(
     year: Int,
     month: Month,
     isShowDropMenu: Boolean,
-    onShowDropMenu: () -> Unit
+    onToggleDatePicker: () -> Unit
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Row(
@@ -46,7 +46,7 @@ internal fun CurrentDateMenu(
                 .clickable(
                     interactionSource = null,
                     indication = null,
-                    onClick = onShowDropMenu
+                    onClick = onToggleDatePicker
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -75,11 +75,10 @@ internal fun CalendarDatePicker(
     year: Int,
     month: Month,
     isShowDropMenu: Boolean,
-    onDismiss: (Int, Int) -> Unit,
+    onYearChanged: (Int) -> Unit,
+    onMonthChanged: (Int) -> Unit,
+    onDismiss: () -> Unit,
 ) {
-    var selectedYear by remember { mutableStateOf(year) }
-    var selectedMonth by remember { mutableStateOf(month.number) }
-
     AnimatedVisibility(
         modifier = modifier,
         visible = isShowDropMenu,
@@ -94,9 +93,7 @@ internal fun CalendarDatePicker(
                 .clickable(
                     indication = null,
                     interactionSource = null,
-                    onClick = {
-                        onDismiss(selectedYear, selectedMonth)
-                    }
+                    onClick = onDismiss
                 )
         )
         Box(
@@ -115,8 +112,8 @@ internal fun CalendarDatePicker(
                     month = month.number,
                     day = 1
                 ),
-                onYearChanged = { selectedYear = it },
-                onMonthChanged = { selectedMonth = it }
+                onYearChanged = { onYearChanged(it) },
+                onMonthChanged = { onMonthChanged(it) }
             )
         }
     }

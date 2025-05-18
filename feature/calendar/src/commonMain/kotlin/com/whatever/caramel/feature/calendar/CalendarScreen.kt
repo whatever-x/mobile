@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.calendar
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,7 +21,6 @@ import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.calendar.component.CalendarDatePicker
@@ -49,7 +49,7 @@ internal fun CalendarScreen(
         rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
 
     LaunchedEffect(state.bottomSheetState) {
-
+        // TODO : 바텀시트 상태 업데이트 필요
     }
 
     LaunchedEffect(pagerState.currentPage) {
@@ -74,32 +74,15 @@ internal fun CalendarScreen(
                 )
             },
             topBar = {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = Color.Transparent)
-                ) {
+                Column(modifier = Modifier.fillMaxWidth()) {
                     CaramelTopBar(
                         modifier = Modifier.background(color = CaramelTheme.color.background.primary),
                         leadingContent = {
                             CurrentDateMenu(
                                 year = state.year,
                                 month = state.month,
-                                isShowDropMenu = state.isShownDateSelectDropDown,
-                                onShowDropMenu = { onIntent(CalendarIntent.OpenCalendarDatePicker) }
-                            )
-                        }
-                    )
-                    CalendarDatePicker(
-                        year = state.year,
-                        month = state.month,
-                        isShowDropMenu = state.isShownDateSelectDropDown,
-                        onDismiss = { year, monthNumber ->
-                            onIntent(
-                                CalendarIntent.DismissCalendarDatePicker(
-                                    year = year,
-                                    monthNumber = monthNumber
-                                )
+                                isShowDropMenu = state.isShowDatePicker,
+                                onToggleDatePicker = { onIntent(CalendarIntent.ToggleDatePicker) }
                             )
                         }
                     )
@@ -160,27 +143,38 @@ internal fun CalendarScreen(
                 }
             }
         ) {
-            HorizontalPager(
-                modifier = Modifier.fillMaxSize(),
-                state = pagerState
-            ) {
-                Column {
-                    CalendarDayOfWeek(
-                        modifier = Modifier.height(height = CalendarDimension.datePickerHeight)
-                    )
-                    CaramelCalendar(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(bottom = CalendarDimension.sheetPeekHeight)
-                            .background(color = CaramelTheme.color.background.primary),
-                        year = state.year,
-                        month = state.month,
-                        schedules = state.schedules,
-                        selectedDate = state.selectedDate,
-                        onClickTodo = { onIntent(CalendarIntent.ClickTodoItemInCalendar(it)) },
-                        onClickCell = { onIntent(CalendarIntent.ClickCalendarCell(it)) }
-                    )
+            Box(modifier = Modifier.fillMaxSize()) {
+                HorizontalPager(
+                    modifier = Modifier.fillMaxSize(),
+                    state = pagerState
+                ) {
+                    Column {
+                        CalendarDayOfWeek(
+                            modifier = Modifier.height(height = CalendarDimension.datePickerHeight)
+                        )
+                        CaramelCalendar(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(bottom = CalendarDimension.sheetPeekHeight)
+                                .background(color = CaramelTheme.color.background.primary),
+                            year = state.year,
+                            month = state.month,
+                            schedules = state.schedules,
+                            selectedDate = state.selectedDate,
+                            onClickTodo = { onIntent(CalendarIntent.ClickTodoItemInCalendar(it)) },
+                            onClickCell = { onIntent(CalendarIntent.ClickCalendarCell(it)) }
+                        )
+                    }
                 }
+
+                CalendarDatePicker(
+                    year = state.year,
+                    month = state.month,
+                    isShowDropMenu = state.isShowDatePicker,
+                    onDismiss = { onIntent(CalendarIntent.ToggleDatePicker) },
+                    onYearChanged = { onIntent(CalendarIntent.UpdateSelectPickerYear(it)) },
+                    onMonthChanged = { onIntent(CalendarIntent.UpdateSelectPickerMonth(it)) }
+                )
             }
         }
     }

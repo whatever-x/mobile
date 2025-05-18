@@ -1,7 +1,6 @@
 package com.whatever.caramel.feature.calendar.mvi
 
 import com.whatever.caramel.core.domain.entity.Todo
-import com.whatever.caramel.core.domain.vo.calendar.Calendar
 import com.whatever.caramel.core.domain.vo.calendar.Holiday
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.UiState
@@ -12,12 +11,14 @@ data class CalendarState(
     val year: Int,
     val month: Month,
     val currentDateList: List<LocalDate>,
-    val pageIndex : Int,
+    val pageIndex: Int,
+    val pickerYear: Int,
+    val pickerMonth: Int,
     val today: LocalDate = DateUtil.today(),
     val selectedDate: LocalDate = DateUtil.today(),
-    val isShownDateSelectDropDown: Boolean = false,
+    val isShowDatePicker: Boolean = false,
     val bottomSheetState: BottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
-    val schedules: List<DaySchedule> = emptyList()
+    val schedules: List<DaySchedule> = emptyList(),
 ) : UiState
 
 enum class BottomSheetState {
@@ -27,10 +28,10 @@ enum class BottomSheetState {
 }
 
 data class DaySchedule(
-    val date : LocalDate,
-    val todos : List<Todo> = emptyList(),
-    val holidays : List<Holiday> = emptyList()
+    val date: LocalDate,
+    val todos: List<Todo> = emptyList(),
+    val holidays: List<Holiday> = emptyList()
 ) {
-    val totalScheduleCount : Int
+    val totalScheduleCount: Int
         get() = todos.size + holidays.size
 }

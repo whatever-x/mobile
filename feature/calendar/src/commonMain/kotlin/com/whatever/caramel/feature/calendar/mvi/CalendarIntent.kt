@@ -6,8 +6,7 @@ import kotlinx.datetime.LocalDate
 sealed interface CalendarIntent : UiIntent {
     data object SwipeLeftCalendar : CalendarIntent
     data object SwipeRightCalendar : CalendarIntent
-    data object OpenCalendarDatePicker : CalendarIntent
-    data class DismissCalendarDatePicker(val year : Int, val monthNumber : Int) : CalendarIntent
+    data object ToggleDatePicker : CalendarIntent
     data class ClickAddScheduleButton(val date : String) : CalendarIntent
     data class ClickTodoItemInBottomSheet(val todoId : Long) : CalendarIntent
     data class ClickTodoUrl(val url : String?) : CalendarIntent
@@ -15,4 +14,6 @@ sealed interface CalendarIntent : UiIntent {
     data class ClickCalendarCell(val selectedDate: LocalDate) : CalendarIntent
     data class ClickTodoItemInCalendar(val todoId : Long) : CalendarIntent
     data class UpdatePageIndex(val index : Int) : CalendarIntent
+    data class UpdateSelectPickerYear(val year : Int) : CalendarIntent
+    data class UpdateSelectPickerMonth(val month : Int) : CalendarIntent
 }

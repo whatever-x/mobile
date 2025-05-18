@@ -35,6 +35,8 @@ class CalendarViewModel(
         return CalendarState(
             year = currentDate.year,
             month = currentDate.month,
+            pickerYear = currentDate.year,
+            pickerMonth = currentDate.month.number,
             currentDateList = createCurrentDateList(
                 year = currentDate.year,
                 month = currentDate.month
@@ -47,7 +49,7 @@ class CalendarViewModel(
         when (intent) {
             CalendarIntent.SwipeLeftCalendar -> decrementMonth()
             CalendarIntent.SwipeRightCalendar -> incrementMonth()
-            CalendarIntent.OpenCalendarDatePicker -> openCalendarDatePicker()
+            is CalendarIntent.ToggleDatePicker -> toggleCalendarDatePicker()
             is CalendarIntent.ToggleCalendarBottomSheet -> toggleCalendarBottomSheet(intent.sheetState)
             is CalendarIntent.ClickAddScheduleButton -> postSideEffect(
                 CalendarSideEffect.NavigateToAddSchedule(
@@ -62,20 +64,33 @@ class CalendarViewModel(
             )
 
             is CalendarIntent.ClickTodoUrl -> clickTodoUrl(intent.url)
-            is CalendarIntent.DismissCalendarDatePicker -> updateCalendarDate(
-                year = intent.year,
-                monthNumber = intent.monthNumber
-            )
-
             is CalendarIntent.ClickCalendarCell -> clickCalendarCell(intent.selectedDate)
             is CalendarIntent.ClickTodoItemInCalendar -> TODO()
             is CalendarIntent.UpdatePageIndex -> updatePageIndex(intent.index)
+            is CalendarIntent.UpdateSelectPickerMonth -> updateSelectPickerMonth(intent.month)
+            is CalendarIntent.UpdateSelectPickerYear -> updateSelectPickerYear(intent.year)
         }
     }
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
         Napier.e { "exception : $throwable" }
+    }
+
+    private fun updateSelectPickerYear(year: Int) {
+        reduce {
+            copy(
+                pickerYear = year
+            )
+        }
+    }
+
+    private fun updateSelectPickerMonth(monthNumber: Int) {
+        reduce {
+            copy(
+                pickerMonth = monthNumber
+            )
+        }
     }
 
     private fun updatePageIndex(pageIndex: Int) {
@@ -118,20 +133,6 @@ class CalendarViewModel(
                 schedules = newSchedule.sortedBy { it.date }
             )
         }
-    }
-
-    private fun updateCalendarDate(year: Int, monthNumber: Int) {
-        val month = Month.entries[monthNumber - 1]
-        reduce {
-            copy(
-                year = year,
-                month = month,
-                pageIndex = calcPageIndex(year, month),
-                isShownDateSelectDropDown = false,
-                currentDateList = createCurrentDateList(year = year, month = month)
-            )
-        }
-        getSchedules(dateChange = true)
     }
 
     private fun getSchedules(dateChange: Boolean = false) {
@@ -179,11 +180,27 @@ class CalendarViewModel(
         }
     }
 
-    private fun openCalendarDatePicker() {
+    private fun toggleCalendarDatePicker() {
         reduce {
-            copy(
-                isShownDateSelectDropDown = true
-            )
+            if (currentState.isShowDatePicker) {
+                val pickerYear = currentState.pickerYear
+                val pickerMonth = Month.entries[currentState.pickerMonth - 1]
+
+                copy(
+                    year = pickerYear,
+                    month = pickerMonth,
+                    isShowDatePicker = false,
+                    pageIndex = calcPageIndex(pickerYear, pickerMonth),
+                    currentDateList = createCurrentDateList(year = pickerYear, month = pickerMonth)
+                )
+            } else {
+                copy(
+                    isShowDatePicker = true
+                )
+            }
+        }
+        if(!currentState.isShowDatePicker){
+            getSchedules(dateChange = true)
         }
     }
 
