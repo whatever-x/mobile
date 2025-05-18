@@ -1,6 +1,5 @@
 package com.whatever.caramel.di
 
-
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.app.CaramelViewModel
 import org.koin.core.module.Module
@@ -13,6 +12,7 @@ actual val appViewModelModule: Module
             CaramelViewModel(
                 getUserStatusUseCase = get(),
                 connectCoupleUseCase = get(),
+                deepLinkHandler = get(),
                 savedStateHandle = SavedStateHandle()
                 /*
                  @ham2174 FIXME : SavedStateHandle Ios에서 사용 불가능.

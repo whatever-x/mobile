@@ -45,6 +45,7 @@ kotlin {
             implementation(projects.core.remote)
             api(projects.core.analytics)
             implementation(projects.core.viewmodel)
+            api(projects.core.deeplink)
             implementation(projects.feature.profile.edit)
             implementation(projects.feature.profile.create)
             implementation(projects.feature.splash)

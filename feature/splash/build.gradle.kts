@@ -17,6 +17,7 @@ kotlin {
             implementation(projects.core.ui)
             implementation(projects.core.analytics)
             implementation(projects.core.viewmodel)
+            implementation(projects.core.deeplink)
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)

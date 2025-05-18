@@ -16,9 +16,12 @@
 		BAA2B7AD2D72DA330017F868 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = BAA2B7AC2D72DA330017F868 /* FirebaseAnalyticsOnDeviceConversion */; };
 		BAA2B7AF2D72DA330017F868 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = BAA2B7AE2D72DA330017F868 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		BAA2B7B12D72DA330017F868 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = BAA2B7B02D72DA330017F868 /* FirebaseCrashlytics */; };
+		E93275352DD225A7004AE2BF /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93275342DD225A7004AE2BF /* AdSupport.framework */; };
+		E93275372DD225BB004AE2BF /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93275362DD225BB004AE2BF /* AppTrackingTransparency.framework */; };
 		E94D12602D7A3F4E00262C39 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E94D125F2D7A3F4E00262C39 /* GoogleService-Info.plist */; };
 		E9A293E82D78E3E50060A927 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = E9A293E72D78E3E50060A927 /* KakaoSDK */; };
 		E9A293EA2D78E4930060A927 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A293E92D78E4930060A927 /* AppDelegate.swift */; };
+		E9E80DF02DD54CED00BCB125 /* AppsFlyerLib-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E9E80DEF2DD54CED00BCB125 /* AppsFlyerLib-Dynamic */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,12 +40,14 @@
 /* Begin PBXFileReference section */
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
+		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.java; };
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BA981A902D6B7F0000F4630B /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		BA981A922D6B7F0A00F4630B /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		E93275342DD225A7004AE2BF /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		E93275362DD225BB004AE2BF /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 		E94D125F2D7A3F4E00262C39 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E96349E22D7C238E00F6BBF7 /* iosApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iosApp.entitlements; sourceTree = "<group>"; };
 		E9A293E92D78E4930060A927 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -54,10 +59,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E9A293E82D78E3E50060A927 /* KakaoSDK in Frameworks */,
+				E93275372DD225BB004AE2BF /* AppTrackingTransparency.framework in Frameworks */,
 				BAA2B7AB2D72DA330017F868 /* FirebaseAnalytics in Frameworks */,
+				E9E80DF02DD54CED00BCB125 /* AppsFlyerLib-Dynamic in Frameworks */,
 				BAA2B7B12D72DA330017F868 /* FirebaseCrashlytics in Frameworks */,
 				BAA2B7AF2D72DA330017F868 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				BAA2B7AD2D72DA330017F868 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
+				E93275352DD225A7004AE2BF /* AdSupport.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +117,8 @@
 		7555FFB0242A642200829871 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E93275362DD225BB004AE2BF /* AppTrackingTransparency.framework */,
+				E93275342DD225A7004AE2BF /* AdSupport.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -173,6 +183,7 @@
 			packageReferences = (
 				E9A293E62D78E3E50060A927 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				BAA2B7A92D72DA330017F868 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				E9E80DEE2DD54CED00BCB125 /* XCRemoteSwiftPackageReference "AppsFlyerFramework-Dynamic" */,
 			);
 			productRefGroup = 7555FF7C242A565900829871 /* Products */;
 			projectDirPath = "";
@@ -489,6 +500,14 @@
 				minimumVersion = 2.23.0;
 			};
 		};
+		E9E80DEE2DD54CED00BCB125 /* XCRemoteSwiftPackageReference "AppsFlyerFramework-Dynamic" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppsFlyerSDK/AppsFlyerFramework-Dynamic";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 6.17.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -516,6 +535,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E9A293E62D78E3E50060A927 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDK;
+		};
+		E9E80DEF2DD54CED00BCB125 /* AppsFlyerLib-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E9E80DEE2DD54CED00BCB125 /* XCRemoteSwiftPackageReference "AppsFlyerFramework-Dynamic" */;
+			productName = "AppsFlyerLib-Dynamic";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

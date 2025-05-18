@@ -6,6 +6,7 @@ import com.whatever.caramel.core.database.di.databaseModule
 import com.whatever.caramel.core.database.di.platformDatabaseModule
 import com.whatever.caramel.core.datastore.di.dataStoreModule
 import com.whatever.caramel.core.datastore.di.platformDataStoreModule
+import com.whatever.caramel.core.deeplink.di.deepLinkModule
 import com.whatever.caramel.core.designsystem.di.hapticControllerModule
 import com.whatever.caramel.core.domain.di.useCaseModule
 import com.whatever.caramel.core.remote.di.deviceIdModule
@@ -35,7 +36,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
         modules(
             /* === App Layer === */
             appViewModelModule,
-
+            deepLinkModule,
 
             /* ==== Data Layer ==== */
             repositoryModule,

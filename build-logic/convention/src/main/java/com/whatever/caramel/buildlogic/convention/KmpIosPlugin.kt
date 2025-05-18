@@ -18,6 +18,7 @@ class KmpIosPlugin : Plugin<Project> {
                         baseName = "App"
                         isStatic = true
                         export(project(":core:analytics"))
+                        export(project(":core:deeplink"))
                         freeCompilerArgs += "-Xbinary=bundleId=com.whatever.caramel"
                     }
                 }

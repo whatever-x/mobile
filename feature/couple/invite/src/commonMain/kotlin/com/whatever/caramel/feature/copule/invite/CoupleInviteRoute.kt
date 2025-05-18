@@ -46,7 +46,7 @@ internal fun CoupleInviteRoute(
                 is CoupleInviteSideEffect.ShareOfInvite -> {
                     shareService.shareContents( // @ham2174 FIXME : 딥링크 ULR 개선
                         title = "연인이 카라멜에 초대했어요!\n초대를 수락하고 일정과 메모를 공유해보세요",
-                        url = "https://caramel.onelink.me/7nAT/2l5wk4ab?invite_code=${sideEffect.inviteCode}"
+                        url = "https://caramel.onelink.me/7nAT/2l5wk4ab?p1=${sideEffect.inviteCode}"
                     )
                 }
             }
