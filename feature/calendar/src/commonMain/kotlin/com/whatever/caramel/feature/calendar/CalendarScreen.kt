@@ -16,6 +16,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -32,6 +33,7 @@ import com.whatever.caramel.feature.calendar.component.bottomSheet.DefaultBottom
 import com.whatever.caramel.feature.calendar.component.calendar.CalendarDayOfWeek
 import com.whatever.caramel.feature.calendar.component.calendar.CaramelCalendar
 import com.whatever.caramel.feature.calendar.dimension.CalendarDimension
+import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
 
@@ -41,19 +43,31 @@ internal fun CalendarScreen(
     state: CalendarState,
     onIntent: (CalendarIntent) -> Unit
 ) {
-    val pagerState = rememberPagerState(initialPage = state.pageIndex) {
-        200 * 12
-    }
+    val pagerState = rememberPagerState(initialPage = state.pageIndex) { 200*12 }
     val bottomSheetState = rememberStandardBottomSheetState()
     val bottomSheetScaffoldState =
         rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
 
     LaunchedEffect(state.bottomSheetState) {
-        // TODO : 바텀시트 상태 업데이트 필요
+        when(state.bottomSheetState) {
+            BottomSheetState.HIDDEN -> bottomSheetState.hide()
+            BottomSheetState.EXPANDED -> bottomSheetState.expand()
+            BottomSheetState.PARTIALLY_EXPANDED -> bottomSheetState.partialExpand()
+        }
     }
-
+    LaunchedEffect(bottomSheetState.currentValue) {
+        val updateStateValue = when(bottomSheetState.currentValue) {
+            SheetValue.Hidden -> BottomSheetState.HIDDEN
+            SheetValue.Expanded -> BottomSheetState.EXPANDED
+            SheetValue.PartiallyExpanded -> BottomSheetState.PARTIALLY_EXPANDED
+        }
+        onIntent(CalendarIntent.ToggleCalendarBottomSheet(updateStateValue))
+    }
     LaunchedEffect(pagerState.currentPage) {
         onIntent(CalendarIntent.UpdatePageIndex(pagerState.currentPage))
+    }
+    LaunchedEffect(state.pageIndex) {
+        pagerState.scrollToPage(state.pageIndex)
     }
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {

@@ -116,7 +116,7 @@ class CalendarViewModel(
     private fun clickCalendarCell(selectedDate: LocalDate) {
         reduce {
             val newSchedule = currentState.schedules.toMutableList()
-            // 이전 선택 스케츌에 todo도 없고 휴일도 없다면 리스트에서 제거
+            // 이전에 선택된 날짜에 스케쥴이 존재하지 않는 경우 리스트에서 삭제
             newSchedule.find { it.date == currentState.selectedDate }?.let {
                 if (it.holidays.isEmpty() && it.todos.isEmpty()) {
                     newSchedule.remove(it)
@@ -157,18 +157,20 @@ class CalendarViewModel(
             )
             val holidays = getHolidaysUseCase(year = year, monthNumber = monthNumber)
             reduce {
-                copy(
-                    schedules = createDaySchedules(todoList = todos, holidayList = holidays)
-                )
-            }
-            // 날짜가 변경됐다면 실행
-            clickCalendarCell(
-                if (dateChange) {
+                val updatedSelectedDate = if (dateChange) {
                     LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
                 } else {
                     currentState.today
                 }
-            )
+                copy(
+                    selectedDate = updatedSelectedDate,
+                    schedules = createDaySchedules(
+                        todoList = todos,
+                        holidayList = holidays,
+                        updatedSelectedDate = updatedSelectedDate
+                    )
+                )
+            }
         }
     }
 
@@ -199,7 +201,7 @@ class CalendarViewModel(
                 )
             }
         }
-        if(!currentState.isShowDatePicker){
+        if (!currentState.isShowDatePicker) {
             getSchedules(dateChange = true)
         }
     }
@@ -252,7 +254,8 @@ class CalendarViewModel(
 
     private fun createDaySchedules(
         todoList: List<TodoList>,
-        holidayList: List<HolidayList>
+        holidayList: List<HolidayList>,
+        updatedSelectedDate: LocalDate
     ): List<DaySchedule> {
         val scheduleMap = mutableMapOf<LocalDate, DaySchedule>()
 
@@ -268,9 +271,10 @@ class CalendarViewModel(
             scheduleMap[date] = existingSchedule.copy(holidays = list.holidays)
         }
 
-        if (!scheduleMap.containsKey(currentState.selectedDate)) {
-            scheduleMap[currentState.selectedDate] = DaySchedule(date = currentState.selectedDate)
+        if (!scheduleMap.containsKey(updatedSelectedDate)) {
+            scheduleMap[updatedSelectedDate] = DaySchedule(date = updatedSelectedDate)
         }
+
         return scheduleMap.values.sortedBy { it.date }
     }
 
