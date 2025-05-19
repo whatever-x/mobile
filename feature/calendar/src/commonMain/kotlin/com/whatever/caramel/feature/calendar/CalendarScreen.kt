@@ -53,16 +53,13 @@ internal fun CalendarScreen(
 
     LaunchedEffect(state.selectedDate) {
         if (state.bottomSheetState == BottomSheetState.EXPANDED) {
-            var todoDateSize = 0
-            val findIndex = state.schedules.indexOfFirst {
-                it.date == state.selectedDate
-            }
-            for (index in 0..findIndex) {
-                if (index == findIndex) continue
-                todoDateSize += state.schedules[index].todos.size
-            }
-            if (findIndex >= 0) {
-                lazyListState.animateScrollToItem(index = findIndex + todoDateSize)
+            val scheduleIndex = state.schedules.indexOfFirst { it.date == state.selectedDate }
+            if (scheduleIndex >= 0) {
+                var itemPosition = scheduleIndex
+                for (index in 0 until scheduleIndex) {
+                    itemPosition += state.schedules[index].todos.size
+                }
+                lazyListState.scrollToItem(index = itemPosition)
             }
         }
     }
@@ -83,10 +80,14 @@ internal fun CalendarScreen(
     }
 
     LaunchedEffect(pagerState.currentPage) {
-        onIntent(CalendarIntent.UpdatePageIndex(pagerState.currentPage))
+        if (pagerState.currentPage != state.pageIndex) {
+            onIntent(CalendarIntent.UpdatePageIndex(pagerState.currentPage))
+        }
     }
     LaunchedEffect(state.pageIndex) {
-        pagerState.scrollToPage(state.pageIndex)
+        if (state.pageIndex != pagerState.currentPage) {
+            pagerState.scrollToPage(state.pageIndex)
+        }
     }
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
