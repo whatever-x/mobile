@@ -26,6 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.domain.vo.calendar.Calendar
 import com.whatever.caramel.feature.calendar.component.CalendarDatePicker
 import com.whatever.caramel.feature.calendar.component.CurrentDateMenu
 import com.whatever.caramel.feature.calendar.component.bottomSheet.BottomSheetTodoItem
@@ -38,6 +39,7 @@ import com.whatever.caramel.feature.calendar.dimension.CalendarDimension
 import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
+import kotlinx.datetime.Month
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,7 +47,8 @@ internal fun CalendarScreen(
     state: CalendarState,
     onIntent: (CalendarIntent) -> Unit
 ) {
-    val pagerState = rememberPagerState(initialPage = state.pageIndex) { 200 * 12 }
+    val pagerState =
+        rememberPagerState(initialPage = state.pageIndex) { Calendar.yearSize * Month.entries.size }
     val bottomSheetState = rememberStandardBottomSheetState()
     val bottomSheetScaffoldState =
         rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
