@@ -56,4 +56,10 @@ class UserRepositoryImpl(
             userRemoteDataSource.editUserProfile(request).toUser()
         }
     }
+
+    override suspend fun getUserInfo(): User {
+        return safeCall {
+            userRemoteDataSource.getUserInfo().toUser()
+        }
+    }
 }
