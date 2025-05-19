@@ -65,7 +65,7 @@ class CalendarViewModel(
 
             is CalendarIntent.ClickTodoUrl -> clickTodoUrl(intent.url)
             is CalendarIntent.ClickCalendarCell -> clickCalendarCell(intent.selectedDate)
-            is CalendarIntent.ClickTodoItemInCalendar -> TODO()
+            is CalendarIntent.ClickTodoItemInCalendar -> postSideEffect(CalendarSideEffect.NavigateToTodoDetail(intent.todoId))
             is CalendarIntent.UpdatePageIndex -> updatePageIndex(intent.index)
             is CalendarIntent.UpdateSelectPickerMonth -> updateSelectPickerMonth(intent.month)
             is CalendarIntent.UpdateSelectPickerYear -> updateSelectPickerYear(intent.year)

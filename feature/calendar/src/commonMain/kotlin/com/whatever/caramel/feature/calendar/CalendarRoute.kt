@@ -11,14 +11,14 @@ import org.koin.compose.viewmodel.koinViewModel
 internal fun CalendarRoute(
     viewModel: CalendarViewModel = koinViewModel(),
     navigateToCreateTodo: () -> Unit,
-    navigateToTodoDetail: () -> Unit,
+    navigateToTodoDetail: (Long) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is CalendarSideEffect.NavigateToTodoDetail -> navigateToTodoDetail()
+                is CalendarSideEffect.NavigateToTodoDetail -> navigateToTodoDetail(sideEffect.id)
                 is CalendarSideEffect.NavigateToAddSchedule -> navigateToCreateTodo()
                 is CalendarSideEffect.OpenWebView -> TODO()
             }
