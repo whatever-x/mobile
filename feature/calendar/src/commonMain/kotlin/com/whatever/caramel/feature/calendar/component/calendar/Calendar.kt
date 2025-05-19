@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import caramel.feature.calendar.generated.resources.Res
 import caramel.feature.calendar.generated.resources.day_of_week
@@ -28,10 +27,10 @@ fun CaramelCalendar(
     modifier: Modifier = Modifier,
     year: Int,
     month: Month,
-    selectedDate : LocalDate,
+    selectedDate: LocalDate,
     schedules: List<DaySchedule>,
-    onClickCell: (LocalDate) -> Unit,
-    onClickTodo: (Long) -> Unit
+    onClickTodo: (Long) -> Unit,
+    onClickCell: (LocalDate) -> Unit
 ) {
     val firstDay = LocalDate(year = year, month = month, dayOfMonth = 1)
     val firstDayOfWeek =

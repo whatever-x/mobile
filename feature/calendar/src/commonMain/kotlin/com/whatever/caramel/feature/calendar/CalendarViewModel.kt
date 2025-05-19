@@ -56,13 +56,11 @@ class CalendarViewModel(
                     intent.date
                 )
             )
-
             is CalendarIntent.ClickTodoItemInBottomSheet -> postSideEffect(
                 CalendarSideEffect.NavigateToTodoDetail(
                     intent.todoId
                 )
             )
-
             is CalendarIntent.ClickTodoUrl -> clickTodoUrl(intent.url)
             is CalendarIntent.ClickCalendarCell -> clickCalendarCell(intent.selectedDate)
             is CalendarIntent.ClickTodoItemInCalendar -> postSideEffect(CalendarSideEffect.NavigateToTodoDetail(intent.todoId))
@@ -71,11 +69,6 @@ class CalendarViewModel(
             is CalendarIntent.UpdateSelectPickerYear -> updateSelectPickerYear(intent.year)
             CalendarIntent.ClickOutSideBottomSheet -> clickOutSideBottomSheet()
         }
-    }
-
-    override fun handleClientException(throwable: Throwable) {
-        super.handleClientException(throwable)
-        Napier.e { "exception : $throwable" }
     }
 
     private fun clickOutSideBottomSheet() {
