@@ -1,7 +1,6 @@
 package com.whatever.caramel.core.data.repository
 
 import com.whatever.caramel.core.data.mapper.toUser
-import com.whatever.caramel.core.data.mapper.toUserStatus
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datastore.datasource.UserDataSource
 import com.whatever.caramel.core.domain.entity.User
@@ -18,7 +17,8 @@ class UserRepositoryImpl(
 ) : UserRepository {
     override suspend fun getUserStatus(): UserStatus {
         return safeCall {
-            userDataSource.getUserStatus().toUserStatus()
+            val userStatus = userDataSource.getUserStatus()
+            UserStatus.valueOf(value = userStatus)
         }
     }
 
