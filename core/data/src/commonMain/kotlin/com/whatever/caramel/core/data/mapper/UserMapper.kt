@@ -5,7 +5,9 @@ import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.domain.vo.user.UserProfile
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.remote.dto.user.UserStatusDto
+import com.whatever.caramel.core.remote.dto.user.GenderDto
 import com.whatever.caramel.core.remote.dto.user.response.EditUserProfileResponse
+import com.whatever.caramel.core.remote.dto.user.response.UserInfoResponse
 import com.whatever.caramel.core.remote.dto.user.response.UserProfileResponse
 
 fun String.toUserStatus() : UserStatus {
@@ -36,4 +38,19 @@ fun EditUserProfileResponse.toUser() = User(
         gender = Gender.IDLE,
         birthday = this.birthday.replace("-", ".")
     )
+)
+
+fun UserInfoResponse.toUser() = User(
+    id = this.id,
+    userStatus = UserStatus.valueOf(this.userStatus.name),
+    userProfile = UserProfile(
+        nickName = this.nickname,
+        gender = when(this.gender) {
+            GenderDto.MALE -> Gender.MALE
+            GenderDto.FEMALE -> Gender.FEMALE
+            null -> null
+        },
+        birthday = this.birthDate
+    ),
+    userMetaData = null
 )

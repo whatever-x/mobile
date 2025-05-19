@@ -24,9 +24,9 @@ data class CoupleUser(
     companion object {
         fun toCoupleInfo(user: User) = CoupleUser(
             id = user.requireId,
-            birthday = user.requireProfile.birthday,
-            nickname = user.requireProfile.nickName,
-            gender = user.requireProfile.gender
+            birthday = user.userProfile?.birthday?: "",
+            nickname = user.userProfile?.nickName?: "",
+            gender = user.userProfile?.gender ?: Gender.IDLE
         )
     }
 }
