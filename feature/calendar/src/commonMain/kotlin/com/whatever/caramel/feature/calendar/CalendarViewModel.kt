@@ -113,7 +113,7 @@ class CalendarViewModel(
         postSideEffect(CalendarSideEffect.OpenWebView(url))
     }
 
-    private fun clickCalendarCell(selectedDate: LocalDate) {
+    private fun clickCalendarCell(newSelectedDate: LocalDate) {
         reduce {
             val newSchedule = currentState.schedules.toMutableList()
             // 이전에 선택된 날짜에 스케쥴이 존재하지 않는 경우 리스트에서 삭제
@@ -123,13 +123,13 @@ class CalendarViewModel(
                 }
             }
             // 새로 선택된 날짜에 스케쥴이 없으면 빈 스케쥴 추가
-            if (!newSchedule.any { it.date == selectedDate }) {
-                newSchedule.add(DaySchedule(date = selectedDate))
+            if (!newSchedule.any { it.date == newSelectedDate }) {
+                newSchedule.add(DaySchedule(date = newSelectedDate))
             }
 
             copy(
                 bottomSheetState = BottomSheetState.EXPANDED,
-                selectedDate = selectedDate,
+                selectedDate = newSelectedDate,
                 schedules = newSchedule.sortedBy { it.date }
             )
         }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,6 +37,7 @@ import com.whatever.caramel.feature.calendar.dimension.CalendarDimension
 import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
+import io.github.aakira.napier.Napier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,26 +45,43 @@ internal fun CalendarScreen(
     state: CalendarState,
     onIntent: (CalendarIntent) -> Unit
 ) {
-    val pagerState = rememberPagerState(initialPage = state.pageIndex) { 200*12 }
+    val pagerState = rememberPagerState(initialPage = state.pageIndex) { 200 * 12 }
     val bottomSheetState = rememberStandardBottomSheetState()
     val bottomSheetScaffoldState =
         rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
-
+    val lazyListState = rememberLazyListState()
+    
+    LaunchedEffect(state.selectedDate) {
+        if (state.bottomSheetState == BottomSheetState.EXPANDED) {
+            var todoDateSize = 0
+            val findIndex = state.schedules.indexOfFirst {
+                it.date == state.selectedDate
+            }
+            for (index in 0..findIndex) {
+                if (index == findIndex) continue
+                todoDateSize += state.schedules[index].todos.size
+            }
+            if (findIndex >= 0) {
+                lazyListState.animateScrollToItem(index = findIndex + todoDateSize)
+            }
+        }
+    }
     LaunchedEffect(state.bottomSheetState) {
-        when(state.bottomSheetState) {
+        when (state.bottomSheetState) {
             BottomSheetState.HIDDEN -> bottomSheetState.hide()
             BottomSheetState.EXPANDED -> bottomSheetState.expand()
             BottomSheetState.PARTIALLY_EXPANDED -> bottomSheetState.partialExpand()
         }
     }
     LaunchedEffect(bottomSheetState.currentValue) {
-        val updateStateValue = when(bottomSheetState.currentValue) {
+        val updateStateValue = when (bottomSheetState.currentValue) {
             SheetValue.Hidden -> BottomSheetState.HIDDEN
             SheetValue.Expanded -> BottomSheetState.EXPANDED
             SheetValue.PartiallyExpanded -> BottomSheetState.PARTIALLY_EXPANDED
         }
         onIntent(CalendarIntent.ToggleCalendarBottomSheet(updateStateValue))
     }
+
     LaunchedEffect(pagerState.currentPage) {
         onIntent(CalendarIntent.UpdatePageIndex(pagerState.currentPage))
     }
@@ -115,7 +134,8 @@ internal fun CalendarScreen(
                             start = CaramelTheme.spacing.xl,
                             end = CaramelTheme.spacing.xl
                         )
-                        .height(availableHeight)
+                        .height(availableHeight),
+                    state = lazyListState
                 ) {
                     state.schedules.forEach { schedule ->
                         item {
