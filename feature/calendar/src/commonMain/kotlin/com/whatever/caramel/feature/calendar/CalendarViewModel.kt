@@ -192,18 +192,25 @@ class CalendarViewModel(
     }
 
     private fun toggleCalendarDatePicker() {
+        val pickerYear = currentState.pickerYear
+        val pickerMonth = Month.entries[currentState.pickerMonth - 1]
+        val needUpdate = pickerYear != currentState.year || pickerMonth != currentState.month
         reduce {
             if (currentState.isShowDatePicker) {
-                val pickerYear = currentState.pickerYear
-                val pickerMonth = Month.entries[currentState.pickerMonth - 1]
-
-                copy(
-                    year = pickerYear,
-                    month = pickerMonth,
-                    isShowDatePicker = false,
-                    pageIndex = calcPageIndex(pickerYear, pickerMonth),
-                    currentDateList = createCurrentDateList(year = pickerYear, month = pickerMonth)
-                )
+                // 같은 년, 월이라면 업데이트를 하지 않음
+                if(needUpdate) {
+                    copy(
+                        year = pickerYear,
+                        month = pickerMonth,
+                        isShowDatePicker = false,
+                        pageIndex = calcPageIndex(pickerYear, pickerMonth),
+                        currentDateList = createCurrentDateList(year = pickerYear, month = pickerMonth)
+                    )
+                } else {
+                    copy(
+                        isShowDatePicker = false
+                    )
+                }
             } else {
                 copy(
                     isShowDatePicker = true,
@@ -211,7 +218,7 @@ class CalendarViewModel(
                 )
             }
         }
-        if (!currentState.isShowDatePicker) {
+        if (needUpdate) {
             getSchedules(dateChange = true)
         }
     }
