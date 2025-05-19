@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.calendar
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -37,7 +38,6 @@ import com.whatever.caramel.feature.calendar.dimension.CalendarDimension
 import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
-import io.github.aakira.napier.Napier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,7 +50,7 @@ internal fun CalendarScreen(
     val bottomSheetScaffoldState =
         rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
     val lazyListState = rememberLazyListState()
-    
+
     LaunchedEffect(state.selectedDate) {
         if (state.bottomSheetState == BottomSheetState.EXPANDED) {
             var todoDateSize = 0
@@ -107,19 +107,23 @@ internal fun CalendarScreen(
                 )
             },
             topBar = {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    CaramelTopBar(
-                        modifier = Modifier.background(color = CaramelTheme.color.background.primary),
-                        leadingContent = {
-                            CurrentDateMenu(
-                                year = state.year,
-                                month = state.month,
-                                isShowDropMenu = state.isShowDatePicker,
-                                onToggleDatePicker = { onIntent(CalendarIntent.ToggleDatePicker) }
-                            )
-                        }
-                    )
-                }
+                CaramelTopBar(
+                    modifier = Modifier
+                        .background(color = CaramelTheme.color.background.primary)
+                        .clickable(
+                            indication = null,
+                            interactionSource = null,
+                            onClick = { onIntent(CalendarIntent.ClickOutSideBottomSheet) }
+                        ),
+                    leadingContent = {
+                        CurrentDateMenu(
+                            year = state.year,
+                            month = state.month,
+                            isShowDropMenu = state.isShowDatePicker,
+                            onToggleDatePicker = { onIntent(CalendarIntent.ToggleDatePicker) }
+                        )
+                    }
+                )
             },
             sheetContent = {
                 val availableHeight =
@@ -184,7 +188,13 @@ internal fun CalendarScreen(
                 ) {
                     Column {
                         CalendarDayOfWeek(
-                            modifier = Modifier.height(height = CalendarDimension.datePickerHeight)
+                            modifier = Modifier
+                                .height(height = CalendarDimension.datePickerHeight)
+                                .clickable(
+                                    indication = null,
+                                    interactionSource = null,
+                                    onClick = { onIntent(CalendarIntent.ClickOutSideBottomSheet) }
+                                )
                         )
                         CaramelCalendar(
                             modifier = Modifier

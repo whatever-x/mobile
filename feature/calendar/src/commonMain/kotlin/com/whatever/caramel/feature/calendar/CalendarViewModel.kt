@@ -69,12 +69,21 @@ class CalendarViewModel(
             is CalendarIntent.UpdatePageIndex -> updatePageIndex(intent.index)
             is CalendarIntent.UpdateSelectPickerMonth -> updateSelectPickerMonth(intent.month)
             is CalendarIntent.UpdateSelectPickerYear -> updateSelectPickerYear(intent.year)
+            CalendarIntent.ClickOutSideBottomSheet -> clickOutSideBottomSheet()
         }
     }
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
         Napier.e { "exception : $throwable" }
+    }
+
+    private fun clickOutSideBottomSheet() {
+        reduce {
+            copy(
+                bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED
+            )
+        }
     }
 
     private fun updateSelectPickerYear(year: Int) {
@@ -197,7 +206,8 @@ class CalendarViewModel(
                 )
             } else {
                 copy(
-                    isShowDatePicker = true
+                    isShowDatePicker = true,
+                    bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED
                 )
             }
         }
