@@ -47,6 +47,9 @@ import caramel.core.designsystem.generated.resources.ic_vertex_17_9
 import caramel.core.designsystem.generated.resources.img_couple_on_ground
 import caramel.core.designsystem.generated.resources.img_gender_man
 import caramel.core.designsystem.generated.resources.img_gender_woman
+import caramel.core.designsystem.generated.resources.img_onboarding01
+import caramel.core.designsystem.generated.resources.img_onboarding02
+import caramel.core.designsystem.generated.resources.img_onboarding03
 
 object Resources {
 
@@ -100,6 +103,9 @@ object Resources {
         val img_couple_on_ground = Res.drawable.img_couple_on_ground
         val img_gender_man = Res.drawable.img_gender_man
         val img_gender_woman = Res.drawable.img_gender_woman
+        val img_onboarding01 = Res.drawable.img_onboarding01
+        val img_onboarding02 = Res.drawable.img_onboarding02
+        val img_onboarding03 = Res.drawable.img_onboarding03
     }
 
 }
