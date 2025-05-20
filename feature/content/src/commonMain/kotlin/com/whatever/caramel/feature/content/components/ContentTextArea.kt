@@ -51,7 +51,7 @@ internal fun ContentTextArea(
     var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
 
     BasicTextField(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         value = value,
         onValueChange = onValueChange,
         textStyle = CaramelTheme.typography.body2.reading.copy(

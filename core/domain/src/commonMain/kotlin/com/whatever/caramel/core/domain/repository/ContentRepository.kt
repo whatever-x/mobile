@@ -4,5 +4,5 @@ import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.domain.vo.memo.MemoMetadata
 
 interface ContentRepository {
-    suspend fun createContent(parameter: MemoParameter): MemoMetadata
+    suspend fun createMemo(parameter: MemoParameter): MemoMetadata
 } 

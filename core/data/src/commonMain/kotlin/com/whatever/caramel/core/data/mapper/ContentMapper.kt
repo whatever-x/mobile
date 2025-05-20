@@ -1,11 +1,11 @@
 package com.whatever.caramel.core.data.mapper
 
 import com.whatever.caramel.core.domain.vo.memo.MemoMetadata
-import com.whatever.caramel.core.remote.dto.content.response.CreateContentResponse
+import com.whatever.caramel.core.remote.dto.content.response.CreateMemoResponse
 
-internal fun CreateContentResponse.toContentMetaData(): MemoMetadata {
+internal fun CreateMemoResponse.toMemoMetaData(): MemoMetadata {
     return MemoMetadata(
-        contentId = this.contentId,
-        contentType = this.contentType
+        contentId = contentId,
+        contentType = contentType
     )
 } 

@@ -13,7 +13,7 @@ import io.ktor.client.request.setBody
 import org.koin.core.annotation.Named
 
 internal class RemoteCalendarDataSourceImpl(
-    @Named("AuthClient") private val authClient: HttpClient, // Assuming AuthClient is needed
+    @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteCalendarDataSource {
     override suspend fun createSchedule(request: CreateScheduleRequest): CreateScheduleResponse =
         authClient.post("$CALENDAR_BASE_URL/schedules") {

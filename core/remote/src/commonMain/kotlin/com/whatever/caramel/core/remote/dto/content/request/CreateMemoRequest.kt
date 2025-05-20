@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CreateContentRequest(
+data class CreateMemoRequest(
     @SerialName("title")
     val title: String,
     @SerialName("description")

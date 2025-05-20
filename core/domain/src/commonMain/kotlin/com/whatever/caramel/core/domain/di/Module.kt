@@ -43,6 +43,6 @@ val useCaseModule = module {
     // Tag
     factory { GetTagUseCase() }
 
-    // Item
+    // Content
     factory { CreateContentUseCase(get(), get()) }
 }

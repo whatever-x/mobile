@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CreateContentResponse(
+data class CreateMemoResponse(
     @SerialName("contentId")
     val contentId: Long,
     @SerialName("contentType")

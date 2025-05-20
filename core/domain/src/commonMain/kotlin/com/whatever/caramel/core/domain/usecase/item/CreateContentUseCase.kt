@@ -15,7 +15,7 @@ class CreateContentUseCase(
             }
 
             is ContentParameterType.Memo -> {
-                contentRepository.createContent(parameter.param).contentId
+                contentRepository.createMemo(parameter.param).contentId
             }
         }
     }
