@@ -47,6 +47,7 @@ import caramel.core.designsystem.generated.resources.ic_vertex_17_9
 import caramel.core.designsystem.generated.resources.img_couple_on_ground
 import caramel.core.designsystem.generated.resources.img_gender_man
 import caramel.core.designsystem.generated.resources.img_gender_woman
+import caramel.core.designsystem.generated.resources.img_splash
 
 object Resources {
 
@@ -100,6 +101,7 @@ object Resources {
         val img_couple_on_ground = Res.drawable.img_couple_on_ground
         val img_gender_man = Res.drawable.img_gender_man
         val img_gender_woman = Res.drawable.img_gender_woman
+        val img_splash = Res.drawable.img_splash
     }
 
 }
