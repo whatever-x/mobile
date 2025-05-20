@@ -33,13 +33,13 @@ fun UserInfoResponse.toUser() = User(
     id = this.id,
     userStatus = UserStatus.valueOf(this.userStatus.name),
     userProfile = UserProfile(
-        nickName = this.nickname,
+        nickName = this.nickname?: "",
         gender = when(this.gender) {
             GenderDto.MALE -> Gender.MALE
             GenderDto.FEMALE -> Gender.FEMALE
-            null -> null
+            else -> Gender.IDLE
         },
-        birthday = this.birthDate
+        birthday = this.birthDate?: ""
     ),
     userMetaData = null
 )
