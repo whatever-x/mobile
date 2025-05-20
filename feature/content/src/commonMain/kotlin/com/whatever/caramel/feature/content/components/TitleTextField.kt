@@ -3,11 +3,14 @@ package com.whatever.caramel.feature.content.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.input.ImeAction
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 
 @Composable
@@ -15,6 +18,7 @@ internal fun TitleTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
+    onKeyboardAction: () -> Unit,
 ) {
     val textStyle = CaramelTheme.typography.heading1
     BasicTextField(
@@ -25,7 +29,13 @@ internal fun TitleTextField(
         textStyle = textStyle.copy(
             color = CaramelTheme.color.text.primary
         ),
-        singleLine = true
+        singleLine = true,
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+        keyboardActions = KeyboardActions(
+            onNext = {
+                onKeyboardAction()
+            }
+        )
     ) { innerTextField ->
         Box(
             modifier = Modifier.fillMaxWidth(),

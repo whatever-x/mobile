@@ -23,7 +23,8 @@ import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelButton
 import com.whatever.caramel.core.designsystem.components.CaramelButtonSize
@@ -51,11 +52,11 @@ internal fun ContentScreen(
     state: ContentState,
     onIntent: (ContentIntent) -> Unit
 ) {
-    val uriHandler = LocalUriHandler.current
     val sheetState = rememberStandardBottomSheetState(
         initialValue = SheetValue.PartiallyExpanded,
         skipHiddenState = false
     )
+    val contentFocusRequester = FocusRequester()
 
     Box(
         modifier = Modifier
@@ -89,6 +90,9 @@ internal fun ContentScreen(
                     value = state.title,
                     onValueChange = {
                         onIntent(ContentIntent.InputTitle(it))
+                    },
+                    onKeyboardAction = {
+                        contentFocusRequester.requestFocus()
                     }
                 )
                 HorizontalDivider(
@@ -96,15 +100,14 @@ internal fun ContentScreen(
                     color = CaramelTheme.color.divider.primary
                 )
                 ContentTextArea(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .focusRequester(contentFocusRequester),
                     value = state.content,
-                    onValueChanged = {
+                    onValueChange = {
                         onIntent(ContentIntent.InputContent(it))
                     },
                     placeholder = "함께 하고 싶거나 기억하면 좋은 것들을 자유롭게 입력해 주세요.",
-                    onLinkPreviewClick = {
-                        uriHandler.openUri(it)
-                    },
                 )
                 Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.xl))
                 SelectableTagChipRow(
@@ -205,8 +208,7 @@ internal fun ContentScreen(
                     CaramelButton(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(all = CaramelTheme.spacing.xl)
-                            .imePadding(),
+                            .padding(all = CaramelTheme.spacing.xl),
                         buttonType = CaramelButtonType.Enabled1,
                         buttonSize = CaramelButtonSize.Large,
                         text = "완료",
