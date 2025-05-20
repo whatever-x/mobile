@@ -10,6 +10,7 @@ import com.whatever.caramel.core.domain.usecase.couple.GetAnniversariesUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInvitationCodeUseCase
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
+import com.whatever.caramel.core.domain.usecase.item.CreateContentUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
 import com.whatever.caramel.core.domain.usecase.user.EditProfileUseCase
@@ -41,4 +42,7 @@ val useCaseModule = module {
     factory { GetHolidaysUseCase(get()) }
     // Tag
     factory { GetTagUseCase() }
+
+    // Item
+    factory { CreateContentUseCase(get(), get()) }
 }

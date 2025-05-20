@@ -1,5 +1,7 @@
 package com.whatever.caramel.core.data.mapper
 
+import com.whatever.caramel.core.domain.vo.calendar.ScheduleMetadata
+import com.whatever.caramel.core.remote.dto.calendar.response.CreateScheduleResponse
 import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
 import com.whatever.caramel.core.remote.dto.calendar.CalendarDetailResponse
@@ -19,6 +21,12 @@ fun CalendarDetailResponse.toTodo(): List<Todo> {
     }
 }
 
+internal fun CreateScheduleResponse.toScheduleMetaData(): ScheduleMetadata {
+    return ScheduleMetadata(
+        contentId = this.contentId,
+        contentType = this.contentType
+    )
+}
 fun HolidayDetailListResponse.toHoliday(): List<Holiday> {
     return this.holidayList.map {
         Holiday(

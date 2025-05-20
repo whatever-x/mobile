@@ -112,4 +112,10 @@ val remoteDataSourceModule = module {
             authClient = get(AuthClient)
         )
     }
+
+    single<RemoteContentDataSource> {
+        RemoteContentDataSourceImpl(
+            authClient = get(AuthClient)
+        )
+    }
 }

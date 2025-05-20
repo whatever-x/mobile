@@ -4,9 +4,6 @@ import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.viewmodel.UiIntent
 
 sealed interface ContentIntent : UiIntent {
-
-    data object ClickDeleteButton : ContentIntent
-
     data object ClickCloseButton : ContentIntent
 
     data object ClickSaveButton : ContentIntent
@@ -19,10 +16,8 @@ sealed interface ContentIntent : UiIntent {
 
     data class SelectCreateMode(val createMode: ContentState.CreateMode) : ContentIntent
 
-    data object ClickDate: ContentIntent
-    data object ClickTime: ContentIntent
-
-    data class RecognizeLink(val link: String) : ContentIntent
+    data object ClickDate : ContentIntent
+    data object ClickTime : ContentIntent
 
     data object HideDateTimeDialog : ContentIntent
 

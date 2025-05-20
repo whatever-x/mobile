@@ -1,8 +1,12 @@
 package com.whatever.caramel.feature.content
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.domain.usecase.item.CreateContentUseCase
 import androidx.navigation.toRoute
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
+import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
+import com.whatever.caramel.core.domain.vo.item.ContentParameterType
+import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.mvi.ContentIntent
 import com.whatever.caramel.feature.content.mvi.ContentSideEffect
@@ -10,11 +14,14 @@ import com.whatever.caramel.feature.content.mvi.ContentState
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import com.whatever.caramel.feature.content.navigation.ContentRoute
 
 class ContentViewModel(
     savedStateHandle: SavedStateHandle,
-    private val getTagUseCase: GetTagUseCase
+    private val getTagUseCase: GetTagUseCase,
+    private val createContentUseCase: CreateContentUseCase
 ) : BaseViewModel<ContentState, ContentSideEffect, ContentIntent>(savedStateHandle) {
 
     init {
@@ -36,14 +43,9 @@ class ContentViewModel(
     override suspend fun handleIntent(intent: ContentIntent) {
         when (intent) {
             is ContentIntent.ClickCloseButton -> postSideEffect(ContentSideEffect.NavigateToBackStack)
-            is ContentIntent.ClickSaveButton -> postSideEffect(ContentSideEffect.NavigateToBackStack)
-            is ContentIntent.ClickDeleteButton -> postSideEffect(ContentSideEffect.NavigateToBackStack)
+            is ContentIntent.ClickSaveButton -> clickSaveButton(intent)
             is ContentIntent.InputTitle -> inputTitle(intent)
             is ContentIntent.InputContent -> inputContent(intent)
-            is ContentIntent.RecognizeLink -> {
-                // TODO: Handle link recognition
-            }
-
             is ContentIntent.ClickTag -> toggleTagSelection(intent)
             is ContentIntent.SelectCreateMode -> selectCreateMode(intent)
             is ContentIntent.HideDateTimeDialog -> hideDateTimeDialog(intent)
@@ -158,6 +160,38 @@ class ContentViewModel(
                 else -> currentHour24
             }
             copy(dateTime = currentDateTime.copy(hour = finalNewHour24))
+        }
+    }
+
+    private fun clickSaveButton(intent: ContentIntent.ClickSaveButton) {
+        launch {
+            val state = currentState
+            val parameter = when (state.createMode) {
+                ContentState.CreateMode.MEMO -> ContentParameterType.Memo(
+                    MemoParameter(
+                        title = state.title,
+                        description = state.content,
+                        isCompleted = false,
+                        tags = state.selectedTags.map { it.id }.toList()
+                    )
+                )
+
+                ContentState.CreateMode.CALENDAR -> ContentParameterType.Calendar(
+                    ScheduleParameter(
+                        title = state.title,
+                        description = state.content,
+                        isCompleted = false,
+                        startDateTime = state.dateTime.toInstant(TimeZone.currentSystemDefault())
+                            .toString(),
+                        startTimeZone = TimeZone.currentSystemDefault().id,
+                        endDateTime = null,
+                        endTimeZone = null,
+                        tagIds = state.selectedTags.map { it.id }.toList()
+                    )
+                )
+            }
+            createContentUseCase(parameter)
+            postSideEffect(ContentSideEffect.NavigateToBackStack)
         }
     }
 }
