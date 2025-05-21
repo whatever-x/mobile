@@ -1,6 +1,8 @@
 package com.whatever.caramel.feature.content
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.usecase.item.CreateContentUseCase
 import androidx.navigation.toRoute
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
@@ -40,6 +42,16 @@ class ContentViewModel(
         )
     }
 
+    override fun handleClientException(throwable: Throwable) {
+        super.handleClientException(throwable)
+        val (code, message) = if (throwable is CaramelException) {
+            throwable.code to throwable.message
+        } else {
+            AppErrorCode.UNKNOWN to null
+        }
+        postSideEffect(ContentSideEffect.ShowErrorSnackBar(code = code, message = message))
+    }
+
     override suspend fun handleIntent(intent: ContentIntent) {
         when (intent) {
             is ContentIntent.ClickCloseButton -> postSideEffect(ContentSideEffect.NavigateToBackStack)
@@ -61,18 +73,22 @@ class ContentViewModel(
     }
 
     private fun inputTitle(intent: ContentIntent.InputTitle) {
-        reduce {
-            copy(
-                title = intent.text
-            )
+        if (intent.text.length <= ContentState.MAX_TITLE_LENGTH) {
+            reduce {
+                copy(
+                    title = intent.text
+                )
+            }
         }
     }
 
     private fun inputContent(intent: ContentIntent.InputContent) {
-        reduce {
-            copy(
-                content = intent.text
-            )
+        if (intent.text.length <= ContentState.MAX_CONTENT_LENGTH) {
+            reduce {
+                copy(
+                    content = intent.text
+                )
+            }
         }
     }
 

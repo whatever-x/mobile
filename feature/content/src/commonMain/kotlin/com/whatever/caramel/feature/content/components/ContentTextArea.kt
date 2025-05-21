@@ -48,10 +48,8 @@ internal fun ContentTextArea(
         value.annotateLinks(regex = linkRegex, linkStyle = linkStyle, linkTag = "URL")
     }
 
-    var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
-
     BasicTextField(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         value = value,
         onValueChange = onValueChange,
         textStyle = CaramelTheme.typography.body2.reading.copy(
@@ -61,8 +59,6 @@ internal fun ContentTextArea(
         visualTransformation = {
             TransformedText(annotatedString, OffsetMapping.Identity)
         },
-        onTextLayout = { textLayoutResult = it },
-        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
         decorationBox = { inner ->
             Box(
                 modifier = Modifier.fillMaxWidth(),

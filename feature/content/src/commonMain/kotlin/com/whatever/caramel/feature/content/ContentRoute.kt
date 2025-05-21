@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.whatever.caramel.core.designsystem.components.LocalSnackbarHostState
+import com.whatever.caramel.core.designsystem.components.showSnackbarMessage
 import com.whatever.caramel.feature.content.mvi.ContentSideEffect
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -13,11 +15,19 @@ internal fun ContentRoute(
     navigateToBackStack: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val snackbarHostState = LocalSnackbarHostState.current
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is ContentSideEffect.NavigateToBackStack -> navigateToBackStack()
+                is ContentSideEffect.ShowErrorSnackBar -> {
+                    showSnackbarMessage(
+                        snackbarHostState = snackbarHostState,
+                        coroutineScope = this,
+                        message = sideEffect.message ?: ""
+                    )
+                }
             }
         }
     }

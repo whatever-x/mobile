@@ -38,4 +38,9 @@ data class ContentState(
     enum class CreateMode {
         MEMO, CALENDAR
     }
+
+    companion object {
+        const val MAX_TITLE_LENGTH = 30
+        const val MAX_CONTENT_LENGTH = 5000
+    }
 }
