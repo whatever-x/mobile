@@ -2,6 +2,7 @@ package com.whatever.caramel.core.data.repository
 
 import com.whatever.caramel.core.data.mapper.toHoliday
 import com.whatever.caramel.core.data.mapper.toSchedules
+import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.domain.entity.Todo
 import com.whatever.caramel.core.domain.repository.CalendarRepository
 import com.whatever.caramel.core.domain.vo.calendar.Holiday
@@ -16,11 +17,15 @@ class CalendarRepositoryImpl(
         endDate: String,
         userTimezone: String?
     ): List<Todo> {
-        return remoteCalendarDataSource.getSchedules(startDate, endDate, userTimezone).toSchedules()
+        return safeCall {
+            remoteCalendarDataSource.getSchedules(startDate, endDate, userTimezone).toSchedules()
+        }
     }
 
     override suspend fun getHolidays(year: Int, monthString: String): List<Holiday> {
         val yearMonth = "$year-$monthString"
-        return remoteCalendarDataSource.getHolidays(yearMonth).toHoliday()
+        return safeCall {
+            remoteCalendarDataSource.getHolidays(yearMonth).toHoliday()
+        }
     }
 }
