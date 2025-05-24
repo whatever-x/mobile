@@ -1,23 +1,27 @@
 package com.whatever.caramel.feature.home
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.domain.usecase.calendar.GetTodayScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.home.mvi.HomeIntent
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect
 import com.whatever.caramel.feature.home.mvi.HomeState
-import io.github.aakira.napier.Napier
-import kotlinx.coroutines.delay
+import com.whatever.caramel.feature.home.mvi.TodoState
 
 class HomeViewModel(
     private val updateShareMessageUseCase: UpdateShareMessageUseCase,
     private val getCoupleInfoUseCase: GetCoupleInfoUseCase,
+    private val getTodayScheduleUseCase: GetTodayScheduleUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle) {
 
     init {
-        initCoupleInfo()
+        launch {
+            initCoupleInfo()
+            initSchedules()
+        }
     }
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): HomeState {
@@ -53,14 +57,8 @@ class HomeViewModel(
     private suspend fun refreshHomeData() {
         launch {
             reduce { copy(isLoading = true) }
-
-            // @ham2174 TODO : 홈 데이터 업데이트하기
-            // 기억할 말 가져오기
-            // 만난 날짜 가져오기
-            // 오늘 일정 가져오기
-            Napier.d { "데이터 업데이트" }
-            delay(2000L)
-
+            initCoupleInfo()
+            initSchedules()
             reduce { copy(isLoading = false) }
         }
     }
@@ -77,14 +75,31 @@ class HomeViewModel(
         }
     }
 
-    private fun initCoupleInfo() {
-        launch {
-            val coupleInfo = getCoupleInfoUseCase()
+    private suspend fun initCoupleInfo() {
+        val coupleInfo = getCoupleInfoUseCase()
+
+        reduce {
+            copy(
+                daysTogether = coupleInfo.daysTogether,
+                shareMessage = coupleInfo.sharedMessage,
+            )
+        }
+    }
+
+    private suspend fun initSchedules() {
+        val schedules = getTodayScheduleUseCase()
+
+        if (schedules.isNotEmpty()) {
+            val todoUiState = schedules.map { todo ->
+                TodoState(
+                    id = todo.id,
+                    title = todo.title,
+                )
+            }
 
             reduce {
                 copy(
-                    daysTogether = coupleInfo.daysTogether,
-                    shareMessage = coupleInfo.sharedMessage,
+                    todos = todoUiState
                 )
             }
         }
