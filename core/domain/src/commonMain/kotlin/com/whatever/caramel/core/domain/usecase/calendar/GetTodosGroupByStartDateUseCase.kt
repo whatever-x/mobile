@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.domain.usecase.calendar
 
 import com.whatever.caramel.core.domain.repository.CalendarRepository
-import com.whatever.caramel.core.domain.vo.calendar.TodoOnDate
+import com.whatever.caramel.core.domain.vo.calendar.TodosOnDate
 
 class GetTodosGroupByStartDateUseCase(
     private val calendarRepository: CalendarRepository
@@ -10,12 +10,12 @@ class GetTodosGroupByStartDateUseCase(
         startDate: String,
         endDate: String,
         userTimezone: String? = null
-    ): List<TodoOnDate> {
+    ): List<TodosOnDate> {
         return calendarRepository.getSchedules(
             startDate = startDate,
             endDate = endDate,
             userTimezone = userTimezone
         ).groupBy { it.startDate }
-            .map { (date, todos) -> TodoOnDate(date.date, todos) }
+            .map { (date, todos) -> TodosOnDate(date.date, todos) }
     }
 }

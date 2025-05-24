@@ -3,9 +3,11 @@ package com.whatever.caramel.feature.calendar
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.usecase.calendar.GetHolidaysUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodosGroupByStartDateUseCase
+import com.whatever.caramel.core.domain.usecase.couple.GetAnniversariesUseCase
+import com.whatever.caramel.core.domain.vo.calendar.AnniversariesOnDate
 import com.whatever.caramel.core.domain.vo.calendar.Calendar
 import com.whatever.caramel.core.domain.vo.calendar.HolidaysOnDate
-import com.whatever.caramel.core.domain.vo.calendar.TodoOnDate
+import com.whatever.caramel.core.domain.vo.calendar.TodosOnDate
 import com.whatever.caramel.core.util.DateFormatter
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.BaseViewModel
@@ -23,6 +25,7 @@ import kotlinx.datetime.number
 class CalendarViewModel(
     private val getTodosGroupByStartDateUseCase: GetTodosGroupByStartDateUseCase,
     private val getHolidaysUseCase: GetHolidaysUseCase,
+    private val getAnniversariesUseCase: GetAnniversariesUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(savedStateHandle) {
 
@@ -169,7 +172,7 @@ class CalendarViewModel(
                 keys.add("$year-$month")
             }
             keys.forEach { key ->
-                if(year != currentState.year) {
+                if (year != currentState.year) {
                     // 년도가 다른 경우는 업데이트가 필요하다
                     Napier.e { "need holiday update" }
                     return@forEach
@@ -202,6 +205,10 @@ class CalendarViewModel(
                 endDate = lastDayOfMonth,
                 userTimezone = TimeZone.currentSystemDefault().toString()
             )
+            val anniversaries = getAnniversariesUseCase(
+                startDate = firstDayOfMonth,
+                endDate = lastDayOfMonth
+            )
 
             val needHolidayUpdate = currentState.year != year || initialize
             val holidays = if (needHolidayUpdate) {
@@ -216,8 +223,9 @@ class CalendarViewModel(
                     selectedDate = updatedSelectedDate,
                     cachedHolidays = holidays,
                     schedules = createDaySchedules(
-                        todoOnDate = todos,
+                        todosOnDate = todos,
                         holidaysOnDate = holidays,
+                        anniversariesOnDate = anniversaries,
                         updatedSelectedDate = updatedSelectedDate
                     )
                 )
@@ -287,22 +295,29 @@ class CalendarViewModel(
     }
 
     private fun createDaySchedules(
-        todoOnDate: List<TodoOnDate>,
+        todosOnDate: List<TodosOnDate>,
         holidaysOnDate: List<HolidaysOnDate>,
+        anniversariesOnDate: List<AnniversariesOnDate>,
         updatedSelectedDate: LocalDate
     ): List<DaySchedule> {
         val scheduleMap = mutableMapOf<LocalDate, DaySchedule>()
 
-        todoOnDate.forEach { list ->
-            val date = list.date
+        todosOnDate.forEach { todo ->
+            val date = todo.date
             val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-            scheduleMap[date] = existingSchedule.copy(todos = list.todos)
+            scheduleMap[date] = existingSchedule.copy(todos = todo.todos)
         }
 
-        holidaysOnDate.forEach { list ->
-            val date = list.date
+        anniversariesOnDate.forEach { anniversary ->
+            val date = anniversary.date
             val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-            scheduleMap[date] = existingSchedule.copy(holidays = list.holidays)
+            scheduleMap[date] = existingSchedule.copy(anniversaries = anniversary.anniversaries)
+        }
+
+        holidaysOnDate.forEach { holiday ->
+            val date = holiday.date
+            val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
+            scheduleMap[date] = existingSchedule.copy(holidays = holiday.holidays)
         }
 
         if (!scheduleMap.containsKey(updatedSelectedDate)) {

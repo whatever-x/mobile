@@ -21,4 +21,5 @@ interface RemoteCoupleDataSource {
         timeZone: String,
         request: CoupleStartDateUpdateRequest
     ): CoupleBasicResponse
+    suspend fun getAnniversaries(coupleId : Long, startDate : String, endDate : String)
 }
