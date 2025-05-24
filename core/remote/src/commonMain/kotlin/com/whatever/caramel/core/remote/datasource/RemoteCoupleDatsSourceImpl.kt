@@ -29,7 +29,7 @@ class RemoteCoupleDatsSourceImpl(
         }.getBody()
     }
 
-    override suspend fun getCoupleInfo(coupleId: Long): CoupleDetailResponse {
+    override suspend fun fetchCoupleRelationshipInfo(coupleId: Long): CoupleDetailResponse {
         return authClient.get(COUPLE_BASE_URL + "$coupleId").getBody()
     }
 

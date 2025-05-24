@@ -10,7 +10,7 @@ import com.whatever.caramel.core.remote.dto.couple.request.CoupleStartDateUpdate
 interface RemoteCoupleDataSource {
     suspend fun generateCoupleInvitationCode(): CoupleInvitationCodeResponse
     suspend fun connectCouple(request: CoupleConnectRequest): CoupleDetailResponse
-    suspend fun getCoupleInfo(coupleId: Long): CoupleDetailResponse
+    suspend fun fetchCoupleRelationshipInfo(coupleId: Long): CoupleDetailResponse
     suspend fun patchShareMessage(
         coupleId: Long,
         request: CoupleSharedMessageRequest

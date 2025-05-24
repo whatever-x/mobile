@@ -46,11 +46,11 @@ class CoupleRepositoryImpl(
         }
     }
 
-    override suspend fun getCoupleInfo(
+    override suspend fun getCoupleRelationshipInfo(
         coupleId: Long
     ): CoupleRelationship {
         return safeCall {
-            remoteCoupleDataSource.getCoupleInfo(coupleId = coupleId).toCoupleRelationship()
+            remoteCoupleDataSource.fetchCoupleRelationshipInfo(coupleId = coupleId).toCoupleRelationship()
         }
     }
 

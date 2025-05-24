@@ -8,6 +8,6 @@ class GetCoupleRelationshipInfoUseCase(
 ) {
     suspend operator fun invoke(): CoupleRelationship {
         val savedCoupleId = coupleRepository.getCoupleId()
-        return coupleRepository.getCoupleInfo(savedCoupleId)
+        return coupleRepository.getCoupleRelationshipInfo(savedCoupleId)
     }
 }
