@@ -57,10 +57,10 @@ internal fun CalendarScreen(
 
     LaunchedEffect(state.selectedDate) {
         if (state.bottomSheetState == BottomSheetState.EXPANDED) {
-            val scheduleIndex = state.schedules.indexOfFirst { it.date == state.selectedDate }
+            val scheduleIndex = state.monthSchedules.indexOfFirst { it.date == state.selectedDate }
             if (scheduleIndex >= 0) {
                 val itemPosition = scheduleIndex +
-                        state.schedules.take(scheduleIndex).sumOf { it.todos.size }
+                        state.monthSchedules.take(scheduleIndex).sumOf { it.todos.size }
                 lazyListState.scrollToItem(index = itemPosition)
             }
         }
@@ -144,7 +144,7 @@ internal fun CalendarScreen(
                         .height(availableHeight),
                     state = lazyListState
                 ) {
-                    state.schedules.forEach { schedule ->
+                    state.monthSchedules.forEach { schedule ->
                         item {
                             BottomSheetTodoListHeader(
                                 date = schedule.date,
@@ -207,7 +207,7 @@ internal fun CalendarScreen(
                                 .background(color = CaramelTheme.color.background.primary),
                             year = state.year,
                             month = state.month,
-                            schedules = state.schedules,
+                            schedules = state.monthSchedules,
                             selectedDate = state.selectedDate,
                             onClickTodo = { onIntent(CalendarIntent.ClickTodoItemInCalendar(it)) },
                             onClickCell = { onIntent(CalendarIntent.ClickCalendarCell(it)) }

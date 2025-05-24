@@ -20,7 +20,7 @@ data class CalendarState(
     val pickerDate : DateUiState = DateUiState.currentDate(),
     val isShowDatePicker: Boolean = false,
     val bottomSheetState: BottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
-    val schedules: List<DaySchedule> = emptyList(),
+    val monthSchedules: List<DaySchedule> = emptyList(),
     val cachedSchedules: Map<String, List<DaySchedule>> = emptyMap(),
     val cachedHolidays : List<HolidaysOnDate> = emptyList()
 ) : UiState
