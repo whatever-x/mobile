@@ -24,7 +24,7 @@ class CalendarRepositoryImpl(
     override suspend fun getHolidays(year: Int): List<Holiday> {
         return safeCall {
             val yearString = year.toString()
-            remoteCalendarDataSource.getHolidays(year = yearString).toHoliday()
+            remoteCalendarDataSource.getHolidaysByYear(year = yearString).toHoliday()
         }
     }
 }

@@ -10,7 +10,7 @@ interface RemoteCalendarDataSource {
         userTimeZone: String?
     ): CalendarDetailResponse
 
-    suspend fun getHolidays(
+    suspend fun getHolidaysByYear(
         year: String
     ): HolidayDetailListResponse
 }
