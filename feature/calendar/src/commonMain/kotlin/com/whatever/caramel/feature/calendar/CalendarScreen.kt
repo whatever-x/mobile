@@ -59,10 +59,8 @@ internal fun CalendarScreen(
         if (state.bottomSheetState == BottomSheetState.EXPANDED) {
             val scheduleIndex = state.schedules.indexOfFirst { it.date == state.selectedDate }
             if (scheduleIndex >= 0) {
-                var itemPosition = scheduleIndex
-                for (index in 0 until scheduleIndex) {
-                    itemPosition += state.schedules[index].todos.size
-                }
+                val itemPosition = scheduleIndex +
+                        state.schedules.take(scheduleIndex).sumOf { it.todos.size }
                 lazyListState.scrollToItem(index = itemPosition)
             }
         }
