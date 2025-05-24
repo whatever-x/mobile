@@ -13,8 +13,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
-import com.whatever.caramel.core.domain.vo.calendar.Holiday
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 
 @Composable

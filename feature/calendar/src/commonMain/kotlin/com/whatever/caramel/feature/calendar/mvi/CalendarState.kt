@@ -1,7 +1,7 @@
 package com.whatever.caramel.feature.calendar.mvi
 
+import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
-import com.whatever.caramel.core.domain.vo.calendar.Holiday
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.UiState

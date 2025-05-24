@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.data.mapper
 
+import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
-import com.whatever.caramel.core.domain.vo.calendar.Holiday
 import com.whatever.caramel.core.remote.dto.calendar.CalendarDetailResponse
 import com.whatever.caramel.core.remote.dto.calendar.HolidayDetailListResponse
 import kotlinx.datetime.LocalDate
@@ -22,6 +22,7 @@ fun CalendarDetailResponse.toSchedules(): List<Todo> {
 fun HolidayDetailListResponse.toHoliday(): List<Holiday> {
     return this.holidayList.map {
         Holiday(
+            id = it.id,
             date = LocalDate.parse(it.date),
             name = it.name,
             isHoliday = it.isHoliday
