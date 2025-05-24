@@ -187,20 +187,21 @@ internal fun CalendarScreen(
             }
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
-                HorizontalPager(
-                    modifier = Modifier.fillMaxSize(),
-                    state = pagerState
-                ) {
-                    Column {
-                        CalendarDayOfWeek(
-                            modifier = Modifier
-                                .height(height = CalendarDimension.datePickerHeight)
-                                .clickable(
-                                    indication = null,
-                                    interactionSource = null,
-                                    onClick = { onIntent(CalendarIntent.ClickOutSideBottomSheet) }
-                                )
-                        )
+                Column {
+                    CalendarDayOfWeek(
+                        modifier = Modifier
+                            .height(height = CalendarDimension.datePickerHeight)
+                            .clickable(
+                                indication = null,
+                                interactionSource = null,
+                                onClick = { onIntent(CalendarIntent.ClickOutSideBottomSheet) }
+                            )
+                    )
+
+                    HorizontalPager(
+                        modifier = Modifier.fillMaxSize(),
+                        state = pagerState
+                    ) {
                         CaramelCalendar(
                             modifier = Modifier
                                 .weight(1f)
