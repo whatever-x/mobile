@@ -7,10 +7,12 @@ data class HomeState(
     val daysTogether: Int = 0,
     val shareMessage: String = "",
     val todos: List<TodoState> = emptyList(),
-    val isSetAnniversary: Boolean = false,
     val isShowBottomSheet: Boolean = false,
     val isLoading: Boolean = false
-) : UiState
+) : UiState {
+    val isSetAnniversary: Boolean
+        get() = daysTogether != 0
+}
 
 @Immutable
 data class TodoState(

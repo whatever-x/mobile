@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.home
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.home.mvi.HomeIntent
@@ -11,8 +12,13 @@ import kotlinx.coroutines.delay
 
 class HomeViewModel(
     private val updateShareMessageUseCase: UpdateShareMessageUseCase,
+    private val getCoupleInfoUseCase: GetCoupleInfoUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle) {
+
+    init {
+        initCoupleInfo()
+    }
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): HomeState {
         return HomeState()
@@ -68,6 +74,19 @@ class HomeViewModel(
     private fun hideBottomSheet() {
         reduce {
             copy(isShowBottomSheet = false)
+        }
+    }
+
+    private fun initCoupleInfo() {
+        launch {
+            val coupleInfo = getCoupleInfoUseCase()
+
+            reduce {
+                copy(
+                    daysTogether = coupleInfo.daysTogether,
+                    shareMessage = coupleInfo.sharedMessage,
+                )
+            }
         }
     }
 
