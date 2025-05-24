@@ -1,6 +1,9 @@
 package com.whatever.caramel.feature.calendar.component
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
@@ -75,42 +78,51 @@ internal fun CalendarDatePicker(
     onMonthChanged: (Int) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    AnimatedVisibility(
-        modifier = modifier,
-        visible = isShowDropMenu,
-        enter = slideInVertically(initialOffsetY = { -it }),
-        exit = slideOutVertically(targetOffsetY = { -it })
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(CaramelTheme.color.alpha.primary)
-                .padding(top = CalendarDimension.datePickerHeight)
-                .clickable(
-                    indication = null,
-                    interactionSource = null,
-                    onClick = onDismiss
-                )
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = CaramelTheme.color.background.primary,
-                    shape = RoundedCornerShape(bottomEnd = 24.dp, bottomStart = 24.dp)
-                )
-                .padding(top = CaramelTheme.spacing.s, bottom = CaramelTheme.spacing.l)
+    Box(modifier = modifier.fillMaxSize()) {
+        AnimatedVisibility(
+            visible = isShowDropMenu,
+            enter = fadeIn(animationSpec = tween(durationMillis = 150)),
+            exit = fadeOut(animationSpec = tween(durationMillis = 150))
         ) {
-            CaramelDateMonthPicker(
-                modifier = Modifier.align(Alignment.TopCenter),
-                dateUiState = DateUiState(
-                    year = year,
-                    month = month.number,
-                    day = 1
-                ),
-                onYearChanged = { onYearChanged(it) },
-                onMonthChanged = { onMonthChanged(it) }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(CaramelTheme.color.alpha.primary)
+                    .padding(top = CalendarDimension.datePickerHeight)
+                    .clickable(
+                        indication = null,
+                        interactionSource = null,
+                        onClick = onDismiss
+                    )
             )
+        }
+
+        AnimatedVisibility(
+            modifier = modifier,
+            visible = isShowDropMenu,
+            enter = slideInVertically(initialOffsetY = { -it }),
+            exit = slideOutVertically(targetOffsetY = { -it })
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = CaramelTheme.color.background.primary,
+                        shape = RoundedCornerShape(bottomEnd = 24.dp, bottomStart = 24.dp)
+                    )
+                    .padding(top = CaramelTheme.spacing.s, bottom = CaramelTheme.spacing.l)
+            ) {
+                CaramelDateMonthPicker(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    dateUiState = DateUiState(
+                        year = year,
+                        month = month.number,
+                        day = 1
+                    ),
+                    onYearChanged = { onYearChanged(it) },
+                    onMonthChanged = { onMonthChanged(it) }
+                )
+            }
         }
     }
 }
