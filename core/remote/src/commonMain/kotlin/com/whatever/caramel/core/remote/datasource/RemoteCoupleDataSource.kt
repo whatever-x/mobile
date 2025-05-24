@@ -15,10 +15,10 @@ interface RemoteCoupleDataSource {
         coupleId: Long,
         request: CoupleSharedMessageRequest
     ): CoupleBasicResponse
-
     suspend fun updateCoupleStartDate(
         coupleId: Long,
         timeZone: String,
         request: CoupleStartDateUpdateRequest
     ): CoupleBasicResponse
+    suspend fun getCoupleInfo(): CoupleBasicResponse
 }

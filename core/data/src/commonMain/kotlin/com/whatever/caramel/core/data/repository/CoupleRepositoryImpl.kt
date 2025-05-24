@@ -80,4 +80,10 @@ class CoupleRepositoryImpl(
             ).toCouple()
         }
     }
+
+    override suspend fun getCoupleInfo(): Couple {
+        return safeCall {
+            remoteCoupleDataSource.getCoupleInfo().toCouple()
+        }
+    }
 }

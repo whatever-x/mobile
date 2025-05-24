@@ -15,4 +15,5 @@ interface CoupleRepository {
         coupleId: Long,
         shareMessage: String
     ) : Couple
+    suspend fun getCoupleInfo() : Couple
 }
