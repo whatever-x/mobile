@@ -10,14 +10,14 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 internal fun MemoRoute(
     viewModel: MemoViewModel = koinViewModel(),
-    navigateToTodoDetail: () -> Unit
+    navigateToTodoDetail: (Long) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is MemoSideEffect.NavigateToTodoDetail -> navigateToTodoDetail()
+                is MemoSideEffect.NavigateToTodoDetail -> navigateToTodoDetail(sideEffect.todoId)
             }
         }
     }

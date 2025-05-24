@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.util
 
-import com.whatever.caramel.core.util.DateFormatter.toFormattedDate
+import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -57,5 +57,4 @@ object DateFormatter {
         } catch (e: Exception) {
             ""
         }
-
 }

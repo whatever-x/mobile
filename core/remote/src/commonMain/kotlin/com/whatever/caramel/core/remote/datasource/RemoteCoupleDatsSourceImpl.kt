@@ -3,6 +3,7 @@ package com.whatever.caramel.core.remote.datasource
 import com.whatever.caramel.core.remote.dto.couple.request.CoupleStartDateUpdateRequest
 import com.whatever.caramel.core.remote.dto.couple.request.CoupleConnectRequest
 import com.whatever.caramel.core.remote.dto.couple.request.CoupleSharedMessageRequest
+import com.whatever.caramel.core.remote.dto.couple.response.CoupleAnniversaryResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleBasicResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleDetailResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleInvitationCodeResponse
@@ -12,6 +13,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import io.ktor.client.request.header
+import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import org.koin.core.annotation.Named
@@ -50,6 +52,14 @@ class RemoteCoupleDatsSourceImpl(
         return authClient.patch(COUPLE_BASE_URL + "${coupleId}/start-date") {
             header(Header.TIME_ZONE, timeZone)
             setBody(request)
+        }.getBody()
+    }
+
+    override suspend fun getAnniversaries(coupleId: Long, startDate: String, endDate: String) : CoupleAnniversaryResponse {
+        return authClient.get(COUPLE_BASE_URL + "${coupleId}/anniversaries") {
+            parameter("couple-id", coupleId)
+            parameter("startDate", startDate)
+            parameter("endDate", endDate)
         }.getBody()
     }
 

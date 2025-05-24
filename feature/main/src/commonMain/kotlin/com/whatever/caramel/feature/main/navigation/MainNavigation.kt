@@ -20,7 +20,7 @@ fun NavController.navigateToMain(builder: NavOptionsBuilder.() -> Unit = {}) {
 fun NavGraphBuilder.mainGraph(
     navigateToSetting: () -> Unit,
     navigateToStaredCoupleDay: () -> Unit,
-    navigateToTodoDetail: () -> Unit,
+    navigateToTodoDetail: (Long) -> Unit,
     navigateToCreateTodo: () -> Unit,
 ) {
     composable<MainRoute>() {

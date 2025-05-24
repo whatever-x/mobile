@@ -6,10 +6,14 @@ import com.whatever.caramel.core.domain.vo.user.UserStatus
 
 class RefreshUserSessionUseCase(
     private val authRepository: AuthRepository,
+    private val userRepository: UserRepository
 ) {
     suspend operator fun invoke() {
         val localSavedToken = authRepository.getAuthToken()
         val newToken = authRepository.refreshAuthToken(localSavedToken)
         authRepository.saveTokens(newToken)
+
+        val userInfo = userRepository.getUserInfo()
+        userRepository.setUserStatus(status = userInfo.userStatus)
     }
 }

@@ -18,7 +18,7 @@ fun NavHostController.navigateToMemo(builder: NavOptionsBuilder.() -> Unit) {
 }
 
 fun NavGraphBuilder.memoContent(
-    navigateToTodoDetail: () -> Unit
+    navigateToTodoDetail: (Long) -> Unit
 ) {
     composable<MemoRoute> {
         MemoRoute(
