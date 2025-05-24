@@ -54,6 +54,7 @@ import caramel.core.designsystem.generated.resources.img_splash
 import caramel.core.designsystem.generated.resources.img_onboarding01
 import caramel.core.designsystem.generated.resources.img_onboarding02
 import caramel.core.designsystem.generated.resources.img_onboarding03
+import caramel.core.designsystem.generated.resources.img_typelogo
 
 object Resources {
 
@@ -114,6 +115,7 @@ object Resources {
         val img_onboarding02 = Res.drawable.img_onboarding02
         val img_onboarding03 = Res.drawable.img_onboarding03
         val img_anniversary = Res.drawable.img_anniversary
+        val img_type_logo = Res.drawable.img_typelogo
     }
 
 }
