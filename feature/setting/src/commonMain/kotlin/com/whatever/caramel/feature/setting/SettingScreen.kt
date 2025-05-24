@@ -69,7 +69,7 @@ internal fun SettingScreen(
                     color = CaramelTheme.color.text.primary
                 )
             },
-            leadingIcon = {
+            leadingContent = {
                 Icon(
                     modifier = Modifier
                         .clickable(

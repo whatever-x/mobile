@@ -8,11 +8,15 @@ import com.whatever.caramel.feature.content.ContentRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object ContentRoute
+data class ContentRoute(
+    val contentId: Long
+)
 
-fun NavHostController.navigateToContent(navOptions: NavOptions? = null) {
+fun NavHostController.navigateToContent(navOptions: NavOptions? = null, contentId: Long) {
     navigate(
-        route = ContentRoute,
+        route = ContentRoute(
+            contentId = contentId
+        ),
         navOptions = navOptions
     )
 }

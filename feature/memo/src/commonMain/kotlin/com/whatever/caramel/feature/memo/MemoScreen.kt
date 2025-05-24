@@ -32,7 +32,7 @@ internal fun MemoScreen(
                 .align(
                     alignment = Alignment.BottomCenter
                 ),
-            onClick = { onIntent(MemoIntent.ClickMemo) }
+            onClick = { onIntent(MemoIntent.ClickMemo(memoId = 1L)) } // @RyuSw-cs 2025.05.19 FIXME :임시 메모 아이디, 구현 시 제거 필요
         ) {
             Text(
                 text = "메모 아이템",

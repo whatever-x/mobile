@@ -15,7 +15,7 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 @Composable
 fun CaramelTopBar(
     modifier: Modifier = Modifier,
-    leadingIcon: (@Composable () -> Unit)? = null,
+    leadingContent: (@Composable () -> Unit)? = null,
     centerContents: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
 ) {
@@ -29,11 +29,11 @@ fun CaramelTopBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = CaramelTheme.spacing.xl),
-            horizontalArrangement = if (leadingIcon == null) Arrangement.End else Arrangement.SpaceBetween,
+            horizontalArrangement = if (leadingContent == null) Arrangement.End else Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (leadingIcon != null) {
-                leadingIcon()
+            if (leadingContent != null) {
+                leadingContent()
             }
 
             if (trailingIcon != null) {
