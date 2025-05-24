@@ -20,7 +20,7 @@ class LoginViewModel(
 ) : BaseViewModel<LoginState, LoginSideEffect, LoginIntent>(savedStateHandle) {
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): LoginState {
-        return LoginState()
+        return LoginState
     }
 
     override suspend fun handleIntent(intent: LoginIntent) {
