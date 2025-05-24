@@ -11,6 +11,6 @@ interface RemoteCalendarDataSource {
     ): CalendarDetailResponse
 
     suspend fun getHolidays(
-        yearMonth: String
+        year: String
     ): HolidayDetailListResponse
 }

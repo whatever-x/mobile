@@ -21,10 +21,10 @@ class CalendarRepositoryImpl(
         }
     }
 
-    override suspend fun getHolidays(year: Int, monthString: String): List<Holiday> {
-        val yearMonth = "$year-$monthString"
+    override suspend fun getHolidays(year: Int): List<Holiday> {
         return safeCall {
-            remoteCalendarDataSource.getHolidays(yearMonth).toHoliday()
+            val yearString = year.toString()
+            remoteCalendarDataSource.getHolidays(year = yearString).toHoliday()
         }
     }
 }

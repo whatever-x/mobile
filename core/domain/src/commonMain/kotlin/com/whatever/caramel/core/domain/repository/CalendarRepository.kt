@@ -11,7 +11,6 @@ interface CalendarRepository {
     ) : List<Todo>
 
     suspend fun getHolidays(
-        year : Int,
-        monthString : String
+        year : Int
     ) : List<Holiday>
 }

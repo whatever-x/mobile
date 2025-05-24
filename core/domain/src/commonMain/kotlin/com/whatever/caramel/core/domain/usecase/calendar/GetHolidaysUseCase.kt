@@ -6,11 +6,9 @@ import com.whatever.caramel.core.domain.vo.calendar.HolidaysOnDate
 class GetHolidaysUseCase(
     private val calendarRepository: CalendarRepository
 ) {
-    suspend operator fun invoke(year: Int, monthNumber: Int): List<HolidaysOnDate> {
-        val monthString = monthNumber.toString().padStart(2, '0')
+    suspend operator fun invoke(year: Int): List<HolidaysOnDate> {
         return calendarRepository.getHolidays(
-            year = year,
-            monthString = monthString
+            year = year
         ).groupBy { it.date }
             .map { (date, holidayList) -> HolidaysOnDate(date, holidayList) }
     }

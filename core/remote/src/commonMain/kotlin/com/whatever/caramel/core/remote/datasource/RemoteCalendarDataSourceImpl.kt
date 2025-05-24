@@ -23,9 +23,9 @@ class RemoteCalendarDataSourceImpl(
         }.getBody()
     }
 
-    override suspend fun getHolidays(yearMonth: String): HolidayDetailListResponse {
+    override suspend fun getHolidays(year: String): HolidayDetailListResponse {
         return authClient.get("$CALENDAR_BASE_URL/holidays") {
-            parameter("yearMonth", yearMonth)
+            parameter("year", year)
         }.getBody()
     }
 
