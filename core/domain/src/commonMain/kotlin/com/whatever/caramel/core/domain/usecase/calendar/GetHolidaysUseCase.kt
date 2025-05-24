@@ -1,17 +1,17 @@
 package com.whatever.caramel.core.domain.usecase.calendar
 
 import com.whatever.caramel.core.domain.repository.CalendarRepository
-import com.whatever.caramel.core.domain.vo.calendar.HolidayList
+import com.whatever.caramel.core.domain.vo.calendar.HolidaysOnDate
 
 class GetHolidaysUseCase(
     private val calendarRepository: CalendarRepository
 ) {
-    suspend operator fun invoke(year: Int, monthNumber: Int): List<HolidayList> {
+    suspend operator fun invoke(year: Int, monthNumber: Int): List<HolidaysOnDate> {
         val monthString = monthNumber.toString().padStart(2, '0')
         return calendarRepository.getHolidays(
             year = year,
             monthString = monthString
         ).groupBy { it.date }
-            .map { (date, holidayList) -> HolidayList(date, holidayList) }
+            .map { (date, holidayList) -> HolidaysOnDate(date, holidayList) }
     }
 }

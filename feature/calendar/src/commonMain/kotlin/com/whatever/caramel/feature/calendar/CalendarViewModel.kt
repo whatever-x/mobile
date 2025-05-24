@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.usecase.calendar.GetHolidaysUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodosGroupByStartDateUseCase
 import com.whatever.caramel.core.domain.vo.calendar.Calendar
-import com.whatever.caramel.core.domain.vo.calendar.HolidayList
-import com.whatever.caramel.core.domain.vo.calendar.TodoList
+import com.whatever.caramel.core.domain.vo.calendar.HolidaysOnDate
+import com.whatever.caramel.core.domain.vo.calendar.TodoOnDate
 import com.whatever.caramel.core.util.DateFormatter
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.BaseViewModel
@@ -166,8 +166,8 @@ class CalendarViewModel(
                 copy(
                     selectedDate = updatedSelectedDate,
                     schedules = createDaySchedules(
-                        todoList = todos,
-                        holidayList = holidays,
+                        todoOnDate = todos,
+                        holidaysOnDate = holidays,
                         updatedSelectedDate = updatedSelectedDate
                     )
                 )
@@ -262,19 +262,19 @@ class CalendarViewModel(
     }
 
     private fun createDaySchedules(
-        todoList: List<TodoList>,
-        holidayList: List<HolidayList>,
+        todoOnDate: List<TodoOnDate>,
+        holidaysOnDate: List<HolidaysOnDate>,
         updatedSelectedDate: LocalDate
     ): List<DaySchedule> {
         val scheduleMap = mutableMapOf<LocalDate, DaySchedule>()
 
-        todoList.forEach { list ->
+        todoOnDate.forEach { list ->
             val date = list.date
             val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
             scheduleMap[date] = existingSchedule.copy(todos = list.todos)
         }
 
-        holidayList.forEach { list ->
+        holidaysOnDate.forEach { list ->
             val date = list.date
             val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
             scheduleMap[date] = existingSchedule.copy(holidays = list.holidays)

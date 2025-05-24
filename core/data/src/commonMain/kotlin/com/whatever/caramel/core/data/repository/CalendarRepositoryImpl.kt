@@ -6,7 +6,6 @@ import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.domain.entity.Todo
 import com.whatever.caramel.core.domain.repository.CalendarRepository
 import com.whatever.caramel.core.domain.vo.calendar.Holiday
-import com.whatever.caramel.core.domain.vo.calendar.HolidayList
 import com.whatever.caramel.core.remote.datasource.RemoteCalendarDataSource
 
 class CalendarRepositoryImpl(
