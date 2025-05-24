@@ -4,7 +4,7 @@ import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
 
 interface CalendarRepository {
-    suspend fun getSchedules(
+    suspend fun getTodos(
         startDate : String,
         endDate : String,
         userTimezone : String?

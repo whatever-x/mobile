@@ -7,7 +7,7 @@ import com.whatever.caramel.core.remote.dto.calendar.HolidayDetailListResponse
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 
-fun CalendarDetailResponse.toSchedules(): List<Todo> {
+fun CalendarDetailResponse.toTodo(): List<Todo> {
     return this.calendarResult.scheduleList.map {
         Todo(
             id = it.scheduleId,

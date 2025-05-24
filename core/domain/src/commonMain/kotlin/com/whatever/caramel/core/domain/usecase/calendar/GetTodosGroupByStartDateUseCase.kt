@@ -11,7 +11,7 @@ class GetTodosGroupByStartDateUseCase(
         endDate: String,
         userTimezone: String? = null
     ): List<TodosOnDate> {
-        return calendarRepository.getSchedules(
+        return calendarRepository.getTodos(
             startDate = startDate,
             endDate = endDate,
             userTimezone = userTimezone
