@@ -4,7 +4,7 @@ import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
 import com.whatever.caramel.core.domain.usecase.couple.EditCoupleStartDateUseCase
-import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInfoUseCase
+import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInvitationCodeUseCase
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
@@ -27,7 +27,7 @@ val useCaseModule = module {
     // Couple
     factory { GetCoupleInvitationCodeUseCase(get()) }
     factory { ConnectCoupleUseCase(get(), get()) }
-    factory { GetCoupleInfoUseCase(get()) }
+    factory { GetCoupleRelationshipInfoUseCase(get()) }
     factory { EditCoupleStartDateUseCase(get()) }
     factory { UpdateShareMessageUseCase(get()) }
 
