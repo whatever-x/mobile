@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.calendar.mvi
 
 import com.whatever.caramel.core.domain.entity.Todo
 import com.whatever.caramel.core.domain.vo.calendar.Holiday
+import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.UiState
 import kotlinx.datetime.LocalDate
@@ -12,10 +13,9 @@ data class CalendarState(
     val month: Month,
     val currentDateList: List<LocalDate>,
     val pageIndex: Int,
-    val pickerYear: Int,
-    val pickerMonth: Int,
     val today: LocalDate = DateUtil.today(),
     val selectedDate: LocalDate = DateUtil.today(),
+    val pickerDate : DateUiState = DateUiState.currentDate(),
     val isShowDatePicker: Boolean = false,
     val bottomSheetState: BottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
     val schedules: List<DaySchedule> = emptyList(),

@@ -41,6 +41,7 @@ import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
 import kotlinx.datetime.Month
 
+// @RyuSw-cs 2025.05.24 TODO : Column + ModalBottomSheet 조합으로 변경
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CalendarScreen(
@@ -124,7 +125,7 @@ internal fun CalendarScreen(
                             year = state.year,
                             month = state.month,
                             isShowDropMenu = state.isShowDatePicker,
-                            onToggleDatePicker = { onIntent(CalendarIntent.ToggleDatePicker) }
+                            onClickDatePicker = { onIntent(CalendarIntent.ClickDatePicker) }
                         )
                     }
                 )
@@ -219,7 +220,7 @@ internal fun CalendarScreen(
                     year = state.year,
                     month = state.month,
                     isShowDropMenu = state.isShowDatePicker,
-                    onDismiss = { onIntent(CalendarIntent.ToggleDatePicker) },
+                    onDismiss = { onIntent(CalendarIntent.ClickDatePickerOutSide) },
                     onYearChanged = { onIntent(CalendarIntent.UpdateSelectPickerYear(it)) },
                     onMonthChanged = { onIntent(CalendarIntent.UpdateSelectPickerMonth(it)) }
                 )
