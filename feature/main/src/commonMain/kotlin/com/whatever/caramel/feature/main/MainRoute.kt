@@ -27,7 +27,7 @@ import com.whatever.caramel.feature.memo.navigation.navigateToMemo
 internal fun MainRoute(
     navigateToSetting: () -> Unit,
     navigateToStaredCoupleDay: () -> Unit,
-    navigateToTodoDetail: () -> Unit,
+    navigateToTodoDetail: (Long) -> Unit,
     navigateToCreateTodo: () -> Unit,
 ) {
     val hapticFeedback = LocalHapticFeedback.current

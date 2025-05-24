@@ -4,6 +4,6 @@ import com.whatever.caramel.core.viewmodel.UiSideEffect
 
 sealed interface MemoSideEffect : UiSideEffect {
 
-    data object NavigateToTodoDetail : MemoSideEffect
+    data class NavigateToTodoDetail(val todoId : Long) : MemoSideEffect
 
 }

@@ -1,5 +1,6 @@
 package com.whatever.caramel.core.data.repository
 
+import com.whatever.caramel.core.data.mapper.toAnniversary
 import com.whatever.caramel.core.data.mapper.toCouple
 import com.whatever.caramel.core.data.mapper.toCoupleRelationship
 import com.whatever.caramel.core.data.mapper.toCoupleInvitationCode
@@ -7,6 +8,7 @@ import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datastore.datasource.CoupleDataSource
 import com.whatever.caramel.core.domain.entity.Couple
 import com.whatever.caramel.core.domain.repository.CoupleRepository
+import com.whatever.caramel.core.domain.vo.couple.Anniversary
 import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
 import com.whatever.caramel.core.domain.vo.couple.CoupleRelationship
 import com.whatever.caramel.core.remote.datasource.RemoteCoupleDataSource
@@ -78,6 +80,20 @@ class CoupleRepositoryImpl(
                 coupleId = coupleId,
                 request = request
             ).toCouple()
+        }
+    }
+
+    override suspend fun getAnniversaries(
+        coupleId: Long,
+        startDate: String,
+        endDate: String
+    ): List<Anniversary> {
+        return safeCall {
+            remoteCoupleDataSource.getAnniversaries(
+                coupleId = coupleId,
+                startDate = startDate,
+                endDate = endDate
+            ).toAnniversary()
         }
     }
 }
