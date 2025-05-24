@@ -13,7 +13,7 @@ internal fun HomeRoute(
     viewModel: HomeViewModel = koinViewModel(),
     navigateToSetting: () -> Unit,
     navigateToStaredCoupleDay: () -> Unit,
-    navigateToTodoDetail: () -> Unit,
+    navigateToTodoDetail: (Long) -> Unit,
     navigateToCreateTodo: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -23,7 +23,7 @@ internal fun HomeRoute(
             when (sideEffect) {
                 is HomeSideEffect.NavigateToSetting -> navigateToSetting()
                 is HomeSideEffect.NavigateToCreateContent -> navigateToCreateTodo()
-                is HomeSideEffect.NavigateToContentDetail -> navigateToTodoDetail()
+                is HomeSideEffect.NavigateToContentDetail -> navigateToTodoDetail(sideEffect.contentId)
                 is HomeSideEffect.NavigateToEditAnniversary -> navigateToStaredCoupleDay()
             }
         }

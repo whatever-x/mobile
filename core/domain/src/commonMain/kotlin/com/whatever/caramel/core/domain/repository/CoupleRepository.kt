@@ -1,6 +1,7 @@
 package com.whatever.caramel.core.domain.repository
 
 import com.whatever.caramel.core.domain.entity.Couple
+import com.whatever.caramel.core.domain.vo.couple.Anniversary
 import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
 import com.whatever.caramel.core.domain.vo.couple.CoupleRelationship
 
@@ -16,4 +17,5 @@ interface CoupleRepository {
         shareMessage: String
     ) : Couple
     suspend fun getCoupleInfo() : Couple
+    suspend fun getAnniversaries(coupleId : Long, startDate : String, endDate : String) : List<Anniversary>
 }

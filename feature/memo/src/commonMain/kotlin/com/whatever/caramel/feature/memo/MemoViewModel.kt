@@ -16,7 +16,7 @@ class MemoViewModel(
 
     override suspend fun handleIntent(intent: MemoIntent) {
         when (intent) {
-            is MemoIntent.ClickMemo -> postSideEffect(MemoSideEffect.NavigateToTodoDetail)
+            is MemoIntent.ClickMemo -> postSideEffect(MemoSideEffect.NavigateToTodoDetail(intent.memoId))
         }
     }
 

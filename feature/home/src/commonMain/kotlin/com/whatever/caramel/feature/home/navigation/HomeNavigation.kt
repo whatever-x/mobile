@@ -20,7 +20,7 @@ fun NavHostController.navigateToHome(builder: NavOptionsBuilder.() -> Unit) {
 fun NavGraphBuilder.homeContent(
     navigateToSetting: () -> Unit,
     navigateToStaredCoupleDay: () -> Unit,
-    navigateToTodoDetail: () -> Unit,
+    navigateToTodoDetail: (Long) -> Unit,
     navigateToCreateTodo: () -> Unit,
 ) {
     composable<HomeRoute> {

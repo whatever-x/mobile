@@ -6,6 +6,7 @@ import com.whatever.caramel.core.remote.dto.couple.response.CoupleBasicResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleDetailResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleInvitationCodeResponse
 import com.whatever.caramel.core.remote.dto.couple.request.CoupleStartDateUpdateRequest
+import com.whatever.caramel.core.remote.dto.couple.response.CoupleAnniversaryResponse
 
 interface RemoteCoupleDataSource {
     suspend fun generateCoupleInvitationCode(): CoupleInvitationCodeResponse
@@ -21,4 +22,5 @@ interface RemoteCoupleDataSource {
         request: CoupleStartDateUpdateRequest
     ): CoupleBasicResponse
     suspend fun getCoupleInfo(): CoupleBasicResponse
+    suspend fun getAnniversaries(coupleId : Long, startDate : String, endDate : String) : CoupleAnniversaryResponse
 }
