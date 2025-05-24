@@ -50,9 +50,11 @@ import caramel.core.designsystem.generated.resources.img_anniversary
 import caramel.core.designsystem.generated.resources.img_couple_on_ground
 import caramel.core.designsystem.generated.resources.img_gender_man
 import caramel.core.designsystem.generated.resources.img_gender_woman
+import caramel.core.designsystem.generated.resources.img_splash
 import caramel.core.designsystem.generated.resources.img_onboarding01
 import caramel.core.designsystem.generated.resources.img_onboarding02
 import caramel.core.designsystem.generated.resources.img_onboarding03
+import caramel.core.designsystem.generated.resources.img_typelogo
 
 object Resources {
 
@@ -108,10 +110,12 @@ object Resources {
         val img_couple_on_ground = Res.drawable.img_couple_on_ground
         val img_gender_man = Res.drawable.img_gender_man
         val img_gender_woman = Res.drawable.img_gender_woman
+        val img_splash = Res.drawable.img_splash
         val img_onboarding01 = Res.drawable.img_onboarding01
         val img_onboarding02 = Res.drawable.img_onboarding02
         val img_onboarding03 = Res.drawable.img_onboarding03
         val img_anniversary = Res.drawable.img_anniversary
+        val img_type_logo = Res.drawable.img_typelogo
     }
 
 }
