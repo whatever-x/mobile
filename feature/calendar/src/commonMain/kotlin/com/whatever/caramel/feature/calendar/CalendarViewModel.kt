@@ -44,8 +44,6 @@ class CalendarViewModel(
 
     override suspend fun handleIntent(intent: CalendarIntent) {
         when (intent) {
-            CalendarIntent.SwipeLeftCalendar -> decrementMonth()
-            CalendarIntent.SwipeRightCalendar -> incrementMonth()
             is CalendarIntent.ClickDatePicker -> showCalendarDatePicker()
             is CalendarIntent.ToggleCalendarBottomSheet -> toggleCalendarBottomSheet(intent.sheetState)
             is CalendarIntent.ClickAddScheduleButton -> postSideEffect(
@@ -109,7 +107,7 @@ class CalendarViewModel(
             copy(
                 year = year,
                 month = Month.entries[monthNumber],
-                pageIndex = pageIndex
+                pageIndex = pageIndex,
             )
         }
         getSchedules(initialize = true)
@@ -192,7 +190,8 @@ class CalendarViewModel(
     private fun showCalendarDatePicker() {
         reduce {
             copy(
-                isShowDatePicker = true
+                isShowDatePicker = true,
+                pickerDate = pickerDate.copy(year = year, month = month.number)
             )
         }
     }
@@ -222,40 +221,6 @@ class CalendarViewModel(
                     )
                 )
             }
-        }
-    }
-
-    private fun incrementMonth() {
-        reduce {
-            val newMonth =
-                if (currentState.month == Month.DECEMBER) Month.JANUARY else Month.entries[currentState.month.ordinal + 1]
-            val newYear =
-                if (currentState.month == Month.DECEMBER) currentState.year + 1 else currentState.year
-            copy(
-                year = newYear,
-                month = newMonth,
-                currentDateList = createCurrentDateList(
-                    year = newYear,
-                    month = newMonth
-                )
-            )
-        }
-    }
-
-    private fun decrementMonth() {
-        reduce {
-            val newMonth =
-                if (currentState.month == Month.JANUARY) Month.DECEMBER else Month.entries[currentState.month.ordinal - 1]
-            val newYear =
-                if (currentState.month == Month.JANUARY) currentState.year - 1 else currentState.year
-            copy(
-                year = newYear,
-                month = newMonth,
-                currentDateList = createCurrentDateList(
-                    year = newYear,
-                    month = newMonth
-                )
-            )
         }
     }
 

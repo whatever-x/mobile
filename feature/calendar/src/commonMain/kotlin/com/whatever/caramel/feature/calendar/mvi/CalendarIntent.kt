@@ -4,8 +4,6 @@ import com.whatever.caramel.core.viewmodel.UiIntent
 import kotlinx.datetime.LocalDate
 
 sealed interface CalendarIntent : UiIntent {
-    data object SwipeLeftCalendar : CalendarIntent
-    data object SwipeRightCalendar : CalendarIntent
     data object ClickDatePicker : CalendarIntent
     data object ClickDatePickerOutSide : CalendarIntent
     data object ClickOutSideBottomSheet : CalendarIntent

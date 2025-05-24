@@ -218,8 +218,8 @@ internal fun CalendarScreen(
                 }
 
                 CalendarDatePicker(
-                    year = state.year,
-                    month = state.month,
+                    year = state.pickerDate.year,
+                    month = Month.entries[state.pickerDate.month - 1],
                     isShowDropMenu = state.isShowDatePicker,
                     onDismiss = { onIntent(CalendarIntent.ClickDatePickerOutSide) },
                     onYearChanged = { onIntent(CalendarIntent.UpdateSelectPickerYear(it)) },
