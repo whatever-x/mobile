@@ -18,3 +18,16 @@ private fun HomeScreenPreview(
         )
     }
 }
+
+@Preview
+@Composable
+private fun QuizPreview(
+    @PreviewParameter(QuizPreviewData::class) quizType: HomeState
+) {
+    CaramelTheme {
+        HomeScreen(
+            state = quizType,
+            onIntent = {}
+        )
+    }
+}
