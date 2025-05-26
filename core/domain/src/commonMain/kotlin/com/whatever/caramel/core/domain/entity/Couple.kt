@@ -16,11 +16,7 @@ data class Couple(
     val daysTogether: Int
         get() {
             try {
-                val parts = startDate.split(".")
-                val year = parts[0].toInt()
-                val month = parts[1].toInt()
-                val day = parts[2].toInt()
-
+                val (year, month, day) = startDate.split(".").map{ it.toInt() }
                 val startDate = LocalDate(year, month, day)
                 val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
                 return startDate.daysUntil(today)
