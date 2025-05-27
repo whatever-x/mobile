@@ -41,7 +41,7 @@ val useCaseModule = module {
     factory { GetTodosGroupByStartDateUseCase(get()) }
     factory { GetHolidaysUseCase(get()) }
     // Tag
-    factory { GetTagUseCase() }
+    factory { GetTagUseCase(get()) }
 
     // Content
     factory { CreateContentUseCase(get(), get()) }
