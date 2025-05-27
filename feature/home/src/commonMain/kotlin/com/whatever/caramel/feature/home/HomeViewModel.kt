@@ -9,6 +9,7 @@ import com.whatever.caramel.feature.home.mvi.HomeIntent
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect
 import com.whatever.caramel.feature.home.mvi.HomeState
 import com.whatever.caramel.feature.home.mvi.TodoState
+import kotlinx.coroutines.joinAll
 
 class HomeViewModel(
     private val updateShareMessageUseCase: UpdateShareMessageUseCase,
@@ -57,8 +58,12 @@ class HomeViewModel(
     private suspend fun refreshHomeData() {
         launch {
             reduce { copy(isLoading = true) }
-            initCoupleInfo()
-            initSchedules()
+
+            val initCoupleInfoJob = launch { initCoupleInfo() }
+            val initSchedulesJob = launch { initSchedules() }
+
+            joinAll(initCoupleInfoJob, initSchedulesJob)
+
             reduce { copy(isLoading = false) }
         }
     }
