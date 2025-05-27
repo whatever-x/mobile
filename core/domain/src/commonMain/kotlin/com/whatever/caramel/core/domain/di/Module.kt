@@ -2,6 +2,7 @@ package com.whatever.caramel.core.domain.di
 
 import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
+import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetHolidaysUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodosGroupByStartDateUseCase
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
@@ -38,4 +39,8 @@ val useCaseModule = module {
     // Schedule
     factory { GetTodosGroupByStartDateUseCase(get()) }
     factory { GetHolidaysUseCase(get()) }
+
+    // BalanceGame
+    factory { GetTodayBalanceGameUseCase(get()) }
+
 }
