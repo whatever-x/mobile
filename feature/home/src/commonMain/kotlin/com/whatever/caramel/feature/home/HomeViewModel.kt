@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodayScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.home.mvi.HomeIntent
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect
@@ -86,7 +87,9 @@ class HomeViewModel(
         reduce {
             copy(
                 myNickname = coupleRelationShip.myInfo.userProfile?.nickName ?: "",
+                myGender = coupleRelationShip.myInfo.userProfile?.gender ?: Gender.IDLE,
                 partnerNickname = coupleRelationShip.partnerInfo.userProfile?.nickName ?: "",
+                partnerGender = coupleRelationShip.partnerInfo.userProfile?.gender ?: Gender.IDLE,
                 daysTogether = coupleRelationShip.info.daysTogether,
                 shareMessage = coupleRelationShip.info.sharedMessage,
             )
