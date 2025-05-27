@@ -11,16 +11,16 @@ import com.whatever.caramel.core.remote.dto.couple.response.CoupleAnniversaryRes
 interface RemoteCoupleDataSource {
     suspend fun generateCoupleInvitationCode(): CoupleInvitationCodeResponse
     suspend fun connectCouple(request: CoupleConnectRequest): CoupleDetailResponse
-    suspend fun getCoupleInfo(coupleId: Long): CoupleDetailResponse
+    suspend fun fetchCoupleRelationshipInfo(coupleId: Long): CoupleDetailResponse
     suspend fun patchShareMessage(
         coupleId: Long,
         request: CoupleSharedMessageRequest
     ): CoupleBasicResponse
-
     suspend fun updateCoupleStartDate(
         coupleId: Long,
         timeZone: String,
         request: CoupleStartDateUpdateRequest
     ): CoupleBasicResponse
+    suspend fun getCoupleInfo(): CoupleBasicResponse
     suspend fun getAnniversaries(coupleId : Long, startDate : String, endDate : String) : CoupleAnniversaryResponse
 }

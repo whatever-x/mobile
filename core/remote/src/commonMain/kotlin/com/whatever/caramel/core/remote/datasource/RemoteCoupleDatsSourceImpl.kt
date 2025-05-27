@@ -31,7 +31,7 @@ class RemoteCoupleDatsSourceImpl(
         }.getBody()
     }
 
-    override suspend fun getCoupleInfo(coupleId: Long): CoupleDetailResponse {
+    override suspend fun fetchCoupleRelationshipInfo(coupleId: Long): CoupleDetailResponse {
         return authClient.get(COUPLE_BASE_URL + "$coupleId").getBody()
     }
 
@@ -61,6 +61,10 @@ class RemoteCoupleDatsSourceImpl(
             parameter("startDate", startDate)
             parameter("endDate", endDate)
         }.getBody()
+    }
+
+    override suspend fun getCoupleInfo(): CoupleBasicResponse {
+        return authClient.get(COUPLE_BASE_URL + "me").getBody()
     }
 
     companion object {
