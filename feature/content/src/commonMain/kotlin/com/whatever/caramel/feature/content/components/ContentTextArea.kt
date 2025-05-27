@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.content.components
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,6 +13,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -32,6 +35,7 @@ internal fun ContentTextArea(
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String,
+    focusRequester: FocusRequester,
 ) {
 
     val linkRegex = remember { Regex("""https?://\S+""") }
@@ -49,7 +53,7 @@ internal fun ContentTextArea(
     }
 
     BasicTextField(
-        modifier = modifier,
+        modifier = Modifier.focusRequester(focusRequester),
         value = value,
         onValueChange = onValueChange,
         textStyle = CaramelTheme.typography.body2.reading.copy(
@@ -61,8 +65,7 @@ internal fun ContentTextArea(
         },
         decorationBox = { inner ->
             Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.TopStart
+                modifier = modifier.fillMaxWidth(),
             ) {
                 inner()
                 if (value.isEmpty()) {

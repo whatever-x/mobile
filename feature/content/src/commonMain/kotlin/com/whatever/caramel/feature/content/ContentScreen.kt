@@ -35,9 +35,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelButton
 import com.whatever.caramel.core.designsystem.components.CaramelButtonSize
 import com.whatever.caramel.core.designsystem.components.CaramelButtonType
@@ -74,21 +72,39 @@ internal fun ContentScreen(
         modifier = Modifier.fillMaxSize(),
         containerColor = CaramelTheme.color.background.primary,
         topBar = {
-            CaramelTopBar(
-                modifier = Modifier.statusBarsPadding(),
-                trailingIcon = {
-                    Icon(
-                        modifier = Modifier.clickable(
-                            onClick = { onIntent(ContentIntent.ClickCloseButton) },
-                            indication = null,
-                            interactionSource = null
-                        ),
-                        painter = painterResource(resource = Resources.Icon.ic_cancel_24),
-                        tint = CaramelTheme.color.icon.primary,
-                        contentDescription = null
-                    )
-                }
-            )
+            Column {
+                CaramelTopBar(
+                    modifier = Modifier.statusBarsPadding(),
+                    trailingIcon = {
+                        Icon(
+                            modifier = Modifier.clickable(
+                                onClick = { onIntent(ContentIntent.ClickCloseButton) },
+                                indication = null,
+                                interactionSource = null
+                            ),
+                            painter = painterResource(resource = Resources.Icon.ic_cancel_24),
+                            tint = CaramelTheme.color.icon.primary,
+                            contentDescription = null
+                        )
+                    }
+                )
+                TitleTextField(
+                    modifier = Modifier.padding(horizontal = CaramelTheme.spacing.xl),
+                    value = state.title,
+                    onValueChange = {
+                        onIntent(ContentIntent.InputTitle(it))
+                    },
+                    onKeyboardAction = {
+                        contentFocusRequester.requestFocus()
+                    }
+                )
+                HorizontalDivider(
+                    modifier = Modifier
+                        .padding(CaramelTheme.spacing.xl)
+                        .padding(vertical = CaramelTheme.spacing.xl),
+                    color = CaramelTheme.color.divider.primary
+                )
+            }
         },
         bottomBar = {
             Column(
@@ -160,8 +176,7 @@ internal fun ContentScreen(
                     }
                 }
                 CaramelButton(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     buttonType = if (state.isSaveButtonEnable) {
                         CaramelButtonType.Enabled1
                     } else {
@@ -175,41 +190,21 @@ internal fun ContentScreen(
                 )
             }
         }
-    ) { _ ->
+    ) { contentPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .statusBarsPadding()
-                .padding(top = 48.dp)
+                .padding(contentPadding)
                 .padding(horizontal = CaramelTheme.spacing.xl)
         ) {
-            TitleTextField(
-                value = state.title,
-                onValueChange = {
-                    onIntent(ContentIntent.InputTitle(it))
-                },
-                onKeyboardAction = {
-                    contentFocusRequester.requestFocus()
-                }
-            )
-            HorizontalDivider(
-                modifier = Modifier.padding(vertical = CaramelTheme.spacing.xl),
-                color = CaramelTheme.color.divider.primary
-            )
             ContentTextArea(
-                modifier = Modifier
-                    .weight(1f)
-                    .focusRequester(contentFocusRequester),
+                modifier = Modifier.weight(1f),
                 value = state.content,
                 onValueChange = {
                     onIntent(ContentIntent.InputContent(it))
                 },
+                focusRequester = contentFocusRequester,
                 placeholder = "함께 하고 싶거나 기억하면 좋은 것들을 자유롭게 입력해 주세요.",
-            )
-            Spacer(
-                modifier = Modifier.imePadding()
-                    .padding(vertical = CaramelTheme.spacing.xl)
-                    .padding(top = 50.dp)
             )
         }
     }
