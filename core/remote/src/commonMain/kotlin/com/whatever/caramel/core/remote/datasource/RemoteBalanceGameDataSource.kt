@@ -1,0 +1,7 @@
+package com.whatever.caramel.core.remote.datasource
+
+import com.whatever.caramel.core.remote.dto.balanceGame.response.BalanceGameResponse
+
+interface RemoteBalanceGameDataSource {
+    suspend fun fetchTodayBalanceGame(): BalanceGameResponse
+}

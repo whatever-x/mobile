@@ -1,0 +1,21 @@
+package com.whatever.caramel.core.remote.datasource
+
+import com.whatever.caramel.core.remote.dto.balanceGame.response.BalanceGameResponse
+import com.whatever.caramel.core.remote.network.util.getBody
+import io.ktor.client.HttpClient
+import io.ktor.client.request.get
+import org.koin.core.annotation.Named
+
+class RemoteBalanceGameDataSourceImpl(
+    @Named("AuthClient") private val authClient: HttpClient,
+): RemoteBalanceGameDataSource {
+
+    override suspend fun fetchTodayBalanceGame(): BalanceGameResponse {
+        return authClient.get(BALANCE_GAME_BASE_URL + "today").getBody()
+    }
+
+    companion object {
+        private const val BALANCE_GAME_BASE_URL = "/v1/balance-game/"
+    }
+
+}
