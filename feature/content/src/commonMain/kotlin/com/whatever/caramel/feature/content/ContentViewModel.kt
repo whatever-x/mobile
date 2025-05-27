@@ -54,7 +54,7 @@ class ContentViewModel(
 
     override suspend fun handleIntent(intent: ContentIntent) {
         when (intent) {
-            is ContentIntent.ClickCloseButton -> postSideEffect(ContentSideEffect.NavigateToBackStack)
+            is ContentIntent.ClickCloseButton -> clickCloseButton(intent)
             is ContentIntent.ClickSaveButton -> clickSaveButton(intent)
             is ContentIntent.InputTitle -> inputTitle(intent)
             is ContentIntent.InputContent -> inputContent(intent)
@@ -69,6 +69,24 @@ class ContentViewModel(
             is ContentIntent.OnMinuteChanged -> updateMinute(intent)
             is ContentIntent.ClickDate -> clickDate(intent)
             is ContentIntent.ClickTime -> clickTime(intent)
+            ContentIntent.ClickEditDialogRightButton -> clickEditDialogRightButton(intent)
+            ContentIntent.ClickEditDialogLeftButton -> clickEditDialogLeftButton(intent)
+        }
+    }
+
+    private fun clickEditDialogLeftButton(intent: ContentIntent) {
+        postSideEffect(ContentSideEffect.NavigateToBackStack)
+    }
+
+    private fun clickEditDialogRightButton(intent: ContentIntent) {
+        reduce {
+            copy(showEditConfirmDialog = false)
+        }
+    }
+
+    private fun clickCloseButton(intent: ContentIntent.ClickCloseButton) {
+        reduce {
+            copy(showEditConfirmDialog = true)
         }
     }
 

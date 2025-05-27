@@ -28,4 +28,7 @@ sealed interface ContentIntent : UiIntent {
     data class OnPeriodChanged(val period: String) : ContentIntent
     data class OnHourChanged(val hour: String) : ContentIntent
     data class OnMinuteChanged(val minute: String) : ContentIntent
+
+    data object ClickEditDialogLeftButton : ContentIntent
+    data object ClickEditDialogRightButton : ContentIntent
 }

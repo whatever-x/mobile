@@ -21,6 +21,7 @@ data class ContentState(
     val showDateDialog: Boolean = false,
     val showTimeDialog: Boolean = false,
     val dateTime: LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
+    val showEditConfirmDialog: Boolean = false,
     val id : Long,
 ) : UiState {
 

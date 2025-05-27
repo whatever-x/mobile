@@ -6,6 +6,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,7 +36,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import com.whatever.caramel.core.designsystem.components.CaramelButton
 import com.whatever.caramel.core.designsystem.components.CaramelButtonSize
 import com.whatever.caramel.core.designsystem.components.CaramelButtonType
@@ -68,8 +71,12 @@ internal fun ContentScreen(
     )
     val contentFocusRequester = FocusRequester()
     val isKeyboardVisible by rememberKeyboardVisibilityState()
+    val keyboardController = LocalSoftwareKeyboardController.current
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
+            .pointerInput(Unit){
+                detectTapGestures { keyboardController?.hide() }
+            },
         containerColor = CaramelTheme.color.background.primary,
         topBar = {
             Column {
@@ -99,9 +106,7 @@ internal fun ContentScreen(
                     }
                 )
                 HorizontalDivider(
-                    modifier = Modifier
-                        .padding(CaramelTheme.spacing.xl)
-                        .padding(vertical = CaramelTheme.spacing.xl),
+                    modifier = Modifier.padding(vertical = CaramelTheme.spacing.xl),
                     color = CaramelTheme.color.divider.primary
                 )
             }
