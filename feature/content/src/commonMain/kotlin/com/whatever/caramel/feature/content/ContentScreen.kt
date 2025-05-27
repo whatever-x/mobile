@@ -57,7 +57,6 @@ import com.whatever.caramel.feature.content.components.TitleTextField
 import com.whatever.caramel.feature.content.mvi.ContentIntent
 import com.whatever.caramel.feature.content.mvi.ContentState
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -74,7 +73,7 @@ internal fun ContentScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     Scaffold(
         modifier = Modifier.fillMaxSize()
-            .pointerInput(Unit){
+            .pointerInput(Unit) {
                 detectTapGestures { keyboardController?.hide() }
             },
         containerColor = CaramelTheme.color.background.primary,
@@ -224,7 +223,7 @@ internal fun ContentScreen(
                             modifier = Modifier
                                 .padding(top = CaramelTheme.spacing.xxl)
                                 .align(Alignment.CenterHorizontally),
-                            dateUiState = state.dateTime.toDateUiState(),
+                            dateUiState = DateUiState.from(state.dateTime),
                             onYearChanged = { year ->
                                 onIntent(ContentIntent.OnYearChanged(year))
                             },
@@ -242,7 +241,7 @@ internal fun ContentScreen(
                             modifier = Modifier
                                 .padding(top = CaramelTheme.spacing.xxl)
                                 .align(Alignment.CenterHorizontally),
-                            timeUiState = state.dateTime.toTimeUiState(),
+                            timeUiState = TimeUiState.from(state.dateTime),
                             onPeriodChanged = { period ->
                                 onIntent(ContentIntent.OnPeriodChanged(period))
                             },
@@ -270,25 +269,6 @@ internal fun ContentScreen(
             }
         )
     }
-}
-
-private fun LocalDateTime.toDateUiState(): DateUiState {
-    return DateUiState(
-        year = this.year,
-        month = this.monthNumber,
-        day = this.dayOfMonth
-    )
-}
-
-private fun LocalDateTime.toTimeUiState(): TimeUiState {
-    val currentHour = this.hour
-    val period = if (currentHour < 12) "오전" else "오후"
-    val hourIn12 = if (currentHour == 0 || currentHour == 12) 12 else currentHour % 12
-    return TimeUiState(
-        period = period,
-        hour = hourIn12.toString(),
-        minute = this.minute.toString()
-    )
 }
 
 @Composable
