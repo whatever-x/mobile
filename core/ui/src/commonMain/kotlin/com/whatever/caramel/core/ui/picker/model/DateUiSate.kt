@@ -1,6 +1,7 @@
 package com.whatever.caramel.core.ui.picker.model
 
 import com.whatever.caramel.core.util.DateUtil
+import kotlinx.datetime.LocalDateTime
 
 // @ham2174 FIXME : DateMonthPicker 또는 DatePicker 의 상태 변경시 DateUiState / DateMonthUiState 로 분리
 data class DateUiState(
@@ -27,6 +28,14 @@ data class DateUiState(
                 val day = dateNumber.substring(6, 8).toInt()
                 DateUiState(year, month, day)
             }.getOrNull() ?: currentDate()
+        }
+
+        fun from(dateTime: LocalDateTime): DateUiState {
+            return DateUiState(
+                year = dateTime.year,
+                month = dateTime.monthNumber,
+                day = dateTime.dayOfMonth
+            )
         }
     }
 }

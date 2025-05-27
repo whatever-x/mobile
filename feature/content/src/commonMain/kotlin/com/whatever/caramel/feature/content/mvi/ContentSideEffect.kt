@@ -6,4 +6,5 @@ sealed interface ContentSideEffect : UiSideEffect {
 
     data object NavigateToBackStack : ContentSideEffect
 
+    data class ShowErrorSnackBar(val code: String, val message: String? = null) : ContentSideEffect
 }

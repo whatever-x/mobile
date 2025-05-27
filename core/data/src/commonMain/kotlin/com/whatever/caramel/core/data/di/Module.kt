@@ -3,12 +3,16 @@ package com.whatever.caramel.core.data.di
 import com.whatever.caramel.core.data.interceptor.TokenInterceptorImpl
 import com.whatever.caramel.core.data.repository.AuthRepositoryImpl
 import com.whatever.caramel.core.data.repository.CalendarRepositoryImpl
+import com.whatever.caramel.core.data.repository.MemoRepositoryImpl
 import com.whatever.caramel.core.data.repository.CoupleRepositoryImpl
 import com.whatever.caramel.core.data.repository.UserRepositoryImpl
+import com.whatever.caramel.core.data.repository.TagRepositoryImpl
 import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.repository.CalendarRepository
+import com.whatever.caramel.core.domain.repository.ContentRepository
 import com.whatever.caramel.core.domain.repository.CoupleRepository
 import com.whatever.caramel.core.domain.repository.UserRepository
+import com.whatever.caramel.core.domain.repository.TagRepository
 import com.whatever.caramel.core.remote.network.interceptor.TokenInterceptor
 import org.koin.dsl.module
 
@@ -46,6 +50,18 @@ val repositoryModule = module {
     single<CalendarRepository> {
         CalendarRepositoryImpl(
             remoteCalendarDataSource = get()
+        )
+    }
+
+    single<ContentRepository> {
+        MemoRepositoryImpl(
+            remoteMemoDataSource = get()
+        )
+    }
+
+    single<TagRepository> {
+        TagRepositoryImpl(
+            remoteTagDataSource = get()
         )
     }
 }
