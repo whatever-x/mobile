@@ -45,8 +45,9 @@ internal fun ContentRoute(
                 "그대로 나가시겠어요?",
         mainButtonText = "유지하기",
         subButtonText = "나가기",
-        onDismissRequest = { viewModel.intent(ContentIntent.ClickEditDialogLeftButton) },
+        onDismissRequest = { viewModel.intent(ContentIntent.ClickEditDialogRightButton) },
         onMainButtonClick = { viewModel.intent(ContentIntent.ClickEditDialogRightButton) },
+        onSubButtonClick = { viewModel.intent(ContentIntent.ClickEditDialogLeftButton) }
     ) {
         DefaultCaramelDialogLayout()
     }
