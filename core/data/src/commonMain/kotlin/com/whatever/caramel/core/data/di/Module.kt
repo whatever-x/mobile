@@ -4,7 +4,6 @@ import com.whatever.caramel.core.data.interceptor.TokenInterceptorImpl
 import com.whatever.caramel.core.data.repository.AuthRepositoryImpl
 import com.whatever.caramel.core.data.repository.CalendarRepositoryImpl
 import com.whatever.caramel.core.data.repository.MemoRepositoryImpl
-import com.whatever.caramel.core.data.repository.ContentRepositoryImpl
 import com.whatever.caramel.core.data.repository.CoupleRepositoryImpl
 import com.whatever.caramel.core.data.repository.UserRepositoryImpl
 import com.whatever.caramel.core.domain.repository.AuthRepository
