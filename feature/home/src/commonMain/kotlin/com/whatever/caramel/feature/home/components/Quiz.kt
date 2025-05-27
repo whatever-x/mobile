@@ -334,12 +334,14 @@ private fun RowScope.OptionButton(
                 text = optionString,
                 inlineContent = inlineContentMap,
                 style = CaramelTheme.typography.body3.bold,
+                textAlign = TextAlign.Center,
                 color = textColor
             )
         } else {
             Text(
                 text = text,
                 style = CaramelTheme.typography.body3.bold,
+                textAlign = TextAlign.Center,
                 color = textColor
             )
         }
