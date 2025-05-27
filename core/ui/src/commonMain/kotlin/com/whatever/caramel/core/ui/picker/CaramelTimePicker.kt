@@ -15,6 +15,7 @@ import com.whatever.caramel.core.designsystem.components.PickerScrollMode.BOUNDE
 import com.whatever.caramel.core.designsystem.components.PickerScrollMode.LOOPING
 import com.whatever.caramel.core.designsystem.components.rememberPickerState
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import kotlinx.datetime.LocalDateTime
 
 data class TimeUiState(
     val period: String,
@@ -28,6 +29,17 @@ data class TimeUiState(
                 hour = "12",
                 minute = "00",
             )
+
+        fun from(dateTime: LocalDateTime): TimeUiState {
+            val currentHour = dateTime.hour
+            val period = if (currentHour < 12) "오전" else "오후"
+            val hourIn12 = if (currentHour == 0 || currentHour == 12) 12 else currentHour % 12
+            return TimeUiState(
+                period = period,
+                hour = hourIn12.toString(),
+                minute = dateTime.minute.toString()
+            )
+        }
     }
 }
 

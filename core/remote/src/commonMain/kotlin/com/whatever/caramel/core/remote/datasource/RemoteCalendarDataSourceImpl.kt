@@ -2,15 +2,24 @@ package com.whatever.caramel.core.remote.datasource
 
 import com.whatever.caramel.core.remote.dto.calendar.CalendarDetailResponse
 import com.whatever.caramel.core.remote.dto.calendar.HolidayDetailListResponse
+import com.whatever.caramel.core.remote.dto.calendar.request.CreateScheduleRequest
+import com.whatever.caramel.core.remote.dto.calendar.response.CreateScheduleResponse
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import org.koin.core.annotation.Named
 
-class RemoteCalendarDataSourceImpl(
+internal class RemoteCalendarDataSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteCalendarDataSource {
+    override suspend fun createSchedule(request: CreateScheduleRequest): CreateScheduleResponse =
+        authClient.post("$CALENDAR_BASE_URL/schedules") {
+            setBody(body = request)
+        }.getBody()
+
     override suspend fun getSchedules(
         startDate: String,
         endDate: String,
@@ -32,4 +41,4 @@ class RemoteCalendarDataSourceImpl(
     companion object {
         private const val CALENDAR_BASE_URL = "v1/calendar"
     }
-}
+} 
