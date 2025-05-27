@@ -2,7 +2,7 @@ package com.whatever.caramel.feature.home
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodayScheduleUseCase
-import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInfoUseCase
+import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.home.mvi.HomeIntent
@@ -13,7 +13,7 @@ import kotlinx.coroutines.joinAll
 
 class HomeViewModel(
     private val updateShareMessageUseCase: UpdateShareMessageUseCase,
-    private val getCoupleInfoUseCase: GetCoupleInfoUseCase,
+    private val getCoupleRelationshipInfoUseCase: GetCoupleRelationshipInfoUseCase,
     private val getTodayScheduleUseCase: GetTodayScheduleUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle) {
@@ -81,12 +81,14 @@ class HomeViewModel(
     }
 
     private suspend fun initCoupleInfo() {
-        val coupleInfo = getCoupleInfoUseCase()
+        val coupleRelationShip = getCoupleRelationshipInfoUseCase()
 
         reduce {
             copy(
-                daysTogether = coupleInfo.daysTogether,
-                shareMessage = coupleInfo.sharedMessage,
+                myNickname = coupleRelationShip.myInfo.userProfile?.nickName ?: "",
+                partnerNickname = coupleRelationShip.partnerInfo.userProfile?.nickName ?: "",
+                daysTogether = coupleRelationShip.info.daysTogether,
+                shareMessage = coupleRelationShip.info.sharedMessage,
             )
         }
     }

@@ -4,6 +4,8 @@ import androidx.compose.runtime.Immutable
 import com.whatever.caramel.core.viewmodel.UiState
 
 data class HomeState(
+    val myNickname: String = "",
+    val partnerNickname: String = "",
     val daysTogether: Int = 0,
     val shareMessage: String = "",
     val todos: List<TodoState> = emptyList(),
