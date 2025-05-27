@@ -16,6 +16,7 @@ kotlin {
             implementation(projects.core.ui)
             implementation(projects.core.analytics)
             implementation(projects.core.viewmodel)
+            implementation(projects.core.util)
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)

@@ -2,7 +2,7 @@ package com.whatever.caramel.feature.setting
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
-import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInfoUseCase
+import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.setting.mvi.CoupleUser
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
@@ -11,7 +11,7 @@ import com.whatever.caramel.feature.setting.mvi.SettingState
 import io.github.aakira.napier.Napier
 
 class SettingViewModel(
-    private val getCoupleInfoUseCase: GetCoupleInfoUseCase,
+    private val getCoupleRelationshipInfoUseCase: GetCoupleRelationshipInfoUseCase,
     private val logoutUseCase: LogoutUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<SettingState, SettingSideEffect, SettingIntent>(savedStateHandle) {
@@ -54,7 +54,7 @@ class SettingViewModel(
                     isLoading = true
                 )
             }
-            val couple = getCoupleInfoUseCase()
+            val couple = getCoupleRelationshipInfoUseCase()
             reduce {
                 copy(
                     isLoading = false,
