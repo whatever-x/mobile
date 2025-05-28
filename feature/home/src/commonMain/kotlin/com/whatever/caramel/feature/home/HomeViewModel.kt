@@ -50,6 +50,7 @@ class HomeViewModel(
             is HomeIntent.PullToRefresh -> refreshHomeData()
             is HomeIntent.ClickBalanceGameOptionButton -> submitBalanceGameOption(balanceGameOptionState = intent.option)
             is HomeIntent.ClickBalanceGameResultButton -> checkBalanceGameResult()
+            is HomeIntent.ChangeBalanceGameCardState -> changeBalanceGameCardState()
         }
     }
 
@@ -76,7 +77,12 @@ class HomeViewModel(
 
             joinAll(initCoupleInfoJob, initSchedulesJob, initBalanceGameJob)
 
-            reduce { copy(isLoading = false) }
+            reduce {
+                copy(
+                    isBalanceGameCardRotated = false,
+                    isLoading = false
+                )
+            }
         }
     }
 
@@ -185,8 +191,14 @@ class HomeViewModel(
     private fun checkBalanceGameResult() {
         reduce {
             copy(
-                balanceGameCardState = HomeState.BalanceGameCardState.CONFIRM
+                isBalanceGameCardRotated = !isBalanceGameCardRotated
             )
+        }
+    }
+
+    private fun changeBalanceGameCardState() {
+        reduce {
+            copy(balanceGameCardState = HomeState.BalanceGameCardState.CONFIRM)
         }
     }
 

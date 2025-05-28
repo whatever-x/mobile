@@ -16,6 +16,7 @@ data class HomeState(
     val todos: List<TodoState> = emptyList(),
     val isShowBottomSheet: Boolean = false,
     val isLoading: Boolean = false,
+    val isBalanceGameCardRotated: Boolean = false,
     val balanceGameState: BalanceGameState = BalanceGameState(),
     val balanceGameCardState: BalanceGameCardState = BalanceGameCardState.IDLE,
     val myChoiceOption: BalanceGameOptionState = BalanceGameOptionState(),

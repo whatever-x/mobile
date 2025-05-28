@@ -1,5 +1,9 @@
 package com.whatever.caramel.feature.home.components
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.AnimationVector1D
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,9 +26,17 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
@@ -42,11 +54,20 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.feature.home.mvi.BalanceGameOptionState
 import com.whatever.caramel.feature.home.mvi.HomeState
+import io.github.aakira.napier.Napier
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import kotlin.math.floor
 
 internal fun LazyListScope.Quiz(
+    rotated: Boolean,
     myNickname: String,
     myGender: Gender,
     partnerNickname: String,
@@ -58,15 +79,42 @@ internal fun LazyListScope.Quiz(
     balanceGameAnswerState: HomeState.BalanceGameAnswerState,
     balanceGameCardState: HomeState.BalanceGameCardState,
     onOptionClick: (BalanceGameOptionState) -> Unit,
-    onClickResult: () -> Unit
+    onClickResult: () -> Unit,
+    onChangeCardState: () -> Unit,
 ) {
     item(key = "Quiz") {
+        val rotation = remember { Animatable(0f) }
+
+        LaunchedEffect(rotated) {
+            if (rotated) {
+                rotation.snapTo(0f)
+                rotation.animateTo(
+                    targetValue = rotation.value + 180f,
+                    animationSpec = tween(durationMillis = 1000)
+                )
+            }
+        }
+
+        LaunchedEffect(Unit) {
+            snapshotFlow { rotation.value >= 90f }
+                .distinctUntilChanged()
+                .filter { it }
+                .collect { onChangeCardState() }
+        }
+
         Box(
             modifier = Modifier
+                .graphicsLayer {
+                    this.rotationY = rotation.value
+                    cameraDistance = 8 * density
+                }
                 .padding(horizontal = CaramelTheme.spacing.xl)
         ) {
+            val contentRotationY = if (rotation.value < 90f) 0f else 180f
+
             Column(
                 modifier = Modifier
+                    .graphicsLayer { rotationY = contentRotationY }
                     .fillMaxWidth()
                     .background(
                         color = CaramelTheme.color.background.tertiary,
@@ -121,7 +169,8 @@ internal fun LazyListScope.Quiz(
                     }
                     HomeState.BalanceGameCardState.CONFIRM -> {
                         HorizontalDivider(
-                            modifier = Modifier.padding(horizontal = CaramelTheme.spacing.l),
+                            modifier = Modifier
+                                .padding(horizontal = CaramelTheme.spacing.l),
                             thickness = 1.dp,
                             color = CaramelTheme.color.fill.quaternary,
                         )
@@ -143,11 +192,51 @@ internal fun LazyListScope.Quiz(
 
             Image(
                 modifier = Modifier
+                    .graphicsLayer { rotationY = contentRotationY }
                     .align(alignment = Alignment.TopCenter)
                     .offset(y = (-15).dp),
                 painter = painterResource(resource = Resources.Image.img_quiz_vs),
                 contentDescription = null
             )
+        }
+    }
+}
+
+@Composable
+private fun FlipBalanceGameCard(
+    rotation: Animatable<Float, AnimationVector1D>,
+    front: @Composable () -> Unit,
+    back: @Composable () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .graphicsLayer {
+                this.rotationY = rotation.value
+                cameraDistance = 8 * density
+            }
+            .fillMaxWidth()
+            .background(
+                color = CaramelTheme.color.background.tertiary,
+                shape = CaramelTheme.shape.l
+            )
+            .border(
+                width = 4.dp,
+                color = CaramelTheme.color.fill.quaternary,
+                shape = CaramelTheme.shape.l
+            )
+            .padding(top = 48.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if (rotation.value <= 90f) {
+            front()
+        } else {
+            Box(
+                modifier = Modifier.graphicsLayer {
+                    rotationY = 180f
+                }
+            ) {
+                back()
+            }
         }
     }
 }
