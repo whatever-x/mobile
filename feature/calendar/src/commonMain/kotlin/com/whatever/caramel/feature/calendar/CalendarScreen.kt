@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,6 +25,7 @@ import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.calendar.Calendar
@@ -147,6 +149,7 @@ internal fun CalendarScreen(
                     state.monthSchedules.forEach { schedule ->
                         item {
                             BottomSheetTodoListHeader(
+                                modifier = Modifier.heightIn(max = 800.dp),
                                 date = schedule.date,
                                 onClickAddSchedule = {
                                     onIntent(
@@ -157,7 +160,8 @@ internal fun CalendarScreen(
                                 },
                                 isToday = schedule.date == state.today,
                                 isEmpty = schedule.todos.isEmpty(),
-                                holidays = schedule.holidays
+                                holidays = schedule.holidays,
+                                anniversaries = schedule.anniversaries
                             )
                             Spacer(modifier = Modifier.height(CaramelTheme.spacing.s))
                         }
