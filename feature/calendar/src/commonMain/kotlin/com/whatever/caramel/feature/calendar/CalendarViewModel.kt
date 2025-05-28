@@ -16,7 +16,6 @@ import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
-import io.github.aakira.napier.Napier
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
@@ -31,14 +30,10 @@ class CalendarViewModel(
 
     init {
         val year = currentState.year
-        val startMonthNumber =
-            if (currentState.month == Month.JANUARY) 12 else currentState.month.number - 1
-        val endMonthNumber =
-            if (currentState.month == Month.DECEMBER) 1 else currentState.month.number + 1
+        val monthNumber = currentState.month.number
         getSchedules(
             year = year,
-            startMonthNumber = startMonthNumber,
-            endMonthNumber = endMonthNumber,
+            startMonthNumber = monthNumber,
             initialize = true
         )
     }
@@ -117,7 +112,6 @@ class CalendarViewModel(
 
         val year = (pageIndex / 12) + 1900
         val monthNumber = pageIndex % 12
-        getSchedules(year = year, startMonthNumber = monthNumber, initialize = true)
         reduce {
             copy(
                 year = year,
@@ -125,6 +119,7 @@ class CalendarViewModel(
                 pageIndex = pageIndex,
             )
         }
+        getSchedules(year = year, startMonthNumber = monthNumber + 1, initialize = false)
     }
 
     private fun clickTodoUrl(url: String?) {
@@ -155,7 +150,6 @@ class CalendarViewModel(
     }
 
 
-
     private fun getSchedules(
         year: Int,
         startMonthNumber: Int,
@@ -167,27 +161,6 @@ class CalendarViewModel(
                 currentState.today
             } else {
                 LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
-            }
-
-            val keys = mutableListOf<String>()
-            for (month in startMonthNumber until endMonthNumber) {
-                keys.add("$year-$month")
-            }
-            keys.forEach { key ->
-                if (year != currentState.year) {
-                    Napier.e { "already exist" }
-                    return@forEach
-                }
-                if (currentState.cachedSchedules.containsKey(key)) {
-                    reduce {
-                        Napier.e { "cashExist = $key" }
-                        copy(
-                            selectedDate = updatedSelectedDate,
-                            monthSchedules = cachedSchedules[key] ?: emptyList()
-                        )
-                    }
-                    return@launch
-                }
             }
 
             val firstDayOfMonth = DateFormatter.createDateString(
@@ -210,19 +183,10 @@ class CalendarViewModel(
                 startDate = firstDayOfMonth,
                 endDate = lastDayOfMonth
             )
-
-            val needHolidayUpdate = currentState.year != year || initialize
-            val holidays = if (needHolidayUpdate) {
-                Napier.e { "needHolidayUpdate = true" }
-                getHolidaysUseCase(year = year)
-            } else {
-                Napier.e { "needHolidayUpdate = false" }
-                currentState.cachedHolidays
-            }
+            val holidays = getHolidaysUseCase(year = year)
             reduce {
                 copy(
                     selectedDate = updatedSelectedDate,
-                    cachedHolidays = holidays,
                     monthSchedules = createMonthSchedules(
                         todosOnDate = todos,
                         holidaysOnDate = holidays,
@@ -254,33 +218,25 @@ class CalendarViewModel(
     private fun dismissCalendarDatePicker() {
         val pickerYear = currentState.pickerDate.year
         val pickerMonth = Month.entries[currentState.pickerDate.month - 1]
-        val needUpdate = pickerYear != currentState.year || pickerMonth != currentState.month
 
         reduce {
             copy(
+                year = pickerYear,
+                month = pickerMonth,
+                pageIndex = calcPageIndex(pickerYear, pickerMonth),
+                currentDateList = createCurrentDateList(
+                    year = pickerYear,
+                    month = pickerMonth
+                ),
                 isShowDatePicker = false,
                 bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED
             )
         }
-
-        if (needUpdate) {
-            getSchedules(
-                year = pickerYear,
-                startMonthNumber = pickerMonth.number,
-                initialize = true
-            )
-            reduce {
-                copy(
-                    year = pickerYear,
-                    month = pickerMonth,
-                    pageIndex = calcPageIndex(pickerYear, pickerMonth),
-                    currentDateList = createCurrentDateList(
-                        year = pickerYear,
-                        month = pickerMonth
-                    )
-                )
-            }
-        }
+        getSchedules(
+            year = pickerYear,
+            startMonthNumber = pickerMonth.number,
+            initialize = false
+        )
     }
 
     private fun createCurrentDateList(
