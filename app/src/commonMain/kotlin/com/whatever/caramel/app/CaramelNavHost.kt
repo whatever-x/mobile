@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.whatever.caramel.feature.content.navigation.contentScreen
-import com.whatever.caramel.feature.content.navigation.navigateToContent
+import com.whatever.caramel.feature.content.create.navigation.contentScreen
+import com.whatever.caramel.feature.content.create.navigation.navigateToContent
 import com.whatever.caramel.feature.copule.connecting.navigation.connectingScreen
 import com.whatever.caramel.feature.copule.invite.navigation.inviteCoupleScreen
 import com.whatever.caramel.feature.couple.connect.navigation.connectCoupleScreen

@@ -52,7 +52,6 @@ kotlin {
             implementation(projects.feature.setting)
             implementation(projects.feature.login)
             implementation(projects.feature.calendar)
-            implementation(projects.feature.content)
             implementation(projects.feature.couple.connect)
             implementation(projects.feature.couple.invite)
             implementation(projects.feature.couple.connecting)
@@ -60,6 +59,9 @@ kotlin {
             implementation(projects.feature.login)
             implementation(projects.feature.main)
             implementation(projects.feature.memo)
+            implementation(projects.feature.content.create)
+            implementation(projects.feature.content.edit)
+            implementation(projects.feature.content.detail)
 
             // Library
             implementation(compose.runtime)

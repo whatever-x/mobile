@@ -14,7 +14,7 @@ import com.whatever.caramel.core.remote.di.networkClientEngineModule
 import com.whatever.caramel.core.remote.di.networkModule
 import com.whatever.caramel.core.remote.di.remoteDataSourceModule
 import com.whatever.caramel.feature.calendar.di.calendarFeatureModule
-import com.whatever.caramel.feature.content.di.contentFeatureModule
+import com.whatever.caramel.feature.content.create.di.contentFeatureModule
 import com.whatever.caramel.feature.copule.connecting.di.coupleConnectingFeatureModule
 import com.whatever.caramel.feature.copule.invite.di.coupleInviteFeatureModule
 import com.whatever.caramel.feature.copule.invite.di.shareServiceModule
