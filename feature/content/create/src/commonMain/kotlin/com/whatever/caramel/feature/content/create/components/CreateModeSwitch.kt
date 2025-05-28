@@ -20,11 +20,15 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.content.create.mvi.ContentState
 import org.jetbrains.compose.resources.painterResource
 
+enum class CreateMode {
+    MEMO, CALENDAR
+}
+
 @Composable
 fun CreateModeSwitch(
     modifier: Modifier = Modifier,
-    createMode: ContentState.CreateMode,
-    onCreateModeSelect: (ContentState.CreateMode) -> Unit,
+    createMode: CreateMode,
+    onCreateModeSelect: (CreateMode) -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -33,10 +37,10 @@ fun CreateModeSwitch(
             .padding(CaramelTheme.spacing.xxs),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        ContentState.CreateMode.entries.forEach {
+        CreateMode.entries.forEach {
             val icon = when (it) {
-                ContentState.CreateMode.MEMO -> painterResource(Resources.Icon.ic_memo_24)
-                ContentState.CreateMode.CALENDAR -> painterResource(Resources.Icon.ic_calendar_24)
+                CreateMode.MEMO -> painterResource(Resources.Icon.ic_memo_24)
+                CreateMode.CALENDAR -> painterResource(Resources.Icon.ic_calendar_24)
             }
             ToggleIconButton(
                 icon = icon,

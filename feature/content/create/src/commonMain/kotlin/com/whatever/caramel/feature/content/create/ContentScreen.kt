@@ -50,6 +50,7 @@ import com.whatever.caramel.core.ui.picker.CaramelTimePicker
 import com.whatever.caramel.core.ui.picker.TimeUiState
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.feature.content.create.components.ContentTextArea
+import com.whatever.caramel.feature.content.create.components.CreateMode
 import com.whatever.caramel.feature.content.create.components.CreateModeSwitch
 import com.whatever.caramel.feature.content.create.components.DateBottomSheet
 import com.whatever.caramel.feature.content.create.components.SelectableTagChipRow
@@ -147,7 +148,7 @@ internal fun ContentScreen(
                                 }
                             )
                             when (state.createMode) {
-                                ContentState.CreateMode.MEMO -> {
+                                CreateMode.MEMO -> {
                                     Text(
                                         text = "정해진 일정이 없어요",
                                         style = CaramelTheme.typography.body2.regular,
@@ -155,7 +156,7 @@ internal fun ContentScreen(
                                     )
                                 }
 
-                                ContentState.CreateMode.CALENDAR -> {
+                                CreateMode.CALENDAR -> {
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
                                         horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s)

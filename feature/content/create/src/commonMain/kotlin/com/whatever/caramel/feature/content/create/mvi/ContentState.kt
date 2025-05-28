@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.content.create.mvi
 
 import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.viewmodel.UiState
+import com.whatever.caramel.feature.content.create.components.CreateMode
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
@@ -20,9 +21,10 @@ data class ContentState(
     val createMode: CreateMode = CreateMode.MEMO,
     val showDateDialog: Boolean = false,
     val showTimeDialog: Boolean = false,
-    val dateTime: LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
+    val dateTime: LocalDateTime = Clock.System.now()
+        .toLocalDateTime(TimeZone.currentSystemDefault()),
     val showEditConfirmDialog: Boolean = false,
-    val id : Long,
+    val id: Long,
 ) : UiState {
 
     val isSaveButtonEnable: Boolean
@@ -35,10 +37,6 @@ data class ContentState(
         get() = "${dateTime.hour.toString().padStart(2, '0')}:${
             dateTime.minute.toString().padStart(2, '0')
         }"
-
-    enum class CreateMode {
-        MEMO, CALENDAR
-    }
 
     companion object {
         const val MAX_TITLE_LENGTH = 30

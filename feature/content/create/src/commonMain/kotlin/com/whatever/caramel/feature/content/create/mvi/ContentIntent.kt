@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.content.create.mvi
 
 import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.viewmodel.UiIntent
+import com.whatever.caramel.feature.content.create.components.CreateMode
 
 sealed interface ContentIntent : UiIntent {
     data object ClickCloseButton : ContentIntent
@@ -14,7 +15,7 @@ sealed interface ContentIntent : UiIntent {
 
     data class ClickTag(val tag: Tag) : ContentIntent
 
-    data class SelectCreateMode(val createMode: ContentState.CreateMode) : ContentIntent
+    data class SelectCreateMode(val createMode: CreateMode) : ContentIntent
 
     data object ClickDate : ContentIntent
     data object ClickTime : ContentIntent
