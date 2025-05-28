@@ -5,6 +5,6 @@ import com.whatever.caramel.core.domain.entity.BalanceGameOption
 
 data class BalanceGameResult(
     val gameInfo: BalanceGame,
-    val myChoice: BalanceGameOption,
-    val partnerChoice: BalanceGameOption
+    val myChoice: BalanceGameOption?,
+    val partnerChoice: BalanceGameOption?
 )

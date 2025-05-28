@@ -15,14 +15,8 @@ fun BalanceGameResponse.toBalanceGameResult(): BalanceGameResult =
             question = this.gameInfo.question,
             options = this.gameInfo.options.map { it.toBalanceGameOption() },
         ),
-        myChoice = BalanceGameOption(
-            optionId = this.myChoice?.optionId ?: 0,
-            text = this.myChoice?.text ?: ""
-        ),
-        partnerChoice = BalanceGameOption(
-            optionId = this.partnerChoice?.optionId ?: 0,
-            text = this.partnerChoice?.text ?: ""
-        ),
+        myChoice = this.myChoice?.toBalanceGameOption(),
+        partnerChoice = this.partnerChoice?.toBalanceGameOption()
     )
 
 fun OptionInfoDto.toBalanceGameOption(): BalanceGameOption =
