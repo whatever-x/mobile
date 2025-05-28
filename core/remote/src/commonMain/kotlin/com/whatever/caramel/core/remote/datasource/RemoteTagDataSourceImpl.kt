@@ -13,6 +13,6 @@ internal class RemoteTagDataSourceImpl(
         authClient.get(GET_TAGS_URL).getBody()
 
     companion object {
-        private const val GET_TAGS_URL = "/tags"
+        private const val GET_TAGS_URL = "v1/tags"
     }
 } 
