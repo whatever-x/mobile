@@ -8,8 +8,12 @@ import com.whatever.caramel.core.remote.datasource.RemoteCalendarDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteCalendarDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteCoupleDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteCoupleDatsSourceImpl
+import com.whatever.caramel.core.remote.datasource.RemoteMemoDataSource
+import com.whatever.caramel.core.remote.datasource.RemoteMemoDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteUserDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteUserDataSourceImpl
+import com.whatever.caramel.core.remote.datasource.RemoteTagDataSource
+import com.whatever.caramel.core.remote.datasource.RemoteTagDataSourceImpl
 import com.whatever.caramel.core.remote.di.qualifier.AuthClient
 import com.whatever.caramel.core.remote.di.qualifier.DefaultClient
 import com.whatever.caramel.core.remote.di.qualifier.SampleClient
@@ -111,6 +115,18 @@ val remoteDataSourceModule = module {
 
     single<RemoteCalendarDataSource> {
         RemoteCalendarDataSourceImpl(
+            authClient = get(AuthClient)
+        )
+    }
+
+    single<RemoteMemoDataSource> {
+        RemoteMemoDataSourceImpl(
+            authClient = get(AuthClient)
+        )
+    }
+
+    single<RemoteTagDataSource> {
+        RemoteTagDataSourceImpl(
             authClient = get(AuthClient)
         )
     }

@@ -1,18 +1,30 @@
 package com.whatever.caramel.feature.home
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.domain.usecase.calendar.GetTodayScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.home.mvi.HomeIntent
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect
 import com.whatever.caramel.feature.home.mvi.HomeState
-import io.github.aakira.napier.Napier
-import kotlinx.coroutines.delay
+import com.whatever.caramel.feature.home.mvi.TodoState
+import kotlinx.coroutines.joinAll
 
 class HomeViewModel(
     private val updateShareMessageUseCase: UpdateShareMessageUseCase,
+    private val getCoupleRelationshipInfoUseCase: GetCoupleRelationshipInfoUseCase,
+    private val getTodayScheduleUseCase: GetTodayScheduleUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle) {
+
+    init {
+        launch {
+            initCoupleInfo()
+            initSchedules()
+        }
+    }
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): HomeState {
         return HomeState()
@@ -48,12 +60,10 @@ class HomeViewModel(
         launch {
             reduce { copy(isLoading = true) }
 
-            // @ham2174 TODO : 홈 데이터 업데이트하기
-            // 기억할 말 가져오기
-            // 만난 날짜 가져오기
-            // 오늘 일정 가져오기
-            Napier.d { "데이터 업데이트" }
-            delay(2000L)
+            val initCoupleInfoJob = launch { initCoupleInfo() }
+            val initSchedulesJob = launch { initSchedules() }
+
+            joinAll(initCoupleInfoJob, initSchedulesJob)
 
             reduce { copy(isLoading = false) }
         }
@@ -68,6 +78,40 @@ class HomeViewModel(
     private fun hideBottomSheet() {
         reduce {
             copy(isShowBottomSheet = false)
+        }
+    }
+
+    private suspend fun initCoupleInfo() {
+        val coupleRelationShip = getCoupleRelationshipInfoUseCase()
+
+        reduce {
+            copy(
+                myNickname = coupleRelationShip.myInfo.userProfile?.nickName ?: "",
+                myGender = coupleRelationShip.myInfo.userProfile?.gender ?: Gender.IDLE,
+                partnerNickname = coupleRelationShip.partnerInfo.userProfile?.nickName ?: "",
+                partnerGender = coupleRelationShip.partnerInfo.userProfile?.gender ?: Gender.IDLE,
+                daysTogether = coupleRelationShip.info.daysTogether,
+                shareMessage = coupleRelationShip.info.sharedMessage,
+            )
+        }
+    }
+
+    private suspend fun initSchedules() {
+        val schedules = getTodayScheduleUseCase()
+
+        if (schedules.isNotEmpty()) {
+            val todoUiState = schedules.map { todo ->
+                TodoState(
+                    id = todo.id,
+                    title = todo.title,
+                )
+            }
+
+            reduce {
+                copy(
+                    todos = todoUiState
+                )
+            }
         }
     }
 
