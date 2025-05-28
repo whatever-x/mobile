@@ -40,7 +40,7 @@ import caramel.feature.home.generated.resources.waku_we_will_choice_same
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.user.Gender
-import com.whatever.caramel.feature.home.mvi.BalanceGameOption
+import com.whatever.caramel.feature.home.mvi.BalanceGameOptionState
 import com.whatever.caramel.feature.home.mvi.HomeState
 import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.painterResource
@@ -52,12 +52,12 @@ internal fun LazyListScope.Quiz(
     partnerNickname: String,
     partnerGender: Gender,
     question: String,
-    options: ImmutableList<BalanceGameOption>,
-    myChoiceOption: BalanceGameOption,
-    partnerChoiceOption: BalanceGameOption,
+    options: ImmutableList<BalanceGameOptionState>,
+    myChoiceOption: BalanceGameOptionState,
+    partnerChoiceOption: BalanceGameOptionState,
     balanceGameAnswerState: HomeState.BalanceGameAnswerState,
     balanceGameCardState: HomeState.BalanceGameCardState,
-    onOptionClick: (BalanceGameOption) -> Unit,
+    onOptionClick: (BalanceGameOptionState) -> Unit,
     onClickResult: () -> Unit
 ) {
     item(key = "Quiz") {
@@ -112,7 +112,7 @@ internal fun LazyListScope.Quiz(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(all = CaramelTheme.spacing.l),
-                            balanceGameOptions = options,
+                            balanceGameOptionStates = options,
                             balanceGameAnswerState = balanceGameAnswerState,
                             myChoiceOption = myChoiceOption,
                             onClickOption = onOptionClick,
@@ -216,10 +216,10 @@ private fun ImageArea(
 @Composable
 private fun ButtonArea(
     modifier: Modifier = Modifier,
-    myChoiceOption: BalanceGameOption,
-    balanceGameOptions: ImmutableList<BalanceGameOption>,
+    myChoiceOption: BalanceGameOptionState,
+    balanceGameOptionStates: ImmutableList<BalanceGameOptionState>,
     balanceGameAnswerState: HomeState.BalanceGameAnswerState,
-    onClickOption: (BalanceGameOption) -> Unit,
+    onClickOption: (BalanceGameOptionState) -> Unit,
     onClickResult: () -> Unit
 ) {
     when (balanceGameAnswerState) {
@@ -231,11 +231,11 @@ private fun ButtonArea(
                     space = CaramelTheme.spacing.s,
                 )
             ) {
-                balanceGameOptions.forEach { option ->
+                balanceGameOptionStates.forEach { option ->
                     OptionButton(
                         modifier = Modifier,
                         text = option.name,
-                        isSelected = myChoiceOption == option,
+                        isSelected = myChoiceOption.id == option.id,
                         balanceGameAnswerState = balanceGameAnswerState,
                         onClick = { onClickOption(option) }
                     )
@@ -360,8 +360,8 @@ private fun BalanceGameResult(
     myGender: Gender,
     partnerNickname: String,
     partnerGender: Gender,
-    myChoiceOption: BalanceGameOption,
-    partnerChoiceOption: BalanceGameOption,
+    myChoiceOption: BalanceGameOptionState,
+    partnerChoiceOption: BalanceGameOptionState,
 ) {
     val myGenderImage = when (myGender) {
         Gender.MALE -> Resources.Image.img_quiz_man
