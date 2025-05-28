@@ -160,7 +160,10 @@ class HomeViewModel(
 
     private fun submitBalanceGameOption(balanceGameOptionState: BalanceGameOptionState) {
         launch {
-            val result = submitBalanceGameChoiceUseCase(optionId = balanceGameOptionState.id)
+            val result = submitBalanceGameChoiceUseCase(
+                gameId = currentState.balanceGameState.id,
+                optionId = balanceGameOptionState.id
+            )
 
             reduce {
                 copy(
