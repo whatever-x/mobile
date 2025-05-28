@@ -16,4 +16,10 @@ class BalanceGameRepositoryImpl(
         }
     }
 
+    override suspend fun submitOption(optionId: Long): BalanceGameResult {
+        return safeCall {
+            remoteBalanceGameDataSource.postChoiceOption(optionId = optionId).toBalanceGameResult()
+        }
+    }
+
 }

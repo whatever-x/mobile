@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.home
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
+import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameChoiceUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodayScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
@@ -21,6 +22,7 @@ class HomeViewModel(
     private val getCoupleRelationshipInfoUseCase: GetCoupleRelationshipInfoUseCase,
     private val getTodayScheduleUseCase: GetTodayScheduleUseCase,
     private val getTodayBalanceGameUseCase: GetTodayBalanceGameUseCase,
+    private val submitBalanceGameChoiceUseCase: SubmitBalanceGameChoiceUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle) {
 
@@ -46,7 +48,7 @@ class HomeViewModel(
             is HomeIntent.ShowShareMessageEditBottomSheet -> showBottomSheet()
             is HomeIntent.HideShareMessageEditBottomSheet -> hideBottomSheet()
             is HomeIntent.PullToRefresh -> refreshHomeData()
-            is HomeIntent.ClickBalanceGameOptionButton -> selectBalanceGameOption(balanceGameOptionState = intent.option)
+            is HomeIntent.ClickBalanceGameOptionButton -> submitBalanceGameOption(balanceGameOptionState = intent.option)
             is HomeIntent.ClickBalanceGameResultButton -> checkBalanceGameResult()
         }
     }
@@ -70,8 +72,9 @@ class HomeViewModel(
 
             val initCoupleInfoJob = launch { initCoupleInfo() }
             val initSchedulesJob = launch { initSchedules() }
+            val initBalanceGameJob = launch { initBalanceGame() }
 
-            joinAll(initCoupleInfoJob, initSchedulesJob)
+            joinAll(initCoupleInfoJob, initSchedulesJob, initBalanceGameJob)
 
             reduce { copy(isLoading = false) }
         }
@@ -155,22 +158,32 @@ class HomeViewModel(
         }
     }
 
-    private fun selectBalanceGameOption(balanceGameOptionState: BalanceGameOptionState) {
+    private fun submitBalanceGameOption(balanceGameOptionState: BalanceGameOptionState) {
         launch {
-            // 밸런스 게임 옵션 선택한것을 서버에 전달
-            // 서버에서 밸런스 게임 결과를 받아옴
-            // 결과에 따라 BalanceGameAnswerState를 변경
-                // 만일 partnerChoice가 null 이라면
-                // BalanceGameAnswerState = WAITING 으로 변경
-                // 만일 partnerChoice가 있다면
-                // BalanceGameAnswerState = SUCCESS 로 변경
+            val result = submitBalanceGameChoiceUseCase(optionId = balanceGameOptionState.id)
 
+            reduce {
+                copy(
+                    myChoiceOption =
+                        BalanceGameOptionState(
+                            id = result.myChoice?.optionId?: 0L,
+                            name = result.myChoice?.text?: ""
+                        ),
+                    partnerChoiceOption =
+                        BalanceGameOptionState(
+                            id = result.partnerChoice?.optionId?: 0L,
+                            name = result.partnerChoice?.text?: ""
+                        ),
+                )
+            }
         }
     }
 
     private fun checkBalanceGameResult() {
-        launch {
-            // 밸런스 게임 결과를 서버에 요청
+        reduce {
+            copy(
+                balanceGameCardState = HomeState.BalanceGameCardState.CONFIRM
+            )
         }
     }
 

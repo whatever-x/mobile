@@ -4,6 +4,7 @@ import com.whatever.caramel.core.remote.dto.balanceGame.response.BalanceGameResp
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
+import io.ktor.client.request.post
 import org.koin.core.annotation.Named
 
 class RemoteBalanceGameDataSourceImpl(
@@ -12,6 +13,10 @@ class RemoteBalanceGameDataSourceImpl(
 
     override suspend fun fetchTodayBalanceGame(): BalanceGameResponse {
         return authClient.get(BALANCE_GAME_BASE_URL + "today").getBody()
+    }
+
+    override suspend fun postChoiceOption(optionId: Long): BalanceGameResponse {
+        return authClient.post(BALANCE_GAME_BASE_URL + "$optionId").getBody()
     }
 
     companion object {
