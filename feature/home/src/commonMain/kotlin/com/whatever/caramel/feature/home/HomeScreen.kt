@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.home
 
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -100,6 +101,9 @@ internal fun HomeScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .graphicsLayer { translationY = homeContentsOffset.toFloat() },
+                verticalArrangement = Arrangement.spacedBy(
+                    space = CaramelTheme.spacing.xl
+                )
             ) {
                 Header(
                     shareMessage = state.shareMessage,
@@ -108,7 +112,18 @@ internal fun HomeScreen(
                 )
 
                 Quiz(
-                    // @hamn2174 TODO : 퀴즈 구현시 UI 추가
+                    question = state.balanceGameQuestion,
+                    options = state.balanceGameOptions,
+                    balanceGameAnswerState = state.balanceGameAnswerState,
+                    balanceGameCardState = state.balanceGameCardState,
+                    myNickname = state.myNickname,
+                    myGender = state.myGender,
+                    partnerNickname = state.partnerNickname,
+                    partnerGender = state.partnerGender,
+                    myChoiceOption = state.myChoiceOption,
+                    partnerChoiceOption = state.partnerChoice,
+                    onOptionClick = { option -> onIntent(HomeIntent.ClickBalanceGameOptionButton(option = option)) },
+                    onClickResult = { onIntent(HomeIntent.ClickBalanceGameResultButton) }
                 )
 
                 Todo(

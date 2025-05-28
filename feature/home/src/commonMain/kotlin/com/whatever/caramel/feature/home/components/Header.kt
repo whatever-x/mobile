@@ -33,9 +33,7 @@ internal fun LazyListScope.Header(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    bottom = CaramelTheme.spacing.l,
-                    start = CaramelTheme.spacing.xl,
-                    end = CaramelTheme.spacing.xl,
+                    horizontal = CaramelTheme.spacing.xl
                 ),
             verticalArrangement = Arrangement.spacedBy(space = 2.dp),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -84,8 +82,7 @@ internal fun LazyListScope.Header(
                         onClick = onClickShareMessage,
                         interactionSource = null,
                         indication = null
-                    )
-                    .padding(vertical = CaramelTheme.spacing.xs),
+                    ),
                 text = shareMessageAnnotatedString,
                 inlineContent = inlineContentMap,
                 color = CaramelTheme.color.text.secondary,
