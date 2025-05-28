@@ -39,6 +39,7 @@ import caramel.feature.home.generated.resources.waiting_for_partner_answer
 import caramel.feature.home.generated.resources.waku_we_will_choice_same
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.feature.home.mvi.BalanceGameOption
 import com.whatever.caramel.feature.home.mvi.HomeState
 import kotlinx.collections.immutable.ImmutableList
@@ -46,8 +47,10 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 internal fun LazyListScope.Quiz(
-    partnerNickname: String,
     myNickname: String,
+    myGender: Gender,
+    partnerNickname: String,
+    partnerGender: Gender,
     question: String,
     options: ImmutableList<BalanceGameOption>,
     myChoiceOption: BalanceGameOption,
@@ -128,7 +131,9 @@ internal fun LazyListScope.Quiz(
                                 .fillMaxWidth()
                                 .padding(all = CaramelTheme.spacing.xl),
                             myNickname = myNickname,
+                            myGender = myGender,
                             partnerNickname = partnerNickname,
+                            partnerGender = partnerGender,
                             myChoiceOption = myChoiceOption,
                             partnerChoiceOption = partnerChoiceOption
                         )
@@ -352,10 +357,24 @@ private fun RowScope.OptionButton(
 private fun BalanceGameResult(
     modifier: Modifier = Modifier,
     myNickname: String,
+    myGender: Gender,
     partnerNickname: String,
+    partnerGender: Gender,
     myChoiceOption: BalanceGameOption,
     partnerChoiceOption: BalanceGameOption,
 ) {
+    val myGenderImage = when (myGender) {
+        Gender.MALE -> Resources.Image.img_quiz_man
+        Gender.FEMALE -> Resources.Image.img_quiz_woman
+        else -> Resources.Image.img_quiz_man
+    }
+
+    val partnerGenderImage = when (partnerGender) {
+        Gender.MALE -> Resources.Image.img_quiz_man
+        Gender.FEMALE -> Resources.Image.img_quiz_woman
+        else -> Resources.Image.img_quiz_man
+    }
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(
@@ -374,8 +393,9 @@ private fun BalanceGameResult(
                 Image(
                     painter = painterResource(
                         resource =
-                            if (index == 0)  Resources.Image.img_quiz_my
-                            else Resources.Image.img_quiz_partner
+                            if (index == 0) myGenderImage
+                            else partnerGenderImage
+
                     ),
                     contentDescription = null,
                 )
