@@ -2,7 +2,7 @@ package com.whatever.caramel.feature.content.create.mvi
 
 import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.viewmodel.UiState
-import com.whatever.caramel.feature.content.create.components.CreateMode
+import com.whatever.caramel.core.ui.content.CreateMode
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf

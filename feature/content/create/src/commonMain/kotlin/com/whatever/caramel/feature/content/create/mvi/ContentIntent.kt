@@ -2,7 +2,7 @@ package com.whatever.caramel.feature.content.create.mvi
 
 import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.viewmodel.UiIntent
-import com.whatever.caramel.feature.content.create.components.CreateMode
+import com.whatever.caramel.core.ui.content.CreateMode
 
 sealed interface ContentIntent : UiIntent {
     data object ClickCloseButton : ContentIntent

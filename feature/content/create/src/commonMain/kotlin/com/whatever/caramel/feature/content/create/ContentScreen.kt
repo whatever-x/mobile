@@ -45,19 +45,20 @@ import com.whatever.caramel.core.designsystem.components.CaramelButtonType
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.domain.entity.Tag
+import com.whatever.caramel.core.ui.content.ContentTextArea
+import com.whatever.caramel.core.ui.content.CreateMode
+import com.whatever.caramel.core.ui.content.CreateModeSwitch
+import com.whatever.caramel.core.ui.content.DateBottomSheet
+import com.whatever.caramel.core.ui.content.SelectableTagChipRow
+import com.whatever.caramel.core.ui.content.TagChip
+import com.whatever.caramel.core.ui.content.TitleTextField
 import com.whatever.caramel.core.ui.picker.CaramelDatePicker
 import com.whatever.caramel.core.ui.picker.CaramelTimePicker
 import com.whatever.caramel.core.ui.picker.TimeUiState
 import com.whatever.caramel.core.ui.picker.model.DateUiState
-import com.whatever.caramel.feature.content.create.components.ContentTextArea
-import com.whatever.caramel.feature.content.create.components.CreateMode
-import com.whatever.caramel.feature.content.create.components.CreateModeSwitch
-import com.whatever.caramel.feature.content.create.components.DateBottomSheet
-import com.whatever.caramel.feature.content.create.components.SelectableTagChipRow
-import com.whatever.caramel.feature.content.create.components.TitleTextField
 import com.whatever.caramel.feature.content.create.mvi.ContentIntent
 import com.whatever.caramel.feature.content.create.mvi.ContentState
-import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -115,7 +116,7 @@ internal fun ContentScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(CaramelTheme.spacing.xl)
+                    .padding(vertical = CaramelTheme.spacing.xl)
                     .navigationBarsPadding()
                     .imePadding(),
             ) {
@@ -129,15 +130,16 @@ internal fun ContentScreen(
                     ) {
                         SelectableTagChipRow(
                             modifier = Modifier.fillMaxWidth(),
-                            tags = state.tags,
-                            selectedTags = state.selectedTags.toImmutableList(),
-                            onTagClick = {
-                                onIntent(ContentIntent.ClickTag(it))
+                            tagChips = state.tags.map { TagChip(it.id, it.label) },
+                            selectedTagChips = state.selectedTags.map { TagChip(it.id, it.label) },
+                            onTagChipClick = {
+                                onIntent(ContentIntent.ClickTag(Tag(it.id, it.label)))
                             }
                         )
                         Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.xl))
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth()
+                                .padding(horizontal = CaramelTheme.spacing.xl),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
@@ -181,7 +183,8 @@ internal fun ContentScreen(
                     }
                 }
                 CaramelButton(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(horizontal = CaramelTheme.spacing.xl),
                     buttonType = if (state.isSaveButtonEnable) {
                         CaramelButtonType.Enabled1
                     } else {

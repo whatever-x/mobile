@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.content.create.components
+package com.whatever.caramel.core.ui.content
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +14,7 @@ import androidx.compose.ui.text.input.ImeAction
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 
 @Composable
-internal fun TitleTextField(
+fun TitleTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,

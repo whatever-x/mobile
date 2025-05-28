@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.content.create.components
+package com.whatever.caramel.core.ui.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.feature.content.create.mvi.ContentState
 import org.jetbrains.compose.resources.painterResource
 
 enum class CreateMode {

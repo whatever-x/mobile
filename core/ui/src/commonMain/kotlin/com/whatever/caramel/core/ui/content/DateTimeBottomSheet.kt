@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.content.create.components
+package com.whatever.caramel.core.ui.content
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -10,7 +10,7 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun DateBottomSheet(
+fun DateBottomSheet(
     modifier: Modifier = Modifier,
     sheetState: SheetState,
     onDismiss: () -> Unit,

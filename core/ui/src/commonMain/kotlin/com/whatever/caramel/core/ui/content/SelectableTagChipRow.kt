@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.content.create.components
+package com.whatever.caramel.core.ui.content
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -20,26 +21,30 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.domain.entity.Tag
-import kotlinx.collections.immutable.ImmutableList
+
+data class TagChip(
+    val id: Long,
+    val label: String
+)
 
 @Composable
-internal fun SelectableTagChipRow(
+fun SelectableTagChipRow(
     modifier: Modifier = Modifier,
-    tags: ImmutableList<Tag>,
-    selectedTags: ImmutableList<Tag>,
-    onTagClick: (Tag) -> Unit,
+    tagChips: List<TagChip>,
+    selectedTagChips: List<TagChip>,
+    onTagChipClick: (TagChip) -> Unit,
 ) {
     LazyRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s),
+        contentPadding = PaddingValues(horizontal = CaramelTheme.spacing.xl)
     ) {
-        items(tags) { tag ->
+        items(tagChips) { tag ->
             SelectableTagChip(
                 text = tag.label,
-                selected = selectedTags.contains(tag),
+                selected = selectedTagChips.contains(tag),
                 onClick = {
-                    onTagClick(tag)
+                    onTagChipClick(tag)
                 }
             )
         }

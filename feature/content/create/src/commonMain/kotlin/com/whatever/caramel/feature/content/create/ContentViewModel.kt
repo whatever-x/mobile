@@ -11,7 +11,7 @@ import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
 import com.whatever.caramel.core.domain.vo.item.ContentParameterType
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.viewmodel.BaseViewModel
-import com.whatever.caramel.feature.content.create.components.CreateMode
+import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.feature.content.create.mvi.ContentIntent
 import com.whatever.caramel.feature.content.create.mvi.ContentSideEffect
 import com.whatever.caramel.feature.content.create.mvi.ContentState
