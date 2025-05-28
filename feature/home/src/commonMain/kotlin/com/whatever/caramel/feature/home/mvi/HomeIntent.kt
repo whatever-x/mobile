@@ -20,4 +20,8 @@ sealed interface HomeIntent : UiIntent {
 
     data object ClickAnniversaryNudgeCard : HomeIntent
 
+    data class ClickBalanceGameOptionButton(val option: BalanceGameOption) : HomeIntent
+
+    data object ClickBalanceGameResultButton : HomeIntent
+
 }
