@@ -112,8 +112,9 @@ internal fun HomeScreen(
                 )
 
                 Quiz(
-                    question = state.balanceGameQuestion,
-                    options = state.balanceGameOptions,
+                    rotated = state.isBalanceGameCardRotated,
+                    question = state.balanceGameState.question,
+                    options = state.balanceGameState.options,
                     balanceGameAnswerState = state.balanceGameAnswerState,
                     balanceGameCardState = state.balanceGameCardState,
                     myNickname = state.myNickname,
@@ -121,9 +122,10 @@ internal fun HomeScreen(
                     partnerNickname = state.partnerNickname,
                     partnerGender = state.partnerGender,
                     myChoiceOption = state.myChoiceOption,
-                    partnerChoiceOption = state.partnerChoice,
+                    partnerChoiceOption = state.partnerChoiceOption,
                     onOptionClick = { option -> onIntent(HomeIntent.ClickBalanceGameOptionButton(option = option)) },
-                    onClickResult = { onIntent(HomeIntent.ClickBalanceGameResultButton) }
+                    onClickResult = { onIntent(HomeIntent.ClickBalanceGameResultButton) },
+                    onChangeCardState = { onIntent(HomeIntent.ChangeBalanceGameCardState) }
                 )
 
                 Todo(

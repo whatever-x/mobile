@@ -2,6 +2,8 @@ package com.whatever.caramel.core.remote.di
 
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSourceImpl
+import com.whatever.caramel.core.remote.datasource.RemoteBalanceGameDataSource
+import com.whatever.caramel.core.remote.datasource.RemoteBalanceGameDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteCalendarDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteCalendarDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteCoupleDataSource
@@ -125,6 +127,12 @@ val remoteDataSourceModule = module {
 
     single<RemoteTagDataSource> {
         RemoteTagDataSourceImpl(
+            authClient = get(AuthClient)
+        )
+    }
+
+    single<RemoteBalanceGameDataSource> {
+        RemoteBalanceGameDataSourceImpl(
             authClient = get(AuthClient)
         )
     }

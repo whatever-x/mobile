@@ -16,16 +16,26 @@ data class HomeState(
     val todos: List<TodoState> = emptyList(),
     val isShowBottomSheet: Boolean = false,
     val isLoading: Boolean = false,
-    val balanceGameQuestion: String = "",
+    val isBalanceGameCardRotated: Boolean = false,
+    val balanceGameState: BalanceGameState = BalanceGameState(),
     val balanceGameCardState: BalanceGameCardState = BalanceGameCardState.IDLE,
-    val balanceGameAnswerState: BalanceGameAnswerState = BalanceGameAnswerState.IDLE,
-    val balanceGameOptions: ImmutableList<BalanceGameOption> = persistentListOf(),
-    val myChoiceOption: BalanceGameOption = BalanceGameOption(),
-    val partnerChoice: BalanceGameOption = BalanceGameOption(),
+    val myChoiceOption: BalanceGameOptionState = BalanceGameOptionState(),
+    val partnerChoiceOption: BalanceGameOptionState = BalanceGameOptionState(),
 ) : UiState {
 
     val isSetAnniversary: Boolean
         get() = daysTogether != 0
+
+    val balanceGameAnswerState: BalanceGameAnswerState
+        get() = if (myChoiceOption.notSelected) { // 내가 대답하지 않은 상태
+            BalanceGameAnswerState.IDLE
+        } else {
+            if (partnerChoiceOption.notSelected) { // 내가 대답하고 / 상대가 대답하지 않은 상태
+                BalanceGameAnswerState.WAITING
+            } else {
+                BalanceGameAnswerState.CHECK_RESULT // 내가 대답하고 / 상대도 대답한 상태
+            }
+        }
 
     enum class BalanceGameAnswerState {
         IDLE,
@@ -48,7 +58,16 @@ data class TodoState(
     val title: String,
 )
 
-data class BalanceGameOption(
-    val id: Int = 0,
-    val name: String = "",
+data class BalanceGameState(
+    val id: Long = 0L,
+    val question: String = "",
+    val options: ImmutableList<BalanceGameOptionState> = persistentListOf(),
 )
+
+data class BalanceGameOptionState(
+    val id: Long = 0L,
+    val name: String = "",
+) {
+    val notSelected: Boolean
+        get() = id == 0L && name.isEmpty()
+}
