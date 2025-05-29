@@ -1,43 +1,101 @@
 package com.whatever.caramel.feature.memo
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
+import caramel.feature.memo.generated.resources.Res
+import caramel.feature.memo.generated.resources.memo
+import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.util.DateFormatter.formatWithSeparator
+import com.whatever.caramel.feature.memo.component.MemoItem
+import com.whatever.caramel.feature.memo.component.TagChip
 import com.whatever.caramel.feature.memo.mvi.MemoIntent
 import com.whatever.caramel.feature.memo.mvi.MemoState
+import org.jetbrains.compose.resources.stringResource
+import kotlin.math.max
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MemoScreen(
     state: MemoState,
     onIntent: (MemoIntent) -> Unit
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize()
+    val pullToRefreshState = rememberPullToRefreshState()
+    PullToRefreshBox(
+        state = pullToRefreshState,
+        isRefreshing = state.isLoading,
+        onRefresh = { onIntent(MemoIntent.PullToRefresh) }
     ) {
-        Text(
-            modifier = Modifier.align(alignment = Alignment.Center),
-            text = "메모 화면 입니다.",
-            fontSize = 32.sp
-        )
-
-        Button(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .align(
-                    alignment = Alignment.BottomCenter
-                ),
-            onClick = { onIntent(MemoIntent.ClickMemo(memoId = 1L)) } // @RyuSw-cs 2025.05.19 FIXME :임시 메모 아이디, 구현 시 제거 필요
+                .fillMaxSize()
+                .background(color = CaramelTheme.color.background.primary)
         ) {
             Text(
-                text = "메모 아이템",
-                fontSize = 12.sp
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp, horizontal = CaramelTheme.spacing.xl),
+                text = stringResource(Res.string.memo),
+                style = CaramelTheme.typography.heading1,
+                color = CaramelTheme.color.text.primary
             )
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = CaramelTheme.spacing.xl)
+                    .padding(top = CaramelTheme.spacing.xs)
+                    .padding(bottom = CaramelTheme.spacing.m),
+                horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s)
+            ) {
+                items(state.tags) { tag ->
+                    TagChip(
+                        tag = tag,
+                        isSelected = state.selectedTag == tag,
+                        onClickChip = { MemoIntent.ClickTagChip(tag = it) }
+                    )
+                }
+            }
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                itemsIndexed(state.memos) { index, memo ->
+                    MemoItem(
+                        id = memo.id,
+                        title = memo.title,
+                        description = memo.description,
+                        categoriesText = memo.tagList.joinToString(separator = ",") { it.label },
+                        createdDateText = memo.createdAt.formatWithSeparator(separator = "."),
+                        onClickMemoItem = { MemoIntent.ClickMemo(memoId = it) }
+                    )
+                    if(index < state.memos.lastIndex) {
+                        HorizontalDivider(
+                            modifier = Modifier.fillMaxWidth(),
+                            thickness = 1.dp,
+                            color = CaramelTheme.color.divider.primary
+                        )
+                    }
+                }
+            }
         }
     }
 }

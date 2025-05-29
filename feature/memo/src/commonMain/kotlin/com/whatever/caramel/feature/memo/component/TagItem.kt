@@ -11,11 +11,11 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.entity.Tag
 
 @Composable
-internal fun MemoChip(
+internal fun TagChip(
     modifier: Modifier = Modifier,
     tag: Tag,
     isSelected: Boolean,
-    onClickChip: (Long) -> Unit
+    onClickChip: (Tag) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -27,7 +27,7 @@ internal fun MemoChip(
             .clickable(
                 indication = null,
                 interactionSource = null,
-                onClick = { onClickChip(tag.id) }
+                onClick = { onClickChip(tag) }
             )
     ) {
         Text(
@@ -39,6 +39,6 @@ internal fun MemoChip(
 }
 
 @Composable
-internal fun MemoChipSkeleton() {
+internal fun TagChipSkeleton() {
 
 }
