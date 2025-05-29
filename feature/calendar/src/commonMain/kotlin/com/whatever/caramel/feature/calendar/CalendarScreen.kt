@@ -149,7 +149,6 @@ internal fun CalendarScreen(
                     state.monthSchedules.forEach { schedule ->
                         item {
                             BottomSheetTodoListHeader(
-                                modifier = Modifier.heightIn(max = 800.dp),
                                 date = schedule.date,
                                 onClickAddSchedule = {
                                     onIntent(

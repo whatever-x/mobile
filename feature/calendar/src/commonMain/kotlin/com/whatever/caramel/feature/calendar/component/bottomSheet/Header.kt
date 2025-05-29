@@ -38,7 +38,7 @@ internal fun BottomSheetTodoListHeader(
     isToday: Boolean,
     isEmpty: Boolean,
     holidays: List<Holiday>? = null,
-    anniversaries: List<Anniversary>? = null
+    anniversaries: List<Anniversary>? = null,
 ) {
     Column(
         modifier = modifier
@@ -119,9 +119,13 @@ internal fun BottomSheetTodoListHeader(
                 contentDescription = null
             )
         }
+
         if (!anniversaries.isNullOrEmpty()) {
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                items(anniversaries) { anniversary ->
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xs)
+            ) {
+                anniversaries.fastForEach { anniversary ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
