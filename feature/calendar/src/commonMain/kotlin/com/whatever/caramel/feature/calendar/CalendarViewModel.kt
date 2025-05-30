@@ -16,7 +16,6 @@ import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
-import io.github.aakira.napier.Napier
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
@@ -31,14 +30,10 @@ class CalendarViewModel(
 
     init {
         val year = currentState.year
-        val startMonthNumber =
-            if (currentState.month == Month.JANUARY) 12 else currentState.month.number - 1
-        val endMonthNumber =
-            if (currentState.month == Month.DECEMBER) 1 else currentState.month.number + 1
+        val monthNumber = currentState.month.number
         getSchedules(
             year = year,
-            startMonthNumber = startMonthNumber,
-            endMonthNumber = endMonthNumber,
+            startMonthNumber = monthNumber,
             initialize = true
         )
     }
@@ -117,7 +112,6 @@ class CalendarViewModel(
 
         val year = (pageIndex / 12) + 1900
         val monthNumber = pageIndex % 12
-        getSchedules(year = year, startMonthNumber = monthNumber, initialize = true)
         reduce {
             copy(
                 year = year,
@@ -125,6 +119,7 @@ class CalendarViewModel(
                 pageIndex = pageIndex,
             )
         }
+        getSchedules(year = year, startMonthNumber = monthNumber + 1, initialize = false)
     }
 
     private fun clickTodoUrl(url: String?) {
@@ -134,7 +129,7 @@ class CalendarViewModel(
 
     private fun clickCalendarCell(newSelectedDate: LocalDate) {
         reduce {
-            val newSchedule = currentState.schedules.toMutableList()
+            val newSchedule = currentState.monthSchedules.toMutableList()
             // 이전에 선택된 날짜에 스케쥴이 존재하지 않는 경우 리스트에서 삭제
             newSchedule.find { it.date == currentState.selectedDate }?.let {
                 if (it.holidays.isEmpty() && it.todos.isEmpty()) {
@@ -149,10 +144,11 @@ class CalendarViewModel(
             copy(
                 bottomSheetState = BottomSheetState.EXPANDED,
                 selectedDate = newSelectedDate,
-                schedules = newSchedule.sortedBy { it.date }
+                monthSchedules = newSchedule.sortedBy { it.date }
             )
         }
     }
+
 
     private fun getSchedules(
         year: Int,
@@ -162,31 +158,9 @@ class CalendarViewModel(
     ) {
         launch {
             val updatedSelectedDate = if (initialize) {
-                LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
-            } else {
                 currentState.today
-            }
-
-            val keys = mutableListOf<String>()
-            for (month in startMonthNumber until endMonthNumber) {
-                keys.add("$year-$month")
-            }
-            keys.forEach { key ->
-                if (year != currentState.year) {
-                    // 년도가 다른 경우는 업데이트가 필요하다
-                    Napier.e { "need holiday update" }
-                    return@forEach
-                }
-                if (currentState.cachedSchedules.containsKey(key)) {
-                    reduce {
-                        Napier.e { "cashExist = $key" }
-                        copy(
-                            selectedDate = updatedSelectedDate,
-                            schedules = cachedSchedules[key] ?: emptyList()
-                        )
-                    }
-                    return@launch
-                }
+            } else {
+                LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
             }
 
             val firstDayOfMonth = DateFormatter.createDateString(
@@ -209,20 +183,11 @@ class CalendarViewModel(
                 startDate = firstDayOfMonth,
                 endDate = lastDayOfMonth
             )
-
-            val needHolidayUpdate = currentState.year != year || initialize
-            val holidays = if (needHolidayUpdate) {
-                Napier.e { "needHolidayUpdate = true" }
-                getHolidaysUseCase(year = year)
-            } else {
-                Napier.e { "needHolidayUpdate = false" }
-                currentState.cachedHolidays
-            }
+            val holidays = getHolidaysUseCase(year = year)
             reduce {
                 copy(
                     selectedDate = updatedSelectedDate,
-                    cachedHolidays = holidays,
-                    schedules = createDaySchedules(
+                    monthSchedules = createMonthSchedules(
                         todosOnDate = todos,
                         holidaysOnDate = holidays,
                         anniversariesOnDate = anniversaries,
@@ -253,33 +218,25 @@ class CalendarViewModel(
     private fun dismissCalendarDatePicker() {
         val pickerYear = currentState.pickerDate.year
         val pickerMonth = Month.entries[currentState.pickerDate.month - 1]
-        val needUpdate = pickerYear != currentState.year || pickerMonth != currentState.month
 
         reduce {
             copy(
+                year = pickerYear,
+                month = pickerMonth,
+                pageIndex = calcPageIndex(pickerYear, pickerMonth),
+                currentDateList = createCurrentDateList(
+                    year = pickerYear,
+                    month = pickerMonth
+                ),
                 isShowDatePicker = false,
                 bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED
             )
         }
-
-        if (needUpdate) {
-            getSchedules(
-                year = pickerYear,
-                startMonthNumber = pickerMonth.number,
-                initialize = true
-            )
-            reduce {
-                copy(
-                    year = pickerYear,
-                    month = pickerMonth,
-                    pageIndex = calcPageIndex(pickerYear, pickerMonth),
-                    currentDateList = createCurrentDateList(
-                        year = pickerYear,
-                        month = pickerMonth
-                    )
-                )
-            }
-        }
+        getSchedules(
+            year = pickerYear,
+            startMonthNumber = pickerMonth.number,
+            initialize = false
+        )
     }
 
     private fun createCurrentDateList(
@@ -294,7 +251,7 @@ class CalendarViewModel(
         return dateList.toList()
     }
 
-    private fun createDaySchedules(
+    private fun createMonthSchedules(
         todosOnDate: List<TodosOnDate>,
         holidaysOnDate: List<HolidaysOnDate>,
         anniversariesOnDate: List<AnniversariesOnDate>,
@@ -302,19 +259,25 @@ class CalendarViewModel(
     ): List<DaySchedule> {
         val scheduleMap = mutableMapOf<LocalDate, DaySchedule>()
 
-        todosOnDate.forEach { todo ->
-            val date = todo.date
-            val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-            scheduleMap[date] = existingSchedule.copy(todos = todo.todos)
-        }
+        todosOnDate
+            .filter { it.date.year == currentState.year && it.date.month == currentState.month }
+            .forEach { todo ->
+                val date = todo.date
+                val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
+                scheduleMap[date] = existingSchedule.copy(todos = todo.todos)
+            }
 
-        anniversariesOnDate.forEach { anniversary ->
+        anniversariesOnDate
+            .filter { it.date.year == currentState.year && it.date.month == currentState.month }
+            .forEach { anniversary ->
             val date = anniversary.date
             val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
             scheduleMap[date] = existingSchedule.copy(anniversaries = anniversary.anniversaries)
         }
 
-        holidaysOnDate.forEach { holiday ->
+        holidaysOnDate
+            .filter { it.date.year == currentState.year && it.date.month == currentState.month }
+            .forEach { holiday ->
             val date = holiday.date
             val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
             scheduleMap[date] = existingSchedule.copy(holidays = holiday.holidays)

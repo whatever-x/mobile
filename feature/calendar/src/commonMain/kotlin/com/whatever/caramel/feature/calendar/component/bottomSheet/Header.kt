@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -37,7 +38,7 @@ internal fun BottomSheetTodoListHeader(
     isToday: Boolean,
     isEmpty: Boolean,
     holidays: List<Holiday>? = null,
-    anniversaries: List<Anniversary>? = null
+    anniversaries: List<Anniversary>? = null,
 ) {
     Column(
         modifier = modifier
@@ -119,27 +120,30 @@ internal fun BottomSheetTodoListHeader(
             )
         }
 
-        anniversaries?.let {
-            LazyColumn(
-                modifier = Modifier.padding(
-                    top = CaramelTheme.spacing.s,
-                    bottom = CaramelTheme.spacing.l
-                ),
-                verticalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xs)
+        if (!anniversaries.isNullOrEmpty()) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xs)
             ) {
-                items(it) { anniversary ->
-                    Row(modifier = Modifier.fillMaxWidth()) {
+                anniversaries.fastForEach { anniversary ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = CaramelTheme.spacing.xs)
+                    ) {
                         Icon(
                             painter = painterResource(Resources.Image.img_anniversary),
                             tint = Color.Unspecified,
                             contentDescription = null
                         )
-
                         Text(
-                            modifier = Modifier.padding(vertical = CaramelTheme.spacing.xs),
+                            modifier = Modifier
+                                .padding(start = CaramelTheme.spacing.m)
+                                .align(Alignment.CenterVertically),
                             style = CaramelTheme.typography.body2.bold,
                             color = CaramelTheme.color.text.brand,
-                            text = anniversary.label
+                            text = "${anniversary.label}을 축하해!",
+                            textAlign = TextAlign.Start
                         )
                     }
                 }

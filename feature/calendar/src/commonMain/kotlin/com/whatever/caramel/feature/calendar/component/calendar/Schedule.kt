@@ -15,6 +15,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
+import com.whatever.caramel.core.domain.vo.couple.Anniversary
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 
 @Composable
@@ -50,6 +51,21 @@ fun CalendarScheduleList(
                 visibleItemCount++
                 itemsToPlace.add(placeable to totalHeight)
                 totalHeight = newHeight
+            } else {
+                return@forEachIndexed
+            }
+        }
+
+        schedule.anniversaries.forEachIndexed { index, anniversary ->
+            val placeable = subcompose("anniversary_$index") {
+                CalendarAnniversaryItem(anniversary = anniversary)
+            }.first().measure(constraints)
+
+            val newHeight = totalHeight + placeable.height + spacingBetweenItems
+            if (newHeight + placeable.height <= parentHeight) {
+                itemsToPlace.add(placeable to totalHeight)
+                totalHeight = newHeight
+                visibleItemCount++
             } else {
                 return@forEachIndexed
             }
@@ -92,6 +108,27 @@ fun CalendarScheduleList(
             }
         }
     }
+}
+
+@Composable
+private fun CalendarAnniversaryItem(
+    modifier: Modifier = Modifier,
+    anniversary: Anniversary
+) {
+    Text(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(
+                color = CaramelTheme.color.fill.brand,
+                shape = CaramelTheme.shape.xxs
+            )
+            .padding(horizontal = CaramelTheme.spacing.xxs),
+        maxLines = 1,
+        overflow = TextOverflow.Clip,
+        text = anniversary.label,
+        style = CaramelTheme.typography.label3.bold,
+        color = CaramelTheme.color.text.inverse
+    )
 }
 
 @Composable
