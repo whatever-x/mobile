@@ -5,14 +5,17 @@ import com.whatever.caramel.core.domain.entity.Memo
 import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.feature.memo.mvi.MemoState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
     override val values: Sequence<MemoState>
         get() = sequenceOf(
             MemoState(
                 isLoading = true,
-                memos = emptyList(),
-                tags = emptyList(),
+                memos = persistentListOf(),
+                tags = persistentListOf(),
                 selectedTag = null
             ),
             MemoState(
@@ -29,7 +32,7 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
             ),
         )
 
-    private fun createTempMemoList(size: Int, emptyTitle: Boolean = false): List<Memo> {
+    private fun createTempMemoList(size: Int, emptyTitle: Boolean = false): ImmutableList<Memo> {
         val list = mutableListOf<Memo>()
         for (index in 0 until size) {
             list.add(
@@ -43,10 +46,10 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
                 )
             )
         }
-        return list.toList()
+        return list.toImmutableList()
     }
 
-    private fun createTempTagList(size: Int): List<Tag> {
+    private fun createTempTagList(size: Int): ImmutableList<Tag> {
         val list = mutableListOf<Tag>()
         for (index in 0 until size) {
             list.add(
@@ -56,6 +59,6 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
                 )
             )
         }
-        return list.toList()
+        return list.toImmutableList()
     }
 }

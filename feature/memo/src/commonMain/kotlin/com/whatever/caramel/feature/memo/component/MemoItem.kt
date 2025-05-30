@@ -83,7 +83,7 @@ internal fun MemoItem(
                 style = CaramelTheme.typography.label1.regular,
                 color = CaramelTheme.color.text.secondary
             )
-            if(categoriesText.isNotEmpty()){
+            if (categoriesText.isNotEmpty()) {
                 Box(
                     modifier = Modifier
                         .size(size = 2.dp)
@@ -110,18 +110,24 @@ internal fun MemoItemSkeleton() {
 internal fun EmptyMemo(
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
-        Icon(
-            painter = painterResource(Resources.Image.img_blank_memo),
-            tint = Color.Unspecified,
-            contentDescription = null
-        )
-        Spacer(modifier = Modifier.size(CaramelTheme.spacing.l))
-        Text(
-            text = stringResource(Res.string.empty_memo),
-            style = CaramelTheme.typography.body3.regular,
-            color = CaramelTheme.color.text.primary,
-            textAlign = TextAlign.Center
-        )
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.align(Alignment.Center)
+        ) {
+            Icon(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                painter = painterResource(Resources.Image.img_blank_memo),
+                tint = Color.Unspecified,
+                contentDescription = null
+            )
+            Spacer(modifier = Modifier.size(CaramelTheme.spacing.l))
+            Text(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                text = stringResource(Res.string.empty_memo),
+                style = CaramelTheme.typography.body3.regular,
+                color = CaramelTheme.color.text.primary,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }

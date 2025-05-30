@@ -7,4 +7,5 @@ sealed interface MemoIntent : UiIntent {
     data class ClickMemo(val memoId : Long) : MemoIntent
     data object PullToRefresh : MemoIntent
     data class ClickTagChip(val tag : Tag) : MemoIntent
+    data object ReachedEndOfList : MemoIntent
 }

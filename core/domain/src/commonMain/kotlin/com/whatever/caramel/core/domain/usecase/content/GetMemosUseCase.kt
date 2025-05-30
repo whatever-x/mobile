@@ -12,11 +12,12 @@ class GetMemosUseCase(
         sortType : String? = null,
         tagId : Long? = null
     ): MemoWithCursor {
+        val requestTagId = if(tagId == 0L) null else tagId
         return contentRepository.getMemos(
             size = size,
             cursor = cursor,
             sortType = sortType,
-            tagId = tagId
+            tagId = requestTagId
         )
     }
 }

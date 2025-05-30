@@ -1,5 +1,6 @@
 package com.whatever.caramel.feature.memo
 
+import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,28 +10,44 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import caramel.feature.memo.generated.resources.Res
 import caramel.feature.memo.generated.resources.memo
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.util.DateFormatter.formatWithSeparator
+import com.whatever.caramel.feature.memo.component.EmptyMemo
 import com.whatever.caramel.feature.memo.component.MemoItem
 import com.whatever.caramel.feature.memo.component.TagChip
 import com.whatever.caramel.feature.memo.mvi.MemoIntent
 import com.whatever.caramel.feature.memo.mvi.MemoState
+import kotlinx.coroutines.flow.filter
 import org.jetbrains.compose.resources.stringResource
 import kotlin.math.max
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,15 +56,32 @@ internal fun MemoScreen(
     onIntent: (MemoIntent) -> Unit
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
+    val lazyListState = rememberLazyListState().apply {
+        onLastReached(
+            numberOfItemsBeforeEnd = 1,
+            onReachedNumberOfItemsBeforeEnd = { onIntent(MemoIntent.ReachedEndOfList) }
+        )
+    }
+    val homeContentsOffset by animateIntAsState(
+        targetValue = when {
+            state.isRefreshing -> 250
+            pullToRefreshState.distanceFraction in 0f..1f -> (250 * pullToRefreshState.distanceFraction).roundToInt()
+            pullToRefreshState.distanceFraction > 1f -> (250 + ((pullToRefreshState.distanceFraction - 1f) * 1f) * 100).roundToInt()
+            else -> 0
+        }
+    )
     PullToRefreshBox(
+        modifier = Modifier.background(color = CaramelTheme.color.background.primary),
         state = pullToRefreshState,
-        isRefreshing = state.isLoading,
+        isRefreshing = state.isRefreshing,
         onRefresh = { onIntent(MemoIntent.PullToRefresh) }
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = CaramelTheme.color.background.primary)
+                .graphicsLayer {
+                    translationY = homeContentsOffset.toFloat()
+                }
         ) {
             Text(
                 modifier = Modifier
@@ -69,33 +103,69 @@ internal fun MemoScreen(
                     TagChip(
                         tag = tag,
                         isSelected = state.selectedTag == tag,
-                        onClickChip = { MemoIntent.ClickTagChip(tag = it) }
+                        onClickChip = { onIntent(MemoIntent.ClickTagChip(tag = it)) }
                     )
                 }
             }
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-            ) {
-                itemsIndexed(state.memos) { index, memo ->
-                    MemoItem(
-                        id = memo.id,
-                        title = memo.title,
-                        description = memo.description,
-                        categoriesText = memo.tagList.joinToString(separator = ",") { it.label },
-                        createdDateText = memo.createdAt.formatWithSeparator(separator = "."),
-                        onClickMemoItem = { MemoIntent.ClickMemo(memoId = it) }
-                    )
-                    if(index < state.memos.lastIndex) {
-                        HorizontalDivider(
-                            modifier = Modifier.fillMaxWidth(),
-                            thickness = 1.dp,
-                            color = CaramelTheme.color.divider.primary
+            if (state.memos.isEmpty() && !state.isLoading) {
+                EmptyMemo(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                )
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    state = lazyListState
+                ) {
+                    itemsIndexed(state.memos) { index, memo ->
+                        MemoItem(
+                            id = memo.id,
+                            title = memo.title,
+                            description = memo.description,
+                            categoriesText = memo.tagList.joinToString(separator = ",") { it.label },
+                            createdDateText = memo.createdAt.formatWithSeparator(separator = "."),
+                            onClickMemoItem = { onIntent(MemoIntent.ClickMemo(memoId = it)) }
                         )
+                        if (index < state.memos.lastIndex) {
+                            HorizontalDivider(
+                                modifier = Modifier.fillMaxWidth(),
+                                thickness = 1.dp,
+                                color = CaramelTheme.color.divider.primary
+                            )
+                        }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+internal fun LazyListState.onLastReached(
+    numberOfItemsBeforeEnd: Int = 1,
+    onReachedNumberOfItemsBeforeEnd: () -> Unit
+) {
+    require(numberOfItemsBeforeEnd >= 0) { "Number of items before end must be greater than or equal to 0" }
+
+    val lastItemVisible = remember {
+        derivedStateOf {
+            val totalItemsCount = layoutInfo.totalItemsCount
+            val lastVisibleItemIndex = (layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
+            totalItemsCount > 0 && lastVisibleItemIndex >= max(
+                a = (totalItemsCount - numberOfItemsBeforeEnd),
+                b = 0
+            )
+        }
+    }
+
+    LaunchedEffect(lastItemVisible) {
+        snapshotFlow { lastItemVisible.value }
+            .filter { it }
+            .collect {
+                onReachedNumberOfItemsBeforeEnd()
+            }
     }
 }
