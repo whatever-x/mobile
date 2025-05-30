@@ -5,4 +5,10 @@ import com.whatever.caramel.core.remote.dto.content.response.CreateMemoResponse
 
 interface RemoteMemoDataSource {
     suspend fun createMemo(request: CreateMemoRequest): CreateMemoResponse
+    suspend fun getMemos(
+        pageSize : Int,
+        cursor : String,
+        sortType : String,
+        tagId : Long
+    ) : List<CreateMemoResponse>
 } 
