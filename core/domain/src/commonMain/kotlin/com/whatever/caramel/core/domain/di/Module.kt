@@ -7,6 +7,7 @@ import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameCho
 import com.whatever.caramel.core.domain.usecase.calendar.GetHolidaysUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodayScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodosGroupByStartDateUseCase
+import com.whatever.caramel.core.domain.usecase.content.GetMemosUseCase
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
 import com.whatever.caramel.core.domain.usecase.couple.EditCoupleStartDateUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetAnniversariesUseCase
@@ -52,6 +53,7 @@ val useCaseModule = module {
 
     // Content
     factory { CreateContentUseCase(get(), get()) }
+    factory { GetMemosUseCase(get()) }
 
     // BalanceGame
     factory { GetTodayBalanceGameUseCase(get()) }

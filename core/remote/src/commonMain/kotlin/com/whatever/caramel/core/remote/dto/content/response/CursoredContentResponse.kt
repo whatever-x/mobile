@@ -1,6 +1,7 @@
 package com.whatever.caramel.core.remote.dto.content.response
 
 import com.whatever.caramel.core.remote.dto.tag.TagDataResponse
+import com.whatever.caramel.core.remote.dto.tag.TagDetailResponse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -12,7 +13,7 @@ data class CursoredContentResponse(
 
 @Serializable
 data class Cursor(
-    @SerialName("next") val next: String
+    @SerialName("next") val next: String?
 )
 
 @Serializable
@@ -21,6 +22,6 @@ data class ContentResponse(
     @SerialName("title") val title: String,
     @SerialName("description") val description: String,
     @SerialName("isCompleted") val isCompleted: Boolean,
-    @SerialName("tagList") val tagList: List<TagDataResponse>,
+    @SerialName("tagList") val tagList: List<TagDetailResponse>,
     @SerialName("createdAt") val createdAt: String,
 )

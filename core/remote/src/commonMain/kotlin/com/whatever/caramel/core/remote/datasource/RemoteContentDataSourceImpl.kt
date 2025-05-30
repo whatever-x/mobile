@@ -2,6 +2,7 @@ package com.whatever.caramel.core.remote.datasource
 
 import com.whatever.caramel.core.remote.dto.content.request.CreateMemoRequest
 import com.whatever.caramel.core.remote.dto.content.response.CreateMemoResponse
+import com.whatever.caramel.core.remote.dto.content.response.CursoredContentResponse
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
@@ -10,25 +11,25 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import org.koin.core.annotation.Named
 
-internal class RemoteMemoDataSourceImpl(
+internal class RemoteContentDataSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient,
-) : RemoteMemoDataSource {
+) : RemoteContentDataSource {
     override suspend fun createMemo(request: CreateMemoRequest): CreateMemoResponse =
         authClient.post(CONTENT_BASE_URL) {
             setBody(body = request)
         }.getBody()
 
     override suspend fun getMemos(
-        pageSize: Int,
-        cursor: String,
-        sortType: String,
-        tagId: Long,
-    ): List<CreateMemoResponse> {
+        size: Int?,
+        cursor: String?,
+        sortType: String?,
+        tagId: Long?,
+    ): CursoredContentResponse {
         return authClient.get(CONTENT_BASE_URL) {
-            parameter("pageSize", pageSize)
-            parameter("cursor", cursor)
-            parameter("sortType", sortType)
-            parameter("tagId", tagId)
+            size?.let { parameter("size", it) }
+            cursor?.let { parameter("cursor", it) }
+            sortType?.let { parameter("sortType", it) }
+            tagId?.let { parameter("tagId", it) }
         }.getBody()
     }
 
