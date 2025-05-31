@@ -1,13 +1,10 @@
 package com.whatever.caramel.core.remote.datasource
 
-import com.whatever.caramel.core.remote.dto.content.request.CreateMemoRequest
-import com.whatever.caramel.core.remote.dto.content.request.UpdateMemoRequest
-import com.whatever.caramel.core.remote.dto.content.response.CreateMemoResponse
+import com.whatever.caramel.core.remote.dto.content.response.ContentResponse
 import com.whatever.caramel.core.remote.dto.content.response.CursoredContentResponse
 import com.whatever.caramel.core.remote.dto.memo.request.CreateMemoRequest
 import com.whatever.caramel.core.remote.dto.memo.request.UpdateMemoRequest
 import com.whatever.caramel.core.remote.dto.memo.response.CreateMemoResponse
-import com.whatever.caramel.core.remote.dto.memo.response.GetMemoResponse
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
@@ -36,7 +33,7 @@ internal class RemoteMemoDataSourceImpl(
         authClient.delete("$MEMO_BASE_URL/$memoId")
     }
 
-    override suspend fun getMemoDetail(memoId: Long): GetMemoResponse {
+    override suspend fun getMemoDetail(memoId: Long): ContentResponse {
         return authClient.get("$MEMO_BASE_URL/$memoId").getBody()
     }
 

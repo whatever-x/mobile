@@ -4,8 +4,8 @@ import com.whatever.caramel.core.domain.entity.Memo
 import com.whatever.caramel.core.domain.vo.memo.MemoMetadata
 import com.whatever.caramel.core.domain.vo.memo.MemoWithCursor
 import com.whatever.caramel.core.remote.dto.content.response.ContentResponse
-import com.whatever.caramel.core.remote.dto.content.response.CreateMemoResponse
 import com.whatever.caramel.core.remote.dto.content.response.CursoredContentResponse
+import com.whatever.caramel.core.remote.dto.memo.response.CreateMemoResponse
 import kotlinx.datetime.LocalDate
 
 internal fun CreateMemoResponse.toMemoMetaData(): MemoMetadata {

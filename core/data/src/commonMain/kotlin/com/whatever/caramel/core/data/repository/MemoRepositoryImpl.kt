@@ -1,11 +1,11 @@
 package com.whatever.caramel.core.data.repository
 
+import com.whatever.caramel.core.data.mapper.toMemo
 import com.whatever.caramel.core.data.mapper.toMemoMetaData
 import com.whatever.caramel.core.data.mapper.toMemosWithCursor
 import com.whatever.caramel.core.data.util.safeCall
+import com.whatever.caramel.core.domain.entity.Memo
 import com.whatever.caramel.core.domain.repository.MemoRepository
-import com.whatever.caramel.core.domain.repository.MemoRepository
-import com.whatever.caramel.core.domain.vo.memo.MemoDetail
 import com.whatever.caramel.core.domain.vo.memo.MemoEditParameter
 import com.whatever.caramel.core.domain.vo.memo.MemoMetadata
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
@@ -66,9 +66,8 @@ class MemoRepositoryImpl(
             remoteMemoDataSource.getMemos(size, cursor, sortType, tagId).toMemosWithCursor()
         }
     }
-}
 
-    override suspend fun getMemoDetail(memoId: Long): Memo {
+    override suspend fun getMemo(memoId: Long): Memo {
         return safeCall {
             val response = remoteMemoDataSource.getMemoDetail(memoId)
             response.toMemo()

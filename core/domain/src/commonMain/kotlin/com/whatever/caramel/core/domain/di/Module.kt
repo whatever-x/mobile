@@ -20,7 +20,7 @@ import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInvitationCodeUs
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
 import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
 import com.whatever.caramel.core.domain.usecase.memo.DeleteMemoUseCase
-import com.whatever.caramel.core.domain.usecase.memo.GetMemoDetailUseCase
+import com.whatever.caramel.core.domain.usecase.memo.GetMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.UpdateMemoUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
@@ -65,7 +65,7 @@ val useCaseModule = module {
     factory { UpdateMemoUseCase(get()) }
     factory { DeleteMemoUseCase(get()) }
     factory { GetMemosUseCase(get()) }
-    factory { GetMemoDetailUseCase(get()) }
+    factory { GetMemoUseCase(get()) }
 
     // BalanceGame
     factory { GetTodayBalanceGameUseCase(get()) }
