@@ -55,7 +55,7 @@ internal fun MemoScreen(
     val scrollState = rememberScrollState()
     val lazyListState = rememberLazyListState().apply {
         onLastReached(
-            numberOfItemsBeforeEnd = 1,
+            numberOfItemsBeforeEnd = 3,
             onReachedNumberOfItemsBeforeEnd = { onIntent(MemoIntent.ReachedEndOfList) }
         )
     }
@@ -158,7 +158,7 @@ internal fun MemoScreen(
 
 @Composable
 internal fun LazyListState.onLastReached(
-    numberOfItemsBeforeEnd: Int = 3,
+    numberOfItemsBeforeEnd: Int = 1,
     onReachedNumberOfItemsBeforeEnd: () -> Unit
 ) {
     require(numberOfItemsBeforeEnd >= 0) { "Number of items before end must be greater than or equal to 0" }
