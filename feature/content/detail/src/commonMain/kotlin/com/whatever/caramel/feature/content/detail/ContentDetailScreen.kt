@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.content.detail
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -11,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
@@ -35,19 +37,20 @@ internal fun ContentDetailScreen(
                     trailingIcon = {
                         Icon(
                             modifier = Modifier.clickable {
-
+                                onIntent(ContentDetailIntent.ClickDeleteButton)
                             },
                             painter = painterResource(resource = Resources.Icon.ic_trash_24),
                             tint = CaramelTheme.color.icon.primary,
-                            contentDescription = "Close"
+                            contentDescription = "Delete"
                         )
+                        Spacer(modifier = Modifier.padding(start = 20.dp))
                         Icon(
                             modifier = Modifier.clickable {
-
+                                onIntent(ContentDetailIntent.ClickEditButton)
                             },
-                            painter = painterResource(resource = Resources.Icon.ic_edit_24),
+                            painter = painterResource(resource = Resources.Icon.ic_edit_line_24),
                             tint = CaramelTheme.color.icon.primary,
-                            contentDescription = "Close"
+                            contentDescription = "Edit"
                         )
                     }
                 )

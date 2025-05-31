@@ -22,6 +22,7 @@ import caramel.core.designsystem.generated.resources.ic_circle_plus_solid_24
 import caramel.core.designsystem.generated.resources.ic_edit_14
 import caramel.core.designsystem.generated.resources.ic_edit_16
 import caramel.core.designsystem.generated.resources.ic_edit_24
+import caramel.core.designsystem.generated.resources.ic_edit_line_24
 import caramel.core.designsystem.generated.resources.ic_gift_20
 import caramel.core.designsystem.generated.resources.ic_gift_24
 import caramel.core.designsystem.generated.resources.ic_gift_36
@@ -51,7 +52,6 @@ import caramel.core.designsystem.generated.resources.img_blank_memo
 import caramel.core.designsystem.generated.resources.img_couple_on_ground
 import caramel.core.designsystem.generated.resources.img_gender_man
 import caramel.core.designsystem.generated.resources.img_gender_woman
-import caramel.core.designsystem.generated.resources.img_splash
 import caramel.core.designsystem.generated.resources.img_onboarding01
 import caramel.core.designsystem.generated.resources.img_onboarding02
 import caramel.core.designsystem.generated.resources.img_onboarding03
@@ -59,6 +59,7 @@ import caramel.core.designsystem.generated.resources.img_quiz
 import caramel.core.designsystem.generated.resources.img_quiz_man
 import caramel.core.designsystem.generated.resources.img_quiz_vs
 import caramel.core.designsystem.generated.resources.img_quiz_woman
+import caramel.core.designsystem.generated.resources.img_splash
 import caramel.core.designsystem.generated.resources.img_typelogo
 
 object Resources {
@@ -109,6 +110,7 @@ object Resources {
         val ic_vertex_17_9 = Res.drawable.ic_vertex_17_9
         val ic_kakao_logo_24 = Res.drawable.ic_kakao_logo_24
         val ic_apple_logo_17_20 = Res.drawable.ic_apple_logo_17_20
+        val ic_edit_line_24 = Res.drawable.ic_edit_line_24
     }
 
     object Image {
