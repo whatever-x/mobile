@@ -102,22 +102,24 @@ internal fun MemoScreen(
             if (state.isTagLoading) {
                 TagChipSkeleton()
             } else {
-                Row {
-                    LazyRow(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = CaramelTheme.spacing.xl)
-                            .padding(top = CaramelTheme.spacing.xs)
-                            .padding(bottom = CaramelTheme.spacing.m),
-                        horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s)
-                    ) {
-                        items(state.tags) { tag ->
-                            TagChip(
-                                tag = tag,
-                                isSelected = state.selectedTag == tag,
-                                onClickChip = { onIntent(MemoIntent.ClickTagChip(tag = it)) }
-                            )
-                        }
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = CaramelTheme.spacing.xs)
+                        .padding(bottom = CaramelTheme.spacing.m),
+                    horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s)
+                ) {
+                    itemsIndexed(state.tags) { index, tag ->
+                        TagChip(
+                            modifier = when (index) {
+                                0 -> Modifier.padding(start = CaramelTheme.spacing.xl)
+                                state.tags.lastIndex -> Modifier.padding(end = CaramelTheme.spacing.xl)
+                                else -> Modifier
+                            },
+                            tag = tag,
+                            isSelected = state.selectedTag == tag,
+                            onClickChip = { onIntent(MemoIntent.ClickTagChip(tag = it)) }
+                        )
                     }
                 }
             }
