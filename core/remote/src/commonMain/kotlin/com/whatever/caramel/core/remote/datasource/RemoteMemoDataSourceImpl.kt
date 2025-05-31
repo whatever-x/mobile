@@ -11,11 +11,11 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import org.koin.core.annotation.Named
 
-internal class RemoteContentDataSourceImpl(
+internal class RemoteMemoDataSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient,
-) : RemoteContentDataSource {
+) : RemoteMemoDataSource {
     override suspend fun createMemo(request: CreateMemoRequest): CreateMemoResponse =
-        authClient.post(CONTENT_BASE_URL) {
+        authClient.post(MEMO_BASE_URL) {
             setBody(body = request)
         }.getBody()
 
@@ -25,7 +25,7 @@ internal class RemoteContentDataSourceImpl(
         sortType: String?,
         tagId: Long?,
     ): CursoredContentResponse {
-        return authClient.get(CONTENT_BASE_URL) {
+        return authClient.get(MEMO_BASE_URL) {
             size?.let { parameter("size", it) }
             cursor?.let { parameter("cursor", it) }
             sortType?.let { parameter("sortType", it) }
@@ -34,6 +34,6 @@ internal class RemoteContentDataSourceImpl(
     }
 
     companion object {
-        private const val CONTENT_BASE_URL = "/v1/content/memo"
+        private const val MEMO_BASE_URL = "/v1/content/memo"
     }
 } 

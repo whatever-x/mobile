@@ -1,10 +1,10 @@
 package com.whatever.caramel.core.domain.usecase.content
 
-import com.whatever.caramel.core.domain.repository.ContentRepository
+import com.whatever.caramel.core.domain.repository.MemoRepository
 import com.whatever.caramel.core.domain.vo.memo.MemoWithCursor
 
 class GetMemosUseCase(
-    private val contentRepository: ContentRepository
+    private val memoRepository: MemoRepository
 ) {
     suspend operator fun invoke(
         size : Int? = null,
@@ -13,7 +13,7 @@ class GetMemosUseCase(
         tagId : Long? = null
     ): MemoWithCursor {
         val requestTagId = if(tagId == 0L) null else tagId
-        return contentRepository.getMemos(
+        return memoRepository.getMemos(
             size = size,
             cursor = cursor,
             sortType = sortType,

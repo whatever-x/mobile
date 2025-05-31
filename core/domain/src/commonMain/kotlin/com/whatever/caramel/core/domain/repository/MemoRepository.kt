@@ -4,7 +4,7 @@ import com.whatever.caramel.core.domain.vo.memo.MemoMetadata
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.domain.vo.memo.MemoWithCursor
 
-interface ContentRepository {
+interface MemoRepository {
     suspend fun createMemo(parameter: MemoParameter): MemoMetadata
     suspend fun getMemos(
         size : Int?,
