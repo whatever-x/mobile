@@ -13,6 +13,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -50,6 +52,7 @@ internal fun MemoScreen(
     onIntent: (MemoIntent) -> Unit
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
+    val scrollState = rememberScrollState()
     val lazyListState = rememberLazyListState().apply {
         onLastReached(
             numberOfItemsBeforeEnd = 1,
@@ -64,6 +67,13 @@ internal fun MemoScreen(
             else -> 0
         }
     )
+
+    LaunchedEffect(state.isMemoLoading) {
+        if (state.isMemoLoading) {
+            lazyListState.scrollToItem(0)
+        }
+    }
+
     PullToRefreshBox(
         modifier = Modifier.background(color = CaramelTheme.color.background.primary),
         state = pullToRefreshState,
@@ -76,6 +86,7 @@ internal fun MemoScreen(
                 .graphicsLayer {
                     translationY = memoScreenOffset.toFloat()
                 }
+                .verticalScroll(scrollState)
         ) {
             Text(
                 modifier = Modifier
@@ -85,7 +96,7 @@ internal fun MemoScreen(
                 style = CaramelTheme.typography.heading1,
                 color = CaramelTheme.color.text.primary
             )
-            if(state.isTagLoading) {
+            if (state.isTagLoading) {
                 TagChipSkeleton()
             } else {
                 LazyRow(
@@ -112,7 +123,7 @@ internal fun MemoScreen(
                         .weight(1f)
                 )
             } else {
-                if(state.isMemoLoading) {
+                if (state.isMemoLoading) {
                     MemoItemSkeleton()
                 } else {
                     LazyColumn(
@@ -147,7 +158,7 @@ internal fun MemoScreen(
 
 @Composable
 internal fun LazyListState.onLastReached(
-    numberOfItemsBeforeEnd: Int = 1,
+    numberOfItemsBeforeEnd: Int = 3,
     onReachedNumberOfItemsBeforeEnd: () -> Unit
 ) {
     require(numberOfItemsBeforeEnd >= 0) { "Number of items before end must be greater than or equal to 0" }

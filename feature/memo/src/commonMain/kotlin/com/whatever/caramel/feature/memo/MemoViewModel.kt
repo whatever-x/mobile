@@ -18,7 +18,7 @@ class MemoViewModel(
 ) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle) {
 
     init {
-        getMemos(clear = false, initialize = true)
+        getMemos()
         getTags()
     }
 
@@ -31,7 +31,7 @@ class MemoViewModel(
             is MemoIntent.ClickMemo -> clickMemo(intent)
             is MemoIntent.ClickTagChip -> clickTagChip(intent)
             MemoIntent.PullToRefresh -> refreshMemos()
-            MemoIntent.ReachedEndOfList -> getMemos(clear = false)
+            MemoIntent.ReachedEndOfList -> loadPagingData()
         }
     }
 
@@ -64,27 +64,38 @@ class MemoViewModel(
         postSideEffect(MemoSideEffect.NavigateToTodoDetail(intent.memoId))
     }
 
+    private fun loadPagingData(){
+        if(currentState.cursor == null && currentState.memos.isNotEmpty()) return
+        getMemos()
+    }
+
     private fun clickTagChip(intent: MemoIntent.ClickTagChip) {
         if (currentState.selectedTag == intent.tag) return
 
-        reduce { copy(selectedTag = intent.tag) }
-        getMemos(clear = true, initialize = true)
+        reduce {
+            copy(
+                isMemoLoading = true,
+                selectedTag = intent.tag,
+                cursor = null,
+                memos = persistentListOf()
+            )
+        }
+        getMemos()
     }
 
     private fun refreshMemos() {
-        reduce { copy(isRefreshing = true) }
-        getMemos(clear = true)
-    }
-
-    private fun getMemos(clear: Boolean, initialize: Boolean = false) {
-        if (clear) reduce { copy(memos = persistentListOf(), cursor = null) }
-        if (currentState.memos.isNotEmpty() && currentState.cursor == null) return
         reduce {
             copy(
-                isMemoLoading = initialize,
-                cursor = if(initialize) null else cursor
+                isRefreshing = true,
+                isMemoLoading = true,
+                cursor = null,
+                memos = persistentListOf()
             )
         }
+        getMemos()
+    }
+
+    private fun getMemos() {
         launch {
             val newMemos = getMemosUseCase(
                 size = 10,
