@@ -3,12 +3,14 @@ package com.whatever.caramel.feature.content.detail
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.whatever.caramel.core.designsystem.components.CaramelDialog
 import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLayout
 import com.whatever.caramel.core.designsystem.components.LocalSnackbarHostState
 import com.whatever.caramel.core.designsystem.components.showSnackbarMessage
 import com.whatever.caramel.core.domain.vo.content.ContentType
+import com.whatever.caramel.core.ui.util.ObserveLifecycleEvent
 import com.whatever.caramel.feature.content.detail.mvi.ContentDetailIntent
 import com.whatever.caramel.feature.content.detail.mvi.ContentDetailSideEffect
 import org.koin.compose.viewmodel.koinViewModel
@@ -39,6 +41,12 @@ internal fun ContentDetailRoute(
                     )
                 }
             }
+        }
+    }
+
+    ObserveLifecycleEvent { event ->
+        if (event == Lifecycle.Event.ON_START) {
+            viewModel.intent(ContentDetailIntent.LoadDataOnStart)
         }
     }
 

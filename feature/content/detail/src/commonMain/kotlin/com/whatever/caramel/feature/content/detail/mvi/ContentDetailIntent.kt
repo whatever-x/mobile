@@ -8,4 +8,5 @@ sealed interface ContentDetailIntent : UiIntent {
     data object ClickDeleteButton : ContentDetailIntent
     data object ClickConfirmDeleteDialogButton : ContentDetailIntent
     data object ClickCancelDeleteDialogButton : ContentDetailIntent
+    data object LoadDataOnStart: ContentDetailIntent
 } 

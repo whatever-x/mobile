@@ -1,14 +1,20 @@
 package com.whatever.caramel.feature.content.detail
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
@@ -67,14 +73,31 @@ internal fun ContentDetailScreen(
                 )
             }
         },
+        bottomBar = {
+            LazyRow(
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .padding(bottom = 50.dp),
+                contentPadding = PaddingValues(horizontal = CaramelTheme.spacing.xl),
+                horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xs),
+            ) {
+                items(state.tags) { tag ->
+                    Text(
+                        text = "#${tag.label}",
+                        style = CaramelTheme.typography.body2.reading,
+                        color = CaramelTheme.color.text.brand,
+                    )
+                }
+            }
+        }
     ) { contentPadding ->
         Column(
             modifier = Modifier
                 .padding(contentPadding)
-                .padding(horizontal = CaramelTheme.spacing.xl)
                 .fillMaxSize()
         ) {
             TextWithUrlPreview(
+                modifier = Modifier.padding(horizontal = CaramelTheme.spacing.xl),
                 text = state.description,
                 linkMetaData = state.linkMetaDataList.toList(),
                 onLinkPreviewClick = {

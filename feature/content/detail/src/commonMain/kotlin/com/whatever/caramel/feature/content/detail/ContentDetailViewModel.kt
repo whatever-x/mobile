@@ -28,10 +28,6 @@ class ContentDetailViewModel(
     private val getLinkPreviewsForContentUseCase: GetLinkPreviewsForContentUseCase
 ) : BaseViewModel<ContentDetailState, ContentDetailSideEffect, ContentDetailIntent>(savedStateHandle) {
 
-    init {
-        loadContentDetails()
-    }
-
     override fun createInitialState(savedStateHandle: SavedStateHandle): ContentDetailState {
         val arguments = savedStateHandle.toRoute<ContentDetailRoute>()
         return ContentDetailState(
@@ -40,33 +36,7 @@ class ContentDetailViewModel(
         )
     }
 
-    private fun loadContentDetails() {
-        launch {
-            val state = currentState
-            reduce { copy(isLoading = true) }
-            try {
-                when (state.contentType) {
-                    ContentType.MEMO -> {
-                        val memo = getMemoUseCase(state.contentId)
-                        reduce { copy(memoDetail = memo, isLoading = false) }
 
-                        fetchLinkPreviews(memo.description)
-                    }
-
-                    ContentType.CALENDAR -> {
-                        val schedule = getScheduleUseCase(state.contentId)
-                        reduce { copy(scheduleDetail = schedule, isLoading = false) }
-                        schedule.description?.also {
-                            fetchLinkPreviews(it)
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                handleClientException(e)
-                reduce { copy(isLoading = false) }
-            }
-        }
-    }
 
     private fun fetchLinkPreviews(content: String) {
         launch {
@@ -97,7 +67,6 @@ class ContentDetailViewModel(
     }
 
     override suspend fun handleIntent(intent: ContentDetailIntent) {
-        val state = currentState
         when (intent) {
             is ContentDetailIntent.ClickCloseButton -> {
                 postSideEffect(ContentDetailSideEffect.NavigateToBackStack)
@@ -106,8 +75,8 @@ class ContentDetailViewModel(
             is ContentDetailIntent.ClickEditButton -> {
                 postSideEffect(
                     ContentDetailSideEffect.NavigateToEdit(
-                        state.contentId,
-                        state.contentType
+                        currentState.contentId,
+                        currentState.contentType
                     )
                 )
             }
@@ -120,9 +89,9 @@ class ContentDetailViewModel(
                 reduce { copy(showDeleteConfirmDialog = false) }
                 launch {
                     try {
-                        when (state.contentType) {
-                            ContentType.MEMO -> deleteMemoUseCase(state.contentId)
-                            ContentType.CALENDAR -> deleteScheduleUseCase(state.contentId)
+                        when (currentState.contentType) {
+                            ContentType.MEMO -> deleteMemoUseCase(currentState.contentId)
+                            ContentType.CALENDAR -> deleteScheduleUseCase(currentState.contentId)
                         }
                         postSideEffect(ContentDetailSideEffect.NavigateToBackStack)
                     } catch (e: Exception) {
@@ -133,6 +102,32 @@ class ContentDetailViewModel(
 
             is ContentDetailIntent.ClickCancelDeleteDialogButton -> {
                 reduce { copy(showDeleteConfirmDialog = false) }
+            }
+
+            ContentDetailIntent.LoadDataOnStart -> {
+                loadContentDetails()
+            }
+        }
+    }
+
+    private fun loadContentDetails() {
+        launch {
+            reduce { copy(isLoading = true) }
+            when (currentState.contentType) {
+                ContentType.MEMO -> {
+                    val memo = getMemoUseCase(currentState.contentId)
+                    reduce { copy(memoDetail = memo, isLoading = false) }
+
+                    fetchLinkPreviews(memo.description)
+                }
+
+                ContentType.CALENDAR -> {
+                    val schedule = getScheduleUseCase(currentState.contentId)
+                    reduce { copy(scheduleDetail = schedule, isLoading = false) }
+                    schedule.description?.also {
+                        fetchLinkPreviews(it)
+                    }
+                }
             }
         }
     }
