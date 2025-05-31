@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.content.detail.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -21,14 +22,15 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 fun LinkPreview(
     modifier: Modifier = Modifier,
     title: String,
-    imageUrl: String
+    imageUrl: String,
+    onLinkPreviewClick: () -> Unit,
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .clip(CaramelTheme.shape.s)
             .background(CaramelTheme.color.background.tertiary)
-            .padding(12.dp)
+            .clickable { onLinkPreviewClick() }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

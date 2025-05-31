@@ -5,10 +5,12 @@ package com.whatever.caramel.feature.content.edit
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,9 +21,8 @@ import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -37,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
@@ -140,8 +142,7 @@ internal fun ContentEditScreen(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         SelectableTagChipRow(
-                            modifier = Modifier.fillMaxWidth()
-                                .padding(horizontal = CaramelTheme.spacing.xl),
+                            modifier = Modifier.fillMaxWidth(),
                             tagChips = state.tags.map { TagChip(it.id, it.label) }
                                 .toImmutableList(),
                             selectedTagChips = state.selectedTags.map { TagChip(it.id, it.label) }
@@ -215,18 +216,18 @@ internal fun ContentEditScreen(
                         .padding(horizontal = CaramelTheme.spacing.xl),
                     horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.m)
                 ) {
-                    Button(
-                        onClick = { onIntent(ContentEditIntent.OnDeleteClicked) },
-                        modifier = Modifier.weight(1f),
-                        shape = CaramelTheme.shape.xxl,
-                        border = BorderStroke(
-                            width = 1.dp,
-                            color = CaramelTheme.color.fill.quaternary
-                        ),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = CaramelTheme.color.fill.inverse,
-                            contentColor = CaramelTheme.color.icon.primary,
-                        ),
+                    Box(
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(CaramelTheme.shape.xxl)
+                            .border(
+                                width = 1.dp,
+                                color = CaramelTheme.color.fill.quaternary,
+                                shape = CaramelTheme.shape.xxl,
+                            )
+                            .background(CaramelTheme.color.fill.inverse)
+                            .clickable { onIntent(ContentEditIntent.OnDeleteClicked) },
+                        contentAlignment = Alignment.Center,
                     ) {
                         Icon(
                             painter = painterResource(Resources.Icon.ic_trash_24),

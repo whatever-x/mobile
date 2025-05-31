@@ -1,6 +1,5 @@
 package com.whatever.caramel.feature.content.detail.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -89,13 +88,13 @@ fun TextWithUrlPreview(
                         text = annotatedLinkString,
                         onClick = { onLinkPreviewClick(item.url) }
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
                     LinkPreview(
-                        modifier = Modifier
-                            .padding(bottom = 8.dp)
-                            .clickable { onLinkPreviewClick(item.url) },
                         title = item.title,
-                        imageUrl = item.imageUrl
+                        imageUrl = item.imageUrl,
+                        onLinkPreviewClick = {
+                            onLinkPreviewClick(item.url)
+                        }
                     )
                 }
             }
