@@ -7,15 +7,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key.Companion.R
+import caramel.feature.memo.generated.resources.Res
+import caramel.feature.memo.generated.resources.tag_all
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.entity.Tag
+import com.whatever.caramel.feature.memo.mvi.TagUiModel
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun TagChip(
     modifier: Modifier = Modifier,
-    tag: Tag,
+    tag: TagUiModel,
     isSelected: Boolean,
-    onClickChip: (Tag) -> Unit
+    onClickChip: (TagUiModel) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -31,7 +36,7 @@ internal fun TagChip(
             )
     ) {
         Text(
-            text = tag.label,
+            text = tag.label.ifEmpty { stringResource(Res.string.tag_all) },
             style = CaramelTheme.typography.body4.regular,
             color = if (isSelected) CaramelTheme.color.text.inverse else CaramelTheme.color.text.primary
         )

@@ -8,6 +8,7 @@ import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.memo.mvi.MemoIntent
 import com.whatever.caramel.feature.memo.mvi.MemoSideEffect
 import com.whatever.caramel.feature.memo.mvi.MemoState
+import com.whatever.caramel.feature.memo.mvi.TagUiModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
@@ -49,12 +50,13 @@ class MemoViewModel(
     private fun getTags() {
         reduce { copy(isTagLoading = true) }
         launch {
-            val tags = (listOf(Tag(id = 0, label = "전체")) + getTagUseCase())
+            val tags = getTagUseCase().map { TagUiModel.toUiModel(it) }
+            val combinedTags = listOf(TagUiModel()) + tags
             reduce {
                 copy(
                     isTagLoading = false,
-                    tags = tags.toImmutableList(),
-                    selectedTag = tags.first()
+                    tags = combinedTags.toImmutableList(),
+                    selectedTag = combinedTags.first()
                 )
             }
         }
