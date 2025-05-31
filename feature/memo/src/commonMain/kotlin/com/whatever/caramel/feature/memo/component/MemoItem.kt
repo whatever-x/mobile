@@ -102,11 +102,6 @@ internal fun MemoItem(
 }
 
 @Composable
-internal fun MemoItemSkeleton() {
-
-}
-
-@Composable
 internal fun EmptyMemo(
     modifier: Modifier = Modifier
 ) {

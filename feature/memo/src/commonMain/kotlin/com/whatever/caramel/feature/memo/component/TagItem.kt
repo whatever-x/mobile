@@ -37,8 +37,3 @@ internal fun TagChip(
         )
     }
 }
-
-@Composable
-internal fun TagChipSkeleton() {
-
-}

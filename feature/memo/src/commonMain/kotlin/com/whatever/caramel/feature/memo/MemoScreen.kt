@@ -6,20 +6,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -31,7 +24,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
@@ -41,7 +33,9 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.util.DateFormatter.formatWithSeparator
 import com.whatever.caramel.feature.memo.component.EmptyMemo
 import com.whatever.caramel.feature.memo.component.MemoItem
+import com.whatever.caramel.feature.memo.component.MemoItemSkeleton
 import com.whatever.caramel.feature.memo.component.TagChip
+import com.whatever.caramel.feature.memo.component.TagChipSkeleton
 import com.whatever.caramel.feature.memo.mvi.MemoIntent
 import com.whatever.caramel.feature.memo.mvi.MemoState
 import kotlinx.coroutines.flow.filter
@@ -62,7 +56,7 @@ internal fun MemoScreen(
             onReachedNumberOfItemsBeforeEnd = { onIntent(MemoIntent.ReachedEndOfList) }
         )
     }
-    val homeContentsOffset by animateIntAsState(
+    val memoScreenOffset by animateIntAsState(
         targetValue = when {
             state.isRefreshing -> 250
             pullToRefreshState.distanceFraction in 0f..1f -> (250 * pullToRefreshState.distanceFraction).roundToInt()
@@ -80,7 +74,7 @@ internal fun MemoScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .graphicsLayer {
-                    translationY = homeContentsOffset.toFloat()
+                    translationY = memoScreenOffset.toFloat()
                 }
         ) {
             Text(
@@ -91,50 +85,58 @@ internal fun MemoScreen(
                 style = CaramelTheme.typography.heading1,
                 color = CaramelTheme.color.text.primary
             )
-            LazyRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = CaramelTheme.spacing.xl)
-                    .padding(top = CaramelTheme.spacing.xs)
-                    .padding(bottom = CaramelTheme.spacing.m),
-                horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s)
-            ) {
-                items(state.tags) { tag ->
-                    TagChip(
-                        tag = tag,
-                        isSelected = state.selectedTag == tag,
-                        onClickChip = { onIntent(MemoIntent.ClickTagChip(tag = it)) }
-                    )
+            if(state.isTagLoading) {
+                TagChipSkeleton()
+            } else {
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = CaramelTheme.spacing.xl)
+                        .padding(top = CaramelTheme.spacing.xs)
+                        .padding(bottom = CaramelTheme.spacing.m),
+                    horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s)
+                ) {
+                    items(state.tags) { tag ->
+                        TagChip(
+                            tag = tag,
+                            isSelected = state.selectedTag == tag,
+                            onClickChip = { onIntent(MemoIntent.ClickTagChip(tag = it)) }
+                        )
+                    }
                 }
             }
-            if (state.memos.isEmpty() && !state.isLoading) {
+            if (state.isEmpty) {
                 EmptyMemo(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
                 )
             } else {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    state = lazyListState
-                ) {
-                    itemsIndexed(state.memos) { index, memo ->
-                        MemoItem(
-                            id = memo.id,
-                            title = memo.title,
-                            description = memo.description,
-                            categoriesText = memo.tagList.joinToString(separator = ",") { it.label },
-                            createdDateText = memo.createdAt.formatWithSeparator(separator = "."),
-                            onClickMemoItem = { onIntent(MemoIntent.ClickMemo(memoId = it)) }
-                        )
-                        if (index < state.memos.lastIndex) {
-                            HorizontalDivider(
-                                modifier = Modifier.fillMaxWidth(),
-                                thickness = 1.dp,
-                                color = CaramelTheme.color.divider.primary
+                if(state.isMemoLoading) {
+                    MemoItemSkeleton()
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        state = lazyListState
+                    ) {
+                        itemsIndexed(state.memos) { index, memo ->
+                            MemoItem(
+                                id = memo.id,
+                                title = memo.title,
+                                description = memo.description,
+                                categoriesText = memo.tagList.joinToString(separator = ",") { it.label },
+                                createdDateText = memo.createdAt.formatWithSeparator(separator = "."),
+                                onClickMemoItem = { onIntent(MemoIntent.ClickMemo(memoId = it)) }
                             )
+                            if (index < state.memos.lastIndex) {
+                                HorizontalDivider(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    thickness = 1.dp,
+                                    color = CaramelTheme.color.divider.primary
+                                )
+                            }
                         }
                     }
                 }

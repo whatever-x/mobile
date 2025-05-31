@@ -18,7 +18,7 @@ class MemoViewModel(
 ) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle) {
 
     init {
-        getMemos(clear = false)
+        getMemos(clear = false, pagingLoading = true)
         getTags()
     }
 
@@ -39,17 +39,18 @@ class MemoViewModel(
         super.handleClientException(throwable)
         reduce {
             copy(
-                isLoading = false,
-                isRefreshing = false
+                isMemoLoading = false,
+                isRefreshing = false,
+                isTagLoading = false
             )
         }
     }
 
     private fun getTags() {
-        reduce { copy(isLoading = true) }
+        reduce { copy(isTagLoading = true) }
         launch {
             val tags = (listOf(Tag(id = 0, label = "전체")) + getTagUseCase())
-            reduce { copy(isLoading = false, tags = tags.toImmutableList(), selectedTag = tags.first()) }
+            reduce { copy(isTagLoading = false, tags = tags.toImmutableList(), selectedTag = tags.first()) }
         }
     }
 
@@ -58,12 +59,7 @@ class MemoViewModel(
     }
 
     private fun clickTagChip(intent: MemoIntent.ClickTagChip) {
-        reduce {
-            copy(
-                isLoading = true,
-                selectedTag = intent.tag
-            )
-        }
+        reduce { copy(selectedTag = intent.tag) }
         getMemos(clear = true)
     }
 
@@ -72,11 +68,10 @@ class MemoViewModel(
         getMemos(clear = true)
     }
 
-    private fun getMemos(clear: Boolean) {
+    private fun getMemos(clear: Boolean, pagingLoading : Boolean = false) {
         if (clear) reduce { copy(memos = persistentListOf(), cursor = null) }
-        // 데이터가 더 이상 존재하지 않음
         if(currentState.memos.isNotEmpty() && currentState.cursor == null) return
-        reduce { copy(isLoading = true) }
+        reduce { copy(isMemoLoading = pagingLoading) }
         launch {
             val newMemos = getMemosUseCase(
                 size = 5,
@@ -90,7 +85,7 @@ class MemoViewModel(
             }
             reduce {
                 copy(
-                    isLoading = false,
+                    isMemoLoading = false,
                     isRefreshing = false,
                     cursor = newMemos.nextCursor,
                     memos = updatedMemos.toImmutableList()

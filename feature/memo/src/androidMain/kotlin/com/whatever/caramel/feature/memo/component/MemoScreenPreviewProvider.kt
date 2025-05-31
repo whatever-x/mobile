@@ -13,19 +13,19 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
     override val values: Sequence<MemoState>
         get() = sequenceOf(
             MemoState(
-                isLoading = true,
+                isMemoLoading = true,
                 memos = persistentListOf(),
                 tags = persistentListOf(),
                 selectedTag = null
             ),
             MemoState(
-                isLoading = false,
+                isMemoLoading = false,
                 memos = createTempMemoList(size = 100, emptyTitle = true),
                 tags = createTempTagList(size = 100),
                 selectedTag = Tag(1, "label1")
             ),
             MemoState(
-                isLoading = false,
+                isMemoLoading = false,
                 memos = createTempMemoList(size = 5, emptyTitle = false),
                 tags = createTempTagList(size = 5),
                 selectedTag = Tag(1, "label1")
