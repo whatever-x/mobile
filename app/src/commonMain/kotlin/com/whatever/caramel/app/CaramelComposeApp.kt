@@ -1,5 +1,6 @@
 package com.whatever.caramel.app
 
+import androidx.compose.foundation.LocalOverscrollFactory
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -35,7 +36,8 @@ fun CaramelComposeApp(
         val snackBarHostState = remember { SnackbarHostState() }
 
         CompositionLocalProvider(
-            LocalSnackbarHostState provides snackBarHostState
+            LocalSnackbarHostState provides snackBarHostState,
+            LocalOverscrollFactory provides null
         ) {
             val appState by viewModel.state.collectAsStateWithLifecycle()
 

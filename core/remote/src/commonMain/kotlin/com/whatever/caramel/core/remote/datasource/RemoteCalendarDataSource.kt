@@ -5,6 +5,7 @@ import com.whatever.caramel.core.remote.dto.calendar.HolidayDetailListResponse
 import com.whatever.caramel.core.remote.dto.calendar.request.CreateScheduleRequest
 import com.whatever.caramel.core.remote.dto.calendar.response.CreateScheduleResponse
 import com.whatever.caramel.core.remote.dto.calendar.request.UpdateScheduleRequest
+import com.whatever.caramel.core.remote.dto.calendar.response.GetScheduleResponse
 
 interface RemoteCalendarDataSource {
     suspend fun createSchedule(request: CreateScheduleRequest): CreateScheduleResponse
@@ -18,6 +19,8 @@ interface RemoteCalendarDataSource {
     suspend fun getHolidaysByYear(
         year: String
     ): HolidayDetailListResponse
+
+    suspend fun getScheduleDetail(scheduleId: Long): GetScheduleResponse
 
     suspend fun updateSchedule(
         scheduleId: Long,

@@ -1,4 +1,3 @@
-package com.whatever.caramel.core.domain.usecase.item
 
 import com.whatever.caramel.core.domain.repository.MemoRepository
 import com.whatever.caramel.core.domain.vo.memo.MemoEditParameter

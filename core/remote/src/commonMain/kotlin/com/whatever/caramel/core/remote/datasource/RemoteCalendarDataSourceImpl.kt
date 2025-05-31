@@ -5,6 +5,7 @@ import com.whatever.caramel.core.remote.dto.calendar.HolidayDetailListResponse
 import com.whatever.caramel.core.remote.dto.calendar.request.CreateScheduleRequest
 import com.whatever.caramel.core.remote.dto.calendar.response.CreateScheduleResponse
 import com.whatever.caramel.core.remote.dto.calendar.request.UpdateScheduleRequest
+import com.whatever.caramel.core.remote.dto.calendar.response.GetScheduleResponse
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
@@ -49,6 +50,10 @@ internal class RemoteCalendarDataSourceImpl(
 
     override suspend fun deleteSchedule(scheduleId: Long) {
         authClient.delete("$CALENDAR_BASE_URL/schedules/$scheduleId")
+    }
+
+    override suspend fun getScheduleDetail(scheduleId: Long): GetScheduleResponse {
+        return authClient.get("$CALENDAR_BASE_URL/schedules/$scheduleId").getBody()
     }
 
     companion object {

@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain.vo.item
+package com.whatever.caramel.core.domain.vo.content
 
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
