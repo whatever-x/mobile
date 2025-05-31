@@ -12,7 +12,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
-data class ContentState(
+data class ContentCreateState(
     val title: String = "",
     val content: String = "",
     val isLoading: Boolean = false,

@@ -1,9 +1,9 @@
 package com.whatever.caramel.feature.content.create.di
 
-import com.whatever.caramel.feature.content.create.ContentViewModel
+import com.whatever.caramel.feature.content.create.ContentCreateViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-val contentFeatureModule = module {
-    viewModelOf(::ContentViewModel)
+val contentCreateFeatureModule = module {
+    viewModelOf(::ContentCreateViewModel)
 }

@@ -57,14 +57,14 @@ import com.whatever.caramel.core.ui.picker.CaramelDatePicker
 import com.whatever.caramel.core.ui.picker.CaramelTimePicker
 import com.whatever.caramel.core.ui.picker.TimeUiState
 import com.whatever.caramel.core.ui.picker.model.DateUiState
-import com.whatever.caramel.feature.content.create.mvi.ContentIntent
-import com.whatever.caramel.feature.content.create.mvi.ContentState
+import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
+import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 internal fun ContentScreen(
-    state: ContentState,
-    onIntent: (ContentIntent) -> Unit
+    state: ContentCreateState,
+    onIntent: (ContentCreateIntent) -> Unit
 ) {
     val sheetState = rememberStandardBottomSheetState(
         initialValue = SheetValue.PartiallyExpanded,
@@ -86,7 +86,7 @@ internal fun ContentScreen(
                     trailingIcon = {
                         Icon(
                             modifier = Modifier.clickable(
-                                onClick = { onIntent(ContentIntent.ClickCloseButton) },
+                                onClick = { onIntent(ContentCreateIntent.ClickCloseButton) },
                                 indication = null,
                                 interactionSource = null
                             ),
@@ -100,7 +100,7 @@ internal fun ContentScreen(
                     modifier = Modifier.padding(horizontal = CaramelTheme.spacing.xl),
                     value = state.title,
                     onValueChange = {
-                        onIntent(ContentIntent.InputTitle(it))
+                        onIntent(ContentCreateIntent.InputTitle(it))
                     },
                     onKeyboardAction = {
                         contentFocusRequester.requestFocus()
@@ -133,7 +133,7 @@ internal fun ContentScreen(
                             tagChips = state.tags.map { TagChip(it.id, it.label) },
                             selectedTagChips = state.selectedTags.map { TagChip(it.id, it.label) },
                             onTagChipClick = {
-                                onIntent(ContentIntent.ClickTag(Tag(it.id, it.label)))
+                                onIntent(ContentCreateIntent.ClickTag(Tag(it.id, it.label)))
                             }
                         )
                         Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.xl))
@@ -146,7 +146,7 @@ internal fun ContentScreen(
                             CreateModeSwitch(
                                 createMode = state.createMode,
                                 onCreateModeSelect = {
-                                    onIntent(ContentIntent.SelectCreateMode(it))
+                                    onIntent(ContentCreateIntent.SelectCreateMode(it))
                                 }
                             )
                             when (state.createMode) {
@@ -164,13 +164,13 @@ internal fun ContentScreen(
                                         horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s)
                                     ) {
                                         Text(
-                                            modifier = Modifier.clickable { onIntent(ContentIntent.ClickDate) },
+                                            modifier = Modifier.clickable { onIntent(ContentCreateIntent.ClickDate) },
                                             text = state.date,
                                             style = CaramelTheme.typography.body2.regular,
                                             color = CaramelTheme.color.text.primary
                                         )
                                         Text(
-                                            modifier = Modifier.clickable { onIntent(ContentIntent.ClickTime) },
+                                            modifier = Modifier.clickable { onIntent(ContentCreateIntent.ClickTime) },
                                             text = state.time,
                                             style = CaramelTheme.typography.body2.regular,
                                             color = CaramelTheme.color.text.primary
@@ -193,7 +193,7 @@ internal fun ContentScreen(
                     buttonSize = CaramelButtonSize.Large,
                     text = "저장",
                     onClick = {
-                        onIntent(ContentIntent.ClickSaveButton)
+                        onIntent(ContentCreateIntent.ClickSaveButton)
                     }
                 )
             }
@@ -209,7 +209,7 @@ internal fun ContentScreen(
                 modifier = Modifier.weight(1f),
                 value = state.content,
                 onValueChange = {
-                    onIntent(ContentIntent.InputContent(it))
+                    onIntent(ContentCreateIntent.InputContent(it))
                 },
                 focusRequester = contentFocusRequester,
                 placeholder = "함께 하고 싶거나 기억하면 좋은 것들을 자유롭게 입력해 주세요.",
@@ -219,7 +219,7 @@ internal fun ContentScreen(
     if (state.showDateDialog || state.showTimeDialog) {
         DateBottomSheet(
             sheetState = sheetState,
-            onDismiss = { onIntent(ContentIntent.HideDateTimeDialog) },
+            onDismiss = { onIntent(ContentCreateIntent.HideDateTimeDialog) },
             content = {
                 when {
                     state.showDateDialog -> {
@@ -229,13 +229,13 @@ internal fun ContentScreen(
                                 .align(Alignment.CenterHorizontally),
                             dateUiState = DateUiState.from(state.dateTime),
                             onYearChanged = { year ->
-                                onIntent(ContentIntent.OnYearChanged(year))
+                                onIntent(ContentCreateIntent.OnYearChanged(year))
                             },
                             onDayChanged = { day ->
-                                onIntent(ContentIntent.OnDayChanged(day))
+                                onIntent(ContentCreateIntent.OnDayChanged(day))
                             },
                             onMonthChanged = { month ->
-                                onIntent(ContentIntent.OnMonthChanged(month))
+                                onIntent(ContentCreateIntent.OnMonthChanged(month))
                             }
                         )
                     }
@@ -247,13 +247,13 @@ internal fun ContentScreen(
                                 .align(Alignment.CenterHorizontally),
                             timeUiState = TimeUiState.from(state.dateTime),
                             onPeriodChanged = { period ->
-                                onIntent(ContentIntent.OnPeriodChanged(period))
+                                onIntent(ContentCreateIntent.OnPeriodChanged(period))
                             },
                             onHourChanged = { hour ->
-                                onIntent(ContentIntent.OnHourChanged(hour))
+                                onIntent(ContentCreateIntent.OnHourChanged(hour))
                             },
                             onMinuteChanged = { minute ->
-                                onIntent(ContentIntent.OnMinuteChanged(minute))
+                                onIntent(ContentCreateIntent.OnMinuteChanged(minute))
                             }
                         )
                     }
@@ -267,7 +267,7 @@ internal fun ContentScreen(
                     buttonSize = CaramelButtonSize.Large,
                     text = "완료",
                     onClick = {
-                        onIntent(ContentIntent.HideDateTimeDialog)
+                        onIntent(ContentCreateIntent.HideDateTimeDialog)
                     }
                 )
             }

@@ -8,13 +8,13 @@ import com.whatever.caramel.core.designsystem.components.CaramelDialog
 import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLayout
 import com.whatever.caramel.core.designsystem.components.LocalSnackbarHostState
 import com.whatever.caramel.core.designsystem.components.showSnackbarMessage
-import com.whatever.caramel.feature.content.create.mvi.ContentIntent
-import com.whatever.caramel.feature.content.create.mvi.ContentSideEffect
+import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
+import com.whatever.caramel.feature.content.create.mvi.ContentCreateSideEffect
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-internal fun ContentRoute(
-    viewModel: ContentViewModel = koinViewModel(),
+internal fun ContentCreateRoute(
+    viewModel: ContentCreateViewModel = koinViewModel(),
     navigateToBackStack: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -23,8 +23,8 @@ internal fun ContentRoute(
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is ContentSideEffect.NavigateToBackStack -> navigateToBackStack()
-                is ContentSideEffect.ShowErrorSnackBar -> {
+                is ContentCreateSideEffect.NavigateToBackStack -> navigateToBackStack()
+                is ContentCreateSideEffect.ShowErrorSnackBar -> {
                     showSnackbarMessage(
                         snackbarHostState = snackbarHostState,
                         coroutineScope = this,
@@ -45,9 +45,9 @@ internal fun ContentRoute(
                 "그대로 나가시겠어요?",
         mainButtonText = "유지하기",
         subButtonText = "나가기",
-        onDismissRequest = { viewModel.intent(ContentIntent.ClickEditDialogRightButton) },
-        onMainButtonClick = { viewModel.intent(ContentIntent.ClickEditDialogRightButton) },
-        onSubButtonClick = { viewModel.intent(ContentIntent.ClickEditDialogLeftButton) }
+        onDismissRequest = { viewModel.intent(ContentCreateIntent.ClickEditDialogRightButton) },
+        onMainButtonClick = { viewModel.intent(ContentCreateIntent.ClickEditDialogRightButton) },
+        onSubButtonClick = { viewModel.intent(ContentCreateIntent.ClickEditDialogLeftButton) }
     ) {
         DefaultCaramelDialogLayout()
     }

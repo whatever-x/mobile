@@ -5,28 +5,27 @@ import androidx.navigation.toRoute
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
-import androidx.navigation.toRoute
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
 import com.whatever.caramel.core.domain.vo.item.ContentParameterType
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
-import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.core.ui.content.CreateMode
-import com.whatever.caramel.feature.content.create.mvi.ContentIntent
-import com.whatever.caramel.feature.content.create.mvi.ContentSideEffect
-import com.whatever.caramel.feature.content.create.mvi.ContentState
-import com.whatever.caramel.feature.content.create.navigation.ContentRoute
+import com.whatever.caramel.core.viewmodel.BaseViewModel
+import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
+import com.whatever.caramel.feature.content.create.mvi.ContentCreateSideEffect
+import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
+import com.whatever.caramel.feature.content.create.navigation.ContentCreateRoute
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 
-class ContentViewModel(
+class ContentCreateViewModel(
     savedStateHandle: SavedStateHandle,
     private val getTagUseCase: GetTagUseCase,
     private val createContentUseCase: CreateContentUseCase
-) : BaseViewModel<ContentState, ContentSideEffect, ContentIntent>(savedStateHandle) {
+) : BaseViewModel<ContentCreateState, ContentCreateSideEffect, ContentCreateIntent>(savedStateHandle) {
 
     init {
         launch {
@@ -37,9 +36,9 @@ class ContentViewModel(
         }
     }
 
-    override fun createInitialState(savedStateHandle: SavedStateHandle): ContentState {
-        val arguments = savedStateHandle.toRoute<ContentRoute>()
-        return ContentState(
+    override fun createInitialState(savedStateHandle: SavedStateHandle): ContentCreateState {
+        val arguments = savedStateHandle.toRoute<ContentCreateRoute>()
+        return ContentCreateState(
             id = arguments.contentId
         )
     }
@@ -51,49 +50,49 @@ class ContentViewModel(
         } else {
             AppErrorCode.UNKNOWN to null
         }
-        postSideEffect(ContentSideEffect.ShowErrorSnackBar(code = code, message = message))
+        postSideEffect(ContentCreateSideEffect.ShowErrorSnackBar(code = code, message = message))
     }
 
-    override suspend fun handleIntent(intent: ContentIntent) {
+    override suspend fun handleIntent(intent: ContentCreateIntent) {
         when (intent) {
-            is ContentIntent.ClickCloseButton -> clickCloseButton(intent)
-            is ContentIntent.ClickSaveButton -> clickSaveButton(intent)
-            is ContentIntent.InputTitle -> inputTitle(intent)
-            is ContentIntent.InputContent -> inputContent(intent)
-            is ContentIntent.ClickTag -> toggleTagSelection(intent)
-            is ContentIntent.SelectCreateMode -> selectCreateMode(intent)
-            is ContentIntent.HideDateTimeDialog -> hideDateTimeDialog(intent)
-            is ContentIntent.OnYearChanged -> updateYear(intent)
-            is ContentIntent.OnMonthChanged -> updateMonth(intent)
-            is ContentIntent.OnDayChanged -> updateDay(intent)
-            is ContentIntent.OnPeriodChanged -> updatePeriod(intent)
-            is ContentIntent.OnHourChanged -> updateHour(intent)
-            is ContentIntent.OnMinuteChanged -> updateMinute(intent)
-            is ContentIntent.ClickDate -> clickDate(intent)
-            is ContentIntent.ClickTime -> clickTime(intent)
-            ContentIntent.ClickEditDialogRightButton -> clickEditDialogRightButton(intent)
-            ContentIntent.ClickEditDialogLeftButton -> clickEditDialogLeftButton(intent)
+            is ContentCreateIntent.ClickCloseButton -> clickCloseButton(intent)
+            is ContentCreateIntent.ClickSaveButton -> clickSaveButton(intent)
+            is ContentCreateIntent.InputTitle -> inputTitle(intent)
+            is ContentCreateIntent.InputContent -> inputContent(intent)
+            is ContentCreateIntent.ClickTag -> toggleTagSelection(intent)
+            is ContentCreateIntent.SelectCreateMode -> selectCreateMode(intent)
+            is ContentCreateIntent.HideDateTimeDialog -> hideDateTimeDialog(intent)
+            is ContentCreateIntent.OnYearChanged -> updateYear(intent)
+            is ContentCreateIntent.OnMonthChanged -> updateMonth(intent)
+            is ContentCreateIntent.OnDayChanged -> updateDay(intent)
+            is ContentCreateIntent.OnPeriodChanged -> updatePeriod(intent)
+            is ContentCreateIntent.OnHourChanged -> updateHour(intent)
+            is ContentCreateIntent.OnMinuteChanged -> updateMinute(intent)
+            is ContentCreateIntent.ClickDate -> clickDate(intent)
+            is ContentCreateIntent.ClickTime -> clickTime(intent)
+            ContentCreateIntent.ClickEditDialogRightButton -> clickEditDialogRightButton(intent)
+            ContentCreateIntent.ClickEditDialogLeftButton -> clickEditDialogLeftButton(intent)
         }
     }
 
-    private fun clickEditDialogLeftButton(intent: ContentIntent) {
-        postSideEffect(ContentSideEffect.NavigateToBackStack)
+    private fun clickEditDialogLeftButton(intent: ContentCreateIntent) {
+        postSideEffect(ContentCreateSideEffect.NavigateToBackStack)
     }
 
-    private fun clickEditDialogRightButton(intent: ContentIntent) {
+    private fun clickEditDialogRightButton(intent: ContentCreateIntent) {
         reduce {
             copy(showEditConfirmDialog = false)
         }
     }
 
-    private fun clickCloseButton(intent: ContentIntent.ClickCloseButton) {
+    private fun clickCloseButton(intent: ContentCreateIntent.ClickCloseButton) {
         reduce {
             copy(showEditConfirmDialog = true)
         }
     }
 
-    private fun inputTitle(intent: ContentIntent.InputTitle) {
-        if (intent.text.length <= ContentState.MAX_TITLE_LENGTH) {
+    private fun inputTitle(intent: ContentCreateIntent.InputTitle) {
+        if (intent.text.length <= ContentCreateState.MAX_TITLE_LENGTH) {
             reduce {
                 copy(
                     title = intent.text
@@ -102,8 +101,8 @@ class ContentViewModel(
         }
     }
 
-    private fun inputContent(intent: ContentIntent.InputContent) {
-        if (intent.text.length <= ContentState.MAX_CONTENT_LENGTH) {
+    private fun inputContent(intent: ContentCreateIntent.InputContent) {
+        if (intent.text.length <= ContentCreateState.MAX_CONTENT_LENGTH) {
             reduce {
                 copy(
                     content = intent.text
@@ -112,7 +111,7 @@ class ContentViewModel(
         }
     }
 
-    private fun toggleTagSelection(intent: ContentIntent.ClickTag) {
+    private fun toggleTagSelection(intent: ContentCreateIntent.ClickTag) {
         reduce {
             copy(
                 selectedTags = if (selectedTags.contains(intent.tag)) {
@@ -124,7 +123,7 @@ class ContentViewModel(
         }
     }
 
-    private fun selectCreateMode(intent: ContentIntent.SelectCreateMode) {
+    private fun selectCreateMode(intent: ContentCreateIntent.SelectCreateMode) {
         reduce {
             copy(
                 createMode = intent.createMode,
@@ -132,42 +131,42 @@ class ContentViewModel(
         }
     }
 
-    private fun clickDate(intent: ContentIntent.ClickDate) {
+    private fun clickDate(intent: ContentCreateIntent.ClickDate) {
         reduce {
             copy(showDateDialog = true)
         }
     }
 
-    private fun clickTime(intent: ContentIntent.ClickTime) {
+    private fun clickTime(intent: ContentCreateIntent.ClickTime) {
         reduce {
             copy(showTimeDialog = true)
         }
     }
 
-    private fun hideDateTimeDialog(intent: ContentIntent.HideDateTimeDialog) {
+    private fun hideDateTimeDialog(intent: ContentCreateIntent.HideDateTimeDialog) {
         reduce {
             copy(showDateDialog = false, showTimeDialog = false)
         }
     }
 
-    private fun updateYear(intent: ContentIntent.OnYearChanged) {
+    private fun updateYear(intent: ContentCreateIntent.OnYearChanged) {
         reduce { copy(dateTime = dateTime.copy(year = intent.year)) }
     }
 
-    private fun updateMonth(intent: ContentIntent.OnMonthChanged) {
+    private fun updateMonth(intent: ContentCreateIntent.OnMonthChanged) {
         reduce { copy(dateTime = dateTime.copy(monthNumber = intent.month)) }
     }
 
-    private fun updateDay(intent: ContentIntent.OnDayChanged) {
+    private fun updateDay(intent: ContentCreateIntent.OnDayChanged) {
         reduce { copy(dateTime = dateTime.copy(dayOfMonth = intent.day)) }
     }
 
-    private fun updateMinute(intent: ContentIntent.OnMinuteChanged) {
+    private fun updateMinute(intent: ContentCreateIntent.OnMinuteChanged) {
         val minute = intent.minute.toIntOrNull() ?: currentState.dateTime.minute
         reduce { copy(dateTime = dateTime.copy(minute = minute)) }
     }
 
-    private fun updateHour(intent: ContentIntent.OnHourChanged) {
+    private fun updateHour(intent: ContentCreateIntent.OnHourChanged) {
         val newHour12 = intent.hour.toIntOrNull() ?: return
 
         reduce {
@@ -186,7 +185,7 @@ class ContentViewModel(
         }
     }
 
-    private fun updatePeriod(intent: ContentIntent.OnPeriodChanged) {
+    private fun updatePeriod(intent: ContentCreateIntent.OnPeriodChanged) {
         reduce {
             val currentDateTime = dateTime
             val currentHour24 = currentDateTime.hour
@@ -199,11 +198,11 @@ class ContentViewModel(
         }
     }
 
-    private fun clickSaveButton(intent: ContentIntent.ClickSaveButton) {
+    private fun clickSaveButton(intent: ContentCreateIntent.ClickSaveButton) {
         launch {
             val state = currentState
             val parameter = when (state.createMode) {
-                ContentState.CreateMode.MEMO -> ContentParameterType.Memo(
+                CreateMode.MEMO -> ContentParameterType.Memo(
                     MemoParameter(
                         title = state.title,
                         description = state.content,
@@ -212,7 +211,7 @@ class ContentViewModel(
                     )
                 )
 
-                ContentState.CreateMode.CALENDAR -> ContentParameterType.Calendar(
+                CreateMode.CALENDAR -> ContentParameterType.Calendar(
                     ScheduleParameter(
                         title = state.title,
                         description = state.content,
@@ -227,7 +226,7 @@ class ContentViewModel(
                 )
             }
             createContentUseCase(parameter)
-            postSideEffect(ContentSideEffect.NavigateToBackStack)
+            postSideEffect(ContentCreateSideEffect.NavigateToBackStack)
         }
     }
 }
