@@ -7,7 +7,7 @@ import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
-import com.whatever.caramel.core.domain.vo.item.ContentParameterType
+import com.whatever.caramel.core.domain.vo.content.ContentParameterType
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.viewmodel.BaseViewModel
