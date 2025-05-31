@@ -75,7 +75,7 @@ class CalendarRepositoryImpl(
         }
     }
 
-    override suspend fun getScheduleDetail(scheduleId: Long): ScheduleDetail {
+    override suspend fun getSchedule(scheduleId: Long): ScheduleDetail {
         return safeCall {
             val response = remoteCalendarDataSource.getScheduleDetail(scheduleId)
             response.toScheduleDetailVO()

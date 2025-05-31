@@ -7,7 +7,7 @@ data class UpdateMemoRequest(
     val title: String?,
     val description: String?,
     val isCompleted: Boolean?,
-    val tagList: List<Int>?,
+    val tagList: List<Long>?,
     val dateTimeInfo: DateTimeInfoRequest?
 )
 

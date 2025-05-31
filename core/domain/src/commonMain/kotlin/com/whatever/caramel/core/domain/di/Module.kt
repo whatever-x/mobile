@@ -5,7 +5,7 @@ import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUse
 import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameChoiceUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetHolidaysUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.GetScheduleDetailUseCase
+import com.whatever.caramel.core.domain.usecase.calendar.GetScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodayScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodosGroupByStartDateUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.UpdateScheduleUseCase
@@ -55,7 +55,7 @@ val useCaseModule = module {
     factory { GetTodayScheduleUseCase(get()) }
     factory { UpdateScheduleUseCase(get()) }
     factory { DeleteScheduleUseCase(get()) }
-    factory { GetScheduleDetailUseCase(get()) }
+    factory { GetScheduleUseCase(get()) }
 
     // Tag
     factory { GetTagUseCase(get()) }

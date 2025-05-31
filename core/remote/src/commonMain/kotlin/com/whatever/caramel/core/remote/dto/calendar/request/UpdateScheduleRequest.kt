@@ -12,5 +12,5 @@ data class UpdateScheduleRequest(
     val startTimeZone: String,
     val endDateTime: String,
     val endTimeZone: String,
-    val tagIds: List<Int>
+    val tagIds: List<Long>
 ) 

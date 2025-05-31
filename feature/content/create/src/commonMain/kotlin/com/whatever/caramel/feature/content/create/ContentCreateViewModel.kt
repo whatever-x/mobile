@@ -10,6 +10,7 @@ import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
 import com.whatever.caramel.core.domain.vo.content.ContentParameterType
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.ui.content.CreateMode
+import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateSideEffect
@@ -17,7 +18,6 @@ import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
 import com.whatever.caramel.feature.content.create.navigation.ContentCreateRoute
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 
@@ -229,24 +229,4 @@ class ContentCreateViewModel(
             postSideEffect(ContentCreateSideEffect.NavigateToBackStack)
         }
     }
-}
-
-private fun LocalDateTime.copy(
-    year: Int = this.year,
-    monthNumber: Int = this.monthNumber,
-    dayOfMonth: Int = this.dayOfMonth,
-    hour: Int = this.hour,
-    minute: Int = this.minute,
-    second: Int = this.second,
-    nanosecond: Int = this.nanosecond
-): LocalDateTime {
-    return LocalDateTime(
-        year = year,
-        monthNumber = monthNumber,
-        dayOfMonth = dayOfMonth,
-        hour = hour,
-        minute = minute,
-        second = second,
-        nanosecond = nanosecond
-    )
 }
