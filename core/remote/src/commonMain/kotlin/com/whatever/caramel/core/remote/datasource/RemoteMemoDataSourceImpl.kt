@@ -1,10 +1,13 @@
 package com.whatever.caramel.core.remote.datasource
 
 import com.whatever.caramel.core.remote.dto.content.request.CreateMemoRequest
+import com.whatever.caramel.core.remote.dto.content.request.UpdateMemoRequest
 import com.whatever.caramel.core.remote.dto.content.response.CreateMemoResponse
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
+import io.ktor.client.request.delete
 import io.ktor.client.request.post
+import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import org.koin.core.annotation.Named
 
@@ -12,11 +15,21 @@ internal class RemoteMemoDataSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteMemoDataSource {
     override suspend fun createMemo(request: CreateMemoRequest): CreateMemoResponse =
-        authClient.post(CREATE_CONTENT_URL) {
+        authClient.post(MEMO_BASE_URL) {
             setBody(body = request)
         }.getBody()
 
+    override suspend fun updateMemo(memoId: Long, updateMemoRequest: UpdateMemoRequest) {
+        authClient.put("$MEMO_BASE_URL/$memoId") {
+            setBody(updateMemoRequest)
+        }
+    }
+
+    override suspend fun deleteMemo(memoId: Long) {
+        authClient.delete("$MEMO_BASE_URL/$memoId")
+    }
+
     companion object {
-        private const val CREATE_CONTENT_URL = "/v1/content/memo"
+        private const val MEMO_BASE_URL = "v1/content/memo"
     }
 } 
