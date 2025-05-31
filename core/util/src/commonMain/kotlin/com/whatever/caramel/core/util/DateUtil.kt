@@ -2,6 +2,7 @@ package com.whatever.caramel.core.util
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
@@ -38,5 +39,13 @@ object DateUtil {
      */
     fun today(): LocalDate =
         Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+    /**
+     * 오늘 날짜와 시간을 구하는 함수
+     * @return LocalDateTime 형식의 오늘 날짜와 시간
+     * @author evergreentree97
+     */
+    fun todayLocalDateTime(): LocalDateTime =
+        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
 
 }

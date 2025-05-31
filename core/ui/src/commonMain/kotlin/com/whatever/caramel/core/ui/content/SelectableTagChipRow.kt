@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import kotlinx.collections.immutable.ImmutableList
 
 data class TagChip(
     val id: Long,
@@ -30,8 +31,8 @@ data class TagChip(
 @Composable
 fun SelectableTagChipRow(
     modifier: Modifier = Modifier,
-    tagChips: List<TagChip>,
-    selectedTagChips: List<TagChip>,
+    tagChips: ImmutableList<TagChip>,
+    selectedTagChips: ImmutableList<TagChip>,
     onTagChipClick: (TagChip) -> Unit,
 ) {
     LazyRow(

@@ -1,16 +1,14 @@
 package com.whatever.caramel.feature.content.create.mvi
 
 import com.whatever.caramel.core.domain.entity.Tag
-import com.whatever.caramel.core.viewmodel.UiState
 import com.whatever.caramel.core.ui.content.CreateMode
+import com.whatever.caramel.core.util.DateUtil
+import com.whatever.caramel.core.viewmodel.UiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 data class ContentCreateState(
     val title: String = "",
@@ -21,8 +19,7 @@ data class ContentCreateState(
     val createMode: CreateMode = CreateMode.MEMO,
     val showDateDialog: Boolean = false,
     val showTimeDialog: Boolean = false,
-    val dateTime: LocalDateTime = Clock.System.now()
-        .toLocalDateTime(TimeZone.currentSystemDefault()),
+    val dateTime: LocalDateTime = DateUtil.todayLocalDateTime(),
     val showEditConfirmDialog: Boolean = false,
     val id: Long,
 ) : UiState {

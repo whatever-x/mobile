@@ -59,6 +59,7 @@ import com.whatever.caramel.core.ui.picker.TimeUiState
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
+import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -130,8 +131,10 @@ internal fun ContentScreen(
                     ) {
                         SelectableTagChipRow(
                             modifier = Modifier.fillMaxWidth(),
-                            tagChips = state.tags.map { TagChip(it.id, it.label) },
-                            selectedTagChips = state.selectedTags.map { TagChip(it.id, it.label) },
+                            tagChips = state.tags.map { TagChip(it.id, it.label) }
+                                .toImmutableList(),
+                            selectedTagChips = state.selectedTags.map { TagChip(it.id, it.label) }
+                                .toImmutableList(),
                             onTagChipClick = {
                                 onIntent(ContentCreateIntent.ClickTag(Tag(it.id, it.label)))
                             }
@@ -164,13 +167,21 @@ internal fun ContentScreen(
                                         horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s)
                                     ) {
                                         Text(
-                                            modifier = Modifier.clickable { onIntent(ContentCreateIntent.ClickDate) },
+                                            modifier = Modifier.clickable {
+                                                onIntent(
+                                                    ContentCreateIntent.ClickDate
+                                                )
+                                            },
                                             text = state.date,
                                             style = CaramelTheme.typography.body2.regular,
                                             color = CaramelTheme.color.text.primary
                                         )
                                         Text(
-                                            modifier = Modifier.clickable { onIntent(ContentCreateIntent.ClickTime) },
+                                            modifier = Modifier.clickable {
+                                                onIntent(
+                                                    ContentCreateIntent.ClickTime
+                                                )
+                                            },
                                             text = state.time,
                                             style = CaramelTheme.typography.body2.regular,
                                             color = CaramelTheme.color.text.primary
