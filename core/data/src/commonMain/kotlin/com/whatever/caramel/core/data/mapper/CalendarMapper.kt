@@ -1,11 +1,13 @@
 package com.whatever.caramel.core.data.mapper
 
-import com.whatever.caramel.core.domain.vo.calendar.ScheduleMetadata
-import com.whatever.caramel.core.remote.dto.calendar.response.CreateScheduleResponse
 import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
+import com.whatever.caramel.core.domain.vo.calendar.ScheduleDetail
+import com.whatever.caramel.core.domain.vo.calendar.ScheduleMetadata
 import com.whatever.caramel.core.remote.dto.calendar.CalendarDetailResponse
 import com.whatever.caramel.core.remote.dto.calendar.HolidayDetailListResponse
+import com.whatever.caramel.core.remote.dto.calendar.response.CreateScheduleResponse
+import com.whatever.caramel.core.remote.dto.calendar.response.GetScheduleResponse
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 
@@ -27,6 +29,7 @@ internal fun CreateScheduleResponse.toScheduleMetaData(): ScheduleMetadata {
         contentType = this.contentType
     )
 }
+
 fun HolidayDetailListResponse.toHoliday(): List<Holiday> {
     return this.holidayList.map {
         Holiday(
@@ -36,4 +39,19 @@ fun HolidayDetailListResponse.toHoliday(): List<Holiday> {
             isHoliday = it.isHoliday
         )
     }
+}
+
+internal fun GetScheduleResponse.toScheduleDetailVO(): ScheduleDetail {
+    return ScheduleDetail(
+        scheduleId = scheduleId,
+        startDateTime = startDateTime,
+        endDateTime = endDateTime,
+        startDateTimezone = startDateTimezone,
+        endDateTimezone = endDateTimezone,
+        isCompleted = isCompleted,
+        parentScheduleId = parentScheduleId,
+        title = title,
+        description = description,
+        tags = tags.map { it.toTag() }
+    )
 }

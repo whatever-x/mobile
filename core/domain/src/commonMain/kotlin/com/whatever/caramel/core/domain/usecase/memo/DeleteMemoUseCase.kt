@@ -1,11 +1,11 @@
 package com.whatever.caramel.core.domain.usecase.memo
 
-import com.whatever.caramel.core.domain.repository.ContentRepository
+import com.whatever.caramel.core.domain.repository.MemoRepository
 
 class DeleteMemoUseCase(
-    private val contentRepository: ContentRepository
+    private val memoRepository: MemoRepository
 ) {
     suspend operator fun invoke(memoId: Long) {
-        contentRepository.deleteMemo(memoId)
+        memoRepository.deleteMemo(memoId)
     }
 } 

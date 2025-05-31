@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.remote.dto.content.request
+package com.whatever.caramel.core.remote.dto.memo.request
 
 import kotlinx.serialization.Serializable
 

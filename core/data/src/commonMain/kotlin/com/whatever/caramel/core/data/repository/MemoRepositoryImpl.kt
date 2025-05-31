@@ -1,19 +1,21 @@
 package com.whatever.caramel.core.data.repository
 
+import com.whatever.caramel.core.data.mapper.toMemoDetail
 import com.whatever.caramel.core.data.mapper.toMemoMetaData
 import com.whatever.caramel.core.data.util.safeCall
-import com.whatever.caramel.core.domain.repository.ContentRepository
+import com.whatever.caramel.core.domain.repository.MemoRepository
+import com.whatever.caramel.core.domain.vo.memo.MemoDetail
 import com.whatever.caramel.core.domain.vo.memo.MemoEditParameter
 import com.whatever.caramel.core.domain.vo.memo.MemoMetadata
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.remote.datasource.RemoteMemoDataSource
-import com.whatever.caramel.core.remote.dto.content.request.CreateMemoRequest
-import com.whatever.caramel.core.remote.dto.content.request.DateTimeInfoRequest
-import com.whatever.caramel.core.remote.dto.content.request.UpdateMemoRequest
+import com.whatever.caramel.core.remote.dto.memo.request.CreateMemoRequest
+import com.whatever.caramel.core.remote.dto.memo.request.DateTimeInfoRequest
+import com.whatever.caramel.core.remote.dto.memo.request.UpdateMemoRequest
 
 class MemoRepositoryImpl(
     private val remoteMemoDataSource: RemoteMemoDataSource
-) : ContentRepository {
+) : MemoRepository {
     override suspend fun createMemo(parameter: MemoParameter): MemoMetadata {
         val request = CreateMemoRequest(
             title = parameter.title,
@@ -49,6 +51,13 @@ class MemoRepositoryImpl(
     override suspend fun deleteMemo(memoId: Long) {
         safeCall {
             remoteMemoDataSource.deleteMemo(memoId)
+        }
+    }
+
+    override suspend fun getMemoDetail(memoId: Long): MemoDetail {
+        return safeCall {
+            val response = remoteMemoDataSource.getMemoDetail(memoId)
+            response.toMemoDetail()
         }
     }
 } 

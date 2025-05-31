@@ -11,7 +11,7 @@ import com.whatever.caramel.core.data.repository.TagRepositoryImpl
 import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.repository.BalanceGameRepository
 import com.whatever.caramel.core.domain.repository.CalendarRepository
-import com.whatever.caramel.core.domain.repository.ContentRepository
+import com.whatever.caramel.core.domain.repository.MemoRepository
 import com.whatever.caramel.core.domain.repository.CoupleRepository
 import com.whatever.caramel.core.domain.repository.UserRepository
 import com.whatever.caramel.core.domain.repository.TagRepository
@@ -55,7 +55,7 @@ val repositoryModule = module {
         )
     }
 
-    single<ContentRepository> {
+    single<MemoRepository> {
         MemoRepositoryImpl(
             remoteMemoDataSource = get()
         )

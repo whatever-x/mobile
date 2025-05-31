@@ -5,6 +5,7 @@ import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUse
 import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameChoiceUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetHolidaysUseCase
+import com.whatever.caramel.core.domain.usecase.calendar.GetScheduleDetailUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodayScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodosGroupByStartDateUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.UpdateScheduleUseCase
@@ -17,8 +18,9 @@ import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfo
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInvitationCodeUseCase
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
 import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
-import com.whatever.caramel.core.domain.usecase.memo.UpdateMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.DeleteMemoUseCase
+import com.whatever.caramel.core.domain.usecase.memo.GetMemoDetailUseCase
+import com.whatever.caramel.core.domain.usecase.memo.UpdateMemoUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
 import com.whatever.caramel.core.domain.usecase.user.EditProfileUseCase
@@ -52,6 +54,7 @@ val useCaseModule = module {
     factory { GetTodayScheduleUseCase(get()) }
     factory { UpdateScheduleUseCase(get()) }
     factory { DeleteScheduleUseCase(get()) }
+    factory { GetScheduleDetailUseCase(get()) }
 
     // Tag
     factory { GetTagUseCase(get()) }
@@ -60,6 +63,7 @@ val useCaseModule = module {
     factory { CreateContentUseCase(get(), get()) }
     factory { UpdateMemoUseCase(get()) }
     factory { DeleteMemoUseCase(get()) }
+    factory { GetMemoDetailUseCase(get()) }
 
     // BalanceGame
     factory { GetTodayBalanceGameUseCase(get()) }
