@@ -7,11 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.Key.Companion.R
 import caramel.feature.memo.generated.resources.Res
 import caramel.feature.memo.generated.resources.tag_all
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.feature.memo.mvi.TagUiModel
 import org.jetbrains.compose.resources.stringResource
 

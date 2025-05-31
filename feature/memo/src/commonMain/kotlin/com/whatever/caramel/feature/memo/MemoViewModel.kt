@@ -1,7 +1,6 @@
 package com.whatever.caramel.feature.memo
 
 import androidx.lifecycle.SavedStateHandle
-import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.domain.usecase.content.GetMemosUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel

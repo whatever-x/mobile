@@ -4,11 +4,14 @@ import com.whatever.caramel.core.data.mapper.toMemoMetaData
 import com.whatever.caramel.core.data.mapper.toMemosWithCursor
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.domain.repository.MemoRepository
-import com.whatever.caramel.core.domain.vo.memo.MemoParameter
+import com.whatever.caramel.core.domain.vo.memo.MemoEditParameter
 import com.whatever.caramel.core.domain.vo.memo.MemoMetadata
+import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.domain.vo.memo.MemoWithCursor
 import com.whatever.caramel.core.remote.datasource.RemoteMemoDataSource
 import com.whatever.caramel.core.remote.dto.content.request.CreateMemoRequest
+import com.whatever.caramel.core.remote.dto.content.request.DateTimeInfoRequest
+import com.whatever.caramel.core.remote.dto.content.request.UpdateMemoRequest
 
 class MemoRepositoryImpl(
     private val remoteMemoDataSource: RemoteMemoDataSource
@@ -25,6 +28,32 @@ class MemoRepositoryImpl(
         }
     }
 
+    override suspend fun updateMemo(memoId: Long, parameter: MemoEditParameter) {
+        val request = UpdateMemoRequest(
+            title = parameter.title,
+            description = parameter.description,
+            isCompleted = parameter.isCompleted,
+            tagList = parameter.tagIds,
+            dateTimeInfo = parameter.dateTimeInfo?.run {
+                DateTimeInfoRequest(
+                    startDateTime = startDateTime,
+                    startTimezone = startTimezone,
+                    endDateTime = endDateTime,
+                    endTimezone = endTimezone
+                )
+            }
+        )
+        safeCall {
+            remoteMemoDataSource.updateMemo(memoId, request)
+        }
+    }
+
+    override suspend fun deleteMemo(memoId: Long) {
+        safeCall {
+            remoteMemoDataSource.deleteMemo(memoId)
+        }
+    }
+
     override suspend fun getMemos(
         size: Int?,
         cursor: String?,
@@ -35,4 +64,4 @@ class MemoRepositoryImpl(
             remoteMemoDataSource.getMemos(size, cursor, sortType, tagId).toMemosWithCursor()
         }
     }
-} 
+}
