@@ -1,10 +1,10 @@
 package com.whatever.caramel.feature.content.edit.mvi
 
 import com.whatever.caramel.core.domain.entity.Tag
-import com.whatever.caramel.core.ui.content.CreateMode // Re-using for edit context if applicable
+import com.whatever.caramel.core.domain.vo.content.ContentType
+import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.UiState
-import com.whatever.caramel.feature.content.edit.navigation.ContentType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
@@ -26,7 +26,7 @@ data class ContentEditState(
     val showExitConfirmDialog: Boolean = false,
     val showDeleteConfirmDialog: Boolean = false,
 
-) : UiState {
+    ) : UiState {
 
     val isSaveButtonEnable: Boolean
         get() = title.isNotBlank() || content.isNotBlank()
@@ -35,7 +35,9 @@ data class ContentEditState(
         get() = "${dateTime.year}년 ${dateTime.monthNumber}월 ${dateTime.dayOfMonth}일"
 
     val time: String
-        get() = "${dateTime.hour.toString().padStart(2, '0')}:${dateTime.minute.toString().padStart(2, '0')}"
+        get() = "${dateTime.hour.toString().padStart(2, '0')}:${
+            dateTime.minute.toString().padStart(2, '0')
+        }"
 
     companion object {
         val INITIAL = ContentEditState()

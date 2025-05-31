@@ -8,9 +8,9 @@ import com.whatever.caramel.core.designsystem.components.CaramelDialog
 import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLayout
 import com.whatever.caramel.core.designsystem.components.LocalSnackbarHostState
 import com.whatever.caramel.core.designsystem.components.showSnackbarMessage
+import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditIntent
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditSideEffect
-import com.whatever.caramel.feature.content.edit.navigation.ContentType
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

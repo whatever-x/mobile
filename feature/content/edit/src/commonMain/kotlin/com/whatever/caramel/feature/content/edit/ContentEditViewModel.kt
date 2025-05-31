@@ -12,6 +12,7 @@ import com.whatever.caramel.core.domain.usecase.memo.GetMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.UpdateMemoUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleEditParameter
+import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoEditParameter
 import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
@@ -19,7 +20,6 @@ import com.whatever.caramel.feature.content.edit.mvi.ContentEditIntent
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditSideEffect
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditState
 import com.whatever.caramel.feature.content.edit.navigation.ContentEditScreenRoute
-import com.whatever.caramel.feature.content.edit.navigation.ContentType
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.datetime.LocalDateTime

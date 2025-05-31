@@ -27,6 +27,7 @@ import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
 import com.whatever.caramel.core.domain.usecase.user.EditProfileUseCase
 import com.whatever.caramel.core.domain.usecase.user.GetUserStatusUseCase
 import com.whatever.caramel.core.domain.usecase.user.RefreshUserSessionUseCase
+import com.whatever.caramel.core.domain.usecase.common.GetLinkPreviewsForContentUseCase
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -70,5 +71,8 @@ val useCaseModule = module {
     // BalanceGame
     factory { GetTodayBalanceGameUseCase(get()) }
     factory { SubmitBalanceGameChoiceUseCase(get()) }
+
+    // Common
+    factory { GetLinkPreviewsForContentUseCase(get()) }
 
 }

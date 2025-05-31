@@ -4,13 +4,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.feature.content.edit.ContentEditRoute
 import kotlinx.serialization.Serializable
-
-enum class ContentType {
-    MEMO,
-    CALENDAR
-}
 
 @Serializable
 data class ContentEditScreenRoute(val id: Long, val type: String)
