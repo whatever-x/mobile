@@ -18,7 +18,7 @@ class MemoViewModel(
 ) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle) {
 
     init {
-        getMemos(clear = false, pagingLoading = true)
+        getMemos(clear = false, initialize = true)
         getTags()
     }
 
@@ -50,7 +50,13 @@ class MemoViewModel(
         reduce { copy(isTagLoading = true) }
         launch {
             val tags = (listOf(Tag(id = 0, label = "전체")) + getTagUseCase())
-            reduce { copy(isTagLoading = false, tags = tags.toImmutableList(), selectedTag = tags.first()) }
+            reduce {
+                copy(
+                    isTagLoading = false,
+                    tags = tags.toImmutableList(),
+                    selectedTag = tags.first()
+                )
+            }
         }
     }
 
@@ -59,8 +65,10 @@ class MemoViewModel(
     }
 
     private fun clickTagChip(intent: MemoIntent.ClickTagChip) {
+        if (currentState.selectedTag == intent.tag) return
+
         reduce { copy(selectedTag = intent.tag) }
-        getMemos(clear = true)
+        getMemos(clear = true, initialize = true)
     }
 
     private fun refreshMemos() {
@@ -68,13 +76,18 @@ class MemoViewModel(
         getMemos(clear = true)
     }
 
-    private fun getMemos(clear: Boolean, pagingLoading : Boolean = false) {
+    private fun getMemos(clear: Boolean, initialize: Boolean = false) {
         if (clear) reduce { copy(memos = persistentListOf(), cursor = null) }
-        if(currentState.memos.isNotEmpty() && currentState.cursor == null) return
-        reduce { copy(isMemoLoading = pagingLoading) }
+        if (currentState.memos.isNotEmpty() && currentState.cursor == null) return
+        reduce {
+            copy(
+                isMemoLoading = initialize,
+                cursor = if(initialize) null else cursor
+            )
+        }
         launch {
             val newMemos = getMemosUseCase(
-                size = 5,
+                size = 10,
                 cursor = currentState.cursor,
                 tagId = currentState.selectedTag?.id
             )
