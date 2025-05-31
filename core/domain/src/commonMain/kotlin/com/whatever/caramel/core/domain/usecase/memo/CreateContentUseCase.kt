@@ -1,12 +1,12 @@
 package com.whatever.caramel.core.domain.usecase.memo
 
 import com.whatever.caramel.core.domain.repository.CalendarRepository
-import com.whatever.caramel.core.domain.repository.ContentRepository
+import com.whatever.caramel.core.domain.repository.MemoRepository
 import com.whatever.caramel.core.domain.vo.item.ContentParameterType
 
 class CreateContentUseCase(
     private val calendarRepository: CalendarRepository,
-    private val contentRepository: ContentRepository
+    private val memoRepository: MemoRepository
 ) {
     suspend operator fun invoke(parameter: ContentParameterType): Long {
         return when (parameter) {
@@ -15,7 +15,7 @@ class CreateContentUseCase(
             }
 
             is ContentParameterType.Memo -> {
-                contentRepository.createMemo(parameter.param).contentId
+                memoRepository.createMemo(parameter.param).contentId
             }
         }
     }
