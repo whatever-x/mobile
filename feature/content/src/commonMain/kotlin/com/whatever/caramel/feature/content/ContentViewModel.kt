@@ -3,7 +3,7 @@ package com.whatever.caramel.feature.content
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.code.AppErrorCode
-import com.whatever.caramel.core.domain.usecase.item.CreateContentUseCase
+import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
 import androidx.navigation.toRoute
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter

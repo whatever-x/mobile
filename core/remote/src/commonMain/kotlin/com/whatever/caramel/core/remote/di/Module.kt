@@ -115,7 +115,7 @@ val remoteDataSourceModule = module {
 
     single<RemoteCalendarDataSource> {
         RemoteCalendarDataSourceImpl(
-            authClient = get(AuthClient)
+            authClient = get(AuthClient),
         )
     }
 

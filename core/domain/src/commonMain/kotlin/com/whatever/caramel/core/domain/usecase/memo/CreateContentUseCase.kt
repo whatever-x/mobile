@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain.usecase.item
+package com.whatever.caramel.core.domain.usecase.memo
 
 import com.whatever.caramel.core.domain.repository.CalendarRepository
 import com.whatever.caramel.core.domain.repository.ContentRepository
