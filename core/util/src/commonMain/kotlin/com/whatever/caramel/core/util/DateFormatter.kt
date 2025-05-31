@@ -5,6 +5,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 
 object DateFormatter {
@@ -27,6 +28,14 @@ object DateFormatter {
         } catch (e: Exception) {
             null
         }
+
+    /**
+     * LocalDate를 정해진 separator를 통해 문자열로 반환
+     * @param separator 날짜 문자열의 구분자 (기본값: '-')
+     * @return 년/월/일과 각 구분자로 설정된 문자열
+     * @author RyuSw-cs
+     * */
+    fun LocalDate.formatWithSeparator(separator: String = "-") = "$year$separator${month.number}$separator$dayOfMonth"
 
     /**
      * 밀리초를 LocalDateTime 형식으로 변환

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="empty_memo">남긴 메모가 없어요.\n함께하고 싶은 활동이나\n기억하고 싶은 것들을 남겨보세요.</string>
+    <string name="memo">메모</string>
+    <string name="tag_all">전체</string>
+</resources>

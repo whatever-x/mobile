@@ -1,5 +1,9 @@
 package com.whatever.caramel.core.remote.datasource
 
+import com.whatever.caramel.core.remote.dto.content.request.CreateMemoRequest
+import com.whatever.caramel.core.remote.dto.content.request.UpdateMemoRequest
+import com.whatever.caramel.core.remote.dto.content.response.CreateMemoResponse
+import com.whatever.caramel.core.remote.dto.content.response.CursoredContentResponse
 import com.whatever.caramel.core.remote.dto.memo.request.CreateMemoRequest
 import com.whatever.caramel.core.remote.dto.memo.request.UpdateMemoRequest
 import com.whatever.caramel.core.remote.dto.memo.response.CreateMemoResponse
@@ -8,6 +12,7 @@ import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
@@ -35,7 +40,21 @@ internal class RemoteMemoDataSourceImpl(
         return authClient.get("$MEMO_BASE_URL/$memoId").getBody()
     }
 
+    override suspend fun getMemos(
+        size: Int?,
+        cursor: String?,
+        sortType: String?,
+        tagId: Long?,
+    ): CursoredContentResponse {
+        return authClient.get(MEMO_BASE_URL) {
+            size?.let { parameter("size", it) }
+            cursor?.let { parameter("cursor", it) }
+            sortType?.let { parameter("sortType", it) }
+            tagId?.let { parameter("tagId", it) }
+        }.getBody()
+    }
+
     companion object {
-        private const val MEMO_BASE_URL = "v1/content/memo"
+        private const val MEMO_BASE_URL = "/v1/content/memo"
     }
 } 

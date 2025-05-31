@@ -2,7 +2,7 @@ package com.whatever.caramel.core.domain.usecase.memo
 
 import com.whatever.caramel.core.domain.repository.CalendarRepository
 import com.whatever.caramel.core.domain.repository.MemoRepository
-import com.whatever.caramel.core.domain.vo.content.ContentParameterType
+import com.whatever.caramel.core.domain.vo.item.ContentParameterType
 
 class CreateContentUseCase(
     private val calendarRepository: CalendarRepository,

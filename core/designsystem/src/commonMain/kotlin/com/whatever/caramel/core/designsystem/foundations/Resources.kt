@@ -47,6 +47,7 @@ import caramel.core.designsystem.generated.resources.ic_trash_24
 import caramel.core.designsystem.generated.resources.ic_uncheck_box_20
 import caramel.core.designsystem.generated.resources.ic_vertex_17_9
 import caramel.core.designsystem.generated.resources.img_anniversary
+import caramel.core.designsystem.generated.resources.img_blank_memo
 import caramel.core.designsystem.generated.resources.img_couple_on_ground
 import caramel.core.designsystem.generated.resources.img_gender_man
 import caramel.core.designsystem.generated.resources.img_gender_woman
@@ -124,6 +125,7 @@ object Resources {
         val img_quiz_man = Res.drawable.img_quiz_man
         val img_quiz_woman = Res.drawable.img_quiz_woman
         val img_quiz_vs = Res.drawable.img_quiz_vs
+        val img_blank_memo = Res.drawable.img_blank_memo
     }
 
 }

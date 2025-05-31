@@ -29,7 +29,7 @@ internal class RemoteCalendarDataSourceImpl(
         endDate: String,
         userTimeZone: String?
     ): CalendarDetailResponse {
-        return authClient.get("$CALENDAR_BASE_URL/schedules") {
+        return authClient.get(CALENDAR_BASE_URL) {
             parameter("startDate", startDate)
             parameter("endDate", endDate)
             parameter("userTimeZone", userTimeZone)
