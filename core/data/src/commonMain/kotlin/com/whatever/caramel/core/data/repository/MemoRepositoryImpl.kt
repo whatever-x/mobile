@@ -69,7 +69,7 @@ class MemoRepositoryImpl(
 
     override suspend fun getMemo(memoId: Long): Memo {
         return safeCall {
-            val response = remoteMemoDataSource.getMemoDetail(memoId)
+            val response = remoteMemoDataSource.getMemo(memoId)
             response.toMemo()
         }
     }
