@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CreateScheduleRequest(
     @SerialName("title")
-    val title: String,
+    val title: String?,
     @SerialName("description")
-    val description: String,
+    val description: String?,
     @SerialName("isCompleted")
     val isCompleted: Boolean,
     @SerialName("startDateTime")

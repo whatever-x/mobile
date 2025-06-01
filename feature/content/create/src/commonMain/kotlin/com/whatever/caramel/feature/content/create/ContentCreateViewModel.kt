@@ -204,8 +204,8 @@ class ContentCreateViewModel(
             val parameter = when (state.createMode) {
                 CreateMode.MEMO -> ContentParameterType.Memo(
                     MemoParameter(
-                        title = state.title,
-                        description = state.content,
+                        title = state.title.ifBlank { null },
+                        description = state.content.ifBlank { null },
                         isCompleted = false,
                         tags = state.selectedTags.map { it.id }.toList()
                     )
@@ -213,8 +213,8 @@ class ContentCreateViewModel(
 
                 CreateMode.CALENDAR -> ContentParameterType.Calendar(
                     ScheduleParameter(
-                        title = state.title,
-                        description = state.content,
+                        title = state.title.ifBlank { null },
+                        description = state.content.ifBlank { null },
                         isCompleted = false,
                         startDateTime = state.dateTime.toInstant(TimeZone.currentSystemDefault())
                             .toString(),
