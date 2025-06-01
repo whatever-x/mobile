@@ -8,6 +8,8 @@ import com.whatever.caramel.core.remote.datasource.RemoteCalendarDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteCalendarDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteCoupleDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteCoupleDatsSourceImpl
+import com.whatever.caramel.core.remote.datasource.RemoteFirebaseControllerDataSource
+import com.whatever.caramel.core.remote.datasource.RemoteFirebaseControllerDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteMemoDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteMemoDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteUserDataSource
@@ -143,6 +145,12 @@ val remoteDataSourceModule = module {
     single<LinkMetadataRemoteDataSource> {
         LinkMetadataRemoteDataSourceImpl(
             httpClient = get(DefaultClient)
+        )
+    }
+
+    single<RemoteFirebaseControllerDataSource> {
+        RemoteFirebaseControllerDataSourceImpl(
+            authClient = get(AuthClient)
         )
     }
 }

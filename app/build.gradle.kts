@@ -46,6 +46,7 @@ kotlin {
             api(projects.core.analytics)
             implementation(projects.core.viewmodel)
             api(projects.core.deeplink)
+            api(projects.core.firebaseMessaging)
             implementation(projects.feature.profile.edit)
             implementation(projects.feature.profile.create)
             implementation(projects.feature.splash)

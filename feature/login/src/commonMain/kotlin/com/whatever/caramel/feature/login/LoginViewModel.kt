@@ -6,6 +6,7 @@ import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.exception.code.AuthErrorCode
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
+import com.whatever.caramel.core.firebaseMessaging.FcmTokenProvider
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.login.mvi.LoginIntent
 import com.whatever.caramel.feature.login.mvi.LoginSideEffect
@@ -17,6 +18,7 @@ import com.whatever.caramel.feature.login.social.kakao.KakaoUser
 class LoginViewModel(
     savedStateHandle: SavedStateHandle,
     private val signInWithSocialPlatformUseCase: SignInWithSocialPlatformUseCase,
+    private val fcmTokenProvider: FcmTokenProvider,
 ) : BaseViewModel<LoginState, LoginSideEffect, LoginIntent>(savedStateHandle) {
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): LoginState {
@@ -87,6 +89,7 @@ class LoginViewModel(
                 idToken = idToken,
                 socialLoginType = socialLoginType
             )
+            fcmTokenProvider.updateToken()
             postSideEffect(LoginSideEffect.NavigateToStartDestination)
         }
     }

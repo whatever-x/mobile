@@ -21,7 +21,7 @@ core/database/schemas
 */*/exported*/*
 
 # Xcode
-app-ios/iosApp/GoogleService-Info.plist
+**/GoogleService-Info.plist
 *.xcworkspace
 *.xcuserdata/
 !*.xcworkspace/contents.xcworkspacedata
