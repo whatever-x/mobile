@@ -19,4 +19,5 @@ interface UserRepository {
         birthday: String?
     ) : User
     suspend fun getUserInfo(): User
+    suspend fun deleteUserStatus()
 }

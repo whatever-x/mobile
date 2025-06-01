@@ -12,4 +12,6 @@ interface RemoteAuthDataSource {
     suspend fun refresh(
         request: ServiceTokenDto
     ): ServiceTokenDto
+
+    suspend fun signOut()
 }

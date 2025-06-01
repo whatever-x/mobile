@@ -13,4 +13,5 @@ interface AuthRepository {
     suspend fun saveTokens(authToken: AuthToken)
     suspend fun getAuthToken() : AuthToken
     suspend fun deleteToken()
+    suspend fun signOut()
 }

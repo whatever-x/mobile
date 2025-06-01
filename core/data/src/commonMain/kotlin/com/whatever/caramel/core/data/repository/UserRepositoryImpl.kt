@@ -62,4 +62,8 @@ class UserRepositoryImpl(
             userRemoteDataSource.getUserInfo().toUser()
         }
     }
+
+    override suspend fun deleteUserStatus() {
+        safeCall { userDataSource.deleteUserStatus() }
+    }
 }

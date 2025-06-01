@@ -66,4 +66,10 @@ internal class AuthRepositoryImpl(
             tokenDataSource.deleteToken()
         }
     }
+
+    override suspend fun signOut() {
+        safeCall {
+            remoteAuthDataSource.signOut()
+        }
+    }
 }
