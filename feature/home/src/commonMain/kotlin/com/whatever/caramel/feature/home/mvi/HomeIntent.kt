@@ -3,6 +3,7 @@ package com.whatever.caramel.feature.home.mvi
 import com.whatever.caramel.core.viewmodel.UiIntent
 
 sealed interface HomeIntent : UiIntent {
+    data object LoadDataOnStart : HomeIntent
 
     data object ClickSettingButton : HomeIntent
 

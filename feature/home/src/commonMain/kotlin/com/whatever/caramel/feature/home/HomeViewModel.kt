@@ -29,9 +29,7 @@ class HomeViewModel(
 
     init {
         launch {
-            initCoupleInfo()
-            initSchedules()
-            initBalanceGame()
+
         }
     }
 
@@ -63,6 +61,15 @@ class HomeViewModel(
 
             is HomeIntent.ClickBalanceGameResultButton -> checkBalanceGameResult()
             is HomeIntent.ChangeBalanceGameCardState -> changeBalanceGameCardState()
+            HomeIntent.LoadDataOnStart -> loadDataOnStart()
+        }
+    }
+
+    private suspend fun loadDataOnStart() {
+        launch {
+            initCoupleInfo()
+            initSchedules()
+            initBalanceGame()
         }
     }
 
