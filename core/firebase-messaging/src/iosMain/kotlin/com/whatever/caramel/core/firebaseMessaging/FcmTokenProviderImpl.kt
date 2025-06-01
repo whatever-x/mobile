@@ -27,7 +27,7 @@ class FcmTokenProviderImpl(
     }
 
     override suspend fun updateToken(token: String) {
-        // 여기서 사용될 예정
+        remoteFirebaseControllerDataSource.postFcmToken(token = token)
     }
 
 }
@@ -41,6 +41,6 @@ class FcmTokenProviderImpl(
     // 1. 로그인 성공 시
         // 로그인 성공시 현재 토큰을 가져와 토큰을 앱 서버에 갱신한다. -> Android 구현 가능 / iOS 구현 가능
     // 2. 새로운 토큰 생성 시
-        // 새 토큰을 발급 받으면 곧바로 토큰을 앱 서버에 갱신한다. -> Android 구현 가능 / iOS 구현 가능?
+        // 새 토큰을 발급 받으면 곧바로 토큰을 앱 서버에 갱신한다. -> Android 구현 가능 / iOS 구현 가능
     // 3. 앱이 메인 화면의 포그라운드로 돌아올 시
         // 현재 토큰을 조회하고 토큰을 앱 서버에 갱신한다. -> 로그인처럼 구현 가능
