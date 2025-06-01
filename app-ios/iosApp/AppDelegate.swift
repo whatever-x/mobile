@@ -11,10 +11,13 @@ import KakaoSDKAuth
 import KakaoSDKCommon
 import Firebase
 import FirebaseAnalytics
+import FirebaseCore
+import FirebaseMessaging
 import App
 import AppsFlyerLib
 import AppTrackingTransparency
 import AdSupport
+import UserNotifications
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -28,6 +31,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         FirebaseApp.configure()
         CaramelAnalytics_iosKt.firebaseCallback(callback: FirebaseLoggingCallback())
+        
+        Messaging.messaging().delegate = self
+
+        UNUserNotificationCenter.current().delegate = self
+
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(
+          options: authOptions,
+          completionHandler: { _, _ in }
+        )
+
+        application.registerForRemoteNotifications()
         
         if let kakaoAppKey = Bundle.main.object(forInfoDictionaryKey: "KakaoNativeAppKey") as? String {
             KakaoSDK.initSDK(appKey: kakaoAppKey)
@@ -54,6 +69,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         )
         
         return true
+    }
+    
+    func application(
+        _ application: UIApplication,
+        didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+    ) {
+        Messaging.messaging().apnsToken = deviceToken
     }
     
     @objc func didBecomeActiveNotification() {

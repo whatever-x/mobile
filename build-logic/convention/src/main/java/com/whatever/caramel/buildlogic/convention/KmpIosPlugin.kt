@@ -19,6 +19,7 @@ class KmpIosPlugin : Plugin<Project> {
                         isStatic = true
                         export(project(":core:analytics"))
                         export(project(":core:deeplink"))
+                        export(project(":core:firebase-messaging"))
                         freeCompilerArgs += "-Xbinary=bundleId=com.whatever.caramel"
                     }
                 }
