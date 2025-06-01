@@ -28,6 +28,7 @@ import com.whatever.caramel.core.domain.usecase.user.EditProfileUseCase
 import com.whatever.caramel.core.domain.usecase.user.GetUserStatusUseCase
 import com.whatever.caramel.core.domain.usecase.user.RefreshUserSessionUseCase
 import com.whatever.caramel.core.domain.usecase.common.GetLinkPreviewsForContentUseCase
+import com.whatever.caramel.core.domain.usecase.auth.SignOutUseCase
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -35,6 +36,7 @@ val useCaseModule = module {
     factory { SignInWithSocialPlatformUseCase(get(), get(), get()) }
     factory { RefreshUserSessionUseCase(get(), get()) }
     factory { LogoutUseCase(get()) }
+    factory { SignOutUseCase(get(), get(), get()) }
 
     // User
     factory { CreateUserProfileUseCase(get()) }

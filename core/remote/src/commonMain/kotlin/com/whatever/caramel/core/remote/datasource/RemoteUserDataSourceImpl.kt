@@ -33,11 +33,6 @@ class RemoteUserDataSourceImpl(
     override suspend fun getUserInfo(): UserInfoResponse {
         return authClient.get(USER_BASE_URL + "me").getBody()
     }
-
-    override suspend fun signOut() {
-        authClient.delete(USER_BASE_URL + "account")
-    }
-
     companion object {
         private const val USER_BASE_URL = "/v1/user/"
     }

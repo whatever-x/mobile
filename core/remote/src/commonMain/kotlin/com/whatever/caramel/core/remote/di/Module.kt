@@ -99,7 +99,8 @@ val networkModule = module {
 val remoteDataSourceModule = module {
     single<RemoteAuthDataSource> {
         RemoteAuthDataSourceImpl(
-            defaultClient = get(DefaultClient)
+            defaultClient = get(DefaultClient),
+            authClient = get(AuthClient)
         )
     }
 
