@@ -2,7 +2,6 @@ package com.whatever.caramel.feature.calendar.mvi
 
 import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
-import com.whatever.caramel.core.domain.vo.calendar.HolidaysOnDate
 import com.whatever.caramel.core.domain.vo.couple.Anniversary
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.util.DateUtil
@@ -20,9 +19,7 @@ data class CalendarState(
     val pickerDate : DateUiState = DateUiState.currentDate(),
     val isShowDatePicker: Boolean = false,
     val bottomSheetState: BottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
-    val schedules: List<DaySchedule> = emptyList(),
-    val cachedSchedules: Map<String, List<DaySchedule>> = emptyMap(),
-    val cachedHolidays : List<HolidaysOnDate> = emptyList()
+    val monthSchedules: List<DaySchedule> = emptyList(),
 ) : UiState
 
 enum class BottomSheetState {

@@ -16,6 +16,8 @@ import com.whatever.caramel.core.remote.datasource.RemoteUserDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteUserDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteTagDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteTagDataSourceImpl
+import com.whatever.caramel.core.remote.datasource.LinkMetadataRemoteDataSource
+import com.whatever.caramel.core.remote.datasource.LinkMetadataRemoteDataSourceImpl
 import com.whatever.caramel.core.remote.di.qualifier.AuthClient
 import com.whatever.caramel.core.remote.di.qualifier.DefaultClient
 import com.whatever.caramel.core.remote.di.qualifier.SampleClient
@@ -117,7 +119,7 @@ val remoteDataSourceModule = module {
 
     single<RemoteCalendarDataSource> {
         RemoteCalendarDataSourceImpl(
-            authClient = get(AuthClient)
+            authClient = get(AuthClient),
         )
     }
 
@@ -136,6 +138,12 @@ val remoteDataSourceModule = module {
     single<RemoteBalanceGameDataSource> {
         RemoteBalanceGameDataSourceImpl(
             authClient = get(AuthClient)
+        )
+    }
+
+    single<LinkMetadataRemoteDataSource> {
+        LinkMetadataRemoteDataSourceImpl(
+            httpClient = get(DefaultClient)
         )
     }
 

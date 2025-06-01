@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,6 +25,7 @@ import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.calendar.Calendar
@@ -57,10 +59,10 @@ internal fun CalendarScreen(
 
     LaunchedEffect(state.selectedDate) {
         if (state.bottomSheetState == BottomSheetState.EXPANDED) {
-            val scheduleIndex = state.schedules.indexOfFirst { it.date == state.selectedDate }
+            val scheduleIndex = state.monthSchedules.indexOfFirst { it.date == state.selectedDate }
             if (scheduleIndex >= 0) {
                 val itemPosition = scheduleIndex +
-                        state.schedules.take(scheduleIndex).sumOf { it.todos.size }
+                        state.monthSchedules.take(scheduleIndex).sumOf { it.todos.size }
                 lazyListState.scrollToItem(index = itemPosition)
             }
         }
@@ -144,7 +146,7 @@ internal fun CalendarScreen(
                         .height(availableHeight),
                     state = lazyListState
                 ) {
-                    state.schedules.forEach { schedule ->
+                    state.monthSchedules.forEach { schedule ->
                         item {
                             BottomSheetTodoListHeader(
                                 date = schedule.date,
@@ -157,7 +159,8 @@ internal fun CalendarScreen(
                                 },
                                 isToday = schedule.date == state.today,
                                 isEmpty = schedule.todos.isEmpty(),
-                                holidays = schedule.holidays
+                                holidays = schedule.holidays,
+                                anniversaries = schedule.anniversaries
                             )
                             Spacer(modifier = Modifier.height(CaramelTheme.spacing.s))
                         }
@@ -207,7 +210,7 @@ internal fun CalendarScreen(
                                 .background(color = CaramelTheme.color.background.primary),
                             year = state.year,
                             month = state.month,
-                            schedules = state.schedules,
+                            schedules = state.monthSchedules,
                             selectedDate = state.selectedDate,
                             onClickTodo = { onIntent(CalendarIntent.ClickTodoItemInCalendar(it)) },
                             onClickCell = { onIntent(CalendarIntent.ClickCalendarCell(it)) }

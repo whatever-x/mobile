@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -13,7 +14,7 @@ internal fun HomeRoute(
     viewModel: HomeViewModel = koinViewModel(),
     navigateToSetting: () -> Unit,
     navigateToStaredCoupleDay: () -> Unit,
-    navigateToTodoDetail: (Long) -> Unit,
+    navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -23,7 +24,7 @@ internal fun HomeRoute(
             when (sideEffect) {
                 is HomeSideEffect.NavigateToSetting -> navigateToSetting()
                 is HomeSideEffect.NavigateToCreateContent -> navigateToCreateTodo()
-                is HomeSideEffect.NavigateToContentDetail -> navigateToTodoDetail(sideEffect.contentId)
+                is HomeSideEffect.NavigateToContentDetail -> navigateToTodoDetail(sideEffect.contentId, sideEffect.contentType)
                 is HomeSideEffect.NavigateToEditAnniversary -> navigateToStaredCoupleDay()
             }
         }

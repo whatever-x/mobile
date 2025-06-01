@@ -5,8 +5,12 @@ import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUse
 import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameChoiceUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetHolidaysUseCase
+import com.whatever.caramel.core.domain.usecase.calendar.GetScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodayScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodosGroupByStartDateUseCase
+import com.whatever.caramel.core.domain.usecase.calendar.UpdateScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.calendar.DeleteScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.content.GetMemosUseCase
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
 import com.whatever.caramel.core.domain.usecase.couple.EditCoupleStartDateUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetAnniversariesUseCase
@@ -14,12 +18,16 @@ import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInvitationCodeUseCase
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
-import com.whatever.caramel.core.domain.usecase.item.CreateContentUseCase
+import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
+import com.whatever.caramel.core.domain.usecase.memo.DeleteMemoUseCase
+import com.whatever.caramel.core.domain.usecase.memo.GetMemoUseCase
+import com.whatever.caramel.core.domain.usecase.memo.UpdateMemoUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
 import com.whatever.caramel.core.domain.usecase.user.EditProfileUseCase
 import com.whatever.caramel.core.domain.usecase.user.GetUserStatusUseCase
 import com.whatever.caramel.core.domain.usecase.user.RefreshUserSessionUseCase
+import com.whatever.caramel.core.domain.usecase.common.GetLinkPreviewsForContentUseCase
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -46,15 +54,25 @@ val useCaseModule = module {
     factory { GetTodosGroupByStartDateUseCase(get()) }
     factory { GetHolidaysUseCase(get()) }
     factory { GetTodayScheduleUseCase(get()) }
+    factory { UpdateScheduleUseCase(get()) }
+    factory { DeleteScheduleUseCase(get()) }
+    factory { GetScheduleUseCase(get()) }
 
     // Tag
     factory { GetTagUseCase(get()) }
 
     // Content
     factory { CreateContentUseCase(get(), get()) }
+    factory { UpdateMemoUseCase(get()) }
+    factory { DeleteMemoUseCase(get()) }
+    factory { GetMemosUseCase(get()) }
+    factory { GetMemoUseCase(get()) }
 
     // BalanceGame
     factory { GetTodayBalanceGameUseCase(get()) }
     factory { SubmitBalanceGameChoiceUseCase(get()) }
+
+    // Common
+    factory { GetLinkPreviewsForContentUseCase(get()) }
 
 }

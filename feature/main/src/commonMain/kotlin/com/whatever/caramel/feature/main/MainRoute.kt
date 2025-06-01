@@ -3,8 +3,6 @@ package com.whatever.caramel.feature.main
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -18,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.whatever.caramel.core.designsystem.components.BottomNavItem
 import com.whatever.caramel.core.designsystem.components.CaramelBottomNavigationWithTrailingButton
 import com.whatever.caramel.core.designsystem.components.CaramelNavItemCreateButton
+import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.ui.util.ObserveLifecycleEvent
 import com.whatever.caramel.feature.calendar.navigation.calendarContent
 import com.whatever.caramel.feature.calendar.navigation.navigateToCalendar
@@ -26,7 +25,6 @@ import com.whatever.caramel.feature.home.navigation.homeContent
 import com.whatever.caramel.feature.home.navigation.navigateToHome
 import com.whatever.caramel.feature.memo.navigation.memoContent
 import com.whatever.caramel.feature.memo.navigation.navigateToMemo
-import io.github.aakira.napier.Napier
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -34,7 +32,7 @@ internal fun MainRoute(
     viewModel: MainViewModel = koinViewModel(),
     navigateToSetting: () -> Unit,
     navigateToStaredCoupleDay: () -> Unit,
-    navigateToTodoDetail: (Long) -> Unit,
+    navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: () -> Unit,
 ) {
     val hapticFeedback = LocalHapticFeedback.current
