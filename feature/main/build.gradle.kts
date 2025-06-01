@@ -19,6 +19,7 @@ kotlin {
             implementation(projects.core.ui)
             implementation(projects.core.analytics)
             implementation(projects.core.viewmodel)
+            implementation(projects.core.firebaseMessaging)
 
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.core)
