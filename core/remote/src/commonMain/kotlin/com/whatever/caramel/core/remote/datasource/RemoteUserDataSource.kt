@@ -10,4 +10,5 @@ interface RemoteUserDataSource {
     suspend fun createUserProfile(request: UserProfileRequest): UserProfileResponse
     suspend fun editUserProfile(request: EditUserProfileRequest): EditUserProfileResponse
     suspend fun getUserInfo(): UserInfoResponse
+    suspend fun signOut()
 }

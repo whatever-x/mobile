@@ -97,6 +97,10 @@ class CoupleRepositoryImpl(
         }
     }
 
+    override suspend fun deleteCoupleId() {
+        safeCall { localCoupleDataSource.deleteCoupleId() }
+    }
+
     override suspend fun getCoupleInfo(): Couple {
         return safeCall {
             remoteCoupleDataSource.getCoupleInfo().toCouple()

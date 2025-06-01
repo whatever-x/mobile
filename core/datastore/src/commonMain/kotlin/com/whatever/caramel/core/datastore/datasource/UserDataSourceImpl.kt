@@ -21,6 +21,12 @@ class UserDataSourceImpl(
         }
     }
 
+    override suspend fun deleteUserStatus() {
+        dataStore.edit { prefs ->
+            prefs[userStatusKey] = ""
+        }
+    }
+
     companion object {
         private const val PREFS_KEY_USER_STATUS = "userStatus"
         private val userStatusKey by lazy { stringPreferencesKey(PREFS_KEY_USER_STATUS) }

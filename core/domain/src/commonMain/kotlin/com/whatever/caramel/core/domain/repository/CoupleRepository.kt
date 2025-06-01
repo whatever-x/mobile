@@ -18,4 +18,5 @@ interface CoupleRepository {
     ) : Couple
     suspend fun getCoupleInfo() : Couple
     suspend fun getAnniversaries(coupleId : Long, startDate : String, endDate : String) : List<Anniversary>
+    suspend fun deleteCoupleId()
 }

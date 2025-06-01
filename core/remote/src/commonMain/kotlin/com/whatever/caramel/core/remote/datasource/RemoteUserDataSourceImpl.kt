@@ -7,6 +7,7 @@ import com.whatever.caramel.core.remote.dto.user.response.UserInfoResponse
 import com.whatever.caramel.core.remote.dto.user.response.UserProfileResponse
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.put
@@ -31,6 +32,10 @@ class RemoteUserDataSourceImpl(
 
     override suspend fun getUserInfo(): UserInfoResponse {
         return authClient.get(USER_BASE_URL + "me").getBody()
+    }
+
+    override suspend fun signOut() {
+        authClient.delete(USER_BASE_URL + "account")
     }
 
     companion object {

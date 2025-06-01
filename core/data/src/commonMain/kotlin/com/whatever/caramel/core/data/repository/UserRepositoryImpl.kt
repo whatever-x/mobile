@@ -62,4 +62,14 @@ class UserRepositoryImpl(
             userRemoteDataSource.getUserInfo().toUser()
         }
     }
+
+    override suspend fun signOut() {
+        safeCall {
+            userRemoteDataSource.signOut()
+        }
+    }
+
+    override suspend fun deleteUserStatus() {
+        safeCall { userDataSource.deleteUserStatus() }
+    }
 }

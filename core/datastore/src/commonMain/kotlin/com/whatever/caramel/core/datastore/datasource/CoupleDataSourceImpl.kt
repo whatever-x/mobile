@@ -21,6 +21,12 @@ class CoupleDataSourceImpl(
         }
     }
 
+    override suspend fun deleteCoupleId() {
+        dataStore.edit { prefs ->
+            prefs[coupleIdKey] = 0L
+        }
+    }
+
     companion object {
         private const val PREFS_KEY_COUPLE_ID = "coupleId"
 
