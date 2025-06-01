@@ -13,7 +13,7 @@ class ConnectCoupleUseCase(
     ) {
         val coupleRelationship = coupleRepository.connectCouple(invitationCode = invitationCode)
         val myInfo = coupleRelationship.myInfo
-
+        coupleRepository.setCoupleId(coupleRelationship.info.id)
         userRepository.setUserStatus(myInfo.userStatus)
     }
 
