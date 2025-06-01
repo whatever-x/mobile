@@ -18,11 +18,6 @@ class MemoViewModel(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle) {
 
-    init {
-        getMemos()
-        getTags()
-    }
-
     override fun createInitialState(savedStateHandle: SavedStateHandle): MemoState {
         return MemoState()
     }
@@ -33,6 +28,7 @@ class MemoViewModel(
             is MemoIntent.ClickTagChip -> clickTagChip(intent)
             MemoIntent.PullToRefresh -> refreshMemos()
             MemoIntent.ReachedEndOfList -> loadPagingData()
+            MemoIntent.Initialize -> initialize()
         }
     }
 
@@ -44,6 +40,24 @@ class MemoViewModel(
                 isRefreshing = false,
                 isTagLoading = false
             )
+        }
+    }
+
+    private fun initialize() {
+        reduce {
+            copy(
+                isMemoLoading = true,
+                isTagLoading = true,
+                isRefreshing = false,
+                memos = persistentListOf(),
+                tags = persistentListOf(),
+                selectedTag = null,
+                cursor = null
+            )
+        }
+        launch {
+            getMemos()
+            getTags()
         }
     }
 
