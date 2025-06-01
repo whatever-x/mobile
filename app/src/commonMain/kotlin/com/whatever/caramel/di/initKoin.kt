@@ -9,6 +9,7 @@ import com.whatever.caramel.core.datastore.di.platformDataStoreModule
 import com.whatever.caramel.core.deeplink.di.deepLinkModule
 import com.whatever.caramel.core.designsystem.di.hapticControllerModule
 import com.whatever.caramel.core.domain.di.useCaseModule
+import com.whatever.caramel.core.firebaseMessaging.di.firebaseMessagingModule
 import com.whatever.caramel.core.remote.di.deviceIdModule
 import com.whatever.caramel.core.remote.di.networkClientEngineModule
 import com.whatever.caramel.core.remote.di.networkModule
@@ -55,6 +56,9 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             /* DataStore Module */
             platformDataStoreModule,
             dataStoreModule,
+
+            /* FirebaseMessaging Module */
+            firebaseMessagingModule,
 
             /* ==== Domain Layer ==== */
             useCaseModule,
