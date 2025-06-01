@@ -77,6 +77,15 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		583FC04F2DEBEF87002005A1 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				583FC04D2DEBEE23002005A1 /* Release.xcconfig */,
+				583FC0482DEBEDCE002005A1 /* Debug.xcconfig */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
 		7555FF72242A565900829871 = {
 			isa = PBXGroup;
 			children = (
