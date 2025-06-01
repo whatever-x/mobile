@@ -37,7 +37,6 @@ class ContentDetailViewModel(
     }
 
 
-
     private fun fetchLinkPreviews(content: String) {
         launch {
             getLinkPreviewsForContentUseCase(content)
@@ -106,6 +105,10 @@ class ContentDetailViewModel(
 
             ContentDetailIntent.LoadDataOnStart -> {
                 loadContentDetails()
+            }
+
+            ContentDetailIntent.ClickBackButton -> {
+                postSideEffect(ContentDetailSideEffect.NavigateToBackStack)
             }
         }
     }

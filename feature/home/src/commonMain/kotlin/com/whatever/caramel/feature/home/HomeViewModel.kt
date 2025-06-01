@@ -47,7 +47,7 @@ class HomeViewModel(
                 postSideEffect(
                     HomeSideEffect.NavigateToContentDetail(
                         contentId = intent.todoContentId,
-                        contentType = ContentType.MEMO
+                        contentType = ContentType.CALENDAR
                     )
                 )
             }
