@@ -68,6 +68,8 @@ internal class AuthRepositoryImpl(
     }
 
     override suspend fun signOut() {
-
+        safeCall {
+            remoteAuthDataSource.signOut()
+        }
     }
 }

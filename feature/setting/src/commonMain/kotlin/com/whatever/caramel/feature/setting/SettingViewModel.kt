@@ -3,6 +3,7 @@ package com.whatever.caramel.feature.setting
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
+import com.whatever.caramel.core.domain.usecase.auth.SignOutUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.setting.mvi.CoupleUser
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
@@ -13,6 +14,7 @@ import io.github.aakira.napier.Napier
 class SettingViewModel(
     private val getCoupleRelationshipInfoUseCase: GetCoupleRelationshipInfoUseCase,
     private val logoutUseCase: LogoutUseCase,
+    private val signOutUseCase: SignOutUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<SettingState, SettingSideEffect, SettingIntent>(savedStateHandle) {
 
@@ -36,15 +38,23 @@ class SettingViewModel(
                     startDate = currentState.startDate
                 )
             )
+
             SettingIntent.ToggleUserCancelledButton -> toggleUserCancelledButton()
             SettingIntent.ClickAppUpdateButton -> TODO("앱 업데이트 기능 확인 필요")
-            SettingIntent.ClickUserCancelledConfirmButton -> TODO("탈퇴하기 API 추가 후 연동")
+            SettingIntent.ClickUserCancelledConfirmButton -> signOut()
         }
     }
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
         Napier.e { "exception: $throwable" }
+    }
+
+    private fun signOut() {
+        launch {
+            signOutUseCase()
+            postSideEffect(SettingSideEffect.NavigateLogin)
+        }
     }
 
     private fun getCoupleInfo() {
@@ -90,7 +100,7 @@ class SettingViewModel(
         }
     }
 
-    private fun navigateEditNickname(){
+    private fun navigateEditNickname() {
         toggleEditProfileBottomSheet()
         postSideEffect(
             SettingSideEffect.NavigateToEditNickname(
@@ -99,7 +109,7 @@ class SettingViewModel(
         )
     }
 
-    private fun navigateEditBirthday(){
+    private fun navigateEditBirthday() {
         toggleEditProfileBottomSheet()
         postSideEffect(
             SettingSideEffect.NavigateToEditBirthday(
