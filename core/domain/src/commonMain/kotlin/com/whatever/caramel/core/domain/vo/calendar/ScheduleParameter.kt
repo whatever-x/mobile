@@ -1,8 +1,8 @@
 package com.whatever.caramel.core.domain.vo.calendar
 
 data class ScheduleParameter(
-    val title: String,
-    val description: String,
+    val title: String?,
+    val description: String?,
     val isCompleted: Boolean,
     val startDateTime: String,
     val startTimeZone: String,

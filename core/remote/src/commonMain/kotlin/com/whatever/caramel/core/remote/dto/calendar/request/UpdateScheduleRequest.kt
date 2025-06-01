@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UpdateScheduleRequest(
     val selectedDate: String,
-    val title: String,
-    val description: String,
+    val title: String?,
+    val description: String?,
     val isCompleted: Boolean,
     val startDateTime: String,
     val startTimeZone: String,

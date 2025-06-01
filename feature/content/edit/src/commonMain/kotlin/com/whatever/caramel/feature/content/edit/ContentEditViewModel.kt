@@ -121,8 +121,8 @@ class ContentEditViewModel(
                     updateMemoUseCase(
                         memoId = state.contentId,
                         parameter = MemoEditParameter(
-                            title = state.title,
-                            description = state.content,
+                            title = state.title.ifBlank { null },
+                            description = state.content.ifBlank { null },
                             isCompleted = null,
                             tagIds = state.selectedTags.map { it.id }.toList(),
                             dateTimeInfo = null
@@ -136,9 +136,9 @@ class ContentEditViewModel(
                     updateScheduleUseCase(
                         scheduleId = state.contentId,
                         parameter = ScheduleEditParameter(
-                            selectedDate = "",
-                            title = state.title,
-                            description = state.content,
+                            selectedDate = state.dateTime.date.toString(),
+                            title = state.title.ifBlank { null },
+                            description = state.content.ifBlank { null },
                             isCompleted = false,
                             startDateTime = currentInstant.toString(),
                             startTimeZone = TimeZone.currentSystemDefault().id,
