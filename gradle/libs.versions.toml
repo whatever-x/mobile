@@ -27,7 +27,7 @@ coil3 = "3.0.4"
 ksp = "2.1.20-1.0.32" #2.1.0-1.0.29
 sqlite = "2.5.0-rc03"
 room = "2.7.0-rc03"
-moko = "0.19.0"
+moko = "0.19.1"
 napier = "2.7.1"
 gms = "4.4.2"
 firebase-crahslytics = "3.0.3"
@@ -92,12 +92,13 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 
-moko-permission-camera = { group = "dev.icerock.moko", name = "permissions-camera", version.ref = "moko" }
-moko-permission-multiplatform = { group = "dev.icerock.moko", name = "permissions-compose", version.ref = "moko" }
+moko-permission-compose = { group = "dev.icerock.moko", name = "permissions-compose", version.ref = "moko" }
+moko-permission-notifications = { group = "dev.icerock.moko", name = "permissions-notifications", version.ref = "moko" }
 
 firebase-bom-android = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
 firebase-analytics-ktx = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 firebase-crashlytics-ktx = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
+firebase-fcm = { group = "com.google.firebase", name = "firebase-messaging" }
 
 datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
@@ -150,8 +151,8 @@ coil = [
     "coil-mp"
 ]
 moko = [
-    "moko-permission-multiplatform",
-    "moko-permission-camera"
+    "moko-permission-compose",
+    "moko-permission-notifications"
 ]
 datastore = [
     "datastore",
