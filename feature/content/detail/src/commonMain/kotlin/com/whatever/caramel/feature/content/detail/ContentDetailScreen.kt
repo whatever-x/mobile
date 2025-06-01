@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -16,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
@@ -40,28 +42,45 @@ internal fun ContentDetailScreen(
         topBar = {
             Column(modifier = Modifier.statusBarsPadding()) {
                 CaramelTopBar(
+                    leadingContent = {
+                        Icon(
+                            modifier = Modifier
+                                .clickable(
+                                    onClick = { onIntent(ContentDetailIntent.ClickBackButton) },
+                                    interactionSource = null,
+                                    indication = null
+                                ),
+                            painter = painterResource(resource = Resources.Icon.ic_arrow_left_24),
+                            contentDescription = null,
+                            tint = CaramelTheme.color.icon.primary
+                        )
+                    },
                     trailingIcon = {
-                        Icon(
-                            modifier = Modifier.clickable {
-                                onIntent(ContentDetailIntent.ClickDeleteButton)
-                            },
-                            painter = painterResource(resource = Resources.Icon.ic_trash_24),
-                            tint = CaramelTheme.color.icon.primary,
-                            contentDescription = "Delete"
-                        )
-                        Spacer(modifier = Modifier.padding(start = 20.dp))
-                        Icon(
-                            modifier = Modifier.clickable {
-                                onIntent(ContentDetailIntent.ClickEditButton)
-                            },
-                            painter = painterResource(resource = Resources.Icon.ic_edit_line_24),
-                            tint = CaramelTheme.color.icon.primary,
-                            contentDescription = "Edit"
-                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                modifier = Modifier.clickable {
+                                    onIntent(ContentDetailIntent.ClickDeleteButton)
+                                },
+                                painter = painterResource(resource = Resources.Icon.ic_trash_24),
+                                tint = CaramelTheme.color.icon.primary,
+                                contentDescription = "Delete"
+                            )
+                            Spacer(modifier = Modifier.padding(start = 20.dp))
+                            Icon(
+                                modifier = Modifier.clickable {
+                                    onIntent(ContentDetailIntent.ClickEditButton)
+                                },
+                                painter = painterResource(resource = Resources.Icon.ic_edit_line_24),
+                                tint = CaramelTheme.color.icon.primary,
+                                contentDescription = "Edit"
+                            )
+                        }
                     }
                 )
                 TitleTextField(
-                    modifier = Modifier.padding(horizontal = CaramelTheme.spacing.xl),
+                    modifier = Modifier
+                        .padding(top = CaramelTheme.spacing.s)
+                        .padding(horizontal = CaramelTheme.spacing.xl),
                     value = state.title,
                     onValueChange = {},
                     onKeyboardAction = {},
