@@ -15,6 +15,8 @@ import com.whatever.caramel.core.remote.di.networkModule
 import com.whatever.caramel.core.remote.di.remoteDataSourceModule
 import com.whatever.caramel.feature.calendar.di.calendarFeatureModule
 import com.whatever.caramel.feature.content.create.di.contentCreateFeatureModule
+import com.whatever.caramel.feature.content.detail.di.contentDetailFeatureModule
+import com.whatever.caramel.feature.content.edit.di.contentEditFeatureModule
 import com.whatever.caramel.feature.copule.connecting.di.coupleConnectingFeatureModule
 import com.whatever.caramel.feature.copule.invite.di.coupleInviteFeatureModule
 import com.whatever.caramel.feature.copule.invite.di.shareServiceModule
@@ -67,6 +69,8 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             /* Feature Module */
             calendarFeatureModule,
             contentCreateFeatureModule,
+            contentDetailFeatureModule,
+            contentEditFeatureModule,
             coupleConnectFeatureModule,
             coupleInviteFeatureModule,
             coupleConnectingFeatureModule,

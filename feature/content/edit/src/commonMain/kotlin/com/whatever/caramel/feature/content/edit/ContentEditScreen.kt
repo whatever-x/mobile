@@ -1,21 +1,27 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.whatever.caramel.feature.content.create
+package com.whatever.caramel.feature.content.edit
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -25,12 +31,19 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelButton
 import com.whatever.caramel.core.designsystem.components.CaramelButtonSize
 import com.whatever.caramel.core.designsystem.components.CaramelButtonType
@@ -49,56 +62,62 @@ import com.whatever.caramel.core.ui.picker.CaramelDatePicker
 import com.whatever.caramel.core.ui.picker.CaramelTimePicker
 import com.whatever.caramel.core.ui.picker.TimeUiState
 import com.whatever.caramel.core.ui.picker.model.DateUiState
-import com.whatever.caramel.core.ui.util.rememberKeyboardVisibleState
-import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
-import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
+import com.whatever.caramel.feature.content.edit.mvi.ContentEditIntent
+import com.whatever.caramel.feature.content.edit.mvi.ContentEditState
 import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.painterResource
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ContentScreen(
-    state: ContentCreateState,
-    onIntent: (ContentCreateIntent) -> Unit
+internal fun ContentEditScreen(
+    state: ContentEditState,
+    onIntent: (ContentEditIntent) -> Unit,
 ) {
+    val contentFocusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val keyboardVisible = rememberKeyboardVisibilityState()
+
     val sheetState = rememberStandardBottomSheetState(
-        initialValue = SheetValue.PartiallyExpanded,
+        initialValue = SheetValue.Hidden,
         skipHiddenState = false
     )
-    val contentFocusRequester = FocusRequester()
-    val isKeyboardVisible by rememberKeyboardVisibleState()
-    val keyboardController = LocalSoftwareKeyboardController.current
+
+    LaunchedEffect(state.showDateDialog, state.showTimeDialog) {
+        if (state.showDateDialog || state.showTimeDialog) {
+            sheetState.expand()
+        } else {
+            sheetState.hide()
+        }
+    }
+
     Scaffold(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .pointerInput(Unit) {
                 detectTapGestures { keyboardController?.hide() }
             },
         containerColor = CaramelTheme.color.background.primary,
         topBar = {
-            Column {
+            Column(modifier = Modifier.statusBarsPadding()) {
                 CaramelTopBar(
-                    modifier = Modifier.statusBarsPadding(),
                     trailingIcon = {
                         Icon(
-                            modifier = Modifier.clickable(
-                                onClick = { onIntent(ContentCreateIntent.ClickCloseButton) },
-                                indication = null,
-                                interactionSource = null
-                            ),
+                            modifier = Modifier.clickable {
+                                onIntent(ContentEditIntent.OnBackClicked)
+                            },
                             painter = painterResource(resource = Resources.Icon.ic_cancel_24),
                             tint = CaramelTheme.color.icon.primary,
-                            contentDescription = null
+                            contentDescription = "Close"
                         )
                     }
                 )
                 TitleTextField(
                     modifier = Modifier.padding(horizontal = CaramelTheme.spacing.xl),
                     value = state.title,
-                    onValueChange = {
-                        onIntent(ContentCreateIntent.InputTitle(it))
-                    },
+                    onValueChange = { onIntent(ContentEditIntent.OnTitleChanged(it)) },
                     onKeyboardAction = {
                         contentFocusRequester.requestFocus()
-                    }
+                    },
                 )
                 HorizontalDivider(
                     modifier = Modifier.padding(vertical = CaramelTheme.spacing.xl),
@@ -112,10 +131,10 @@ internal fun ContentScreen(
                     .fillMaxWidth()
                     .padding(vertical = CaramelTheme.spacing.xl)
                     .navigationBarsPadding()
-                    .imePadding(),
+                    .imePadding()
             ) {
                 AnimatedVisibility(
-                    visible = isKeyboardVisible.not(),
+                    visible = !keyboardVisible.value,
                     enter = fadeIn(),
                     exit = ExitTransition.None,
                 ) {
@@ -128,13 +147,14 @@ internal fun ContentScreen(
                                 .toImmutableList(),
                             selectedTagChips = state.selectedTags.map { TagChip(it.id, it.label) }
                                 .toImmutableList(),
-                            onTagChipClick = {
-                                onIntent(ContentCreateIntent.ClickTag(Tag(it.id, it.label)))
+                            onTagChipClick = { tagChip ->
+                                onIntent(ContentEditIntent.ClickTag(Tag(tagChip.id, tagChip.label)))
                             }
                         )
                         Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.xl))
                         Row(
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
                                 .padding(horizontal = CaramelTheme.spacing.xl),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
@@ -142,7 +162,11 @@ internal fun ContentScreen(
                             CreateModeSwitch(
                                 createMode = state.createMode,
                                 onCreateModeSelect = {
-                                    onIntent(ContentCreateIntent.SelectCreateMode(it))
+                                    onIntent(
+                                        ContentEditIntent.OnCreateModeSelected(
+                                            it
+                                        )
+                                    )
                                 }
                             )
                             when (state.createMode) {
@@ -162,7 +186,7 @@ internal fun ContentScreen(
                                         Text(
                                             modifier = Modifier.clickable {
                                                 onIntent(
-                                                    ContentCreateIntent.ClickDate
+                                                    ContentEditIntent.ClickDate
                                                 )
                                             },
                                             text = state.date,
@@ -172,7 +196,7 @@ internal fun ContentScreen(
                                         Text(
                                             modifier = Modifier.clickable {
                                                 onIntent(
-                                                    ContentCreateIntent.ClickTime
+                                                    ContentEditIntent.ClickTime
                                                 )
                                             },
                                             text = state.time,
@@ -186,20 +210,39 @@ internal fun ContentScreen(
                         Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.xl))
                     }
                 }
-                CaramelButton(
-                    modifier = Modifier.fillMaxWidth()
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .padding(horizontal = CaramelTheme.spacing.xl),
-                    buttonType = if (state.isSaveButtonEnable) {
-                        CaramelButtonType.Enabled1
-                    } else {
-                        CaramelButtonType.Disabled
-                    },
-                    buttonSize = CaramelButtonSize.Large,
-                    text = "저장",
-                    onClick = {
-                        onIntent(ContentCreateIntent.ClickSaveButton)
+                    horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.m)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(CaramelTheme.shape.xxl)
+                            .border(
+                                width = 1.dp,
+                                color = CaramelTheme.color.fill.quaternary,
+                                shape = CaramelTheme.shape.xxl,
+                            )
+                            .background(CaramelTheme.color.fill.inverse)
+                            .clickable { onIntent(ContentEditIntent.OnDeleteClicked) },
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(
+                            painter = painterResource(Resources.Icon.ic_trash_24),
+                            tint = CaramelTheme.color.icon.primary,
+                            contentDescription = null
+                        )
                     }
-                )
+                    CaramelButton(
+                        onClick = { onIntent(ContentEditIntent.OnSaveClicked) },
+                        text = "저장",
+                        buttonType = if (state.isSaveButtonEnable) CaramelButtonType.Enabled1 else CaramelButtonType.Disabled,
+                        buttonSize = CaramelButtonSize.Large,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
         }
     ) { contentPadding ->
@@ -212,18 +255,17 @@ internal fun ContentScreen(
             ContentTextArea(
                 modifier = Modifier.weight(1f),
                 value = state.content,
-                onValueChange = {
-                    onIntent(ContentCreateIntent.InputContent(it))
-                },
+                onValueChange = { onIntent(ContentEditIntent.OnContentChanged(it)) },
                 focusRequester = contentFocusRequester,
                 placeholder = "함께 하고 싶거나 기억하면 좋은 것들을 자유롭게 입력해 주세요.",
             )
         }
     }
+
     if (state.showDateDialog || state.showTimeDialog) {
         DateBottomSheet(
             sheetState = sheetState,
-            onDismiss = { onIntent(ContentCreateIntent.HideDateTimeDialog) },
+            onDismiss = { onIntent(ContentEditIntent.HideDateTimeDialog) },
             content = {
                 when {
                     state.showDateDialog -> {
@@ -232,15 +274,15 @@ internal fun ContentScreen(
                                 .padding(top = CaramelTheme.spacing.xxl)
                                 .align(Alignment.CenterHorizontally),
                             dateUiState = DateUiState.from(state.dateTime),
-                            onYearChanged = { year ->
-                                onIntent(ContentCreateIntent.OnYearChanged(year))
-                            },
-                            onDayChanged = { day ->
-                                onIntent(ContentCreateIntent.OnDayChanged(day))
-                            },
+                            onYearChanged = { year -> onIntent(ContentEditIntent.OnYearChanged(year)) },
                             onMonthChanged = { month ->
-                                onIntent(ContentCreateIntent.OnMonthChanged(month))
-                            }
+                                onIntent(
+                                    ContentEditIntent.OnMonthChanged(
+                                        month
+                                    )
+                                )
+                            },
+                            onDayChanged = { day -> onIntent(ContentEditIntent.OnDayChanged(day)) }
                         )
                     }
 
@@ -251,13 +293,19 @@ internal fun ContentScreen(
                                 .align(Alignment.CenterHorizontally),
                             timeUiState = TimeUiState.from(state.dateTime),
                             onPeriodChanged = { period ->
-                                onIntent(ContentCreateIntent.OnPeriodChanged(period))
+                                onIntent(
+                                    ContentEditIntent.OnPeriodChanged(
+                                        period
+                                    )
+                                )
                             },
-                            onHourChanged = { hour ->
-                                onIntent(ContentCreateIntent.OnHourChanged(hour))
-                            },
+                            onHourChanged = { hour -> onIntent(ContentEditIntent.OnHourChanged(hour)) },
                             onMinuteChanged = { minute ->
-                                onIntent(ContentCreateIntent.OnMinuteChanged(minute))
+                                onIntent(
+                                    ContentEditIntent.OnMinuteChanged(
+                                        minute
+                                    )
+                                )
                             }
                         )
                     }
@@ -270,11 +318,24 @@ internal fun ContentScreen(
                     buttonType = CaramelButtonType.Enabled1,
                     buttonSize = CaramelButtonSize.Large,
                     text = "완료",
-                    onClick = {
-                        onIntent(ContentCreateIntent.HideDateTimeDialog)
-                    }
+                    onClick = { onIntent(ContentEditIntent.HideDateTimeDialog) }
                 )
             }
         )
     }
 }
+
+@Composable
+fun rememberKeyboardVisibilityState(): State<Boolean> {
+    val ime = WindowInsets.ime
+    val density = LocalDensity.current
+    val keyboardVisible = remember { mutableStateOf(false) }
+
+    LaunchedEffect(ime) {
+        snapshotFlow { ime.getBottom(density) }
+            .collect { bottom ->
+                keyboardVisible.value = bottom > 0
+            }
+    }
+    return keyboardVisible
+} 

@@ -24,5 +24,5 @@ interface CalendarRepository {
         year: Int
     ): List<Holiday>
 
-    suspend fun getScheduleDetail(scheduleId: Long): ScheduleDetail
+    suspend fun getSchedule(scheduleId: Long): ScheduleDetail
 }

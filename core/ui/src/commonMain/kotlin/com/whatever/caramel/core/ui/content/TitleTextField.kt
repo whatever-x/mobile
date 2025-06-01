@@ -19,6 +19,7 @@ fun TitleTextField(
     value: String,
     onValueChange: (String) -> Unit,
     onKeyboardAction: () -> Unit,
+    readOnly: Boolean = false,
 ) {
     val textStyle = CaramelTheme.typography.heading1
     BasicTextField(
@@ -35,7 +36,8 @@ fun TitleTextField(
             onNext = {
                 onKeyboardAction()
             }
-        )
+        ),
+        readOnly = readOnly,
     ) { innerTextField ->
         Box(
             modifier = Modifier.fillMaxWidth(),

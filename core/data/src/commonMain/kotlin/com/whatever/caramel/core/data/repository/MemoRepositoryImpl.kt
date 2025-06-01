@@ -14,6 +14,7 @@ import com.whatever.caramel.core.remote.datasource.RemoteMemoDataSource
 import com.whatever.caramel.core.remote.dto.memo.request.CreateMemoRequest
 import com.whatever.caramel.core.remote.dto.memo.request.DateTimeInfoRequest
 import com.whatever.caramel.core.remote.dto.memo.request.UpdateMemoRequest
+import com.whatever.caramel.core.remote.dto.tag.TagRequest
 
 class MemoRepositoryImpl(
     private val remoteMemoDataSource: RemoteMemoDataSource
@@ -23,7 +24,7 @@ class MemoRepositoryImpl(
             title = parameter.title,
             description = parameter.description,
             isCompleted = parameter.isCompleted,
-            tags = parameter.tags
+            tags = parameter.tags?.map { TagRequest(it) }
         )
         return safeCall {
             remoteMemoDataSource.createMemo(request).toMemoMetaData()
@@ -35,7 +36,7 @@ class MemoRepositoryImpl(
             title = parameter.title,
             description = parameter.description,
             isCompleted = parameter.isCompleted,
-            tagList = parameter.tagIds,
+            tagList = parameter.tagIds?.map { TagRequest(it) },
             dateTimeInfo = parameter.dateTimeInfo?.run {
                 DateTimeInfoRequest(
                     startDateTime = startDateTime,
