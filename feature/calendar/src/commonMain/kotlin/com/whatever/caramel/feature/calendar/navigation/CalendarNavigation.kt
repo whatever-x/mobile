@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
+import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.feature.calendar.CalendarRoute
 import kotlinx.serialization.Serializable
 
@@ -19,7 +20,7 @@ fun NavHostController.navigateToCalendar(builder: NavOptionsBuilder.() -> Unit) 
 
 fun NavGraphBuilder.calendarContent(
     navigateToCreateTodo: () -> Unit,
-    navigateToTodoDetail: (Long) -> Unit,
+    navigateToTodoDetail: (Long, ContentType) -> Unit,
 ) {
     composable<CalendarRoute> {
         CalendarRoute(

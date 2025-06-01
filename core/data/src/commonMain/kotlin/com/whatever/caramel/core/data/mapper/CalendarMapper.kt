@@ -42,16 +42,18 @@ fun HolidayDetailListResponse.toHoliday(): List<Holiday> {
 }
 
 internal fun GetScheduleResponse.toScheduleDetailVO(): ScheduleDetail {
-    return ScheduleDetail(
-        scheduleId = scheduleId,
-        startDateTime = startDateTime,
-        endDateTime = endDateTime,
-        startDateTimezone = startDateTimezone,
-        endDateTimezone = endDateTimezone,
-        isCompleted = isCompleted,
-        parentScheduleId = parentScheduleId,
-        title = title,
-        description = description,
-        tags = tags.map { it.toTag() }
-    )
+    return with(scheduleDetail) {
+        ScheduleDetail(
+            scheduleId = scheduleId,
+            startDateTime = startDateTime,
+            endDateTime = endDateTime,
+            startDateTimezone = startDateTimezone,
+            endDateTimezone = endDateTimezone,
+            isCompleted = isCompleted,
+            parentScheduleId = parentScheduleId,
+            title = title,
+            description = description,
+            tags = tags.map { it.toTag() }
+        )
+    }
 }

@@ -3,6 +3,7 @@ package com.whatever.caramel.feature.memo
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.usecase.content.GetMemosUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
+import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.memo.mvi.MemoIntent
 import com.whatever.caramel.feature.memo.mvi.MemoSideEffect
@@ -62,11 +63,11 @@ class MemoViewModel(
     }
 
     private fun clickMemo(intent: MemoIntent.ClickMemo) {
-        postSideEffect(MemoSideEffect.NavigateToTodoDetail(intent.memoId))
+        postSideEffect(MemoSideEffect.NavigateToTodoDetail(intent.memoId, ContentType.MEMO))
     }
 
-    private fun loadPagingData(){
-        if(currentState.cursor == null && currentState.memos.isNotEmpty()) return
+    private fun loadPagingData() {
+        if (currentState.cursor == null && currentState.memos.isNotEmpty()) return
         getMemos()
     }
 
