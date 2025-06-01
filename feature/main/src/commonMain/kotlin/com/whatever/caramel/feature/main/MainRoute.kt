@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.whatever.caramel.core.designsystem.components.BottomNavItem
 import com.whatever.caramel.core.designsystem.components.CaramelBottomNavigationWithTrailingButton
 import com.whatever.caramel.core.designsystem.components.CaramelNavItemCreateButton
+import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.feature.calendar.navigation.calendarContent
 import com.whatever.caramel.feature.calendar.navigation.navigateToCalendar
 import com.whatever.caramel.feature.home.navigation.HomeRoute
@@ -27,7 +28,7 @@ import com.whatever.caramel.feature.memo.navigation.navigateToMemo
 internal fun MainRoute(
     navigateToSetting: () -> Unit,
     navigateToStaredCoupleDay: () -> Unit,
-    navigateToTodoDetail: (Long) -> Unit,
+    navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: () -> Unit,
 ) {
     val hapticFeedback = LocalHapticFeedback.current

@@ -6,6 +6,7 @@ import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameCho
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodayScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
+import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.home.mvi.BalanceGameOptionState
@@ -42,13 +43,24 @@ class HomeViewModel(
         when (intent) {
             is HomeIntent.ClickAnniversaryNudgeCard -> postSideEffect(HomeSideEffect.NavigateToEditAnniversary)
             is HomeIntent.ClickSettingButton -> postSideEffect(HomeSideEffect.NavigateToSetting)
-            is HomeIntent.ClickTodoContent -> postSideEffect(HomeSideEffect.NavigateToContentDetail(contentId = intent.todoContentId))
+            is HomeIntent.ClickTodoContent -> {
+                postSideEffect(
+                    HomeSideEffect.NavigateToContentDetail(
+                        contentId = intent.todoContentId,
+                        contentType = ContentType.MEMO
+                    )
+                )
+            }
+
             is HomeIntent.CreateTodoContent -> postSideEffect(HomeSideEffect.NavigateToCreateContent)
             is HomeIntent.SaveShareMessage -> saveShareMessage(newShareMessage = intent.newShareMessage)
             is HomeIntent.ShowShareMessageEditBottomSheet -> showBottomSheet()
             is HomeIntent.HideShareMessageEditBottomSheet -> hideBottomSheet()
             is HomeIntent.PullToRefresh -> refreshHomeData()
-            is HomeIntent.ClickBalanceGameOptionButton -> submitBalanceGameOption(balanceGameOptionState = intent.option)
+            is HomeIntent.ClickBalanceGameOptionButton -> submitBalanceGameOption(
+                balanceGameOptionState = intent.option
+            )
+
             is HomeIntent.ClickBalanceGameResultButton -> checkBalanceGameResult()
             is HomeIntent.ChangeBalanceGameCardState -> changeBalanceGameCardState()
         }
@@ -151,13 +163,13 @@ class HomeViewModel(
                     balanceGameCardState = HomeState.BalanceGameCardState.IDLE,
                     myChoiceOption =
                         BalanceGameOptionState(
-                            id = todayBalanceGame.myChoice?.optionId?: 0L,
-                            name = todayBalanceGame.myChoice?.text?: ""
+                            id = todayBalanceGame.myChoice?.optionId ?: 0L,
+                            name = todayBalanceGame.myChoice?.text ?: ""
                         ),
                     partnerChoiceOption =
                         BalanceGameOptionState(
-                            id = todayBalanceGame.partnerChoice?.optionId?: 0L,
-                            name = todayBalanceGame.partnerChoice?.text?: ""
+                            id = todayBalanceGame.partnerChoice?.optionId ?: 0L,
+                            name = todayBalanceGame.partnerChoice?.text ?: ""
                         ),
                 )
             }
@@ -175,13 +187,13 @@ class HomeViewModel(
                 copy(
                     myChoiceOption =
                         BalanceGameOptionState(
-                            id = result.myChoice?.optionId?: 0L,
-                            name = result.myChoice?.text?: ""
+                            id = result.myChoice?.optionId ?: 0L,
+                            name = result.myChoice?.text ?: ""
                         ),
                     partnerChoiceOption =
                         BalanceGameOptionState(
-                            id = result.partnerChoice?.optionId?: 0L,
-                            name = result.partnerChoice?.text?: ""
+                            id = result.partnerChoice?.optionId ?: 0L,
+                            name = result.partnerChoice?.text ?: ""
                         ),
                 )
             }

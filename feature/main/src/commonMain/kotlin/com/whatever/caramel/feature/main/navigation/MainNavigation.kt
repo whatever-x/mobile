@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
+import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.feature.main.MainRoute
 import kotlinx.serialization.Serializable
 
@@ -20,7 +21,7 @@ fun NavController.navigateToMain(builder: NavOptionsBuilder.() -> Unit = {}) {
 fun NavGraphBuilder.mainGraph(
     navigateToSetting: () -> Unit,
     navigateToStaredCoupleDay: () -> Unit,
-    navigateToTodoDetail: (Long) -> Unit,
+    navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: () -> Unit,
 ) {
     composable<MainRoute>() {

@@ -8,6 +8,7 @@ import com.whatever.caramel.core.domain.vo.calendar.AnniversariesOnDate
 import com.whatever.caramel.core.domain.vo.calendar.Calendar
 import com.whatever.caramel.core.domain.vo.calendar.HolidaysOnDate
 import com.whatever.caramel.core.domain.vo.calendar.TodosOnDate
+import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.util.DateFormatter
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.BaseViewModel
@@ -63,7 +64,8 @@ class CalendarViewModel(
 
             is CalendarIntent.ClickTodoItemInBottomSheet -> postSideEffect(
                 CalendarSideEffect.NavigateToTodoDetail(
-                    intent.todoId
+                    id = intent.todoId,
+                    contentType = ContentType.CALENDAR,
                 )
             )
 
@@ -71,7 +73,8 @@ class CalendarViewModel(
             is CalendarIntent.ClickCalendarCell -> clickCalendarCell(intent.selectedDate)
             is CalendarIntent.ClickTodoItemInCalendar -> postSideEffect(
                 CalendarSideEffect.NavigateToTodoDetail(
-                    intent.todoId
+                    id = intent.todoId,
+                    contentType = ContentType.CALENDAR,
                 )
             )
 
@@ -270,18 +273,18 @@ class CalendarViewModel(
         anniversariesOnDate
             .filter { it.date.year == currentState.year && it.date.month == currentState.month }
             .forEach { anniversary ->
-            val date = anniversary.date
-            val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-            scheduleMap[date] = existingSchedule.copy(anniversaries = anniversary.anniversaries)
-        }
+                val date = anniversary.date
+                val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
+                scheduleMap[date] = existingSchedule.copy(anniversaries = anniversary.anniversaries)
+            }
 
         holidaysOnDate
             .filter { it.date.year == currentState.year && it.date.month == currentState.month }
             .forEach { holiday ->
-            val date = holiday.date
-            val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-            scheduleMap[date] = existingSchedule.copy(holidays = holiday.holidays)
-        }
+                val date = holiday.date
+                val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
+                scheduleMap[date] = existingSchedule.copy(holidays = holiday.holidays)
+            }
 
         if (!scheduleMap.containsKey(updatedSelectedDate)) {
             scheduleMap[updatedSelectedDate] = DaySchedule(date = updatedSelectedDate)
