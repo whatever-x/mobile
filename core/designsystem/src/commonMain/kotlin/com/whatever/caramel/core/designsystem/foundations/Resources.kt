@@ -52,6 +52,7 @@ import caramel.core.designsystem.generated.resources.img_blank_memo
 import caramel.core.designsystem.generated.resources.img_couple_on_ground
 import caramel.core.designsystem.generated.resources.img_gender_man
 import caramel.core.designsystem.generated.resources.img_gender_woman
+import caramel.core.designsystem.generated.resources.img_matchingsuccess
 import caramel.core.designsystem.generated.resources.img_onboarding01
 import caramel.core.designsystem.generated.resources.img_onboarding02
 import caramel.core.designsystem.generated.resources.img_onboarding03
@@ -128,6 +129,7 @@ object Resources {
         val img_quiz_woman = Res.drawable.img_quiz_woman
         val img_quiz_vs = Res.drawable.img_quiz_vs
         val img_blank_memo = Res.drawable.img_blank_memo
+        val img_matchingsuccess = Res.drawable.img_matchingsuccess
     }
 
 }
