@@ -27,12 +27,6 @@ class HomeViewModel(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle) {
 
-    init {
-        launch {
-
-        }
-    }
-
     override fun createInitialState(savedStateHandle: SavedStateHandle): HomeState {
         return HomeState()
     }
@@ -49,19 +43,14 @@ class HomeViewModel(
                     )
                 )
             }
-
             is HomeIntent.CreateTodoContent -> postSideEffect(HomeSideEffect.NavigateToCreateContent)
             is HomeIntent.SaveShareMessage -> saveShareMessage(newShareMessage = intent.newShareMessage)
             is HomeIntent.ShowShareMessageEditBottomSheet -> showBottomSheet()
             is HomeIntent.HideShareMessageEditBottomSheet -> hideBottomSheet()
             is HomeIntent.PullToRefresh -> refreshHomeData()
-            is HomeIntent.ClickBalanceGameOptionButton -> submitBalanceGameOption(
-                balanceGameOptionState = intent.option
-            )
-
-            is HomeIntent.ClickBalanceGameResultButton -> checkBalanceGameResult()
+            is HomeIntent.ClickBalanceGameOptionButton -> submitBalanceGameOption(balanceGameOptionState = intent.option)
             is HomeIntent.ChangeBalanceGameCardState -> changeBalanceGameCardState()
-            HomeIntent.LoadDataOnStart -> loadDataOnStart()
+            is HomeIntent.LoadDataOnStart -> loadDataOnStart()
         }
     }
 
@@ -98,7 +87,6 @@ class HomeViewModel(
 
             reduce {
                 copy(
-                    isBalanceGameCardRotated = false,
                     isLoading = false
                 )
             }
@@ -167,7 +155,6 @@ class HomeViewModel(
                             )
                         }.toImmutableList()
                     ),
-                    balanceGameCardState = HomeState.BalanceGameCardState.IDLE,
                     myChoiceOption =
                         BalanceGameOptionState(
                             id = todayBalanceGame.myChoice?.optionId ?: 0L,
@@ -204,14 +191,6 @@ class HomeViewModel(
                         ),
                 )
             }
-        }
-    }
-
-    private fun checkBalanceGameResult() {
-        reduce {
-            copy(
-                isBalanceGameCardRotated = !isBalanceGameCardRotated
-            )
         }
     }
 
