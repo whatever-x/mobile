@@ -1,5 +1,8 @@
 package com.whatever.caramel.feature.main
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -16,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.whatever.caramel.core.designsystem.components.BottomNavItem
 import com.whatever.caramel.core.designsystem.components.CaramelBottomNavigationWithTrailingButton
 import com.whatever.caramel.core.designsystem.components.CaramelNavItemCreateButton
+import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.ui.util.ObserveLifecycleEvent
 import com.whatever.caramel.feature.calendar.navigation.calendarContent
@@ -47,39 +51,45 @@ internal fun MainRoute(
 
     MainScaffold(
         bottomBar = {
-            CaramelBottomNavigationWithTrailingButton(
-                modifier = Modifier.navigationBarsPadding(),
-                currentItem = currentItem,
-                onClickNavItem = { bottomNavItem ->
-                    currentItem = bottomNavItem
-                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = CaramelTheme.color.background.tertiary),
+            ) {
+                CaramelBottomNavigationWithTrailingButton(
+                    modifier = Modifier.navigationBarsPadding(),
+                    currentItem = currentItem,
+                    onClickNavItem = { bottomNavItem ->
+                        currentItem = bottomNavItem
+                        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
 
-                    when (bottomNavItem) {
-                        BottomNavItem.HOME -> {
-                            mainNavHostController.navigateToHome {
-                                popUpTo(mainNavHostController.graph.id)
+                        when (bottomNavItem) {
+                            BottomNavItem.HOME -> {
+                                mainNavHostController.navigateToHome {
+                                    popUpTo(mainNavHostController.graph.id)
+                                }
+                            }
+
+                            BottomNavItem.CALENDAR -> {
+                                mainNavHostController.navigateToCalendar {
+                                    popUpTo(mainNavHostController.graph.id)
+                                }
+                            }
+
+                            BottomNavItem.MEMO -> {
+                                mainNavHostController.navigateToMemo {
+                                    popUpTo(mainNavHostController.graph.id)
+                                }
                             }
                         }
-
-                        BottomNavItem.CALENDAR -> {
-                            mainNavHostController.navigateToCalendar {
-                                popUpTo(mainNavHostController.graph.id)
-                            }
-                        }
-
-                        BottomNavItem.MEMO -> {
-                            mainNavHostController.navigateToMemo {
-                                popUpTo(mainNavHostController.graph.id)
-                            }
-                        }
+                    },
+                    trailingButton = {
+                        CaramelNavItemCreateButton(
+                            onClickButton = { navigateToCreateTodo() }
+                        )
                     }
-                },
-                trailingButton = {
-                    CaramelNavItemCreateButton(
-                        onClickButton = { navigateToCreateTodo() }
-                    )
-                }
-            )
+                )
+            }
         }
     ) { innerPadding ->
         NavHost(
