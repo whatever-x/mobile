@@ -83,7 +83,21 @@ class CalendarViewModel(
             is CalendarIntent.UpdateSelectPickerYear -> updateSelectPickerYear(intent.year)
             CalendarIntent.ClickOutSideBottomSheet -> clickOutSideBottomSheet()
             CalendarIntent.ClickDatePickerOutSide -> dismissCalendarDatePicker()
+            CalendarIntent.RefreshCalendar -> refreshCalendar()
         }
+    }
+
+    private fun refreshCalendar() {
+        reduce {
+            copy(
+                isRefreshing = true,
+                monthSchedules = emptyList()
+            )
+        }
+        getSchedules(
+            year = currentState.year,
+            startMonthNumber = currentState.month.number
+        )
     }
 
     private fun clickOutSideBottomSheet() {
@@ -189,6 +203,7 @@ class CalendarViewModel(
             val holidays = getHolidaysUseCase(year = year)
             reduce {
                 copy(
+                    isRefreshing = false,
                     selectedDate = updatedSelectedDate,
                     monthSchedules = createMonthSchedules(
                         todosOnDate = todos,
