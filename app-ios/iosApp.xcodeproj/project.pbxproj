@@ -10,6 +10,7 @@
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		583FC0462DEBEB5A002005A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 583FC0452DEBEB5A002005A1 /* Assets.xcassets */; };
+		585D52162DEC983700B85EFA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 585D52152DEC983700B85EFA /* GoogleService-Info.plist */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		BA981A912D6B7F0000F4630B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		BAA2B7AB2D72DA330017F868 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = BAA2B7AA2D72DA330017F868 /* FirebaseAnalytics */; };
@@ -23,7 +24,6 @@
 		E987BEBF2DEB640800CE545C /* NotificationCenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E987BEBE2DEB640800CE545C /* NotificationCenterDelegate.swift */; };
 		E9A293E82D78E3E50060A927 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = E9A293E72D78E3E50060A927 /* KakaoSDK */; };
 		E9A293EA2D78E4930060A927 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A293E92D78E4930060A927 /* AppDelegate.swift */; };
-		E9C6EE792DEC21FD00105944 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9C6EE782DEC21FD00105944 /* GoogleService-Info.plist */; };
 		E9E80DF02DD54CED00BCB125 /* AppsFlyerLib-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E9E80DEF2DD54CED00BCB125 /* AppsFlyerLib-Dynamic */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +44,7 @@
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.java; };
 		583FC0452DEBEB5A002005A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../Downloads/AppIcons/Assets.xcassets; sourceTree = "<group>"; };
+		585D52152DEC983700B85EFA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -55,7 +56,6 @@
 		E987BEBC2DEB63D200CE545C /* MessagingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingDelegate.swift; sourceTree = "<group>"; };
 		E987BEBE2DEB640800CE545C /* NotificationCenterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterDelegate.swift; sourceTree = "<group>"; };
 		E9A293E92D78E4930060A927 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E9C6EE782DEC21FD00105944 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +107,7 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				585D52152DEC983700B85EFA /* GoogleService-Info.plist */,
 				BA4C473D2DEBF67700435A54 /* Configuration */,
 				583FC0452DEBEB5A002005A1 /* Assets.xcassets */,
 				E96349E22D7C238E00F6BBF7 /* iosApp.entitlements */,
@@ -117,7 +118,6 @@
 				E9A293E92D78E4930060A927 /* AppDelegate.swift */,
 				E987BEBC2DEB63D200CE545C /* MessagingDelegate.swift */,
 				E987BEBE2DEB640800CE545C /* NotificationCenterDelegate.swift */,
-				E9C6EE782DEC21FD00105944 /* GoogleService-Info.plist */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -208,7 +208,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
-				E9C6EE792DEC21FD00105944 /* GoogleService-Info.plist in Resources */,
+				585D52162DEC983700B85EFA /* GoogleService-Info.plist in Resources */,
 				583FC0462DEBEB5A002005A1 /* Assets.xcassets in Resources */,
 				BA981A912D6B7F0000F4630B /* (null) in Resources */,
 			);
