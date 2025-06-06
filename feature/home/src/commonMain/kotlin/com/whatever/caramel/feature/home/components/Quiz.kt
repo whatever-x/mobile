@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
@@ -480,6 +481,7 @@ private fun BalanceGameResult(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
+                    modifier = Modifier.size(size = 50.dp),
                     painter = painterResource(
                         resource =
                             if (index == 0) myGenderImage
