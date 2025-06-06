@@ -195,7 +195,7 @@ internal fun LazyListScope.Quiz(
                 modifier = Modifier
                     .graphicsLayer { rotationY = contentRotationY }
                     .align(alignment = Alignment.TopCenter)
-                    .offset(y = (-15).dp),
+                    .offset(y = (-19).dp),
                 painter = painterResource(resource = Resources.Image.img_quiz_vs),
                 contentDescription = null
             )
