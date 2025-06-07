@@ -90,11 +90,6 @@ internal fun CaramelBottomTodoScope.DefaultBottomSheetTodoItem(
         TodoTitle()
         if (hasDescription) TodoDescription()
         if (hasUrl) {
-            HorizontalDivider(
-                modifier = Modifier.fillMaxWidth(),
-                thickness = 1.dp,
-                color = Color(color = 0xFFE3DBD1)
-            )
             TodoUrl()
         }
     }
@@ -134,7 +129,7 @@ internal fun CaramelBottomTodoScope.TodoDescription(
             ),
         text = descriptionText,
         style = CaramelTheme.typography.body3.regular,
-        color = CaramelTheme.color.text.secondary
+        color = CaramelTheme.color.text.primary
     )
 }
 
@@ -154,6 +149,7 @@ internal fun CaramelBottomTodoScope.TodoUrl(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(top = CaramelTheme.spacing.m)
                 .clickable(
                     interactionSource = null,
                     indication = null,
