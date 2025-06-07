@@ -88,12 +88,7 @@ class CalendarViewModel(
     }
 
     private fun refreshCalendar() {
-        reduce {
-            copy(
-                isRefreshing = true,
-                monthSchedules = emptyList()
-            )
-        }
+        reduce { copy(isRefreshing = true) }
         getSchedules(
             year = currentState.year,
             startMonthNumber = currentState.month.number
@@ -171,15 +166,14 @@ class CalendarViewModel(
         year: Int,
         startMonthNumber: Int,
         endMonthNumber: Int = startMonthNumber,
-        initialize: Boolean = false,
+        initialize: Boolean = false
     ) {
         launch {
-            val updatedSelectedDate = if (initialize) {
-                currentState.today
-            } else {
-                LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
+            val updatedSelectedDate = when {
+                initialize -> currentState.today
+                currentState.isRefreshing -> currentState.selectedDate
+                else -> LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
             }
-
             val firstDayOfMonth = DateFormatter.createDateString(
                 year = year,
                 month = startMonthNumber,
