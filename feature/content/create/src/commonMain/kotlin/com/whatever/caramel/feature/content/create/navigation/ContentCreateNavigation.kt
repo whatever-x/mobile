@@ -1,5 +1,7 @@
 package com.whatever.caramel.feature.content.create.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
@@ -24,7 +26,10 @@ fun NavHostController.navigateToContentCreate(navOptions: NavOptions? = null, co
 fun NavGraphBuilder.contentCreateScreen(
     navigateToBackStack: () -> Unit
 ) {
-    composable<ContentCreateRoute>() {
+    composable<ContentCreateRoute>(
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None }
+    ) {
         ContentCreateRoute(
             navigateToBackStack = navigateToBackStack
         )
