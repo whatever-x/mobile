@@ -1,5 +1,7 @@
 package com.whatever.caramel.feature.profile.edit.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
@@ -37,7 +39,10 @@ fun NavHostController.navigateToEditProfile(
 fun NavGraphBuilder.editProfileScreen(
     popBackStack: () -> Unit
 ) {
-    composable<ProfileEditRoute> {
+    composable<ProfileEditRoute>(
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None }
+    ) {
         ProfileEditRoute(
             popBackStack = popBackStack
         )
