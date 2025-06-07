@@ -18,12 +18,13 @@
 		BAA2B7B12D72DA330017F868 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = BAA2B7B02D72DA330017F868 /* FirebaseCrashlytics */; };
 		E93275352DD225A7004AE2BF /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93275342DD225A7004AE2BF /* AdSupport.framework */; };
 		E93275372DD225BB004AE2BF /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93275362DD225BB004AE2BF /* AppTrackingTransparency.framework */; };
+		E97442F12DF2DAC400B9CDEE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E97442F02DF2DAC400B9CDEE /* Assets.xcassets */; };
+		E97442F32DF2DB2B00B9CDEE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E97442F22DF2DB2B00B9CDEE /* GoogleService-Info.plist */; };
 		E987BEB22DEB080E00CE545C /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = E987BEB12DEB080E00CE545C /* FirebaseMessaging */; };
 		E987BEBD2DEB63D200CE545C /* MessagingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E987BEBC2DEB63D200CE545C /* MessagingDelegate.swift */; };
 		E987BEBF2DEB640800CE545C /* NotificationCenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E987BEBE2DEB640800CE545C /* NotificationCenterDelegate.swift */; };
 		E9A293E82D78E3E50060A927 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = E9A293E72D78E3E50060A927 /* KakaoSDK */; };
 		E9A293EA2D78E4930060A927 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A293E92D78E4930060A927 /* AppDelegate.swift */; };
-		E9C6EE792DEC21FD00105944 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9C6EE782DEC21FD00105944 /* GoogleService-Info.plist */; };
 		E9E80DF02DD54CED00BCB125 /* AppsFlyerLib-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E9E80DEF2DD54CED00BCB125 /* AppsFlyerLib-Dynamic */; };
 /* End PBXBuildFile section */
 
@@ -52,10 +53,11 @@
 		E93275342DD225A7004AE2BF /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		E93275362DD225BB004AE2BF /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 		E96349E22D7C238E00F6BBF7 /* iosApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iosApp.entitlements; sourceTree = "<group>"; };
+		E97442F02DF2DAC400B9CDEE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E97442F22DF2DB2B00B9CDEE /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E987BEBC2DEB63D200CE545C /* MessagingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingDelegate.swift; sourceTree = "<group>"; };
 		E987BEBE2DEB640800CE545C /* NotificationCenterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterDelegate.swift; sourceTree = "<group>"; };
 		E9A293E92D78E4930060A927 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E9C6EE782DEC21FD00105944 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,8 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				E97442F22DF2DB2B00B9CDEE /* GoogleService-Info.plist */,
+				E97442F02DF2DAC400B9CDEE /* Assets.xcassets */,
 				BA4C473D2DEBF67700435A54 /* Configuration */,
 				583FC0452DEBEB5A002005A1 /* Assets.xcassets */,
 				E96349E22D7C238E00F6BBF7 /* iosApp.entitlements */,
@@ -117,7 +121,6 @@
 				E9A293E92D78E4930060A927 /* AppDelegate.swift */,
 				E987BEBC2DEB63D200CE545C /* MessagingDelegate.swift */,
 				E987BEBE2DEB640800CE545C /* NotificationCenterDelegate.swift */,
-				E9C6EE782DEC21FD00105944 /* GoogleService-Info.plist */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -208,9 +211,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
-				E9C6EE792DEC21FD00105944 /* GoogleService-Info.plist in Resources */,
 				583FC0462DEBEB5A002005A1 /* Assets.xcassets in Resources */,
+				E97442F32DF2DB2B00B9CDEE /* GoogleService-Info.plist in Resources */,
 				BA981A912D6B7F0000F4630B /* (null) in Resources */,
+				E97442F12DF2DAC400B9CDEE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
