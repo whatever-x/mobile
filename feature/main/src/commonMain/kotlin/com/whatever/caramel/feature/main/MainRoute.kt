@@ -1,5 +1,7 @@
 package com.whatever.caramel.feature.main
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -85,7 +87,11 @@ internal fun MainRoute(
         NavHost(
             modifier = Modifier.padding(paddingValues = innerPadding),
             navController = mainNavHostController,
-            startDestination = HomeRoute
+            startDestination = HomeRoute,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
+            popEnterTransition = { EnterTransition.None},
+            popExitTransition = { ExitTransition.None },
         ) {
             homeContent(
                 navigateToSetting = navigateToSetting,
