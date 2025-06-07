@@ -23,8 +23,6 @@ sealed interface HomeIntent : UiIntent {
 
     data class ClickBalanceGameOptionButton(val option: BalanceGameOptionState) : HomeIntent
 
-    data object ClickBalanceGameResultButton : HomeIntent
-
     data object ChangeBalanceGameCardState : HomeIntent
 
 }
