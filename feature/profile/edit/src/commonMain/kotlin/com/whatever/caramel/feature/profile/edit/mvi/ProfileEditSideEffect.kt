@@ -6,4 +6,6 @@ sealed interface ProfileEditSideEffect : UiSideEffect {
 
     data object PopBackStack : ProfileEditSideEffect
 
+    data object PerformHapticFeedback : ProfileEditSideEffect
+
 }
