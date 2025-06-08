@@ -1,7 +1,7 @@
 package com.whatever.caramel.feature.content.create.navigation
 
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
@@ -27,8 +27,18 @@ fun NavGraphBuilder.contentCreateScreen(
     navigateToBackStack: () -> Unit
 ) {
     composable<ContentCreateRoute>(
-        enterTransition = { fadeIn() },
-        exitTransition = { fadeOut() }
+        enterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Up,
+                animationSpec = tween(400)
+            )
+        },
+        exitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Down,
+                animationSpec = tween(400)
+            )
+        }
     ) {
         ContentCreateRoute(
             navigateToBackStack = navigateToBackStack
