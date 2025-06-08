@@ -76,7 +76,7 @@ fun CaramelComposeApp(
                         when (sideEffect) {
                             is AppSideEffect.NavigateToInviteCoupleScreen -> {
                                 navHostController.navigateToInviteCouple {
-                                    popUpTo(navHostController.graph.id) {
+                                    popUpTo(route = navHostController.graph.startDestinationRoute ?: "") {
                                         inclusive = true
                                     }
                                 }
@@ -84,22 +84,34 @@ fun CaramelComposeApp(
 
                             is AppSideEffect.NavigateToConnectingCoupleScreen -> {
                                 navHostController.navigateToConnectingCouple {
-                                    popUpTo(navHostController.graph.id) {
+                                    popUpTo(route = navHostController.graph.startDestinationRoute ?: "") {
                                         inclusive = true
                                     }
                                 }
                             }
 
                             is AppSideEffect.NavigateToCreateProfile -> {
-                                navHostController.navigateToCreateProfile()
+                                navHostController.navigateToCreateProfile {
+                                    popUpTo(route = navHostController.graph.startDestinationRoute ?: "") {
+                                        inclusive = true
+                                    }
+                                }
                             }
 
                             is AppSideEffect.NavigateToLogin -> {
-                                navHostController.navigateToLogin()
+                                navHostController.navigateToLogin {
+                                    popUpTo(route = navHostController.graph.startDestinationRoute ?: "") {
+                                        inclusive = true
+                                    }
+                                }
                             }
 
                             is AppSideEffect.NavigateToMain -> {
-                                navHostController.navigateToMain()
+                                navHostController.navigateToMain {
+                                    popUpTo(route = navHostController.graph.startDestinationRoute ?: "") {
+                                        inclusive = true
+                                    }
+                                }
                             }
                         }
                     }

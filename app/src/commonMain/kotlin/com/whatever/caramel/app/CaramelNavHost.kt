@@ -18,6 +18,7 @@ import com.whatever.caramel.feature.login.navigation.loginScreen
 import com.whatever.caramel.feature.login.navigation.navigateToLogin
 import com.whatever.caramel.feature.main.navigation.mainGraph
 import com.whatever.caramel.feature.main.navigation.navigateToMain
+import com.whatever.caramel.feature.profile.create.navigation.ProfileCreateRoute
 import com.whatever.caramel.feature.profile.create.navigation.createProfileScreen
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditType
 import com.whatever.caramel.feature.profile.edit.navigation.editProfileScreen
@@ -43,13 +44,25 @@ internal fun CaramelNavHost(
         with(navHostController) {
             splashScreen(
                 navigateToStartDestination = { onIntent(AppIntent.NavigateToStartDestination) },
-                navigateToLogin = { navigateToLogin() },
+                navigateToLogin = {
+                    navigateToLogin {
+                        popUpTo(route = SplashRoute) {
+                            inclusive = true
+                        }
+                    }
+                },
             )
             loginScreen(
                 navigateToStartDestination = { onIntent(AppIntent.NavigateToStartDestination) },
             )
             createProfileScreen(
-                navigateToLogin = { navigateToLogin() },
+                navigateToLogin = {
+                    navigateToLogin {
+                        popUpTo(route = ProfileCreateRoute) {
+                            inclusive = true
+                        }
+                    }
+                },
                 navigateToStartDestination = { onIntent(AppIntent.NavigateToStartDestination) }
             )
             connectingScreen(
