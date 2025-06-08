@@ -55,10 +55,8 @@ class MemoViewModel(
                 cursor = null
             )
         }
-        launch {
-            getMemos()
-            getTags()
-        }
+        getMemos()
+        getTags()
     }
 
     private fun getTags() {
