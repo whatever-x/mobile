@@ -79,6 +79,7 @@ class MemoViewModel(
     }
 
     private fun loadPagingData() {
+        if (currentState.isMemoLoading) return
         if (currentState.cursor == null && currentState.memos.isNotEmpty()) return
         getMemos()
     }
