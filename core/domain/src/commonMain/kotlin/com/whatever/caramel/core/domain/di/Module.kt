@@ -35,7 +35,7 @@ val useCaseModule = module {
     // Auth
     factory { SignInWithSocialPlatformUseCase(get(), get(), get()) }
     factory { RefreshUserSessionUseCase(get(), get()) }
-    factory { LogoutUseCase(get()) }
+    factory { LogoutUseCase(get(), get(), get()) }
     factory { SignOutUseCase(get(), get(), get()) }
 
     // User
