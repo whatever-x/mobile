@@ -6,7 +6,16 @@ plugins {
     id("caramel.kotlin.serialization")
 }
 
-android.namespace = "com.whatever.caramel.feature.setting"
+android {
+    namespace = "com.whatever.caramel.feature.setting"
+
+    defaultConfig {
+        buildFeatures {
+            buildConfig = true
+        }
+        buildConfigField("String", "VERSION_NAME", "\"${libs.versions.version.name.get()}\"")
+    }
+}
 
 kotlin {
     sourceSets {
