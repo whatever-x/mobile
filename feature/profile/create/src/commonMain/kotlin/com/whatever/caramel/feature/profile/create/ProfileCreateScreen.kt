@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
@@ -17,6 +18,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.profile.create.components.ProfileCreateBottomBar
 import com.whatever.caramel.feature.profile.create.components.ProfileCreateTopBar
@@ -34,9 +37,14 @@ internal fun ProfileCreateScreen(
     state: ProfileCreateState,
     onIntent: (ProfileCreateIntent) -> Unit,
 ) {
+    val focusManager = LocalFocusManager.current
+
     Scaffold(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = { focusManager.clearFocus() })
+            },
         containerColor = CaramelTheme.color.background.primary,
         bottomBar = {
             ProfileCreateBottomBar(
@@ -128,4 +136,3 @@ internal fun ProfileCreateScreen(
         }
     }
 }
-
