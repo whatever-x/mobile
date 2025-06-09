@@ -92,6 +92,7 @@ internal fun MemoItem(
                 )
                 Text(
                     text = categoriesText,
+                    maxLines = 1,
                     style = CaramelTheme.typography.label1.regular,
                     color = CaramelTheme.color.text.secondary,
                     overflow = TextOverflow.Ellipsis
