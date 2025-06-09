@@ -162,7 +162,6 @@ internal fun SettingScreen(
             )
             SettingListText(
                 mainText = "앱 버전",
-                tailText = "업데이트",
                 mainTextColor = CaramelTheme.color.text.primary,
                 onClickTailText = { onIntent(SettingIntent.ClickAppUpdateButton) }
             )

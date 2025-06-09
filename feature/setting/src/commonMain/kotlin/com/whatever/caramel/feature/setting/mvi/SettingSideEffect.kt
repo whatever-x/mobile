@@ -10,9 +10,9 @@ sealed interface SettingSideEffect : UiSideEffect {
 
     data class NavigateToEditBirthday(val birthday: String) : SettingSideEffect
 
-    data object NavigateToServiceTermNotion : SettingSideEffect
+    data object OpenTermsOfService : SettingSideEffect
 
-    data object NavigateToPersonalInfoTermNotion : SettingSideEffect
+    data object OpenPrivacyPolicy : SettingSideEffect
 
     data object NavigateLogin : SettingSideEffect
 
