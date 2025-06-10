@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.FileInputStream
+import java.time.LocalDate
 import java.util.Properties
 
 plugins {
@@ -122,6 +123,38 @@ android {
                 keyAlias = this["KEY_ALIAS"] as String
                 keyPassword = this["KEY_PASSWORD"] as String
                 storePassword = this["STORE_PASSWORD"] as String
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            isDebuggable = false
+            signingConfig = signingConfigs.getByName("release")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+
+        debug {
+            isMinifyEnabled = false
+            isDebuggable = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+
+    applicationVariants.all {
+        outputs.forEach { output ->
+            if (output is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
+
+                val localDateTime = LocalDate.now()
+                output.outputFileName =
+                    "purithm_v${versionName}(${localDateTime})-${name}.${output.outputFile.extension}"
             }
         }
     }

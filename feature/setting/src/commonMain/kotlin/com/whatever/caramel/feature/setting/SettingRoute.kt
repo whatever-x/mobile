@@ -6,12 +6,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import caramel.feature.setting.generated.resources.Res
-import caramel.feature.setting.generated.resources.privacy_policy_url
-import caramel.feature.setting.generated.resources.terms_of_service_url
+import com.whatever.caramel.core.designsystem.foundations.Resources
+import com.whatever.caramel.core.ui.util.ObserveLifecycleEvent
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
 import com.whatever.caramel.feature.setting.mvi.SettingSideEffect
-import com.whatever.caramel.core.ui.util.ObserveLifecycleEvent
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -26,8 +24,8 @@ internal fun SettingRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val uriHandler = LocalUriHandler.current
-    val privacyPolicyUrl = stringResource(Res.string.privacy_policy_url)
-    val termsOfServiceUrl = stringResource(Res.string.terms_of_service_url)
+    val privacyPolicyUrl = stringResource(Resources.String.privacy_policy_url)
+    val termsOfServiceUrl = stringResource(Resources.String.terms_of_service_url)
 
     ObserveLifecycleEvent { event ->
         if (event == Lifecycle.Event.ON_START) {
