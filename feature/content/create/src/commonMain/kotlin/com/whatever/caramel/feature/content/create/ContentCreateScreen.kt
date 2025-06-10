@@ -101,7 +101,10 @@ internal fun ContentScreen(
                     }
                 )
                 HorizontalDivider(
-                    modifier = Modifier.padding(vertical = CaramelTheme.spacing.xl),
+                    modifier = Modifier.padding(
+                        vertical = CaramelTheme.spacing.xl,
+                        horizontal = CaramelTheme.spacing.xl
+                    ),
                     color = CaramelTheme.color.divider.primary
                 )
             }
@@ -216,7 +219,7 @@ internal fun ContentScreen(
                     onIntent(ContentCreateIntent.InputContent(it))
                 },
                 focusRequester = contentFocusRequester,
-                placeholder = "함께 하고 싶거나 기억하면 좋은 것들을 자유롭게 입력해 주세요.",
+                placeholder = "함께 하고 싶거나 기억하면 좋은 것들을\n자유롭게 입력해 주세요.",
             )
         }
     }

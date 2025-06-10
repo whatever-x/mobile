@@ -30,7 +30,8 @@ fun TitleTextField(
         textStyle = textStyle.copy(
             color = CaramelTheme.color.text.primary
         ),
-        singleLine = true,
+        singleLine = false,
+        maxLines = 2,
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
         keyboardActions = KeyboardActions(
             onNext = {
