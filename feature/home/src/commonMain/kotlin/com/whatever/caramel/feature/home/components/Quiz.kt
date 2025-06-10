@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
@@ -181,7 +182,7 @@ internal fun LazyListScope.Quiz(
                 modifier = Modifier
                     .graphicsLayer { rotationY = contentRotationY }
                     .align(alignment = Alignment.TopCenter)
-                    .offset(y = (-15).dp),
+                    .offset(y = (-19).dp),
                 painter = painterResource(resource = Resources.Image.img_quiz_vs),
                 contentDescription = null
             )
@@ -467,6 +468,7 @@ private fun BalanceGameResult(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
+                    modifier = Modifier.size(size = 50.dp),
                     painter = painterResource(
                         resource =
                             if (index == 0) myGenderImage
