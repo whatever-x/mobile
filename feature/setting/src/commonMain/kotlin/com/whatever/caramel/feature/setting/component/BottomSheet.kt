@@ -1,5 +1,6 @@
 package com.whatever.caramel.feature.setting.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,7 @@ internal fun SettingEditProfileBottomSheet(
 ) {
     Column (
         modifier = Modifier
+            .background(color = CaramelTheme.color.background.tertiary)
             .padding(horizontal = CaramelTheme.spacing.xl)
     ){
         Text(

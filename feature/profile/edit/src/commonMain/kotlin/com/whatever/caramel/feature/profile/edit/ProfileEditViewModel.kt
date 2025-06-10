@@ -75,6 +75,7 @@ class ProfileEditViewModel(
                 birthDay = birthDay.copy(year = year)
             )
         }
+        postSideEffect(ProfileEditSideEffect.PerformHapticFeedback)
     }
 
     private fun updateBirthdayMonth(month: Int) {
@@ -83,6 +84,7 @@ class ProfileEditViewModel(
                 birthDay = birthDay.copy(month = month)
             )
         }
+        postSideEffect(ProfileEditSideEffect.PerformHapticFeedback)
     }
 
     private fun updateBirthdayDay(day: Int) {
@@ -91,6 +93,7 @@ class ProfileEditViewModel(
                 birthDay = birthDay.copy(day = day)
             )
         }
+        postSideEffect(ProfileEditSideEffect.PerformHapticFeedback)
     }
 
     private fun updateStartDateYear(year: Int) {
@@ -99,6 +102,7 @@ class ProfileEditViewModel(
                 startDate = startDate.copy(year = year)
             )
         }
+        postSideEffect(ProfileEditSideEffect.PerformHapticFeedback)
     }
 
     private fun updateStartDateMonth(month: Int) {
@@ -107,6 +111,7 @@ class ProfileEditViewModel(
                 startDate = startDate.copy(month = month)
             )
         }
+        postSideEffect(ProfileEditSideEffect.PerformHapticFeedback)
     }
 
     private fun updateStartDateDay(day: Int) {
@@ -115,6 +120,7 @@ class ProfileEditViewModel(
                 startDate = startDate.copy(day = day)
             )
         }
+        postSideEffect(ProfileEditSideEffect.PerformHapticFeedback)
     }
 
     private suspend fun clickSaveButton() {

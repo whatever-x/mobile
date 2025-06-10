@@ -2,7 +2,6 @@ package com.whatever.caramel.feature.home.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,11 +27,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,20 +51,14 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.feature.home.mvi.BalanceGameOptionState
 import com.whatever.caramel.feature.home.mvi.HomeState
-import io.github.aakira.napier.Napier
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import kotlin.math.floor
 
 internal fun LazyListScope.Quiz(
-    rotated: Boolean,
     myNickname: String,
     myGender: Gender,
     partnerNickname: String,
@@ -80,21 +70,11 @@ internal fun LazyListScope.Quiz(
     balanceGameAnswerState: HomeState.BalanceGameAnswerState,
     balanceGameCardState: HomeState.BalanceGameCardState,
     onOptionClick: (BalanceGameOptionState) -> Unit,
-    onClickResult: () -> Unit,
     onChangeCardState: () -> Unit,
 ) {
     item(key = "Quiz") {
         val rotation = remember { Animatable(0f) }
-
-        LaunchedEffect(rotated) {
-            if (rotated) {
-                rotation.snapTo(0f)
-                rotation.animateTo(
-                    targetValue = rotation.value + 180f,
-                    animationSpec = tween(durationMillis = 1000)
-                )
-            }
-        }
+        val scope = rememberCoroutineScope()
 
         LaunchedEffect(Unit) {
             snapshotFlow { rotation.value >= 90f }
@@ -165,7 +145,14 @@ internal fun LazyListScope.Quiz(
                             balanceGameAnswerState = balanceGameAnswerState,
                             myChoiceOption = myChoiceOption,
                             onClickOption = onOptionClick,
-                            onClickResult = onClickResult
+                            onClickResult = {
+                                scope.launch {
+                                    rotation.animateTo(
+                                        targetValue = rotation.value + 180f,
+                                        animationSpec = tween(durationMillis = 1000)
+                                    )
+                                }
+                            }
                         )
                     }
                     HomeState.BalanceGameCardState.CONFIRM -> {

@@ -55,10 +55,8 @@ class MemoViewModel(
                 cursor = null
             )
         }
-        launch {
-            getMemos()
-            getTags()
-        }
+        getMemos()
+        getTags()
     }
 
     private fun getTags() {
@@ -81,6 +79,7 @@ class MemoViewModel(
     }
 
     private fun loadPagingData() {
+        if (currentState.isMemoLoading) return
         if (currentState.cursor == null && currentState.memos.isNotEmpty()) return
         getMemos()
     }

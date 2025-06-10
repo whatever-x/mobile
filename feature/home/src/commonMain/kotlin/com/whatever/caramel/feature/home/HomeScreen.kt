@@ -112,7 +112,6 @@ internal fun HomeScreen(
                 )
 
                 Quiz(
-                    rotated = state.isBalanceGameCardRotated,
                     question = state.balanceGameState.question,
                     options = state.balanceGameState.options,
                     balanceGameAnswerState = state.balanceGameAnswerState,
@@ -124,7 +123,6 @@ internal fun HomeScreen(
                     myChoiceOption = state.myChoiceOption,
                     partnerChoiceOption = state.partnerChoiceOption,
                     onOptionClick = { option -> onIntent(HomeIntent.ClickBalanceGameOptionButton(option = option)) },
-                    onClickResult = { onIntent(HomeIntent.ClickBalanceGameResultButton) },
                     onChangeCardState = { onIntent(HomeIntent.ChangeBalanceGameCardState) }
                 )
 

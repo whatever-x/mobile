@@ -83,7 +83,16 @@ class CalendarViewModel(
             is CalendarIntent.UpdateSelectPickerYear -> updateSelectPickerYear(intent.year)
             CalendarIntent.ClickOutSideBottomSheet -> clickOutSideBottomSheet()
             CalendarIntent.ClickDatePickerOutSide -> dismissCalendarDatePicker()
+            CalendarIntent.RefreshCalendar -> refreshCalendar()
         }
+    }
+
+    private fun refreshCalendar() {
+        reduce { copy(isRefreshing = true) }
+        getSchedules(
+            year = currentState.year,
+            startMonthNumber = currentState.month.number
+        )
     }
 
     private fun clickOutSideBottomSheet() {
@@ -157,15 +166,14 @@ class CalendarViewModel(
         year: Int,
         startMonthNumber: Int,
         endMonthNumber: Int = startMonthNumber,
-        initialize: Boolean = false,
+        initialize: Boolean = false
     ) {
         launch {
-            val updatedSelectedDate = if (initialize) {
-                currentState.today
-            } else {
-                LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
+            val updatedSelectedDate = when {
+                initialize -> currentState.today
+                currentState.isRefreshing -> currentState.selectedDate
+                else -> LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
             }
-
             val firstDayOfMonth = DateFormatter.createDateString(
                 year = year,
                 month = startMonthNumber,
@@ -189,6 +197,7 @@ class CalendarViewModel(
             val holidays = getHolidaysUseCase(year = year)
             reduce {
                 copy(
+                    isRefreshing = false,
                     selectedDate = updatedSelectedDate,
                     monthSchedules = createMonthSchedules(
                         todosOnDate = todos,
