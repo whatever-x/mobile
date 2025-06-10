@@ -1,8 +1,8 @@
-package com.whatver.caramel.feature.setting.util
+package com.whatever.caramel.feature.setting.util
 
 import platform.Foundation.NSBundle
 
 actual object Platform {
-    val versionName: String
+    actual val versionName: String
         get() = NSBundle.mainBundle.objectForInfoDictionaryKey("CFBundleShortVersionString") as String
 }
