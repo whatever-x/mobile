@@ -1,6 +1,7 @@
 package com.whatever.caramel.app
 
 import androidx.compose.foundation.LocalOverscrollFactory
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -61,7 +62,8 @@ fun CaramelComposeApp(
                                 start = 20.dp,
                                 end = 20.dp,
                                 bottom = 20.dp
-                            ),
+                            )
+                            .imePadding(),
                         hostState = LocalSnackbarHostState.current,
                         snackbar = { snackbarData ->
                             CaramelSnackbar(
