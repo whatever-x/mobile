@@ -19,12 +19,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import caramel.feature.home.generated.resources.Res
+import caramel.feature.home.generated.resources.start_couple_date_guid
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.home.mvi.TodoState
 import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 internal fun LazyListScope.Todo(
     todoList: ImmutableList<TodoState>,
@@ -47,7 +50,7 @@ internal fun LazyListScope.Todo(
         ) {
             if (!isSetAnniversary) {
                 NudgeCard(
-                    text = "커플 시작일을 입력해주세요.\n기념일을 바로 알 수 있어요!",
+                    text = stringResource(resource = Res.string.start_couple_date_guid),
                     iconResource = Resources.Icon.ic_arrow_right_16,
                     onClick = onClickAnniversaryNudgeCard
                 )

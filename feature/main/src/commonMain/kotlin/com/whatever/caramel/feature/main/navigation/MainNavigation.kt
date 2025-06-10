@@ -1,5 +1,7 @@
 package com.whatever.caramel.feature.main.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
@@ -24,7 +26,11 @@ fun NavGraphBuilder.mainGraph(
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: () -> Unit,
 ) {
-    composable<MainRoute>() {
+    composable<MainRoute>(
+        exitTransition = { ExitTransition.None },
+        popEnterTransition = { EnterTransition.None },
+        popExitTransition = { ExitTransition.None }
+    ) {
         MainRoute(
             navigateToSetting = navigateToSetting,
             navigateToStaredCoupleDay = navigateToStaredCoupleDay,
