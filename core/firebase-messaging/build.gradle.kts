@@ -47,7 +47,6 @@ swiftPackageConfig {
     create("firebaseBridge") {
         customPackageSourcePath = "../../app-ios"
         minIos = "15.0"
-        minMacos = "10.15"
 
         dependency {
             remotePackageVersion(
