@@ -68,4 +68,14 @@ internal fun ContentDetailRoute(
             DefaultCaramelDialogLayout()
         }
     }
+
+    CaramelDialog(
+        show = state.showDeletedContentDialog,
+        title = "삭제된 메모에요",
+        mainButtonText = "확인",
+        onDismissRequest = { viewModel.intent(ContentDetailIntent.DismissDeletedContentDialog) },
+        onMainButtonClick = { viewModel.intent(ContentDetailIntent.DismissDeletedContentDialog) }
+    ) {
+        DefaultCaramelDialogLayout()
+    }
 } 
