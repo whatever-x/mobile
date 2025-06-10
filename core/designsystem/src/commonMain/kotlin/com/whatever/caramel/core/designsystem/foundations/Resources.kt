@@ -62,6 +62,8 @@ import caramel.core.designsystem.generated.resources.img_quiz_vs
 import caramel.core.designsystem.generated.resources.img_quiz_woman
 import caramel.core.designsystem.generated.resources.img_splash
 import caramel.core.designsystem.generated.resources.img_typelogo
+import caramel.core.designsystem.generated.resources.privacy_policy_url
+import caramel.core.designsystem.generated.resources.terms_of_service_url
 
 object Resources {
 
@@ -132,4 +134,8 @@ object Resources {
         val img_matchingsuccess = Res.drawable.img_matchingsuccess
     }
 
+    object String {
+        val privacy_policy_url = Res.string.privacy_policy_url
+        val terms_of_service_url = Res.string.terms_of_service_url
+    }
 }

@@ -5,13 +5,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.backhandler.BackHandler
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.util.HapticController
 import com.whatever.caramel.core.designsystem.util.HapticStyle
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateSideEffect
 import org.koin.compose.getKoin
 import io.github.aakira.napier.Napier
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -23,6 +26,9 @@ internal fun ProfileCreateRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val hapticController: HapticController = getKoin().get()
+    val urlHandler = LocalUriHandler.current
+    val privacyPolicyUrl = stringResource(Resources.String.privacy_policy_url)
+    val termsOfServiceUrl = stringResource(Resources.String.terms_of_service_url)
 
     BackHandler {
         viewModel.intent(ProfileCreateIntent.ClickSystemNavigationBackButton)
@@ -33,8 +39,8 @@ internal fun ProfileCreateRoute(
             when (sideEffect) {
                 is ProfileCreateSideEffect.NavigateToLogin -> navigateToLogin()
                 is ProfileCreateSideEffect.NavigateToStartDestination -> navigateToStartDestination()
-                is ProfileCreateSideEffect.NavigateToPersonalInfoTermNotion -> {} // @ham2174 TODO : 노션 링크 이동
-                is ProfileCreateSideEffect.NavigateToServiceTermNotion -> {} // @ham2174 TODO : 노션 링크 이동
+                is ProfileCreateSideEffect.NavigateToPersonalInfoTermNotion -> urlHandler.openUri(privacyPolicyUrl)
+                is ProfileCreateSideEffect.NavigateToServiceTermNotion -> urlHandler.openUri(termsOfServiceUrl)
                 is ProfileCreateSideEffect.PerformHapticFeedback -> hapticController.performImpact(HapticStyle.GestureThresholdActivate)
                 is ProfileCreateSideEffect.ShowErrorSnackBar -> Napier.d { "error ${sideEffect.message}" } // @RyuSw-cs TODO : 스낵바 표시
             }

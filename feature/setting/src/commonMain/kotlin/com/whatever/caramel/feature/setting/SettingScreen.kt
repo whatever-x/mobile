@@ -34,6 +34,7 @@ import com.whatever.caramel.feature.setting.component.SettingUserProfile
 import com.whatever.caramel.feature.setting.component.SettingUserProfileSkeleton
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
 import com.whatever.caramel.feature.setting.mvi.SettingState
+import com.whatever.caramel.feature.setting.util.Platform
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -161,8 +162,7 @@ internal fun SettingScreen(
                 )
             )
             SettingListText(
-                mainText = "앱 버전",
-                tailText = "업데이트",
+                mainText = "앱 버전 v.${Platform.versionName}",
                 mainTextColor = CaramelTheme.color.text.primary,
                 onClickTailText = { onIntent(SettingIntent.ClickAppUpdateButton) }
             )
