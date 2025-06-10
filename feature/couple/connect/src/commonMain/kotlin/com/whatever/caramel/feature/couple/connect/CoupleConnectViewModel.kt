@@ -1,6 +1,8 @@
 package com.whatever.caramel.feature.couple.connect
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.couple.connect.mvi.CoupleConnectIntent
@@ -21,6 +23,18 @@ class CoupleConnectViewModel(
             is CoupleConnectIntent.ClickConnectButton -> connectCouple()
             is CoupleConnectIntent.ClickBackButton -> postSideEffect(CoupleConnectSideEffect.NavigateToInviteCouple)
             is CoupleConnectIntent.ChangeInvitationCode -> changeInvitationCode(code = intent.invitationCode)
+        }
+    }
+
+    override fun handleClientException(throwable: Throwable) {
+        super.handleClientException(throwable)
+
+        val exception = throwable as CaramelException
+
+        when (exception.code) {
+            CoupleErrorCode.INVITATION_CODE_EXPIRED -> {
+                postSideEffect(CoupleConnectSideEffect.ShowSnackBarMessage(message = exception.message))
+            }
         }
     }
 

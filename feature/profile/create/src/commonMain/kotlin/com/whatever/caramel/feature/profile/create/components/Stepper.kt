@@ -3,13 +3,12 @@ package com.whatever.caramel.feature.profile.create.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.foundations.Resources
+import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateStep
 import org.jetbrains.compose.resources.painterResource
 
@@ -21,16 +20,15 @@ internal fun Stepper(
     Row(
         modifier = modifier
             .padding(
-                top = 8.dp,
-                bottom = 20.dp
+                top = CaramelTheme.spacing.s,
+                bottom = CaramelTheme.spacing.xl
             ),
         horizontalArrangement = Arrangement.spacedBy(
-            space = 8.dp
+            space = CaramelTheme.spacing.xs
         )
     ) {
         ProfileCreateStep.entries.forEach { step ->
             Icon(
-                modifier = Modifier.size(size = 18.dp),
                 painter = painterResource(
                     resource = if (step.ordinal <= currentIndex) {
                         Resources.Icon.ic_progress_dot_active_18

@@ -1,6 +1,7 @@
 package com.whatever.caramel.app
 
 import androidx.compose.foundation.LocalOverscrollFactory
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -61,7 +62,8 @@ fun CaramelComposeApp(
                                 start = 20.dp,
                                 end = 20.dp,
                                 bottom = 20.dp
-                            ),
+                            )
+                            .imePadding(),
                         hostState = LocalSnackbarHostState.current,
                         snackbar = { snackbarData ->
                             CaramelSnackbar(
@@ -76,7 +78,7 @@ fun CaramelComposeApp(
                         when (sideEffect) {
                             is AppSideEffect.NavigateToInviteCoupleScreen -> {
                                 navHostController.navigateToInviteCouple {
-                                    popUpTo(navHostController.graph.id) {
+                                    popUpTo(route = navHostController.graph.startDestinationRoute ?: "") {
                                         inclusive = true
                                     }
                                 }
@@ -84,22 +86,34 @@ fun CaramelComposeApp(
 
                             is AppSideEffect.NavigateToConnectingCoupleScreen -> {
                                 navHostController.navigateToConnectingCouple {
-                                    popUpTo(navHostController.graph.id) {
+                                    popUpTo(route = navHostController.graph.startDestinationRoute ?: "") {
                                         inclusive = true
                                     }
                                 }
                             }
 
                             is AppSideEffect.NavigateToCreateProfile -> {
-                                navHostController.navigateToCreateProfile()
+                                navHostController.navigateToCreateProfile {
+                                    popUpTo(route = navHostController.graph.startDestinationRoute ?: "") {
+                                        inclusive = true
+                                    }
+                                }
                             }
 
                             is AppSideEffect.NavigateToLogin -> {
-                                navHostController.navigateToLogin()
+                                navHostController.navigateToLogin {
+                                    popUpTo(route = navHostController.graph.startDestinationRoute ?: "") {
+                                        inclusive = true
+                                    }
+                                }
                             }
 
                             is AppSideEffect.NavigateToMain -> {
-                                navHostController.navigateToMain()
+                                navHostController.navigateToMain {
+                                    popUpTo(route = navHostController.graph.startDestinationRoute ?: "") {
+                                        inclusive = true
+                                    }
+                                }
                             }
                         }
                     }
