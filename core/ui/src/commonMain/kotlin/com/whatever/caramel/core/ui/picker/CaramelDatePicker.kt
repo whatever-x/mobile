@@ -9,6 +9,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelTextWheelPicker
 import com.whatever.caramel.core.designsystem.components.PickerScrollMode.BOUNDED
@@ -28,6 +30,7 @@ fun CaramelDatePicker(
     onMonthChanged: (Int) -> Unit,
     onDayChanged: (Int) -> Unit,
 ) {
+    val hapticFeedback = LocalHapticFeedback.current
     val yearState = rememberPickerState(dateUiState.year)
     val monthState = rememberPickerState(dateUiState.month)
     val dayState = rememberPickerState(dateUiState.day)
@@ -55,7 +58,10 @@ fun CaramelDatePicker(
             state = yearState,
             dividerWidth = 50.dp,
             scrollMode = LOOPING,
-            onItemSelected = { year -> onYearChanged(year) }
+            onItemSelected = { year -> 
+                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                onYearChanged(year) 
+            }
         )
 
         CaramelTextWheelPicker(
@@ -63,7 +69,10 @@ fun CaramelDatePicker(
             state = monthState,
             dividerWidth = 50.dp,
             scrollMode = LOOPING,
-            onItemSelected = { month -> onMonthChanged(month) }
+            onItemSelected = { month -> 
+                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                onMonthChanged(month) 
+            }
         )
 
         CaramelTextWheelPicker(
@@ -71,7 +80,10 @@ fun CaramelDatePicker(
             state = dayState,
             dividerWidth = 60.dp,
             scrollMode = BOUNDED, // @ham2174 FIXME : MVP 이후 day 피커 LOOPING 모드로 수정
-            onItemSelected = { day -> onDayChanged(day) }
+            onItemSelected = { day -> 
+                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                onDayChanged(day) 
+            }
         )
     }
 }

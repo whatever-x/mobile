@@ -31,6 +31,13 @@ internal fun ContentCreateRoute(
                         message = sideEffect.message ?: ""
                     )
                 }
+                is ContentCreateSideEffect.ShowToast -> {
+                    showSnackbarMessage(
+                        snackbarHostState = snackbarHostState,
+                        coroutineScope = this,
+                        message = sideEffect.message
+                    )
+                }
             }
         }
     }
