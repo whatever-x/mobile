@@ -131,6 +131,21 @@ class ContentCreateViewModel(
         reduce {
             copy(
                 createMode = intent.createMode,
+                dateTime = if (intent.createMode == CreateMode.CALENDAR) {
+                    val now = dateTime
+                    val roundedMinute = ((now.minute + 2) / 5) * 5
+                    val adjustedHour = if (roundedMinute >= 60) now.hour + 1 else now.hour
+                    val finalMinute = if (roundedMinute >= 60) 0 else roundedMinute
+                    
+                    now.copy(
+                        hour = adjustedHour,
+                        minute = finalMinute,
+                        second = 0,
+                        nanosecond = 0
+                    )
+                } else {
+                    dateTime
+                }
             )
         }
     }
