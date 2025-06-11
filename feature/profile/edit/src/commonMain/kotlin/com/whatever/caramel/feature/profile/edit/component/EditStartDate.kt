@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,6 +35,7 @@ internal fun EditStartDate(
         verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xl)
     ) {
         Icon(
+            modifier = Modifier.size(width = 68.dp, height = 32.dp),
             painter = painterResource(Resources.Image.img_couple_on_ground),
             contentDescription = null,
             tint = Color.Unspecified
