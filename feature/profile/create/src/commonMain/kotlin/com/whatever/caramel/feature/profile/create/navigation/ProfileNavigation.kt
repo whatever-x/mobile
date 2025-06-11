@@ -2,12 +2,11 @@ package com.whatever.caramel.feature.profile.create.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideOut
-import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
+import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.feature.profile.create.ProfileCreateRoute
 import kotlinx.serialization.Serializable
 
@@ -22,7 +21,7 @@ fun NavController.navigateToCreateProfile(builder: NavOptionsBuilder.() -> Unit 
 
 fun NavGraphBuilder.createProfileScreen(
     navigateToLogin: () -> Unit,
-    navigateToStartDestination: () -> Unit
+    navigateToStartDestination: (UserStatus) -> Unit
 ) {
     composable<ProfileCreateRoute>(
         enterTransition = {

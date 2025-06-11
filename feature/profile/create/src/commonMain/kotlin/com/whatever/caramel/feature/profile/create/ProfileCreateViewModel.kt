@@ -71,7 +71,7 @@ class ProfileCreateViewModel(
             }
         } else {
             launch {
-                createUserProfileUseCase(
+                val userStatus = createUserProfileUseCase(
                     nickname = currentState.nickname,
                     birthDay = createDateString(
                         currentState.birthday.year,
@@ -82,7 +82,7 @@ class ProfileCreateViewModel(
                     agreementServiceTerms = currentState.isServiceTermChecked,
                     agreementPrivacyPolicy = currentState.isPersonalInfoTermChecked
                 )
-                postSideEffect(ProfileCreateSideEffect.NavigateToStartDestination)
+                postSideEffect(ProfileCreateSideEffect.NavigateToStartDestination(userStatus = userStatus))
             }
         }
     }
