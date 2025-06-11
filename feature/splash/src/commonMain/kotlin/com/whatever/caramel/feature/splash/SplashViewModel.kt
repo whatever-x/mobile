@@ -19,8 +19,8 @@ class SplashViewModel(
         launch {
             delay(1000L)
             deepLinkHandler.runningApp()
-            refreshUserSessionUseCase()
-            postSideEffect(SplashSideEffect.NavigateToStartDestination)
+            val userStatus = refreshUserSessionUseCase()
+            postSideEffect(SplashSideEffect.NavigateToStartDestination(userStatus = userStatus))
         }
     }
 

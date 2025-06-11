@@ -43,7 +43,9 @@ internal fun CaramelNavHost(
     ) {
         with(navHostController) {
             splashScreen(
-                navigateToStartDestination = { onIntent(AppIntent.NavigateToStartDestination) },
+                navigateToStartDestination = { userStatus ->
+                    onIntent(AppIntent.NavigateToStartDestination(userStatus = userStatus))
+                },
                 navigateToLogin = {
                     navigateToLogin {
                         popUpTo(route = SplashRoute) {
