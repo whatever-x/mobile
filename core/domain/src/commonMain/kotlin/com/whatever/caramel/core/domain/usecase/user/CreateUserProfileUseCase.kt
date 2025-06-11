@@ -14,19 +14,19 @@ class CreateUserProfileUseCase(
         gender: Gender,
         agreementServiceTerms: Boolean,
         agreementPrivacyPolicy: Boolean
-    ) {
-        UserValidator.checkNicknameValidate(nickname)
-            .onSuccess {
-                val createProfileResult = userRepository.createUserProfile(
-                    nickname = nickname,
-                    birthDay = birthDay,
-                    gender = gender,
-                    agreementServiceTerms = agreementServiceTerms,
-                    agreementPrivacyPolicy = agreementPrivacyPolicy
-                )
-                userRepository.setUserStatus(createProfileResult.userStatus)
-            }.onFailure {
-                throw it
-            }
+    ): UserStatus {
+        val validatedNickname = UserValidator.checkNicknameValidate(nickname).getOrThrow()
+
+        val createProfileResult = userRepository.createUserProfile(
+            nickname = validatedNickname,
+            birthDay = birthDay,
+            gender = gender,
+            agreementServiceTerms = agreementServiceTerms,
+            agreementPrivacyPolicy = agreementPrivacyPolicy
+        )
+        val userStatus = createProfileResult.userStatus
+        userRepository.setUserStatus(status = userStatus)
+
+        return userStatus
     }
 }
