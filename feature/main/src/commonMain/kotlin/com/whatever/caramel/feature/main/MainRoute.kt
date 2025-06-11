@@ -39,7 +39,7 @@ internal fun MainRoute(
     navigateToSetting: () -> Unit,
     navigateToStaredCoupleDay: () -> Unit,
     navigateToTodoDetail: (Long, ContentType) -> Unit,
-    navigateToCreateTodo: () -> Unit,
+    navigateToCreateTodo: (ContentType) -> Unit,
 ) {
     val hapticFeedback = LocalHapticFeedback.current
     val mainNavHostController = rememberNavController()
@@ -87,7 +87,7 @@ internal fun MainRoute(
                     },
                     trailingButton = {
                         CaramelNavItemCreateButton(
-                            onClickButton = { navigateToCreateTodo() }
+                            onClickButton = { navigateToCreateTodo(ContentType.MEMO) }
                         )
                     }
                 )

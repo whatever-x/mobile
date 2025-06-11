@@ -120,7 +120,7 @@ internal fun CaramelNavHost(
                 navigateToTodoDetail = { contentId, contentType ->
                     navigateToContentDetail(contentId = contentId, type = contentType)
                 },
-                navigateToCreateTodo = { navigateToContentCreate(contentId = 0L) } // @RyuSw-cs 2025.05.19 FIXME : 컨텐츠 생성 시 아이디 넘기는 조건 확인 필요
+                navigateToCreateTodo = { navigateToContentCreate(contentType = it) }
             )
             contentEditScreen(
                 popBackStack = { popBackStack() }

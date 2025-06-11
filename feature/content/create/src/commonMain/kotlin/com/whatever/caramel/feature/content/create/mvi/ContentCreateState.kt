@@ -21,7 +21,6 @@ data class ContentCreateState(
     val showTimeDialog: Boolean = false,
     val dateTime: LocalDateTime = DateUtil.todayLocalDateTime(),
     val showEditConfirmDialog: Boolean = false,
-    val id: Long,
 ) : UiState {
 
     val isSaveButtonEnable: Boolean
