@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.code.AppErrorCode
+import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
+import com.whatever.caramel.core.domain.exception.code.ScheduleErrorCode
 import com.whatever.caramel.core.domain.usecase.calendar.DeleteScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.UpdateScheduleUseCase
@@ -59,7 +61,15 @@ class ContentEditViewModel(
         } else {
             AppErrorCode.UNKNOWN to null
         }
-        postSideEffect(ContentEditSideEffect.ShowErrorSnackBar(code = code, message = message))
+        
+        when (code) {
+            ContentErrorCode.CONTENT_NOT_FOUND, ScheduleErrorCode.SCHEDULE_NOT_FOUND -> {
+                reduce { copy(showDeletedContentDialog = true) }
+            }
+            else -> {
+                postSideEffect(ContentEditSideEffect.ShowErrorSnackBar(code = code, message = message))
+            }
+        }
     }
 
     override suspend fun handleIntent(intent: ContentEditIntent) {
@@ -89,6 +99,7 @@ class ContentEditViewModel(
             ContentEditIntent.ConfirmExitDialog -> handleConfirmExitDialog()
             ContentEditIntent.DismissDeleteDialog -> handleDismissDeleteDialog()
             ContentEditIntent.ConfirmDeleteDialog -> handleConfirmDeleteDialog()
+            ContentEditIntent.DismissDeletedContentDialog -> handleDismissDeletedContentDialog()
             is ContentEditIntent.OnCreateModeSelected -> handleOnCreateModeSelected(intent)
         }
     }
@@ -173,17 +184,22 @@ class ContentEditViewModel(
         reduce { copy(showDeleteConfirmDialog = false) }
     }
 
+    private fun handleDismissDeletedContentDialog() {
+        reduce { copy(showDeletedContentDialog = false) }
+        postSideEffect(ContentEditSideEffect.NavigateBackToContentList)
+    }
+
     private fun handleConfirmDeleteDialog() {
         launch {
             when (currentState.type) {
                 ContentType.MEMO -> {
                     deleteMemoUseCase(currentState.contentId)
-                    postSideEffect(ContentEditSideEffect.NavigateBack)
+                    postSideEffect(ContentEditSideEffect.NavigateBackToContentList)
                 }
 
                 ContentType.CALENDAR -> {
                     deleteScheduleUseCase(currentState.contentId)
-                    postSideEffect(ContentEditSideEffect.NavigateBack)
+                    postSideEffect(ContentEditSideEffect.NavigateBackToContentList)
                 }
             }
         }

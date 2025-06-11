@@ -17,6 +17,7 @@ data class ContentDetailState(
     val memoDetail: Memo? = null,
     val scheduleDetail: ScheduleDetail? = null,
     val showDeleteConfirmDialog: Boolean = false,
+    val showDeletedContentDialog: Boolean = false,
     val linkMetaDataList: ImmutableList<LinkMetaData> = persistentListOf(),
     val isLoadingLinkPreview: Boolean = false,
 ) : UiState {

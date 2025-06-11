@@ -14,6 +14,7 @@ sealed interface ContentEditIntent : UiIntent {
     data object ConfirmExitDialog : ContentEditIntent
     data object DismissDeleteDialog : ContentEditIntent
     data object ConfirmDeleteDialog : ContentEditIntent
+    data object DismissDeletedContentDialog : ContentEditIntent
     data class ClickTag(val tag: Tag) : ContentEditIntent
     data object ClickDate : ContentEditIntent
     data object ClickTime : ContentEditIntent
