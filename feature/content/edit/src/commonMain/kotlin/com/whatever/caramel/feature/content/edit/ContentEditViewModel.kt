@@ -132,7 +132,6 @@ class ContentEditViewModel(
                 }
 
                 ContentType.CALENDAR -> {
-                    val currentInstant = state.dateTime.toInstant(TimeZone.currentSystemDefault())
                     updateScheduleUseCase(
                         scheduleId = state.contentId,
                         parameter = ScheduleEditParameter(
@@ -140,10 +139,10 @@ class ContentEditViewModel(
                             title = state.title.ifBlank { null },
                             description = state.content.ifBlank { null },
                             isCompleted = false,
-                            startDateTime = currentInstant.toString(),
+                            startDateTime = state.dateTime.toString(),
                             startTimeZone = TimeZone.currentSystemDefault().id,
-                            endDateTime = currentInstant.toString(),
-                            endTimeZone = TimeZone.currentSystemDefault().id,
+                            endDateTime = null,
+                            endTimeZone = null,
                             tagIds = state.selectedTags.map { it.id }.toList()
                         )
                     )

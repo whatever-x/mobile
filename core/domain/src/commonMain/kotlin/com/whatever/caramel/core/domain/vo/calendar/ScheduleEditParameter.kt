@@ -7,7 +7,7 @@ data class ScheduleEditParameter(
     val isCompleted: Boolean,
     val startDateTime: String,
     val startTimeZone: String,
-    val endDateTime: String,
-    val endTimeZone: String,
+    val endDateTime: String?,
+    val endTimeZone: String?,
     val tagIds: List<Long>
 ) 
