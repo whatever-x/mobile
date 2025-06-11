@@ -216,8 +216,7 @@ class ContentCreateViewModel(
                         title = state.title.ifBlank { null },
                         description = state.content.ifBlank { null },
                         isCompleted = false,
-                        startDateTime = state.dateTime.toInstant(TimeZone.currentSystemDefault())
-                            .toString(),
+                        startDateTime = state.dateTime.toString(),
                         startTimeZone = TimeZone.currentSystemDefault().id,
                         endDateTime = null,
                         endTimeZone = null,
