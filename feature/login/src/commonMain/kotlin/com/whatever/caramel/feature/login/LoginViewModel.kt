@@ -85,12 +85,12 @@ class LoginViewModel(
         socialLoginType: SocialLoginType
     ) {
         launch {
-            signInWithSocialPlatformUseCase(
+            val userStatus = signInWithSocialPlatformUseCase(
                 idToken = idToken,
                 socialLoginType = socialLoginType
             )
             fcmTokenProvider.updateToken()
-            postSideEffect(LoginSideEffect.NavigateToStartDestination)
+            postSideEffect(LoginSideEffect.NavigateToStartDestination(userStatus = userStatus))
         }
     }
 }

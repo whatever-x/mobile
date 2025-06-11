@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
+import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.feature.login.mvi.LoginIntent
 import com.whatever.caramel.feature.login.mvi.LoginSideEffect
 import com.whatever.caramel.feature.login.social.SocialAuthenticator
@@ -33,7 +34,7 @@ internal fun LoginRoute(
     viewModel: LoginViewModel = koinViewModel(),
     kakaoAuthenticator: SocialAuthenticator<KakaoUser> = koinInject<KakaoAuthProvider>().get(),
     appleAuthenticator: SocialAuthenticator<AppleUser>? = if (Platform.isIos) koinInject<AppleAuthProvider>().get() else null,
-    navigateToStartDestination: () -> Unit
+    navigateToStartDestination: (UserStatus) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
@@ -105,7 +106,7 @@ internal fun LoginRoute(
             when (sideEffect) {
                 // @RyuSw-cs 2025.04.01 FIXME : 로컬에서 발생하면 코드, 서버라면 메세지를 받고 있어 분기 처리 필요
                 is LoginSideEffect.ShowErrorSnackBar -> Napier.e { "Error: ${sideEffect.message}" }
-                is LoginSideEffect.NavigateToStartDestination -> navigateToStartDestination()
+                is LoginSideEffect.NavigateToStartDestination -> navigateToStartDestination(sideEffect.userStatus)
             }
         }
     }

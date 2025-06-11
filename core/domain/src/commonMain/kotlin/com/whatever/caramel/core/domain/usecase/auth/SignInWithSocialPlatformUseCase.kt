@@ -15,11 +15,12 @@ class SignInWithSocialPlatformUseCase(
     suspend operator fun invoke(
         idToken: String,
         socialLoginType: SocialLoginType
-    ) {
+    ): UserStatus {
         val signInUserAuth: UserAuth = authRepository.loginWithSocialPlatform(
             idToken = idToken,
             socialLoginType = socialLoginType
         )
+
         with(signInUserAuth) {
             authRepository.saveTokens(authToken = authToken)
             userRepository.setUserStatus(userStatus)
@@ -28,5 +29,7 @@ class SignInWithSocialPlatformUseCase(
                 coupleRepository.setCoupleId(coupleId = coupleId)
             }
         }
+
+        return signInUserAuth.userStatus
     }
 }

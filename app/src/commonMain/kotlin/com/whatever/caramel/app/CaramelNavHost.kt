@@ -55,7 +55,9 @@ internal fun CaramelNavHost(
                 },
             )
             loginScreen(
-                navigateToStartDestination = { onIntent(AppIntent.NavigateToStartDestination) },
+                navigateToStartDestination = { userStatus ->
+                    onIntent(AppIntent.NavigateToStartDestination(userStatus = userStatus))
+                },
             )
             createProfileScreen(
                 navigateToLogin = {
