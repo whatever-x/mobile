@@ -18,8 +18,9 @@ import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
 import com.whatever.caramel.feature.content.create.navigation.ContentCreateRoute
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 
 class ContentCreateViewModel(
     savedStateHandle: SavedStateHandle,
@@ -131,6 +132,21 @@ class ContentCreateViewModel(
         reduce {
             copy(
                 createMode = intent.createMode,
+                dateTime = if (intent.createMode == CreateMode.CALENDAR) {
+                    val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+                    val roundedMinute = ((now.minute + 2) / 5) * 5
+                    val adjustedHour = if (roundedMinute >= 60) now.hour + 1 else now.hour
+                    val finalMinute = if (roundedMinute >= 60) 0 else roundedMinute
+
+                    now.copy(
+                        hour = adjustedHour,
+                        minute = finalMinute,
+                        second = 0,
+                        nanosecond = 0
+                    )
+                } else {
+                    dateTime
+                }
             )
         }
     }
