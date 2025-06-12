@@ -18,7 +18,7 @@ internal fun HomeRoute(
     navigateToSetting: () -> Unit,
     navigateToStaredCoupleDay: () -> Unit,
     navigateToTodoDetail: (Long, ContentType) -> Unit,
-    navigateToCreateTodo: () -> Unit,
+    navigateToCreateTodo: (ContentType) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -26,7 +26,7 @@ internal fun HomeRoute(
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is HomeSideEffect.NavigateToSetting -> navigateToSetting()
-                is HomeSideEffect.NavigateToCreateContent -> navigateToCreateTodo()
+                is HomeSideEffect.NavigateToCreateContent -> navigateToCreateTodo(ContentType.CALENDAR)
                 is HomeSideEffect.NavigateToContentDetail -> navigateToTodoDetail(sideEffect.contentId, sideEffect.contentType)
                 is HomeSideEffect.NavigateToEditAnniversary -> navigateToStaredCoupleDay()
             }

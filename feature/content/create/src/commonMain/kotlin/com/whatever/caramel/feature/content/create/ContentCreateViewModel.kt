@@ -8,6 +8,7 @@ import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
 import com.whatever.caramel.core.domain.vo.content.ContentParameterType
+import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.util.copy
@@ -40,7 +41,10 @@ class ContentCreateViewModel(
     override fun createInitialState(savedStateHandle: SavedStateHandle): ContentCreateState {
         val arguments = savedStateHandle.toRoute<ContentCreateRoute>()
         return ContentCreateState(
-            id = arguments.contentId
+            createMode = when (arguments.contentType) {
+                ContentType.MEMO -> CreateMode.MEMO
+                ContentType.CALENDAR -> CreateMode.CALENDAR
+            }
         )
     }
 

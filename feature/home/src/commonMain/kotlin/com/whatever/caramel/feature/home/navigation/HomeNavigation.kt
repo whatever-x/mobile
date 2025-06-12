@@ -22,7 +22,7 @@ fun NavGraphBuilder.homeContent(
     navigateToSetting: () -> Unit,
     navigateToStaredCoupleDay: () -> Unit,
     navigateToTodoDetail: (Long, ContentType) -> Unit,
-    navigateToCreateTodo: () -> Unit,
+    navigateToCreateTodo: (ContentType) -> Unit,
 ) {
     composable<HomeRoute> {
         HomeRoute(
