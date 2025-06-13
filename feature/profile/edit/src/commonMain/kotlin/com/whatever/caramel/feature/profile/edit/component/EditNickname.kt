@@ -4,12 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -51,7 +48,7 @@ internal fun EditNickname(
                 style = CaramelTheme.typography.heading1,
                 color = CaramelTheme.color.text.primary
             )
-            Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.xs))
+            Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.s))
             Text(
                 text = "최대 ${UserValidator.NICKNAME_MAX_LENGTH}글자",
                 style = CaramelTheme.typography.body3.regular,
