@@ -93,7 +93,7 @@ internal fun OnboardingPager(
                     textAlign = TextAlign.Center
                 )
 
-                Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.xs))
+                Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.s))
 
                 Text(
                     text = stringResource(resource = OnboardingStep.entries[page].description),
