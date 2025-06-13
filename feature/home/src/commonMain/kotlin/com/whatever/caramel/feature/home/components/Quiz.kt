@@ -118,9 +118,9 @@ internal fun LazyListScope.Quiz(
                 QuestionArea(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = CaramelTheme.spacing.xl)
+                        .padding(horizontal = CaramelTheme.spacing.l)
                         .padding(
-                            top = CaramelTheme.spacing.xl,
+                            top = CaramelTheme.spacing.l,
                             bottom = CaramelTheme.spacing.xxl
                         ),
                     question = question
