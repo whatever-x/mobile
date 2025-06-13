@@ -10,6 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.util.HapticController
 import com.whatever.caramel.core.designsystem.util.HapticStyle
+import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateSideEffect
 import org.koin.compose.getKoin
@@ -22,7 +23,7 @@ import org.koin.compose.viewmodel.koinViewModel
 internal fun ProfileCreateRoute(
     viewModel: ProfileCreateViewModel = koinViewModel(),
     navigateToLogin: () -> Unit,
-    navigateToStartDestination: () -> Unit
+    navigateToStartDestination: (UserStatus) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val hapticController: HapticController = getKoin().get()
@@ -38,7 +39,7 @@ internal fun ProfileCreateRoute(
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is ProfileCreateSideEffect.NavigateToLogin -> navigateToLogin()
-                is ProfileCreateSideEffect.NavigateToStartDestination -> navigateToStartDestination()
+                is ProfileCreateSideEffect.NavigateToStartDestination -> navigateToStartDestination(sideEffect.userStatus)
                 is ProfileCreateSideEffect.NavigateToPersonalInfoTermNotion -> urlHandler.openUri(privacyPolicyUrl)
                 is ProfileCreateSideEffect.NavigateToServiceTermNotion -> urlHandler.openUri(termsOfServiceUrl)
                 is ProfileCreateSideEffect.PerformHapticFeedback -> hapticController.performImpact(HapticStyle.GestureThresholdActivate)

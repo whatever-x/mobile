@@ -17,7 +17,6 @@ import com.whatever.caramel.mvi.AppState
 import kotlinx.coroutines.launch
 
 class CaramelViewModel(
-    private val getUserStatusUseCase: GetUserStatusUseCase,
     private val connectCoupleUseCase: ConnectCoupleUseCase,
     private val deepLinkHandler: DeepLinkHandler,
     savedStateHandle: SavedStateHandle
@@ -64,15 +63,13 @@ class CaramelViewModel(
 
     override suspend fun handleIntent(intent: AppIntent) {
         when(intent) {
-            is AppIntent.NavigateToStartDestination -> startDestination()
+            is AppIntent.NavigateToStartDestination -> startDestination(userStatus = intent.userStatus)
             is AppIntent.CloseErrorDialog -> reduce { copy(isShowErrorDialog = false) }
         }
     }
 
-    private suspend fun startDestination() {
+    private suspend fun startDestination(userStatus: UserStatus) {
         launch {
-            val userStatus = getUserStatusUseCase()
-
             when (userStatus) {
                 UserStatus.NONE -> postSideEffect(AppSideEffect.NavigateToLogin)
                 UserStatus.NEW -> postSideEffect(AppSideEffect.NavigateToCreateProfile)
