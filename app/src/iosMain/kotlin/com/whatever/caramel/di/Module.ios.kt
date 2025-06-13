@@ -10,7 +10,6 @@ actual val appViewModelModule: Module
     get() = module {
         viewModel {
             CaramelViewModel(
-                getUserStatusUseCase = get(),
                 connectCoupleUseCase = get(),
                 deepLinkHandler = get(),
                 savedStateHandle = SavedStateHandle()
