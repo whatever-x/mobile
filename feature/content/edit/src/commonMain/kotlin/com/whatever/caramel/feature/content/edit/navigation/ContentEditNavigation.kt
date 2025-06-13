@@ -1,5 +1,7 @@
 package com.whatever.caramel.feature.content.edit.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
@@ -25,7 +27,20 @@ fun NavHostController.navigateToContentEdit(
 fun NavGraphBuilder.contentEditScreen(
     popBackStack: () -> Unit
 ) {
-    composable<ContentEditScreenRoute> { _ -> // backStackEntry can be used if needed
+    composable<ContentEditScreenRoute>(
+        enterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Up,
+                animationSpec = tween(400)
+            )
+        },
+        exitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Down,
+                animationSpec = tween(400)
+            )
+        }
+    ) { _ -> // backStackEntry can be used if needed
         ContentEditRoute(
             popBackStack = popBackStack
         )
