@@ -57,10 +57,7 @@ class CalendarViewModel(
         when (intent) {
             is CalendarIntent.ClickDatePicker -> showCalendarDatePicker()
             is CalendarIntent.ToggleCalendarBottomSheet -> toggleCalendarBottomSheet(intent.sheetState)
-            is CalendarIntent.ClickAddScheduleButton -> postSideEffect(
-                CalendarSideEffect.NavigateToAddSchedule(intent.date.atTime(hour = 0, minute = 0).toString())
-            )
-
+            is CalendarIntent.ClickAddScheduleButton -> navigateToAddSchedule(intent.date)
             is CalendarIntent.ClickTodoItemInBottomSheet -> postSideEffect(
                 CalendarSideEffect.NavigateToTodoDetail(
                     id = intent.todoId,
@@ -84,6 +81,15 @@ class CalendarViewModel(
             CalendarIntent.ClickDatePickerOutSide -> dismissCalendarDatePicker()
             CalendarIntent.RefreshCalendar -> refreshCalendar()
         }
+    }
+
+    private fun navigateToAddSchedule(date: LocalDate) {
+        reduce { copy(bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED) }
+        postSideEffect(
+            CalendarSideEffect.NavigateToAddSchedule(
+                date.atTime(hour = 0, minute = 0).toString()
+            )
+        )
     }
 
     private fun refreshCalendar() {

@@ -89,7 +89,10 @@ internal fun CalendarScreen(
         when (state.bottomSheetState) {
             BottomSheetState.HIDDEN -> bottomSheetState.hide()
             BottomSheetState.EXPANDED -> bottomSheetState.expand()
-            BottomSheetState.PARTIALLY_EXPANDED -> bottomSheetState.partialExpand()
+            BottomSheetState.PARTIALLY_EXPANDED -> {
+                lazyListState.scrollToItem(0)
+                bottomSheetState.partialExpand()
+            }
         }
     }
     LaunchedEffect(bottomSheetState.currentValue) {
