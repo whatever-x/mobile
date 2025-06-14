@@ -150,7 +150,7 @@ class CalendarViewModel(
             val newSchedule = currentState.monthSchedules.toMutableList()
             // 이전에 선택된 날짜에 스케쥴이 존재하지 않는 경우 리스트에서 삭제
             newSchedule.find { it.date == currentState.selectedDate }?.let {
-                if (it.holidays.isEmpty() && it.todos.isEmpty()) {
+                if (it.holidays.isEmpty() && it.todos.isEmpty() && it.anniversaries.isEmpty()) {
                     newSchedule.remove(it)
                 }
             }
