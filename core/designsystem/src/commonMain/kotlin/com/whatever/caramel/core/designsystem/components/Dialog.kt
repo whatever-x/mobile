@@ -101,8 +101,8 @@ fun CaramelDialogScope.DefaultCaramelDialogLayout() {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CaramelDialogTitle()
-        Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.s))
         if (hasMessage) {
+            Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.s))
             CaramelDialogContent()
         }
         Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.xl))
