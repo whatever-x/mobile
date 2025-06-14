@@ -17,6 +17,7 @@ import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
+import io.github.aakira.napier.Napier
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
@@ -57,10 +58,7 @@ class CalendarViewModel(
         when (intent) {
             is CalendarIntent.ClickDatePicker -> showCalendarDatePicker()
             is CalendarIntent.ToggleCalendarBottomSheet -> toggleCalendarBottomSheet(intent.sheetState)
-            is CalendarIntent.ClickAddScheduleButton -> postSideEffect(
-                CalendarSideEffect.NavigateToAddSchedule(intent.date.atTime(hour = 0, minute = 0).toString())
-            )
-
+            is CalendarIntent.ClickAddScheduleButton -> navigateToAddSchedule(intent.date)
             is CalendarIntent.ClickTodoItemInBottomSheet -> postSideEffect(
                 CalendarSideEffect.NavigateToTodoDetail(
                     id = intent.todoId,
@@ -84,6 +82,15 @@ class CalendarViewModel(
             CalendarIntent.ClickDatePickerOutSide -> dismissCalendarDatePicker()
             CalendarIntent.RefreshCalendar -> refreshCalendar()
         }
+    }
+
+    private fun navigateToAddSchedule(date: LocalDate) {
+        reduce { copy(bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED) }
+        postSideEffect(
+            CalendarSideEffect.NavigateToAddSchedule(
+                date.atTime(hour = 0, minute = 0).toString()
+            )
+        )
     }
 
     private fun refreshCalendar() {
@@ -143,7 +150,7 @@ class CalendarViewModel(
             val newSchedule = currentState.monthSchedules.toMutableList()
             // 이전에 선택된 날짜에 스케쥴이 존재하지 않는 경우 리스트에서 삭제
             newSchedule.find { it.date == currentState.selectedDate }?.let {
-                if (it.holidays.isEmpty() && it.todos.isEmpty()) {
+                if (it.holidays.isEmpty() && it.todos.isEmpty() && it.anniversaries.isEmpty()) {
                     newSchedule.remove(it)
                 }
             }
@@ -218,11 +225,14 @@ class CalendarViewModel(
     }
 
     private fun showCalendarDatePicker() {
-        reduce {
-            copy(
-                isShowDatePicker = true,
-                pickerDate = pickerDate.copy(year = year, month = month.number)
-            )
+        launch {
+            clickOutSideBottomSheet()
+            reduce {
+                copy(
+                    isShowDatePicker = true,
+                    pickerDate = pickerDate.copy(year = year, month = month.number)
+                )
+            }
         }
     }
 
@@ -275,7 +285,7 @@ class CalendarViewModel(
             .forEach { todo ->
                 val date = todo.date
                 val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] = existingSchedule.copy(todos = todo.todos)
+                scheduleMap[date] = existingSchedule.copy(todos =  existingSchedule.todos + todo.todos)
             }
 
         anniversariesOnDate
@@ -283,7 +293,7 @@ class CalendarViewModel(
             .forEach { anniversary ->
                 val date = anniversary.date
                 val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] = existingSchedule.copy(anniversaries = anniversary.anniversaries)
+                scheduleMap[date] = existingSchedule.copy(anniversaries = existingSchedule.anniversaries + anniversary.anniversaries)
             }
 
         holidaysOnDate
@@ -291,7 +301,7 @@ class CalendarViewModel(
             .forEach { holiday ->
                 val date = holiday.date
                 val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] = existingSchedule.copy(holidays = holiday.holidays)
+                scheduleMap[date] = existingSchedule.copy(holidays = existingSchedule.holidays + holiday.holidays)
             }
 
         if (!scheduleMap.containsKey(updatedSelectedDate)) {
