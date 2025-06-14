@@ -224,11 +224,14 @@ class CalendarViewModel(
     }
 
     private fun showCalendarDatePicker() {
-        reduce {
-            copy(
-                isShowDatePicker = true,
-                pickerDate = pickerDate.copy(year = year, month = month.number)
-            )
+        launch {
+            clickOutSideBottomSheet()
+            reduce {
+                copy(
+                    isShowDatePicker = true,
+                    pickerDate = pickerDate.copy(year = year, month = month.number)
+                )
+            }
         }
     }
 
