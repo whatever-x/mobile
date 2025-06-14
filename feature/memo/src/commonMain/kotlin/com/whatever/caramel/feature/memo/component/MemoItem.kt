@@ -41,8 +41,8 @@ internal fun MemoItem(
     createdDateText: String,
     onClickMemoItem: (Long) -> Unit
 ) {
-    val isEmptyTitle = title.isEmpty()
-    val titleText = if (isEmptyTitle) description.replace(lineBreakRegex, "") else title
+    val isTitleOrDescriptionEmpty = title.isEmpty() || description.isEmpty()
+    val mainText = title.ifEmpty { description.replace(lineBreakRegex, "") }
 
     Column(
         modifier = modifier
@@ -57,13 +57,13 @@ internal fun MemoItem(
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = titleText,
+            text = mainText,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = CaramelTheme.typography.body2.bold,
             color = CaramelTheme.color.text.primary
         )
-        if (!isEmptyTitle) {
+        if (!isTitleOrDescriptionEmpty) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = description,
