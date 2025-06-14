@@ -40,6 +40,7 @@ internal fun MainRoute(
     navigateToStaredCoupleDay: () -> Unit,
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: (ContentType) -> Unit,
+    navigateToCreateSchedule : (ContentType, String) -> Unit,
 ) {
     val hapticFeedback = LocalHapticFeedback.current
     val mainNavHostController = rememberNavController()
@@ -110,7 +111,7 @@ internal fun MainRoute(
                 navigateToCreateTodo = navigateToCreateTodo
             )
             calendarContent(
-                navigateToCreateTodo = navigateToCreateTodo,
+                navigateToCreateSchedule = navigateToCreateSchedule,
                 navigateToTodoDetail = navigateToTodoDetail,
             )
             memoContent(

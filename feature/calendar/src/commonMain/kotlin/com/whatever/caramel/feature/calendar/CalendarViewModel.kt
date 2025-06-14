@@ -20,6 +20,7 @@ import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atTime
 import kotlinx.datetime.number
 
 class CalendarViewModel(
@@ -57,9 +58,7 @@ class CalendarViewModel(
             is CalendarIntent.ClickDatePicker -> showCalendarDatePicker()
             is CalendarIntent.ToggleCalendarBottomSheet -> toggleCalendarBottomSheet(intent.sheetState)
             is CalendarIntent.ClickAddScheduleButton -> postSideEffect(
-                CalendarSideEffect.NavigateToAddSchedule(
-                    intent.date
-                )
+                CalendarSideEffect.NavigateToAddSchedule(intent.date.atTime(hour = 0, minute = 0).toString())
             )
 
             is CalendarIntent.ClickTodoItemInBottomSheet -> postSideEffect(

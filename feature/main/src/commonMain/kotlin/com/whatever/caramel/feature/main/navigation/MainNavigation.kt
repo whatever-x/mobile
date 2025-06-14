@@ -25,6 +25,7 @@ fun NavGraphBuilder.mainGraph(
     navigateToStaredCoupleDay: () -> Unit,
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: (ContentType) -> Unit,
+    navigateToCreateSchedule: (ContentType, String) -> Unit,
 ) {
     composable<MainRoute>(
         exitTransition = { ExitTransition.None },
@@ -35,7 +36,8 @@ fun NavGraphBuilder.mainGraph(
             navigateToSetting = navigateToSetting,
             navigateToStaredCoupleDay = navigateToStaredCoupleDay,
             navigateToTodoDetail = navigateToTodoDetail,
-            navigateToCreateTodo = navigateToCreateTodo
+            navigateToCreateTodo = navigateToCreateTodo,
+            navigateToCreateSchedule = navigateToCreateSchedule
         )
     }
 }
