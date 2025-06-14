@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
@@ -42,7 +43,7 @@ internal fun BottomSheetTodoListHeader(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = CaramelTheme.spacing.xs)
+            .padding(vertical = 3.dp)
     ) {
         Box {
             Row(
@@ -121,7 +122,9 @@ internal fun BottomSheetTodoListHeader(
 
         if (!anniversaries.isNullOrEmpty()) {
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = CaramelTheme.spacing.s),
                 verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xs)
             ) {
                 anniversaries.fastForEach { anniversary ->
