@@ -20,6 +20,14 @@ internal class HoeScreenPreviewProvider :
             todos = emptyList(),
             isShowBottomSheet = false,
             isLoading = false,
+            coupleState = HomeState.CoupleState.DISCONNECT
+        ),
+        HomeState(
+            daysTogether = 0,
+            shareMessage = "",
+            todos = emptyList(),
+            isShowBottomSheet = false,
+            isLoading = false,
         ),
         HomeState(
             daysTogether = 1120,
