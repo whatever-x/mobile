@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
@@ -42,7 +44,7 @@ internal fun BottomSheetTodoListHeader(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = CaramelTheme.spacing.xs)
+            .padding(vertical = 3.dp)
     ) {
         Box {
             Row(
@@ -77,14 +79,16 @@ internal fun BottomSheetTodoListHeader(
                             ),
                         textAlign = TextAlign.Center,
                         text = "오늘",
-                        style = CaramelTheme.typography.label2.bold,
+                        style = CaramelTheme.typography.label3.bold,
                         color = CaramelTheme.color.text.inverse
                     )
                 }
                 holidays?.let {
-                    LazyRow {
+                    Spacer(modifier = Modifier.size(size = if (isToday) CaramelTheme.spacing.xxs else CaramelTheme.spacing.xs))
+                    LazyRow (
+                        horizontalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xxs)
+                    ){
                         items(items = it) { holiday ->
-                            Spacer(modifier = Modifier.size(size = CaramelTheme.spacing.xs))
                             Text(
                                 modifier = Modifier
                                     .background(
@@ -97,7 +101,7 @@ internal fun BottomSheetTodoListHeader(
                                     ),
                                 textAlign = TextAlign.Center,
                                 text = holiday.name,
-                                style = CaramelTheme.typography.label2.bold,
+                                style = CaramelTheme.typography.label3.bold,
                                 color = CaramelTheme.color.text.inverse
                             )
                         }
@@ -121,7 +125,9 @@ internal fun BottomSheetTodoListHeader(
 
         if (!anniversaries.isNullOrEmpty()) {
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = CaramelTheme.spacing.s),
                 verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xs)
             ) {
                 anniversaries.fastForEach { anniversary ->

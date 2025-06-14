@@ -41,7 +41,7 @@ internal fun CaramelBottomSheetHandle(
         )
         if (bottomSheetState == BottomSheetState.PARTIALLY_EXPANDED) {
             Text(
-                modifier = Modifier.height(height = CalendarDimension.sheetPartiallyExpandedTextHeight),
+                modifier = Modifier.padding(bottom = CalendarDimension.sheetPartiallyExpandedTextHeight),
                 style = CaramelTheme.typography.label1.regular,
                 color = CaramelTheme.color.text.tertiary,
                 text = "우리의 할 일"
