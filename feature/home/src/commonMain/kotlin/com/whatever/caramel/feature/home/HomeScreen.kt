@@ -26,6 +26,7 @@ import com.whatever.caramel.feature.home.components.Header
 import com.whatever.caramel.feature.home.components.Quiz
 import com.whatever.caramel.feature.home.components.ShareMessageBottomSheet
 import com.whatever.caramel.feature.home.components.Todo
+import com.whatever.caramel.feature.home.components.UnConnectedCard
 import com.whatever.caramel.feature.home.mvi.HomeIntent
 import com.whatever.caramel.feature.home.mvi.HomeState
 import kotlinx.collections.immutable.toImmutableList
@@ -110,6 +111,10 @@ internal fun HomeScreen(
                     daysTogether = state.daysTogether,
                     onClickShareMessage = { onIntent(HomeIntent.ShowShareMessageEditBottomSheet) }
                 )
+
+                if(state.coupleState == HomeState.CoupleState.DISCONNECT) {
+                    UnConnectedCard()
+                }
 
                 Quiz(
                     question = state.balanceGameState.question,

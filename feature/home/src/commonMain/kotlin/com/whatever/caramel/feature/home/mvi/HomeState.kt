@@ -20,6 +20,7 @@ data class HomeState(
     val balanceGameCardState: BalanceGameCardState = BalanceGameCardState.IDLE,
     val myChoiceOption: BalanceGameOptionState = BalanceGameOptionState(),
     val partnerChoiceOption: BalanceGameOptionState = BalanceGameOptionState(),
+    val coupleState: CoupleState = CoupleState.IDLE
 ) : UiState {
 
     val isSetAnniversary: Boolean
@@ -46,6 +47,13 @@ data class HomeState(
     enum class BalanceGameCardState {
         IDLE,
         CONFIRM,
+        ;
+    }
+
+    enum class CoupleState {
+        IDLE,
+        CONNECT,
+        DISCONNECT,
         ;
     }
 

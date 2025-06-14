@@ -116,6 +116,7 @@ class HomeViewModel(
                 partnerGender = coupleRelationShip.partnerInfo.userProfile?.gender ?: Gender.IDLE,
                 daysTogether = coupleRelationShip.info.daysTogether,
                 shareMessage = coupleRelationShip.info.sharedMessage,
+                coupleState = HomeState.CoupleState.CONNECT
             )
         }
     }
