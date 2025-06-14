@@ -17,6 +17,7 @@ import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
+import io.github.aakira.napier.Napier
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
@@ -284,7 +285,7 @@ class CalendarViewModel(
             .forEach { todo ->
                 val date = todo.date
                 val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] = existingSchedule.copy(todos = todo.todos)
+                scheduleMap[date] = existingSchedule.copy(todos =  existingSchedule.todos + todo.todos)
             }
 
         anniversariesOnDate
@@ -292,7 +293,7 @@ class CalendarViewModel(
             .forEach { anniversary ->
                 val date = anniversary.date
                 val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] = existingSchedule.copy(anniversaries = anniversary.anniversaries)
+                scheduleMap[date] = existingSchedule.copy(anniversaries = existingSchedule.anniversaries + anniversary.anniversaries)
             }
 
         holidaysOnDate
@@ -300,7 +301,7 @@ class CalendarViewModel(
             .forEach { holiday ->
                 val date = holiday.date
                 val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] = existingSchedule.copy(holidays = holiday.holidays)
+                scheduleMap[date] = existingSchedule.copy(holidays = existingSchedule.holidays + holiday.holidays)
             }
 
         if (!scheduleMap.containsKey(updatedSelectedDate)) {
