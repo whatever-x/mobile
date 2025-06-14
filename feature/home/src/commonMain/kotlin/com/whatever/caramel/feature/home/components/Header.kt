@@ -1,9 +1,9 @@
 package com.whatever.caramel.feature.home.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.text.InlineTextContent
@@ -16,12 +16,16 @@ import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import caramel.feature.home.generated.resources.Res
+import caramel.feature.home.generated.resources.day
+import caramel.feature.home.generated.resources.leave_something_to_remember_together
+import caramel.feature.home.generated.resources.we_dated
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 internal fun LazyListScope.Header(
     daysTogether: Int,
@@ -32,32 +36,25 @@ internal fun LazyListScope.Header(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    horizontal = CaramelTheme.spacing.xl
-                )
-                .padding(
-                    bottom = CaramelTheme.spacing.xl
-                ),
-            verticalArrangement = Arrangement.spacedBy(space = 2.dp),
+                .padding(horizontal = CaramelTheme.spacing.xl)
+                .padding(bottom = CaramelTheme.spacing.xl),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val daysTogetherAnnotatedString = buildAnnotatedString {
-                withStyle(style = CaramelTheme.typography.heading1.toSpanStyle()) {
-                    append("우리가 만난지\n")
-                }
-                withStyle(style = CaramelTheme.typography.display.toSpanStyle()) {
-                    append("${daysTogether}일")
-                }
-            }
+            Text(
+                text = stringResource(resource = Res.string.we_dated),
+                style = CaramelTheme.typography.heading1,
+                color = CaramelTheme.color.text.primary
+            )
 
             Text(
-                text = daysTogetherAnnotatedString,
-                textAlign = TextAlign.Center,
+                modifier = Modifier.offset(y = (-8).dp),
+                text = stringResource(resource = Res.string.day, formatArgs = arrayOf(daysTogether)),
+                style = CaramelTheme.typography.display,
                 color = CaramelTheme.color.text.primary
             )
 
             val shareMessageAnnotatedString = buildAnnotatedString {
-                append(shareMessage.ifEmpty { "함께 기억할 말을 남겨보세요" })
+                append(shareMessage.ifEmpty { stringResource(resource = Res.string.leave_something_to_remember_together) })
                 append(" ")
                 appendInlineContent(id = "edit icon")
             }

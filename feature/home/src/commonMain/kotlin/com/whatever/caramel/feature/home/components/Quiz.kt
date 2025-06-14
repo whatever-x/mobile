@@ -1,7 +1,6 @@
 package com.whatever.caramel.feature.home.components
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -118,9 +117,9 @@ internal fun LazyListScope.Quiz(
                 QuestionArea(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = CaramelTheme.spacing.xl)
+                        .padding(horizontal = CaramelTheme.spacing.l)
                         .padding(
-                            top = CaramelTheme.spacing.xl,
+                            top = CaramelTheme.spacing.l,
                             bottom = CaramelTheme.spacing.xxl
                         ),
                     question = question
@@ -186,45 +185,6 @@ internal fun LazyListScope.Quiz(
                 painter = painterResource(resource = Resources.Image.img_quiz_vs),
                 contentDescription = null
             )
-        }
-    }
-}
-
-@Composable
-private fun FlipBalanceGameCard(
-    rotation: Animatable<Float, AnimationVector1D>,
-    front: @Composable () -> Unit,
-    back: @Composable () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .graphicsLayer {
-                this.rotationY = rotation.value
-                cameraDistance = 8 * density
-            }
-            .fillMaxWidth()
-            .background(
-                color = CaramelTheme.color.background.tertiary,
-                shape = CaramelTheme.shape.l
-            )
-            .border(
-                width = 4.dp,
-                color = CaramelTheme.color.fill.quaternary,
-                shape = CaramelTheme.shape.l
-            )
-            .padding(top = 48.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        if (rotation.value <= 90f) {
-            front()
-        } else {
-            Box(
-                modifier = Modifier.graphicsLayer {
-                    rotationY = 180f
-                }
-            ) {
-                back()
-            }
         }
     }
 }
