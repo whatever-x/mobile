@@ -1,5 +1,7 @@
 package com.whatever.caramel.feature.setting.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -24,7 +26,10 @@ fun NavGraphBuilder.settingScreen(
     navigateToEditBirthday: (String) -> Unit,
     navigateToEditNickName: (String) -> Unit
 ) {
-    composable<SettingRoute> {
+    composable<SettingRoute>(
+        exitTransition = { ExitTransition.None },
+        popEnterTransition = { EnterTransition.None },
+    ) {
         SettingRoute(
             navigateToHome = navigateToHome,
             navigateToEditBirthday = navigateToEditBirthday,

@@ -30,12 +30,6 @@ fun NavGraphBuilder.createProfileScreen(
                 animationSpec = tween(durationMillis = 300)
             )
         },
-        exitTransition = {
-            slideOutOfContainer(
-                towards = AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(durationMillis = 300)
-            )
-        },
     ) {
         ProfileCreateRoute(
             navigateToLogin = navigateToLogin,

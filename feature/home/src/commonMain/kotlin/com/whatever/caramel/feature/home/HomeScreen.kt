@@ -19,7 +19,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
+import com.whatever.caramel.core.designsystem.components.CaramelDialog
+import com.whatever.caramel.core.designsystem.components.CaramelPullToRefreshIndicator
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
+import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLayout
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.home.components.Header
@@ -43,6 +46,18 @@ internal fun HomeScreen(
         initialValue = SheetValue.PartiallyExpanded,
         skipHiddenState = false
     )
+
+    if (state.isShowDialog) {
+        CaramelDialog(
+            show = state.isShowDialog,
+            title = state.dialogTitle,
+            mainButtonText = "확인",
+            onDismissRequest = { onIntent(HomeIntent.HideDialog) },
+            onMainButtonClick = { onIntent(HomeIntent.HideDialog) },
+        ) {
+            DefaultCaramelDialogLayout()
+        }
+    }
 
     if (state.isShowBottomSheet) {
         ShareMessageBottomSheet(
@@ -94,6 +109,12 @@ internal fun HomeScreen(
             state = pullToRefreshState,
             isRefreshing = state.isLoading,
             onRefresh = { onIntent(HomeIntent.PullToRefresh) },
+            indicator = {
+                CaramelPullToRefreshIndicator(
+                    state = pullToRefreshState,
+                    isRefreshing = state.isLoading
+                )
+            }
         ) {
             LazyColumn(
                 state = lazyListState,

@@ -20,6 +20,8 @@ data class HomeState(
     val balanceGameCardState: BalanceGameCardState = BalanceGameCardState.IDLE,
     val myChoiceOption: BalanceGameOptionState = BalanceGameOptionState(),
     val partnerChoiceOption: BalanceGameOptionState = BalanceGameOptionState(),
+    val isShowDialog: Boolean = false,
+    val dialogTitle: String = ""
     val coupleState: CoupleState = CoupleState.IDLE
 ) : UiState {
 

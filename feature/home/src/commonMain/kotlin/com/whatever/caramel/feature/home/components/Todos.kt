@@ -91,7 +91,7 @@ private fun TodoList(
             color = CaramelTheme.color.text.primary
         )
 
-        Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.s))
+        Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.xs))
 
         if (todoList.isEmpty()) {
             EmptyTodo(
