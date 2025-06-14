@@ -12,4 +12,5 @@ data object CoupleErrorCode {
     const val NOT_A_MEMBER = PREFIX + "007"
     const val ILLEGAL_MEMBER_SIZE = PREFIX + "008"
     const val UPDATE_FAIL = PREFIX + "009"
+    const val CAN_NOT_LOAD_DATA = PREFIX + "011" // 커플 연결 해제 되었을 때 데이터를 불러오지 못함
 }

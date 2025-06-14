@@ -25,4 +25,5 @@ sealed interface HomeIntent : UiIntent {
 
     data object ChangeBalanceGameCardState : HomeIntent
 
+    data object HideDialog : HomeIntent
 }
