@@ -1,6 +1,8 @@
 package com.whatever.caramel.feature.home
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
 import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameChoiceUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodayScheduleUseCase
@@ -51,14 +53,46 @@ class HomeViewModel(
             is HomeIntent.ClickBalanceGameOptionButton -> submitBalanceGameOption(balanceGameOptionState = intent.option)
             is HomeIntent.ChangeBalanceGameCardState -> changeBalanceGameCardState()
             is HomeIntent.LoadDataOnStart -> loadDataOnStart()
+            is HomeIntent.HideDialog -> hideDialog()
+        }
+    }
+
+    override fun handleClientException(throwable: Throwable) {
+        super.handleClientException(throwable)
+
+        val exception = throwable as CaramelException
+
+        when (exception.code) {
+            CoupleErrorCode.CAN_NOT_LOAD_DATA -> {
+                launch {
+                    reduce {
+                        copy(
+                            isShowBottomSheet = false,
+                            isShowDialog = true,
+                            dialogTitle = exception.message
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun hideDialog() {
+        reduce {
+            copy(
+                isShowDialog = false,
+                dialogTitle = ""
+            )
         }
     }
 
     private suspend fun loadDataOnStart() {
         launch {
-            initCoupleInfo()
-            initSchedules()
-            initBalanceGame()
+            val initCoupleInfoJob = launch { initCoupleInfo() }
+            val initSchedulesJob = launch { initSchedules() }
+            val initBalanceGameJob = launch { initBalanceGame() }
+
+            joinAll(initCoupleInfoJob, initSchedulesJob, initBalanceGameJob)
         }
     }
 
