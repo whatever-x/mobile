@@ -180,11 +180,7 @@ internal fun CalendarScreen(
                                 BottomSheetTodoListHeader(
                                     date = schedule.date,
                                     onClickAddSchedule = {
-                                        onIntent(
-                                            CalendarIntent.ClickAddScheduleButton(
-                                                it.toString()
-                                            )
-                                        )
+                                        onIntent(CalendarIntent.ClickAddScheduleButton(schedule.date))
                                     },
                                     isToday = schedule.date == state.today,
                                     isEmpty = schedule.todos.isEmpty(),

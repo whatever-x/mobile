@@ -11,6 +11,7 @@ import com.whatever.caramel.core.domain.vo.content.ContentParameterType
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.ui.content.CreateMode
+import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
@@ -20,6 +21,7 @@ import com.whatever.caramel.feature.content.create.navigation.ContentCreateRoute
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
@@ -40,11 +42,16 @@ class ContentCreateViewModel(
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): ContentCreateState {
         val arguments = savedStateHandle.toRoute<ContentCreateRoute>()
+        val dateTime =
+            if (arguments.dateTimeString.isEmpty()) DateUtil.todayLocalDateTime() else LocalDateTime.parse(
+                arguments.dateTimeString
+            )
         return ContentCreateState(
             createMode = when (arguments.contentType) {
                 ContentType.MEMO -> CreateMode.MEMO
                 ContentType.CALENDAR -> CreateMode.CALENDAR
-            }
+            },
+            dateTime = dateTime
         )
     }
 

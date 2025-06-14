@@ -126,7 +126,13 @@ internal fun CaramelNavHost(
                 navigateToTodoDetail = { contentId, contentType ->
                     navigateToContentDetail(contentId = contentId, type = contentType)
                 },
-                navigateToCreateTodo = { navigateToContentCreate(contentType = it) }
+                navigateToCreateTodo = { navigateToContentCreate(contentType = it) },
+                navigateToCreateSchedule = { contentType, dateTimeString ->
+                    navigateToContentCreate(
+                        contentType = contentType,
+                        dateTimeString = dateTimeString
+                    )
+                }
             )
             contentEditScreen(
                 popBackStack = { popBackStack() }
