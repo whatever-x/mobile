@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import caramel.feature.memo.generated.resources.Res
 import caramel.feature.memo.generated.resources.memo
+import com.whatever.caramel.core.designsystem.components.CaramelPullToRefreshIndicator
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.util.DateFormatter.formatWithSeparator
 import com.whatever.caramel.feature.memo.component.EmptyMemo
@@ -77,7 +78,13 @@ internal fun MemoScreen(
         modifier = Modifier.background(color = CaramelTheme.color.background.primary),
         state = pullToRefreshState,
         isRefreshing = state.isRefreshing,
-        onRefresh = { onIntent(MemoIntent.PullToRefresh) }
+        onRefresh = { onIntent(MemoIntent.PullToRefresh) },
+        indicator = {
+            CaramelPullToRefreshIndicator(
+                state = pullToRefreshState,
+                isRefreshing = state.isRefreshing
+            )
+        }
     ) {
         Column(
             modifier = Modifier

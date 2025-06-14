@@ -53,7 +53,7 @@ internal fun MemoItem(
                 interactionSource = null,
                 onClick = { onClickMemoItem(id) }
             ),
-        verticalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.s)
+        verticalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xs)
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),

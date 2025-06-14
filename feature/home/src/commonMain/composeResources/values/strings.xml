@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
+    <!-- Header -->
+    <string name="we_dated">우리가 만난지</string>
+    <string name="day">%1$d일</string>
+    <string name="leave_something_to_remember_together">함께 기억할 말을 남겨보세요</string>
+
     <!-- Quiz -->
     <string name="today_caramel">오늘의 카라멜</string>
 

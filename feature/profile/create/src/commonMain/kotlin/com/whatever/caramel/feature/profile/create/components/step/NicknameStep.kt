@@ -36,7 +36,7 @@ internal fun NicknameStep(
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.s))
 
         Text(
             text = "최대 8글자",

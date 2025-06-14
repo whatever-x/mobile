@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelDialog
+import com.whatever.caramel.core.designsystem.components.CaramelPullToRefreshIndicator
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLayout
 import com.whatever.caramel.core.designsystem.foundations.Resources
@@ -107,6 +108,12 @@ internal fun HomeScreen(
             state = pullToRefreshState,
             isRefreshing = state.isLoading,
             onRefresh = { onIntent(HomeIntent.PullToRefresh) },
+            indicator = {
+                CaramelPullToRefreshIndicator(
+                    state = pullToRefreshState,
+                    isRefreshing = state.isLoading
+                )
+            }
         ) {
             LazyColumn(
                 state = lazyListState,

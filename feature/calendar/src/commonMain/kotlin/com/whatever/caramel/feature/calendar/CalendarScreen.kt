@@ -31,6 +31,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import com.whatever.caramel.core.designsystem.components.CaramelPullToRefreshIndicator
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.calendar.Calendar
@@ -115,7 +116,13 @@ internal fun CalendarScreen(
         modifier = Modifier.background(color = CaramelTheme.color.background.primary),
         state = pullToRefreshState,
         isRefreshing = state.isRefreshing,
-        onRefresh = { onIntent(CalendarIntent.RefreshCalendar) }
+        onRefresh = { onIntent(CalendarIntent.RefreshCalendar) },
+        indicator = {
+            CaramelPullToRefreshIndicator(
+                state = pullToRefreshState,
+                isRefreshing = state.isRefreshing
+            )
+        }
     ) {
         BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
             val totalHeight = maxHeight - CalendarDimension.sheetPeekHeight
