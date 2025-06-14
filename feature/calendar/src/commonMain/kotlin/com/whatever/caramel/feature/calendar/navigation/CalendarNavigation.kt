@@ -19,7 +19,7 @@ fun NavHostController.navigateToCalendar(builder: NavOptionsBuilder.() -> Unit) 
 }
 
 fun NavGraphBuilder.calendarContent(
-    navigateToCreateTodo: () -> Unit,
+    navigateToCreateTodo: (ContentType) -> Unit,
     navigateToTodoDetail: (Long, ContentType) -> Unit,
 ) {
     composable<CalendarRoute> {

@@ -39,7 +39,7 @@ object UserValidator {
      * @param input 닉네임 입력값
      * @return 검증에 대한 Result 객체
      * */
-    fun checkNicknameValidate(input : String) : Result<Unit> {
+    fun checkNicknameValidate(input : String) : Result<String> {
         return when {
             input.length > NICKNAME_MAX_LENGTH -> Result.failure(
                 CaramelException(
@@ -55,7 +55,7 @@ object UserValidator {
                     debugMessage = "Nickname should only contain English letters, numbers, and Korean characters."
                 )
             )
-            else -> Result.success(Unit)
+            else -> Result.success(input)
         }
     }
 

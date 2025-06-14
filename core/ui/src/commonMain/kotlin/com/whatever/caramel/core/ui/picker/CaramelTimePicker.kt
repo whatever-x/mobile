@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelTextWheelPicker
 import com.whatever.caramel.core.designsystem.components.PickerScrollMode.BOUNDED
@@ -59,6 +61,7 @@ fun CaramelTimePicker(
     onHourChanged: (String) -> Unit,
     onMinuteChanged: (String) -> Unit
 ) {
+    val hapticFeedback = LocalHapticFeedback.current
     val periodState = rememberPickerState(initialItem = timeUiState.period)
     val hourState = rememberPickerState(initialItem = timeUiState.hour)
     val minuteState = rememberPickerState(initialItem = timeUiState.minute)
@@ -76,7 +79,10 @@ fun CaramelTimePicker(
             state = periodState,
             dividerWidth = 50.dp,
             scrollMode = BOUNDED,
-            onItemSelected = { period -> onPeriodChanged(period) }
+            onItemSelected = { period -> 
+                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                onPeriodChanged(period) 
+            }
         )
 
         Spacer(modifier = Modifier.width(width = 40.dp))
@@ -86,7 +92,10 @@ fun CaramelTimePicker(
             state = hourState,
             dividerWidth = 50.dp,
             scrollMode = LOOPING,
-            onItemSelected = { hour -> onHourChanged(hour) }
+            onItemSelected = { hour -> 
+                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                onHourChanged(hour) 
+            }
         )
 
         Spacer(modifier = Modifier.width(width = 20.dp))
@@ -104,7 +113,10 @@ fun CaramelTimePicker(
             state = minuteState,
             dividerWidth = 60.dp,
             scrollMode = LOOPING,
-            onItemSelected = { minute -> onMinuteChanged(minute) }
+            onItemSelected = { minute -> 
+                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                onMinuteChanged(minute) 
+            }
         )
     }
 }

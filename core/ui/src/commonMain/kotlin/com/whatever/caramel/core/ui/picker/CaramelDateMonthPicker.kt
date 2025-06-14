@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelTextWheelPicker
 import com.whatever.caramel.core.designsystem.components.PickerScrollMode.LOOPING
@@ -22,6 +24,7 @@ fun CaramelDateMonthPicker(
     onYearChanged: (Int) -> Unit,
     onMonthChanged: (Int) -> Unit
 ) {
+    val hapticFeedback = LocalHapticFeedback.current
     val yearState = rememberPickerState(dateUiState.year)
     val monthState = rememberPickerState(dateUiState.month)
 
@@ -41,7 +44,10 @@ fun CaramelDateMonthPicker(
             state = yearState,
             dividerWidth = 50.dp,
             scrollMode = LOOPING,
-            onItemSelected = { year -> onYearChanged(year) }
+            onItemSelected = { year -> 
+                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                onYearChanged(year) 
+            }
         )
 
         CaramelTextWheelPicker(
@@ -49,7 +55,10 @@ fun CaramelDateMonthPicker(
             state = monthState,
             dividerWidth = 50.dp,
             scrollMode = LOOPING,
-            onItemSelected = { month -> onMonthChanged(month) }
+            onItemSelected = { month -> 
+                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                onMonthChanged(month) 
+            }
         )
     }
 }

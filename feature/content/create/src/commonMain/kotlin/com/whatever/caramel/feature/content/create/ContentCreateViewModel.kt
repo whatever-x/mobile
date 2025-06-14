@@ -8,6 +8,7 @@ import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
 import com.whatever.caramel.core.domain.vo.content.ContentParameterType
+import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.util.copy
@@ -18,8 +19,9 @@ import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
 import com.whatever.caramel.feature.content.create.navigation.ContentCreateRoute
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 
 class ContentCreateViewModel(
     savedStateHandle: SavedStateHandle,
@@ -39,7 +41,10 @@ class ContentCreateViewModel(
     override fun createInitialState(savedStateHandle: SavedStateHandle): ContentCreateState {
         val arguments = savedStateHandle.toRoute<ContentCreateRoute>()
         return ContentCreateState(
-            id = arguments.contentId
+            createMode = when (arguments.contentType) {
+                ContentType.MEMO -> CreateMode.MEMO
+                ContentType.CALENDAR -> CreateMode.CALENDAR
+            }
         )
     }
 
@@ -98,6 +103,8 @@ class ContentCreateViewModel(
                     title = intent.text
                 )
             }
+        } else {
+            postSideEffect(ContentCreateSideEffect.ShowToast("제목은 ${ContentCreateState.MAX_TITLE_LENGTH}자까지 입력할 수 있어요"))
         }
     }
 
@@ -108,6 +115,8 @@ class ContentCreateViewModel(
                     content = intent.text
                 )
             }
+        } else {
+            postSideEffect(ContentCreateSideEffect.ShowToast("내용은 ${ContentCreateState.MAX_CONTENT_LENGTH}자까지 입력할 수 있어요"))
         }
     }
 
@@ -127,6 +136,21 @@ class ContentCreateViewModel(
         reduce {
             copy(
                 createMode = intent.createMode,
+                dateTime = if (intent.createMode == CreateMode.CALENDAR) {
+                    val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+                    val roundedMinute = ((now.minute + 2) / 5) * 5
+                    val adjustedHour = if (roundedMinute >= 60) now.hour + 1 else now.hour
+                    val finalMinute = if (roundedMinute >= 60) 0 else roundedMinute
+
+                    now.copy(
+                        hour = adjustedHour,
+                        minute = finalMinute,
+                        second = 0,
+                        nanosecond = 0
+                    )
+                } else {
+                    dateTime
+                }
             )
         }
     }
@@ -216,8 +240,7 @@ class ContentCreateViewModel(
                         title = state.title.ifBlank { null },
                         description = state.content.ifBlank { null },
                         isCompleted = false,
-                        startDateTime = state.dateTime.toInstant(TimeZone.currentSystemDefault())
-                            .toString(),
+                        startDateTime = state.dateTime.toString(),
                         startTimeZone = TimeZone.currentSystemDefault().id,
                         endDateTime = null,
                         endTimeZone = null,

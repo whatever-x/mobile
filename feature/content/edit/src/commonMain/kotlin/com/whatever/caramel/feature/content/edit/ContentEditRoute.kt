@@ -25,6 +25,10 @@ fun ContentEditRoute(
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is ContentEditSideEffect.NavigateBack -> popBackStack()
+                is ContentEditSideEffect.NavigateBackToContentList -> {
+                    popBackStack()
+                    popBackStack()
+                }
                 is ContentEditSideEffect.ShowErrorSnackBar -> {
                     showSnackbarMessage(
                         snackbarHostState = snackbarHostState,
@@ -63,6 +67,16 @@ fun ContentEditRoute(
         onMainButtonClick = { viewModel.intent(ContentEditIntent.ConfirmDeleteDialog) },
         onSubButtonClick = { viewModel.intent(ContentEditIntent.DismissDeleteDialog) }
     ) {
-        DefaultCaramelDialogLayout() // Or your custom layout
+        DefaultCaramelDialogLayout()
+    }
+
+    CaramelDialog(
+        show = state.showDeletedContentDialog,
+        title = "삭제된 메모에요",
+        mainButtonText = "확인",
+        onDismissRequest = { viewModel.intent(ContentEditIntent.DismissDeletedContentDialog) },
+        onMainButtonClick = { viewModel.intent(ContentEditIntent.DismissDeletedContentDialog) }
+    ) {
+        DefaultCaramelDialogLayout()
     }
 }

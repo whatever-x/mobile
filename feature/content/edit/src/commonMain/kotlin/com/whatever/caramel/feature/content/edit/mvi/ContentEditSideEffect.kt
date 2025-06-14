@@ -4,5 +4,6 @@ import com.whatever.caramel.core.viewmodel.UiSideEffect
 
 sealed interface ContentEditSideEffect : UiSideEffect {
     data object NavigateBack : ContentEditSideEffect
+    data object NavigateBackToContentList : ContentEditSideEffect
     data class ShowErrorSnackBar(val code: String, val message: String? = null) : ContentEditSideEffect
 } 

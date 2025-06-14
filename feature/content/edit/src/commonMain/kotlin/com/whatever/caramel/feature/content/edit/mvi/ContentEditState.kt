@@ -25,6 +25,7 @@ data class ContentEditState(
     val dateTime: LocalDateTime = DateUtil.todayLocalDateTime(),
     val showExitConfirmDialog: Boolean = false,
     val showDeleteConfirmDialog: Boolean = false,
+    val showDeletedContentDialog: Boolean = false,
 
     ) : UiState {
 

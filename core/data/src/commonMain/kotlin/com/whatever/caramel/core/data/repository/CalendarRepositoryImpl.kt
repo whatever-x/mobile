@@ -41,10 +41,10 @@ class CalendarRepositoryImpl(
             title = parameter.title,
             description = parameter.description,
             isCompleted = parameter.isCompleted,
-            startDateTime = parameter.startDateTime,
-            startTimeZone = parameter.startTimeZone,
-            endDateTime = parameter.endDateTime,
-            endTimeZone = parameter.endTimeZone,
+            startDateTime = parameter.dateTimeInfo?.startDateTime,
+            startTimeZone = parameter.dateTimeInfo?.startTimezone,
+            endDateTime = parameter.dateTimeInfo?.endDateTime,
+            endTimeZone = parameter.dateTimeInfo?.endTimezone,
             tagIds = parameter.tagIds
         )
         safeCall {

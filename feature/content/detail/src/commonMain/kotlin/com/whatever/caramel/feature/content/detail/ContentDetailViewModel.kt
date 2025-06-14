@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.code.AppErrorCode
+import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
+import com.whatever.caramel.core.domain.exception.code.ScheduleErrorCode
 import com.whatever.caramel.core.domain.usecase.calendar.DeleteScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.common.GetLinkPreviewsForContentUseCase
@@ -62,7 +64,15 @@ class ContentDetailViewModel(
         } else {
             AppErrorCode.UNKNOWN to null
         }
-        postSideEffect(ContentDetailSideEffect.ShowErrorSnackBar(code = code, message = message))
+        
+        when (code) {
+            ContentErrorCode.CONTENT_NOT_FOUND, ScheduleErrorCode.SCHEDULE_NOT_FOUND -> {
+                reduce { copy(showDeletedContentDialog = true) }
+            }
+            else -> {
+                postSideEffect(ContentDetailSideEffect.ShowErrorSnackBar(code = code, message = message))
+            }
+        }
     }
 
     override suspend fun handleIntent(intent: ContentDetailIntent) {
@@ -103,6 +113,10 @@ class ContentDetailViewModel(
                 reduce { copy(showDeleteConfirmDialog = false) }
             }
 
+            ContentDetailIntent.DismissDeletedContentDialog -> {
+                handleDismissDeletedContentDialog()
+            }
+
             ContentDetailIntent.LoadDataOnStart -> {
                 loadContentDetails()
             }
@@ -111,6 +125,11 @@ class ContentDetailViewModel(
                 postSideEffect(ContentDetailSideEffect.NavigateToBackStack)
             }
         }
+    }
+
+    private fun handleDismissDeletedContentDialog() {
+        reduce { copy(showDeletedContentDialog = false) }
+        postSideEffect(ContentDetailSideEffect.NavigateToBackStack)
     }
 
     private fun loadContentDetails() {

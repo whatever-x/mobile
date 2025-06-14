@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.code.AppErrorCode
+import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
+import com.whatever.caramel.core.domain.exception.code.ScheduleErrorCode
 import com.whatever.caramel.core.domain.usecase.calendar.DeleteScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.UpdateScheduleUseCase
@@ -12,8 +14,10 @@ import com.whatever.caramel.core.domain.usecase.memo.GetMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.UpdateMemoUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleEditParameter
+import com.whatever.caramel.core.domain.vo.common.DateTimeInfo
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoEditParameter
+import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditIntent
@@ -24,7 +28,6 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
 
 class ContentEditViewModel(
     savedStateHandle: SavedStateHandle,
@@ -59,7 +62,21 @@ class ContentEditViewModel(
         } else {
             AppErrorCode.UNKNOWN to null
         }
-        postSideEffect(ContentEditSideEffect.ShowErrorSnackBar(code = code, message = message))
+
+        when (code) {
+            ContentErrorCode.CONTENT_NOT_FOUND, ScheduleErrorCode.SCHEDULE_NOT_FOUND -> {
+                reduce { copy(showDeletedContentDialog = true) }
+            }
+
+            else -> {
+                postSideEffect(
+                    ContentEditSideEffect.ShowErrorSnackBar(
+                        code = code,
+                        message = message
+                    )
+                )
+            }
+        }
     }
 
     override suspend fun handleIntent(intent: ContentEditIntent) {
@@ -89,6 +106,7 @@ class ContentEditViewModel(
             ContentEditIntent.ConfirmExitDialog -> handleConfirmExitDialog()
             ContentEditIntent.DismissDeleteDialog -> handleDismissDeleteDialog()
             ContentEditIntent.ConfirmDeleteDialog -> handleConfirmDeleteDialog()
+            ContentEditIntent.DismissDeletedContentDialog -> handleDismissDeletedContentDialog()
             is ContentEditIntent.OnCreateModeSelected -> handleOnCreateModeSelected(intent)
         }
     }
@@ -125,14 +143,19 @@ class ContentEditViewModel(
                             description = state.content.ifBlank { null },
                             isCompleted = null,
                             tagIds = state.selectedTags.map { it.id }.toList(),
-                            dateTimeInfo = null
+                            dateTimeInfo = if (state.createMode == CreateMode.CALENDAR) {
+                                DateTimeInfo(
+                                    startDateTime = state.dateTime.toString(),
+                                    startTimezone = TimeZone.currentSystemDefault().id,
+                                    endDateTime = null,
+                                    endTimezone = null
+                                )
+                            } else null
                         )
                     )
-                    postSideEffect(ContentEditSideEffect.NavigateBack)
                 }
 
                 ContentType.CALENDAR -> {
-                    val currentInstant = state.dateTime.toInstant(TimeZone.currentSystemDefault())
                     updateScheduleUseCase(
                         scheduleId = state.contentId,
                         parameter = ScheduleEditParameter(
@@ -140,16 +163,20 @@ class ContentEditViewModel(
                             title = state.title.ifBlank { null },
                             description = state.content.ifBlank { null },
                             isCompleted = false,
-                            startDateTime = currentInstant.toString(),
-                            startTimeZone = TimeZone.currentSystemDefault().id,
-                            endDateTime = currentInstant.toString(),
-                            endTimeZone = TimeZone.currentSystemDefault().id,
+                            dateTimeInfo = if (state.createMode == CreateMode.CALENDAR) {
+                                DateTimeInfo(
+                                    startDateTime = state.dateTime.toString(),
+                                    startTimezone = TimeZone.currentSystemDefault().id,
+                                    endDateTime = state.dateTime.toString(),
+                                    endTimezone = TimeZone.currentSystemDefault().id
+                                )
+                            } else null,
                             tagIds = state.selectedTags.map { it.id }.toList()
                         )
                     )
-                    postSideEffect(ContentEditSideEffect.NavigateBack)
                 }
             }
+            postSideEffect(ContentEditSideEffect.NavigateBackToContentList)
         }
     }
 
@@ -173,17 +200,22 @@ class ContentEditViewModel(
         reduce { copy(showDeleteConfirmDialog = false) }
     }
 
+    private fun handleDismissDeletedContentDialog() {
+        reduce { copy(showDeletedContentDialog = false) }
+        postSideEffect(ContentEditSideEffect.NavigateBackToContentList)
+    }
+
     private fun handleConfirmDeleteDialog() {
         launch {
             when (currentState.type) {
                 ContentType.MEMO -> {
                     deleteMemoUseCase(currentState.contentId)
-                    postSideEffect(ContentEditSideEffect.NavigateBack)
+                    postSideEffect(ContentEditSideEffect.NavigateBackToContentList)
                 }
 
                 ContentType.CALENDAR -> {
                     deleteScheduleUseCase(currentState.contentId)
-                    postSideEffect(ContentEditSideEffect.NavigateBack)
+                    postSideEffect(ContentEditSideEffect.NavigateBackToContentList)
                 }
             }
         }
