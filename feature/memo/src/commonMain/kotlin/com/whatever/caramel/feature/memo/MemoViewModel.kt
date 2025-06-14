@@ -44,19 +44,21 @@ class MemoViewModel(
     }
 
     private fun initialize() {
-        reduce {
-            copy(
-                isMemoLoading = true,
-                isTagLoading = true,
-                isRefreshing = false,
-                memos = persistentListOf(),
-                tags = persistentListOf(),
-                selectedTag = null,
-                cursor = null
-            )
+        launch {
+            reduce {
+                copy(
+                    isMemoLoading = true,
+                    isTagLoading = true,
+                    isRefreshing = false,
+                    memos = persistentListOf(),
+                    tags = persistentListOf(),
+                    selectedTag = null,
+                    cursor = null
+                )
+            }
+            getMemos()
+            getTags()   
         }
-        getMemos()
-        getTags()
     }
 
     private fun getTags() {
