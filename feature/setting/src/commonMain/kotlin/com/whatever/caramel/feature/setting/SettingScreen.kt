@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -222,14 +223,18 @@ fun SettingDialogHost(
     if (isShowEditProfileBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = toggleEditProfileDialog,
+            contentWindowInsets = { WindowInsets(0, 0, 0, 0) },
             dragHandle = null,
             shape = RoundedCornerShape(
                 topStart = 24.dp,
                 topEnd = 24.dp
             ),
-            scrimColor = CaramelTheme.color.alpha.primary
+            scrimColor = CaramelTheme.color.alpha.primary,
         ) {
             SettingEditProfileBottomSheet(
+                modifier = Modifier
+                    .background(color = CaramelTheme.color.background.tertiary)
+                    .navigationBarsPadding(),
                 navigateToProfileEditNickName = onClickEditNickname,
                 navigateToProfileEditBrithDay = onClickEditBrithDay
             )

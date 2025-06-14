@@ -20,11 +20,12 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 internal fun SettingEditProfileBottomSheet(
+    modifier: Modifier = Modifier,
     navigateToProfileEditNickName : () -> Unit,
     navigateToProfileEditBrithDay : () -> Unit,
 ) {
     Column (
-        modifier = Modifier
+        modifier = modifier
             .background(color = CaramelTheme.color.background.tertiary)
             .padding(horizontal = CaramelTheme.spacing.xl)
     ){
