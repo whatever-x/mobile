@@ -37,7 +37,7 @@ internal fun LazyListScope.Header(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = CaramelTheme.spacing.xl)
-                .padding(bottom = CaramelTheme.spacing.xl),
+                .padding(bottom = CaramelTheme.spacing.l),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(

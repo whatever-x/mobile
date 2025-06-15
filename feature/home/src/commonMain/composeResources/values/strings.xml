@@ -16,4 +16,8 @@
     <!-- Todo -->
     <string name="start_couple_date_guid">커플 시작일을 입력해 주세요.\n기념일이 다가오면 알려드릴게요.</string>
 
+    <!-- UnConnectCard -->
+    <string name="unconnected_couple">연인과의 연결이 해제되었어요</string>
+    <string name="do_not_update_home_data">오늘의 카라말 퀴즈 풀기, 메모 남기기 등\n데이터를 더 이상 변경할 수 없어요.</string>
+
 </resources>

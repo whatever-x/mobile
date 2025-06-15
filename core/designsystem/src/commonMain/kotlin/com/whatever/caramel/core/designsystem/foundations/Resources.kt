@@ -1,6 +1,9 @@
 package com.whatever.caramel.core.designsystem.foundations
 
 import caramel.core.designsystem.generated.resources.Res
+import caramel.core.designsystem.generated.resources.ic_alert_12
+import caramel.core.designsystem.generated.resources.ic_alert_24
+import caramel.core.designsystem.generated.resources.ic_alert_32
 import caramel.core.designsystem.generated.resources.ic_apple_logo_17_20
 import caramel.core.designsystem.generated.resources.ic_arrow_down_16
 import caramel.core.designsystem.generated.resources.ic_arrow_down_24
@@ -114,6 +117,9 @@ object Resources {
         val ic_kakao_logo_24 = Res.drawable.ic_kakao_logo_24
         val ic_apple_logo_17_20 = Res.drawable.ic_apple_logo_17_20
         val ic_edit_line_24 = Res.drawable.ic_edit_line_24
+        val ic_alert_12 = Res.drawable.ic_alert_12
+        val ic_alert_24 = Res.drawable.ic_alert_24
+        val ic_alert_32 = Res.drawable.ic_alert_32
     }
 
     object Image {
