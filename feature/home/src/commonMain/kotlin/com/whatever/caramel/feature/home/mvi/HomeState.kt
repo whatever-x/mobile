@@ -21,7 +21,7 @@ data class HomeState(
     val myChoiceOption: BalanceGameOptionState = BalanceGameOptionState(),
     val partnerChoiceOption: BalanceGameOptionState = BalanceGameOptionState(),
     val isShowDialog: Boolean = false,
-    val dialogTitle: String = ""
+    val dialogTitle: String = "",
     val coupleState: CoupleState = CoupleState.IDLE
 ) : UiState {
 
