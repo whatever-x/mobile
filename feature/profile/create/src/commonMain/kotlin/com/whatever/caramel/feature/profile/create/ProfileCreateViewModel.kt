@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
+import com.whatever.caramel.core.domain.usecase.user.UpdateUserSettingUseCase
 import com.whatever.caramel.core.domain.validator.UserValidator
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.util.DateFormatter.createDateString
@@ -12,9 +13,14 @@ import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateSideEffect
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateState
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateStep
+import dev.icerock.moko.permissions.Permission
+import dev.icerock.moko.permissions.PermissionsController
+import dev.icerock.moko.permissions.notifications.REMOTE_NOTIFICATION
 
 class ProfileCreateViewModel(
     private val createUserProfileUseCase: CreateUserProfileUseCase,
+    private val updateUserSettingUseCase: UpdateUserSettingUseCase,
+    private val permissionsController: PermissionsController,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProfileCreateState, ProfileCreateSideEffect, ProfileCreateIntent>(savedStateHandle) {
 
@@ -98,6 +104,12 @@ class ProfileCreateViewModel(
                     gender = currentState.gender,
                     agreementServiceTerms = currentState.isServiceTermChecked,
                     agreementPrivacyPolicy = currentState.isPersonalInfoTermChecked
+                )
+
+                updateUserSettingUseCase(
+                    notificationEnabled = permissionsController.isPermissionGranted(
+                        permission = Permission.REMOTE_NOTIFICATION
+                    )
                 )
                 postSideEffect(ProfileCreateSideEffect.NavigateToStartDestination(userStatus = userStatus))
             }

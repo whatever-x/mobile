@@ -29,6 +29,8 @@ import com.whatever.caramel.core.domain.usecase.user.GetUserStatusUseCase
 import com.whatever.caramel.core.domain.usecase.user.RefreshUserSessionUseCase
 import com.whatever.caramel.core.domain.usecase.common.GetLinkPreviewsForContentUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignOutUseCase
+import com.whatever.caramel.core.domain.usecase.user.GetUserSettingUseCase
+import com.whatever.caramel.core.domain.usecase.user.UpdateUserSettingUseCase
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -42,6 +44,8 @@ val useCaseModule = module {
     factory { CreateUserProfileUseCase(get()) }
     factory { EditProfileUseCase(get()) }
     factory { GetUserStatusUseCase(get()) }
+    factory { UpdateUserSettingUseCase(get()) }
+    factory { GetUserSettingUseCase(get()) }
 
     // Couple
     factory { GetCoupleInvitationCodeUseCase(get()) }

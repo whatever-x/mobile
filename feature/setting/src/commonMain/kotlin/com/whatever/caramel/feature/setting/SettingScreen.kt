@@ -30,6 +30,7 @@ import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLay
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.setting.component.SettingEditProfileBottomSheet
+import com.whatever.caramel.feature.setting.component.SettingListButton
 import com.whatever.caramel.feature.setting.component.SettingListText
 import com.whatever.caramel.feature.setting.component.SettingUserProfile
 import com.whatever.caramel.feature.setting.component.SettingUserProfileSkeleton
@@ -161,6 +162,11 @@ internal fun SettingScreen(
                 modifier = Modifier.padding(
                     bottom = CaramelTheme.spacing.s
                 )
+            )
+            SettingListButton(
+                mainText = "알림",
+                isChecked = state.isNotificationEnabled,
+                onClickTailButton = { onIntent(SettingIntent.ClickNotificationToggleButton) }
             )
             SettingListText(
                 mainText = "앱 버전 v.${Platform.versionName}",

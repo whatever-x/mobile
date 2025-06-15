@@ -10,6 +10,7 @@ import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.remote.datasource.RemoteUserDataSource
 import com.whatever.caramel.core.remote.dto.user.request.EditUserProfileRequest
 import com.whatever.caramel.core.remote.dto.user.request.UserProfileRequest
+import com.whatever.caramel.core.remote.dto.user.request.UserSettingRequest
 
 class UserRepositoryImpl(
     private val userRemoteDataSource: RemoteUserDataSource,
@@ -65,5 +66,14 @@ class UserRepositoryImpl(
 
     override suspend fun deleteUserStatus() {
         safeCall { userDataSource.deleteUserStatus() }
+    }
+
+    override suspend fun updateUserSetting(notificationEnabled: Boolean) : Boolean {
+        val request = UserSettingRequest(notificationEnabled = notificationEnabled)
+        return safeCall { userRemoteDataSource.patchUserSetting(request).notificationEnabled }
+    }
+
+    override suspend fun getUserSetting(): Boolean {
+        return safeCall { userRemoteDataSource.getUserSetting().notificationEnabled }
     }
 }

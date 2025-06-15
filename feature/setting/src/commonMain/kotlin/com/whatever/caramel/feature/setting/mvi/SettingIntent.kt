@@ -29,4 +29,6 @@ sealed interface SettingIntent : UiIntent {
     data object ToggleUserCancelledButton : SettingIntent
 
     data object ClickUserCancelledConfirmButton : SettingIntent
+
+    data object ClickNotificationToggleButton : SettingIntent
 }
