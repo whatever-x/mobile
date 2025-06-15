@@ -48,7 +48,7 @@ class ContentCreateViewModel(
                 arguments.dateTimeString
             )
         return ContentCreateState(
-            createMode = when (arguments.contentType) {
+            createMode = when (ContentType.valueOf(arguments.contentType)) {
                 ContentType.MEMO -> CreateMode.MEMO
                 ContentType.CALENDAR -> CreateMode.CALENDAR
             },
