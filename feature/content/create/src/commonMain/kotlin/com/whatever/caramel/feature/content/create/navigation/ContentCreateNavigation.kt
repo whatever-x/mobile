@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ContentCreateRoute(
-    val contentType: ContentType,
+    val contentType: String,
     val dateTimeString: String
 )
 
@@ -23,7 +23,7 @@ fun NavHostController.navigateToContentCreate(
 ) {
     navigate(
         route = ContentCreateRoute(
-            contentType = contentType,
+            contentType = contentType.name,
             dateTimeString = dateTimeString
         ),
         navOptions = navOptions
