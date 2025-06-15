@@ -17,12 +17,16 @@ data class ErrorResponse(
     @SerialName("code") val code: String,
     @SerialName("message") val message: String,
     @SerialName("debugMessage") val debugMessage: String?,
+    @SerialName("description") val description: String?,
+    @SerialName("errorUiType") val errorUiType: String,
 ) {
     fun toException() : CaramelNetworkException {
         return CaramelNetworkException(
             code = this.code,
             message = this.message,
-            debugMessage = this.debugMessage
+            debugMessage = this.debugMessage,
+            description = this.description,
+            errorUiType = this.errorUiType
         )
     }
 }

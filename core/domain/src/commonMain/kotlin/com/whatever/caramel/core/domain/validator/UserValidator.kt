@@ -1,6 +1,7 @@
 package com.whatever.caramel.core.domain.validator
 
 import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.UserErrorCode
 
 /**
@@ -20,14 +21,16 @@ object UserValidator {
                 CaramelException(
                     code = UserErrorCode.INVALID_NICKNAME_LENGTH,
                     message = "닉네임은 $NICKNAME_MAX_LENGTH 자리 이하여야 합니다.",
-                    debugMessage = "Nickname is limited to $NICKNAME_MAX_LENGTH characters."
+                    debugMessage = "Nickname is limited to $NICKNAME_MAX_LENGTH characters.",
+                    errorUiType = ErrorUiType.TOAST
                 )
             )
             !input.matches(NICKNAME_VALID_PATTERN) -> Result.failure(
                 CaramelException(
                     code = UserErrorCode.INVALID_NICKNAME_CHARACTER,
                     message = "닉네임은 영문, 숫자, 한글만 사용할 수 있습니다.",
-                    debugMessage = "Nickname should only contain English letters, numbers, and Korean characters."
+                    debugMessage = "Nickname should only contain English letters, numbers, and Korean characters.",
+                    errorUiType = ErrorUiType.TOAST
                 )
             )
             else -> Result.success(Unit)
@@ -45,14 +48,16 @@ object UserValidator {
                 CaramelException(
                     code = UserErrorCode.INVALID_NICKNAME_LENGTH,
                     message = "닉네임은 $NICKNAME_MIN_LENGTH 자리 이상, $NICKNAME_MAX_LENGTH 자리 이하여야 합니다.",
-                    debugMessage = "Nicknames must have at least $NICKNAME_MIN_LENGTH character and no more than $NICKNAME_MAX_LENGTH characters."
+                    debugMessage = "Nicknames must have at least $NICKNAME_MIN_LENGTH character and no more than $NICKNAME_MAX_LENGTH characters.",
+                    errorUiType = ErrorUiType.TOAST
                 )
             )
             !input.matches(NICKNAME_VALID_PATTERN) -> Result.failure(
                 CaramelException(
                     code = UserErrorCode.INVALID_NICKNAME_CHARACTER,
                     message = "닉네임은 영문, 숫자, 한글만 사용할 수 있습니다.",
-                    debugMessage = "Nickname should only contain English letters, numbers, and Korean characters."
+                    debugMessage = "Nickname should only contain English letters, numbers, and Korean characters.",
+                    errorUiType = ErrorUiType.TOAST
                 )
             )
             else -> Result.success(input)

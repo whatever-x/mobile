@@ -1,6 +1,7 @@
 package com.whatever.caramel.core.domain.entity
 
 import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.vo.user.UserMetaData
 import com.whatever.caramel.core.domain.vo.user.UserProfile
@@ -17,7 +18,8 @@ data class User(
         get() = id ?: throw CaramelException(
             code = AppErrorCode.NULL_VALUE,
             message = "사용자 ID가 존재하지 않습니다",
-            debugMessage = null
+            debugMessage = null,
+            errorUiType = ErrorUiType.TOAST
         )
 
     val hasProfile get() = userProfile != null
@@ -25,7 +27,8 @@ data class User(
         get() = userProfile ?: throw CaramelException(
             code = AppErrorCode.NULL_VALUE,
             message = "사용자 프로필이 존재하지 않습니다",
-            debugMessage = null
+            debugMessage = null,
+            errorUiType = ErrorUiType.TOAST
         )
 }
 

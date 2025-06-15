@@ -18,8 +18,10 @@ suspend inline fun <reified T> HttpResponse.getBody(): T {
         } else {
             throw CaramelNetworkException(
                 code = "Unknown",
-                message = "Data is null",
-                debugMessage = "Data is null"
+                message = "예상치 못한 에러가 발생했습니다.",
+                debugMessage = "Data is null",
+                description = null,
+                errorUiType = "DIALOG"
             )
         }
     } else {
@@ -29,7 +31,9 @@ suspend inline fun <reified T> HttpResponse.getBody(): T {
             throw CaramelNetworkException(
                 code = "Unknown",
                 message = "Unknown Error",
-                debugMessage = "Unknown Error"
+                debugMessage = "Unknown Error",
+                description = null,
+                errorUiType = "DIALOG"
             )
         }
     }
