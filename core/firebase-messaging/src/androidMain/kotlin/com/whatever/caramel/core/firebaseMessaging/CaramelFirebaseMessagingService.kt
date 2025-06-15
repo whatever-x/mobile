@@ -1,5 +1,13 @@
 package com.whatever.caramel.core.firebaseMessaging
 
+import android.Manifest
+import android.app.PendingIntent
+import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
+import androidx.annotation.RequiresPermission
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import io.github.aakira.napier.Napier
@@ -8,10 +16,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import java.util.UUID
 
 class CaramelFirebaseMessagingService : FirebaseMessagingService() {
 
     private val fcmTokenProvider: FcmTokenProvider by inject()
+    private val notificationIntent: NotificationIntentProvider by inject()
+
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     override fun onNewToken(token: String) {
@@ -26,26 +37,39 @@ class CaramelFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        Napier.d { "메세지 리시브 발동" }
-
-        val notification = message.notification
-
-        if (notification != null) {
-            Napier.d { "타이틀 : " + notification.title }
-            Napier.d { "바디 : " + notification.body }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            return
         }
+
+        val notification = message.notification ?: return
+
+        val intent = notificationIntent.provideNotificationIntent(context = applicationContext)
+
+        val pendingIntent = PendingIntent.getActivity(
+            applicationContext,
+            UUID.randomUUID().hashCode(),
+            intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val builder = NotificationCompat.Builder(applicationContext, getString(R.string.fcm_id_01))
+            .setSmallIcon(R.drawable.ic_notification_small)
+            .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_notification))
+            .setColor(getColor(R.color.notification_color))
+            .setColorized(true)
+            .setContentTitle(notification.title)
+            .setContentText(notification.body)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+
+        NotificationManagerCompat.from(this).notify(
+            UUID.randomUUID().hashCode(),
+            builder.build()
+        )
     }
 
 }
-
-// 토큰을 보내야하는 시점
-    // 로그인 이후 호출 - LoginViewModel 호출 / O
-    // 새로운 토큰이 발급되었을 때 호출 - onNewToken / O
-    // 앱 실행할 때 마다 호출 - MainViewModel 호출 / O
-
-// FcmProvider 역할
-    // 현재 토큰을 앱 서버로 전달하는 로직
-

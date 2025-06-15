@@ -30,6 +30,8 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.koin.android)
+            implementation(libs.androidx.core.ktx)
+            implementation(libs.androidx.appcompat)
 
             implementation(project.dependencies.platform(libs.firebase.bom.android))
             implementation(libs.firebase.fcm)
