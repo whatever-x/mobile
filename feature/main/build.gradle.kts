@@ -26,6 +26,8 @@ kotlin {
 
             implementation(libs.jetbrains.compose.navigation)
             implementation(libs.androidx.lifecycle.runtime.compose)
+
+            implementation(libs.bundles.moko)
         }
     }
 }

@@ -31,11 +31,17 @@ import com.whatever.caramel.feature.home.navigation.homeContent
 import com.whatever.caramel.feature.home.navigation.navigateToHome
 import com.whatever.caramel.feature.memo.navigation.memoContent
 import com.whatever.caramel.feature.memo.navigation.navigateToMemo
+import dev.icerock.moko.permissions.compose.PermissionsControllerFactory
+import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 internal fun MainRoute(
-    viewModel: MainViewModel = koinViewModel(),
+    permissionsControllerFactory: PermissionsControllerFactory = rememberPermissionsControllerFactory(),
+    viewModel: MainViewModel = koinViewModel {
+        parametersOf(permissionsControllerFactory.createPermissionsController())
+    },
     navigateToSetting: () -> Unit,
     navigateToStaredCoupleDay: () -> Unit,
     navigateToTodoDetail: (Long, ContentType) -> Unit,
@@ -49,6 +55,7 @@ internal fun MainRoute(
     ObserveLifecycleEvent { event ->
         if (event == Lifecycle.Event.ON_RESUME) {
             viewModel.updateFcmToken()
+            viewModel.updateUserSetting()
         }
     }
 
