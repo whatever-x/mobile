@@ -31,16 +31,6 @@ class CalendarViewModel(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(savedStateHandle) {
 
-    init {
-        val year = currentState.year
-        val monthNumber = currentState.month.number
-        getSchedules(
-            year = year,
-            startMonthNumber = monthNumber,
-            initialize = true
-        )
-    }
-
     override fun createInitialState(savedStateHandle: SavedStateHandle): CalendarState {
         val currentDate = DateUtil.today()
         return CalendarState(
@@ -81,7 +71,19 @@ class CalendarViewModel(
             CalendarIntent.ClickOutSideBottomSheet -> clickOutSideBottomSheet()
             CalendarIntent.ClickDatePickerOutSide -> dismissCalendarDatePicker()
             CalendarIntent.RefreshCalendar -> refreshCalendar()
+            CalendarIntent.Initialize -> initialize()
         }
+    }
+
+    private fun initialize() {
+        val year = currentState.year
+        val monthNumber = currentState.month.number
+        getSchedules(
+            year = year,
+            startMonthNumber = monthNumber,
+            initialize = currentState.monthSchedules.isEmpty(),
+            isRefresh = true
+        )
     }
 
     private fun navigateToAddSchedule(date: LocalDate) {
@@ -97,7 +99,8 @@ class CalendarViewModel(
         reduce { copy(isRefreshing = true) }
         getSchedules(
             year = currentState.year,
-            startMonthNumber = currentState.month.number
+            startMonthNumber = currentState.month.number,
+            isRefresh = true
         )
     }
 
@@ -137,7 +140,7 @@ class CalendarViewModel(
                 pageIndex = pageIndex,
             )
         }
-        getSchedules(year = year, startMonthNumber = monthNumber + 1, initialize = false)
+        getSchedules(year = year, startMonthNumber = monthNumber + 1)
     }
 
     private fun clickTodoUrl(url: String?) {
@@ -172,12 +175,13 @@ class CalendarViewModel(
         year: Int,
         startMonthNumber: Int,
         endMonthNumber: Int = startMonthNumber,
-        initialize: Boolean = false
+        initialize: Boolean = false,
+        isRefresh: Boolean = false
     ) {
         launch {
             val updatedSelectedDate = when {
                 initialize -> currentState.today
-                currentState.isRefreshing -> currentState.selectedDate
+                isRefresh -> currentState.selectedDate
                 else -> LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
             }
             val firstDayOfMonth = DateFormatter.createDateString(
@@ -255,8 +259,7 @@ class CalendarViewModel(
         }
         getSchedules(
             year = pickerYear,
-            startMonthNumber = pickerMonth.number,
-            initialize = false
+            startMonthNumber = pickerMonth.number
         )
     }
 
