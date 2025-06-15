@@ -64,12 +64,22 @@ class HomeViewModel(
 
         when (exception.code) {
             CoupleErrorCode.CAN_NOT_LOAD_DATA -> {
-                launch {
+                reduce {
+                    copy(
+                        isShowBottomSheet = false,
+                        isShowDialog = true,
+                        dialogTitle = exception.message,
+                        coupleState = HomeState.CoupleState.DISCONNECT
+                    )
+                }
+            }
+            CoupleErrorCode.MEMBER_NOT_FOUND -> {
+                if (currentState.coupleState != HomeState.CoupleState.DISCONNECT) {
                     reduce {
                         copy(
-                            isShowBottomSheet = false,
                             isShowDialog = true,
-                            dialogTitle = exception.message
+                            dialogTitle = exception.message,
+                            coupleState = HomeState.CoupleState.DISCONNECT
                         )
                     }
                 }
@@ -111,7 +121,12 @@ class HomeViewModel(
 
     private suspend fun refreshHomeData() {
         launch {
-            reduce { copy(isLoading = true) }
+            reduce {
+                copy(
+                    isLoading = true,
+                    coupleState = HomeState.CoupleState.IDLE
+                )
+            }
 
             val initCoupleInfoJob = launch { initCoupleInfo() }
             val initSchedulesJob = launch { initSchedules() }
@@ -119,11 +134,7 @@ class HomeViewModel(
 
             joinAll(initCoupleInfoJob, initSchedulesJob, initBalanceGameJob)
 
-            reduce {
-                copy(
-                    isLoading = false
-                )
-            }
+            reduce { copy(isLoading = false) }
         }
     }
 
