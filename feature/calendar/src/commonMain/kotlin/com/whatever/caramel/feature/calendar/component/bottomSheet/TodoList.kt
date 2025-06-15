@@ -25,7 +25,7 @@ import org.jetbrains.compose.resources.painterResource
 internal interface CaramelBottomTodoScope {
     val id: Long
     val title: String
-    val description: String?
+    val description: String
     val url: String?
     val onClickUrl: (String?) -> Unit
     val onClickTodo: (Long) -> Unit
@@ -34,7 +34,7 @@ internal interface CaramelBottomTodoScope {
 internal class CaramelDefaultBottomTodoScope(
     override val id: Long,
     override val title: String,
-    override val description: String?,
+    override val description: String,
     override val url: String?,
     override val onClickUrl: (String?) -> Unit,
     override val onClickTodo: (Long) -> Unit
@@ -44,7 +44,7 @@ internal class CaramelDefaultBottomTodoScope(
 internal fun BottomSheetTodoItem(
     id: Long,
     title: String,
-    description: String? = null,
+    description: String,
     url: String? = null,
     onClickTodo: (Long) -> Unit = {},
     onClickUrl: (String?) -> Unit = {},
@@ -74,7 +74,7 @@ internal fun BottomSheetTodoItem(
 internal fun CaramelBottomTodoScope.DefaultBottomSheetTodoItem(
     modifier: Modifier = Modifier
 ) {
-    val hasDescription = !this.description.isNullOrEmpty()
+    val hasAll = this.title.isNotEmpty() && this.description.isNotEmpty()
     val hasUrl = !this.url.isNullOrEmpty()
 
     Column(
@@ -88,7 +88,7 @@ internal fun CaramelBottomTodoScope.DefaultBottomSheetTodoItem(
         verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.l)
     ) {
         TodoTitle()
-        if (hasDescription) TodoDescription()
+        if (hasAll) TodoDescription()
         if (hasUrl) {
             TodoUrl()
         }
@@ -99,6 +99,7 @@ internal fun CaramelBottomTodoScope.DefaultBottomSheetTodoItem(
 internal fun CaramelBottomTodoScope.TodoTitle(
     modifier: Modifier = Modifier
 ) {
+    val mainText = this.title.ifEmpty { description }
     Text(
         modifier = modifier
             .fillMaxWidth()
@@ -107,7 +108,7 @@ internal fun CaramelBottomTodoScope.TodoTitle(
                 interactionSource = null,
                 onClick = { onClickTodo(id) }
             ),
-        text = this.title,
+        text = mainText,
         style = CaramelTheme.typography.body3.regular,
         color = CaramelTheme.color.text.primary
     )
@@ -117,8 +118,7 @@ internal fun CaramelBottomTodoScope.TodoTitle(
 internal fun CaramelBottomTodoScope.TodoDescription(
     modifier: Modifier = Modifier
 ) {
-    val descriptionText = this.description ?: return
-
+    val descriptionText = this.description.ifEmpty { return }
     Text(
         modifier = modifier
             .fillMaxWidth()
