@@ -1,10 +1,10 @@
 package com.whatever.caramel.feature.main
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -31,17 +31,11 @@ import com.whatever.caramel.feature.home.navigation.homeContent
 import com.whatever.caramel.feature.home.navigation.navigateToHome
 import com.whatever.caramel.feature.memo.navigation.memoContent
 import com.whatever.caramel.feature.memo.navigation.navigateToMemo
-import dev.icerock.moko.permissions.compose.PermissionsControllerFactory
-import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 @Composable
 internal fun MainRoute(
-    permissionsControllerFactory: PermissionsControllerFactory = rememberPermissionsControllerFactory(),
-    viewModel: MainViewModel = koinViewModel {
-        parametersOf(permissionsControllerFactory.createPermissionsController())
-    },
+    viewModel: MainViewModel = koinViewModel(),
     navigateToSetting: () -> Unit,
     navigateToStaredCoupleDay: () -> Unit,
     navigateToTodoDetail: (Long, ContentType) -> Unit,
@@ -55,7 +49,6 @@ internal fun MainRoute(
     ObserveLifecycleEvent { event ->
         if (event == Lifecycle.Event.ON_RESUME) {
             viewModel.updateFcmToken()
-            viewModel.updateUserSetting()
         }
     }
 
