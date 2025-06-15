@@ -23,7 +23,9 @@ import org.koin.compose.viewmodel.koinViewModel
 internal fun ProfileCreateRoute(
     viewModel: ProfileCreateViewModel = koinViewModel(),
     navigateToLogin: () -> Unit,
-    navigateToStartDestination: (UserStatus) -> Unit
+    navigateToStartDestination: (UserStatus) -> Unit,
+    showErrorToast: (String) -> Unit,
+    showErrorDialog: (String, String?) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val hapticController: HapticController = getKoin().get()
@@ -43,7 +45,8 @@ internal fun ProfileCreateRoute(
                 is ProfileCreateSideEffect.NavigateToPersonalInfoTermNotion -> urlHandler.openUri(privacyPolicyUrl)
                 is ProfileCreateSideEffect.NavigateToServiceTermNotion -> urlHandler.openUri(termsOfServiceUrl)
                 is ProfileCreateSideEffect.PerformHapticFeedback -> hapticController.performImpact(HapticStyle.GestureThresholdActivate)
-                is ProfileCreateSideEffect.ShowErrorSnackBar -> Napier.d { "error ${sideEffect.message}" } // @RyuSw-cs TODO : 스낵바 표시
+                is ProfileCreateSideEffect.ShowErrorToast -> showErrorToast(sideEffect.message)
+                is ProfileCreateSideEffect.ShowErrorDialog -> showErrorDialog(sideEffect.message, sideEffect.description)
             }
         }
     }

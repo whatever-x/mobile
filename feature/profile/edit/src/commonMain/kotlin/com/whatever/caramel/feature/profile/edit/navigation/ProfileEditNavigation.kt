@@ -37,7 +37,9 @@ fun NavHostController.navigateToEditProfile(
 }
 
 fun NavGraphBuilder.editProfileScreen(
-    popBackStack: () -> Unit
+    popBackStack: () -> Unit,
+    showErrorDialog: (title: String, message: String?) -> Unit,
+    showErrorToast: (message: String) -> Unit
 ) {
     composable<ProfileEditRoute>(
         enterTransition = {
@@ -54,7 +56,9 @@ fun NavGraphBuilder.editProfileScreen(
         }
     ) {
         ProfileEditRoute(
-            popBackStack = popBackStack
+            popBackStack = popBackStack,
+            showErrorDialog = showErrorDialog,
+            showErrorToast = showErrorToast
         )
     }
 }

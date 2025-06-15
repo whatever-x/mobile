@@ -9,4 +9,6 @@ sealed interface ContentCreateSideEffect : UiSideEffect {
     data class ShowErrorSnackBar(val code: String, val message: String? = null) : ContentCreateSideEffect
     
     data class ShowToast(val message: String) : ContentCreateSideEffect
+
+    data class ShowErrorDialog(val message : String, val description : String?) : ContentCreateSideEffect
 }

@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.couple.connect
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
@@ -28,13 +29,26 @@ class CoupleConnectViewModel(
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
-
-        val exception = throwable as CaramelException
-
-        when (exception.code) {
-            CoupleErrorCode.INVITATION_CODE_EXPIRED -> {
-                postSideEffect(CoupleConnectSideEffect.ShowSnackBarMessage(message = exception.message))
+        if (throwable is CaramelException) {
+            when (throwable.errorUiType) {
+                ErrorUiType.TOAST -> postSideEffect(
+                    CoupleConnectSideEffect.ShowErrorToast(
+                        message = throwable.message
+                    )
+                )
+                ErrorUiType.DIALOG -> postSideEffect(
+                    CoupleConnectSideEffect.ShowErrorDialog(
+                        message = throwable.message,
+                        description = throwable.description
+                    )
+                )
             }
+        } else {
+            postSideEffect(
+                CoupleConnectSideEffect.ShowErrorToast(
+                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
+                )
+            )
         }
     }
 

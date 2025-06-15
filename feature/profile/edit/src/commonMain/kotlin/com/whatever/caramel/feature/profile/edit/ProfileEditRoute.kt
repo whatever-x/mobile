@@ -13,7 +13,9 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 internal fun ProfileEditRoute(
     viewModel: ProfileEditViewModel = koinViewModel(),
-    popBackStack: () -> Unit
+    popBackStack: () -> Unit,
+    showErrorDialog: (String, String?) -> Unit,
+    showErrorToast: (String) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val hapticController: HapticController = getKoin().get()
@@ -23,7 +25,15 @@ internal fun ProfileEditRoute(
             when (sideEffect) {
                 is ProfileEditSideEffect.PopBackStack -> popBackStack()
                 ProfileEditSideEffect.PerformHapticFeedback -> hapticController.performImpact(
-                    HapticStyle.GestureThresholdActivate)
+                    HapticStyle.GestureThresholdActivate
+                )
+
+                is ProfileEditSideEffect.ShowErrorDialog -> showErrorDialog(
+                    sideEffect.message,
+                    sideEffect.description
+                )
+
+                is ProfileEditSideEffect.ShowErrorToast -> showErrorToast(sideEffect.message)
             }
         }
     }

@@ -6,5 +6,6 @@ import com.whatever.caramel.core.viewmodel.UiState
 data class AppState(
     val userStatus: UserStatus = UserStatus.NONE,
     val isShowErrorDialog: Boolean = false,
-    val dialogMessage: String = ""
+    val dialogMessage: String = "",
+    val dialogDescription : String = "",
 ): UiState

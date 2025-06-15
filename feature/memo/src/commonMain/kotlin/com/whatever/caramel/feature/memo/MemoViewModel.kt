@@ -1,6 +1,8 @@
 package com.whatever.caramel.feature.memo
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.content.GetMemosUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.vo.content.ContentType
@@ -39,6 +41,27 @@ class MemoViewModel(
                 isMemoLoading = false,
                 isRefreshing = false,
                 isTagLoading = false
+            )
+        }
+        if (throwable is CaramelException) {
+            when (throwable.errorUiType) {
+                ErrorUiType.TOAST -> postSideEffect(
+                    MemoSideEffect.ShowErrorToast(
+                        message = throwable.message
+                    )
+                )
+                ErrorUiType.DIALOG -> postSideEffect(
+                    MemoSideEffect.ShowErrorDialog(
+                        message = throwable.message,
+                        description = throwable.description
+                    )
+                )
+            }
+        } else {
+            postSideEffect(
+                MemoSideEffect.ShowErrorToast(
+                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
+                )
             )
         }
     }

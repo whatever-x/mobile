@@ -9,4 +9,7 @@ sealed interface AppIntent : UiIntent {
 
     data object CloseErrorDialog : AppIntent
 
+    data class ShowErrorDialog(val message : String, val description : String?) : AppIntent
+
+    data class ShowToast(val message : String) : AppIntent
 }

@@ -1,6 +1,8 @@
 package com.whatever.caramel.feature.setting
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignOutUseCase
@@ -47,7 +49,27 @@ class SettingViewModel(
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
-        Napier.e { "exception: $throwable" }
+        if (throwable is CaramelException) {
+            when (throwable.errorUiType) {
+                ErrorUiType.TOAST -> postSideEffect(
+                    SettingSideEffect.ShowErrorToast(
+                        message = throwable.message
+                    )
+                )
+                ErrorUiType.DIALOG -> postSideEffect(
+                    SettingSideEffect.ShowErrorDialog(
+                        message = throwable.message,
+                        description = throwable.description
+                    )
+                )
+            }
+        } else {
+            postSideEffect(
+                SettingSideEffect.ShowErrorToast(
+                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
+                )
+            )
+        }
     }
 
     private fun signOut() {

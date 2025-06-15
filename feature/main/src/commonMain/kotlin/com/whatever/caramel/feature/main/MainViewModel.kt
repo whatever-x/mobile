@@ -14,8 +14,6 @@ class MainViewModel(
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
-
-        TODO()
     }
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): MainState {
@@ -23,7 +21,7 @@ class MainViewModel(
     }
 
     override suspend fun handleIntent(intent: MainIntent) {
-        TODO()
+
     }
 
     fun updateFcmToken() {

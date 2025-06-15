@@ -8,7 +8,6 @@ import com.whatever.caramel.core.deeplink.model.CaramelDeepLink
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
-import com.whatever.caramel.core.domain.usecase.user.GetUserStatusUseCase
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.mvi.AppIntent
@@ -65,6 +64,18 @@ class CaramelViewModel(
         when(intent) {
             is AppIntent.NavigateToStartDestination -> startDestination(userStatus = intent.userStatus)
             is AppIntent.CloseErrorDialog -> reduce { copy(isShowErrorDialog = false) }
+            is AppIntent.ShowErrorDialog -> showErrorDialog(message = intent.message, description = intent.description)
+            is AppIntent.ShowToast -> postSideEffect(AppSideEffect.ShowToast(intent.message))
+        }
+    }
+
+    private fun showErrorDialog(message : String, description : String?) {
+        reduce {
+            copy(
+                isShowErrorDialog = true,
+                dialogMessage = message,
+                dialogDescription = description ?: ""
+            )
         }
     }
 

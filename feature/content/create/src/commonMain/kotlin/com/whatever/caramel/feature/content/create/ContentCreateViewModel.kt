@@ -3,6 +3,7 @@ package com.whatever.caramel.feature.content.create
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
@@ -57,12 +58,27 @@ class ContentCreateViewModel(
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
-        val (code, message) = if (throwable is CaramelException) {
-            throwable.code to throwable.message
+        if (throwable is CaramelException) {
+            when (throwable.errorUiType) {
+                ErrorUiType.TOAST -> postSideEffect(
+                    ContentCreateSideEffect.ShowToast(
+                        message = throwable.message
+                    )
+                )
+                ErrorUiType.DIALOG -> postSideEffect(
+                    ContentCreateSideEffect.ShowErrorDialog(
+                        message = throwable.message,
+                        description = throwable.description
+                    )
+                )
+            }
         } else {
-            AppErrorCode.UNKNOWN to null
+            postSideEffect(
+                ContentCreateSideEffect.ShowToast(
+                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
+                )
+            )
         }
-        postSideEffect(ContentCreateSideEffect.ShowErrorSnackBar(code = code, message = message))
     }
 
     override suspend fun handleIntent(intent: ContentCreateIntent) {

@@ -29,6 +29,7 @@ fun NavHostController.navigateToContentDetail(
 fun NavGraphBuilder.contentDetailScreen(
     popBackStack: () -> Unit,
     navigateToEdit: (Long, ContentType) -> Unit,
+    showErrorDialog: (String, String?) -> Unit
 ) {
     composable<ContentDetailRoute>(
         exitTransition = { ExitTransition.None },
@@ -42,7 +43,8 @@ fun NavGraphBuilder.contentDetailScreen(
     ) { _ -> // backStackEntry can be used if needed
         ContentDetailRoute(
             popBackStack = popBackStack,
-            navigateToEdit = navigateToEdit
+            navigateToEdit = navigateToEdit,
+            showErrorDialog = showErrorDialog
         )
     }
 }

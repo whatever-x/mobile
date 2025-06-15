@@ -17,4 +17,8 @@ sealed interface SettingSideEffect : UiSideEffect {
     data object NavigateLogin : SettingSideEffect
 
     data class NavigateToEditCountDown(val startDate: String) : SettingSideEffect
+
+    data class ShowErrorDialog(val message : String, val description : String?) : SettingSideEffect
+
+    data class ShowErrorToast(val message : String) : SettingSideEffect
 }

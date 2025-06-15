@@ -18,6 +18,7 @@ import com.whatever.caramel.core.designsystem.components.CaramelSnackBarHost
 import com.whatever.caramel.core.designsystem.components.CaramelSnackbar
 import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLayout
 import com.whatever.caramel.core.designsystem.components.LocalSnackbarHostState
+import com.whatever.caramel.core.designsystem.components.showSnackbarMessage
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.copule.connecting.navigation.navigateToConnectingCouple
 import com.whatever.caramel.feature.copule.invite.navigation.navigateToInviteCouple
@@ -46,6 +47,7 @@ fun CaramelComposeApp(
                 CaramelDialog(
                     show = appState.isShowErrorDialog,
                     title = appState.dialogMessage,
+                    message = appState.dialogDescription,
                     mainButtonText = "확인",
                     onDismissRequest = { viewModel.intent(AppIntent.CloseErrorDialog) },
                     onMainButtonClick = { viewModel.intent(AppIntent.CloseErrorDialog) },
@@ -115,6 +117,12 @@ fun CaramelComposeApp(
                                     }
                                 }
                             }
+
+                            is AppSideEffect.ShowToast -> showSnackbarMessage(
+                                coroutineScope = this,
+                                snackbarHostState = snackBarHostState,
+                                message = sideEffect.message
+                            )
                         }
                     }
                 }

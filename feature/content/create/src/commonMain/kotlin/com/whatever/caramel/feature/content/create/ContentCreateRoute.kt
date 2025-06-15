@@ -15,7 +15,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 internal fun ContentCreateRoute(
     viewModel: ContentCreateViewModel = koinViewModel(),
-    navigateToBackStack: () -> Unit
+    navigateToBackStack: () -> Unit,
+    showErrorDialog: (String, String?) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = LocalSnackbarHostState.current
@@ -38,6 +39,8 @@ internal fun ContentCreateRoute(
                         message = sideEffect.message
                     )
                 }
+
+                is ContentCreateSideEffect.ShowErrorDialog -> showErrorDialog(sideEffect.message, sideEffect.description)
             }
         }
     }

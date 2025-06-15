@@ -12,4 +12,8 @@ sealed interface CoupleInviteSideEffect : UiSideEffect {
 
     data class ShareOfInvite(val inviteCode: String) : CoupleInviteSideEffect
 
+    data class ShowErrorDialog(val message : String, val description : String?) : CoupleInviteSideEffect
+
+    data class ShowErrorToast(val message : String) : CoupleInviteSideEffect
+
 }

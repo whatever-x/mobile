@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.profile.create
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
 import com.whatever.caramel.core.domain.validator.UserValidator
 import com.whatever.caramel.core.domain.vo.user.Gender
@@ -44,9 +45,25 @@ class ProfileCreateViewModel(
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
         if (throwable is CaramelException) {
-            postSideEffect(ProfileCreateSideEffect.ShowErrorSnackBar(throwable.message))
+            when (throwable.errorUiType) {
+                ErrorUiType.TOAST -> postSideEffect(
+                    ProfileCreateSideEffect.ShowErrorToast(
+                        message = throwable.message
+                    )
+                )
+                ErrorUiType.DIALOG -> postSideEffect(
+                    ProfileCreateSideEffect.ShowErrorDialog(
+                        message = throwable.message,
+                        description = throwable.description
+                    )
+                )
+            }
         } else {
-            postSideEffect(ProfileCreateSideEffect.ShowErrorSnackBar("알 수 없는 오류가 발생했습니다."))
+            postSideEffect(
+                ProfileCreateSideEffect.ShowErrorToast(
+                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
+                )
+            )
         }
     }
 

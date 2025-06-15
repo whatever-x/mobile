@@ -24,7 +24,9 @@ fun NavGraphBuilder.settingScreen(
     navigateToLogin: () -> Unit,
     navigateToEditCountDown: (String) -> Unit,
     navigateToEditBirthday: (String) -> Unit,
-    navigateToEditNickName: (String) -> Unit
+    navigateToEditNickName: (String) -> Unit,
+    showErrorDialog: (String, String?) -> Unit,
+    showErrorToast: (String) -> Unit
 ) {
     composable<SettingRoute>(
         exitTransition = { ExitTransition.None },
@@ -35,7 +37,9 @@ fun NavGraphBuilder.settingScreen(
             navigateToEditBirthday = navigateToEditBirthday,
             navigateToEditNickName = navigateToEditNickName,
             navigateToEditCountDown = navigateToEditCountDown,
-            navigateToLogin = navigateToLogin
+            navigateToLogin = navigateToLogin,
+            showErrorDialog = showErrorDialog,
+            showErrorToast = showErrorToast
         )
     }
 }

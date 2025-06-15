@@ -14,7 +14,9 @@ import org.koin.compose.viewmodel.koinViewModel
 internal fun CoupleConnectRoute(
     viewModel: CoupleConnectViewModel = koinViewModel(),
     navigateToMain: () -> Unit,
-    navigateToInviteCouple: () -> Unit
+    navigateToInviteCouple: () -> Unit,
+    showErrorDialog: (String, String?) -> Unit,
+    showErrorToast: (String) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
@@ -32,6 +34,8 @@ internal fun CoupleConnectRoute(
                         snackbarHostState = snackBarHostState
                     )
                 }
+                is CoupleConnectSideEffect.ShowErrorDialog -> showErrorDialog(sideEffect.message, sideEffect.description)
+                is CoupleConnectSideEffect.ShowErrorToast -> showErrorToast(sideEffect.message)
             }
         }
     }

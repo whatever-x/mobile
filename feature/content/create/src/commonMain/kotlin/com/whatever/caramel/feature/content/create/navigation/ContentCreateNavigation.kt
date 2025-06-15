@@ -31,7 +31,8 @@ fun NavHostController.navigateToContentCreate(
 }
 
 fun NavGraphBuilder.contentCreateScreen(
-    navigateToBackStack: () -> Unit
+    navigateToBackStack: () -> Unit,
+    showErrorDialog: (String, String?) -> Unit
 ) {
     composable<ContentCreateRoute>(
         enterTransition = {
@@ -48,7 +49,8 @@ fun NavGraphBuilder.contentCreateScreen(
         }
     ) {
         ContentCreateRoute(
-            navigateToBackStack = navigateToBackStack
+            navigateToBackStack = navigateToBackStack,
+            showErrorDialog = showErrorDialog
         )
     }
 }

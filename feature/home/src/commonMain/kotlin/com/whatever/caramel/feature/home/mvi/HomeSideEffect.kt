@@ -13,4 +13,7 @@ sealed interface HomeSideEffect : UiSideEffect {
 
     data object NavigateToEditAnniversary : HomeSideEffect
 
+    data class ShowErrorDialog(val message : String, val description : String?) : HomeSideEffect
+
+    data class ShowErrorToast(val message : String) : HomeSideEffect
 }
