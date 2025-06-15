@@ -13,15 +13,21 @@ import com.whatever.caramel.core.designsystem.util.HapticStyle
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateSideEffect
+import dev.icerock.moko.permissions.compose.PermissionsControllerFactory
+import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import org.koin.compose.getKoin
 import io.github.aakira.napier.Napier
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun ProfileCreateRoute(
-    viewModel: ProfileCreateViewModel = koinViewModel(),
+    permissionsControllerFactory: PermissionsControllerFactory = rememberPermissionsControllerFactory(),
+    viewModel: ProfileCreateViewModel = koinViewModel {
+        parametersOf(permissionsControllerFactory.createPermissionsController())
+    },
     navigateToLogin: () -> Unit,
     navigateToStartDestination: (UserStatus) -> Unit
 ) {

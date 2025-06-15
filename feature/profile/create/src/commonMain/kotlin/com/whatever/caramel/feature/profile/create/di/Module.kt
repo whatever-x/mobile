@@ -1,9 +1,17 @@
 package com.whatever.caramel.feature.profile.create.di
 
 import com.whatever.caramel.feature.profile.create.ProfileCreateViewModel
-import org.koin.core.module.dsl.viewModelOf
+import dev.icerock.moko.permissions.PermissionsController
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val profileCreateFeatureModule = module {
-    viewModelOf(::ProfileCreateViewModel)
+    viewModel { (permissionsController: PermissionsController) ->
+        ProfileCreateViewModel(
+            savedStateHandle = get(),
+            createUserProfileUseCase = get(),
+            updateUserSettingUseCase = get(),
+            permissionsController = permissionsController
+        )
+    }
 }

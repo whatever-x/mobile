@@ -26,6 +26,8 @@ kotlin {
             implementation(libs.jetbrains.compose.navigation)
             implementation(libs.compose.ui.backhandler)
             implementation(libs.kotlinx.date.time)
+
+            implementation(libs.bundles.moko)
         }
     }
 }
