@@ -1,10 +1,10 @@
 package com.whatever.caramel.feature.main
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -68,19 +68,28 @@ internal fun MainRoute(
                         when (bottomNavItem) {
                             BottomNavItem.HOME -> {
                                 mainNavHostController.navigateToHome {
-                                    popUpTo(mainNavHostController.graph.id)
+                                    popUpTo(mainNavHostController.graph.id) {
+                                        saveState = true
+                                    }
+                                    restoreState = true
                                 }
                             }
 
                             BottomNavItem.CALENDAR -> {
                                 mainNavHostController.navigateToCalendar {
-                                    popUpTo(mainNavHostController.graph.id)
+                                    popUpTo(mainNavHostController.graph.id) {
+                                        saveState = true
+                                    }
+                                    restoreState = true
                                 }
                             }
 
                             BottomNavItem.MEMO -> {
                                 mainNavHostController.navigateToMemo {
-                                    popUpTo(mainNavHostController.graph.id)
+                                    popUpTo(mainNavHostController.graph.id) {
+                                        saveState = true
+                                    }
+                                    restoreState = true
                                 }
                             }
                         }
