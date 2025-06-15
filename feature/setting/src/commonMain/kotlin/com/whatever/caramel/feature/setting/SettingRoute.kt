@@ -6,8 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.whatever.caramel.core.designsystem.components.LocalSnackbarHostState
-import com.whatever.caramel.core.designsystem.components.showSnackbarMessage
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.ui.util.ObserveLifecycleEvent
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
@@ -23,13 +21,13 @@ internal fun SettingRoute(
     navigateToEditCountDown: (String) -> Unit,
     navigateToEditBirthday: (String) -> Unit,
     navigateToEditNickName: (String) -> Unit,
-    navigateToErrorDialog : (String, String?) -> Unit
+    showErrorDialog: (String, String?) -> Unit,
+    showErrorToast: (String) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val uriHandler = LocalUriHandler.current
     val privacyPolicyUrl = stringResource(Resources.String.privacy_policy_url)
     val termsOfServiceUrl = stringResource(Resources.String.terms_of_service_url)
-    val snackbarHostState = LocalSnackbarHostState.current
 
     ObserveLifecycleEvent { event ->
         if (event == Lifecycle.Event.ON_START) {
@@ -47,12 +45,12 @@ internal fun SettingRoute(
                 is SettingSideEffect.NavigateToEditCountDown -> navigateToEditCountDown(sideEffect.startDate)
                 is SettingSideEffect.NavigateToEditNickname -> navigateToEditNickName(sideEffect.nickname)
                 is SettingSideEffect.NavigateToEditBirthday -> navigateToEditBirthday(sideEffect.birthday)
-                is SettingSideEffect.ShowErrorDialog -> navigateToErrorDialog(sideEffect.message, sideEffect.description)
-                is SettingSideEffect.ShowErrorToast -> showSnackbarMessage(
-                    snackbarHostState = snackbarHostState,
-                    coroutineScope = this,
-                    message = sideEffect.message
+                is SettingSideEffect.ShowErrorDialog -> showErrorDialog(
+                    sideEffect.message,
+                    sideEffect.description
                 )
+
+                is SettingSideEffect.ShowErrorToast -> showErrorToast(sideEffect.message)
             }
         }
     }

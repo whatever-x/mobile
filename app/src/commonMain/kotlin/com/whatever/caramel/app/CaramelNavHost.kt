@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.whatever.caramel.error.errorDialogContent
-import com.whatever.caramel.error.navigateToErrorDialog
 import com.whatever.caramel.feature.content.create.navigation.contentCreateScreen
 import com.whatever.caramel.feature.content.create.navigation.navigateToContentCreate
 import com.whatever.caramel.feature.content.detail.navigation.contentDetailScreen
@@ -111,11 +109,11 @@ internal fun CaramelNavHost(
                         startDate = startDate
                     )
                 },
-                navigateToErrorDialog = { message, description ->
-                    navigateToErrorDialog(
-                        message = message,
-                        description = description
-                    )
+                showErrorDialog = { message, description ->
+                    onIntent(AppIntent.ShowErrorDialog(message, description))
+                },
+                showErrorToast = { message ->
+                    onIntent(AppIntent.ShowToast(message))
                 }
             )
             contentCreateScreen(
@@ -153,9 +151,6 @@ internal fun CaramelNavHost(
                         type = type,
                     )
                 }
-            )
-            errorDialogContent(
-                popBackStack = { popBackStack() }
             )
         }
     }

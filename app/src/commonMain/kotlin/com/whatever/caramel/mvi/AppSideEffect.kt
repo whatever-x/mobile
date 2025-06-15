@@ -14,4 +14,5 @@ sealed interface AppSideEffect : UiSideEffect {
 
     data object NavigateToMain : AppSideEffect
 
+    data class ShowToast(val message: String) : AppSideEffect
 }
