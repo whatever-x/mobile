@@ -9,7 +9,6 @@ import kotlinx.coroutines.delay
 
 class CoupleConnectingViewModel(
     savedStateHandle: SavedStateHandle
-
 ): BaseViewModel<CoupleConnectingState, CoupleConnectingSideEffect, CoupleConnectingIntent>(savedStateHandle) {
 
     init {
@@ -23,7 +22,6 @@ class CoupleConnectingViewModel(
         CoupleConnectingState()
 
     override suspend fun handleIntent(intent: CoupleConnectingIntent) {
-        TODO("Not yet implemented")
-    }
 
+    }
 }

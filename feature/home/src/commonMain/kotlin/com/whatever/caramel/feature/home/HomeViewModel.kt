@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.home
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
 import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameChoiceUseCase
@@ -72,6 +73,21 @@ class HomeViewModel(
                             dialogTitle = exception.message
                         )
                     }
+                }
+            }
+            else -> {
+                when (exception.errorUiType) {
+                    ErrorUiType.TOAST -> postSideEffect(
+                        HomeSideEffect.ShowErrorToast(
+                            message = throwable.message
+                        )
+                    )
+                    ErrorUiType.DIALOG -> postSideEffect(
+                        HomeSideEffect.ShowErrorDialog(
+                            message = throwable.message,
+                            description = throwable.description
+                        )
+                    )
                 }
             }
         }

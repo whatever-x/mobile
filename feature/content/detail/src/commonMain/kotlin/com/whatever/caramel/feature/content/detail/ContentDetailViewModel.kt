@@ -3,6 +3,7 @@ package com.whatever.caramel.feature.content.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
 import com.whatever.caramel.core.domain.exception.code.ScheduleErrorCode
@@ -59,20 +60,35 @@ class ContentDetailViewModel(
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
-        val (code, message) = if (throwable is CaramelException) {
-            throwable.code to throwable.message
+        if (throwable is CaramelException) {
+            when (throwable.code) {
+                ContentErrorCode.CONTENT_NOT_FOUND, ScheduleErrorCode.SCHEDULE_NOT_FOUND -> {
+                    reduce { copy(showDeletedContentDialog = true) }
+                }
+                else -> {
+                    when (throwable.errorUiType) {
+                        ErrorUiType.TOAST -> postSideEffect(
+                            ContentDetailSideEffect.ShowErrorSnackBar(
+                                message = throwable.message
+                            )
+                        )
+                        ErrorUiType.DIALOG -> postSideEffect(
+                            ContentDetailSideEffect.ShowErrorDialog(
+                                message = throwable.message,
+                                description = throwable.description
+                            )
+                        )
+                    }
+                }
+            }
         } else {
-            AppErrorCode.UNKNOWN to null
+            postSideEffect(
+                ContentDetailSideEffect.ShowErrorSnackBar(
+                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
+                )
+            )
         }
-        
-        when (code) {
-            ContentErrorCode.CONTENT_NOT_FOUND, ScheduleErrorCode.SCHEDULE_NOT_FOUND -> {
-                reduce { copy(showDeletedContentDialog = true) }
-            }
-            else -> {
-                postSideEffect(ContentDetailSideEffect.ShowErrorSnackBar(code = code, message = message))
-            }
-        }
+
     }
 
     override suspend fun handleIntent(intent: ContentDetailIntent) {

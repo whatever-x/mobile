@@ -20,6 +20,8 @@ internal fun CoupleInviteRoute(
     shareService: ShareService = getKoin().get(),
     navigateToConnectCouple: () -> Unit,
     navigateToLogin: () -> Unit,
+    showErrorDialog: (String, String?) -> Unit,
+    showErrorToast: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
@@ -49,6 +51,8 @@ internal fun CoupleInviteRoute(
                         url = "https://caramel.onelink.me/7nAT/2l5wk4ab?p1=${sideEffect.inviteCode}"
                     )
                 }
+                is CoupleInviteSideEffect.ShowErrorDialog -> showErrorDialog(sideEffect.message, sideEffect.description)
+                is CoupleInviteSideEffect.ShowErrorToast -> showErrorToast(sideEffect.message)
             }
         }
     }

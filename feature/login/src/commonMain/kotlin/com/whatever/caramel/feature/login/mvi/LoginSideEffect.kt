@@ -7,6 +7,8 @@ sealed interface LoginSideEffect : UiSideEffect {
 
     data class NavigateToStartDestination(val userStatus: UserStatus) : LoginSideEffect
 
-    data class ShowErrorSnackBar(val code: String, val message: String? = null) : LoginSideEffect
+    data class ShowErrorToast(val message: String) : LoginSideEffect
+
+    data class ShowErrorDialog(val message : String, val description : String?) : LoginSideEffect
 
 }

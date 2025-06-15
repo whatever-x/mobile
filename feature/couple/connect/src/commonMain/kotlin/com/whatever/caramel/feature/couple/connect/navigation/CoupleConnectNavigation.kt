@@ -18,12 +18,16 @@ fun NavHostController.navigateToConnectCouple(builder: NavOptionsBuilder.() -> U
 
 fun NavGraphBuilder.connectCoupleScreen(
     navigateToMain: () -> Unit,
-    navigateToInviteCouple: () -> Unit
+    navigateToInviteCouple: () -> Unit,
+    showErrorDialog: (String, String?) -> Unit,
+    showErrorToast: (String) -> Unit
 ) {
     composable<ConnectCoupleRoute>() {
         CoupleConnectRoute(
             navigateToMain = navigateToMain,
-            navigateToInviteCouple = navigateToInviteCouple
+            navigateToInviteCouple = navigateToInviteCouple,
+            showErrorDialog = showErrorDialog,
+            showErrorToast = showErrorToast
         )
     }
 }

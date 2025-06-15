@@ -8,4 +8,8 @@ sealed interface ProfileEditSideEffect : UiSideEffect {
 
     data object PerformHapticFeedback : ProfileEditSideEffect
 
+    data class ShowErrorDialog(val message : String, val description : String?) : ProfileEditSideEffect
+
+    data class ShowErrorToast(val message : String) : ProfileEditSideEffect
+
 }

@@ -1,6 +1,8 @@
 package com.whatever.caramel.feature.calendar
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.calendar.GetHolidaysUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodosGroupByStartDateUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetAnniversariesUseCase
@@ -52,6 +54,31 @@ class CalendarViewModel(
             ),
             pageIndex = calcPageIndex(currentDate.year, currentDate.month)
         )
+    }
+
+    override fun handleClientException(throwable: Throwable) {
+        super.handleClientException(throwable)
+        if (throwable is CaramelException) {
+            when (throwable.errorUiType) {
+                ErrorUiType.TOAST -> postSideEffect(
+                    CalendarSideEffect.ShowErrorToast(
+                        message = throwable.message
+                    )
+                )
+                ErrorUiType.DIALOG -> postSideEffect(
+                    CalendarSideEffect.ShowErrorDialog(
+                        message = throwable.message,
+                        description = throwable.description
+                    )
+                )
+            }
+        } else {
+            postSideEffect(
+                CalendarSideEffect.ShowErrorToast(
+                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
+                )
+            )
+        }
     }
 
     override suspend fun handleIntent(intent: CalendarIntent) {

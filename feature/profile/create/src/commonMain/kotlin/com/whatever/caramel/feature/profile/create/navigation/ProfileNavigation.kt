@@ -21,7 +21,9 @@ fun NavController.navigateToCreateProfile(builder: NavOptionsBuilder.() -> Unit 
 
 fun NavGraphBuilder.createProfileScreen(
     navigateToLogin: () -> Unit,
-    navigateToStartDestination: (UserStatus) -> Unit
+    navigateToStartDestination: (UserStatus) -> Unit,
+    showErrorToast: (String) -> Unit,
+    showErrorDialog: (String, String?) -> Unit
 ) {
     composable<ProfileCreateRoute>(
         enterTransition = {
@@ -33,7 +35,9 @@ fun NavGraphBuilder.createProfileScreen(
     ) {
         ProfileCreateRoute(
             navigateToLogin = navigateToLogin,
-            navigateToStartDestination = navigateToStartDestination
+            navigateToStartDestination = navigateToStartDestination,
+            showErrorToast = showErrorToast,
+            showErrorDialog = showErrorDialog
         )
     }
 }

@@ -15,6 +15,8 @@ import org.koin.compose.viewmodel.koinViewModel
 internal fun MemoRoute(
     viewModel: MemoViewModel = koinViewModel(),
     navigateToTodoDetail: (Long, ContentType) -> Unit,
+    showErrorToast: (String) -> Unit,
+    showErrorDialog: (String, String?) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -22,6 +24,8 @@ internal fun MemoRoute(
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is MemoSideEffect.NavigateToTodoDetail -> navigateToTodoDetail(sideEffect.todoId, sideEffect.contentType)
+                is MemoSideEffect.ShowErrorDialog -> showErrorDialog(sideEffect.message, sideEffect.description)
+                is MemoSideEffect.ShowErrorToast -> showErrorToast(sideEffect.message)
             }
         }
     }

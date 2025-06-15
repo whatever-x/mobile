@@ -1,5 +1,6 @@
-package com.whatever.caramel.feature.couple.connect
+package com.whatever.caramel.feature.couple.connect.di
 
+import com.whatever.caramel.feature.couple.connect.CoupleConnectViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 

@@ -22,14 +22,18 @@ fun NavController.navigateToLogin(
 }
 
 fun NavGraphBuilder.loginScreen(
-    navigateToStartDestination: (UserStatus) -> Unit
+    navigateToStartDestination: (UserStatus) -> Unit,
+    showErrorDialog: (String, String?) -> Unit,
+    showErrorToast: (String) -> Unit
 ) {
     composable<LoginRoute>(
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
     ) {
         LoginRoute(
-            navigateToStartDestination = navigateToStartDestination
+            navigateToStartDestination = navigateToStartDestination,
+            showErrorDialog = showErrorDialog,
+            showErrorToast = showErrorToast
         )
     }
 }

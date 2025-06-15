@@ -2,7 +2,7 @@ package com.whatever.caramel.feature.login
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.exception.CaramelException
-import com.whatever.caramel.core.domain.exception.code.AppErrorCode
+import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.AuthErrorCode
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
@@ -34,12 +34,27 @@ class LoginViewModel(
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
-        val (code, message) = if (throwable is CaramelException) {
-            throwable.code to throwable.message
+        if (throwable is CaramelException) {
+            when (throwable.errorUiType) {
+                ErrorUiType.TOAST -> postSideEffect(
+                    LoginSideEffect.ShowErrorToast(
+                        message = throwable.message
+                    )
+                )
+                ErrorUiType.DIALOG -> postSideEffect(
+                    LoginSideEffect.ShowErrorDialog(
+                        message = throwable.message,
+                        description = throwable.description
+                    )
+                )
+            }
         } else {
-            AppErrorCode.UNKNOWN to null
+            postSideEffect(
+                LoginSideEffect.ShowErrorToast(
+                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
+                )
+            )
         }
-        postSideEffect(LoginSideEffect.ShowErrorSnackBar(code = code, message = message))
     }
 
     private suspend fun kakaoLogin(result: SocialAuthResult<KakaoUser>) {
@@ -52,11 +67,11 @@ class LoginViewModel(
             }
 
             is SocialAuthResult.Error -> {
-                postSideEffect(LoginSideEffect.ShowErrorSnackBar(code = AuthErrorCode.LOGIN_FAILED))
+                postSideEffect(LoginSideEffect.ShowErrorToast("로그인에 실패하였습니다."))
             }
 
             is SocialAuthResult.UserCancelled -> {
-                postSideEffect(LoginSideEffect.ShowErrorSnackBar(code = AuthErrorCode.LOGIN_CANCELLED))
+                postSideEffect(LoginSideEffect.ShowErrorToast("취소되었습니다."))
             }
         }
     }
@@ -71,11 +86,11 @@ class LoginViewModel(
             }
 
             is SocialAuthResult.Error -> {
-                postSideEffect(LoginSideEffect.ShowErrorSnackBar(code = AuthErrorCode.LOGIN_FAILED))
+                postSideEffect(LoginSideEffect.ShowErrorToast("로그인에 실패하였습니다."))
             }
 
             is SocialAuthResult.UserCancelled -> {
-                postSideEffect(LoginSideEffect.ShowErrorSnackBar(code = AuthErrorCode.LOGIN_CANCELLED))
+                postSideEffect(LoginSideEffect.ShowErrorToast("취소되었습니다."))
             }
         }
     }

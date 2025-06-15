@@ -21,7 +21,7 @@ import com.whatever.caramel.feature.content.edit.di.contentEditFeatureModule
 import com.whatever.caramel.feature.copule.connecting.di.coupleConnectingFeatureModule
 import com.whatever.caramel.feature.copule.invite.di.coupleInviteFeatureModule
 import com.whatever.caramel.feature.copule.invite.di.shareServiceModule
-import com.whatever.caramel.feature.couple.connect.coupleConnectFeatureModule
+import com.whatever.caramel.feature.couple.connect.di.coupleConnectFeatureModule
 import com.whatever.caramel.feature.home.di.homeFeatureModule
 import com.whatever.caramel.feature.login.di.loginFeatureModule
 import com.whatever.caramel.feature.login.di.socialModule

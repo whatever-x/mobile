@@ -25,7 +25,8 @@ fun NavHostController.navigateToContentEdit(
 }
 
 fun NavGraphBuilder.contentEditScreen(
-    popBackStack: () -> Unit
+    popBackStack: () -> Unit,
+    showErrorDialog: (String, String?) -> Unit
 ) {
     composable<ContentEditScreenRoute>(
         enterTransition = {
@@ -42,7 +43,8 @@ fun NavGraphBuilder.contentEditScreen(
         }
     ) { _ -> // backStackEntry can be used if needed
         ContentEditRoute(
-            popBackStack = popBackStack
+            popBackStack = popBackStack,
+            showErrorDialog = showErrorDialog
         )
     }
 } 

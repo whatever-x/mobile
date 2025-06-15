@@ -130,7 +130,7 @@ class LoginViewModelTest : KoinComponent {
     fun `사용자가 로그인을 취소한 경우 SnackBar로 오류를 표시한다`() = runTest {
         verifyLoginIntent(
             socialAuthResult = SocialAuthResult.UserCancelled,
-            expectedSideEffect = LoginSideEffect.ShowErrorSnackBar(code = AuthErrorCode.LOGIN_CANCELLED),
+            expectedSideEffect = LoginSideEffect.ShowErrorToast(code = AuthErrorCode.LOGIN_CANCELLED),
         )
     }
 
@@ -138,7 +138,7 @@ class LoginViewModelTest : KoinComponent {
     fun `사용자가 로그인 도중 오류가 발생했다면 SnackBar로 오류를 표시한다`() = runTest {
         verifyLoginIntent(
             socialAuthResult = SocialAuthResult.Error,
-            expectedSideEffect = LoginSideEffect.ShowErrorSnackBar(code = AuthErrorCode.LOGIN_FAILED),
+            expectedSideEffect = LoginSideEffect.ShowErrorToast(code = AuthErrorCode.LOGIN_FAILED),
         )
     }
 
@@ -153,7 +153,7 @@ class LoginViewModelTest : KoinComponent {
 
         verifyLoginIntent(
             socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
-            expectedSideEffect = LoginSideEffect.ShowErrorSnackBar(
+            expectedSideEffect = LoginSideEffect.ShowErrorToast(
                 code = NetworkErrorCode.UNKNOWN,
                 message = TestMessage.FAIL_LOGIN
             )

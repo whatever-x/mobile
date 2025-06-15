@@ -23,13 +23,17 @@ fun NavGraphBuilder.homeContent(
     navigateToStaredCoupleDay: () -> Unit,
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: (ContentType) -> Unit,
+    showErrorDialog: (String, String?) -> Unit,
+    showErrorToast: (String) -> Unit
 ) {
     composable<HomeRoute> {
         HomeRoute(
             navigateToSetting = navigateToSetting,
             navigateToStaredCoupleDay = navigateToStaredCoupleDay,
             navigateToTodoDetail = navigateToTodoDetail,
-            navigateToCreateTodo = navigateToCreateTodo
+            navigateToCreateTodo = navigateToCreateTodo,
+            showErrorDialog = showErrorDialog,
+            showErrorToast = showErrorToast
         )
     }
 }

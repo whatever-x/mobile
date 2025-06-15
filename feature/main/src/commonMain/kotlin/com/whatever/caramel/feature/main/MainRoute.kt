@@ -41,6 +41,8 @@ internal fun MainRoute(
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: (ContentType) -> Unit,
     navigateToCreateSchedule : (ContentType, String) -> Unit,
+    showErrorToast: (String) -> Unit,
+    showErrorDialog: (String, String?) -> Unit
 ) {
     val hapticFeedback = LocalHapticFeedback.current
     val mainNavHostController = rememberNavController()
@@ -108,14 +110,20 @@ internal fun MainRoute(
                 navigateToSetting = navigateToSetting,
                 navigateToStaredCoupleDay = navigateToStaredCoupleDay,
                 navigateToTodoDetail = navigateToTodoDetail,
-                navigateToCreateTodo = navigateToCreateTodo
+                navigateToCreateTodo = navigateToCreateTodo,
+                showErrorDialog = showErrorDialog,
+                showErrorToast = showErrorToast
             )
             calendarContent(
                 navigateToCreateSchedule = navigateToCreateSchedule,
                 navigateToTodoDetail = navigateToTodoDetail,
+                showErrorDialog = showErrorDialog,
+                showErrorToast = showErrorToast
             )
             memoContent(
-                navigateToTodoDetail = navigateToTodoDetail
+                navigateToTodoDetail = navigateToTodoDetail,
+                showErrorToast = showErrorToast,
+                showErrorDialog = showErrorDialog
             )
         }
     }

@@ -3,6 +3,7 @@ package com.whatever.caramel.feature.content.edit
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
 import com.whatever.caramel.core.domain.exception.code.ScheduleErrorCode
@@ -57,25 +58,33 @@ class ContentEditViewModel(
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
-        val (code, message) = if (throwable is CaramelException) {
-            throwable.code to throwable.message
+        if (throwable is CaramelException) {
+            when (throwable.code) {
+                ContentErrorCode.CONTENT_NOT_FOUND, ScheduleErrorCode.SCHEDULE_NOT_FOUND -> {
+                    reduce { copy(showDeletedContentDialog = true) }
+                }
+                else -> {
+                    when (throwable.errorUiType) {
+                        ErrorUiType.TOAST -> postSideEffect(
+                            ContentEditSideEffect.ShowErrorSnackBar(
+                                message = throwable.message
+                            )
+                        )
+                        ErrorUiType.DIALOG -> postSideEffect(
+                            ContentEditSideEffect.ShowErrorDialog(
+                                message = throwable.message,
+                                description = throwable.description
+                            )
+                        )
+                    }
+                }
+            }
         } else {
-            AppErrorCode.UNKNOWN to null
-        }
-
-        when (code) {
-            ContentErrorCode.CONTENT_NOT_FOUND, ScheduleErrorCode.SCHEDULE_NOT_FOUND -> {
-                reduce { copy(showDeletedContentDialog = true) }
-            }
-
-            else -> {
-                postSideEffect(
-                    ContentEditSideEffect.ShowErrorSnackBar(
-                        code = code,
-                        message = message
-                    )
+            postSideEffect(
+                ContentEditSideEffect.ShowErrorSnackBar(
+                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
                 )
-            }
+            )
         }
     }
 

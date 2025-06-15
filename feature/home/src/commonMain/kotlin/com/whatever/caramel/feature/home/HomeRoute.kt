@@ -19,6 +19,8 @@ internal fun HomeRoute(
     navigateToStaredCoupleDay: () -> Unit,
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: (ContentType) -> Unit,
+    showErrorDialog: (String, String?) -> Unit,
+    showErrorToast: (String) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -27,8 +29,18 @@ internal fun HomeRoute(
             when (sideEffect) {
                 is HomeSideEffect.NavigateToSetting -> navigateToSetting()
                 is HomeSideEffect.NavigateToCreateContent -> navigateToCreateTodo(ContentType.CALENDAR)
-                is HomeSideEffect.NavigateToContentDetail -> navigateToTodoDetail(sideEffect.contentId, sideEffect.contentType)
+                is HomeSideEffect.NavigateToContentDetail -> navigateToTodoDetail(
+                    sideEffect.contentId,
+                    sideEffect.contentType
+                )
+
                 is HomeSideEffect.NavigateToEditAnniversary -> navigateToStaredCoupleDay()
+                is HomeSideEffect.ShowErrorDialog -> showErrorDialog(
+                    sideEffect.message,
+                    sideEffect.description
+                )
+
+                is HomeSideEffect.ShowErrorToast -> showErrorToast(sideEffect.message)
             }
         }
     }
