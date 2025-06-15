@@ -173,7 +173,7 @@ private fun CalendarTodoItem(
             ),
         maxLines = 1,
         overflow = TextOverflow.Clip,
-        text = todo.title,
+        text = todo.title.ifEmpty { todo.description },
         style = CaramelTheme.typography.label3.bold,
         color = CaramelTheme.color.text.labelBrand
     )

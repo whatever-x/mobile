@@ -7,12 +7,12 @@ data class Todo(
     val startDate: LocalDateTime,
     val endDate: LocalDateTime,
     val title: String,
-    val description: String?
+    val description: String
 ) {
     val url: String?
         get() {
-            if (description == null) return null
-            return URL_PATTERN.findAll(description).map { it.value }.firstOrNull()
+            val allContent = "$title $description"
+            return URL_PATTERN.findAll(allContent).map { it.value }.firstOrNull()
         }
 
     companion object {
