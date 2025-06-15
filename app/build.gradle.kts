@@ -147,15 +147,4 @@ android {
             )
         }
     }
-
-    applicationVariants.all {
-        outputs.forEach { output ->
-            if (output is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
-
-                val localDateTime = LocalDate.now()
-                output.outputFileName =
-                    "purithm_v${versionName}(${localDateTime})-${name}.${output.outputFile.extension}"
-            }
-        }
-    }
 }
