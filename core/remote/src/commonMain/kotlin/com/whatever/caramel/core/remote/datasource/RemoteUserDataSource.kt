@@ -13,4 +13,5 @@ interface RemoteUserDataSource {
     suspend fun editUserProfile(request: EditUserProfileRequest): EditUserProfileResponse
     suspend fun getUserInfo(): UserInfoResponse
     suspend fun patchUserSetting(request : UserSettingRequest) : UserSettingResponse
+    suspend fun getUserSetting(): UserSettingResponse
 }

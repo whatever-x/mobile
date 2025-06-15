@@ -21,4 +21,5 @@ interface UserRepository {
     suspend fun getUserInfo(): User
     suspend fun deleteUserStatus()
     suspend fun updateUserSetting(notificationEnabled : Boolean) : Boolean
+    suspend fun getUserSetting() : Boolean
 }

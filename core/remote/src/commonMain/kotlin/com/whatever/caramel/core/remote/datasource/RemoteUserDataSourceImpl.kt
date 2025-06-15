@@ -42,6 +42,10 @@ class RemoteUserDataSourceImpl(
         }.getBody()
     }
 
+    override suspend fun getUserSetting(): UserSettingResponse {
+        return authClient.get(USER_BASE_URL + "settings").getBody()
+    }
+
     companion object {
         private const val USER_BASE_URL = "/v1/user/"
     }

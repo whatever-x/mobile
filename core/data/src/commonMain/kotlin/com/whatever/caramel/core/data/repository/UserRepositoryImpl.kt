@@ -72,4 +72,8 @@ class UserRepositoryImpl(
         val request = UserSettingRequest(notificationEnabled = notificationEnabled)
         return safeCall { userRemoteDataSource.patchUserSetting(request).notificationEnabled }
     }
+
+    override suspend fun getUserSetting(): Boolean {
+        return safeCall { userRemoteDataSource.getUserSetting().notificationEnabled }
+    }
 }
