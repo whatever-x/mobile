@@ -3,6 +3,7 @@ package com.whatever.caramel.core.firebaseMessaging
 import android.Manifest
 import android.app.PendingIntent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import androidx.annotation.RequiresPermission
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -56,7 +57,10 @@ class CaramelFirebaseMessagingService : FirebaseMessagingService() {
         )
 
         val builder = NotificationCompat.Builder(applicationContext, getString(R.string.fcm_id_01))
-            .setSmallIcon(R.drawable.ic_notification) // @ham2174 FIXME : 임시
+            .setSmallIcon(R.drawable.ic_notification_small)
+            .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_notification))
+            .setColor(getColor(R.color.notification_color))
+            .setColorized(true)
             .setContentTitle(notification.title)
             .setContentText(notification.body)
             .setContentIntent(pendingIntent)
