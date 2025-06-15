@@ -2,17 +2,22 @@ package com.whatever.caramel.feature.setting
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
-import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignOutUseCase
+import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
+import com.whatever.caramel.core.domain.usecase.user.GetUserSettingUseCase
+import com.whatever.caramel.core.domain.usecase.user.UpdateUserSettingUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.setting.mvi.CoupleUser
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
 import com.whatever.caramel.feature.setting.mvi.SettingSideEffect
 import com.whatever.caramel.feature.setting.mvi.SettingState
 import io.github.aakira.napier.Napier
+import kotlinx.coroutines.joinAll
 
 class SettingViewModel(
     private val getCoupleRelationshipInfoUseCase: GetCoupleRelationshipInfoUseCase,
+    private val updateUserSettingUseCase: UpdateUserSettingUseCase,
+    private val getUserSettingUseCase: GetUserSettingUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val signOutUseCase: SignOutUseCase,
     savedStateHandle: SavedStateHandle
@@ -42,12 +47,23 @@ class SettingViewModel(
             SettingIntent.ToggleUserCancelledButton -> toggleUserCancelledButton()
             SettingIntent.ClickAppUpdateButton -> TODO("앱 업데이트 기능 확인 필요")
             SettingIntent.ClickUserCancelledConfirmButton -> signOut()
+            SettingIntent.ClickNotificationToggleButton -> toggleUpdateNotificationSetting()
         }
     }
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
         Napier.e { "exception: $throwable" }
+    }
+
+    private fun toggleUpdateNotificationSetting() {
+        launch {
+            val result = updateUserSettingUseCase(
+                notificationEnabled = !currentState.isNotificationEnabled
+            )
+
+            reduce { copy(isNotificationEnabled = result) }
+        }
     }
 
     private fun signOut() {
@@ -59,20 +75,28 @@ class SettingViewModel(
 
     private fun getCoupleInfo() {
         launch {
-            reduce {
-                copy(
-                    isLoading = true
-                )
+            reduce { copy(isLoading = true) }
+
+            val coupleJob = launch {
+                val couple = getCoupleRelationshipInfoUseCase()
+
+                reduce {
+                    copy(
+                        isLoading = false,
+                        startDate = couple.info.startDate,
+                        myInfo = CoupleUser.toCoupleInfo(couple.myInfo),
+                        partnerInfo = CoupleUser.toCoupleInfo(couple.partnerInfo),
+                    )
+                }
             }
-            val couple = getCoupleRelationshipInfoUseCase()
-            reduce {
-                copy(
-                    isLoading = false,
-                    startDate = couple.info.startDate,
-                    myInfo = CoupleUser.toCoupleInfo(couple.myInfo),
-                    partnerInfo = CoupleUser.toCoupleInfo(couple.partnerInfo),
-                )
+
+            val notificationEnabledJob = launch {
+                val notificationEnabled = getUserSettingUseCase()
+
+                reduce { copy(isNotificationEnabled = notificationEnabled) }
             }
+
+            joinAll(coupleJob, notificationEnabledJob)
         }
     }
 

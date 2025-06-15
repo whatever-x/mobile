@@ -12,7 +12,8 @@ data class SettingState(
     val partnerInfo: CoupleUser = CoupleUser(),
     val isShowEditProfileBottomSheet: Boolean = false,
     val isShowLogoutDialog: Boolean = false,
-    val isShowUserCancelledDialog: Boolean = false
+    val isShowUserCancelledDialog: Boolean = false,
+    val isNotificationEnabled: Boolean = false
 ) : UiState
 
 data class CoupleUser(
