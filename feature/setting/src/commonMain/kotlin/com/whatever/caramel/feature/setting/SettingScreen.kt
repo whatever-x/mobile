@@ -188,12 +188,11 @@ internal fun SettingScreen(
                     onClickListItem = { onIntent(SettingIntent.ClickPrivacyPolicyButton) },
                 )
             }
-
+            Spacer(modifier = Modifier.weight(1f))
             Box(modifier = Modifier.fillMaxSize()) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 74.dp)
                         .padding(horizontal = 20.dp)
                         .navigationBarsPadding()
                         .align(Alignment.BottomStart)
