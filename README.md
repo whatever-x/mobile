@@ -3,8 +3,8 @@
 </h1>
 
 <p>
-  <a href="https://apps.apple.com/kr/app/%EC%B9%B4%EB%9D%BC%EB%A9%9C-caramel-%EC%9A%B0%EB%A6%AC%EB%A7%8C%EC%9D%98-%EA%B0%90%EC%84%B1-%EC%BB%A4%ED%94%8C-%EB%8B%A4%EC%9D%B4%EC%96%B4%EB%A6%AC/id6745321351"><img src="https://github.com/user-attachments/assets/0b054308-2575-4ddb-942f-a89be4e8f464" align="right" width=30%/></a>
-  <a href="https://play.google.com/store/apps/details?id=com.whatever.caramel&pcampaignid=web_share"><img src="https://github.com/user-attachments/assets/468fa558-35f7-4c6f-b049-ca6b96374119" align="right" width=32%/></a>
+  <a href="https://apps.apple.com/kr/app/%EC%B9%B4%EB%9D%BC%EB%A9%9C-caramel-%EC%9A%B0%EB%A6%AC%EB%A7%8C%EC%9D%98-%EA%B0%90%EC%84%B1-%EC%BB%A4%ED%94%8C-%EB%8B%A4%EC%9D%B4%EC%96%B4%EB%A6%AC/id6745321351"><img src="https://github.com/user-attachments/assets/0b054308-2575-4ddb-942f-a89be4e8f464" align="right" width=28%/></a>
+  <a href="https://play.google.com/store/apps/details?id=com.whatever.caramel&pcampaignid=web_share"><img src="https://github.com/user-attachments/assets/468fa558-35f7-4c6f-b049-ca6b96374119" align="right" width=30%/></a>
   <br>
   <img src="https://img.shields.io/badge/Kotlin Multiplatform-7F52FF?style=flat&logo=Kotlin&logoColor=white"/>
   <img src="https://img.shields.io/badge/Compose Multiplaform-4285F4?style=flat&logo=jetpackcompose&logoColor=white"/>
@@ -17,11 +17,11 @@
 </p><br>
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/375cf029-4e48-4f79-81da-9c44ded41f04" width=180/>
-  <img src="https://github.com/user-attachments/assets/88e4f3c7-5d34-49fa-a73f-93cbe95a5a37" width=180/>
-  <img src="https://github.com/user-attachments/assets/f085db75-638f-499b-9e7a-97b9c1fd0f0d" width=180/>
-  <img src="https://github.com/user-attachments/assets/99d6447e-299b-4af0-915b-691bdb8c281c" width=180/>
-  <img src="https://github.com/user-attachments/assets/df9713d2-104f-44af-83d7-0ecb9fc96ed0" width=180/>
+  <img src="https://github.com/user-attachments/assets/375cf029-4e48-4f79-81da-9c44ded41f04" width=160/>
+  <img src="https://github.com/user-attachments/assets/88e4f3c7-5d34-49fa-a73f-93cbe95a5a37" width=160/>
+  <img src="https://github.com/user-attachments/assets/f085db75-638f-499b-9e7a-97b9c1fd0f0d" width=160/>
+  <img src="https://github.com/user-attachments/assets/99d6447e-299b-4af0-915b-691bdb8c281c" width=160/>
+  <img src="https://github.com/user-attachments/assets/df9713d2-104f-44af-83d7-0ecb9fc96ed0" width=160/>
 </div>
 
 ## 📖 Overview
