@@ -185,12 +185,17 @@ graph TD
     <tr>
       <td align="center">
         <a href="https://github.com/ham2174">
-          <img src="https://github.com/Nexters/Funch-AOS/assets/54674781/388e8bd4-3e86-4369-95ce-9956b18c70b5" width="150">
+          <img src="https://github.com/user-attachments/assets/b82eb2ff-b00d-421f-9326-37079cf12b67" width="150">
         </a>
       </td>
       <td align="center">
         <a href="https://github.com/RyuSw-cs">
           <img src="https://github.com/user-attachments/assets/765d40e8-ef2b-4674-8314-2a1889b1b337" width="150">
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/evergreentree97">
+          <img src="https://github.com/user-attachments/assets/55c6c489-0f5d-4e46-b6a9-764f5d50e9b1" width="150">
         </a>
       </td>
     </tr>
@@ -201,6 +206,9 @@ graph TD
       <td align="center">
         <p align="center"><a href="https://github.com/RyuSw-cs">유승우</a></p>
       </td>
+      <td align="center">
+        <p align="center"><a href="https://github.com/evergreentree97">최상록</a></p>
+      </td>
     </tr>
     <tr>
       <td align="center">
@@ -208,6 +216,9 @@ graph TD
       </td>
       <td align="center">
         <p><a href="mailto:rsw1452@gmail.com">rsw1452@gmail.com</a></p>
+      </td>
+      <td align="center">
+        <p><a href="mailto:tkdfhr7875@gmail.com">tkdfhr7875@gmail.com</a></p>
       </td>
     </tr>
   </table>
