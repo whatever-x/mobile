@@ -6,10 +6,9 @@ import caramel.feature.calendar.generated.resources.friday
 import caramel.feature.calendar.generated.resources.monday
 import caramel.feature.calendar.generated.resources.saturday
 import caramel.feature.calendar.generated.resources.sunday
+import caramel.feature.calendar.generated.resources.thursday
 import caramel.feature.calendar.generated.resources.tuesday
 import caramel.feature.calendar.generated.resources.wednesday
-import com.whatever.caramel.core.domain.exception.CaramelException
-import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import kotlinx.datetime.DayOfWeek
 import org.jetbrains.compose.resources.stringResource
 
@@ -19,7 +18,7 @@ internal fun DayOfWeek.toUiText(): String = stringResource(
         DayOfWeek.MONDAY -> Res.string.monday
         DayOfWeek.TUESDAY -> Res.string.tuesday
         DayOfWeek.WEDNESDAY -> Res.string.wednesday
-        DayOfWeek.THURSDAY -> Res.string.tuesday
+        DayOfWeek.THURSDAY -> Res.string.thursday
         DayOfWeek.FRIDAY -> Res.string.friday
         DayOfWeek.SATURDAY -> Res.string.saturday
         DayOfWeek.SUNDAY -> Res.string.sunday
