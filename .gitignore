@@ -1,3 +1,4 @@
+# Root
 *.iml
 .kotlin/
 .gradle
@@ -10,9 +11,21 @@ local.properties
 captures
 .externalNativeBuild
 .cxx
-*.xcodeproj/*
+*.jks
+*.aab
+*.apk
+
+# ComposeApp
+app/google-services.json
+core/database/schemas
+*/*/exported*/*
+
+# Xcode
+**/GoogleService-Info.plist
+*.xcworkspace
+*.xcuserdata/
+!*.xcworkspace/contents.xcworkspacedata
 !*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata/
-!*.xcodeproj/project.xcworkspace/
-!*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
+*.xcconfig

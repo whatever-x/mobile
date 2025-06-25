@@ -2,11 +2,12 @@ name: Add PR to Project
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, reopened, synchronize]
 
 jobs:
   add-to-project:
     runs-on: ubuntu-latest
+
     steps:
       - name: Add PR to Project
         id: add_to_project
@@ -43,11 +44,13 @@ jobs:
             https://api.github.com/graphql
           )
           
-          if echo "$response" | jq -e '.data.updateProjectV2ItemFieldValue.clientMutationId' > /dev/null; then
-            echo "✅ Successfully updated project status."
-          else
-            echo "❌ Failed to update project status. Response: $response"
+          echo "Response : $response"
+
+          if echo "$response" | jq -e '.errors' > /dev/null; then
+            echo "❌ GraphQL API returned an error. Response: $response"
             exit 1
+          else
+            echo "✅ No errors detected. Continuing..."
           fi
         env:
           REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}

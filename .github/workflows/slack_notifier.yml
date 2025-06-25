@@ -1,0 +1,104 @@
+name: Slack Notifier
+
+on:
+  issues:
+    types: [opened, closed, commented]
+  push:
+  create:
+    branches:
+  delete:
+    branches:
+  pull_request:
+    types: [opened, closed, review_requested, review_submitted, commented]
+
+jobs:
+  notify-slack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build Slack Message
+        id: slack_message
+        run: |
+          EVENT_TYPE="${{ github.event_name }}"
+          ACTION="${{ github.event.action }}"
+          REPO="${{ github.repository }}"
+          ACTOR="${{ github.actor }}"
+          EVENT_URL="${{ github.event.issue.html_url || github.event.pull_request.html_url || github.event.repository.html_url }}"
+
+          # JSON 파싱을 위해 이벤트 데이터를 저장
+          echo '${{ toJson(github.event) }}' > event.json
+
+          # 이슈 관련
+          if [[ "$EVENT_TYPE" == "issues" ]]; then
+            ISSUE_NUMBER=$(jq -r '.issue.number' event.json)
+            ISSUE_TITLE=$(jq -r '.issue.title' event.json)
+
+            if [[ "$ACTION" == "opened" ]]; then
+              MESSAGE="📌 *이슈 생성됨:* #$ISSUE_NUMBER - $ISSUE_TITLE"
+            elif [[ "$ACTION" == "closed" ]]; then
+              MESSAGE="✅ *이슈 종료됨:* #$ISSUE_NUMBER - $ISSUE_TITLE"
+            elif [[ "$ACTION" == "commented" ]]; then
+              MESSAGE="💬 *이슈 댓글 작성됨:* #$ISSUE_NUMBER - $ISSUE_TITLE"
+            fi
+          
+          # 커밋 푸시 관련
+          elif [[ "$EVENT_TYPE" == "push" ]]; then
+            COMMIT_COUNT=$(jq '.commits | length' event.json)
+            FIRST_COMMIT_MSG=$(jq -r '.commits[0].message' event.json | jq -Rs .)
+            BRANCH_NAME=$(jq -r '.ref' event.json | sed 's|refs/heads/||')
+
+            MESSAGE="🚀 *$BRANCH_NAME 브랜치에 코드 푸시됨:* $COMMIT_COUNT개 커밋 - 첫 메시지: $FIRST_COMMIT_MSG"
+          
+          # 브랜치 생성 및 삭제 관련
+          elif [[ "$EVENT_TYPE" == "create" ]]; then
+            BRANCH_NAME=$(jq -r '.ref' event.json)
+            MESSAGE="🌱 *새로운 브랜치 생성됨:* $BRANCH_NAME by $ACTOR"
+          
+          elif [[ "$EVENT_TYPE" == "delete" ]]; then
+            BRANCH_NAME=$(jq -r '.ref' event.json)
+            MESSAGE="🗑️ *브랜치 삭제됨:* $BRANCH_NAME by $ACTOR"
+          
+          # PR 관련
+          elif [[ "$EVENT_TYPE" == "pull_request" ]]; then
+            PR_NUMBER=$(jq -r '.pull_request.number' event.json)
+            PR_TITLE=$(jq -r '.pull_request.title' event.json)
+
+            case "$ACTION" in
+              "opened") MESSAGE="🔃 *PR 생성됨:* #$PR_NUMBER - $PR_TITLE";;
+              "closed") MESSAGE="🚪 *PR 닫힘:* #$PR_NUMBER - $PR_TITLE";;
+              "review_requested") MESSAGE="👀 *리뷰 요청됨:* #$PR_NUMBER - $PR_TITLE";;
+              "review_submitted") MESSAGE="✅ *리뷰 완료됨:* #$PR_NUMBER - $PR_TITLE";;
+              "commented") MESSAGE="💬 *PR 댓글 작성됨:* #$PR_NUMBER - $PR_TITLE";;
+            esac
+          fi
+
+          echo "MESSAGE=$MESSAGE" >> $GITHUB_ENV
+          echo "EVENT_URL=$EVENT_URL" >> $GITHUB_ENV
+
+      - name: Send Slack Notification
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": ${{ toJson(env.MESSAGE) }},
+              "attachments": [
+                {
+                  "fallback": "GitHub 이벤트 알림",
+                  "color": "#36a64f",
+                  "fields": [
+                    {
+                      "title": "Repository",
+                      "value": "${{ github.repository }}",
+                      "short": true
+                    },
+                    {
+                      "title": "이벤트 URL",
+                      "value": "<${{ env.EVENT_URL }}|🔗 View Event>"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
