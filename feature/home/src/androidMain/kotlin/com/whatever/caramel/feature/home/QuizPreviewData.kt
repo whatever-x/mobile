@@ -6,7 +6,6 @@ import com.whatever.caramel.feature.home.mvi.BalanceGameOptionState
 import com.whatever.caramel.feature.home.mvi.BalanceGameState
 import com.whatever.caramel.feature.home.mvi.HomeState
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 internal class QuizPreviewData :
     PreviewParameterProvider<HomeState> {
@@ -16,26 +15,30 @@ internal class QuizPreviewData :
             val myGender = Gender.MALE
             val partnerNickname = "상대방 닉네임"
             val partnerGender = Gender.FEMALE
-            val balanceGameState = BalanceGameState(
-                id = 0L,
-                question = "밸런스 게임 퀴즈 질문",
-                options = persistentListOf(
-                    BalanceGameOptionState(id = 0, name = "옵션 1"),
-                    BalanceGameOptionState(id = 1, name = "옵션 2"),
+            val balanceGameState =
+                BalanceGameState(
+                    id = 0L,
+                    question = "밸런스 게임 퀴즈 질문",
+                    options =
+                        persistentListOf(
+                            BalanceGameOptionState(id = 0, name = "옵션 1"),
+                            BalanceGameOptionState(id = 1, name = "옵션 2"),
+                        ),
                 )
-            )
             val myChoiceOption = balanceGameState.options[0]
             val partnerChoiceOption = balanceGameState.options[1]
 
             return sequenceOf(
-                HomeState( // 상대방 선택 x / 내 선택 x
+                // 상대방 선택 x / 내 선택 x
+                HomeState(
                     myNickname = myNickname,
                     balanceGameCardState = HomeState.BalanceGameCardState.IDLE,
                     balanceGameState = balanceGameState,
                     partnerChoiceOption = BalanceGameOptionState(),
                     myChoiceOption = BalanceGameOptionState(),
                 ),
-                HomeState( // 상대방 선택 o / 내 선택 x
+                // 상대방 선택 o / 내 선택 x
+                HomeState(
                     myNickname = myNickname,
                     partnerNickname = partnerNickname,
                     balanceGameCardState = HomeState.BalanceGameCardState.IDLE,
@@ -43,7 +46,8 @@ internal class QuizPreviewData :
                     partnerChoiceOption = partnerChoiceOption,
                     myChoiceOption = BalanceGameOptionState(),
                 ),
-                HomeState( // 상대방 선택 x / 내 선택 o
+                // 상대방 선택 x / 내 선택 o
+                HomeState(
                     myNickname = myNickname,
                     partnerNickname = partnerNickname,
                     balanceGameCardState = HomeState.BalanceGameCardState.IDLE,
@@ -51,7 +55,8 @@ internal class QuizPreviewData :
                     partnerChoiceOption = BalanceGameOptionState(),
                     myChoiceOption = myChoiceOption,
                 ),
-                HomeState( // 상대방 선택 o / 내 선택 o
+                // 상대방 선택 o / 내 선택 o
+                HomeState(
                     myNickname = myNickname,
                     partnerNickname = partnerNickname,
                     balanceGameCardState = HomeState.BalanceGameCardState.IDLE,
@@ -59,7 +64,8 @@ internal class QuizPreviewData :
                     partnerChoiceOption = partnerChoiceOption,
                     myChoiceOption = myChoiceOption,
                 ),
-                HomeState( // 결과 확인
+                // 결과 확인
+                HomeState(
                     myNickname = myNickname,
                     myGender = myGender,
                     partnerNickname = partnerNickname,
