@@ -21,22 +21,24 @@ data class ContentDetailState(
     val linkMetaDataList: ImmutableList<LinkMetaData> = persistentListOf(),
     val isLoadingLinkPreview: Boolean = false,
 ) : UiState {
-
     val title: String
-        get() = when (contentType) {
-            ContentType.MEMO -> memoDetail?.title ?: ""
-            ContentType.CALENDAR -> scheduleDetail?.title ?: ""
-        }
+        get() =
+            when (contentType) {
+                ContentType.MEMO -> memoDetail?.title ?: ""
+                ContentType.CALENDAR -> scheduleDetail?.title ?: ""
+            }
 
     val description: String
-        get() = when (contentType) {
-            ContentType.MEMO -> memoDetail?.description ?: ""
-            ContentType.CALENDAR -> scheduleDetail?.description ?: ""
-        }
+        get() =
+            when (contentType) {
+                ContentType.MEMO -> memoDetail?.description ?: ""
+                ContentType.CALENDAR -> scheduleDetail?.description ?: ""
+            }
 
     val tags: ImmutableList<Tag>
-        get() = when (contentType) {
-            ContentType.MEMO -> memoDetail?.tagList?.toImmutableList() ?: persistentListOf()
-            ContentType.CALENDAR -> scheduleDetail?.tags?.toImmutableList() ?: persistentListOf()
-        }
-} 
+        get() =
+            when (contentType) {
+                ContentType.MEMO -> memoDetail?.tagList?.toImmutableList() ?: persistentListOf()
+                ContentType.CALENDAR -> scheduleDetail?.tags?.toImmutableList() ?: persistentListOf()
+            }
+}

@@ -20,7 +20,7 @@ internal fun ContentDetailRoute(
     viewModel: ContentDetailViewModel = koinViewModel(),
     popBackStack: () -> Unit,
     navigateToEdit: (contentId: Long, type: ContentType) -> Unit,
-    showErrorDialog: (String, String?) -> Unit
+    showErrorDialog: (String, String?) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = LocalSnackbarHostState.current
@@ -29,16 +29,17 @@ internal fun ContentDetailRoute(
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is ContentDetailSideEffect.NavigateToBackStack -> popBackStack()
-                is ContentDetailSideEffect.NavigateToEdit -> navigateToEdit(
-                    sideEffect.contentId,
-                    sideEffect.type
-                )
+                is ContentDetailSideEffect.NavigateToEdit ->
+                    navigateToEdit(
+                        sideEffect.contentId,
+                        sideEffect.type,
+                    )
 
                 is ContentDetailSideEffect.ShowErrorSnackBar -> {
                     showSnackbarMessage(
                         snackbarHostState = snackbarHostState,
                         coroutineScope = this,
-                        message = sideEffect.message
+                        message = sideEffect.message,
                     )
                 }
 
@@ -55,7 +56,7 @@ internal fun ContentDetailRoute(
 
     ContentDetailScreen(
         state = state,
-        onIntent = viewModel::intent
+        onIntent = viewModel::intent,
     )
 
     if (state.showDeleteConfirmDialog) {
@@ -66,7 +67,7 @@ internal fun ContentDetailRoute(
             subButtonText = "유지하기",
             onDismissRequest = { viewModel.intent(ContentDetailIntent.ClickCancelDeleteDialogButton) },
             onMainButtonClick = { viewModel.intent(ContentDetailIntent.ClickConfirmDeleteDialogButton) },
-            onSubButtonClick = { viewModel.intent(ContentDetailIntent.ClickCancelDeleteDialogButton) }
+            onSubButtonClick = { viewModel.intent(ContentDetailIntent.ClickCancelDeleteDialogButton) },
         ) {
             DefaultCaramelDialogLayout()
         }
@@ -77,8 +78,8 @@ internal fun ContentDetailRoute(
         title = "삭제된 메모에요",
         mainButtonText = "확인",
         onDismissRequest = { viewModel.intent(ContentDetailIntent.DismissDeletedContentDialog) },
-        onMainButtonClick = { viewModel.intent(ContentDetailIntent.DismissDeletedContentDialog) }
+        onMainButtonClick = { viewModel.intent(ContentDetailIntent.DismissDeletedContentDialog) },
     ) {
         DefaultCaramelDialogLayout()
     }
-} 
+}

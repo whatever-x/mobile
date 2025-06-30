@@ -18,18 +18,18 @@ data class ContentDetailRoute(val contentId: Long, val type: String)
 fun NavHostController.navigateToContentDetail(
     contentId: Long,
     type: ContentType,
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = null,
 ) {
     navigate(
         route = ContentDetailRoute(contentId = contentId, type = type.name),
-        navOptions = navOptions
+        navOptions = navOptions,
     )
 }
 
 fun NavGraphBuilder.contentDetailScreen(
     popBackStack: () -> Unit,
     navigateToEdit: (Long, ContentType) -> Unit,
-    showErrorDialog: (String, String?) -> Unit
+    showErrorDialog: (String, String?) -> Unit,
 ) {
     composable<ContentDetailRoute>(
         exitTransition = { ExitTransition.None },
@@ -37,14 +37,14 @@ fun NavGraphBuilder.contentDetailScreen(
         popExitTransition = {
             slideOutOfContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(600)
+                animationSpec = tween(600),
             )
-        }
+        },
     ) { _ -> // backStackEntry can be used if needed
         ContentDetailRoute(
             popBackStack = popBackStack,
             navigateToEdit = navigateToEdit,
-            showErrorDialog = showErrorDialog
+            showErrorDialog = showErrorDialog,
         )
     }
 }
