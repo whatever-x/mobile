@@ -18,7 +18,7 @@ fun CalendarDetailResponse.toTodo(): List<Todo> {
             startDate = LocalDateTime.parse(it.startDateTime),
             endDate = LocalDateTime.parse(it.endDateTime),
             title = it.title ?: "",
-            description = it.description ?: ""
+            description = it.description ?: "",
         )
     }
 }
@@ -26,7 +26,7 @@ fun CalendarDetailResponse.toTodo(): List<Todo> {
 internal fun CreateScheduleResponse.toScheduleMetaData(): ScheduleMetadata {
     return ScheduleMetadata(
         contentId = this.contentId,
-        contentType = this.contentType
+        contentType = this.contentType,
     )
 }
 
@@ -36,7 +36,7 @@ fun HolidayDetailListResponse.toHoliday(): List<Holiday> {
             id = it.id,
             date = LocalDate.parse(it.date),
             name = it.name,
-            isHoliday = it.isHoliday
+            isHoliday = it.isHoliday,
         )
     }
 }
@@ -53,7 +53,7 @@ internal fun GetScheduleResponse.toScheduleDetailVO(): ScheduleDetail {
             parentScheduleId = parentScheduleId,
             title = title,
             description = description,
-            tags = tags.map { it.toTag() }
+            tags = tags.map { it.toTag() },
         )
     }
 }

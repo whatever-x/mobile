@@ -15,35 +15,37 @@ import com.whatever.caramel.core.remote.dto.couple.response.CoupleAnniversaryRes
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleBasicResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleDetailResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleInvitationCodeResponse
-import com.whatever.caramel.core.util.DateFormatter
 import kotlinx.datetime.LocalDate
 
-fun CoupleInvitationCodeResponse.toCoupleInvitationCode() = CoupleInvitationCode(
-    invitationCode = this.invitationCode,
-    expirationDateTime = expirationDateTime
-)
+fun CoupleInvitationCodeResponse.toCoupleInvitationCode() =
+    CoupleInvitationCode(
+        invitationCode = this.invitationCode,
+        expirationDateTime = expirationDateTime,
+    )
 
 fun CoupleDetailResponse.toCoupleRelationship(): CoupleRelationship =
     CoupleRelationship(
-        info = Couple(
-            id = this.coupleId,
-            startDate = this.startDate?.replace("-", ".") ?: "",
-            sharedMessage = this.sharedMessage ?: "",
-            status = CoupleStatus.valueOf(this.status.name)
-        ),
+        info =
+            Couple(
+                id = this.coupleId,
+                startDate = this.startDate?.replace("-", ".") ?: "",
+                sharedMessage = this.sharedMessage ?: "",
+                status = CoupleStatus.valueOf(this.status.name),
+            ),
         myInfo = this.myInfo.toUser(),
-        partnerInfo = this.partnerInfo.toUser()
+        partnerInfo = this.partnerInfo.toUser(),
     )
 
 fun CoupleUserInfoDto.toUser(): User =
     User(
         id = this.id,
         userStatus = UserStatus.valueOf(this.userStatus.name),
-        userProfile = UserProfile(
-            nickName = this.nickname,
-            birthday = this.birthDate.replace("-", "."),
-            gender = Gender.valueOf(this.gender.name)
-        )
+        userProfile =
+            UserProfile(
+                nickName = this.nickname,
+                birthday = this.birthDate.replace("-", "."),
+                gender = Gender.valueOf(this.gender.name),
+            ),
     )
 
 fun CoupleBasicResponse.toCouple(): Couple =
@@ -51,44 +53,48 @@ fun CoupleBasicResponse.toCouple(): Couple =
         id = this.coupleId,
         startDate = this.startDate?.replace("-", ".") ?: "",
         sharedMessage = this.sharedMessage ?: "",
-        status = CoupleStatus.valueOf(this.status.name)
+        status = CoupleStatus.valueOf(this.status.name),
     )
 
 fun CoupleAnniversaryResponse.toAnniversary(): List<Anniversary> {
-    val hundredDayAnniversaries = this.hundredDayAnniversaries.map {
-        Anniversary(
-            date = LocalDate.parse(it.date),
-            type = AnniversaryType.valueOf(it.type),
-            label = it.label,
-            isAdjustedForNonLeapYear = it.isAdjustedForNonLeapYear
-        )
-    }
+    val hundredDayAnniversaries =
+        this.hundredDayAnniversaries.map {
+            Anniversary(
+                date = LocalDate.parse(it.date),
+                type = AnniversaryType.valueOf(it.type),
+                label = it.label,
+                isAdjustedForNonLeapYear = it.isAdjustedForNonLeapYear,
+            )
+        }
 
-    val yearlyAnniversaries = this.yearlyAnniversaries.map {
-        Anniversary(
-            date = LocalDate.parse(it.date),
-            type = AnniversaryType.valueOf(it.type),
-            label = it.label,
-            isAdjustedForNonLeapYear = it.isAdjustedForNonLeapYear
-        )
-    }
+    val yearlyAnniversaries =
+        this.yearlyAnniversaries.map {
+            Anniversary(
+                date = LocalDate.parse(it.date),
+                type = AnniversaryType.valueOf(it.type),
+                label = it.label,
+                isAdjustedForNonLeapYear = it.isAdjustedForNonLeapYear,
+            )
+        }
 
-    val myBirthdayAnniversaries = this.myBirthDates.map {
-        Anniversary(
-            date = LocalDate.parse(it.date),
-            type = AnniversaryType.valueOf(it.type),
-            label = it.label,
-            isAdjustedForNonLeapYear = it.isAdjustedForNonLeapYear
-        )
-    }
+    val myBirthdayAnniversaries =
+        this.myBirthDates.map {
+            Anniversary(
+                date = LocalDate.parse(it.date),
+                type = AnniversaryType.valueOf(it.type),
+                label = it.label,
+                isAdjustedForNonLeapYear = it.isAdjustedForNonLeapYear,
+            )
+        }
 
-    val partnerBirthdayAnniversaries = this.partnerBirthDates.map {
-        Anniversary(
-            date = LocalDate.parse(it.date),
-            type = AnniversaryType.valueOf(it.type),
-            label = it.label,
-            isAdjustedForNonLeapYear = it.isAdjustedForNonLeapYear
-        )
-    }
+    val partnerBirthdayAnniversaries =
+        this.partnerBirthDates.map {
+            Anniversary(
+                date = LocalDate.parse(it.date),
+                type = AnniversaryType.valueOf(it.type),
+                label = it.label,
+                isAdjustedForNonLeapYear = it.isAdjustedForNonLeapYear,
+            )
+        }
     return hundredDayAnniversaries + yearlyAnniversaries + myBirthdayAnniversaries + partnerBirthdayAnniversaries
 }

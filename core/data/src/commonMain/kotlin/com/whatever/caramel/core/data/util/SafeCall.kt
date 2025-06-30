@@ -1,7 +1,6 @@
 package com.whatever.caramel.core.data.util
 
 import com.whatever.caramel.core.data.mapper.toCaramelException
-import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.NetworkErrorCode
@@ -18,6 +17,6 @@ suspend fun <T> safeCall(block: suspend () -> T): T =
             code = NetworkErrorCode.UNKNOWN,
             message = "예상치 못한 에러가 발생했습니다.",
             debugMessage = e.message,
-            errorUiType = ErrorUiType.DIALOG
+            errorUiType = ErrorUiType.DIALOG,
         )
     }

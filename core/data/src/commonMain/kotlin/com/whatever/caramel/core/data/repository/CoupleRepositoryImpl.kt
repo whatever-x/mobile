@@ -2,8 +2,8 @@ package com.whatever.caramel.core.data.repository
 
 import com.whatever.caramel.core.data.mapper.toAnniversary
 import com.whatever.caramel.core.data.mapper.toCouple
-import com.whatever.caramel.core.data.mapper.toCoupleRelationship
 import com.whatever.caramel.core.data.mapper.toCoupleInvitationCode
+import com.whatever.caramel.core.data.mapper.toCoupleRelationship
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datastore.datasource.CoupleDataSource
 import com.whatever.caramel.core.domain.entity.Couple
@@ -19,7 +19,7 @@ import kotlinx.datetime.TimeZone
 
 class CoupleRepositoryImpl(
     private val localCoupleDataSource: CoupleDataSource,
-    private val remoteCoupleDataSource: RemoteCoupleDataSource
+    private val remoteCoupleDataSource: RemoteCoupleDataSource,
 ) : CoupleRepository {
     override suspend fun getCoupleInvitationCode(): CoupleInvitationCode {
         return safeCall {
@@ -29,9 +29,10 @@ class CoupleRepositoryImpl(
 
     override suspend fun connectCouple(invitationCode: String): CoupleRelationship {
         return safeCall {
-            val request = CoupleConnectRequest(
-                invitationCode = invitationCode
-            )
+            val request =
+                CoupleConnectRequest(
+                    invitationCode = invitationCode,
+                )
             remoteCoupleDataSource.connectCouple(request).toCoupleRelationship()
         }
     }
@@ -48,37 +49,39 @@ class CoupleRepositoryImpl(
         }
     }
 
-    override suspend fun getCoupleRelationshipInfo(
-        coupleId: Long
-    ): CoupleRelationship {
+    override suspend fun getCoupleRelationshipInfo(coupleId: Long): CoupleRelationship {
         return safeCall {
             remoteCoupleDataSource.fetchCoupleRelationshipInfo(coupleId = coupleId).toCoupleRelationship()
         }
     }
 
-    override suspend fun editCoupleStartDate(coupleId: Long, startDate: String): Couple {
+    override suspend fun editCoupleStartDate(
+        coupleId: Long,
+        startDate: String,
+    ): Couple {
         return safeCall {
-            val request = CoupleStartDateUpdateRequest(
-                startDate = startDate
-            )
+            val request =
+                CoupleStartDateUpdateRequest(
+                    startDate = startDate,
+                )
             remoteCoupleDataSource.updateCoupleStartDate(
                 coupleId = coupleId,
                 timeZone = TimeZone.currentSystemDefault().id,
-                request = request
+                request = request,
             ).toCouple()
         }
     }
 
     override suspend fun updateShareMessage(
         coupleId: Long,
-        shareMessage: String
+        shareMessage: String,
     ): Couple {
         return safeCall {
             val request = CoupleSharedMessageRequest(sharedMessage = shareMessage)
 
             remoteCoupleDataSource.patchShareMessage(
                 coupleId = coupleId,
-                request = request
+                request = request,
             ).toCouple()
         }
     }
@@ -86,13 +89,13 @@ class CoupleRepositoryImpl(
     override suspend fun getAnniversaries(
         coupleId: Long,
         startDate: String,
-        endDate: String
+        endDate: String,
     ): List<Anniversary> {
         return safeCall {
             remoteCoupleDataSource.getAnniversaries(
                 coupleId = coupleId,
                 startDate = startDate,
-                endDate = endDate
+                endDate = endDate,
             ).toAnniversary()
         }
     }

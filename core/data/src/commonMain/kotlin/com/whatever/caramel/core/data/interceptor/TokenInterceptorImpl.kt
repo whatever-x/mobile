@@ -7,7 +7,7 @@ import com.whatever.caramel.core.remote.network.interceptor.TokenInterceptor
 
 class TokenInterceptorImpl(
     private val tokenDataSource: TokenDataSource,
-    private val authDataSource: RemoteAuthDataSource
+    private val authDataSource: RemoteAuthDataSource,
 ) : TokenInterceptor {
     override suspend fun getAccessToken(): String {
         return tokenDataSource.fetchAccessToken()
@@ -30,16 +30,18 @@ class TokenInterceptorImpl(
             val refreshToken = tokenDataSource.fetchRefreshToken()
 
             if (accessToken.isNotEmpty() && refreshToken.isNotEmpty()) {
-                val response = authDataSource.refresh(
-                    request = ServiceTokenDto(
-                        accessToken = accessToken,
-                        refreshToken = refreshToken
+                val response =
+                    authDataSource.refresh(
+                        request =
+                            ServiceTokenDto(
+                                accessToken = accessToken,
+                                refreshToken = refreshToken,
+                            ),
                     )
-                )
 
                 tokenDataSource.createToken(
                     accessToken = response.accessToken,
-                    refreshToken = response.refreshToken
+                    refreshToken = response.refreshToken,
                 )
 
                 return true
@@ -52,5 +54,4 @@ class TokenInterceptorImpl(
             return false
         }
     }
-
 }

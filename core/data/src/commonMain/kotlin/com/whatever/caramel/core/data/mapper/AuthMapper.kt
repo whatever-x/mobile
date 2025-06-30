@@ -12,11 +12,12 @@ fun SignInResponse.toUserAuth(): UserAuth {
         nickname = this.nickname,
         userStatus = UserStatus.valueOf(this.userStatus.name),
         birthday = this.birthDay ?: "",
-        authToken = serviceToken.toAuthToken()
+        authToken = serviceToken.toAuthToken(),
     )
 }
 
-fun ServiceTokenDto.toAuthToken() = AuthToken(
-    accessToken = this.accessToken,
-    refreshToken = this.refreshToken
-)
+fun ServiceTokenDto.toAuthToken() =
+    AuthToken(
+        accessToken = this.accessToken,
+        refreshToken = this.refreshToken,
+    )

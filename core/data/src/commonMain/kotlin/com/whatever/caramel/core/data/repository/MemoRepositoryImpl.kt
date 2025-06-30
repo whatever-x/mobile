@@ -17,35 +17,41 @@ import com.whatever.caramel.core.remote.dto.memo.request.UpdateMemoRequest
 import com.whatever.caramel.core.remote.dto.tag.TagRequest
 
 class MemoRepositoryImpl(
-    private val remoteMemoDataSource: RemoteMemoDataSource
+    private val remoteMemoDataSource: RemoteMemoDataSource,
 ) : MemoRepository {
     override suspend fun createMemo(parameter: MemoParameter): MemoMetadata {
-        val request = CreateMemoRequest(
-            title = parameter.title,
-            description = parameter.description,
-            isCompleted = parameter.isCompleted,
-            tags = parameter.tags?.map { TagRequest(it) }
-        )
+        val request =
+            CreateMemoRequest(
+                title = parameter.title,
+                description = parameter.description,
+                isCompleted = parameter.isCompleted,
+                tags = parameter.tags?.map { TagRequest(it) },
+            )
         return safeCall {
             remoteMemoDataSource.createMemo(request).toMemoMetaData()
         }
     }
 
-    override suspend fun updateMemo(memoId: Long, parameter: MemoEditParameter) {
-        val request = UpdateMemoRequest(
-            title = parameter.title,
-            description = parameter.description,
-            isCompleted = parameter.isCompleted,
-            tagList = parameter.tagIds?.map { TagRequest(it) },
-            dateTimeInfo = parameter.dateTimeInfo?.run {
-                DateTimeInfoRequest(
-                    startDateTime = startDateTime,
-                    startTimezone = startTimezone,
-                    endDateTime = endDateTime,
-                    endTimezone = endTimezone
-                )
-            }
-        )
+    override suspend fun updateMemo(
+        memoId: Long,
+        parameter: MemoEditParameter,
+    ) {
+        val request =
+            UpdateMemoRequest(
+                title = parameter.title,
+                description = parameter.description,
+                isCompleted = parameter.isCompleted,
+                tagList = parameter.tagIds?.map { TagRequest(it) },
+                dateTimeInfo =
+                    parameter.dateTimeInfo?.run {
+                        DateTimeInfoRequest(
+                            startDateTime = startDateTime,
+                            startTimezone = startTimezone,
+                            endDateTime = endDateTime,
+                            endTimezone = endTimezone,
+                        )
+                    },
+            )
         safeCall {
             remoteMemoDataSource.updateMemo(memoId, request)
         }
@@ -61,7 +67,7 @@ class MemoRepositoryImpl(
         size: Int?,
         cursor: String?,
         sortType: String?,
-        tagId: Long?
+        tagId: Long?,
     ): MemoWithCursor {
         return safeCall {
             remoteMemoDataSource.getMemos(size, cursor, sortType, tagId).toMemosWithCursor()
