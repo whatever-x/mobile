@@ -21,6 +21,11 @@ subprojects {
         debug.set(true)
         verbose.set(true)
         outputToConsole.set(true)
-        outputColorName.set("RED")
+        outputColorName.set("YELLOW")
+
+        filter {
+            exclude("**/build/**")
+            exclude("**/generated/**")
+        }
     }
 }
