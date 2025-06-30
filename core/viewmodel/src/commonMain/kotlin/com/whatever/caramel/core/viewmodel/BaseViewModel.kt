@@ -19,7 +19,6 @@ import kotlin.coroutines.EmptyCoroutineContext
 abstract class BaseViewModel<S : UiState, SE : UiSideEffect, I : UiIntent>(
     val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
     private val initialState: S by lazy { createInitialState(savedStateHandle) }
 
     protected abstract fun createInitialState(savedStateHandle: SavedStateHandle): S
@@ -35,9 +34,10 @@ abstract class BaseViewModel<S : UiState, SE : UiSideEffect, I : UiIntent>(
     protected val currentState: S
         get() = _state.value
 
-    protected val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        handleClientException(throwable)
-    }
+    protected val coroutineExceptionHandler =
+        CoroutineExceptionHandler { _, throwable ->
+            handleClientException(throwable)
+        }
 
     fun intent(intent: I) {
         launch {
