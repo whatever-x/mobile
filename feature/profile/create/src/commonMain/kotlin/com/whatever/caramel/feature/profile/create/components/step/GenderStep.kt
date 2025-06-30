@@ -34,57 +34,61 @@ internal fun GenderStep(
     onClickGenderButton: (Gender) -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = "성별을\n알려주세요",
             style = CaramelTheme.typography.heading1,
             color = CaramelTheme.color.text.primary,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
-        Row (
+        Row(
             modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(
-                space = CaramelTheme.spacing.m,
-                alignment = Alignment.CenterHorizontally
-            ),
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement =
+                Arrangement.spacedBy(
+                    space = CaramelTheme.spacing.m,
+                    alignment = Alignment.CenterHorizontally,
+                ),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             GenderButton(
-                modifier = Modifier
-                    .then(
-                        if (selectedGender == Gender.MALE) {
-                            Modifier.border(
-                                width = 2.dp,
-                                color = CaramelTheme.color.fill.brand,
-                                shape = CaramelTheme.shape.xl
-                            )
-                        } else {
-                            Modifier
-                        }
-                    ),
+                modifier =
+                    Modifier
+                        .then(
+                            if (selectedGender == Gender.MALE) {
+                                Modifier.border(
+                                    width = 2.dp,
+                                    color = CaramelTheme.color.fill.brand,
+                                    shape = CaramelTheme.shape.xl,
+                                )
+                            } else {
+                                Modifier
+                            },
+                        ),
                 text = "남자에요",
                 icon = Resources.Image.img_gender_man,
                 onClick = { onClickGenderButton(Gender.MALE) },
             )
 
             GenderButton(
-                modifier = Modifier
-                    .then(
-                        if (selectedGender == Gender.FEMALE) {
-                            Modifier.border(
-                                width = 2.dp,
-                                color = CaramelTheme.color.fill.brand,
-                                shape = CaramelTheme.shape.xl
-                            )
-                        } else {
-                            Modifier
-                        }
-                    ),
+                modifier =
+                    Modifier
+                        .then(
+                            if (selectedGender == Gender.FEMALE) {
+                                Modifier.border(
+                                    width = 2.dp,
+                                    color = CaramelTheme.color.fill.brand,
+                                    shape = CaramelTheme.shape.xl,
+                                )
+                            } else {
+                                Modifier
+                            },
+                        ),
                 text = "여자에요",
                 icon = Resources.Image.img_gender_woman,
                 onClick = { onClickGenderButton(Gender.FEMALE) },
@@ -98,38 +102,40 @@ internal fun GenderButton(
     modifier: Modifier = Modifier,
     text: String,
     icon: DrawableResource,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .width(width = 160.dp)
-            .background(
-                color = CaramelTheme.color.background.tertiary,
-                shape = CaramelTheme.shape.xl
-            )
-            .clip(shape = CaramelTheme.shape.xl)
-            .clickable(
-                onClick = onClick,
-                interactionSource = MutableInteractionSource(),
-                indication = null
-            )
-            .padding(vertical = CaramelTheme.spacing.xl),
-        verticalArrangement = Arrangement.spacedBy(
-            space = CaramelTheme.spacing.l
-        ),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            modifier
+                .width(width = 160.dp)
+                .background(
+                    color = CaramelTheme.color.background.tertiary,
+                    shape = CaramelTheme.shape.xl,
+                )
+                .clip(shape = CaramelTheme.shape.xl)
+                .clickable(
+                    onClick = onClick,
+                    interactionSource = MutableInteractionSource(),
+                    indication = null,
+                )
+                .padding(vertical = CaramelTheme.spacing.xl),
+        verticalArrangement =
+            Arrangement.spacedBy(
+                space = CaramelTheme.spacing.l,
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
             modifier = Modifier.size(size = 90.dp),
             painter = painterResource(resource = icon),
             tint = Color.Unspecified,
-            contentDescription = null
+            contentDescription = null,
         )
 
         Text(
             text = text,
             style = CaramelTheme.typography.body2.bold,
-            color = CaramelTheme.color.text.primary
+            color = CaramelTheme.color.text.primary,
         )
     }
 }

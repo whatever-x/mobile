@@ -4,7 +4,6 @@ import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.viewmodel.UiIntent
 
 sealed interface ProfileCreateIntent : UiIntent {
-
     data object ClickBackButton : ProfileCreateIntent
 
     data object ClickNextButton : ProfileCreateIntent
@@ -28,5 +27,4 @@ sealed interface ProfileCreateIntent : UiIntent {
     data class ChangeMonthPicker(val month: Int) : ProfileCreateIntent
 
     data class ChangeDayPicker(val day: Int) : ProfileCreateIntent
-
 }

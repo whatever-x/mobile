@@ -23,13 +23,13 @@ fun NavGraphBuilder.createProfileScreen(
     navigateToLogin: () -> Unit,
     navigateToStartDestination: (UserStatus) -> Unit,
     showErrorToast: (String) -> Unit,
-    showErrorDialog: (String, String?) -> Unit
+    showErrorDialog: (String, String?) -> Unit,
 ) {
     composable<ProfileCreateRoute>(
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(durationMillis = 300)
+                animationSpec = tween(durationMillis = 300),
             )
         },
     ) {
@@ -37,7 +37,7 @@ fun NavGraphBuilder.createProfileScreen(
             navigateToLogin = navigateToLogin,
             navigateToStartDestination = navigateToStartDestination,
             showErrorToast = showErrorToast,
-            showErrorDialog = showErrorDialog
+            showErrorDialog = showErrorDialog,
         )
     }
 }

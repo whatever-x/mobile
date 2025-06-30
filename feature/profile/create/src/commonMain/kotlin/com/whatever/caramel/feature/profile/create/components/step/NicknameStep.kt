@@ -21,19 +21,20 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 internal fun NicknameStep(
     modifier: Modifier = Modifier,
     nickname: String,
-    onNicknameChange: (String) -> Unit
+    onNicknameChange: (String) -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = "사용할 닉네임을\n알려주세요",
             style = CaramelTheme.typography.heading1,
             color = CaramelTheme.color.text.primary,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
         Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.s))
@@ -48,19 +49,21 @@ internal fun NicknameStep(
             value = nickname,
             onValueChange = onNicknameChange,
             cursorBrush = SolidColor(CaramelTheme.color.fill.brand),
-            textStyle = CaramelTheme.typography.heading2.copy(
-                color = CaramelTheme.color.text.primary,
-                textAlign = if (nickname.isNotEmpty()) {
-                    TextAlign.Center
-                } else {
-                    TextAlign.Start
-                }
-            ),
+            textStyle =
+                CaramelTheme.typography.heading2.copy(
+                    color = CaramelTheme.color.text.primary,
+                    textAlign =
+                        if (nickname.isNotEmpty()) {
+                            TextAlign.Center
+                        } else {
+                            TextAlign.Start
+                        },
+                ),
             singleLine = true,
         ) { innerTextField ->
             Box(
                 modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Box {
                     innerTextField.invoke()
@@ -69,7 +72,7 @@ internal fun NicknameStep(
                         Text(
                             text = "연인간의 애칭도 좋아요",
                             style = CaramelTheme.typography.heading2,
-                            color = CaramelTheme.color.text.placeholder
+                            color = CaramelTheme.color.text.placeholder,
                         )
                     }
                 }
