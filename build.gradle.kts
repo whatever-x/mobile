@@ -28,4 +28,10 @@ subprojects {
             exclude("**/generated/**")
         }
     }
+
+    tasks.matching {
+        it.name.startsWith("runKtlintCheck") || it.name.startsWith("runKtlintFormat")
+    }.configureEach {
+        dependsOn(tasks.matching { it.name.startsWith("ksp") })
+    }
 }
