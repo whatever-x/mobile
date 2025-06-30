@@ -16,56 +16,55 @@ import com.whatever.caramel.core.designsystem.components.shimmer
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 
 @Composable
-internal fun MemoItemSkeleton(
-    modifier: Modifier = Modifier
-) {
+internal fun MemoItemSkeleton(modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxWidth()) {
         repeat(2) {
-            Column (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = CaramelTheme.spacing.xl),
-                verticalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.s)
+            Column(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(all = CaramelTheme.spacing.xl),
+                verticalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.s),
             ) {
                 Box(
-                    modifier = Modifier
-                        .size(width = 127.dp, height = 22.dp)
-                        .shimmer(shape = CaramelTheme.shape.xs)
+                    modifier =
+                        Modifier
+                            .size(width = 127.dp, height = 22.dp)
+                            .shimmer(shape = CaramelTheme.shape.xs),
                 )
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(16.dp)
-                        .shimmer(shape = CaramelTheme.shape.xs)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(16.dp)
+                            .shimmer(shape = CaramelTheme.shape.xs),
                 )
             }
             HorizontalDivider(
                 modifier = Modifier.fillMaxWidth(),
                 thickness = 1.dp,
-                color = CaramelTheme.color.divider.primary
+                color = CaramelTheme.color.divider.primary,
             )
         }
     }
-
-
 }
 
 @Composable
-internal fun TagChipSkeleton(
-    modifier: Modifier = Modifier
-) {
+internal fun TagChipSkeleton(modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(top = CaramelTheme.spacing.xs, bottom = CaramelTheme.spacing.m)
-            .padding(horizontal = CaramelTheme.spacing.l),
-        horizontalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.s)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(top = CaramelTheme.spacing.xs, bottom = CaramelTheme.spacing.m)
+                .padding(horizontal = CaramelTheme.spacing.l),
+        horizontalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.s),
     ) {
         repeat(2) {
             Box(
-                modifier = Modifier
-                    .size(width = 70.dp, height = 34.dp)
-                    .shimmer(shape = CaramelTheme.shape.xl)
+                modifier =
+                    Modifier
+                        .size(width = 70.dp, height = 34.dp)
+                        .shimmer(shape = CaramelTheme.shape.xl),
             )
         }
     }

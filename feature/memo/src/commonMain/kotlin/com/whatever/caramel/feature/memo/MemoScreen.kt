@@ -49,23 +49,25 @@ import kotlin.math.roundToInt
 @Composable
 internal fun MemoScreen(
     state: MemoState,
-    onIntent: (MemoIntent) -> Unit
+    onIntent: (MemoIntent) -> Unit,
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
     val scrollState = rememberScrollState()
-    val lazyListState = rememberLazyListState().apply {
-        onLastReached(
-            numberOfItemsBeforeEnd = 3,
-            onReachedNumberOfItemsBeforeEnd = { onIntent(MemoIntent.ReachedEndOfList) }
-        )
-    }
-    val memoScreenOffset by animateIntAsState(
-        targetValue = when {
-            state.isRefreshing -> 250
-            pullToRefreshState.distanceFraction in 0f..1f -> (250 * pullToRefreshState.distanceFraction).roundToInt()
-            pullToRefreshState.distanceFraction > 1f -> (250 + ((pullToRefreshState.distanceFraction - 1f) * 1f) * 100).roundToInt()
-            else -> 0
+    val lazyListState =
+        rememberLazyListState().apply {
+            onLastReached(
+                numberOfItemsBeforeEnd = 3,
+                onReachedNumberOfItemsBeforeEnd = { onIntent(MemoIntent.ReachedEndOfList) },
+            )
         }
+    val memoScreenOffset by animateIntAsState(
+        targetValue =
+            when {
+                state.isRefreshing -> 250
+                pullToRefreshState.distanceFraction in 0f..1f -> (250 * pullToRefreshState.distanceFraction).roundToInt()
+                pullToRefreshState.distanceFraction > 1f -> (250 + ((pullToRefreshState.distanceFraction - 1f) * 1f) * 100).roundToInt()
+                else -> 0
+            },
     )
 
     LaunchedEffect(state.isMemoLoading) {
@@ -82,65 +84,71 @@ internal fun MemoScreen(
         indicator = {
             CaramelPullToRefreshIndicator(
                 state = pullToRefreshState,
-                isRefreshing = state.isRefreshing
+                isRefreshing = state.isRefreshing,
             )
-        }
+        },
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .graphicsLayer {
-                    translationY = memoScreenOffset.toFloat()
-                }
-                .verticalScroll(scrollState)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .graphicsLayer {
+                        translationY = memoScreenOffset.toFloat()
+                    }
+                    .verticalScroll(scrollState),
         ) {
             Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 10.dp, horizontal = CaramelTheme.spacing.xl),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp, horizontal = CaramelTheme.spacing.xl),
                 text = stringResource(Res.string.memo),
                 style = CaramelTheme.typography.heading1,
-                color = CaramelTheme.color.text.primary
+                color = CaramelTheme.color.text.primary,
             )
             if (state.isTagLoading) {
                 TagChipSkeleton()
             } else {
                 LazyRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = CaramelTheme.spacing.xs)
-                        .padding(bottom = CaramelTheme.spacing.m),
-                    horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(top = CaramelTheme.spacing.xs)
+                            .padding(bottom = CaramelTheme.spacing.m),
+                    horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s),
                 ) {
                     itemsIndexed(state.tags) { index, tag ->
                         TagChip(
-                            modifier = when (index) {
-                                0 -> Modifier.padding(start = CaramelTheme.spacing.xl)
-                                state.tags.lastIndex -> Modifier.padding(end = CaramelTheme.spacing.xl)
-                                else -> Modifier
-                            },
+                            modifier =
+                                when (index) {
+                                    0 -> Modifier.padding(start = CaramelTheme.spacing.xl)
+                                    state.tags.lastIndex -> Modifier.padding(end = CaramelTheme.spacing.xl)
+                                    else -> Modifier
+                                },
                             tag = tag,
                             isSelected = state.selectedTag == tag,
-                            onClickChip = { onIntent(MemoIntent.ClickTagChip(tag = it)) }
+                            onClickChip = { onIntent(MemoIntent.ClickTagChip(tag = it)) },
                         )
                     }
                 }
             }
             if (state.isEmpty) {
                 EmptyMemo(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
                 )
             } else {
                 if (state.isMemoLoading) {
                     MemoItemSkeleton()
                 } else {
                     LazyColumn(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        state = lazyListState
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
+                        state = lazyListState,
                     ) {
                         itemsIndexed(state.memos) { index, memo ->
                             MemoItem(
@@ -149,13 +157,13 @@ internal fun MemoScreen(
                                 description = memo.description,
                                 categoriesText = memo.tagList.joinToString(separator = ",") { it.label },
                                 createdDateText = memo.createdAt.formatWithSeparator(separator = "."),
-                                onClickMemoItem = { onIntent(MemoIntent.ClickMemo(memoId = it)) }
+                                onClickMemoItem = { onIntent(MemoIntent.ClickMemo(memoId = it)) },
                             )
                             if (index < state.memos.lastIndex) {
                                 HorizontalDivider(
                                     modifier = Modifier.fillMaxWidth(),
                                     thickness = 1.dp,
-                                    color = CaramelTheme.color.divider.primary
+                                    color = CaramelTheme.color.divider.primary,
                                 )
                             }
                         }
@@ -169,20 +177,22 @@ internal fun MemoScreen(
 @Composable
 internal fun LazyListState.onLastReached(
     numberOfItemsBeforeEnd: Int = 1,
-    onReachedNumberOfItemsBeforeEnd: () -> Unit
+    onReachedNumberOfItemsBeforeEnd: () -> Unit,
 ) {
     require(numberOfItemsBeforeEnd >= 0) { "Number of items before end must be greater than or equal to 0" }
 
-    val lastItemVisible = remember {
-        derivedStateOf {
-            val totalItemsCount = layoutInfo.totalItemsCount
-            val lastVisibleItemIndex = (layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
-            totalItemsCount > 0 && lastVisibleItemIndex >= max(
-                a = (totalItemsCount - numberOfItemsBeforeEnd),
-                b = 0
-            )
+    val lastItemVisible =
+        remember {
+            derivedStateOf {
+                val totalItemsCount = layoutInfo.totalItemsCount
+                val lastVisibleItemIndex = (layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
+                totalItemsCount > 0 && lastVisibleItemIndex >=
+                    max(
+                        a = (totalItemsCount - numberOfItemsBeforeEnd),
+                        b = 0,
+                    )
+            }
         }
-    }
 
     LaunchedEffect(lastItemVisible) {
         snapshotFlow { lastItemVisible.value }

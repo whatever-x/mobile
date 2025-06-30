@@ -4,8 +4,12 @@ import com.whatever.caramel.core.viewmodel.UiIntent
 
 sealed interface MemoIntent : UiIntent {
     data object Initialize : MemoIntent
-    data class ClickMemo(val memoId : Long) : MemoIntent
+
+    data class ClickMemo(val memoId: Long) : MemoIntent
+
     data object PullToRefresh : MemoIntent
-    data class ClickTagChip(val tag : TagUiModel) : MemoIntent
+
+    data class ClickTagChip(val tag: TagUiModel) : MemoIntent
+
     data object ReachedEndOfList : MemoIntent
 }
