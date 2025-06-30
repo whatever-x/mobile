@@ -13,7 +13,7 @@ import io.ktor.client.statement.HttpResponse
 suspend inline fun <reified T> HttpResponse.getBody(): T {
     val baseResponse = this.body<BaseResponse<T>>()
     if (baseResponse.success) {
-        return baseResponse.data ?: if(T::class == Unit::class){
+        return baseResponse.data ?: if (T::class == Unit::class) {
             Unit as T
         } else {
             throw CaramelNetworkException(
@@ -21,7 +21,7 @@ suspend inline fun <reified T> HttpResponse.getBody(): T {
                 message = "예상치 못한 에러가 발생했습니다.",
                 debugMessage = "Data is null",
                 description = null,
-                errorUiType = "DIALOG"
+                errorUiType = "DIALOG",
             )
         }
     } else {
@@ -33,7 +33,7 @@ suspend inline fun <reified T> HttpResponse.getBody(): T {
                 message = "Unknown Error",
                 debugMessage = "Unknown Error",
                 description = null,
-                errorUiType = "DIALOG"
+                errorUiType = "DIALOG",
             )
         }
     }

@@ -7,7 +7,7 @@ import io.ktor.client.statement.bodyAsText
 import kotlin.text.RegexOption
 
 class LinkMetadataRemoteDataSourceImpl(
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
 ) : LinkMetadataRemoteDataSource {
     override suspend fun fetchLinkMetadata(url: String): OgTagDto? {
         val htmlContent = fetchHtmlContent(url)
@@ -22,22 +22,27 @@ class LinkMetadataRemoteDataSourceImpl(
             OgTagDto(
                 url = ogUrl ?: url,
                 title = title,
-                image = ogImage ?: ""
+                image = ogImage ?: "",
             )
         }
     }
 
-    private suspend fun fetchHtmlContent(url: String): String? = runCatching {
-        httpClient.get(url).bodyAsText()
-    }.onFailure { e ->
-        println("Error fetching HTML for $url: ${e.message}")
-    }.getOrNull()
+    private suspend fun fetchHtmlContent(url: String): String? =
+        runCatching {
+            httpClient.get(url).bodyAsText()
+        }.onFailure { e ->
+            println("Error fetching HTML for $url: ${e.message}")
+        }.getOrNull()
 
-    private fun parseMetaTagContent(htmlContent: String, propertyValue: String): String? {
-        val regex = Regex(
-            """<meta\s+property\s*=\s*["']${Regex.escape(propertyValue)}["']\s+content\s*=\s*["']([^"']*)["']\s*/?>""",
-            RegexOption.IGNORE_CASE
-        )
+    private fun parseMetaTagContent(
+        htmlContent: String,
+        propertyValue: String,
+    ): String? {
+        val regex =
+            Regex(
+                """<meta\s+property\s*=\s*["']${Regex.escape(propertyValue)}["']\s+content\s*=\s*["']([^"']*)["']\s*/?>""",
+                RegexOption.IGNORE_CASE,
+            )
         return regex.find(htmlContent)?.groups?.get(1)?.value?.trim()?.takeIf { it.isNotBlank() }
     }
 
@@ -50,11 +55,12 @@ class LinkMetadataRemoteDataSourceImpl(
 
             val pathSegment = authorityAndPath.substringAfter("/", missingDelimiterValue = "")
 
-            val textToProcess = if (pathSegment.isNotEmpty() && pathSegment != authorityAndPath) {
-                pathSegment.split('/').lastOrNull()?.takeIf { it.isNotBlank() }
-            } else {
-                authorityAndPath.split('/').firstOrNull()?.takeIf { it.isNotBlank() }
-            }
+            val textToProcess =
+                if (pathSegment.isNotEmpty() && pathSegment != authorityAndPath) {
+                    pathSegment.split('/').lastOrNull()?.takeIf { it.isNotBlank() }
+                } else {
+                    authorityAndPath.split('/').firstOrNull()?.takeIf { it.isNotBlank() }
+                }
 
             textToProcess
                 ?.replace("-", " ")
@@ -69,4 +75,4 @@ class LinkMetadataRemoteDataSourceImpl(
             .joinToString(" ") { word ->
                 word.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
             }
-} 
+}

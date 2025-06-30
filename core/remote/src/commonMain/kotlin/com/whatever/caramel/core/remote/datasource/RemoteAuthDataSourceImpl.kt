@@ -12,7 +12,7 @@ import org.koin.core.annotation.Named
 
 internal class RemoteAuthDataSourceImpl(
     @Named("DefaultClient") private val defaultClient: HttpClient,
-    @Named("AuthClient") private val authClient: HttpClient
+    @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteAuthDataSource {
     override suspend fun signIn(request: SignInRequest): SignInResponse =
         defaultClient.post(BASE_AUTH_URL + "sign-in") {
@@ -26,11 +26,9 @@ internal class RemoteAuthDataSourceImpl(
 
     override suspend fun signOut() {
         authClient.delete(BASE_AUTH_URL + "account")
-
     }
 
     companion object {
         private const val BASE_AUTH_URL = "/v1/auth/"
     }
-
 }

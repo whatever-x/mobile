@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CoupleStartDateUpdateRequest(
-    @SerialName("startDate") val startDate : String
+    @SerialName("startDate") val startDate: String,
 )

@@ -28,12 +28,12 @@ android {
             buildConfigField(
                 "String",
                 "BASE_URL",
-                properties.getProperty(releaseUrl)
+                properties.getProperty(releaseUrl),
             )
             buildConfigField(
                 "String",
                 "SAMPLE_URL",
-                properties.getProperty(sampleUrl)
+                properties.getProperty(sampleUrl),
             )
         }
 
@@ -41,12 +41,12 @@ android {
             buildConfigField(
                 "String",
                 "BASE_URL",
-                properties.getProperty(debugUrl)
+                properties.getProperty(debugUrl),
             )
             buildConfigField(
                 "String",
                 "SAMPLE_URL",
-                properties.getProperty(sampleUrl)
+                properties.getProperty(sampleUrl),
             )
         }
     }
@@ -86,7 +86,7 @@ dependencies {
 }
 
 project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-    if(name != "kspCommonMainKotlinMetadata") {
+    if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
     }
 }

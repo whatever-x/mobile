@@ -1,5 +1,7 @@
 package com.whatever.caramel.core.remote.di
 
+import com.whatever.caramel.core.remote.datasource.LinkMetadataRemoteDataSource
+import com.whatever.caramel.core.remote.datasource.LinkMetadataRemoteDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteBalanceGameDataSource
@@ -12,12 +14,10 @@ import com.whatever.caramel.core.remote.datasource.RemoteFirebaseControllerDataS
 import com.whatever.caramel.core.remote.datasource.RemoteFirebaseControllerDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteMemoDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteMemoDataSourceImpl
-import com.whatever.caramel.core.remote.datasource.RemoteUserDataSource
-import com.whatever.caramel.core.remote.datasource.RemoteUserDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteTagDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteTagDataSourceImpl
-import com.whatever.caramel.core.remote.datasource.LinkMetadataRemoteDataSource
-import com.whatever.caramel.core.remote.datasource.LinkMetadataRemoteDataSourceImpl
+import com.whatever.caramel.core.remote.datasource.RemoteUserDataSource
+import com.whatever.caramel.core.remote.datasource.RemoteUserDataSourceImpl
 import com.whatever.caramel.core.remote.di.qualifier.AuthClient
 import com.whatever.caramel.core.remote.di.qualifier.DefaultClient
 import com.whatever.caramel.core.remote.di.qualifier.SampleClient
@@ -40,117 +40,119 @@ import org.koin.dsl.module
 expect val networkClientEngineModule: Module
 expect val deviceIdModule: Module
 
-val networkModule = module {
-    single { HttpClientFactory.create(engine = get()) }
+val networkModule =
+    module {
+        single { HttpClientFactory.create(engine = get()) }
 
-    single(SampleClient) {
-        get<HttpClient>().config {
-            addDeviceIdHeader(get())
-            caramelResponseValidator()
-            defaultRequest {
-                url(NetworkConfig.SAMPLE_URL)
-                contentType(ContentType.Application.Json)
+        single(SampleClient) {
+            get<HttpClient>().config {
+                addDeviceIdHeader(get())
+                caramelResponseValidator()
+                defaultRequest {
+                    url(NetworkConfig.SAMPLE_URL)
+                    contentType(ContentType.Application.Json)
+                }
             }
         }
-    }
 
-    single(DefaultClient) {
-        get<HttpClient>().config {
-            addDeviceIdHeader(get())
-            caramelResponseValidator()
-            caramelDefaultRequest()
+        single(DefaultClient) {
+            get<HttpClient>().config {
+                addDeviceIdHeader(get())
+                caramelResponseValidator()
+                caramelDefaultRequest()
+            }
         }
-    }
 
-    single(AuthClient) {
-        get<HttpClient>(DefaultClient).config {
-            install(Auth) {
-                bearer {
-                    loadTokens {
-                        val accessToken = get<TokenInterceptor>().getAccessToken()
-
-                        if (accessToken.isNotEmpty()) {
-                            BearerTokens(accessToken, null)
-                        } else {
-                            null
-                        }
-                    }
-
-                    refreshTokens {
-                        val refreshed = get<TokenInterceptor>().refresh()
-
-                        if (refreshed) {
+        single(AuthClient) {
+            get<HttpClient>(DefaultClient).config {
+                install(Auth) {
+                    bearer {
+                        loadTokens {
                             val accessToken = get<TokenInterceptor>().getAccessToken()
-                            val refreshToken = get<TokenInterceptor>().getRefreshToken()
 
-                            if (accessToken.isNotEmpty() && refreshToken.isNotEmpty()) {
-                                BearerTokens(accessToken, refreshToken)
+                            if (accessToken.isNotEmpty()) {
+                                BearerTokens(accessToken, null)
                             } else {
                                 null
                             }
-                        } else {
-                            null
+                        }
+
+                        refreshTokens {
+                            val refreshed = get<TokenInterceptor>().refresh()
+
+                            if (refreshed) {
+                                val accessToken = get<TokenInterceptor>().getAccessToken()
+                                val refreshToken = get<TokenInterceptor>().getRefreshToken()
+
+                                if (accessToken.isNotEmpty() && refreshToken.isNotEmpty()) {
+                                    BearerTokens(accessToken, refreshToken)
+                                } else {
+                                    null
+                                }
+                            } else {
+                                null
+                            }
                         }
                     }
                 }
             }
         }
     }
-}
 
-val remoteDataSourceModule = module {
-    single<RemoteAuthDataSource> {
-        RemoteAuthDataSourceImpl(
-            defaultClient = get(DefaultClient),
-            authClient = get(AuthClient)
-        )
-    }
+val remoteDataSourceModule =
+    module {
+        single<RemoteAuthDataSource> {
+            RemoteAuthDataSourceImpl(
+                defaultClient = get(DefaultClient),
+                authClient = get(AuthClient),
+            )
+        }
 
-    single<RemoteUserDataSource> {
-        RemoteUserDataSourceImpl(
-            authClient = get(AuthClient)
-        )
-    }
+        single<RemoteUserDataSource> {
+            RemoteUserDataSourceImpl(
+                authClient = get(AuthClient),
+            )
+        }
 
-    single<RemoteCoupleDataSource> {
-        RemoteCoupleDatsSourceImpl(
-            authClient = get(AuthClient)
-        )
-    }
+        single<RemoteCoupleDataSource> {
+            RemoteCoupleDatsSourceImpl(
+                authClient = get(AuthClient),
+            )
+        }
 
-    single<RemoteCalendarDataSource> {
-        RemoteCalendarDataSourceImpl(
-            authClient = get(AuthClient),
-        )
-    }
+        single<RemoteCalendarDataSource> {
+            RemoteCalendarDataSourceImpl(
+                authClient = get(AuthClient),
+            )
+        }
 
-    single<RemoteMemoDataSource> {
-        RemoteMemoDataSourceImpl(
-            authClient = get(AuthClient)
-        )
-    }
+        single<RemoteMemoDataSource> {
+            RemoteMemoDataSourceImpl(
+                authClient = get(AuthClient),
+            )
+        }
 
-    single<RemoteTagDataSource> {
-        RemoteTagDataSourceImpl(
-            authClient = get(AuthClient)
-        )
-    }
+        single<RemoteTagDataSource> {
+            RemoteTagDataSourceImpl(
+                authClient = get(AuthClient),
+            )
+        }
 
-    single<RemoteBalanceGameDataSource> {
-        RemoteBalanceGameDataSourceImpl(
-            authClient = get(AuthClient)
-        )
-    }
+        single<RemoteBalanceGameDataSource> {
+            RemoteBalanceGameDataSourceImpl(
+                authClient = get(AuthClient),
+            )
+        }
 
-    single<LinkMetadataRemoteDataSource> {
-        LinkMetadataRemoteDataSourceImpl(
-            httpClient = get(DefaultClient)
-        )
-    }
+        single<LinkMetadataRemoteDataSource> {
+            LinkMetadataRemoteDataSourceImpl(
+                httpClient = get(DefaultClient),
+            )
+        }
 
-    single<RemoteFirebaseControllerDataSource> {
-        RemoteFirebaseControllerDataSourceImpl(
-            authClient = get(AuthClient)
-        )
+        single<RemoteFirebaseControllerDataSource> {
+            RemoteFirebaseControllerDataSourceImpl(
+                authClient = get(AuthClient),
+            )
+        }
     }
-}

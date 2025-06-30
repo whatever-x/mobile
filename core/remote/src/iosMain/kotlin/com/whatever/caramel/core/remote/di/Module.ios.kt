@@ -8,13 +8,15 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 actual val networkClientEngineModule: Module
-    get() = module {
-        single<HttpClientEngine> { Darwin.create() }
-    }
+    get() =
+        module {
+            single<HttpClientEngine> { Darwin.create() }
+        }
 
 actual val deviceIdModule: Module
-    get() = module {
-        single<DeviceIdProvider> {
-            IOSDeviceIdProvider()
+    get() =
+        module {
+            single<DeviceIdProvider> {
+                IOSDeviceIdProvider()
+            }
         }
-    }

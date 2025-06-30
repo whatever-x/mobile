@@ -5,7 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class LoginPlatformDto {
-    @SerialName("KAKAO") KAKAO,
-    @SerialName("APPLE") APPLE,
-    ;
+    @SerialName("KAKAO")
+    KAKAO,
+
+    @SerialName("APPLE")
+    APPLE,
 }

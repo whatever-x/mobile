@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class FcmTokenRequest(
-    @SerialName("token") val token: String
+    @SerialName("token") val token: String,
 )

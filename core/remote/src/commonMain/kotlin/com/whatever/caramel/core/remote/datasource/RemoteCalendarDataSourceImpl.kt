@@ -3,8 +3,8 @@ package com.whatever.caramel.core.remote.datasource
 import com.whatever.caramel.core.remote.dto.calendar.CalendarDetailResponse
 import com.whatever.caramel.core.remote.dto.calendar.HolidayDetailListResponse
 import com.whatever.caramel.core.remote.dto.calendar.request.CreateScheduleRequest
-import com.whatever.caramel.core.remote.dto.calendar.response.CreateScheduleResponse
 import com.whatever.caramel.core.remote.dto.calendar.request.UpdateScheduleRequest
+import com.whatever.caramel.core.remote.dto.calendar.response.CreateScheduleResponse
 import com.whatever.caramel.core.remote.dto.calendar.response.GetScheduleResponse
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
@@ -17,7 +17,7 @@ import io.ktor.client.request.setBody
 import org.koin.core.annotation.Named
 
 internal class RemoteCalendarDataSourceImpl(
-    @Named("AuthClient") private val authClient: HttpClient
+    @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteCalendarDataSource {
     override suspend fun createSchedule(request: CreateScheduleRequest): CreateScheduleResponse =
         authClient.post("$CALENDAR_BASE_URL/schedules") {
@@ -27,7 +27,7 @@ internal class RemoteCalendarDataSourceImpl(
     override suspend fun getSchedules(
         startDate: String,
         endDate: String,
-        userTimeZone: String?
+        userTimeZone: String?,
     ): CalendarDetailResponse {
         return authClient.get(CALENDAR_BASE_URL) {
             parameter("startDate", startDate)
@@ -42,7 +42,10 @@ internal class RemoteCalendarDataSourceImpl(
         }.getBody()
     }
 
-    override suspend fun updateSchedule(scheduleId: Long, updateScheduleRequest: UpdateScheduleRequest) {
+    override suspend fun updateSchedule(
+        scheduleId: Long,
+        updateScheduleRequest: UpdateScheduleRequest,
+    ) {
         authClient.put("$CALENDAR_BASE_URL/schedules/$scheduleId") {
             setBody(updateScheduleRequest)
         }
@@ -59,4 +62,4 @@ internal class RemoteCalendarDataSourceImpl(
     companion object {
         private const val CALENDAR_BASE_URL = "v1/calendar"
     }
-} 
+}

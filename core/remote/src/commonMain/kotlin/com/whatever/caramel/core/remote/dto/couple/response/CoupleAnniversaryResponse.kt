@@ -19,5 +19,5 @@ data class CoupleAnniversary(
     @SerialName("type") val type: String,
     @SerialName("date") val date: String,
     @SerialName("label") val label: String,
-    @SerialName("isAdjustedForNonLeapYear") val isAdjustedForNonLeapYear: Boolean
+    @SerialName("isAdjustedForNonLeapYear") val isAdjustedForNonLeapYear: Boolean,
 )

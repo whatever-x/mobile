@@ -13,5 +13,5 @@ data class CreateMemoRequest(
     @SerialName("isCompleted")
     val isCompleted: Boolean,
     @SerialName("tags")
-    val tags: List<TagRequest>?
+    val tags: List<TagRequest>?,
 )

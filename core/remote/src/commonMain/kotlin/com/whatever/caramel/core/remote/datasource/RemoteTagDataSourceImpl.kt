@@ -9,10 +9,9 @@ import org.koin.core.annotation.Named
 internal class RemoteTagDataSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteTagDataSource {
-    override suspend fun getTags(): TagDataResponse =
-        authClient.get(GET_TAGS_URL).getBody()
+    override suspend fun getTags(): TagDataResponse = authClient.get(GET_TAGS_URL).getBody()
 
     companion object {
         private const val GET_TAGS_URL = "v1/tags"
     }
-} 
+}

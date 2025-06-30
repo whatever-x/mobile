@@ -1,9 +1,9 @@
 package com.whatever.caramel.core.remote.datasource
 
 import com.whatever.caramel.core.remote.dto.user.request.EditUserProfileRequest
-import com.whatever.caramel.core.remote.dto.user.response.EditUserProfileResponse
 import com.whatever.caramel.core.remote.dto.user.request.UserProfileRequest
 import com.whatever.caramel.core.remote.dto.user.request.UserSettingRequest
+import com.whatever.caramel.core.remote.dto.user.response.EditUserProfileResponse
 import com.whatever.caramel.core.remote.dto.user.response.UserInfoResponse
 import com.whatever.caramel.core.remote.dto.user.response.UserProfileResponse
 import com.whatever.caramel.core.remote.dto.user.response.UserSettingResponse
@@ -19,7 +19,6 @@ import org.koin.core.annotation.Named
 class RemoteUserDataSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteUserDataSource {
-
     override suspend fun createUserProfile(request: UserProfileRequest): UserProfileResponse {
         return authClient.post(USER_BASE_URL + "profile") {
             setBody(request)
@@ -36,7 +35,7 @@ class RemoteUserDataSourceImpl(
         return authClient.get(USER_BASE_URL + "me").getBody()
     }
 
-    override suspend fun patchUserSetting(request: UserSettingRequest) : UserSettingResponse{
+    override suspend fun patchUserSetting(request: UserSettingRequest): UserSettingResponse {
         return authClient.patch(USER_BASE_URL + "settings") {
             setBody(request)
         }.getBody()
@@ -49,5 +48,4 @@ class RemoteUserDataSourceImpl(
     companion object {
         private const val USER_BASE_URL = "/v1/user/"
     }
-
 }
