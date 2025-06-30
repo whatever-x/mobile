@@ -24,6 +24,11 @@ jobs:
           gradle-version: wrapper
           cache-read-only: false
 
+      - name: Generate local.properties
+        run: |
+          echo "${{ secrets.LOCAL_PROPERTIES }}" > local.properties
+          echo "sdk.dir=$ANDROID_HOME" >> local.properties
+
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
