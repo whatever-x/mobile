@@ -58,7 +58,7 @@ class LoginViewModelTest : KoinComponent {
                     single<SavedStateHandle> { SavedStateHandle() }
                 },
                 loginFeatureModule,
-                useCaseModule
+                useCaseModule,
             )
         }
         loginViewModel = get<LoginViewModel>()
@@ -73,13 +73,13 @@ class LoginViewModelTest : KoinComponent {
 
     private suspend fun verifyLoginIntent(
         socialAuthResult: SocialAuthResult<KakaoUser>,
-        expectedSideEffect: LoginSideEffect
+        expectedSideEffect: LoginSideEffect,
     ) {
         loginViewModel.sideEffect.test {
             loginViewModel.intent(LoginIntent.ClickKakaoLoginButton(socialAuthResult))
             assertEquals(
                 expected = expectedSideEffect,
-                actual = awaitItem()
+                actual = awaitItem(),
             )
         }
     }
@@ -100,63 +100,71 @@ class LoginViewModelTest : KoinComponent {
     }
 
     @Test
-    fun `회원가입을 한 사용자는 프로필 생성 화면으로 이동한다`() = runTest {
-        determineUserStatusAfterLogin(userStatus = UserStatus.NEW)
-        verifyLoginIntent(
-            socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
-            expectedSideEffect = LoginSideEffect.NavigateToCreateProfile
-        )
-    }
-
-    @Test
-    fun `커플이 연결되지 않은 사용자는 로그인을 하면 커플 연결 화면으로 이동한다`() = runTest {
-        determineUserStatusAfterLogin(userStatus = UserStatus.SINGLE)
-        verifyLoginIntent(
-            socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
-            expectedSideEffect = LoginSideEffect.NavigateToInviteCouple
-        )
-    }
-
-    @Test
-    fun `커플 연결된 사용자는 로그인을 하면 메인 화면으로 이동한다`() = runTest {
-        determineUserStatusAfterLogin(userStatus = UserStatus.COUPLED)
-        verifyLoginIntent(
-            socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
-            expectedSideEffect = LoginSideEffect.NavigateToMain
-        )
-    }
-
-    @Test
-    fun `사용자가 로그인을 취소한 경우 SnackBar로 오류를 표시한다`() = runTest {
-        verifyLoginIntent(
-            socialAuthResult = SocialAuthResult.UserCancelled,
-            expectedSideEffect = LoginSideEffect.ShowErrorToast(code = AuthErrorCode.LOGIN_CANCELLED),
-        )
-    }
-
-    @Test
-    fun `사용자가 로그인 도중 오류가 발생했다면 SnackBar로 오류를 표시한다`() = runTest {
-        verifyLoginIntent(
-            socialAuthResult = SocialAuthResult.Error,
-            expectedSideEffect = LoginSideEffect.ShowErrorToast(code = AuthErrorCode.LOGIN_FAILED),
-        )
-    }
-
-    @Test
-    fun `로그인 서버 통신 중 오류가 발생한 경우 서버에서 내려준 메세지를 기반으로 SnackBar에 표시한다`() = runTest {
-        everySuspend {
-            authRepository.loginWithSocialPlatform(idToken = any(), socialLoginType = any())
-        } throws CaramelException(
-            code = NetworkErrorCode.UNKNOWN,
-            message = TestMessage.FAIL_LOGIN
-        )
-
-        verifyLoginIntent(
-            socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
-            expectedSideEffect = LoginSideEffect.ShowErrorToast(
-                code = NetworkErrorCode.UNKNOWN,
-                message = TestMessage.FAIL_LOGIN
+    fun `회원가입을 한 사용자는 프로필 생성 화면으로 이동한다`() =
+        runTest {
+            determineUserStatusAfterLogin(userStatus = UserStatus.NEW)
+            verifyLoginIntent(
+                socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
+                expectedSideEffect = LoginSideEffect.NavigateToCreateProfile,
             )
-        )
-    }
+        }
+
+    @Test
+    fun `커플이 연결되지 않은 사용자는 로그인을 하면 커플 연결 화면으로 이동한다`() =
+        runTest {
+            determineUserStatusAfterLogin(userStatus = UserStatus.SINGLE)
+            verifyLoginIntent(
+                socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
+                expectedSideEffect = LoginSideEffect.NavigateToInviteCouple,
+            )
+        }
+
+    @Test
+    fun `커플 연결된 사용자는 로그인을 하면 메인 화면으로 이동한다`() =
+        runTest {
+            determineUserStatusAfterLogin(userStatus = UserStatus.COUPLED)
+            verifyLoginIntent(
+                socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
+                expectedSideEffect = LoginSideEffect.NavigateToMain,
+            )
+        }
+
+    @Test
+    fun `사용자가 로그인을 취소한 경우 SnackBar로 오류를 표시한다`() =
+        runTest {
+            verifyLoginIntent(
+                socialAuthResult = SocialAuthResult.UserCancelled,
+                expectedSideEffect = LoginSideEffect.ShowErrorToast(code = AuthErrorCode.LOGIN_CANCELLED),
+            )
+        }
+
+    @Test
+    fun `사용자가 로그인 도중 오류가 발생했다면 SnackBar로 오류를 표시한다`() =
+        runTest {
+            verifyLoginIntent(
+                socialAuthResult = SocialAuthResult.Error,
+                expectedSideEffect = LoginSideEffect.ShowErrorToast(code = AuthErrorCode.LOGIN_FAILED),
+            )
+        }
+
+    @Test
+    fun `로그인 서버 통신 중 오류가 발생한 경우 서버에서 내려준 메세지를 기반으로 SnackBar에 표시한다`() =
+        runTest {
+            everySuspend {
+                authRepository.loginWithSocialPlatform(idToken = any(), socialLoginType = any())
+            } throws
+                CaramelException(
+                    code = NetworkErrorCode.UNKNOWN,
+                    message = TestMessage.FAIL_LOGIN,
+                )
+
+            verifyLoginIntent(
+                socialAuthResult = SocialAuthResult.Success(KakaoUser(TestAuthInfo.ID_TOKEN)),
+                expectedSideEffect =
+                    LoginSideEffect.ShowErrorToast(
+                        code = NetworkErrorCode.UNKNOWN,
+                        message = TestMessage.FAIL_LOGIN,
+                    ),
+            )
+        }
 }

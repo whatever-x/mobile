@@ -12,7 +12,7 @@ private fun LoginScreenPreview() {
         LoginScreen(
             state = LoginState,
             onIntent = {},
-            onLaunch = {}
+            onLaunch = {},
         )
     }
 }

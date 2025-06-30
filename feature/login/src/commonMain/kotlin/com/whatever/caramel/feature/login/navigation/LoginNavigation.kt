@@ -13,9 +13,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object LoginRoute
 
-fun NavController.navigateToLogin(
-    builder: NavOptionsBuilder.() -> Unit = {}
-) {
+fun NavController.navigateToLogin(builder: NavOptionsBuilder.() -> Unit = {}) {
     navigate(route = LoginRoute) {
         builder()
     }
@@ -24,7 +22,7 @@ fun NavController.navigateToLogin(
 fun NavGraphBuilder.loginScreen(
     navigateToStartDestination: (UserStatus) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
-    showErrorToast: (String) -> Unit
+    showErrorToast: (String) -> Unit,
 ) {
     composable<LoginRoute>(
         enterTransition = { EnterTransition.None },
@@ -33,7 +31,7 @@ fun NavGraphBuilder.loginScreen(
         LoginRoute(
             navigateToStartDestination = navigateToStartDestination,
             showErrorDialog = showErrorDialog,
-            showErrorToast = showErrorToast
+            showErrorToast = showErrorToast,
         )
     }
 }

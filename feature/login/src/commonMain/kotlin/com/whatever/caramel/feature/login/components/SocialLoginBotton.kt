@@ -26,50 +26,56 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 internal fun SocialLoginButton(
     socialLoginType: SocialLoginType,
-    onLaunch: () -> Unit
+    onLaunch: () -> Unit,
 ) {
-    val backgroundColor = when (socialLoginType) {
-        SocialLoginType.KAKAO -> Color(0xFFFFE812)
-        SocialLoginType.APPLE -> Color.Black
-    }
-    val drawableResource = when (socialLoginType) {
-        SocialLoginType.KAKAO -> Resources.Icon.ic_kakao_logo_24
-        SocialLoginType.APPLE -> Resources.Icon.ic_apple_logo_17_20
-    }
-    val stringResource = when (socialLoginType) {
-        SocialLoginType.KAKAO -> Res.string.kakao
-        SocialLoginType.APPLE -> Res.string.apple
-    }
-    val textColor = when (socialLoginType) {
-        SocialLoginType.KAKAO -> CaramelTheme.color.text.primary
-        SocialLoginType.APPLE -> CaramelTheme.color.text.inverse
-    }
+    val backgroundColor =
+        when (socialLoginType) {
+            SocialLoginType.KAKAO -> Color(0xFFFFE812)
+            SocialLoginType.APPLE -> Color.Black
+        }
+    val drawableResource =
+        when (socialLoginType) {
+            SocialLoginType.KAKAO -> Resources.Icon.ic_kakao_logo_24
+            SocialLoginType.APPLE -> Resources.Icon.ic_apple_logo_17_20
+        }
+    val stringResource =
+        when (socialLoginType) {
+            SocialLoginType.KAKAO -> Res.string.kakao
+            SocialLoginType.APPLE -> Res.string.apple
+        }
+    val textColor =
+        when (socialLoginType) {
+            SocialLoginType.KAKAO -> CaramelTheme.color.text.primary
+            SocialLoginType.APPLE -> CaramelTheme.color.text.inverse
+        }
 
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(height = 50.dp)
-            .background(
-                color = backgroundColor,
-                shape = CaramelTheme.shape.xl
-            )
-            .clip(shape = CaramelTheme.shape.xl)
-            .clickable(onClick = onLaunch)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(height = 50.dp)
+                .background(
+                    color = backgroundColor,
+                    shape = CaramelTheme.shape.xl,
+                )
+                .clip(shape = CaramelTheme.shape.xl)
+                .clickable(onClick = onLaunch),
     ) {
         Icon(
-            modifier = Modifier
-                .offset(x = 12.dp)
-                .align(alignment = Alignment.CenterStart),
+            modifier =
+                Modifier
+                    .offset(x = 12.dp)
+                    .align(alignment = Alignment.CenterStart),
             painter = painterResource(resource = drawableResource),
             tint = Color.Unspecified,
-            contentDescription = null
+            contentDescription = null,
         )
 
         Text(
             modifier = Modifier.align(alignment = Alignment.Center),
             text = stringResource(resource = stringResource),
             style = CaramelTheme.typography.body1.bold,
-            color = textColor
+            color = textColor,
         )
     }
 }

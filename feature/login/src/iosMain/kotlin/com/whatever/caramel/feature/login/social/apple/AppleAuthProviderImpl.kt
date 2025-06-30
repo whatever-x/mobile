@@ -25,13 +25,11 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 internal class AppleAuthProviderImpl : AppleAuthProvider {
-
     @Composable
     override fun get(): SocialAuthenticator<AppleUser> {
         val viewController = LocalUIViewController.current
         return AppleAuthenticatorImpl(viewController = viewController)
     }
-
 }
 
 /**
@@ -48,13 +46,11 @@ enum class ASAuthorizationErrorCode(val code: Int) {
     UNKNOWN(1005),
     CREDENTIAL_EXPORT(1006),
     CREDENTIAL_IMPORT(1007),
-    ;
 }
 
 private class AppleAuthenticatorImpl(
     private val viewController: UIViewController,
 ) : SocialAuthenticator<AppleUser>, KoinComponent {
-
     /**
      * ASAuthorizationController의 Delegate는 기본적으로 Weak Reference로 저장됩니다.
      * KMP 환경에서는 Kotlin 객체가 Swift/Objective-C 객체의 Delegate로 지정될 때 예상보다 빨리 해제될 수 있으므로 이를 방지하기 위해
@@ -72,45 +68,46 @@ private class AppleAuthenticatorImpl(
                 listOf(ASAuthorizationScopeFullName, ASAuthorizationScopeEmail)
             val controller = ASAuthorizationController(listOf(request))
 
-            authorizationDelegate = object : NSObject(), ASAuthorizationControllerDelegateProtocol {
+            authorizationDelegate =
+                object : NSObject(), ASAuthorizationControllerDelegateProtocol {
+                    @OptIn(BetaInteropApi::class)
+                    override fun authorizationController(
+                        controller: ASAuthorizationController,
+                        didCompleteWithAuthorization: ASAuthorization,
+                    ) {
+                        val credential = didCompleteWithAuthorization.credential as? ASAuthorizationAppleIDCredential
+                        val idToken =
+                            credential?.identityToken?.let { data ->
+                                NSString.create(data, NSUTF8StringEncoding)?.toString()
+                            }
 
-                @OptIn(BetaInteropApi::class)
-                override fun authorizationController(
-                    controller: ASAuthorizationController,
-                    didCompleteWithAuthorization: ASAuthorization
-                ) {
-                    val credential = didCompleteWithAuthorization.credential as? ASAuthorizationAppleIDCredential
-                    val idToken = credential?.identityToken?.let { data ->
-                        NSString.create(data, NSUTF8StringEncoding)?.toString()
-                    }
-
-                    if (idToken.isNullOrEmpty()) {
-                        continuation.resume(SocialAuthResult.Error)
-                    } else {
-                        continuation.resume(SocialAuthResult.Success(AppleUser(idToken)))
-                    }
-
-                    authorizationDelegate = null
-                }
-
-                override fun authorizationController(
-                    controller: ASAuthorizationController,
-                    didCompleteWithError: NSError
-                ) {
-                    val errorCode = didCompleteWithError.code.toInt()
-
-                    when (errorCode) {
-                        ASAuthorizationErrorCode.CANCELED.code -> {
-                            continuation.resume(SocialAuthResult.UserCancelled)
-                        }
-                        else -> {
+                        if (idToken.isNullOrEmpty()) {
                             continuation.resume(SocialAuthResult.Error)
+                        } else {
+                            continuation.resume(SocialAuthResult.Success(AppleUser(idToken)))
                         }
+
+                        authorizationDelegate = null
                     }
 
-                    authorizationDelegate = null
+                    override fun authorizationController(
+                        controller: ASAuthorizationController,
+                        didCompleteWithError: NSError,
+                    ) {
+                        val errorCode = didCompleteWithError.code.toInt()
+
+                        when (errorCode) {
+                            ASAuthorizationErrorCode.CANCELED.code -> {
+                                continuation.resume(SocialAuthResult.UserCancelled)
+                            }
+                            else -> {
+                                continuation.resume(SocialAuthResult.Error)
+                            }
+                        }
+
+                        authorizationDelegate = null
+                    }
                 }
-            }
 
             controller.delegate = authorizationDelegate
             controller.presentationContextProvider =
@@ -121,5 +118,4 @@ private class AppleAuthenticatorImpl(
 
             controller.performRequests()
         }
-
 }

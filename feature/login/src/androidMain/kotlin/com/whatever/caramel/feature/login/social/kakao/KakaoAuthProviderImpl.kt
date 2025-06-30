@@ -16,7 +16,6 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 class KakaoAuthProviderImpl : KakaoAuthProvider {
-
     @Composable
     override fun get(): SocialAuthenticator<KakaoUser> {
         val context = LocalContext.current
@@ -27,7 +26,6 @@ class KakaoAuthProviderImpl : KakaoAuthProvider {
 private class KakaoAuthenticator(
     private val context: Context,
 ) : SocialAuthenticator<KakaoUser> {
-
     init {
         KakaoSdk.init(context, BuildConfig.KAKAO_NATIVE_APP_KEY)
     }
@@ -47,7 +45,7 @@ private class KakaoAuthenticator(
 
     private fun CancellableContinuation<SocialAuthResult<KakaoUser>>.handle(
         token: OAuthToken?,
-        error: Throwable?
+        error: Throwable?,
     ) {
         if (error != null) {
             if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
