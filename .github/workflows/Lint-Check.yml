@@ -2,7 +2,7 @@ name: Spotless Lint Check
 
 on:
   pull_request:
-    types: [ opened ]
+    branches: [ main, develop ]
 
 jobs:
   spotless-check:
