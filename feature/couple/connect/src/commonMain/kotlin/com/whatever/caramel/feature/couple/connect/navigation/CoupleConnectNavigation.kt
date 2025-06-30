@@ -20,14 +20,14 @@ fun NavGraphBuilder.connectCoupleScreen(
     navigateToMain: () -> Unit,
     navigateToInviteCouple: () -> Unit,
     showErrorDialog: (String, String?) -> Unit,
-    showErrorToast: (String) -> Unit
+    showErrorToast: (String) -> Unit,
 ) {
-    composable<ConnectCoupleRoute>() {
+    composable<ConnectCoupleRoute> {
         CoupleConnectRoute(
             navigateToMain = navigateToMain,
             navigateToInviteCouple = navigateToInviteCouple,
             showErrorDialog = showErrorDialog,
-            showErrorToast = showErrorToast
+            showErrorToast = showErrorToast,
         )
     }
 }

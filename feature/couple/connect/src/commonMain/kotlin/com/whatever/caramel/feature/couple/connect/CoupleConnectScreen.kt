@@ -22,19 +22,20 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 internal fun CoupleConnectScreen(
     state: CoupleConnectState,
-    onIntent: (CoupleConnectIntent) -> Unit
+    onIntent: (CoupleConnectIntent) -> Unit,
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = CaramelTheme.color.background.primary,
         bottomBar = {
             CoupleConnectBottomBar(
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .imePadding(),
+                modifier =
+                    Modifier
+                        .navigationBarsPadding()
+                        .imePadding(),
                 buttonEnabled = state.isButtonEnabled,
                 buttonText = "연결하기",
-                onClickButton = { onIntent(CoupleConnectIntent.ClickConnectButton) }
+                onClickButton = { onIntent(CoupleConnectIntent.ClickConnectButton) },
             )
         },
         topBar = {
@@ -42,24 +43,25 @@ internal fun CoupleConnectScreen(
                 modifier = Modifier.systemBarsPadding(),
                 leadingContent = {
                     Icon(
-                        modifier = Modifier
-                            .clickable(
-                                onClick = { onIntent(CoupleConnectIntent.ClickBackButton) },
-                                interactionSource = null,
-                                indication = null
-                            ),
+                        modifier =
+                            Modifier
+                                .clickable(
+                                    onClick = { onIntent(CoupleConnectIntent.ClickBackButton) },
+                                    interactionSource = null,
+                                    indication = null,
+                                ),
                         painter = painterResource(resource = Resources.Icon.ic_arrow_left_24),
                         contentDescription = null,
-                        tint = CaramelTheme.color.icon.primary
+                        tint = CaramelTheme.color.icon.primary,
                     )
-                }
+                },
             )
-        }
+        },
     ) { innerPadding ->
         CoupleConnectContents(
             modifier = Modifier.padding(paddingValues = innerPadding),
             code = state.invitationCode,
-            onCodeChange = { code -> onIntent(CoupleConnectIntent.ChangeInvitationCode(code)) }
+            onCodeChange = { code -> onIntent(CoupleConnectIntent.ChangeInvitationCode(code)) },
         )
     }
 }
