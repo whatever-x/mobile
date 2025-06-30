@@ -69,7 +69,6 @@ import caramel.core.designsystem.generated.resources.privacy_policy_url
 import caramel.core.designsystem.generated.resources.terms_of_service_url
 
 object Resources {
-
     object Icon {
         val ic_arrow_down_16 = Res.drawable.ic_arrow_down_16
         val ic_arrow_down_24 = Res.drawable.ic_arrow_down_24

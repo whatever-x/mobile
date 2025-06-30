@@ -5,9 +5,10 @@ import platform.UIKit.UIImpactFeedbackStyle
 
 class IOSHapticController : HapticController {
     override fun performImpact(style: HapticStyle) {
-        val generator = when (style) {
-            HapticStyle.GestureThresholdActivate -> UIImpactFeedbackGenerator(UIImpactFeedbackStyle.UIImpactFeedbackStyleMedium)
-        }
+        val generator =
+            when (style) {
+                HapticStyle.GestureThresholdActivate -> UIImpactFeedbackGenerator(UIImpactFeedbackStyle.UIImpactFeedbackStyleMedium)
+            }
 
         generator.prepare()
         generator.impactOccurred()

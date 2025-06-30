@@ -19,37 +19,38 @@ data class CaramelDialogPreviewData(
 
 class CaramelDialogPreviewProvider : PreviewParameterProvider<CaramelDialogPreviewData> {
     override val values: Sequence<CaramelDialogPreviewData>
-        get() = sequenceOf(
-            CaramelDialogPreviewData(
-                title = "Default Title",
-                message = "This is a default message",
-                mainButtonText = "OK",
-                subButtonText = "Cancel",
-                mainButtonClickEvent = {},
-                subButtonClickEvent = {}
-            ),
-            CaramelDialogPreviewData(
-                title = "Default Title",
-                message = "This is a default message",
-                mainButtonText = "OK",
-                mainButtonClickEvent = {},
-                subButtonClickEvent = {}
-            ),
-            CaramelDialogPreviewData(
-                title = "Default Title",
-                mainButtonText = "OK",
-                subButtonText = "Cancel",
-                mainButtonClickEvent = {},
-                subButtonClickEvent = {}
-            ),
-            CaramelDialogPreviewData(
-                title = "Default Title",
-                mainButtonText = "OK",
-                subButtonText = "Cancel",
-                mainButtonClickEvent = {},
-                subButtonClickEvent = {}
+        get() =
+            sequenceOf(
+                CaramelDialogPreviewData(
+                    title = "Default Title",
+                    message = "This is a default message",
+                    mainButtonText = "OK",
+                    subButtonText = "Cancel",
+                    mainButtonClickEvent = {},
+                    subButtonClickEvent = {},
+                ),
+                CaramelDialogPreviewData(
+                    title = "Default Title",
+                    message = "This is a default message",
+                    mainButtonText = "OK",
+                    mainButtonClickEvent = {},
+                    subButtonClickEvent = {},
+                ),
+                CaramelDialogPreviewData(
+                    title = "Default Title",
+                    mainButtonText = "OK",
+                    subButtonText = "Cancel",
+                    mainButtonClickEvent = {},
+                    subButtonClickEvent = {},
+                ),
+                CaramelDialogPreviewData(
+                    title = "Default Title",
+                    mainButtonText = "OK",
+                    subButtonText = "Cancel",
+                    mainButtonClickEvent = {},
+                    subButtonClickEvent = {},
+                ),
             )
-        )
 }
 
 @Preview
@@ -66,7 +67,7 @@ private fun CaramelDialogPreview(
             mainButtonText = data.mainButtonText,
             subButtonText = data.subButtonText,
             onSubButtonClick = data.subButtonClickEvent,
-            onMainButtonClick = data.mainButtonClickEvent
+            onMainButtonClick = data.mainButtonClickEvent,
         ) {
             DefaultCaramelDialogLayout()
         }

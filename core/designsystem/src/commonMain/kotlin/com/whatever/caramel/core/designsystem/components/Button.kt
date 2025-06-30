@@ -19,14 +19,12 @@ enum class CaramelButtonType {
     Enabled1,
     Enabled2,
     Disabled,
-    ;
 }
 
 enum class CaramelButtonSize {
     Large,
     Medium,
     Small,
-    ;
 }
 
 @Composable
@@ -35,56 +33,61 @@ fun CaramelButton(
     buttonSize: CaramelButtonSize,
     modifier: Modifier = Modifier,
     text: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
-    val buttonHeight = when (buttonSize) {
-        CaramelButtonSize.Large -> 50.dp
-        CaramelButtonSize.Medium -> 42.dp
-        CaramelButtonSize.Small -> 32.dp
-    }
+    val buttonHeight =
+        when (buttonSize) {
+            CaramelButtonSize.Large -> 50.dp
+            CaramelButtonSize.Medium -> 42.dp
+            CaramelButtonSize.Small -> 32.dp
+        }
     val buttonBackgroundColor by animateColorAsState(
         when (buttonType) {
             CaramelButtonType.Enabled1 -> CaramelTheme.color.fill.brand
             CaramelButtonType.Enabled2 -> CaramelTheme.color.fill.quinary
             CaramelButtonType.Disabled -> CaramelTheme.color.fill.disabledPrimary
-        }
+        },
     )
-    val buttonShape = when (buttonSize) {
-        CaramelButtonSize.Large -> CaramelTheme.shape.xl
-        CaramelButtonSize.Medium -> CaramelTheme.shape.xl
-        CaramelButtonSize.Small -> CaramelTheme.shape.s
-    }
+    val buttonShape =
+        when (buttonSize) {
+            CaramelButtonSize.Large -> CaramelTheme.shape.xl
+            CaramelButtonSize.Medium -> CaramelTheme.shape.xl
+            CaramelButtonSize.Small -> CaramelTheme.shape.s
+        }
 
-    val textColor = when (buttonType) {
-        CaramelButtonType.Enabled1 -> CaramelTheme.color.text.inverse
-        CaramelButtonType.Enabled2 -> CaramelTheme.color.text.brand
-        CaramelButtonType.Disabled -> CaramelTheme.color.text.disabledPrimary
-    }
-    val textStyle = when (buttonSize) {
-        CaramelButtonSize.Large -> CaramelTheme.typography.body1.bold
-        CaramelButtonSize.Medium -> CaramelTheme.typography.body3.bold
-        CaramelButtonSize.Small -> CaramelTheme.typography.label1.bold
-    }
+    val textColor =
+        when (buttonType) {
+            CaramelButtonType.Enabled1 -> CaramelTheme.color.text.inverse
+            CaramelButtonType.Enabled2 -> CaramelTheme.color.text.brand
+            CaramelButtonType.Disabled -> CaramelTheme.color.text.disabledPrimary
+        }
+    val textStyle =
+        when (buttonSize) {
+            CaramelButtonSize.Large -> CaramelTheme.typography.body1.bold
+            CaramelButtonSize.Medium -> CaramelTheme.typography.body3.bold
+            CaramelButtonSize.Small -> CaramelTheme.typography.label1.bold
+        }
 
     Box(
-        modifier = modifier
-            .height(height = buttonHeight)
-            .background(
-                color = buttonBackgroundColor,
-                shape = buttonShape
-            )
-            .clip(shape = buttonShape)
-            .clickable(
-                enabled = buttonType != CaramelButtonType.Disabled,
-                onClick = onClick
-            )
-            .padding(horizontal = CaramelTheme.spacing.l),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .height(height = buttonHeight)
+                .background(
+                    color = buttonBackgroundColor,
+                    shape = buttonShape,
+                )
+                .clip(shape = buttonShape)
+                .clickable(
+                    enabled = buttonType != CaramelButtonType.Disabled,
+                    onClick = onClick,
+                )
+                .padding(horizontal = CaramelTheme.spacing.l),
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = text,
             style = textStyle,
-            color = textColor
+            color = textColor,
         )
     }
 }

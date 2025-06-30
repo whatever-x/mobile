@@ -12,9 +12,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import com.whatever.caramel.core.designsystem.animation.SlideInSlideOutSnackbarHost
+import com.whatever.caramel.core.designsystem.foundations.Neutral800
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -36,17 +36,18 @@ val LocalSnackbarHostState = compositionLocalOf<SnackbarHostState> { error("No S
 fun CaramelSnackBarHost(
     modifier: Modifier = Modifier,
     hostState: SnackbarHostState,
-    snackbar: @Composable (SnackbarData) -> Unit
+    snackbar: @Composable (SnackbarData) -> Unit,
 ) {
     val currentSnackbarData = hostState.currentSnackbarData
 
     LaunchedEffect(currentSnackbarData) {
         if (currentSnackbarData != null) {
-            val duration = when (currentSnackbarData.visuals.duration) {
-                SnackbarDuration.Indefinite -> Long.MAX_VALUE
-                SnackbarDuration.Long -> 10000L
-                SnackbarDuration.Short -> 3000L
-            }
+            val duration =
+                when (currentSnackbarData.visuals.duration) {
+                    SnackbarDuration.Indefinite -> Long.MAX_VALUE
+                    SnackbarDuration.Long -> 10000L
+                    SnackbarDuration.Short -> 3000L
+                }
 
             delay(duration)
 
@@ -57,7 +58,7 @@ fun CaramelSnackBarHost(
     SlideInSlideOutSnackbarHost(
         current = hostState.currentSnackbarData,
         modifier = modifier,
-        content = snackbar
+        content = snackbar,
     )
 }
 
@@ -67,22 +68,23 @@ fun CaramelSnackbar(
     snackbarData: SnackbarData,
 ) {
     Box(
-        modifier = modifier
-            .background(
-                color = Color(color = 0xFF54493F), // TODO : 토큰으로 변경하기
-                shape = CaramelTheme.shape.xl
-            )
-            .padding(
-                horizontal = CaramelTheme.spacing.xl,
-                vertical = CaramelTheme.spacing.m
-            ),
+        modifier =
+            modifier
+                .background(
+                    color = Neutral800,
+                    shape = CaramelTheme.shape.xl,
+                )
+                .padding(
+                    horizontal = CaramelTheme.spacing.xl,
+                    vertical = CaramelTheme.spacing.m,
+                ),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             text = snackbarData.visuals.message,
             color = CaramelTheme.color.text.inverse,
             style = CaramelTheme.typography.body3.regular,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }

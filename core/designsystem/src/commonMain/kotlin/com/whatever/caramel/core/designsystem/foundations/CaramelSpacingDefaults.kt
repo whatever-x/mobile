@@ -11,5 +11,4 @@ internal enum class CaramelSpacingDefaults(val spacing: Dp) {
     SPACING_LG(spacing = 16.dp),
     SPACING_XL(spacing = 20.dp),
     SPACING_XXL(spacing = 24.dp),
-    ;
 }
