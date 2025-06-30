@@ -25,11 +25,11 @@ import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLayout
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.feature.home.components.Header
-import com.whatever.caramel.feature.home.components.Quiz
 import com.whatever.caramel.feature.home.components.ShareMessageBottomSheet
-import com.whatever.caramel.feature.home.components.Todo
-import com.whatever.caramel.feature.home.components.UnConnectedCard
+import com.whatever.caramel.feature.home.components.disconnectedCard
+import com.whatever.caramel.feature.home.components.header
+import com.whatever.caramel.feature.home.components.quiz
+import com.whatever.caramel.feature.home.components.todo
 import com.whatever.caramel.feature.home.mvi.HomeIntent
 import com.whatever.caramel.feature.home.mvi.HomeState
 import kotlinx.collections.immutable.toImmutableList
@@ -40,12 +40,13 @@ import kotlin.math.roundToInt
 @Composable
 internal fun HomeScreen(
     state: HomeState,
-    onIntent: (HomeIntent) -> Unit
+    onIntent: (HomeIntent) -> Unit,
 ) {
-    val sheetState = rememberStandardBottomSheetState(
-        initialValue = SheetValue.PartiallyExpanded,
-        skipHiddenState = false
-    )
+    val sheetState =
+        rememberStandardBottomSheetState(
+            initialValue = SheetValue.PartiallyExpanded,
+            skipHiddenState = false,
+        )
 
     if (state.isShowDialog) {
         CaramelDialog(
@@ -61,16 +62,17 @@ internal fun HomeScreen(
 
     if (state.isShowBottomSheet) {
         ShareMessageBottomSheet(
-            bottomSheetContentModifier = Modifier
-                .padding(
-                    top = CaramelTheme.spacing.l + 24.dp,
-                    start = CaramelTheme.spacing.xl,
-                    end = CaramelTheme.spacing.xl
-                ),
+            bottomSheetContentModifier =
+                Modifier
+                    .padding(
+                        top = CaramelTheme.spacing.l + 24.dp,
+                        start = CaramelTheme.spacing.xl,
+                        end = CaramelTheme.spacing.xl,
+                    ),
             sheetState = sheetState,
             initialShareMessage = state.shareMessage,
             onDismiss = { onIntent(HomeIntent.HideShareMessageEditBottomSheet) },
-            onClickSave = { newShareMessage -> onIntent(HomeIntent.SaveShareMessage(newShareMessage = newShareMessage)) }
+            onClickSave = { newShareMessage -> onIntent(HomeIntent.SaveShareMessage(newShareMessage = newShareMessage)) },
         )
     }
 
@@ -80,28 +82,30 @@ internal fun HomeScreen(
             CaramelTopBar(
                 trailingIcon = {
                     Icon(
-                        modifier = Modifier.clickable(
-                            onClick = { onIntent(HomeIntent.ClickSettingButton) },
-                            interactionSource = null,
-                            indication = null
-                        ),
+                        modifier =
+                            Modifier.clickable(
+                                onClick = { onIntent(HomeIntent.ClickSettingButton) },
+                                interactionSource = null,
+                                indication = null,
+                            ),
                         painter = painterResource(resource = Resources.Icon.ic_setting_24),
                         tint = CaramelTheme.color.icon.primary,
-                        contentDescription = null
+                        contentDescription = null,
                     )
-                }
+                },
             )
-        }
+        },
     ) { innerPadding ->
         val pullToRefreshState = rememberPullToRefreshState()
         val lazyListState = rememberLazyListState()
         val homeContentsOffset by animateIntAsState(
-            targetValue = when {
-                state.isLoading -> 250
-                pullToRefreshState.distanceFraction in 0f..1f -> (250 * pullToRefreshState.distanceFraction).roundToInt()
-                pullToRefreshState.distanceFraction > 1f -> (250 + ((pullToRefreshState.distanceFraction - 1f) * 1f) * 100).roundToInt()
-                else -> 0
-            }
+            targetValue =
+                when {
+                    state.isLoading -> 250
+                    pullToRefreshState.distanceFraction in 0f..1f -> (250 * pullToRefreshState.distanceFraction).roundToInt()
+                    pullToRefreshState.distanceFraction > 1f -> (250 + ((pullToRefreshState.distanceFraction - 1f) * 1f) * 100).roundToInt()
+                    else -> 0
+                },
         )
 
         PullToRefreshBox(
@@ -112,32 +116,34 @@ internal fun HomeScreen(
             indicator = {
                 CaramelPullToRefreshIndicator(
                     state = pullToRefreshState,
-                    isRefreshing = state.isLoading
+                    isRefreshing = state.isLoading,
                 )
-            }
+            },
         ) {
             LazyColumn(
                 state = lazyListState,
                 userScrollEnabled = !state.isLoading,
                 overscrollEffect = null,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .graphicsLayer { translationY = homeContentsOffset.toFloat() },
-                verticalArrangement = Arrangement.spacedBy(
-                    space = CaramelTheme.spacing.xl
-                )
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .graphicsLayer { translationY = homeContentsOffset.toFloat() },
+                verticalArrangement =
+                    Arrangement.spacedBy(
+                        space = CaramelTheme.spacing.xl,
+                    ),
             ) {
-                Header(
+                header(
                     shareMessage = state.shareMessage,
                     daysTogether = state.daysTogether,
-                    onClickShareMessage = { onIntent(HomeIntent.ShowShareMessageEditBottomSheet) }
+                    onClickShareMessage = { onIntent(HomeIntent.ShowShareMessageEditBottomSheet) },
                 )
 
-                if(state.coupleState == HomeState.CoupleState.DISCONNECT) {
-                    UnConnectedCard()
+                if (state.coupleState == HomeState.CoupleState.DISCONNECT) {
+                    disconnectedCard()
                 }
 
-                Quiz(
+                quiz(
                     question = state.balanceGameState.question,
                     options = state.balanceGameState.options,
                     balanceGameAnswerState = state.balanceGameAnswerState,
@@ -149,17 +155,17 @@ internal fun HomeScreen(
                     myChoiceOption = state.myChoiceOption,
                     partnerChoiceOption = state.partnerChoiceOption,
                     onOptionClick = { option -> onIntent(HomeIntent.ClickBalanceGameOptionButton(option = option)) },
-                    onChangeCardState = { onIntent(HomeIntent.ChangeBalanceGameCardState) }
+                    onChangeCardState = { onIntent(HomeIntent.ChangeBalanceGameCardState) },
                 )
 
-                Todo(
+                todo(
                     todoList = state.todos.toImmutableList(),
                     isSetAnniversary = state.isSetAnniversary,
                     onClickAnniversaryNudgeCard = { onIntent(HomeIntent.ClickAnniversaryNudgeCard) },
                     onClickTodoItem = { todoContentId ->
                         onIntent(HomeIntent.ClickTodoContent(todoContentId = todoContentId))
                     },
-                    onClickEmptyTodo = { onIntent(HomeIntent.CreateTodoContent) }
+                    onClickEmptyTodo = { onIntent(HomeIntent.CreateTodoContent) },
                 )
             }
         }
