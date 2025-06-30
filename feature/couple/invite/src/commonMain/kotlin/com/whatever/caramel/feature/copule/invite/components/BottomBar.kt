@@ -12,24 +12,22 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-internal fun InviteBottomBar(
-    modifier: Modifier = Modifier,
-) {
+internal fun InviteBottomBar(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = "상대방이 보낸 초대 코드 직접 입력하기",
             style = CaramelTheme.typography.body2.regular,
-            color = CaramelTheme.color.text.primary
+            color = CaramelTheme.color.text.primary,
         )
 
         Icon(
             painter = painterResource(resource = Resources.Icon.ic_arrow_right_14),
             tint = CaramelTheme.color.icon.primary,
-            contentDescription = null
+            contentDescription = null,
         )
     }
 }
