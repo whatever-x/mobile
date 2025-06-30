@@ -20,30 +20,33 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 internal fun SplashScreen(
     state: SplashState,
-    onIntent: (SplashIntent) -> Unit
+    onIntent: (SplashIntent) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                color = CaramelTheme.color.background.primary
-            )
-            .systemBarsPadding(),
-        verticalArrangement = Arrangement.spacedBy(
-            space = CaramelTheme.spacing.l,
-            alignment = Alignment.CenterVertically
-        ),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(
+                    color = CaramelTheme.color.background.primary,
+                )
+                .systemBarsPadding(),
+        verticalArrangement =
+            Arrangement.spacedBy(
+                space = CaramelTheme.spacing.l,
+                alignment = Alignment.CenterVertically,
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             painter = painterResource(resource = Resources.Image.img_splash),
-            contentDescription = null
+            contentDescription = null,
         )
 
-        Icon( // @ham2174 FIXME : 추후 폰트 정의될 시 텍스트로 변경 예정
+        // @ham2174 FIXME : 추후 폰트 정의될 시 텍스트로 변경 예정
+        Icon(
             painter = painterResource(resource = Resources.Image.img_type_logo),
             contentDescription = null,
-            tint = Color.Unspecified
+            tint = Color.Unspecified,
         )
     }
 }

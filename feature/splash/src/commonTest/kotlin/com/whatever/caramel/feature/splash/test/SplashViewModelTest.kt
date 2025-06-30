@@ -7,7 +7,6 @@ import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.code.AuthErrorCode
 import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.repository.UserRepository
-import com.whatever.caramel.core.domain.vo.auth.AuthToken
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.testing.constants.TestMessage
 import com.whatever.caramel.core.testing.factory.AuthTestFactory
@@ -53,7 +52,7 @@ class SplashViewModelTest : KoinComponent {
                     single<SavedStateHandle> { SavedStateHandle() }
                 },
                 splashFeatureModule,
-                useCaseModule
+                useCaseModule,
             )
         }
     }
@@ -65,14 +64,12 @@ class SplashViewModelTest : KoinComponent {
         stopKoin()
     }
 
-    private suspend fun verifySplashSideEffect(
-        expectedSplashSideEffect: SplashSideEffect
-    ) {
+    private suspend fun verifySplashSideEffect(expectedSplashSideEffect: SplashSideEffect) {
         val viewModel = get<SplashViewModel>()
         viewModel.sideEffect.test {
             assertEquals(
                 expected = expectedSplashSideEffect,
-                actual = awaitItem()
+                actual = awaitItem(),
             )
         }
     }
@@ -96,40 +93,45 @@ class SplashViewModelTest : KoinComponent {
     }
 
     @Test
-    fun `토큰 갱신이 실패한 경우 로그인 화면으로 이동한다`() = runTest {
-        everySuspend {
-            authRepository.refreshAuthToken(any())
-        } throws CaramelException(
-            code = AuthErrorCode.UNAUTHORIZED,
-            message = TestMessage.FAIL_REFRESH_TOKEN
-        )
+    fun `토큰 갱신이 실패한 경우 로그인 화면으로 이동한다`() =
+        runTest {
+            everySuspend {
+                authRepository.refreshAuthToken(any())
+            } throws
+                CaramelException(
+                    code = AuthErrorCode.UNAUTHORIZED,
+                    message = TestMessage.FAIL_REFRESH_TOKEN,
+                )
 
-        verifySplashSideEffect(
-            expectedSplashSideEffect = SplashSideEffect.NavigateToLogin
-        )
-    }
-
-    @Test
-    fun `토큰 갱신이 성공한 경우 로컬 저장소에 저장된 유저 상태가 커플이라면 메인 페이지로 이동한다`() = runTest {
-        determineUserStatusAfterTokenRefresh(userStatus = UserStatus.COUPLED)
-        verifySplashSideEffect(
-            expectedSplashSideEffect = SplashSideEffect.NavigateToMain
-        )
-    }
+            verifySplashSideEffect(
+                expectedSplashSideEffect = SplashSideEffect.NavigateToLogin,
+            )
+        }
 
     @Test
-    fun `토큰 갱신이 성공한 경우 로컬 저장소에 저장된 유저 상태가 싱글이라면 커플 초대로 이동한다`() = runTest {
-        determineUserStatusAfterTokenRefresh(userStatus = UserStatus.SINGLE)
-        verifySplashSideEffect(
-            expectedSplashSideEffect = SplashSideEffect.NavigateToInviteCouple
-        )
-    }
+    fun `토큰 갱신이 성공한 경우 로컬 저장소에 저장된 유저 상태가 커플이라면 메인 페이지로 이동한다`() =
+        runTest {
+            determineUserStatusAfterTokenRefresh(userStatus = UserStatus.COUPLED)
+            verifySplashSideEffect(
+                expectedSplashSideEffect = SplashSideEffect.NavigateToMain,
+            )
+        }
 
     @Test
-    fun `토큰 갱신이 성공한 경우 로컬 저장소에 저장된 유저 상태가 회원가입 이후 아무것도 안한 상태라면 프로필 생성으로 이동한다`() = runTest {
-        determineUserStatusAfterTokenRefresh(userStatus = UserStatus.NEW)
-        verifySplashSideEffect(
-            expectedSplashSideEffect = SplashSideEffect.NavigateToCreateProfile
-        )
-    }
+    fun `토큰 갱신이 성공한 경우 로컬 저장소에 저장된 유저 상태가 싱글이라면 커플 초대로 이동한다`() =
+        runTest {
+            determineUserStatusAfterTokenRefresh(userStatus = UserStatus.SINGLE)
+            verifySplashSideEffect(
+                expectedSplashSideEffect = SplashSideEffect.NavigateToInviteCouple,
+            )
+        }
+
+    @Test
+    fun `토큰 갱신이 성공한 경우 로컬 저장소에 저장된 유저 상태가 회원가입 이후 아무것도 안한 상태라면 프로필 생성으로 이동한다`() =
+        runTest {
+            determineUserStatusAfterTokenRefresh(userStatus = UserStatus.NEW)
+            verifySplashSideEffect(
+                expectedSplashSideEffect = SplashSideEffect.NavigateToCreateProfile,
+            )
+        }
 }

@@ -11,12 +11,12 @@ data object SplashRoute
 
 fun NavGraphBuilder.splashScreen(
     navigateToLogin: () -> Unit,
-    navigateToStartDestination: (UserStatus) -> Unit
+    navigateToStartDestination: (UserStatus) -> Unit,
 ) {
     composable<SplashRoute> {
         SplashRoute(
             navigateToLogin = navigateToLogin,
-            navigateToStartDestination = navigateToStartDestination
+            navigateToStartDestination = navigateToStartDestination,
         )
     }
 }

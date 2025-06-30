@@ -11,7 +11,7 @@ private fun SplashScreenPreview() {
     CaramelTheme {
         SplashScreen(
             state = SplashState(),
-            onIntent = {}
+            onIntent = {},
         )
     }
 }
