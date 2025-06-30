@@ -30,7 +30,7 @@ fun CaramelCalendar(
     selectedDate: LocalDate,
     schedules: List<DaySchedule>,
     onClickTodo: (Long) -> Unit,
-    onClickCell: (LocalDate) -> Unit
+    onClickCell: (LocalDate) -> Unit,
 ) {
     val firstDay = LocalDate(year = year, month = month, dayOfMonth = 1)
     val firstDayOfWeek =
@@ -42,17 +42,19 @@ fun CaramelCalendar(
         val totalRows = (totalCells + 6) / 7
         repeat(totalRows) { row ->
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
             ) {
                 Row(modifier = Modifier.fillMaxWidth()) {
                     repeat(7) { column ->
                         val dayOfMonth = row * 7 + column - firstDayOfWeek + 1
                         Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f)
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f),
                         ) {
                             if (dayOfMonth in 1..lastDay) {
                                 val date = LocalDate(year, month, dayOfMonth)
@@ -61,7 +63,7 @@ fun CaramelCalendar(
                                     date = date,
                                     isFocus = selectedDate == date,
                                     onClickCell = { onClickCell(it) },
-                                    onClickTodo = { onClickTodo(it) }
+                                    onClickTodo = { onClickTodo(it) },
                                 )
                             }
                         }
@@ -73,22 +75,21 @@ fun CaramelCalendar(
 }
 
 @Composable
-fun CalendarDayOfWeek(
-    modifier: Modifier = Modifier
-) {
+fun CalendarDayOfWeek(modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(CaramelTheme.color.background.primary)
-            .padding(top = CaramelTheme.spacing.s, bottom = CaramelTheme.spacing.m),
-        horizontalArrangement = Arrangement.SpaceAround
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(CaramelTheme.color.background.primary)
+                .padding(top = CaramelTheme.spacing.s, bottom = CaramelTheme.spacing.m),
+        horizontalArrangement = Arrangement.SpaceAround,
     ) {
         stringArrayResource(Res.array.day_of_week).forEach { dayOfWeek ->
             Text(
                 text = dayOfWeek,
                 style = CaramelTheme.typography.label2.bold,
                 color = CaramelTheme.color.text.primary,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
     }
