@@ -4,7 +4,6 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 
 object DateParser {
-
     /**
      * 날짜 문자열을 밀리초로 변환
      * Timezone형식으로 사용한다면 해당 Timezone을 기준으로 변환, Timezone이 존재하지 않는다면 시스템 기본 Timezone을 사용.
@@ -22,7 +21,7 @@ object DateParser {
             val localDate = LocalDate(year.toInt(), month.toInt(), day.toInt())
             val formattedMonth = localDate.monthNumber.toString().padStart(2, '0')
             val formattedDay = localDate.dayOfMonth.toString().padStart(2, '0')
-            val dateStr = "${localDate.year}-${formattedMonth}-${formattedDay}${timeZone}"
+            val dateStr = "${localDate.year}-$formattedMonth-${formattedDay}$timeZone"
             Instant.parse(dateStr).toEpochMilliseconds()
         } catch (e: Exception) {
             null
@@ -37,5 +36,4 @@ object DateParser {
         val matchResult = regex.find(this) ?: return null
         return matchResult.groupValues[1]
     }
-
 }

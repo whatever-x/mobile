@@ -9,7 +9,7 @@ fun LocalDateTime.copy(
     hour: Int = this.hour,
     minute: Int = this.minute,
     second: Int = this.second,
-    nanosecond: Int = this.nanosecond
+    nanosecond: Int = this.nanosecond,
 ): LocalDateTime {
     return LocalDateTime(
         year = year,
@@ -18,6 +18,6 @@ fun LocalDateTime.copy(
         hour = hour,
         minute = minute,
         second = second,
-        nanosecond = nanosecond
+        nanosecond = nanosecond,
     )
 }

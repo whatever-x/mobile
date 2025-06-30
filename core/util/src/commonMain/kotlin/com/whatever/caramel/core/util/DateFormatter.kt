@@ -1,6 +1,5 @@
 package com.whatever.caramel.core.util
 
-import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -9,7 +8,6 @@ import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 
 object DateFormatter {
-
     /**
      * 밀리초를 날짜 문자열로 변환
      * @param separator 날짜 문자열의 구분자 (기본값: '-')
@@ -55,7 +53,11 @@ object DateFormatter {
      * @return 밀리초를 날짜 문자열로 변환한 결과, 변환 실패 시 빈 문자열
      * @author RyuSw-cs
      * */
-    fun createDateString(year: Int, month: Int, day: Int): String =
+    fun createDateString(
+        year: Int,
+        month: Int,
+        day: Int,
+    ): String =
         try {
             check(year in 1..9999 && month in 1..12 && day in 1..31) { "날짜 형식이 잘못되었습니다." }
 
