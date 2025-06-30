@@ -11,27 +11,24 @@ plugins {
     alias(libs.plugins.crashlytics) apply false
     alias(libs.plugins.jetbrainsKotlinJvm) apply false
     alias(libs.plugins.mokkery) apply false
-    alias(libs.plugins.ktlint) apply false
+    alias(libs.plugins.spotless) apply false
 }
 
+val ktlintCliVersion = libs.versions.ktlint.cli.get()
+
 subprojects {
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    apply(plugin = "com.diffplug.spotless")
 
-    configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-        debug.set(true)
-        verbose.set(true)
-        outputToConsole.set(true)
-        outputColorName.set("YELLOW")
-
-        filter {
-            exclude("**/build/**")
-            exclude("**/generated/**")
+    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+        kotlin {
+            target("**/*.kt")
+            targetExclude("**/build/**", "**/generated/**")
+            ktlint(ktlintCliVersion)
         }
-    }
 
-    tasks.matching {
-        it.name.startsWith("runKtlintCheck") || it.name.startsWith("runKtlintFormat")
-    }.configureEach {
-        dependsOn(tasks.matching { it.name.startsWith("ksp") })
+        kotlinGradle {
+            target("**/*.gradle.kts")
+            ktlint(ktlintCliVersion)
+        }
     }
 }
