@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 
 class DeepLinkHandlerImpl : DeepLinkHandler {
-
     private val _deepLinkFlow = Channel<CaramelDeepLink>(capacity = Channel.CONFLATED)
     override val deepLinkFlow: Flow<CaramelDeepLink> = _deepLinkFlow.receiveAsFlow()
 
@@ -23,13 +22,13 @@ class DeepLinkHandlerImpl : DeepLinkHandler {
 
     override fun handleAppsFlyerData(
         deepLinkValue: String,
-        params: Map<AppsFlyerDeepLinkParameter, String?>
+        params: Map<AppsFlyerDeepLinkParameter, String?>,
     ) {
         val deepLinkType = AppsFlyerDeepLinkValue.entries.find { it.deepLinkValue == deepLinkValue }
 
         when (deepLinkType) {
             AppsFlyerDeepLinkValue.INVITE -> {
-                val inviteCode = params[AppsFlyerDeepLinkParameter.Parameter_1]?: return
+                val inviteCode = params[AppsFlyerDeepLinkParameter.Parameter1] ?: return
 
                 if (isRunningApp) {
                     _deepLinkFlow.trySend(CaramelDeepLink.Invite(code = inviteCode))
@@ -47,11 +46,12 @@ class DeepLinkHandlerImpl : DeepLinkHandler {
 
     override fun handleAppsFlyerDataRaw(
         deepLinkValue: String,
-        rawParams: Map<String, String?>
+        rawParams: Map<String, String?>,
     ) {
-        val mappedParams = AppsFlyerDeepLinkParameter.entries.associateWith { param ->
-            rawParams[param.parameterName]
-        }
+        val mappedParams =
+            AppsFlyerDeepLinkParameter.entries.associateWith { param ->
+                rawParams[param.parameterName]
+            }
 
         handleAppsFlyerData(deepLinkValue, mappedParams)
     }
@@ -63,5 +63,4 @@ class DeepLinkHandlerImpl : DeepLinkHandler {
     override fun runningApp() {
         _isRunningApp = true
     }
-
 }
