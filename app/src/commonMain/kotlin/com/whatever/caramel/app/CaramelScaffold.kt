@@ -14,7 +14,7 @@ internal fun CaramelScaffold(
     Scaffold(
         modifier = modifier,
         snackbarHost = snackBarHost,
-        bottomBar = bottomBar
+        bottomBar = bottomBar,
     ) {
         content()
     }
