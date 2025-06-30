@@ -22,32 +22,34 @@ fun CaramelDateMonthPicker(
     years: List<Int> = (1900..2100).toList(),
     months: List<Int> = (1..12).toList(),
     onYearChanged: (Int) -> Unit,
-    onMonthChanged: (Int) -> Unit
+    onMonthChanged: (Int) -> Unit,
 ) {
     val hapticFeedback = LocalHapticFeedback.current
     val yearState = rememberPickerState(dateUiState.year)
     val monthState = rememberPickerState(dateUiState.month)
 
     Row(
-        modifier = modifier
-            .padding(
-                vertical = CaramelTheme.spacing.m,
-                horizontal = CaramelTheme.spacing.xl
+        modifier =
+            modifier
+                .padding(
+                    vertical = CaramelTheme.spacing.m,
+                    horizontal = CaramelTheme.spacing.xl,
+                ),
+        horizontalArrangement =
+            Arrangement.spacedBy(
+                space = 40.dp,
             ),
-        horizontalArrangement = Arrangement.spacedBy(
-            space = 40.dp
-        ),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         CaramelTextWheelPicker(
             items = years,
             state = yearState,
             dividerWidth = 50.dp,
             scrollMode = LOOPING,
-            onItemSelected = { year -> 
+            onItemSelected = { year ->
                 hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                onYearChanged(year) 
-            }
+                onYearChanged(year)
+            },
         )
 
         CaramelTextWheelPicker(
@@ -55,10 +57,10 @@ fun CaramelDateMonthPicker(
             state = monthState,
             dividerWidth = 50.dp,
             scrollMode = LOOPING,
-            onItemSelected = { month -> 
+            onItemSelected = { month ->
                 hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                onMonthChanged(month) 
-            }
+                onMonthChanged(month)
+            },
         )
     }
 }

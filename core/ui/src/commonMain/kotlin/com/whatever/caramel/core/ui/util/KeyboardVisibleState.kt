@@ -11,9 +11,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalDensity
 
 @Composable
-fun rememberKeyboardVisibleState(
-    visiblePixelThreshold: Int = 300,
-): State<Boolean> {
+fun rememberKeyboardVisibleState(visiblePixelThreshold: Int = 300): State<Boolean> {
     val ime = WindowInsets.ime
     val density = LocalDensity.current
     val keyboardVisible = remember { mutableStateOf(false) }

@@ -27,31 +27,34 @@ fun TitleTextField(
         value = value,
         onValueChange = onValueChange,
         cursorBrush = SolidColor(CaramelTheme.color.fill.brand),
-        textStyle = textStyle.copy(
-            color = CaramelTheme.color.text.primary
-        ),
+        textStyle =
+            textStyle.copy(
+                color = CaramelTheme.color.text.primary,
+            ),
         singleLine = false,
         maxLines = 2,
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-        keyboardActions = KeyboardActions(
-            onNext = {
-                onKeyboardAction()
-            }
-        ),
+        keyboardActions =
+            KeyboardActions(
+                onNext = {
+                    onKeyboardAction()
+                },
+            ),
         readOnly = readOnly,
     ) { innerTextField ->
         Box(
             modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.CenterStart
+            contentAlignment = Alignment.CenterStart,
         ) {
             Box {
                 innerTextField()
                 if (value.isEmpty()) {
                     Text(
                         text = "제목을 알려주세요",
-                        style = textStyle.copy(
-                            color = CaramelTheme.color.text.disabledPrimary
-                        ),
+                        style =
+                            textStyle.copy(
+                                color = CaramelTheme.color.text.disabledPrimary,
+                            ),
                     )
                 }
             }

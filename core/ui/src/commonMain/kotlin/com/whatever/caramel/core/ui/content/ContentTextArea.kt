@@ -28,28 +28,30 @@ fun ContentTextArea(
     placeholder: String,
     focusRequester: FocusRequester,
 ) {
-
     val linkRegex = remember { Regex("""https?://\S+""") }
 
     val linkColor = CaramelTheme.color.text.brand
-    val linkStyle = remember {
-        SpanStyle(
-            color = linkColor,
-            textDecoration = TextDecoration.Underline
-        )
-    }
+    val linkStyle =
+        remember {
+            SpanStyle(
+                color = linkColor,
+                textDecoration = TextDecoration.Underline,
+            )
+        }
 
-    val annotatedString: AnnotatedString = remember(value) {
-        value.annotateLinks(regex = linkRegex, linkStyle = linkStyle, linkTag = "URL")
-    }
+    val annotatedString: AnnotatedString =
+        remember(value) {
+            value.annotateLinks(regex = linkRegex, linkStyle = linkStyle, linkTag = "URL")
+        }
 
     BasicTextField(
         modifier = Modifier.focusRequester(focusRequester),
         value = value,
         onValueChange = onValueChange,
-        textStyle = CaramelTheme.typography.body2.reading.copy(
-            color = CaramelTheme.color.text.primary
-        ),
+        textStyle =
+            CaramelTheme.typography.body2.reading.copy(
+                color = CaramelTheme.color.text.primary,
+            ),
         cursorBrush = SolidColor(CaramelTheme.color.fill.brand),
         visualTransformation = {
             TransformedText(annotatedString, OffsetMapping.Identity)
@@ -62,20 +64,21 @@ fun ContentTextArea(
                 if (value.isEmpty()) {
                     Text(
                         text = placeholder,
-                        style = CaramelTheme.typography.body2.reading.copy(
-                            color = CaramelTheme.color.text.disabledPrimary
-                        )
+                        style =
+                            CaramelTheme.typography.body2.reading.copy(
+                                color = CaramelTheme.color.text.disabledPrimary,
+                            ),
                     )
                 }
             }
-        }
+        },
     )
 }
 
 private fun String.annotateLinks(
     regex: Regex,
     linkStyle: SpanStyle,
-    linkTag: String = "URL"
+    linkTag: String = "URL",
 ): AnnotatedString {
     val sourceText = this
     return buildAnnotatedString {

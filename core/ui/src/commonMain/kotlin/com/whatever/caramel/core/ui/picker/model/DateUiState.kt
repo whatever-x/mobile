@@ -7,7 +7,7 @@ import kotlinx.datetime.LocalDateTime
 data class DateUiState(
     val year: Int,
     val month: Int,
-    val day: Int
+    val day: Int,
 ) {
     companion object {
         fun currentDate(): DateUiState {
@@ -16,7 +16,7 @@ data class DateUiState(
             return DateUiState(
                 year = today.year,
                 month = today.monthNumber,
-                day = today.dayOfMonth
+                day = today.dayOfMonth,
             )
         }
 
@@ -34,7 +34,7 @@ data class DateUiState(
             return DateUiState(
                 year = dateTime.year,
                 month = dateTime.monthNumber,
-                day = dateTime.dayOfMonth
+                day = dateTime.dayOfMonth,
             )
         }
     }

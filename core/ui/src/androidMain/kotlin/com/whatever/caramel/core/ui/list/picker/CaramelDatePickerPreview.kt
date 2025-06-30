@@ -17,7 +17,7 @@ private fun CaramelDatePickerPreview() {
     CaramelTheme {
         Box(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             CaramelDatePicker(
                 dateUiState = DateUiState.currentDate(),
