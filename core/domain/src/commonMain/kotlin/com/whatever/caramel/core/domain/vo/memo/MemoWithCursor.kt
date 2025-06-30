@@ -4,5 +4,5 @@ import com.whatever.caramel.core.domain.entity.Memo
 
 data class MemoWithCursor(
     val nextCursor: String?,
-    val memos: List<Memo>
+    val memos: List<Memo>,
 )

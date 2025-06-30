@@ -9,4 +9,4 @@ class GetScheduleUseCase(
     suspend operator fun invoke(scheduleId: Long): ScheduleDetail {
         return calendarRepository.getSchedule(scheduleId)
     }
-} 
+}

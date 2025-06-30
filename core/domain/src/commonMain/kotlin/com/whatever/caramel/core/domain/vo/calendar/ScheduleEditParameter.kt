@@ -8,5 +8,5 @@ data class ScheduleEditParameter(
     val description: String?,
     val isCompleted: Boolean,
     val dateTimeInfo: DateTimeInfo?,
-    val tagIds: List<Long>
-) 
+    val tagIds: List<Long>,
+)

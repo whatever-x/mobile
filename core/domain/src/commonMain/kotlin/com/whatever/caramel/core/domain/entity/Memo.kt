@@ -8,5 +8,5 @@ data class Memo(
     val description: String,
     val isCompleted: Boolean,
     val tagList: List<Tag>,
-    val createdAt : LocalDate
+    val createdAt: LocalDate,
 )

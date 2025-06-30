@@ -4,8 +4,9 @@ import com.whatever.caramel.core.domain.vo.balanceGame.BalanceGameResult
 
 interface BalanceGameRepository {
     suspend fun getTodayBalanceGame(): BalanceGameResult
+
     suspend fun submitOption(
         gameId: Long,
-        optionId: Long
+        optionId: Long,
     ): BalanceGameResult
 }
