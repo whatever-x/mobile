@@ -3,7 +3,6 @@ package com.whatever.caramel.feature.copule.connecting
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -24,40 +23,43 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 internal fun CoupleConnectingScreen(
     state: CoupleConnectingState,
-    onIntent: (CoupleConnectingIntent) -> Unit
+    onIntent: (CoupleConnectingIntent) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = CaramelTheme.color.background.primary),
-        verticalArrangement = Arrangement.spacedBy(
-            space = CaramelTheme.spacing.xl,
-            alignment = Alignment.CenterVertically
-        ),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(color = CaramelTheme.color.background.primary),
+        verticalArrangement =
+            Arrangement.spacedBy(
+                space = CaramelTheme.spacing.xl,
+                alignment = Alignment.CenterVertically,
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             painter = painterResource(resource = Resources.Image.img_matchingsuccess),
-            contentDescription = null
+            contentDescription = null,
         )
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(
-                space = CaramelTheme.spacing.s,
-            )
+            verticalArrangement =
+                Arrangement.spacedBy(
+                    space = CaramelTheme.spacing.s,
+                ),
         ) {
             Text(
                 text = stringResource(resource = Res.string.welcome_to_caramel),
                 style = CaramelTheme.typography.body3.regular,
-                color = CaramelTheme.color.text.primary
+                color = CaramelTheme.color.text.primary,
             )
 
             Text(
                 text = stringResource(resource = Res.string.go_to_home),
                 textAlign = TextAlign.Center,
                 style = CaramelTheme.typography.heading2,
-                color = CaramelTheme.color.text.primary
+                color = CaramelTheme.color.text.primary,
             )
         }
     }
