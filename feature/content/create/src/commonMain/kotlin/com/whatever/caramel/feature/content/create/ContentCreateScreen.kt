@@ -58,20 +58,22 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 internal fun ContentScreen(
     state: ContentCreateState,
-    onIntent: (ContentCreateIntent) -> Unit
+    onIntent: (ContentCreateIntent) -> Unit,
 ) {
-    val sheetState = rememberStandardBottomSheetState(
-        initialValue = SheetValue.PartiallyExpanded,
-        skipHiddenState = false
-    )
+    val sheetState =
+        rememberStandardBottomSheetState(
+            initialValue = SheetValue.PartiallyExpanded,
+            skipHiddenState = false,
+        )
     val contentFocusRequester = FocusRequester()
     val isKeyboardVisible by rememberKeyboardVisibleState()
     val keyboardController = LocalSoftwareKeyboardController.current
     Scaffold(
-        modifier = Modifier.fillMaxSize()
-            .pointerInput(Unit) {
-                detectTapGestures { keyboardController?.hide() }
-            },
+        modifier =
+            Modifier.fillMaxSize()
+                .pointerInput(Unit) {
+                    detectTapGestures { keyboardController?.hide() }
+                },
         containerColor = CaramelTheme.color.background.primary,
         topBar = {
             Column {
@@ -79,16 +81,17 @@ internal fun ContentScreen(
                     modifier = Modifier.statusBarsPadding(),
                     trailingIcon = {
                         Icon(
-                            modifier = Modifier.clickable(
-                                onClick = { onIntent(ContentCreateIntent.ClickCloseButton) },
-                                indication = null,
-                                interactionSource = null
-                            ),
+                            modifier =
+                                Modifier.clickable(
+                                    onClick = { onIntent(ContentCreateIntent.ClickCloseButton) },
+                                    indication = null,
+                                    interactionSource = null,
+                                ),
                             painter = painterResource(resource = Resources.Icon.ic_cancel_24),
                             tint = CaramelTheme.color.icon.primary,
-                            contentDescription = null
+                            contentDescription = null,
                         )
-                    }
+                    },
                 )
                 TitleTextField(
                     modifier = Modifier.padding(horizontal = CaramelTheme.spacing.xl),
@@ -98,24 +101,26 @@ internal fun ContentScreen(
                     },
                     onKeyboardAction = {
                         contentFocusRequester.requestFocus()
-                    }
+                    },
                 )
                 HorizontalDivider(
-                    modifier = Modifier.padding(
-                        vertical = CaramelTheme.spacing.xl,
-                        horizontal = CaramelTheme.spacing.xl
-                    ),
-                    color = CaramelTheme.color.divider.primary
+                    modifier =
+                        Modifier.padding(
+                            vertical = CaramelTheme.spacing.xl,
+                            horizontal = CaramelTheme.spacing.xl,
+                        ),
+                    color = CaramelTheme.color.divider.primary,
                 )
             }
         },
         bottomBar = {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = CaramelTheme.spacing.xl)
-                    .navigationBarsPadding()
-                    .imePadding(),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = CaramelTheme.spacing.xl)
+                        .navigationBarsPadding()
+                        .imePadding(),
             ) {
                 AnimatedVisibility(
                     visible = isKeyboardVisible.not(),
@@ -127,60 +132,65 @@ internal fun ContentScreen(
                     ) {
                         SelectableTagChipRow(
                             modifier = Modifier.fillMaxWidth(),
-                            tagChips = state.tags.map { TagChip(it.id, it.label) }
-                                .toImmutableList(),
-                            selectedTagChips = state.selectedTags.map { TagChip(it.id, it.label) }
-                                .toImmutableList(),
+                            tagChips =
+                                state.tags.map { TagChip(it.id, it.label) }
+                                    .toImmutableList(),
+                            selectedTagChips =
+                                state.selectedTags.map { TagChip(it.id, it.label) }
+                                    .toImmutableList(),
                             onTagChipClick = {
                                 onIntent(ContentCreateIntent.ClickTag(Tag(it.id, it.label)))
-                            }
+                            },
                         )
                         Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.xl))
                         Row(
-                            modifier = Modifier.fillMaxWidth()
-                                .padding(horizontal = CaramelTheme.spacing.xl),
+                            modifier =
+                                Modifier.fillMaxWidth()
+                                    .padding(horizontal = CaramelTheme.spacing.xl),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
                             CreateModeSwitch(
                                 createMode = state.createMode,
                                 onCreateModeSelect = {
                                     onIntent(ContentCreateIntent.SelectCreateMode(it))
-                                }
+                                },
                             )
                             when (state.createMode) {
                                 CreateMode.MEMO -> {
                                     Text(
                                         text = "정해진 일정이 없어요",
                                         style = CaramelTheme.typography.body2.regular,
-                                        color = CaramelTheme.color.text.disabledPrimary
+                                        color = CaramelTheme.color.text.disabledPrimary,
                                     )
                                 }
 
                                 CreateMode.CALENDAR -> {
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s)
+                                        horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s),
                                     ) {
                                         Text(
-                                            modifier = Modifier.clickable {
-                                                onIntent(
-                                                    ContentCreateIntent.ClickDate
-                                                )
-                                            },
+                                            modifier =
+                                                Modifier.clickable {
+                                                    onIntent(
+                                                        ContentCreateIntent.ClickDate,
+                                                    )
+                                                },
                                             text = state.date,
                                             style = CaramelTheme.typography.body2.regular,
-                                            color = CaramelTheme.color.text.primary
+                                            color = CaramelTheme.color.text.primary,
                                         )
                                         Text(
-                                            modifier = Modifier.clickable {
-                                                onIntent(
-                                                    ContentCreateIntent.ClickTime
-                                                )
-                                            },
+                                            modifier =
+                                                Modifier.clickable {
+                                                    onIntent(
+                                                        ContentCreateIntent.ClickTime,
+                                                    )
+                                                },
                                             text = state.time,
                                             style = CaramelTheme.typography.body2.regular,
-                                            color = CaramelTheme.color.text.primary
+                                            color = CaramelTheme.color.text.primary,
                                         )
                                     }
                                 }
@@ -190,27 +200,30 @@ internal fun ContentScreen(
                     }
                 }
                 CaramelButton(
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(horizontal = CaramelTheme.spacing.xl),
-                    buttonType = if (state.isSaveButtonEnable) {
-                        CaramelButtonType.Enabled1
-                    } else {
-                        CaramelButtonType.Disabled
-                    },
+                    modifier =
+                        Modifier.fillMaxWidth()
+                            .padding(horizontal = CaramelTheme.spacing.xl),
+                    buttonType =
+                        if (state.isSaveButtonEnable) {
+                            CaramelButtonType.Enabled1
+                        } else {
+                            CaramelButtonType.Disabled
+                        },
                     buttonSize = CaramelButtonSize.Large,
                     text = "저장",
                     onClick = {
                         onIntent(ContentCreateIntent.ClickSaveButton)
-                    }
+                    },
                 )
             }
-        }
+        },
     ) { contentPadding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(contentPadding)
-                .padding(horizontal = CaramelTheme.spacing.xl)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(contentPadding)
+                    .padding(horizontal = CaramelTheme.spacing.xl),
         ) {
             ContentTextArea(
                 modifier = Modifier.weight(1f),
@@ -231,9 +244,10 @@ internal fun ContentScreen(
                 when {
                     state.showDateDialog -> {
                         CaramelDatePicker(
-                            modifier = Modifier
-                                .padding(top = CaramelTheme.spacing.xxl)
-                                .align(Alignment.CenterHorizontally),
+                            modifier =
+                                Modifier
+                                    .padding(top = CaramelTheme.spacing.xxl)
+                                    .align(Alignment.CenterHorizontally),
                             dateUiState = DateUiState.from(state.dateTime),
                             onYearChanged = { year ->
                                 onIntent(ContentCreateIntent.OnYearChanged(year))
@@ -243,15 +257,16 @@ internal fun ContentScreen(
                             },
                             onMonthChanged = { month ->
                                 onIntent(ContentCreateIntent.OnMonthChanged(month))
-                            }
+                            },
                         )
                     }
 
                     state.showTimeDialog -> {
                         CaramelTimePicker(
-                            modifier = Modifier
-                                .padding(top = CaramelTheme.spacing.xxl)
-                                .align(Alignment.CenterHorizontally),
+                            modifier =
+                                Modifier
+                                    .padding(top = CaramelTheme.spacing.xxl)
+                                    .align(Alignment.CenterHorizontally),
                             timeUiState = TimeUiState.from(state.dateTime),
                             onPeriodChanged = { period ->
                                 onIntent(ContentCreateIntent.OnPeriodChanged(period))
@@ -261,23 +276,24 @@ internal fun ContentScreen(
                             },
                             onMinuteChanged = { minute ->
                                 onIntent(ContentCreateIntent.OnMinuteChanged(minute))
-                            }
+                            },
                         )
                     }
                 }
                 Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.l))
                 CaramelButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = CaramelTheme.spacing.xl),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(all = CaramelTheme.spacing.xl),
                     buttonType = CaramelButtonType.Enabled1,
                     buttonSize = CaramelButtonSize.Large,
                     text = "완료",
                     onClick = {
                         onIntent(ContentCreateIntent.HideDateTimeDialog)
-                    }
+                    },
                 )
-            }
+            },
         )
     }
 }
