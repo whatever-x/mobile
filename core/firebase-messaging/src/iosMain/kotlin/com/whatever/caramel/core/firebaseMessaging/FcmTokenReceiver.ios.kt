@@ -12,8 +12,10 @@ import platform.Foundation.NSError
  * @author GunHyung-Ham
  */
 object FcmTokenReceiver {
-
-    fun updateToken(token: String, completion: (NSError?) -> Unit) {
+    fun updateToken(
+        token: String,
+        completion: (NSError?) -> Unit,
+    ) {
         val fcmTokenProvider: FcmTokenProvider = object : KoinComponent {}.get()
 
         CoroutineScope(Dispatchers.Main).launch {
@@ -25,11 +27,10 @@ object FcmTokenReceiver {
                     NSError(
                         domain = "FCMError",
                         code = -1,
-                        userInfo = mapOf("message" to e.message)
-                    )
+                        userInfo = mapOf("message" to e.message),
+                    ),
                 )
             }
         }
     }
-
 }
