@@ -20,22 +20,20 @@ data class DateUiState(
             )
         }
 
-        fun get(dateString: String): DateUiState {
-            return runCatching {
+        fun get(dateString: String): DateUiState =
+            runCatching {
                 val dateNumber = dateString.replace(Regex("[^0-9]"), "")
                 val year = dateNumber.substring(0, 4).toInt()
                 val month = dateNumber.substring(4, 6).toInt()
                 val day = dateNumber.substring(6, 8).toInt()
                 DateUiState(year, month, day)
             }.getOrNull() ?: currentDate()
-        }
 
-        fun from(dateTime: LocalDateTime): DateUiState {
-            return DateUiState(
+        fun from(dateTime: LocalDateTime): DateUiState =
+            DateUiState(
                 year = dateTime.year,
                 month = dateTime.monthNumber,
                 day = dateTime.dayOfMonth,
             )
-        }
     }
 }

@@ -70,7 +70,8 @@ internal fun ContentScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     Scaffold(
         modifier =
-            Modifier.fillMaxSize()
+            Modifier
+                .fillMaxSize()
                 .pointerInput(Unit) {
                     detectTapGestures { keyboardController?.hide() }
                 },
@@ -133,10 +134,12 @@ internal fun ContentScreen(
                         SelectableTagChipRow(
                             modifier = Modifier.fillMaxWidth(),
                             tagChips =
-                                state.tags.map { TagChip(it.id, it.label) }
+                                state.tags
+                                    .map { TagChip(it.id, it.label) }
                                     .toImmutableList(),
                             selectedTagChips =
-                                state.selectedTags.map { TagChip(it.id, it.label) }
+                                state.selectedTags
+                                    .map { TagChip(it.id, it.label) }
                                     .toImmutableList(),
                             onTagChipClick = {
                                 onIntent(ContentCreateIntent.ClickTag(Tag(it.id, it.label)))
@@ -145,7 +148,8 @@ internal fun ContentScreen(
                         Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.xl))
                         Row(
                             modifier =
-                                Modifier.fillMaxWidth()
+                                Modifier
+                                    .fillMaxWidth()
                                     .padding(horizontal = CaramelTheme.spacing.xl),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween,
@@ -201,7 +205,8 @@ internal fun ContentScreen(
                 }
                 CaramelButton(
                     modifier =
-                        Modifier.fillMaxWidth()
+                        Modifier
+                            .fillMaxWidth()
                             .padding(horizontal = CaramelTheme.spacing.xl),
                     buttonType =
                         if (state.isSaveButtonEnable) {

@@ -6,7 +6,5 @@ import com.whatever.caramel.core.domain.repository.MemoRepository
 class GetMemoUseCase(
     private val memoRepository: MemoRepository,
 ) {
-    suspend operator fun invoke(memoId: Long): Memo {
-        return memoRepository.getMemo(memoId)
-    }
+    suspend operator fun invoke(memoId: Long): Memo = memoRepository.getMemo(memoId)
 }

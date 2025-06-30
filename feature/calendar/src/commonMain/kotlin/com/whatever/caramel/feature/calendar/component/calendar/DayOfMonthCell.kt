@@ -77,8 +77,7 @@ private fun CalendarDayOfMonthText(
                                 Color.Unspecified
                             },
                         shape = CaramelTheme.shape.s,
-                    )
-                    .align(Alignment.Center)
+                    ).align(Alignment.Center)
                     .size(24.dp),
         )
 

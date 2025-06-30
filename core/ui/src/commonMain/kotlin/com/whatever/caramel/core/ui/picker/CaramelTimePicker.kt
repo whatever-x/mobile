@@ -45,7 +45,9 @@ data class TimeUiState(
     }
 }
 
-enum class Period(val value: String) {
+enum class Period(
+    val value: String,
+) {
     AM(value = "오전"),
     PM(value = "오후"),
 }

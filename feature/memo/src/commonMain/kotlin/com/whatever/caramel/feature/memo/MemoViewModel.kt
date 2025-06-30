@@ -19,9 +19,7 @@ class MemoViewModel(
     private val getTagUseCase: GetTagUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle) {
-    override fun createInitialState(savedStateHandle: SavedStateHandle): MemoState {
-        return MemoState()
-    }
+    override fun createInitialState(savedStateHandle: SavedStateHandle): MemoState = MemoState()
 
     override suspend fun handleIntent(intent: MemoIntent) {
         when (intent) {

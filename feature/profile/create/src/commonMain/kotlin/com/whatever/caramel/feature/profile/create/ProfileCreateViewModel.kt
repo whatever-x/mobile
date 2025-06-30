@@ -23,9 +23,7 @@ class ProfileCreateViewModel(
     private val permissionsController: PermissionsController,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProfileCreateState, ProfileCreateSideEffect, ProfileCreateIntent>(savedStateHandle) {
-    override fun createInitialState(savedStateHandle: SavedStateHandle): ProfileCreateState {
-        return ProfileCreateState()
-    }
+    override fun createInitialState(savedStateHandle: SavedStateHandle): ProfileCreateState = ProfileCreateState()
 
     override suspend fun handleIntent(intent: ProfileCreateIntent) {
         when (intent) {

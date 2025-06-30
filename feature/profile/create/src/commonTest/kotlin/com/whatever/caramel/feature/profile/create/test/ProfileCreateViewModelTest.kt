@@ -72,7 +72,10 @@ class ProfileCreateViewModelTest : KoinComponent {
 
         require(targetIndex >= currentIndex) { TestMessage.REQUIRE_TEST_DATA }
 
-        if (currentStep == ProfileCreateStep.NICKNAME && viewModel.state.value.nickname.isEmpty()) {
+        if (currentStep == ProfileCreateStep.NICKNAME &&
+            viewModel.state.value.nickname
+                .isEmpty()
+        ) {
             viewModel.intent(ProfileCreateIntent.ChangeNickname(TestUserInfo.TEST_USER_NICKNAME))
         }
 

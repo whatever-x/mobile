@@ -11,7 +11,8 @@ class EditProfileUseCase(
         birthday: String? = null,
     ) {
         if (nickname != null) {
-            UserValidator.checkNicknameValidate(nickname)
+            UserValidator
+                .checkNicknameValidate(nickname)
                 .onFailure {
                     throw it
                 }

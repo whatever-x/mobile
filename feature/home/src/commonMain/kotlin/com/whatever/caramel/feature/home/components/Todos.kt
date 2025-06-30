@@ -64,8 +64,7 @@ internal fun LazyListScope.todo(
                         .background(
                             color = CaramelTheme.color.fill.quaternary,
                             shape = CaramelTheme.shape.l,
-                        )
-                        .padding(
+                        ).padding(
                             bottom = CaramelTheme.spacing.m,
                             top = CaramelTheme.spacing.l,
                             start = CaramelTheme.spacing.l,
@@ -105,8 +104,7 @@ private fun TodoList(
                             onClick = onClickEmptyTodo,
                             interactionSource = null,
                             indication = null,
-                        )
-                        .padding(vertical = CaramelTheme.spacing.s),
+                        ).padding(vertical = CaramelTheme.spacing.s),
             )
         } else {
             todoList.forEachIndexed { index, todo ->
@@ -118,8 +116,7 @@ private fun TodoList(
                                 onClick = { onClickTodoItem(todo.id) },
                                 interactionSource = null,
                                 indication = null,
-                            )
-                            .padding(
+                            ).padding(
                                 vertical = CaramelTheme.spacing.s,
                             ),
                     title = todo.title,
@@ -204,14 +201,12 @@ private fun NudgeCard(
                 .background(
                     color = CaramelTheme.color.fill.quaternary,
                     shape = CaramelTheme.shape.l,
-                )
-                .clip(shape = CaramelTheme.shape.l)
+                ).clip(shape = CaramelTheme.shape.l)
                 .clickable(
                     onClick = onClick,
                     indication = null,
                     interactionSource = null,
-                )
-                .padding(all = CaramelTheme.spacing.l),
+                ).padding(all = CaramelTheme.spacing.l),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {

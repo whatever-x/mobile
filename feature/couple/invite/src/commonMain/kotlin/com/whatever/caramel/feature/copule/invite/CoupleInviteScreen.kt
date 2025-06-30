@@ -72,12 +72,10 @@ internal fun CoupleInviteScreen(
                             onClick = { onIntent(CoupleInviteIntent.ClickConnectCoupleButton) },
                             indication = null,
                             interactionSource = null,
-                        )
-                        .padding(
+                        ).padding(
                             horizontal = CaramelTheme.spacing.xl,
                             vertical = CaramelTheme.spacing.xxl,
-                        )
-                        .navigationBarsPadding(),
+                        ).navigationBarsPadding(),
             )
         },
     ) { innerPadding ->

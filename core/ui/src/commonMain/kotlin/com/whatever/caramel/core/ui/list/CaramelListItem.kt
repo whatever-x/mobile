@@ -25,8 +25,7 @@ fun CaramelListItem(
                 .background(color = CaramelTheme.color.background.primary)
                 .clickable {
                     onClick?.invoke()
-                }
-                .padding(vertical = 14.dp, horizontal = 20.dp),
+                }.padding(vertical = 14.dp, horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         leading?.invoke()

@@ -21,21 +21,19 @@ class CoupleRepositoryImpl(
     private val localCoupleDataSource: CoupleDataSource,
     private val remoteCoupleDataSource: RemoteCoupleDataSource,
 ) : CoupleRepository {
-    override suspend fun getCoupleInvitationCode(): CoupleInvitationCode {
-        return safeCall {
+    override suspend fun getCoupleInvitationCode(): CoupleInvitationCode =
+        safeCall {
             remoteCoupleDataSource.generateCoupleInvitationCode().toCoupleInvitationCode()
         }
-    }
 
-    override suspend fun connectCouple(invitationCode: String): CoupleRelationship {
-        return safeCall {
+    override suspend fun connectCouple(invitationCode: String): CoupleRelationship =
+        safeCall {
             val request =
                 CoupleConnectRequest(
                     invitationCode = invitationCode,
                 )
             remoteCoupleDataSource.connectCouple(request).toCoupleRelationship()
         }
-    }
 
     override suspend fun setCoupleId(coupleId: Long) {
         safeCall {
@@ -43,70 +41,67 @@ class CoupleRepositoryImpl(
         }
     }
 
-    override suspend fun getCoupleId(): Long {
-        return safeCall {
+    override suspend fun getCoupleId(): Long =
+        safeCall {
             localCoupleDataSource.fetchCoupleId()
         }
-    }
 
-    override suspend fun getCoupleRelationshipInfo(coupleId: Long): CoupleRelationship {
-        return safeCall {
+    override suspend fun getCoupleRelationshipInfo(coupleId: Long): CoupleRelationship =
+        safeCall {
             remoteCoupleDataSource.fetchCoupleRelationshipInfo(coupleId = coupleId).toCoupleRelationship()
         }
-    }
 
     override suspend fun editCoupleStartDate(
         coupleId: Long,
         startDate: String,
-    ): Couple {
-        return safeCall {
+    ): Couple =
+        safeCall {
             val request =
                 CoupleStartDateUpdateRequest(
                     startDate = startDate,
                 )
-            remoteCoupleDataSource.updateCoupleStartDate(
-                coupleId = coupleId,
-                timeZone = TimeZone.currentSystemDefault().id,
-                request = request,
-            ).toCouple()
+            remoteCoupleDataSource
+                .updateCoupleStartDate(
+                    coupleId = coupleId,
+                    timeZone = TimeZone.currentSystemDefault().id,
+                    request = request,
+                ).toCouple()
         }
-    }
 
     override suspend fun updateShareMessage(
         coupleId: Long,
         shareMessage: String,
-    ): Couple {
-        return safeCall {
+    ): Couple =
+        safeCall {
             val request = CoupleSharedMessageRequest(sharedMessage = shareMessage)
 
-            remoteCoupleDataSource.patchShareMessage(
-                coupleId = coupleId,
-                request = request,
-            ).toCouple()
+            remoteCoupleDataSource
+                .patchShareMessage(
+                    coupleId = coupleId,
+                    request = request,
+                ).toCouple()
         }
-    }
 
     override suspend fun getAnniversaries(
         coupleId: Long,
         startDate: String,
         endDate: String,
-    ): List<Anniversary> {
-        return safeCall {
-            remoteCoupleDataSource.getAnniversaries(
-                coupleId = coupleId,
-                startDate = startDate,
-                endDate = endDate,
-            ).toAnniversary()
+    ): List<Anniversary> =
+        safeCall {
+            remoteCoupleDataSource
+                .getAnniversaries(
+                    coupleId = coupleId,
+                    startDate = startDate,
+                    endDate = endDate,
+                ).toAnniversary()
         }
-    }
 
     override suspend fun deleteCoupleId() {
         safeCall { localCoupleDataSource.deleteCoupleId() }
     }
 
-    override suspend fun getCoupleInfo(): Couple {
-        return safeCall {
+    override suspend fun getCoupleInfo(): Couple =
+        safeCall {
             remoteCoupleDataSource.getCoupleInfo().toCouple()
         }
-    }
 }

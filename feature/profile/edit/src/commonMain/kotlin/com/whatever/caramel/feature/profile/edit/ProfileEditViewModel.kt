@@ -83,7 +83,8 @@ class ProfileEditViewModel(
     }
 
     private fun updateNickname(nickname: String) {
-        UserValidator.checkInputNicknameValidate(nickname)
+        UserValidator
+            .checkInputNicknameValidate(nickname)
             .onSuccess {
                 reduce {
                     copy(

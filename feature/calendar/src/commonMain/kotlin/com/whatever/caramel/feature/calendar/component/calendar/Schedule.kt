@@ -129,8 +129,7 @@ private fun CalendarAnniversaryItem(
                 .background(
                     color = CaramelTheme.color.fill.brand,
                     shape = CaramelTheme.shape.xxs,
-                )
-                .padding(horizontal = CaramelTheme.spacing.xxs),
+                ).padding(horizontal = CaramelTheme.spacing.xxs),
         maxLines = 1,
         overflow = TextOverflow.Clip,
         text = anniversary.label,
@@ -151,8 +150,7 @@ private fun CalendarHolidayItem(
                 .background(
                     color = CaramelTheme.color.fill.labelAccent1,
                     shape = CaramelTheme.shape.xxs,
-                )
-                .padding(horizontal = CaramelTheme.spacing.xxs),
+                ).padding(horizontal = CaramelTheme.spacing.xxs),
         maxLines = 1,
         overflow = TextOverflow.Clip,
         text = holiday.name,
@@ -174,8 +172,7 @@ private fun CalendarTodoItem(
                 .background(
                     color = CaramelTheme.color.fill.labelBrand,
                     shape = CaramelTheme.shape.xxs,
-                )
-                .padding(horizontal = CaramelTheme.spacing.xxs)
+                ).padding(horizontal = CaramelTheme.spacing.xxs)
                 .clickable(
                     interactionSource = null,
                     indication = null,

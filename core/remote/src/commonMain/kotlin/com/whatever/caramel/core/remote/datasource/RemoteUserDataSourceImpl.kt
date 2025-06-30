@@ -19,31 +19,27 @@ import org.koin.core.annotation.Named
 class RemoteUserDataSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteUserDataSource {
-    override suspend fun createUserProfile(request: UserProfileRequest): UserProfileResponse {
-        return authClient.post(USER_BASE_URL + "profile") {
-            setBody(request)
-        }.getBody()
-    }
+    override suspend fun createUserProfile(request: UserProfileRequest): UserProfileResponse =
+        authClient
+            .post(USER_BASE_URL + "profile") {
+                setBody(request)
+            }.getBody()
 
-    override suspend fun editUserProfile(request: EditUserProfileRequest): EditUserProfileResponse {
-        return authClient.put(USER_BASE_URL + "profile") {
-            setBody(request)
-        }.getBody()
-    }
+    override suspend fun editUserProfile(request: EditUserProfileRequest): EditUserProfileResponse =
+        authClient
+            .put(USER_BASE_URL + "profile") {
+                setBody(request)
+            }.getBody()
 
-    override suspend fun getUserInfo(): UserInfoResponse {
-        return authClient.get(USER_BASE_URL + "me").getBody()
-    }
+    override suspend fun getUserInfo(): UserInfoResponse = authClient.get(USER_BASE_URL + "me").getBody()
 
-    override suspend fun patchUserSetting(request: UserSettingRequest): UserSettingResponse {
-        return authClient.patch(USER_BASE_URL + "settings") {
-            setBody(request)
-        }.getBody()
-    }
+    override suspend fun patchUserSetting(request: UserSettingRequest): UserSettingResponse =
+        authClient
+            .patch(USER_BASE_URL + "settings") {
+                setBody(request)
+            }.getBody()
 
-    override suspend fun getUserSetting(): UserSettingResponse {
-        return authClient.get(USER_BASE_URL + "settings").getBody()
-    }
+    override suspend fun getUserSetting(): UserSettingResponse = authClient.get(USER_BASE_URL + "settings").getBody()
 
     companion object {
         private const val USER_BASE_URL = "/v1/user/"

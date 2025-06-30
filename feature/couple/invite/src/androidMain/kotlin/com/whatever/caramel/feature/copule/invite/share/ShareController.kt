@@ -3,7 +3,9 @@ package com.whatever.caramel.feature.copule.invite.share
 import android.content.Context
 import android.content.Intent
 
-class ShareController(private val context: Context) : ShareService {
+class ShareController(
+    private val context: Context,
+) : ShareService {
     override fun shareContents(
         title: String,
         url: String,

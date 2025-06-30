@@ -43,7 +43,13 @@ class LinkMetadataRemoteDataSourceImpl(
                 """<meta\s+property\s*=\s*["']${Regex.escape(propertyValue)}["']\s+content\s*=\s*["']([^"']*)["']\s*/?>""",
                 RegexOption.IGNORE_CASE,
             )
-        return regex.find(htmlContent)?.groups?.get(1)?.value?.trim()?.takeIf { it.isNotBlank() }
+        return regex
+            .find(htmlContent)
+            ?.groups
+            ?.get(1)
+            ?.value
+            ?.trim()
+            ?.takeIf { it.isNotBlank() }
     }
 
     private fun extractTitleFromUrl(url: String): String? {
@@ -70,7 +76,8 @@ class LinkMetadataRemoteDataSourceImpl(
     }
 
     private fun String.capitalizeWords(): String =
-        this.split(' ')
+        this
+            .split(' ')
             .filter { it.isNotBlank() }
             .joinToString(" ") { word ->
                 word.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }

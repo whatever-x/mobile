@@ -26,8 +26,7 @@ internal fun TagChip(
                 .background(
                     color = if (isSelected) CaramelTheme.color.fill.primary else CaramelTheme.color.background.tertiary,
                     shape = CaramelTheme.shape.xl,
-                )
-                .padding(horizontal = CaramelTheme.spacing.m, vertical = CaramelTheme.spacing.s)
+                ).padding(horizontal = CaramelTheme.spacing.m, vertical = CaramelTheme.spacing.s)
                 .clickable(
                     indication = null,
                     interactionSource = null,

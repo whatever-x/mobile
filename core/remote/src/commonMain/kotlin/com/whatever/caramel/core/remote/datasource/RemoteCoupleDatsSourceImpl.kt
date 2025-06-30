@@ -21,55 +21,51 @@ import org.koin.core.annotation.Named
 class RemoteCoupleDatsSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteCoupleDataSource {
-    override suspend fun generateCoupleInvitationCode(): CoupleInvitationCodeResponse {
-        return authClient.post(COUPLE_BASE_URL + "invitation-code").getBody()
-    }
+    override suspend fun generateCoupleInvitationCode(): CoupleInvitationCodeResponse =
+        authClient.post(COUPLE_BASE_URL + "invitation-code").getBody()
 
-    override suspend fun connectCouple(request: CoupleConnectRequest): CoupleDetailResponse {
-        return authClient.post(COUPLE_BASE_URL + "connect") {
-            setBody(request)
-        }.getBody()
-    }
+    override suspend fun connectCouple(request: CoupleConnectRequest): CoupleDetailResponse =
+        authClient
+            .post(COUPLE_BASE_URL + "connect") {
+                setBody(request)
+            }.getBody()
 
-    override suspend fun fetchCoupleRelationshipInfo(coupleId: Long): CoupleDetailResponse {
-        return authClient.get(COUPLE_BASE_URL + "$coupleId").getBody()
-    }
+    override suspend fun fetchCoupleRelationshipInfo(coupleId: Long): CoupleDetailResponse =
+        authClient.get(COUPLE_BASE_URL + "$coupleId").getBody()
 
     override suspend fun patchShareMessage(
         coupleId: Long,
         request: CoupleSharedMessageRequest,
-    ): CoupleBasicResponse {
-        return authClient.patch(COUPLE_BASE_URL + "$coupleId/shared-message") {
-            setBody(body = request)
-        }.getBody()
-    }
+    ): CoupleBasicResponse =
+        authClient
+            .patch(COUPLE_BASE_URL + "$coupleId/shared-message") {
+                setBody(body = request)
+            }.getBody()
 
     override suspend fun updateCoupleStartDate(
         coupleId: Long,
         timeZone: String,
         request: CoupleStartDateUpdateRequest,
-    ): CoupleBasicResponse {
-        return authClient.patch(COUPLE_BASE_URL + "$coupleId/start-date") {
-            header(Header.TIME_ZONE, timeZone)
-            setBody(request)
-        }.getBody()
-    }
+    ): CoupleBasicResponse =
+        authClient
+            .patch(COUPLE_BASE_URL + "$coupleId/start-date") {
+                header(Header.TIME_ZONE, timeZone)
+                setBody(request)
+            }.getBody()
 
     override suspend fun getAnniversaries(
         coupleId: Long,
         startDate: String,
         endDate: String,
-    ): CoupleAnniversaryResponse {
-        return authClient.get(COUPLE_BASE_URL + "$coupleId/anniversaries") {
-            parameter("couple-id", coupleId)
-            parameter("startDate", startDate)
-            parameter("endDate", endDate)
-        }.getBody()
-    }
+    ): CoupleAnniversaryResponse =
+        authClient
+            .get(COUPLE_BASE_URL + "$coupleId/anniversaries") {
+                parameter("couple-id", coupleId)
+                parameter("startDate", startDate)
+                parameter("endDate", endDate)
+            }.getBody()
 
-    override suspend fun getCoupleInfo(): CoupleBasicResponse {
-        return authClient.get(COUPLE_BASE_URL + "me").getBody()
-    }
+    override suspend fun getCoupleInfo(): CoupleBasicResponse = authClient.get(COUPLE_BASE_URL + "me").getBody()
 
     companion object {
         private const val COUPLE_BASE_URL = "v1/couples/"

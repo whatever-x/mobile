@@ -8,9 +8,13 @@ sealed interface ProfileCreateIntent : UiIntent {
 
     data object ClickNextButton : ProfileCreateIntent
 
-    data class ChangeNickname(val nickname: String) : ProfileCreateIntent
+    data class ChangeNickname(
+        val nickname: String,
+    ) : ProfileCreateIntent
 
-    data class ClickGenderButton(val gender: Gender) : ProfileCreateIntent
+    data class ClickGenderButton(
+        val gender: Gender,
+    ) : ProfileCreateIntent
 
     data object ClickSystemNavigationBackButton : ProfileCreateIntent
 
@@ -22,9 +26,15 @@ sealed interface ProfileCreateIntent : UiIntent {
 
     data object ClickPersonalInfoTermLabel : ProfileCreateIntent
 
-    data class ChangeYearPicker(val year: Int) : ProfileCreateIntent
+    data class ChangeYearPicker(
+        val year: Int,
+    ) : ProfileCreateIntent
 
-    data class ChangeMonthPicker(val month: Int) : ProfileCreateIntent
+    data class ChangeMonthPicker(
+        val month: Int,
+    ) : ProfileCreateIntent
 
-    data class ChangeDayPicker(val day: Int) : ProfileCreateIntent
+    data class ChangeDayPicker(
+        val day: Int,
+    ) : ProfileCreateIntent
 }

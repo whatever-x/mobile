@@ -9,8 +9,7 @@ internal data class SettingScreenPreviewData(
     val state: SettingState,
 )
 
-internal class SettingScreenPreviewDataProvider :
-    PreviewParameterProvider<SettingScreenPreviewData> {
+internal class SettingScreenPreviewDataProvider : PreviewParameterProvider<SettingScreenPreviewData> {
     override val values: Sequence<SettingScreenPreviewData> =
         sequenceOf(
             SettingScreenPreviewData(state = SettingState()),

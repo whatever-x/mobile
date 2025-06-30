@@ -6,7 +6,5 @@ import com.whatever.caramel.core.domain.vo.calendar.ScheduleDetail
 class GetScheduleUseCase(
     private val calendarRepository: CalendarRepository,
 ) {
-    suspend operator fun invoke(scheduleId: Long): ScheduleDetail {
-        return calendarRepository.getSchedule(scheduleId)
-    }
+    suspend operator fun invoke(scheduleId: Long): ScheduleDetail = calendarRepository.getSchedule(scheduleId)
 }

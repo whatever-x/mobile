@@ -38,7 +38,11 @@ object DateUtil {
      * @return LocalDate 형식의 오늘 날짜
      * @author GunHyung-Ham
      */
-    fun today(): LocalDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+    fun today(): LocalDate =
+        Clock.System
+            .now()
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .date
 
     /**
      * 오늘 날짜와 시간을 구하는 함수

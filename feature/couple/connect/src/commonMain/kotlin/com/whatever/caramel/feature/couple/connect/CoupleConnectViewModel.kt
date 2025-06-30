@@ -13,9 +13,7 @@ class CoupleConnectViewModel(
     private val connectCoupleUseCase: ConnectCoupleUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<CoupleConnectState, CoupleConnectSideEffect, CoupleConnectIntent>(savedStateHandle) {
-    override fun createInitialState(savedStateHandle: SavedStateHandle): CoupleConnectState {
-        return CoupleConnectState()
-    }
+    override fun createInitialState(savedStateHandle: SavedStateHandle): CoupleConnectState = CoupleConnectState()
 
     override suspend fun handleIntent(intent: CoupleConnectIntent) {
         when (intent) {

@@ -68,16 +68,14 @@ class MemoRepositoryImpl(
         cursor: String?,
         sortType: String?,
         tagId: Long?,
-    ): MemoWithCursor {
-        return safeCall {
+    ): MemoWithCursor =
+        safeCall {
             remoteMemoDataSource.getMemos(size, cursor, sortType, tagId).toMemosWithCursor()
         }
-    }
 
-    override suspend fun getMemo(memoId: Long): Memo {
-        return safeCall {
+    override suspend fun getMemo(memoId: Long): Memo =
+        safeCall {
             val response = remoteMemoDataSource.getMemo(memoId)
             response.toMemo()
         }
-    }
 }

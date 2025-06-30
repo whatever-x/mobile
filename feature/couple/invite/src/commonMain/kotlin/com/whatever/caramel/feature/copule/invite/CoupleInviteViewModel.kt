@@ -13,9 +13,7 @@ class CoupleInviteViewModel(
     private val coupleRepository: CoupleRepository,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<CoupleInviteState, CoupleInviteSideEffect, CoupleInviteIntent>(savedStateHandle) {
-    override fun createInitialState(savedStateHandle: SavedStateHandle): CoupleInviteState {
-        return CoupleInviteState()
-    }
+    override fun createInitialState(savedStateHandle: SavedStateHandle): CoupleInviteState = CoupleInviteState()
 
     override suspend fun handleIntent(intent: CoupleInviteIntent) {
         when (intent) {

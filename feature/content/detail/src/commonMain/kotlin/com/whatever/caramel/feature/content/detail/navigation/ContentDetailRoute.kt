@@ -13,7 +13,10 @@ import com.whatever.caramel.feature.content.detail.ContentDetailRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ContentDetailRoute(val contentId: Long, val type: String)
+data class ContentDetailRoute(
+    val contentId: Long,
+    val type: String,
+)
 
 fun NavHostController.navigateToContentDetail(
     contentId: Long,
@@ -40,7 +43,8 @@ fun NavGraphBuilder.contentDetailScreen(
                 animationSpec = tween(600),
             )
         },
-    ) { _ -> // backStackEntry can be used if needed
+    ) { _ ->
+        // backStackEntry can be used if needed
         ContentDetailRoute(
             popBackStack = popBackStack,
             navigateToEdit = navigateToEdit,

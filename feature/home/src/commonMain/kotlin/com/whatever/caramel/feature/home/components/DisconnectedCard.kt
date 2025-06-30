@@ -39,13 +39,11 @@ internal fun LazyListScope.disconnectedCard() {
                         .background(
                             color = CaramelTheme.color.fill.inverse,
                             shape = CaramelTheme.shape.l,
-                        )
-                        .border(
+                        ).border(
                             width = 4.dp,
                             color = CaramelTheme.color.fill.quaternary,
                             shape = CaramelTheme.shape.l,
-                        )
-                        .padding(horizontal = CaramelTheme.spacing.xl)
+                        ).padding(horizontal = CaramelTheme.spacing.xl)
                         .padding(top = CaramelTheme.spacing.xxl)
                         .padding(bottom = 30.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,

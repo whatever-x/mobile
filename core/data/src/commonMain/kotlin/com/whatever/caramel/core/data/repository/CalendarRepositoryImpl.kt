@@ -67,23 +67,20 @@ class CalendarRepositoryImpl(
         startDate: String,
         endDate: String,
         userTimezone: String?,
-    ): List<Todo> {
-        return safeCall {
+    ): List<Todo> =
+        safeCall {
             remoteCalendarDataSource.getSchedules(startDate, endDate, userTimezone).toTodo()
         }
-    }
 
-    override suspend fun getHolidays(year: Int): List<Holiday> {
-        return safeCall {
+    override suspend fun getHolidays(year: Int): List<Holiday> =
+        safeCall {
             val yearString = year.toString()
             remoteCalendarDataSource.getHolidaysByYear(year = yearString).toHoliday()
         }
-    }
 
-    override suspend fun getSchedule(scheduleId: Long): ScheduleDetail {
-        return safeCall {
+    override suspend fun getSchedule(scheduleId: Long): ScheduleDetail =
+        safeCall {
             val response = remoteCalendarDataSource.getScheduleDetail(scheduleId)
             response.toScheduleDetailVO()
         }
-    }
 }

@@ -74,8 +74,7 @@ internal fun BottomSheetTodoListHeader(
                                 .background(
                                     color = CaramelTheme.color.fill.brand,
                                     shape = CaramelTheme.shape.m,
-                                )
-                                .padding(
+                                ).padding(
                                     horizontal = CaramelTheme.spacing.s,
                                     vertical = CaramelTheme.spacing.xxs,
                                 ),
@@ -97,8 +96,7 @@ internal fun BottomSheetTodoListHeader(
                                         .background(
                                             color = CaramelTheme.color.fill.labelAccent1,
                                             shape = CaramelTheme.shape.m,
-                                        )
-                                        .padding(
+                                        ).padding(
                                             horizontal = CaramelTheme.spacing.s,
                                             vertical = CaramelTheme.spacing.xxs,
                                         ),

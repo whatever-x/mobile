@@ -11,7 +11,10 @@ import com.whatever.caramel.feature.content.edit.ContentEditRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ContentEditScreenRoute(val id: Long, val type: String)
+data class ContentEditScreenRoute(
+    val id: Long,
+    val type: String,
+)
 
 fun NavHostController.navigateToContentEdit(
     id: Long,
@@ -41,7 +44,8 @@ fun NavGraphBuilder.contentEditScreen(
                 animationSpec = tween(400),
             )
         },
-    ) { _ -> // backStackEntry can be used if needed
+    ) { _ ->
+        // backStackEntry can be used if needed
         ContentEditRoute(
             popBackStack = popBackStack,
             showErrorDialog = showErrorDialog,

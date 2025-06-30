@@ -16,12 +16,11 @@ class UserRepositoryImpl(
     private val userRemoteDataSource: RemoteUserDataSource,
     private val userDataSource: UserDataSource,
 ) : UserRepository {
-    override suspend fun getUserStatus(): UserStatus {
-        return safeCall {
+    override suspend fun getUserStatus(): UserStatus =
+        safeCall {
             val userStatus = userDataSource.getUserStatus()
             UserStatus.valueOf(value = userStatus)
         }
-    }
 
     override suspend fun setUserStatus(status: UserStatus) {
         safeCall {
@@ -35,8 +34,8 @@ class UserRepositoryImpl(
         gender: Gender,
         agreementServiceTerms: Boolean,
         agreementPrivacyPolicy: Boolean,
-    ): User {
-        return safeCall {
+    ): User =
+        safeCall {
             val request =
                 UserProfileRequest(
                     nickname = nickname,
@@ -47,13 +46,12 @@ class UserRepositoryImpl(
                 )
             userRemoteDataSource.createUserProfile(request).toUser()
         }
-    }
 
     override suspend fun updateUserProfile(
         nickname: String?,
         birthday: String?,
-    ): User {
-        return safeCall {
+    ): User =
+        safeCall {
             val request =
                 EditUserProfileRequest(
                     nickname = nickname,
@@ -61,13 +59,11 @@ class UserRepositoryImpl(
                 )
             userRemoteDataSource.editUserProfile(request).toUser()
         }
-    }
 
-    override suspend fun getUserInfo(): User {
-        return safeCall {
+    override suspend fun getUserInfo(): User =
+        safeCall {
             userRemoteDataSource.getUserInfo().toUser()
         }
-    }
 
     override suspend fun deleteUserStatus() {
         safeCall { userDataSource.deleteUserStatus() }
@@ -78,7 +74,5 @@ class UserRepositoryImpl(
         return safeCall { userRemoteDataSource.patchUserSetting(request).notificationEnabled }
     }
 
-    override suspend fun getUserSetting(): Boolean {
-        return safeCall { userRemoteDataSource.getUserSetting().notificationEnabled }
-    }
+    override suspend fun getUserSetting(): Boolean = safeCall { userRemoteDataSource.getUserSetting().notificationEnabled }
 }

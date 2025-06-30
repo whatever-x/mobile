@@ -7,7 +7,12 @@ sealed interface ContentEditSideEffect : UiSideEffect {
 
     data object NavigateBackToContentList : ContentEditSideEffect
 
-    data class ShowErrorSnackBar(val message: String) : ContentEditSideEffect
+    data class ShowErrorSnackBar(
+        val message: String,
+    ) : ContentEditSideEffect
 
-    data class ShowErrorDialog(val message: String, val description: String?) : ContentEditSideEffect
+    data class ShowErrorDialog(
+        val message: String,
+        val description: String?,
+    ) : ContentEditSideEffect
 }

@@ -11,11 +11,12 @@ class GetAnniversariesUseCase(
         endDate: String,
     ): List<AnniversariesOnDate> {
         val coupleId = coupleRepository.getCoupleId()
-        return coupleRepository.getAnniversaries(
-            coupleId = coupleId,
-            startDate = startDate,
-            endDate = endDate,
-        ).groupBy { it.date }
+        return coupleRepository
+            .getAnniversaries(
+                coupleId = coupleId,
+                startDate = startDate,
+                endDate = endDate,
+            ).groupBy { it.date }
             .map { (date, anniversaries) -> AnniversariesOnDate(date, anniversaries) }
     }
 }

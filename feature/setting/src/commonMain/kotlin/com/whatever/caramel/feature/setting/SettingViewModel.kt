@@ -23,9 +23,7 @@ class SettingViewModel(
     private val signOutUseCase: SignOutUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SettingState, SettingSideEffect, SettingIntent>(savedStateHandle) {
-    override fun createInitialState(savedStateHandle: SavedStateHandle): SettingState {
-        return SettingState()
-    }
+    override fun createInitialState(savedStateHandle: SavedStateHandle): SettingState = SettingState()
 
     override suspend fun handleIntent(intent: SettingIntent) {
         when (intent) {

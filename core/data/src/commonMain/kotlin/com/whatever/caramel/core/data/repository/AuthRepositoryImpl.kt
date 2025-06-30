@@ -20,8 +20,8 @@ internal class AuthRepositoryImpl(
     override suspend fun loginWithSocialPlatform(
         idToken: String,
         socialLoginType: SocialLoginType,
-    ): UserAuth {
-        return safeCall {
+    ): UserAuth =
+        safeCall {
             val request =
                 SignInRequest(
                     idToken = idToken,
@@ -30,10 +30,9 @@ internal class AuthRepositoryImpl(
             val response = remoteAuthDataSource.signIn(request = request)
             response.toUserAuth()
         }
-    }
 
-    override suspend fun refreshAuthToken(oldToken: AuthToken): AuthToken {
-        return safeCall {
+    override suspend fun refreshAuthToken(oldToken: AuthToken): AuthToken =
+        safeCall {
             val request =
                 ServiceTokenDto(
                     accessToken = oldToken.accessToken,
@@ -42,7 +41,6 @@ internal class AuthRepositoryImpl(
             val response = remoteAuthDataSource.refresh(request)
             response.toAuthToken()
         }
-    }
 
     override suspend fun saveTokens(authToken: AuthToken) {
         safeCall {
@@ -53,14 +51,13 @@ internal class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun getAuthToken(): AuthToken {
-        return safeCall {
+    override suspend fun getAuthToken(): AuthToken =
+        safeCall {
             AuthToken(
                 accessToken = tokenDataSource.fetchAccessToken(),
                 refreshToken = tokenDataSource.fetchRefreshToken(),
             )
         }
-    }
 
     override suspend fun deleteToken() {
         safeCall {

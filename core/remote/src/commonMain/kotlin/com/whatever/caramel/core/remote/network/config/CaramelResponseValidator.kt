@@ -22,7 +22,9 @@ internal fun HttpClientConfig<*>.caramelResponseValidator() {
                             data = null,
                             error =
                                 ErrorResponse(
-                                    code = exception.response.status.value.toString(),
+                                    code =
+                                        exception.response.status.value
+                                            .toString(),
                                     message = "예상치 못한 에러가 발생했습니다.",
                                     debugMessage =
                                         "Error Code : ${exception.response.status}\n" +

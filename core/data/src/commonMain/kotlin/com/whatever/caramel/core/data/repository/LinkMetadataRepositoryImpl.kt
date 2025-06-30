@@ -7,13 +7,12 @@ import com.whatever.caramel.core.remote.datasource.LinkMetadataRemoteDataSource
 class LinkMetadataRepositoryImpl(
     private val remoteDataSource: LinkMetadataRemoteDataSource,
 ) : LinkMetadataRepository {
-    override suspend fun getLinkMetadata(url: String): LinkMetaData? {
-        return remoteDataSource.fetchLinkMetadata(url)?.let {
+    override suspend fun getLinkMetadata(url: String): LinkMetaData? =
+        remoteDataSource.fetchLinkMetadata(url)?.let {
             LinkMetaData(
                 url = it.url,
                 title = it.title,
                 imageUrl = it.image,
             )
         }
-    }
 }

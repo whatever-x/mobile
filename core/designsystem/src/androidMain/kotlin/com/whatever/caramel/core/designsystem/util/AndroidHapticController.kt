@@ -7,7 +7,9 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 
-class AndroidHapticController(private val context: Context) : HapticController {
+class AndroidHapticController(
+    private val context: Context,
+) : HapticController {
     @SuppressLint("MissingPermission")
     override fun performImpact(style: HapticStyle) {
         val vibrator =

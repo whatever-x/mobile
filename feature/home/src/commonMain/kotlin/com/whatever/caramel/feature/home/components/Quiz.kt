@@ -88,8 +88,7 @@ internal fun LazyListScope.quiz(
                     .graphicsLayer {
                         this.rotationY = rotation.value
                         cameraDistance = 8 * density
-                    }
-                    .padding(horizontal = CaramelTheme.spacing.xl),
+                    }.padding(horizontal = CaramelTheme.spacing.xl),
         ) {
             val contentRotationY = if (rotation.value < 90f) 0f else 180f
 
@@ -101,13 +100,11 @@ internal fun LazyListScope.quiz(
                         .background(
                             color = CaramelTheme.color.background.tertiary,
                             shape = CaramelTheme.shape.l,
-                        )
-                        .border(
+                        ).border(
                             width = 4.dp,
                             color = CaramelTheme.color.fill.quaternary,
                             shape = CaramelTheme.shape.l,
-                        )
-                        .padding(top = 48.dp),
+                        ).padding(top = 48.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
@@ -299,13 +296,11 @@ private fun ButtonArea(
                         .background(
                             color = CaramelTheme.color.fill.brand,
                             shape = CaramelTheme.shape.m,
-                        )
-                        .clip(shape = CaramelTheme.shape.m)
+                        ).clip(shape = CaramelTheme.shape.m)
                         .clickable(
                             enabled = balanceGameAnswerState != HomeState.BalanceGameAnswerState.WAITING,
                             onClick = onClickResult,
-                        )
-                        .padding(all = CaramelTheme.spacing.m),
+                        ).padding(all = CaramelTheme.spacing.m),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
@@ -356,13 +351,11 @@ private fun RowScope.OptionButton(
                 .background(
                     color = backgroundColor,
                     shape = CaramelTheme.shape.m,
-                )
-                .clip(shape = CaramelTheme.shape.m)
+                ).clip(shape = CaramelTheme.shape.m)
                 .clickable(
                     enabled = balanceGameAnswerState != HomeState.BalanceGameAnswerState.WAITING,
                     onClick = onClick,
-                )
-                .padding(all = CaramelTheme.spacing.m),
+                ).padding(all = CaramelTheme.spacing.m),
         contentAlignment = Alignment.Center,
     ) {
         if (isSelected) {

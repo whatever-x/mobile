@@ -148,10 +148,12 @@ internal fun ContentEditScreen(
                         SelectableTagChipRow(
                             modifier = Modifier.fillMaxWidth(),
                             tagChips =
-                                state.tags.map { TagChip(it.id, it.label) }
+                                state.tags
+                                    .map { TagChip(it.id, it.label) }
                                     .toImmutableList(),
                             selectedTagChips =
-                                state.selectedTags.map { TagChip(it.id, it.label) }
+                                state.selectedTags
+                                    .map { TagChip(it.id, it.label) }
                                     .toImmutableList(),
                             onTagChipClick = { tagChip ->
                                 onIntent(ContentEditIntent.ClickTag(Tag(tagChip.id, tagChip.label)))
@@ -235,8 +237,7 @@ internal fun ContentEditScreen(
                                     width = 1.dp,
                                     color = CaramelTheme.color.fill.quaternary,
                                     shape = CaramelTheme.shape.xxl,
-                                )
-                                .background(CaramelTheme.color.fill.inverse)
+                                ).background(CaramelTheme.color.fill.inverse)
                                 .clickable { onIntent(ContentEditIntent.OnDeleteClicked) },
                         contentAlignment = Alignment.Center,
                     ) {

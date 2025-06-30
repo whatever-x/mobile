@@ -9,9 +9,8 @@ import com.whatever.caramel.core.remote.datasource.RemoteTagDataSource
 class TagRepositoryImpl(
     private val remoteTagDataSource: RemoteTagDataSource,
 ) : TagRepository {
-    override suspend fun getTags(): List<Tag> {
-        return safeCall {
+    override suspend fun getTags(): List<Tag> =
+        safeCall {
             remoteTagDataSource.getTags().tags.toTags()
         }
-    }
 }

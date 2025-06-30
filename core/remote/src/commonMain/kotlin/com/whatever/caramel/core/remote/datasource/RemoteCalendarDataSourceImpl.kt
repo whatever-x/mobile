@@ -20,27 +20,28 @@ internal class RemoteCalendarDataSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteCalendarDataSource {
     override suspend fun createSchedule(request: CreateScheduleRequest): CreateScheduleResponse =
-        authClient.post("$CALENDAR_BASE_URL/schedules") {
-            setBody(body = request)
-        }.getBody()
+        authClient
+            .post("$CALENDAR_BASE_URL/schedules") {
+                setBody(body = request)
+            }.getBody()
 
     override suspend fun getSchedules(
         startDate: String,
         endDate: String,
         userTimeZone: String?,
-    ): CalendarDetailResponse {
-        return authClient.get(CALENDAR_BASE_URL) {
-            parameter("startDate", startDate)
-            parameter("endDate", endDate)
-            parameter("userTimeZone", userTimeZone)
-        }.getBody()
-    }
+    ): CalendarDetailResponse =
+        authClient
+            .get(CALENDAR_BASE_URL) {
+                parameter("startDate", startDate)
+                parameter("endDate", endDate)
+                parameter("userTimeZone", userTimeZone)
+            }.getBody()
 
-    override suspend fun getHolidaysByYear(year: String): HolidayDetailListResponse {
-        return authClient.get("$CALENDAR_BASE_URL/holidays/year") {
-            parameter("year", year)
-        }.getBody()
-    }
+    override suspend fun getHolidaysByYear(year: String): HolidayDetailListResponse =
+        authClient
+            .get("$CALENDAR_BASE_URL/holidays/year") {
+                parameter("year", year)
+            }.getBody()
 
     override suspend fun updateSchedule(
         scheduleId: Long,
@@ -55,9 +56,8 @@ internal class RemoteCalendarDataSourceImpl(
         authClient.delete("$CALENDAR_BASE_URL/schedules/$scheduleId")
     }
 
-    override suspend fun getScheduleDetail(scheduleId: Long): GetScheduleResponse {
-        return authClient.get("$CALENDAR_BASE_URL/schedules/$scheduleId").getBody()
-    }
+    override suspend fun getScheduleDetail(scheduleId: Long): GetScheduleResponse =
+        authClient.get("$CALENDAR_BASE_URL/schedules/$scheduleId").getBody()
 
     companion object {
         private const val CALENDAR_BASE_URL = "v1/calendar"

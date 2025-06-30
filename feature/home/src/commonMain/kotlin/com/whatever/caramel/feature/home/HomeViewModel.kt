@@ -29,9 +29,7 @@ class HomeViewModel(
     private val submitBalanceGameChoiceUseCase: SubmitBalanceGameChoiceUseCase,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle) {
-    override fun createInitialState(savedStateHandle: SavedStateHandle): HomeState {
-        return HomeState()
-    }
+    override fun createInitialState(savedStateHandle: SavedStateHandle): HomeState = HomeState()
 
     override suspend fun handleIntent(intent: HomeIntent) {
         when (intent) {
@@ -214,12 +212,13 @@ class HomeViewModel(
                             id = todayBalanceGame.gameInfo.id,
                             question = todayBalanceGame.gameInfo.question,
                             options =
-                                todayBalanceGame.gameInfo.options.map {
-                                    BalanceGameOptionState(
-                                        id = it.optionId,
-                                        name = it.text,
-                                    )
-                                }.toImmutableList(),
+                                todayBalanceGame.gameInfo.options
+                                    .map {
+                                        BalanceGameOptionState(
+                                            id = it.optionId,
+                                            name = it.text,
+                                        )
+                                    }.toImmutableList(),
                         ),
                     myChoiceOption =
                         BalanceGameOptionState(

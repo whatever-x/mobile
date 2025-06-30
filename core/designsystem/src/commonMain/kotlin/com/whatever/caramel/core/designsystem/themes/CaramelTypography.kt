@@ -32,19 +32,35 @@ data class CaramelTypography(
         val reading: TextStyle
     }
 
-    interface Body1Type : BoldStyle, RegularStyle
+    interface Body1Type :
+        BoldStyle,
+        RegularStyle
 
-    interface Body2Type : BoldStyle, RegularStyle, ReadingStyle
+    interface Body2Type :
+        BoldStyle,
+        RegularStyle,
+        ReadingStyle
 
-    interface Body3Type : BoldStyle, RegularStyle, ReadingStyle
+    interface Body3Type :
+        BoldStyle,
+        RegularStyle,
+        ReadingStyle
 
-    interface Body4Type : BoldStyle, RegularStyle
+    interface Body4Type :
+        BoldStyle,
+        RegularStyle
 
-    interface Label1Type : BoldStyle, RegularStyle
+    interface Label1Type :
+        BoldStyle,
+        RegularStyle
 
-    interface Label2Type : BoldStyle, RegularStyle
+    interface Label2Type :
+        BoldStyle,
+        RegularStyle
 
-    interface Label3Type : BoldStyle, RegularStyle
+    interface Label3Type :
+        BoldStyle,
+        RegularStyle
 
     @Immutable
     data class Body1Style(

@@ -111,14 +111,12 @@ internal fun GenderButton(
                 .background(
                     color = CaramelTheme.color.background.tertiary,
                     shape = CaramelTheme.shape.xl,
-                )
-                .clip(shape = CaramelTheme.shape.xl)
+                ).clip(shape = CaramelTheme.shape.xl)
                 .clickable(
                     onClick = onClick,
                     interactionSource = MutableInteractionSource(),
                     indication = null,
-                )
-                .padding(vertical = CaramelTheme.spacing.xl),
+                ).padding(vertical = CaramelTheme.spacing.xl),
         verticalArrangement =
             Arrangement.spacedBy(
                 space = CaramelTheme.spacing.l,

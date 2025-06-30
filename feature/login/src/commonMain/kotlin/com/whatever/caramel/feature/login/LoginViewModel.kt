@@ -19,9 +19,7 @@ class LoginViewModel(
     private val signInWithSocialPlatformUseCase: SignInWithSocialPlatformUseCase,
     private val fcmTokenProvider: FcmTokenProvider,
 ) : BaseViewModel<LoginState, LoginSideEffect, LoginIntent>(savedStateHandle) {
-    override fun createInitialState(savedStateHandle: SavedStateHandle): LoginState {
-        return LoginState
-    }
+    override fun createInitialState(savedStateHandle: SavedStateHandle): LoginState = LoginState
 
     override suspend fun handleIntent(intent: LoginIntent) {
         when (intent) {

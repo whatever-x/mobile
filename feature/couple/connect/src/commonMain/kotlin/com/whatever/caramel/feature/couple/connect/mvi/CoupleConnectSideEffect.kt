@@ -7,9 +7,16 @@ sealed interface CoupleConnectSideEffect : UiSideEffect {
 
     data object NavigateToInviteCouple : CoupleConnectSideEffect
 
-    data class ShowSnackBarMessage(val message: String) : CoupleConnectSideEffect
+    data class ShowSnackBarMessage(
+        val message: String,
+    ) : CoupleConnectSideEffect
 
-    data class ShowErrorDialog(val message: String, val description: String?) : CoupleConnectSideEffect
+    data class ShowErrorDialog(
+        val message: String,
+        val description: String?,
+    ) : CoupleConnectSideEffect
 
-    data class ShowErrorToast(val message: String) : CoupleConnectSideEffect
+    data class ShowErrorToast(
+        val message: String,
+    ) : CoupleConnectSideEffect
 }

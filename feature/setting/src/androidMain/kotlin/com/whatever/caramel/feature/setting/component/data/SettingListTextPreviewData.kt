@@ -7,8 +7,7 @@ internal data class SettingListTextPreviewData(
     val tailText: String?,
 )
 
-internal class SettingListTextPreviewDataProvider :
-    PreviewParameterProvider<SettingListTextPreviewData> {
+internal class SettingListTextPreviewDataProvider : PreviewParameterProvider<SettingListTextPreviewData> {
     override val values: Sequence<SettingListTextPreviewData> =
         sequenceOf(
             SettingListTextPreviewData(

@@ -5,9 +5,13 @@ import com.whatever.caramel.core.viewmodel.UiSideEffect
 sealed interface SettingSideEffect : UiSideEffect {
     data object NavigateToHome : SettingSideEffect
 
-    data class NavigateToEditNickname(val nickname: String) : SettingSideEffect
+    data class NavigateToEditNickname(
+        val nickname: String,
+    ) : SettingSideEffect
 
-    data class NavigateToEditBirthday(val birthday: String) : SettingSideEffect
+    data class NavigateToEditBirthday(
+        val birthday: String,
+    ) : SettingSideEffect
 
     data object OpenTermsOfService : SettingSideEffect
 
@@ -15,9 +19,16 @@ sealed interface SettingSideEffect : UiSideEffect {
 
     data object NavigateLogin : SettingSideEffect
 
-    data class NavigateToEditCountDown(val startDate: String) : SettingSideEffect
+    data class NavigateToEditCountDown(
+        val startDate: String,
+    ) : SettingSideEffect
 
-    data class ShowErrorDialog(val message: String, val description: String?) : SettingSideEffect
+    data class ShowErrorDialog(
+        val message: String,
+        val description: String?,
+    ) : SettingSideEffect
 
-    data class ShowErrorToast(val message: String) : SettingSideEffect
+    data class ShowErrorToast(
+        val message: String,
+    ) : SettingSideEffect
 }

@@ -1,10 +1,14 @@
 package com.whatever.caramel.core.deeplink.model
 
-enum class AppsFlyerDeepLinkValue(val deepLinkValue: String) {
+enum class AppsFlyerDeepLinkValue(
+    val deepLinkValue: String,
+) {
     INVITE(deepLinkValue = "invitation"),
 }
 
-enum class AppsFlyerDeepLinkParameter(val parameterName: String) {
+enum class AppsFlyerDeepLinkParameter(
+    val parameterName: String,
+) {
     Parameter1("p1"),
     Parameter2("p2"),
     Parameter3("p3"),

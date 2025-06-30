@@ -82,8 +82,7 @@ internal fun CaramelBottomTodoScope.DefaultBottomSheetTodoItem(modifier: Modifie
                 .background(
                     color = Color(color = 0xFFF7F2EC),
                     shape = CaramelTheme.shape.m,
-                )
-                .padding(all = CaramelTheme.spacing.l),
+                ).padding(all = CaramelTheme.spacing.l),
         verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.l),
     ) {
         TodoTitle()

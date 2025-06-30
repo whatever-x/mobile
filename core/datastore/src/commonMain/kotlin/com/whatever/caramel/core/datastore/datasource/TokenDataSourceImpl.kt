@@ -26,17 +26,15 @@ class TokenDataSourceImpl(
         }
     }
 
-    override suspend fun fetchAccessToken(): String {
-        return dataStore.data.first().let { prefs ->
+    override suspend fun fetchAccessToken(): String =
+        dataStore.data.first().let { prefs ->
             prefs[accessTokenKey] ?: ""
         }
-    }
 
-    override suspend fun fetchRefreshToken(): String {
-        return dataStore.data.first().let { prefs ->
+    override suspend fun fetchRefreshToken(): String =
+        dataStore.data.first().let { prefs ->
             prefs[refreshTokenKey] ?: ""
         }
-    }
 
     companion object {
         private const val PREFS_KEY_ACCESS_TOKEN = "accessToken"

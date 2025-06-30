@@ -55,8 +55,7 @@ internal fun ProfileEditBottomBar(
                     .background(
                         color = buttonBackgroundColor,
                         shape = buttonShape,
-                    )
-                    .clip(shape = buttonShape)
+                    ).clip(shape = buttonShape)
                     .clickable(
                         enabled = buttonEnabled,
                         onClick = onClickButton,

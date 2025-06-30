@@ -15,8 +15,8 @@ object UserValidator {
      * @param input 닉네임 입력값
      * @return 검증에 대한 Result 객체
      * */
-    fun checkInputNicknameValidate(input: String): Result<Unit> {
-        return when {
+    fun checkInputNicknameValidate(input: String): Result<Unit> =
+        when {
             input.length > NICKNAME_MAX_LENGTH ->
                 Result.failure(
                     CaramelException(
@@ -37,15 +37,14 @@ object UserValidator {
                 )
             else -> Result.success(Unit)
         }
-    }
 
     /**
      * 닉네임에 대한 값을 서버 전달시에 필요한 유효성 검사 진행
      * @param input 닉네임 입력값
      * @return 검증에 대한 Result 객체
      * */
-    fun checkNicknameValidate(input: String): Result<String> {
-        return when {
+    fun checkNicknameValidate(input: String): Result<String> =
+        when {
             input.length > NICKNAME_MAX_LENGTH ->
                 Result.failure(
                     CaramelException(
@@ -68,7 +67,6 @@ object UserValidator {
                 )
             else -> Result.success(input)
         }
-    }
 
     const val NICKNAME_MIN_LENGTH = 2
     const val NICKNAME_MAX_LENGTH = 8

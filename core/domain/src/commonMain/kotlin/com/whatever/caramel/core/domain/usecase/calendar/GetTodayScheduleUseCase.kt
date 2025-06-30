@@ -10,7 +10,12 @@ class GetTodayScheduleUseCase(
     private val calendarRepository: CalendarRepository,
 ) {
     suspend operator fun invoke(): List<Todo> {
-        val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.toString()
+        val today =
+            Clock.System
+                .now()
+                .toLocalDateTime(TimeZone.currentSystemDefault())
+                .date
+                .toString()
 
         return calendarRepository.getTodos(
             startDate = today,

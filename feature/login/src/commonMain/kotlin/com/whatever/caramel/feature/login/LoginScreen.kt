@@ -34,8 +34,7 @@ internal fun LoginScreen(
                 .fillMaxSize()
                 .background(
                     color = CaramelTheme.color.background.primary,
-                )
-                .systemBarsPadding(),
+                ).systemBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         OnboardingPager(

@@ -15,14 +15,16 @@ internal class RemoteAuthDataSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteAuthDataSource {
     override suspend fun signIn(request: SignInRequest): SignInResponse =
-        defaultClient.post(BASE_AUTH_URL + "sign-in") {
-            setBody(body = request)
-        }.getBody()
+        defaultClient
+            .post(BASE_AUTH_URL + "sign-in") {
+                setBody(body = request)
+            }.getBody()
 
     override suspend fun refresh(request: ServiceTokenDto): ServiceTokenDto =
-        defaultClient.post(BASE_AUTH_URL + "refresh") {
-            setBody(body = request)
-        }.getBody()
+        defaultClient
+            .post(BASE_AUTH_URL + "refresh") {
+                setBody(body = request)
+            }.getBody()
 
     override suspend fun signOut() {
         authClient.delete(BASE_AUTH_URL + "account")

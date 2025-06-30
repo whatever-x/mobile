@@ -73,8 +73,7 @@ fun CaramelSnackbar(
                 .background(
                     color = Neutral800,
                     shape = CaramelTheme.shape.xl,
-                )
-                .padding(
+                ).padding(
                     horizontal = CaramelTheme.spacing.xl,
                     vertical = CaramelTheme.spacing.m,
                 ),

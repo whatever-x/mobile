@@ -94,8 +94,7 @@ internal fun MemoScreen(
                     .fillMaxSize()
                     .graphicsLayer {
                         translationY = memoScreenOffset.toFloat()
-                    }
-                    .verticalScroll(scrollState),
+                    }.verticalScroll(scrollState),
         ) {
             Text(
                 modifier =
@@ -186,7 +185,8 @@ internal fun LazyListState.onLastReached(
             derivedStateOf {
                 val totalItemsCount = layoutInfo.totalItemsCount
                 val lastVisibleItemIndex = (layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
-                totalItemsCount > 0 && lastVisibleItemIndex >=
+                totalItemsCount > 0 &&
+                    lastVisibleItemIndex >=
                     max(
                         a = (totalItemsCount - numberOfItemsBeforeEnd),
                         b = 0,

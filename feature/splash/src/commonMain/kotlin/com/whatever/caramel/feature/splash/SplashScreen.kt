@@ -28,8 +28,7 @@ internal fun SplashScreen(
                 .fillMaxSize()
                 .background(
                     color = CaramelTheme.color.background.primary,
-                )
-                .systemBarsPadding(),
+                ).systemBarsPadding(),
         verticalArrangement =
             Arrangement.spacedBy(
                 space = CaramelTheme.spacing.l,

@@ -3,7 +3,9 @@ package com.whatever.caramel.core.designsystem.foundations
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-internal enum class CaramelSpacingDefaults(val spacing: Dp) {
+internal enum class CaramelSpacingDefaults(
+    val spacing: Dp,
+) {
     SPACING_XXS(spacing = 2.dp),
     SPACING_XS(spacing = 4.dp),
     SPACING_S(spacing = 8.dp),

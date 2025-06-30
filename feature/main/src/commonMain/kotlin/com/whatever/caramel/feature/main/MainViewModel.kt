@@ -15,9 +15,7 @@ class MainViewModel(
         super.handleClientException(throwable)
     }
 
-    override fun createInitialState(savedStateHandle: SavedStateHandle): MainState {
-        return MainState
-    }
+    override fun createInitialState(savedStateHandle: SavedStateHandle): MainState = MainState
 
     override suspend fun handleIntent(intent: MainIntent) {
     }

@@ -37,7 +37,9 @@ internal class AppleAuthProviderImpl : AppleAuthProvider {
  * @author GunHyung-Ham
  * @since 2025.03.09
  */
-enum class ASAuthorizationErrorCode(val code: Int) {
+enum class ASAuthorizationErrorCode(
+    val code: Int,
+) {
     FAILED(1000),
     CANCELED(1001),
     NOT_HANDLED(1002),
@@ -50,7 +52,8 @@ enum class ASAuthorizationErrorCode(val code: Int) {
 
 private class AppleAuthenticatorImpl(
     private val viewController: UIViewController,
-) : SocialAuthenticator<AppleUser>, KoinComponent {
+) : SocialAuthenticator<AppleUser>,
+    KoinComponent {
     /**
      * ASAuthorizationController의 Delegate는 기본적으로 Weak Reference로 저장됩니다.
      * KMP 환경에서는 Kotlin 객체가 Swift/Objective-C 객체의 Delegate로 지정될 때 예상보다 빨리 해제될 수 있으므로 이를 방지하기 위해

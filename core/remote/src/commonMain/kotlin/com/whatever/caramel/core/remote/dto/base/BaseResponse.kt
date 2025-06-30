@@ -20,13 +20,12 @@ data class ErrorResponse(
     @SerialName("description") val description: String?,
     @SerialName("errorUiType") val errorUiType: String,
 ) {
-    fun toException(): CaramelNetworkException {
-        return CaramelNetworkException(
+    fun toException(): CaramelNetworkException =
+        CaramelNetworkException(
             code = this.code,
             message = this.message,
             debugMessage = this.debugMessage,
             description = this.description,
             errorUiType = this.errorUiType,
         )
-    }
 }

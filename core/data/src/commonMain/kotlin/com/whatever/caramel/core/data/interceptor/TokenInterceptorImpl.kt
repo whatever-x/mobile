@@ -9,13 +9,9 @@ class TokenInterceptorImpl(
     private val tokenDataSource: TokenDataSource,
     private val authDataSource: RemoteAuthDataSource,
 ) : TokenInterceptor {
-    override suspend fun getAccessToken(): String {
-        return tokenDataSource.fetchAccessToken()
-    }
+    override suspend fun getAccessToken(): String = tokenDataSource.fetchAccessToken()
 
-    override suspend fun getRefreshToken(): String {
-        return tokenDataSource.fetchRefreshToken()
-    }
+    override suspend fun getRefreshToken(): String = tokenDataSource.fetchRefreshToken()
 
     /**
      * 401 에러 발생시 데이터스토어에 저장된 리프레쉬 토큰을 가져와 refresh API를 호출합니다.

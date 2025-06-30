@@ -19,9 +19,10 @@ internal class RemoteMemoDataSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteMemoDataSource {
     override suspend fun createMemo(request: CreateMemoRequest): CreateMemoResponse =
-        authClient.post(MEMO_BASE_URL) {
-            setBody(body = request)
-        }.getBody()
+        authClient
+            .post(MEMO_BASE_URL) {
+                setBody(body = request)
+            }.getBody()
 
     override suspend fun updateMemo(
         memoId: Long,
@@ -36,23 +37,21 @@ internal class RemoteMemoDataSourceImpl(
         authClient.delete("$MEMO_BASE_URL/$memoId")
     }
 
-    override suspend fun getMemo(memoId: Long): MemoResponse {
-        return authClient.get("$MEMO_BASE_URL/$memoId").getBody()
-    }
+    override suspend fun getMemo(memoId: Long): MemoResponse = authClient.get("$MEMO_BASE_URL/$memoId").getBody()
 
     override suspend fun getMemos(
         size: Int?,
         cursor: String?,
         sortType: String?,
         tagId: Long?,
-    ): CursoredContentResponse {
-        return authClient.get(MEMO_BASE_URL) {
-            size?.let { parameter("size", it) }
-            cursor?.let { parameter("cursor", it) }
-            sortType?.let { parameter("sortType", it) }
-            tagId?.let { parameter("tagId", it) }
-        }.getBody()
-    }
+    ): CursoredContentResponse =
+        authClient
+            .get(MEMO_BASE_URL) {
+                size?.let { parameter("size", it) }
+                cursor?.let { parameter("cursor", it) }
+                sortType?.let { parameter("sortType", it) }
+                tagId?.let { parameter("tagId", it) }
+            }.getBody()
 
     companion object {
         private const val MEMO_BASE_URL = "/v1/content/memo"

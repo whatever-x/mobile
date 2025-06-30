@@ -11,8 +11,7 @@ internal data class CaramelListViewPreviewData(
     val trailingText: String? = null,
 )
 
-internal class CaramelListItemPreviewProvider :
-    PreviewParameterProvider<CaramelListViewPreviewData> {
+internal class CaramelListItemPreviewProvider : PreviewParameterProvider<CaramelListViewPreviewData> {
     override val values: Sequence<CaramelListViewPreviewData> =
         sequenceOf(
             CaramelListViewPreviewData(

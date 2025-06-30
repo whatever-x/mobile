@@ -113,10 +113,11 @@ fun <T> CaramelTextWheelPicker(
                 listState.layoutInfo.viewportStartOffset +
                     (listState.layoutInfo.viewportEndOffset - listState.layoutInfo.viewportStartOffset) / 2
 
-            listState.layoutInfo.visibleItemsInfo.minByOrNull { item ->
-                val itemCenter = item.offset + item.size / 2
-                abs(itemCenter - center)
-            }?.index ?: 0
+            listState.layoutInfo.visibleItemsInfo
+                .minByOrNull { item ->
+                    val itemCenter = item.offset + item.size / 2
+                    abs(itemCenter - center)
+                }?.index ?: 0
         }
     }
 

@@ -76,8 +76,7 @@ private fun SelectableTagChip(
                     width = 1.dp,
                     color = borderColor,
                     shape = RoundedCornerShape(24.dp),
-                )
-                .clickable(onClick = onClick)
+                ).clickable(onClick = onClick)
                 .padding(horizontal = 12.dp),
         contentAlignment = Alignment.Center,
     ) {

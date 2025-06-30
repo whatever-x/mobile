@@ -10,12 +10,12 @@ class GetTodosGroupByStartDateUseCase(
         startDate: String,
         endDate: String,
         userTimezone: String? = null,
-    ): List<TodosOnDate> {
-        return calendarRepository.getTodos(
-            startDate = startDate,
-            endDate = endDate,
-            userTimezone = userTimezone,
-        ).groupBy { it.startDate }
+    ): List<TodosOnDate> =
+        calendarRepository
+            .getTodos(
+                startDate = startDate,
+                endDate = endDate,
+                userTimezone = userTimezone,
+            ).groupBy { it.startDate }
             .map { (date, todos) -> TodosOnDate(date.date, todos) }
-    }
 }

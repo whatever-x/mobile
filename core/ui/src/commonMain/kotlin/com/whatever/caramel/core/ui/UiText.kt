@@ -3,7 +3,9 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 sealed interface UiText {
-    data class DynamicString(val value: String) : UiText
+    data class DynamicString(
+        val value: String,
+    ) : UiText
 
     class StringResourceId(
         val id: StringResource,
@@ -11,10 +13,9 @@ sealed interface UiText {
     ) : UiText
 
     @Composable
-    fun asString(): String {
-        return when (this) {
+    fun asString(): String =
+        when (this) {
             is DynamicString -> value
             is StringResourceId -> stringResource(resource = id, formatArgs = args)
         }
-    }
 }

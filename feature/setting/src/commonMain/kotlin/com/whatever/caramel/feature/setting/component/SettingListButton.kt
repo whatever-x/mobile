@@ -53,14 +53,12 @@ internal fun SettingListButton(
                     .background(
                         color = backgroundColor,
                         shape = RoundedCornerShape(size = 100.dp),
-                    )
-                    .clip(shape = RoundedCornerShape(size = 100.dp))
+                    ).clip(shape = RoundedCornerShape(size = 100.dp))
                     .clickable(
                         onClick = onClickTailButton,
                         interactionSource = null,
                         indication = null,
-                    )
-                    .padding(all = 2.dp),
+                    ).padding(all = 2.dp),
             contentAlignment = if (isChecked) Alignment.TopEnd else Alignment.TopStart,
         ) {
             Canvas(

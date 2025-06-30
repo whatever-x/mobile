@@ -55,8 +55,7 @@ fun CaramelBalloonPopup(
                     .background(
                         color = CaramelTheme.color.fill.quaternary,
                         shape = CaramelTheme.shape.s,
-                    )
-                    .padding(
+                    ).padding(
                         horizontal = CaramelTheme.spacing.l,
                         vertical = CaramelTheme.spacing.m,
                     ),

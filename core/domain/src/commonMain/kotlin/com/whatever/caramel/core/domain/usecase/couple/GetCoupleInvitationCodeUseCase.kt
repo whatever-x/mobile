@@ -6,7 +6,5 @@ import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
 class GetCoupleInvitationCodeUseCase(
     private val coupleRepository: CoupleRepository,
 ) {
-    suspend operator fun invoke(): CoupleInvitationCode {
-        return coupleRepository.getCoupleInvitationCode()
-    }
+    suspend operator fun invoke(): CoupleInvitationCode = coupleRepository.getCoupleInvitationCode()
 }

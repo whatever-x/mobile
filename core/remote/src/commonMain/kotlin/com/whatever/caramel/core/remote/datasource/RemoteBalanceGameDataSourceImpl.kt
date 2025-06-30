@@ -12,18 +12,16 @@ import org.koin.core.annotation.Named
 class RemoteBalanceGameDataSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteBalanceGameDataSource {
-    override suspend fun fetchTodayBalanceGame(): BalanceGameResponse {
-        return authClient.get(BALANCE_GAME_BASE_URL + "today").getBody()
-    }
+    override suspend fun fetchTodayBalanceGame(): BalanceGameResponse = authClient.get(BALANCE_GAME_BASE_URL + "today").getBody()
 
     override suspend fun postChoiceOption(
         gameId: Long,
         request: ChooseBalanceGameRequest,
-    ): BalanceGameResponse {
-        return authClient.post(BALANCE_GAME_BASE_URL + "$gameId") {
-            setBody(body = request)
-        }.getBody()
-    }
+    ): BalanceGameResponse =
+        authClient
+            .post(BALANCE_GAME_BASE_URL + "$gameId") {
+                setBody(body = request)
+            }.getBody()
 
     companion object {
         private const val BALANCE_GAME_BASE_URL = "/v1/balance-game/"

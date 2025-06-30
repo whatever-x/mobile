@@ -4,13 +4,25 @@ import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.viewmodel.UiSideEffect
 
 sealed interface CalendarSideEffect : UiSideEffect {
-    data class NavigateToTodoDetail(val id: Long, val contentType: ContentType) : CalendarSideEffect
+    data class NavigateToTodoDetail(
+        val id: Long,
+        val contentType: ContentType,
+    ) : CalendarSideEffect
 
-    data class OpenWebView(val url: String) : CalendarSideEffect
+    data class OpenWebView(
+        val url: String,
+    ) : CalendarSideEffect
 
-    data class NavigateToAddSchedule(val dateTimeString: String) : CalendarSideEffect
+    data class NavigateToAddSchedule(
+        val dateTimeString: String,
+    ) : CalendarSideEffect
 
-    data class ShowErrorDialog(val message: String, val description: String?) : CalendarSideEffect
+    data class ShowErrorDialog(
+        val message: String,
+        val description: String?,
+    ) : CalendarSideEffect
 
-    data class ShowErrorToast(val message: String) : CalendarSideEffect
+    data class ShowErrorToast(
+        val message: String,
+    ) : CalendarSideEffect
 }

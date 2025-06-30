@@ -57,8 +57,7 @@ internal fun SocialLoginButton(
                 .background(
                     color = backgroundColor,
                     shape = CaramelTheme.shape.xl,
-                )
-                .clip(shape = CaramelTheme.shape.xl)
+                ).clip(shape = CaramelTheme.shape.xl)
                 .clickable(onClick = onLaunch),
     ) {
         Icon(

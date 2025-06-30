@@ -75,13 +75,11 @@ fun CaramelButton(
                 .background(
                     color = buttonBackgroundColor,
                     shape = buttonShape,
-                )
-                .clip(shape = buttonShape)
+                ).clip(shape = buttonShape)
                 .clickable(
                     enabled = buttonType != CaramelButtonType.Disabled,
                     onClick = onClick,
-                )
-                .padding(horizontal = CaramelTheme.spacing.l),
+                ).padding(horizontal = CaramelTheme.spacing.l),
         contentAlignment = Alignment.Center,
     ) {
         Text(

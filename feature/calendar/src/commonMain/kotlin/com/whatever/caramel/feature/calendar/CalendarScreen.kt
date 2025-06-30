@@ -181,8 +181,7 @@ internal fun CalendarScreen(
                                     bottom = CaramelTheme.spacing.l,
                                     start = CaramelTheme.spacing.xl,
                                     end = CaramelTheme.spacing.xl,
-                                )
-                                .height(availableHeight),
+                                ).height(availableHeight),
                         state = lazyListState,
                     ) {
                         state.monthSchedules.forEach { schedule ->
@@ -234,8 +233,7 @@ internal fun CalendarScreen(
                                 .fillMaxSize()
                                 .graphicsLayer {
                                     translationY = calendarScreenOffset.toFloat()
-                                }
-                                .verticalScroll(verticalScrollState),
+                                }.verticalScroll(verticalScrollState),
                     ) {
                         CalendarDayOfWeek(
                             modifier =

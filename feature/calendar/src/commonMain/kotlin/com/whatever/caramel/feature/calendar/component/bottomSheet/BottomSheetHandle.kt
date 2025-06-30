@@ -35,8 +35,7 @@ internal fun CaramelBottomSheetHandle(
                     .size(
                         width = CalendarDimension.sheetHandleWidth,
                         height = CalendarDimension.sheetHandleHeight,
-                    )
-                    .background(
+                    ).background(
                         color = CaramelTheme.color.fill.quaternary,
                         shape = CaramelTheme.shape.s,
                     ),

@@ -10,8 +10,7 @@ internal data class ProfileCreateScreenPreviewData(
     val state: ProfileCreateState,
 )
 
-internal class ProfileCreateScreenPreviewProvider :
-    PreviewParameterProvider<ProfileCreateScreenPreviewData> {
+internal class ProfileCreateScreenPreviewProvider : PreviewParameterProvider<ProfileCreateScreenPreviewData> {
     override val values: Sequence<ProfileCreateScreenPreviewData> =
         sequenceOf(
             ProfileCreateScreenPreviewData(

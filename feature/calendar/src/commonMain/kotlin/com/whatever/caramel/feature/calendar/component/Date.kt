@@ -113,8 +113,7 @@ internal fun CalendarDatePicker(
                         .background(
                             color = CaramelTheme.color.background.primary,
                             shape = RoundedCornerShape(bottomEnd = 24.dp, bottomStart = 24.dp),
-                        )
-                        .padding(top = CaramelTheme.spacing.s, bottom = CaramelTheme.spacing.l),
+                        ).padding(top = CaramelTheme.spacing.s, bottom = CaramelTheme.spacing.l),
             ) {
                 CaramelDateMonthPicker(
                     modifier = Modifier.align(Alignment.TopCenter),

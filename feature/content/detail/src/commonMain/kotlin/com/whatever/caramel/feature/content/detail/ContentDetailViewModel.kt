@@ -43,8 +43,7 @@ class ContentDetailViewModel(
                 .onStart { reduce { copy(isLoadingLinkPreview = true) } }
                 .catch { e ->
                     reduce { copy(isLoadingLinkPreview = false) }
-                }
-                .collect { linkMetaDataList ->
+                }.collect { linkMetaDataList ->
                     reduce {
                         copy(
                             linkMetaDataList = linkMetaDataList.toImmutableList(),

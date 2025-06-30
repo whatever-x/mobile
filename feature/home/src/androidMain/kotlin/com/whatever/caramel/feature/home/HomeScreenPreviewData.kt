@@ -4,8 +4,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.whatever.caramel.feature.home.mvi.HomeState
 import com.whatever.caramel.feature.home.mvi.TodoState
 
-internal class HomeScreenPreviewData :
-    PreviewParameterProvider<HomeState> {
+internal class HomeScreenPreviewData : PreviewParameterProvider<HomeState> {
     override val values: Sequence<HomeState> =
         sequenceOf(
             HomeState(

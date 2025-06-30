@@ -11,12 +11,11 @@ class GetMemosUseCase(
         cursor: String? = null,
         sortType: String? = null,
         tagId: Long? = null,
-    ): MemoWithCursor {
-        return memoRepository.getMemos(
+    ): MemoWithCursor =
+        memoRepository.getMemos(
             size = size,
             cursor = cursor,
             sortType = sortType,
             tagId = tagId,
         )
-    }
 }

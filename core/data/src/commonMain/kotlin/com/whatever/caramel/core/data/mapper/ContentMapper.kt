@@ -8,15 +8,14 @@ import com.whatever.caramel.core.remote.dto.memo.response.CursoredContentRespons
 import com.whatever.caramel.core.remote.dto.memo.response.MemoResponse
 import kotlinx.datetime.LocalDate
 
-internal fun CreateMemoResponse.toMemoMetaData(): MemoMetadata {
-    return MemoMetadata(
+internal fun CreateMemoResponse.toMemoMetaData(): MemoMetadata =
+    MemoMetadata(
         contentId = contentId,
         contentType = contentType,
     )
-}
 
-internal fun MemoResponse.toMemo(): Memo {
-    return Memo(
+internal fun MemoResponse.toMemo(): Memo =
+    Memo(
         id = this.id,
         title = this.title,
         description = this.description,
@@ -24,11 +23,9 @@ internal fun MemoResponse.toMemo(): Memo {
         tagList = this.tagList.toTags(),
         createdAt = LocalDate.parse(this.createdAt),
     )
-}
 
-internal fun CursoredContentResponse.toMemosWithCursor(): MemoWithCursor {
-    return MemoWithCursor(
+internal fun CursoredContentResponse.toMemosWithCursor(): MemoWithCursor =
+    MemoWithCursor(
         nextCursor = this.cursor.next,
         memos = this.list.map { it.toMemo() },
     )
-}

@@ -41,7 +41,9 @@ fun BoxScope.CaramelPullToRefreshIndicator(
             if (refreshing) {
                 CircularProgressIndicator(
                     color = CaramelTheme.color.fill.brand,
-                    trackColor = CaramelTheme.color.fill.brand.copy(alpha = 0.3f),
+                    trackColor =
+                        CaramelTheme.color.fill.brand
+                            .copy(alpha = 0.3f),
                     strokeWidth = 5.dp,
                     strokeCap = StrokeCap.Round,
                 )
@@ -49,7 +51,9 @@ fun BoxScope.CaramelPullToRefreshIndicator(
                 CircularProgressIndicator(
                     progress = { state.distanceFraction },
                     color = CaramelTheme.color.fill.brand,
-                    trackColor = CaramelTheme.color.fill.brand.copy(alpha = 0.3f),
+                    trackColor =
+                        CaramelTheme.color.fill.brand
+                            .copy(alpha = 0.3f),
                     strokeWidth = 5.dp,
                     strokeCap = StrokeCap.Round,
                 )

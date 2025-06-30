@@ -13,9 +13,7 @@ internal class KakaoAuthProviderImpl(
     private val bridge: KakaoLoginBridge,
 ) : KakaoAuthProvider {
     @Composable
-    override fun get(): SocialAuthenticator<KakaoUser> {
-        return KakaoAuthenticatorImpl(bridge)
-    }
+    override fun get(): SocialAuthenticator<KakaoUser> = KakaoAuthenticatorImpl(bridge)
 }
 
 @OptIn(ExperimentalForeignApi::class)

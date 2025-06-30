@@ -19,9 +19,11 @@ class GetLinkPreviewsForContentUseCase(
     @OptIn(ExperimentalCoroutinesApi::class)
     operator fun invoke(content: String?): Flow<List<LinkMetaData>> {
         val distinctUrls =
-            content.takeIf { !it.isNullOrBlank() }
+            content
+                .takeIf { !it.isNullOrBlank() }
                 ?.let { nonEmptyContent ->
-                    urlRegex.findAll(nonEmptyContent)
+                    urlRegex
+                        .findAll(nonEmptyContent)
                         .map { it.value }
                         .toList()
                         .distinct()
@@ -33,11 +35,11 @@ class GetLinkPreviewsForContentUseCase(
         } else {
             flow {
                 val linkPreviews =
-                    distinctUrls.asFlow()
+                    distinctUrls
+                        .asFlow()
                         .flatMapMerge { url ->
                             flow { emit(linkMetadataRepository.getLinkMetadata(url)) }
-                        }
-                        .filterNotNull()
+                        }.filterNotNull()
                         .toList()
                 emit(linkPreviews)
             }

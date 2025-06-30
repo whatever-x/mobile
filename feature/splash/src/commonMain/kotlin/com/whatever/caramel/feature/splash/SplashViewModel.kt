@@ -28,9 +28,7 @@ class SplashViewModel(
         postSideEffect(SplashSideEffect.NavigateToLogin)
     }
 
-    override fun createInitialState(savedStateHandle: SavedStateHandle): SplashState {
-        return SplashState()
-    }
+    override fun createInitialState(savedStateHandle: SavedStateHandle): SplashState = SplashState()
 
     override suspend fun handleIntent(intent: SplashIntent) {}
 }

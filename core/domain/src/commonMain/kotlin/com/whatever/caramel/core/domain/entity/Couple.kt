@@ -18,7 +18,11 @@ data class Couple(
             try {
                 val (year, month, day) = startDate.split(".").map { it.toInt() }
                 val startDate = LocalDate(year, month, day)
-                val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+                val today =
+                    Clock.System
+                        .now()
+                        .toLocalDateTime(TimeZone.currentSystemDefault())
+                        .date
                 return startDate.daysUntil(today) + 1
             } catch (e: Exception) {
                 return 0

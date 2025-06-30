@@ -4,7 +4,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
-internal enum class CaramelShapeDefaults(val shape: Shape) {
+internal enum class CaramelShapeDefaults(
+    val shape: Shape,
+) {
     RADIUS_XXS(shape = RoundedCornerShape(2.dp)),
     RADIUS_XS(shape = RoundedCornerShape(4.dp)),
     RADIUS_S(shape = RoundedCornerShape(8.dp)),

@@ -114,8 +114,7 @@ fun CaramelNavItemCreateButton(
                 .background(
                     color = CaramelTheme.color.fill.quinary,
                     shape = CaramelTheme.shape.s,
-                )
-                .clip(shape = CaramelTheme.shape.s)
+                ).clip(shape = CaramelTheme.shape.s)
                 .clickable(
                     onClick = onClickButton,
                     indication = null,

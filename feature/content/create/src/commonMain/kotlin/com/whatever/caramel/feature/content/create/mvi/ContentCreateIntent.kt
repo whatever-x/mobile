@@ -9,13 +9,21 @@ sealed interface ContentCreateIntent : UiIntent {
 
     data object ClickSaveButton : ContentCreateIntent
 
-    data class InputTitle(val text: String) : ContentCreateIntent
+    data class InputTitle(
+        val text: String,
+    ) : ContentCreateIntent
 
-    data class InputContent(val text: String) : ContentCreateIntent
+    data class InputContent(
+        val text: String,
+    ) : ContentCreateIntent
 
-    data class ClickTag(val tag: Tag) : ContentCreateIntent
+    data class ClickTag(
+        val tag: Tag,
+    ) : ContentCreateIntent
 
-    data class SelectCreateMode(val createMode: CreateMode) : ContentCreateIntent
+    data class SelectCreateMode(
+        val createMode: CreateMode,
+    ) : ContentCreateIntent
 
     data object ClickDate : ContentCreateIntent
 
@@ -23,17 +31,29 @@ sealed interface ContentCreateIntent : UiIntent {
 
     data object HideDateTimeDialog : ContentCreateIntent
 
-    data class OnYearChanged(val year: Int) : ContentCreateIntent
+    data class OnYearChanged(
+        val year: Int,
+    ) : ContentCreateIntent
 
-    data class OnMonthChanged(val month: Int) : ContentCreateIntent
+    data class OnMonthChanged(
+        val month: Int,
+    ) : ContentCreateIntent
 
-    data class OnDayChanged(val day: Int) : ContentCreateIntent
+    data class OnDayChanged(
+        val day: Int,
+    ) : ContentCreateIntent
 
-    data class OnPeriodChanged(val period: String) : ContentCreateIntent
+    data class OnPeriodChanged(
+        val period: String,
+    ) : ContentCreateIntent
 
-    data class OnHourChanged(val hour: String) : ContentCreateIntent
+    data class OnHourChanged(
+        val hour: String,
+    ) : ContentCreateIntent
 
-    data class OnMinuteChanged(val minute: String) : ContentCreateIntent
+    data class OnMinuteChanged(
+        val minute: String,
+    ) : ContentCreateIntent
 
     data object ClickEditDialogLeftButton : ContentCreateIntent
 

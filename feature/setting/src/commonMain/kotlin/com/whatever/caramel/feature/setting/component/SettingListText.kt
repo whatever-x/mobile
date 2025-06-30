@@ -47,8 +47,7 @@ internal fun SettingListText(
                     Modifier
                         .padding(
                             start = 16.dp,
-                        )
-                        .clickable(
+                        ).clickable(
                             interactionSource = null,
                             indication = null,
                             onClick = { onClickTailText?.invoke() },

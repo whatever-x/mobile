@@ -7,8 +7,7 @@ import com.whatever.caramel.feature.home.mvi.BalanceGameState
 import com.whatever.caramel.feature.home.mvi.HomeState
 import kotlinx.collections.immutable.persistentListOf
 
-internal class QuizPreviewData :
-    PreviewParameterProvider<HomeState> {
+internal class QuizPreviewData : PreviewParameterProvider<HomeState> {
     override val values: Sequence<HomeState>
         get() {
             val myNickname = "내 닉네임"

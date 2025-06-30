@@ -58,11 +58,10 @@ abstract class BaseViewModel<S : UiState, SE : UiSideEffect, I : UiIntent>(
         context: CoroutineContext = EmptyCoroutineContext,
         start: CoroutineStart = CoroutineStart.DEFAULT,
         crossinline action: suspend CoroutineScope.() -> Unit,
-    ): Job {
-        return viewModelScope.launch(context + coroutineExceptionHandler, start = start) {
+    ): Job =
+        viewModelScope.launch(context + coroutineExceptionHandler, start = start) {
             action()
         }
-    }
 
     open fun handleClientException(throwable: Throwable) {
         Napier.d { throwable.message.toString() }

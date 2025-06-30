@@ -44,8 +44,7 @@ internal fun SettingUserProfile(
                 .background(
                     color = CaramelTheme.color.fill.inverse,
                     shape = CaramelTheme.shape.xl,
-                )
-                .padding(all = CaramelTheme.spacing.m),
+                ).padding(all = CaramelTheme.spacing.m),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
@@ -76,17 +75,18 @@ internal fun SettingUserProfile(
         if (isEditable) {
             Box(
                 modifier =
-                    Modifier.background(
-                        shape = CaramelTheme.shape.s,
-                        color = CaramelTheme.color.fill.quinary,
-                    ).padding(
-                        vertical = CaramelTheme.spacing.s,
-                        horizontal = CaramelTheme.spacing.m,
-                    ).clickable(
-                        indication = null,
-                        interactionSource = null,
-                        onClick = { onClickEditProfile?.invoke() },
-                    ),
+                    Modifier
+                        .background(
+                            shape = CaramelTheme.shape.s,
+                            color = CaramelTheme.color.fill.quinary,
+                        ).padding(
+                            vertical = CaramelTheme.spacing.s,
+                            horizontal = CaramelTheme.spacing.m,
+                        ).clickable(
+                            indication = null,
+                            interactionSource = null,
+                            onClick = { onClickEditProfile?.invoke() },
+                        ),
             ) {
                 Text(
                     modifier =

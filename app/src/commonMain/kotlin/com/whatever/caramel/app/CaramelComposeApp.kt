@@ -65,8 +65,7 @@ fun CaramelComposeApp(
                                     start = 20.dp,
                                     end = 20.dp,
                                     bottom = 20.dp,
-                                )
-                                .imePadding(),
+                                ).imePadding(),
                         hostState = LocalSnackbarHostState.current,
                         snackbar = { snackbarData ->
                             CaramelSnackbar(

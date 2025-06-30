@@ -31,8 +31,7 @@ internal fun RowScope.InviteButton(
                 .background(
                     color = CaramelTheme.color.background.tertiary,
                     shape = CaramelTheme.shape.m,
-                )
-                .clip(shape = CaramelTheme.shape.m)
+                ).clip(shape = CaramelTheme.shape.m)
                 .clickable(onClick = onClickButton)
                 .padding(
                     vertical = CaramelTheme.spacing.xxl,

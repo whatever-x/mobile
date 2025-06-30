@@ -57,7 +57,8 @@ class CaramelFirebaseMessagingService : FirebaseMessagingService() {
             )
 
         val builder =
-            NotificationCompat.Builder(applicationContext, getString(R.string.fcm_id_01))
+            NotificationCompat
+                .Builder(applicationContext, getString(R.string.fcm_id_01))
                 .setSmallIcon(R.drawable.ic_notification_small)
                 .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_notification))
                 .setColor(getColor(R.color.notification_color))
