@@ -29,67 +29,72 @@ internal fun SettingUserProfile(
     nickname: String,
     birthDay: String,
     isEditable: Boolean,
-    onClickEditProfile: (() -> Unit)? = null
+    onClickEditProfile: (() -> Unit)? = null,
 ) {
-    val genderImageResource = when (gender) {
-        Gender.IDLE, Gender.MALE -> Resources.Image.img_gender_man
-        Gender.FEMALE -> Resources.Image.img_gender_woman
-    }
+    val genderImageResource =
+        when (gender) {
+            Gender.IDLE, Gender.MALE -> Resources.Image.img_gender_man
+            Gender.FEMALE -> Resources.Image.img_gender_woman
+        }
 
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(
-                color = CaramelTheme.color.fill.inverse,
-                shape = CaramelTheme.shape.xl
-            )
-            .padding(all = CaramelTheme.spacing.m),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(
+                    color = CaramelTheme.color.fill.inverse,
+                    shape = CaramelTheme.shape.xl,
+                )
+                .padding(all = CaramelTheme.spacing.m),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             modifier = Modifier.size(50.dp),
             contentDescription = null,
             painter = painterResource(genderImageResource),
-            tint = Color.Unspecified
+            tint = Color.Unspecified,
         )
 
         Spacer(modifier = Modifier.size(size = CaramelTheme.spacing.m))
         Column(
-            modifier = Modifier
-                .weight(1f),
-            horizontalAlignment = Alignment.Start
+            modifier =
+                Modifier
+                    .weight(1f),
+            horizontalAlignment = Alignment.Start,
         ) {
             Text(
                 text = nickname,
                 style = CaramelTheme.typography.body2.bold,
-                color = CaramelTheme.color.text.primary
+                color = CaramelTheme.color.text.primary,
             )
             Text(
                 text = birthDay,
                 style = CaramelTheme.typography.body3.regular,
-                color = CaramelTheme.color.text.secondary
+                color = CaramelTheme.color.text.secondary,
             )
         }
         if (isEditable) {
             Box(
-                modifier = Modifier.background(
-                    shape = CaramelTheme.shape.s,
-                    color = CaramelTheme.color.fill.quinary
-                ).padding(
-                    vertical = CaramelTheme.spacing.s,
-                    horizontal = CaramelTheme.spacing.m
-                ).clickable(
-                    indication = null,
-                    interactionSource = null,
-                    onClick = { onClickEditProfile?.invoke() }
-                )
+                modifier =
+                    Modifier.background(
+                        shape = CaramelTheme.shape.s,
+                        color = CaramelTheme.color.fill.quinary,
+                    ).padding(
+                        vertical = CaramelTheme.spacing.s,
+                        horizontal = CaramelTheme.spacing.m,
+                    ).clickable(
+                        indication = null,
+                        interactionSource = null,
+                        onClick = { onClickEditProfile?.invoke() },
+                    ),
             ) {
                 Text(
-                    modifier = Modifier
-                        .align(Alignment.Center),
+                    modifier =
+                        Modifier
+                            .align(Alignment.Center),
                     text = "편집",
                     style = CaramelTheme.typography.label1.bold,
-                    color = CaramelTheme.color.text.brand
+                    color = CaramelTheme.color.text.brand,
                 )
             }
         }
@@ -97,34 +102,36 @@ internal fun SettingUserProfile(
 }
 
 @Composable
-internal fun SettingUserProfileSkeleton(
-    modifier: Modifier = Modifier
-) {
+internal fun SettingUserProfileSkeleton(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(
-            modifier = Modifier
-                .size(50.dp)
-                .shimmer(shape = CaramelTheme.shape.l)
+            modifier =
+                Modifier
+                    .size(50.dp)
+                    .shimmer(shape = CaramelTheme.shape.l),
         )
         Spacer(modifier = Modifier.size(size = CaramelTheme.spacing.m))
         Column(
-            modifier = Modifier
-                .weight(1f),
-            horizontalAlignment = Alignment.Start
+            modifier =
+                Modifier
+                    .weight(1f),
+            horizontalAlignment = Alignment.Start,
         ) {
             Box(
-                modifier = Modifier
-                    .size(width = 100.dp, height = 22.dp)
-                    .shimmer(shape = CaramelTheme.shape.xs)
+                modifier =
+                    Modifier
+                        .size(width = 100.dp, height = 22.dp)
+                        .shimmer(shape = CaramelTheme.shape.xs),
             )
             Spacer(modifier = Modifier.padding(bottom = CaramelTheme.spacing.xs))
             Box(
-                modifier = Modifier
-                    .size(width = 70.dp, height = 16.dp)
-                    .shimmer(shape = CaramelTheme.shape.xs)
+                modifier =
+                    Modifier
+                        .size(width = 70.dp, height = 16.dp)
+                        .shimmer(shape = CaramelTheme.shape.xs),
             )
         }
     }

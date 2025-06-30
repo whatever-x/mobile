@@ -25,44 +25,46 @@ internal fun SettingListButton(
     modifier: Modifier = Modifier,
     mainText: String,
     isChecked: Boolean,
-    onClickTailButton: () -> Unit
+    onClickTailButton: () -> Unit,
 ) {
     Row(
         modifier = modifier.height(height = 50.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             modifier = Modifier.weight(weight = 1f),
             text = mainText,
             style = CaramelTheme.typography.body2.regular,
-            color = CaramelTheme.color.text.primary
+            color = CaramelTheme.color.text.primary,
         )
 
-        val backgroundColor = if (isChecked) {
-            CaramelTheme.color.fill.brand
-        } else {
-            CaramelTheme.color.fill.disabledPrimary
-        }
+        val backgroundColor =
+            if (isChecked) {
+                CaramelTheme.color.fill.brand
+            } else {
+                CaramelTheme.color.fill.disabledPrimary
+            }
 
         Box(
-            modifier = modifier
-                .width(width = 51.dp)
-                .background(
-                    color = backgroundColor,
-                    shape = RoundedCornerShape(size = 100.dp)
-                )
-                .clip(shape = RoundedCornerShape(size = 100.dp))
-                .clickable(
-                    onClick = onClickTailButton,
-                    interactionSource = null,
-                    indication = null
-                )
-                .padding(all = 2.dp),
-            contentAlignment = if (isChecked) Alignment.TopEnd else Alignment.TopStart
+            modifier =
+                modifier
+                    .width(width = 51.dp)
+                    .background(
+                        color = backgroundColor,
+                        shape = RoundedCornerShape(size = 100.dp),
+                    )
+                    .clip(shape = RoundedCornerShape(size = 100.dp))
+                    .clickable(
+                        onClick = onClickTailButton,
+                        interactionSource = null,
+                        indication = null,
+                    )
+                    .padding(all = 2.dp),
+            contentAlignment = if (isChecked) Alignment.TopEnd else Alignment.TopStart,
         ) {
             Canvas(
-                modifier = Modifier.size(size = 27.dp)
+                modifier = Modifier.size(size = 27.dp),
             ) {
                 drawCircle(color = Color.White)
             }

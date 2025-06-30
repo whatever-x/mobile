@@ -16,7 +16,7 @@ fun SettingBottomSheetMenuPreview() {
     CaramelTheme {
         SettingEditProfileBottomSheet(
             navigateToProfileEditBrithDay = {},
-            navigateToProfileEditNickName = {}
+            navigateToProfileEditNickName = {},
         )
     }
 }
@@ -26,13 +26,14 @@ fun SettingBottomSheetMenuPreview() {
 fun SettingProfileChangeMenuPreview() {
     CaramelTheme {
         SettingProfileChangeMenuItem(
-            modifier = Modifier
-                .padding(
-                    horizontal = 20.dp,
-                    vertical = 14.dp
-                ),
+            modifier =
+                Modifier
+                    .padding(
+                        horizontal = 20.dp,
+                        vertical = 14.dp,
+                    ),
             iconRes = Resources.Icon.ic_nickname_20,
-            menu = "닉네임"
+            menu = "닉네임",
         ) { }
     }
 }

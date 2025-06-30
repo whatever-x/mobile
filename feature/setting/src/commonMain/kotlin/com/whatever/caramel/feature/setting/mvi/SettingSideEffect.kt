@@ -3,7 +3,6 @@ package com.whatever.caramel.feature.setting.mvi
 import com.whatever.caramel.core.viewmodel.UiSideEffect
 
 sealed interface SettingSideEffect : UiSideEffect {
-
     data object NavigateToHome : SettingSideEffect
 
     data class NavigateToEditNickname(val nickname: String) : SettingSideEffect
@@ -18,7 +17,7 @@ sealed interface SettingSideEffect : UiSideEffect {
 
     data class NavigateToEditCountDown(val startDate: String) : SettingSideEffect
 
-    data class ShowErrorDialog(val message : String, val description : String?) : SettingSideEffect
+    data class ShowErrorDialog(val message: String, val description: String?) : SettingSideEffect
 
-    data class ShowErrorToast(val message : String) : SettingSideEffect
+    data class ShowErrorToast(val message: String) : SettingSideEffect
 }
