@@ -185,19 +185,14 @@ class HomeViewModel(
     private suspend fun initSchedules() {
         val schedules = getTodayScheduleUseCase()
 
-        if (schedules.isNotEmpty()) {
-            val todoUiState = schedules.map { todo ->
-                TodoState(
-                    id = todo.id,
-                    title = todo.title,
-                )
-            }
-
-            reduce {
-                copy(
-                    todos = todoUiState
-                )
-            }
+        reduce {
+            copy(
+                todos = if (schedules.isNotEmpty()) {
+                    schedules.map { todo -> TodoState(id = todo.id, title = todo.title) }
+                } else {
+                    emptyList()
+                }
+            )
         }
     }
 
