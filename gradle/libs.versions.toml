@@ -7,9 +7,9 @@ version-code = "10000003" # major(10), minor(00), patch(00), build(00)
 version-name = "1.0.1" # major(1), minor(0), patch(0)
 
 androidx-activityCompose = "1.10.1"
-androidx-appcompat = "1.7.0"
+androidx-appcompat = "1.7.1"
 androidx-constraintlayout = "2.2.1"
-androidx-core-ktx = "1.15.0"
+androidx-core-ktx = "1.16.0"
 androidx-espresso-core = "3.6.1"
 androidx-lifecycle = "2.9.1"
 androidx-material = "1.12.0"
