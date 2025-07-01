@@ -17,9 +17,9 @@ import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect
+import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect.*
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
-import io.github.aakira.napier.Napier
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
@@ -77,7 +77,7 @@ class CalendarViewModel(
             is CalendarIntent.ToggleCalendarBottomSheet -> toggleCalendarBottomSheet(intent.sheetState)
             is CalendarIntent.ClickAddScheduleButton -> navigateToAddSchedule(intent.date)
             is CalendarIntent.ClickTodoItemInBottomSheet -> postSideEffect(
-                CalendarSideEffect.NavigateToTodoDetail(
+                NavigateToTodoDetail(
                     id = intent.todoId,
                     contentType = ContentType.CALENDAR,
                 )
@@ -86,7 +86,7 @@ class CalendarViewModel(
             is CalendarIntent.ClickTodoUrl -> clickTodoUrl(intent.url)
             is CalendarIntent.ClickCalendarCell -> clickCalendarCell(intent.selectedDate)
             is CalendarIntent.ClickTodoItemInCalendar -> postSideEffect(
-                CalendarSideEffect.NavigateToTodoDetail(
+                NavigateToTodoDetail(
                     id = intent.todoId,
                     contentType = ContentType.CALENDAR,
                 )
@@ -99,6 +99,7 @@ class CalendarViewModel(
             CalendarIntent.ClickDatePickerOutSide -> dismissCalendarDatePicker()
             CalendarIntent.RefreshCalendar -> refreshCalendar()
             CalendarIntent.Initialize -> initialize()
+            is CalendarIntent.DragBottomSheetHandle -> draggingBottomSheetHandle()
         }
     }
 
@@ -111,6 +112,15 @@ class CalendarViewModel(
             initialize = currentState.monthSchedules.isEmpty(),
             isRefresh = true
         )
+    }
+
+    private fun draggingBottomSheetHandle() {
+        if(!currentState.isShowDatePicker) return
+        reduce {
+            copy(
+                isShowDatePicker = false
+            )
+        }
     }
 
     private fun navigateToAddSchedule(date: LocalDate) {

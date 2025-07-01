@@ -9,6 +9,7 @@ sealed interface CalendarIntent : UiIntent {
     data object ClickDatePicker : CalendarIntent
     data object ClickDatePickerOutSide : CalendarIntent
     data object ClickOutSideBottomSheet : CalendarIntent
+    data object DragBottomSheetHandle : CalendarIntent
     data class ClickAddScheduleButton(val date : LocalDate) : CalendarIntent
     data class ClickTodoItemInBottomSheet(val todoId : Long) : CalendarIntent
     data class ClickTodoUrl(val url : String?) : CalendarIntent

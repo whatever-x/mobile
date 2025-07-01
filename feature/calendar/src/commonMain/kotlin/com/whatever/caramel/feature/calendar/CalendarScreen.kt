@@ -140,7 +140,8 @@ internal fun CalendarScreen(
                 sheetContentColor = CaramelTheme.color.background.tertiary,
                 sheetDragHandle = {
                     CaramelBottomSheetHandle(
-                        bottomSheetState = state.bottomSheetState
+                        bottomSheetState = state.bottomSheetState,
+                        onDragSheetHandle = { onIntent(CalendarIntent.DragBottomSheetHandle) }
                     )
                 },
                 topBar = {
