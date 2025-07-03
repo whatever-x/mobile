@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -90,6 +91,35 @@ internal fun ContentDetailScreen(
                     onKeyboardAction = {},
                     readOnly = true,
                 )
+                if (state.scheduleDetail != null) {
+                    Row(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(top = CaramelTheme.spacing.xl)
+                                .padding(horizontal = CaramelTheme.spacing.xl),
+                        horizontalArrangement =
+                            Arrangement.spacedBy(
+                                space = CaramelTheme.spacing.s,
+                                alignment = Alignment.Start,
+                            ),
+                    ) {
+                        Icon(
+                            painter = painterResource(resource = Resources.Icon.ic_calendar_24),
+                            contentDescription = null,
+                        )
+                        Text(
+                            text = state.date,
+                            style = CaramelTheme.typography.body2.regular,
+                            color = CaramelTheme.color.text.primary,
+                        )
+                        Text(
+                            text = state.time,
+                            style = CaramelTheme.typography.body2.regular,
+                            color = CaramelTheme.color.text.primary,
+                        )
+                    }
+                }
                 HorizontalDivider(
                     modifier = Modifier.padding(vertical = CaramelTheme.spacing.xl),
                     color = CaramelTheme.color.divider.primary,
