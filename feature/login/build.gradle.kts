@@ -61,7 +61,7 @@ swiftPackageConfig {
         dependency {
             remotePackageVersion(
                 url = URI("https://github.com/kakao/kakao-ios-sdk"),
-                version = "2.23.0",
+                version = "2.24.4",
                 products = { add("KakaoSDK") }
             )
         }
