@@ -24,8 +24,9 @@ internal fun BirthdayStep(
     onDayChanged: (Int) -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier =
+            modifier
+                .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
@@ -36,10 +37,11 @@ internal fun BirthdayStep(
         )
 
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 24.dp),
-            contentAlignment = Alignment.Center
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 24.dp),
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = "${dateUiState.year}년 ${dateUiState.month}월 ${dateUiState.day}일",
@@ -49,9 +51,10 @@ internal fun BirthdayStep(
         }
 
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 40.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 40.dp),
         ) {
             CaramelDatePicker(
                 modifier = Modifier.align(alignment = Alignment.BottomCenter),

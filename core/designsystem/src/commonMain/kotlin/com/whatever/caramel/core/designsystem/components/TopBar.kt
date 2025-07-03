@@ -20,17 +20,19 @@ fun CaramelTopBar(
     trailingIcon: (@Composable () -> Unit)? = null,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(48.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(48.dp),
         contentAlignment = Alignment.Center,
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = CaramelTheme.spacing.xl),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = CaramelTheme.spacing.xl),
             horizontalArrangement = if (leadingContent == null) Arrangement.End else Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             if (leadingContent != null) {
                 leadingContent()

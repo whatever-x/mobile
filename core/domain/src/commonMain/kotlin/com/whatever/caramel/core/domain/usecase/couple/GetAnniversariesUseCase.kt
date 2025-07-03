@@ -4,18 +4,19 @@ import com.whatever.caramel.core.domain.repository.CoupleRepository
 import com.whatever.caramel.core.domain.vo.calendar.AnniversariesOnDate
 
 class GetAnniversariesUseCase(
-    private val coupleRepository: CoupleRepository
+    private val coupleRepository: CoupleRepository,
 ) {
     suspend operator fun invoke(
         startDate: String,
-        endDate: String
+        endDate: String,
     ): List<AnniversariesOnDate> {
         val coupleId = coupleRepository.getCoupleId()
-        return coupleRepository.getAnniversaries(
-            coupleId = coupleId,
-            startDate = startDate,
-            endDate = endDate
-        ).groupBy { it.date }
+        return coupleRepository
+            .getAnniversaries(
+                coupleId = coupleId,
+                startDate = startDate,
+                endDate = endDate,
+            ).groupBy { it.date }
             .map { (date, anniversaries) -> AnniversariesOnDate(date, anniversaries) }
     }
 }

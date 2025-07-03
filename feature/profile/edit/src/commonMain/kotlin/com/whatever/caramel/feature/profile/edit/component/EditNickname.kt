@@ -25,18 +25,19 @@ import org.jetbrains.compose.resources.painterResource
 internal fun EditNickname(
     modifier: Modifier = Modifier,
     nickname: String,
-    onNicknameChange: (String) -> Unit
+    onNicknameChange: (String) -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier =
+            modifier
+                .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xl)
+        verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xl),
     ) {
         Icon(
             painter = painterResource(Resources.Icon.ic_nickname_36),
             contentDescription = null,
-            tint = Color.Unspecified
+            tint = Color.Unspecified,
         )
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -46,35 +47,38 @@ internal fun EditNickname(
                 text = "사용할 닉네임을\n알려주세요",
                 textAlign = TextAlign.Center,
                 style = CaramelTheme.typography.heading1,
-                color = CaramelTheme.color.text.primary
+                color = CaramelTheme.color.text.primary,
             )
             Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.s))
             Text(
                 text = "최대 ${UserValidator.NICKNAME_MAX_LENGTH}글자",
                 style = CaramelTheme.typography.body3.regular,
-                color = CaramelTheme.color.text.secondary
+                color = CaramelTheme.color.text.secondary,
             )
         }
 
         BasicTextField(
-            modifier = Modifier
-                .padding(vertical = CaramelTheme.spacing.xl),
+            modifier =
+                Modifier
+                    .padding(vertical = CaramelTheme.spacing.xl),
             value = nickname,
             onValueChange = onNicknameChange,
             cursorBrush = SolidColor(CaramelTheme.color.fill.brand),
-            textStyle = CaramelTheme.typography.heading2.copy(
-                color = CaramelTheme.color.text.primary,
-                textAlign = if(nickname.isEmpty()){
-                    TextAlign.Start
-                } else {
-                    TextAlign.Center
-                }
-            ),
-            singleLine = true
+            textStyle =
+                CaramelTheme.typography.heading2.copy(
+                    color = CaramelTheme.color.text.primary,
+                    textAlign =
+                        if (nickname.isEmpty()) {
+                            TextAlign.Start
+                        } else {
+                            TextAlign.Center
+                        },
+                ),
+            singleLine = true,
         ) { innerTextField ->
             Box(
                 modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Box {
                     innerTextField()
@@ -82,7 +86,7 @@ internal fun EditNickname(
                         Text(
                             text = "연인간의 애칭도 좋아요",
                             style = CaramelTheme.typography.heading2,
-                            color = CaramelTheme.color.text.placeholder
+                            color = CaramelTheme.color.text.placeholder,
                         )
                     }
                 }

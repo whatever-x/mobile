@@ -77,10 +77,11 @@ internal fun ContentEditScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     val keyboardVisible = rememberKeyboardVisibilityState()
 
-    val sheetState = rememberStandardBottomSheetState(
-        initialValue = SheetValue.Hidden,
-        skipHiddenState = false
-    )
+    val sheetState =
+        rememberStandardBottomSheetState(
+            initialValue = SheetValue.Hidden,
+            skipHiddenState = false,
+        )
 
     LaunchedEffect(state.showDateDialog, state.showTimeDialog) {
         if (state.showDateDialog || state.showTimeDialog) {
@@ -91,25 +92,27 @@ internal fun ContentEditScreen(
     }
 
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .pointerInput(Unit) {
-                detectTapGestures { keyboardController?.hide() }
-            },
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectTapGestures { keyboardController?.hide() }
+                },
         containerColor = CaramelTheme.color.background.primary,
         topBar = {
             Column(modifier = Modifier.statusBarsPadding()) {
                 CaramelTopBar(
                     trailingIcon = {
                         Icon(
-                            modifier = Modifier.clickable {
-                                onIntent(ContentEditIntent.OnBackClicked)
-                            },
+                            modifier =
+                                Modifier.clickable {
+                                    onIntent(ContentEditIntent.OnBackClicked)
+                                },
                             painter = painterResource(resource = Resources.Icon.ic_cancel_24),
                             tint = CaramelTheme.color.icon.primary,
-                            contentDescription = "Close"
+                            contentDescription = "Close",
                         )
-                    }
+                    },
                 )
                 TitleTextField(
                     modifier = Modifier.padding(horizontal = CaramelTheme.spacing.xl),
@@ -121,17 +124,18 @@ internal fun ContentEditScreen(
                 )
                 HorizontalDivider(
                     modifier = Modifier.padding(vertical = CaramelTheme.spacing.xl),
-                    color = CaramelTheme.color.divider.primary
+                    color = CaramelTheme.color.divider.primary,
                 )
             }
         },
         bottomBar = {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = CaramelTheme.spacing.xl)
-                    .navigationBarsPadding()
-                    .imePadding()
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = CaramelTheme.spacing.xl)
+                        .navigationBarsPadding()
+                        .imePadding(),
             ) {
                 AnimatedVisibility(
                     visible = !keyboardVisible.value,
@@ -143,65 +147,72 @@ internal fun ContentEditScreen(
                     ) {
                         SelectableTagChipRow(
                             modifier = Modifier.fillMaxWidth(),
-                            tagChips = state.tags.map { TagChip(it.id, it.label) }
-                                .toImmutableList(),
-                            selectedTagChips = state.selectedTags.map { TagChip(it.id, it.label) }
-                                .toImmutableList(),
+                            tagChips =
+                                state.tags
+                                    .map { TagChip(it.id, it.label) }
+                                    .toImmutableList(),
+                            selectedTagChips =
+                                state.selectedTags
+                                    .map { TagChip(it.id, it.label) }
+                                    .toImmutableList(),
                             onTagChipClick = { tagChip ->
                                 onIntent(ContentEditIntent.ClickTag(Tag(tagChip.id, tagChip.label)))
-                            }
+                            },
                         )
                         Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.xl))
                         Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = CaramelTheme.spacing.xl),
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = CaramelTheme.spacing.xl),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
                             CreateModeSwitch(
                                 createMode = state.createMode,
                                 onCreateModeSelect = {
                                     onIntent(
                                         ContentEditIntent.OnCreateModeSelected(
-                                            it
-                                        )
+                                            it,
+                                        ),
                                     )
-                                }
+                                },
                             )
                             when (state.createMode) {
                                 CreateMode.MEMO -> {
                                     Text(
                                         text = "정해진 일정이 없어요",
                                         style = CaramelTheme.typography.body2.regular,
-                                        color = CaramelTheme.color.text.disabledPrimary
+                                        color = CaramelTheme.color.text.disabledPrimary,
                                     )
                                 }
 
                                 CreateMode.CALENDAR -> {
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s)
+                                        horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s),
                                     ) {
                                         Text(
-                                            modifier = Modifier.clickable {
-                                                onIntent(
-                                                    ContentEditIntent.ClickDate
-                                                )
-                                            },
+                                            modifier =
+                                                Modifier.clickable {
+                                                    onIntent(
+                                                        ContentEditIntent.ClickDate,
+                                                    )
+                                                },
                                             text = state.date,
                                             style = CaramelTheme.typography.body2.regular,
-                                            color = CaramelTheme.color.text.primary
+                                            color = CaramelTheme.color.text.primary,
                                         )
                                         Text(
-                                            modifier = Modifier.clickable {
-                                                onIntent(
-                                                    ContentEditIntent.ClickTime
-                                                )
-                                            },
+                                            modifier =
+                                                Modifier.clickable {
+                                                    onIntent(
+                                                        ContentEditIntent.ClickTime,
+                                                    )
+                                                },
                                             text = state.time,
                                             style = CaramelTheme.typography.body2.regular,
-                                            color = CaramelTheme.color.text.primary
+                                            color = CaramelTheme.color.text.primary,
                                         )
                                     }
                                 }
@@ -211,28 +222,29 @@ internal fun ContentEditScreen(
                     }
                 }
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = CaramelTheme.spacing.xl),
-                    horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.m)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = CaramelTheme.spacing.xl),
+                    horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.m),
                 ) {
                     Box(
-                        modifier = Modifier
-                            .size(50.dp)
-                            .clip(CaramelTheme.shape.xxl)
-                            .border(
-                                width = 1.dp,
-                                color = CaramelTheme.color.fill.quaternary,
-                                shape = CaramelTheme.shape.xxl,
-                            )
-                            .background(CaramelTheme.color.fill.inverse)
-                            .clickable { onIntent(ContentEditIntent.OnDeleteClicked) },
+                        modifier =
+                            Modifier
+                                .size(50.dp)
+                                .clip(CaramelTheme.shape.xxl)
+                                .border(
+                                    width = 1.dp,
+                                    color = CaramelTheme.color.fill.quaternary,
+                                    shape = CaramelTheme.shape.xxl,
+                                ).background(CaramelTheme.color.fill.inverse)
+                                .clickable { onIntent(ContentEditIntent.OnDeleteClicked) },
                         contentAlignment = Alignment.Center,
                     ) {
                         Icon(
                             painter = painterResource(Resources.Icon.ic_trash_24),
                             tint = CaramelTheme.color.icon.primary,
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
                     CaramelButton(
@@ -240,17 +252,18 @@ internal fun ContentEditScreen(
                         text = "저장",
                         buttonType = if (state.isSaveButtonEnable) CaramelButtonType.Enabled1 else CaramelButtonType.Disabled,
                         buttonSize = CaramelButtonSize.Large,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                 }
             }
-        }
+        },
     ) { contentPadding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(contentPadding)
-                .padding(horizontal = CaramelTheme.spacing.xl)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(contentPadding)
+                    .padding(horizontal = CaramelTheme.spacing.xl),
         ) {
             ContentTextArea(
                 modifier = Modifier.weight(1f),
@@ -270,57 +283,60 @@ internal fun ContentEditScreen(
                 when {
                     state.showDateDialog -> {
                         CaramelDatePicker(
-                            modifier = Modifier
-                                .padding(top = CaramelTheme.spacing.xxl)
-                                .align(Alignment.CenterHorizontally),
+                            modifier =
+                                Modifier
+                                    .padding(top = CaramelTheme.spacing.xxl)
+                                    .align(Alignment.CenterHorizontally),
                             dateUiState = DateUiState.from(state.dateTime),
                             onYearChanged = { year -> onIntent(ContentEditIntent.OnYearChanged(year)) },
                             onMonthChanged = { month ->
                                 onIntent(
                                     ContentEditIntent.OnMonthChanged(
-                                        month
-                                    )
+                                        month,
+                                    ),
                                 )
                             },
-                            onDayChanged = { day -> onIntent(ContentEditIntent.OnDayChanged(day)) }
+                            onDayChanged = { day -> onIntent(ContentEditIntent.OnDayChanged(day)) },
                         )
                     }
 
                     state.showTimeDialog -> {
                         CaramelTimePicker(
-                            modifier = Modifier
-                                .padding(top = CaramelTheme.spacing.xxl)
-                                .align(Alignment.CenterHorizontally),
+                            modifier =
+                                Modifier
+                                    .padding(top = CaramelTheme.spacing.xxl)
+                                    .align(Alignment.CenterHorizontally),
                             timeUiState = TimeUiState.from(state.dateTime),
                             onPeriodChanged = { period ->
                                 onIntent(
                                     ContentEditIntent.OnPeriodChanged(
-                                        period
-                                    )
+                                        period,
+                                    ),
                                 )
                             },
                             onHourChanged = { hour -> onIntent(ContentEditIntent.OnHourChanged(hour)) },
                             onMinuteChanged = { minute ->
                                 onIntent(
                                     ContentEditIntent.OnMinuteChanged(
-                                        minute
-                                    )
+                                        minute,
+                                    ),
                                 )
-                            }
+                            },
                         )
                     }
                 }
                 Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.l))
                 CaramelButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = CaramelTheme.spacing.xl),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(all = CaramelTheme.spacing.xl),
                     buttonType = CaramelButtonType.Enabled1,
                     buttonSize = CaramelButtonSize.Large,
                     text = "완료",
-                    onClick = { onIntent(ContentEditIntent.HideDateTimeDialog) }
+                    onClick = { onIntent(ContentEditIntent.HideDateTimeDialog) },
                 )
-            }
+            },
         )
     }
 }
@@ -338,4 +354,4 @@ fun rememberKeyboardVisibilityState(): State<Boolean> {
             }
     }
     return keyboardVisible
-} 
+}

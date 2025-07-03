@@ -7,7 +7,7 @@ import com.whatever.caramel.core.domain.repository.UserRepository
 class SignOutUseCase(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
-    private val coupleRepository: CoupleRepository
+    private val coupleRepository: CoupleRepository,
 ) {
     suspend operator fun invoke() {
         authRepository.signOut()

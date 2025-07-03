@@ -7,14 +7,10 @@ class ConnectCoupleUseCase(
     private val userRepository: UserRepository,
     private val coupleRepository: CoupleRepository,
 ) {
-
-    suspend operator fun invoke(
-        invitationCode: String,
-    ) {
+    suspend operator fun invoke(invitationCode: String) {
         val coupleRelationship = coupleRepository.connectCouple(invitationCode = invitationCode)
         val myInfo = coupleRelationship.myInfo
         coupleRepository.setCoupleId(coupleRelationship.info.id)
         userRepository.setUserStatus(myInfo.userStatus)
     }
-
 }

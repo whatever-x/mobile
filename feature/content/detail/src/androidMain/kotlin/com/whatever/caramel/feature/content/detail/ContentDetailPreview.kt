@@ -12,22 +12,24 @@ import com.whatever.caramel.feature.content.detail.mvi.ContentDetailState
 private fun ContentDetailScreenPreview() {
     CaramelTheme {
         ContentDetailScreen(
-            state = ContentDetailState(
-                contentType = ContentType.CALENDAR,
-                scheduleDetail = ScheduleDetail(
-                    scheduleId = 0L,
-                    startDateTime = "2025-07-01T10:05:17",
-                    endDateTime = "qwdasd",
-                    startDateTimezone = "timezone",
-                    endDateTimezone = "TODO()",
-                    isCompleted = true,
-                    parentScheduleId = 0L,
-                    title = "test",
-                    description = "asdasdsa",
-                    tags = emptyList()
-                )
-            ),
-            onIntent = {}
+            state =
+                ContentDetailState(
+                    contentType = ContentType.CALENDAR,
+                    scheduleDetail =
+                        ScheduleDetail(
+                            scheduleId = 0L,
+                            startDateTime = "2025-07-01T10:05:17",
+                            endDateTime = "qwdasd",
+                            startDateTimezone = "timezone",
+                            endDateTimezone = "TODO()",
+                            isCompleted = true,
+                            parentScheduleId = 0L,
+                            title = "test",
+                            description = "asdasdsa",
+                            tags = emptyList(),
+                        ),
+                ),
+            onIntent = {},
         )
     }
 }

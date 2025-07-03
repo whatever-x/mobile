@@ -6,16 +6,18 @@ import com.whatever.caramel.core.database.database.sample.SampleDatabase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-expect val platformDatabaseModule : Module
+expect val platformDatabaseModule: Module
 
-val databaseModule = module {
-    single {
-        get<DatabaseFactory>().create()
-            .setDriver(BundledSQLiteDriver())
-            .build()
-    }
+val databaseModule =
+    module {
+        single {
+            get<DatabaseFactory>()
+                .create()
+                .setDriver(BundledSQLiteDriver())
+                .build()
+        }
 
-    single {
-        get<SampleDatabase>().sampleDao
+        single {
+            get<SampleDatabase>().sampleDao
+        }
     }
-}

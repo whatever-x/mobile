@@ -9,11 +9,11 @@ import androidx.compose.ui.Modifier
 internal fun MainScaffold(
     modifier: Modifier = Modifier,
     bottomBar: @Composable () -> Unit,
-    content: @Composable (PaddingValues) -> Unit
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
-        bottomBar = bottomBar
+        bottomBar = bottomBar,
     ) { padding ->
         content(padding)
     }

@@ -19,7 +19,6 @@ import kotlin.coroutines.EmptyCoroutineContext
 abstract class BaseViewModel<S : UiState, SE : UiSideEffect, I : UiIntent>(
     val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
     private val initialState: S by lazy { createInitialState(savedStateHandle) }
 
     protected abstract fun createInitialState(savedStateHandle: SavedStateHandle): S
@@ -35,9 +34,10 @@ abstract class BaseViewModel<S : UiState, SE : UiSideEffect, I : UiIntent>(
     protected val currentState: S
         get() = _state.value
 
-    protected val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        handleClientException(throwable)
-    }
+    protected val coroutineExceptionHandler =
+        CoroutineExceptionHandler { _, throwable ->
+            handleClientException(throwable)
+        }
 
     fun intent(intent: I) {
         launch {
@@ -58,11 +58,10 @@ abstract class BaseViewModel<S : UiState, SE : UiSideEffect, I : UiIntent>(
         context: CoroutineContext = EmptyCoroutineContext,
         start: CoroutineStart = CoroutineStart.DEFAULT,
         crossinline action: suspend CoroutineScope.() -> Unit,
-    ): Job {
-        return viewModelScope.launch(context + coroutineExceptionHandler, start = start) {
+    ): Job =
+        viewModelScope.launch(context + coroutineExceptionHandler, start = start) {
             action()
         }
-    }
 
     open fun handleClientException(throwable: Throwable) {
         Napier.d { throwable.message.toString() }

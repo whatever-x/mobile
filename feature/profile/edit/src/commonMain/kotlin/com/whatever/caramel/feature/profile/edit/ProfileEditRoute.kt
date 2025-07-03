@@ -15,7 +15,7 @@ internal fun ProfileEditRoute(
     viewModel: ProfileEditViewModel = koinViewModel(),
     popBackStack: () -> Unit,
     showErrorDialog: (String, String?) -> Unit,
-    showErrorToast: (String) -> Unit
+    showErrorToast: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val hapticController: HapticController = getKoin().get()
@@ -24,14 +24,16 @@ internal fun ProfileEditRoute(
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is ProfileEditSideEffect.PopBackStack -> popBackStack()
-                ProfileEditSideEffect.PerformHapticFeedback -> hapticController.performImpact(
-                    HapticStyle.GestureThresholdActivate
-                )
+                ProfileEditSideEffect.PerformHapticFeedback ->
+                    hapticController.performImpact(
+                        HapticStyle.GestureThresholdActivate,
+                    )
 
-                is ProfileEditSideEffect.ShowErrorDialog -> showErrorDialog(
-                    sideEffect.message,
-                    sideEffect.description
-                )
+                is ProfileEditSideEffect.ShowErrorDialog ->
+                    showErrorDialog(
+                        sideEffect.message,
+                        sideEffect.description,
+                    )
 
                 is ProfileEditSideEffect.ShowErrorToast -> showErrorToast(sideEffect.message)
             }
@@ -40,6 +42,6 @@ internal fun ProfileEditRoute(
 
     ProfileEditScreen(
         state = state,
-        onIntent = { intent -> viewModel.intent(intent) }
+        onIntent = { intent -> viewModel.intent(intent) },
     )
 }

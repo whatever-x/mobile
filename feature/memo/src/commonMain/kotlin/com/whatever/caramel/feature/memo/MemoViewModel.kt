@@ -17,12 +17,9 @@ import kotlinx.collections.immutable.toImmutableList
 class MemoViewModel(
     private val getMemosUseCase: GetMemosUseCase,
     private val getTagUseCase: GetTagUseCase,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle) {
-
-    override fun createInitialState(savedStateHandle: SavedStateHandle): MemoState {
-        return MemoState()
-    }
+    override fun createInitialState(savedStateHandle: SavedStateHandle): MemoState = MemoState()
 
     override suspend fun handleIntent(intent: MemoIntent) {
         when (intent) {
@@ -40,28 +37,30 @@ class MemoViewModel(
             copy(
                 isMemoLoading = false,
                 isRefreshing = false,
-                isTagLoading = false
+                isTagLoading = false,
             )
         }
         if (throwable is CaramelException) {
             when (throwable.errorUiType) {
-                ErrorUiType.TOAST -> postSideEffect(
-                    MemoSideEffect.ShowErrorToast(
-                        message = throwable.message
+                ErrorUiType.TOAST ->
+                    postSideEffect(
+                        MemoSideEffect.ShowErrorToast(
+                            message = throwable.message,
+                        ),
                     )
-                )
-                ErrorUiType.DIALOG -> postSideEffect(
-                    MemoSideEffect.ShowErrorDialog(
-                        message = throwable.message,
-                        description = throwable.description
+                ErrorUiType.DIALOG ->
+                    postSideEffect(
+                        MemoSideEffect.ShowErrorDialog(
+                            message = throwable.message,
+                            description = throwable.description,
+                        ),
                     )
-                )
             }
         } else {
             postSideEffect(
                 MemoSideEffect.ShowErrorToast(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
-                )
+                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다.",
+                ),
             )
         }
     }
@@ -76,11 +75,11 @@ class MemoViewModel(
                     memos = persistentListOf(),
                     tags = persistentListOf(),
                     selectedTag = null,
-                    cursor = null
+                    cursor = null,
                 )
             }
             getMemos()
-            getTags()   
+            getTags()
         }
     }
 
@@ -93,7 +92,7 @@ class MemoViewModel(
                 copy(
                     isTagLoading = false,
                     tags = combinedTags.toImmutableList(),
-                    selectedTag = combinedTags.first()
+                    selectedTag = combinedTags.first(),
                 )
             }
         }
@@ -117,7 +116,7 @@ class MemoViewModel(
                 isMemoLoading = true,
                 selectedTag = intent.tag,
                 cursor = null,
-                memos = persistentListOf()
+                memos = persistentListOf(),
             )
         }
         getMemos()
@@ -129,7 +128,7 @@ class MemoViewModel(
                 isRefreshing = true,
                 isMemoLoading = true,
                 cursor = null,
-                memos = persistentListOf()
+                memos = persistentListOf(),
             )
         }
         getMemos()
@@ -137,22 +136,24 @@ class MemoViewModel(
 
     private fun getMemos() {
         launch {
-            val newMemos = getMemosUseCase(
-                size = 10,
-                cursor = currentState.cursor,
-                tagId = currentState.selectedTag?.id
-            )
-            val updatedMemos = if (newMemos.memos.isEmpty()) {
-                currentState.memos
-            } else {
-                currentState.memos + newMemos.memos
-            }
+            val newMemos =
+                getMemosUseCase(
+                    size = 10,
+                    cursor = currentState.cursor,
+                    tagId = currentState.selectedTag?.id,
+                )
+            val updatedMemos =
+                if (newMemos.memos.isEmpty()) {
+                    currentState.memos
+                } else {
+                    currentState.memos + newMemos.memos
+                }
             reduce {
                 copy(
                     isMemoLoading = false,
                     isRefreshing = false,
                     cursor = newMemos.nextCursor,
-                    memos = updatedMemos.toImmutableList()
+                    memos = updatedMemos.toImmutableList(),
                 )
             }
         }

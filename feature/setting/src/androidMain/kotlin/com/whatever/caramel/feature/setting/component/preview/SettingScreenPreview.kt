@@ -11,11 +11,11 @@ import com.whatever.caramel.feature.setting.component.data.SettingScreenPreviewD
 @Preview
 @Composable
 private fun SettingScreenPreview(
-    @PreviewParameter(SettingScreenPreviewDataProvider::class) data: SettingScreenPreviewData
+    @PreviewParameter(SettingScreenPreviewDataProvider::class) data: SettingScreenPreviewData,
 ) {
     CaramelTheme {
         SettingScreen(
-            state = data.state
+            state = data.state,
         ) { }
     }
 }

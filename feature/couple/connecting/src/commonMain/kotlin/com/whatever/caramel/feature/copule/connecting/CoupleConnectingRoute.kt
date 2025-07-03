@@ -24,6 +24,6 @@ internal fun CoupleConnectingRoute(
 
     CoupleConnectingScreen(
         state = state,
-        onIntent = { intent -> viewModel.intent(intent) }
+        onIntent = { intent -> viewModel.intent(intent) },
     )
 }

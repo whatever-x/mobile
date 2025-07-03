@@ -13,7 +13,7 @@ actual val firebaseMessagingModule: Module =
         single<FcmTokenProvider> {
             FcmTokenProviderImpl(
                 fcmTokenBridge = FcmTokenBridge(),
-                remoteFirebaseControllerDataSource = get()
+                remoteFirebaseControllerDataSource = get(),
             )
         }
     }

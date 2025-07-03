@@ -16,24 +16,24 @@ data class CalendarState(
     val pageIndex: Int,
     val today: LocalDate = DateUtil.today(),
     val selectedDate: LocalDate = DateUtil.today(),
-    val pickerDate : DateUiState = DateUiState.currentDate(),
+    val pickerDate: DateUiState = DateUiState.currentDate(),
     val isShowDatePicker: Boolean = false,
     val bottomSheetState: BottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
     val monthSchedules: List<DaySchedule> = emptyList(),
-    val isRefreshing: Boolean = false
+    val isRefreshing: Boolean = false,
 ) : UiState
 
 enum class BottomSheetState {
     HIDDEN,
     EXPANDED,
-    PARTIALLY_EXPANDED
+    PARTIALLY_EXPANDED,
 }
 
 data class DaySchedule(
     val date: LocalDate,
     val todos: List<Todo> = emptyList(),
     val holidays: List<Holiday> = emptyList(),
-    val anniversaries: List<Anniversary> = emptyList()
+    val anniversaries: List<Anniversary> = emptyList(),
 ) {
     val totalScheduleCount: Int
         get() = todos.size + holidays.size + anniversaries.size

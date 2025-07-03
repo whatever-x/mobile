@@ -15,9 +15,8 @@ import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateSideEffect
 import dev.icerock.moko.permissions.compose.PermissionsControllerFactory
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
-import org.koin.compose.getKoin
-import io.github.aakira.napier.Napier
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.getKoin
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -25,13 +24,14 @@ import org.koin.core.parameter.parametersOf
 @Composable
 internal fun ProfileCreateRoute(
     permissionsControllerFactory: PermissionsControllerFactory = rememberPermissionsControllerFactory(),
-    viewModel: ProfileCreateViewModel = koinViewModel {
-        parametersOf(permissionsControllerFactory.createPermissionsController())
-    },
+    viewModel: ProfileCreateViewModel =
+        koinViewModel {
+            parametersOf(permissionsControllerFactory.createPermissionsController())
+        },
     navigateToLogin: () -> Unit,
     navigateToStartDestination: (UserStatus) -> Unit,
     showErrorToast: (String) -> Unit,
-    showErrorDialog: (String, String?) -> Unit
+    showErrorDialog: (String, String?) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val hapticController: HapticController = getKoin().get()
@@ -59,6 +59,6 @@ internal fun ProfileCreateRoute(
 
     ProfileCreateScreen(
         state = state,
-        onIntent = { intent -> viewModel.intent(intent) }
+        onIntent = { intent -> viewModel.intent(intent) },
     )
 }

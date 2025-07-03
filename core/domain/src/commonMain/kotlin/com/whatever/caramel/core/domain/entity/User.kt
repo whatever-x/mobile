@@ -15,20 +15,21 @@ data class User(
 ) {
     val hasId get() = id != null
     val requireId
-        get() = id ?: throw CaramelException(
-            code = AppErrorCode.NULL_VALUE,
-            message = "사용자 ID가 존재하지 않습니다",
-            debugMessage = null,
-            errorUiType = ErrorUiType.TOAST
-        )
+        get() =
+            id ?: throw CaramelException(
+                code = AppErrorCode.NULL_VALUE,
+                message = "사용자 ID가 존재하지 않습니다",
+                debugMessage = null,
+                errorUiType = ErrorUiType.TOAST,
+            )
 
     val hasProfile get() = userProfile != null
     val requireProfile: UserProfile
-        get() = userProfile ?: throw CaramelException(
-            code = AppErrorCode.NULL_VALUE,
-            message = "사용자 프로필이 존재하지 않습니다",
-            debugMessage = null,
-            errorUiType = ErrorUiType.TOAST
-        )
+        get() =
+            userProfile ?: throw CaramelException(
+                code = AppErrorCode.NULL_VALUE,
+                message = "사용자 프로필이 존재하지 않습니다",
+                debugMessage = null,
+                errorUiType = ErrorUiType.TOAST,
+            )
 }
-

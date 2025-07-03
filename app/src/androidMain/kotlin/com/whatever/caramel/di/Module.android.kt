@@ -7,7 +7,8 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 actual val appViewModelModule: Module
-    get() = module {
-        viewModelOf(::CaramelViewModel)
-        single<NotificationIntentProvider> { AppNotificationIntentProvider() }
-    }
+    get() =
+        module {
+            viewModelOf(::CaramelViewModel)
+            single<NotificationIntentProvider> { AppNotificationIntentProvider() }
+        }

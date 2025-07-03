@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class EditUserProfileResponse(
     @SerialName("id") val id: Long,
     @SerialName("nickname") val nickname: String,
-    @SerialName("birthday") val birthday: String
+    @SerialName("birthday") val birthday: String,
 )

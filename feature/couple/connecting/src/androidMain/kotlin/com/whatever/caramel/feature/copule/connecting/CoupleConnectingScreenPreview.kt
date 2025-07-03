@@ -11,7 +11,7 @@ private fun ConnectingScreenPreview() {
     CaramelTheme {
         CoupleConnectingScreen(
             state = CoupleConnectingState(),
-            onIntent = {}
+            onIntent = {},
         )
     }
 }

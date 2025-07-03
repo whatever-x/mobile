@@ -12,7 +12,7 @@ data class CoupleDetailResponse(
     @SerialName("sharedMessage") val sharedMessage: String?,
     @SerialName("status") val status: CoupleStatusDto,
     @SerialName("myInfo") val myInfo: CoupleUserInfoDto,
-    @SerialName("partnerInfo") val partnerInfo: CoupleUserInfoDto
+    @SerialName("partnerInfo") val partnerInfo: CoupleUserInfoDto,
 )
 
 @Serializable

@@ -18,8 +18,11 @@ interface SampleDao {
 
     @Transaction
     @Upsert
-    suspend fun insertSampleWithDetail(sampleEntity: SampleEntity, sampleDetailEntity: List<SampleDetailEntity>)
+    suspend fun insertSampleWithDetail(
+        sampleEntity: SampleEntity,
+        sampleDetailEntity: List<SampleDetailEntity>,
+    )
 
     @Query("SELECT * FROM sample")
-    suspend fun getAllSamples() : List<SampleEntityWithDetail>
+    suspend fun getAllSamples(): List<SampleEntityWithDetail>
 }

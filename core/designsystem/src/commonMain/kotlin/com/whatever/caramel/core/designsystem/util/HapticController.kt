@@ -6,11 +6,9 @@ package com.whatever.caramel.core.designsystem.util
  * @since 2025.04.02
  */
 interface HapticController {
-
     fun performImpact(style: HapticStyle)
-
 }
 
 enum class HapticStyle {
-    GestureThresholdActivate
+    GestureThresholdActivate,
 }

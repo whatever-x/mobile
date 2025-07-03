@@ -8,24 +8,25 @@ import com.whatever.caramel.core.remote.datasource.RemoteBalanceGameDataSource
 import com.whatever.caramel.core.remote.dto.balanceGame.request.ChooseBalanceGameRequest
 
 class BalanceGameRepositoryImpl(
-    private val remoteBalanceGameDataSource: RemoteBalanceGameDataSource
-): BalanceGameRepository {
-
-    override suspend fun getTodayBalanceGame(): BalanceGameResult {
-        return safeCall {
+    private val remoteBalanceGameDataSource: RemoteBalanceGameDataSource,
+) : BalanceGameRepository {
+    override suspend fun getTodayBalanceGame(): BalanceGameResult =
+        safeCall {
             remoteBalanceGameDataSource.fetchTodayBalanceGame().toBalanceGameResult()
         }
-    }
 
-    override suspend fun submitOption(gameId: Long, optionId: Long): BalanceGameResult {
-        return safeCall {
-            remoteBalanceGameDataSource.postChoiceOption(
-                gameId = gameId,
-                request = ChooseBalanceGameRequest(
-                    optionId = optionId
-                )
-            ).toBalanceGameResult()
+    override suspend fun submitOption(
+        gameId: Long,
+        optionId: Long,
+    ): BalanceGameResult =
+        safeCall {
+            remoteBalanceGameDataSource
+                .postChoiceOption(
+                    gameId = gameId,
+                    request =
+                        ChooseBalanceGameRequest(
+                            optionId = optionId,
+                        ),
+                ).toBalanceGameResult()
         }
-    }
-
 }

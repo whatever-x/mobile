@@ -9,12 +9,12 @@ import com.whatever.caramel.feature.profile.edit.ProfileEditScreen
 @Preview
 @Composable
 private fun ProfileEditPreview(
-    @PreviewParameter(ProfileEditPreviewDataProvider::class) data: ProfileEditPreviewData
+    @PreviewParameter(ProfileEditPreviewDataProvider::class) data: ProfileEditPreviewData,
 ) {
     CaramelTheme {
         ProfileEditScreen(
             state = data.state,
-            onIntent = { }
+            onIntent = { },
         )
     }
 }

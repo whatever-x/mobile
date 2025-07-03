@@ -1,6 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.FileInputStream
-import java.time.LocalDate
 import java.util.Properties
 
 plugins {
@@ -101,7 +100,7 @@ android {
         buildConfigField(
             type = "String",
             name = appsFlyerKey,
-            value = properties.getProperty(appsFlyerKey)
+            value = properties.getProperty(appsFlyerKey),
         )
     }
 
@@ -134,7 +133,7 @@ android {
             signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
 
@@ -143,7 +142,7 @@ android {
             isDebuggable = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }

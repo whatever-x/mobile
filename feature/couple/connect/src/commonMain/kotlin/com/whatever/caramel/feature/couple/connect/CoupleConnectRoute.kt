@@ -16,7 +16,7 @@ internal fun CoupleConnectRoute(
     navigateToMain: () -> Unit,
     navigateToInviteCouple: () -> Unit,
     showErrorDialog: (String, String?) -> Unit,
-    showErrorToast: (String) -> Unit
+    showErrorToast: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
@@ -31,7 +31,7 @@ internal fun CoupleConnectRoute(
                     showSnackbarMessage(
                         coroutineScope = scope,
                         message = sideEffect.message,
-                        snackbarHostState = snackBarHostState
+                        snackbarHostState = snackBarHostState,
                     )
                 }
                 is CoupleConnectSideEffect.ShowErrorDialog -> showErrorDialog(sideEffect.message, sideEffect.description)
@@ -42,6 +42,6 @@ internal fun CoupleConnectRoute(
 
     CoupleConnectScreen(
         state = state,
-        onIntent = { intent -> viewModel.intent(intent) }
+        onIntent = { intent -> viewModel.intent(intent) },
     )
 }

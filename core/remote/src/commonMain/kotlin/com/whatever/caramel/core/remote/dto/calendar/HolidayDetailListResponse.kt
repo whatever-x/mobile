@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class HolidayDetailListResponse(
-    @SerialName("holidayList") val holidayList: List<HolidayDetailDto>
+    @SerialName("holidayList") val holidayList: List<HolidayDetailDto>,
 )
 
 @Serializable
@@ -14,5 +14,5 @@ data class HolidayDetailDto(
     @SerialName("type") val type: String,
     @SerialName("date") val date: String,
     @SerialName("name") val name: String,
-    @SerialName("isHoliday") val isHoliday: Boolean
+    @SerialName("isHoliday") val isHoliday: Boolean,
 )

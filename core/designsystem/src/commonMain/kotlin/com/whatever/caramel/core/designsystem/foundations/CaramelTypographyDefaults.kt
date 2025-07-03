@@ -15,11 +15,11 @@ internal fun IbmPlexSans(): FontFamily =
         Font(
             resource = Res.font.ibm_plex_sans_semi_bold,
             weight = FontWeight.W600,
-            style = FontStyle.Normal
+            style = FontStyle.Normal,
         ),
         Font(
             resource = Res.font.ibm_plex_sans_text,
             weight = FontWeight(450),
-            style = FontStyle.Normal
+            style = FontStyle.Normal,
         ),
     )

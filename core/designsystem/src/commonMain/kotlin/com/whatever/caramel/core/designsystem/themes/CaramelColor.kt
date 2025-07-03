@@ -28,7 +28,7 @@ data class CaramelColor(
     val fill: FillColor,
     val divider: DividerColor,
     val icon: IconColor,
-    val skeleton : SkeletonColor
+    val skeleton: SkeletonColor,
 ) {
     @Immutable
     data class TextColor(
@@ -42,19 +42,19 @@ data class CaramelColor(
         val placeholder: Color = Neutral400,
         val labelBrand: Color = Orange700,
         val labelAccent1: Color = Red500,
-        val labelAccent2: Color = Green600
+        val labelAccent2: Color = Green600,
     )
 
     @Immutable
     data class BackgroundColor(
         val primary: Color = Neutral100,
         val secondary: Color = Orange100,
-        val tertiary: Color = White100
+        val tertiary: Color = White100,
     )
 
     @Immutable
     data class DimColor(
-        val primary: Color = Alpha100
+        val primary: Color = Alpha100,
     )
 
     @Immutable
@@ -88,7 +88,7 @@ data class CaramelColor(
         val brand: Color = Orange500,
         val inverse: Color = White100,
         val disabledPrimary: Color = Neutral400,
-        val disabledBrand: Color = Orange400
+        val disabledBrand: Color = Orange400,
     )
 
     @Immutable
@@ -98,14 +98,15 @@ data class CaramelColor(
     )
 
     companion object {
-        fun defaultColor(): CaramelColor = CaramelColor(
-            text = TextColor1(),
-            background = BackgroundColor(),
-            alpha = DimColor(),
-            fill = FillColor(),
-            divider = DividerColor(),
-            icon = IconColor(),
-            skeleton = SkeletonColor()
-        )
+        fun defaultColor(): CaramelColor =
+            CaramelColor(
+                text = TextColor1(),
+                background = BackgroundColor(),
+                alpha = DimColor(),
+                fill = FillColor(),
+                divider = DividerColor(),
+                icon = IconColor(),
+                skeleton = SkeletonColor(),
+            )
     }
 }

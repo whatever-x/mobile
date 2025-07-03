@@ -37,18 +37,19 @@ internal fun CoupleInviteRoute(
                     showSnackbarMessage(
                         snackbarHostState = snackbarHostState,
                         coroutineScope = scope,
-                        message = "초대 코드를 복사했습니다"
+                        message = "초대 코드를 복사했습니다",
                     )
                     clipboard.setClipEntry(
-                        clipEntry = createPlatformClipEntry(
-                            inviteCode = sideEffect.inviteCode
-                        )
+                        clipEntry =
+                            createPlatformClipEntry(
+                                inviteCode = sideEffect.inviteCode,
+                            ),
                     )
                 }
                 is CoupleInviteSideEffect.ShareOfInvite -> {
-                    shareService.shareContents( // @ham2174 FIXME : 딥링크 ULR 개선
+                    shareService.shareContents(
                         title = "연인이 카라멜에 초대했어요!\n초대를 수락하고 일정과 메모를 공유해보세요",
-                        url = "https://caramel.onelink.me/7nAT/2l5wk4ab?p1=${sideEffect.inviteCode}"
+                        url = "https://caramel.onelink.me/7nAT/2l5wk4ab?p1=${sideEffect.inviteCode}",
                     )
                 }
                 is CoupleInviteSideEffect.ShowErrorDialog -> showErrorDialog(sideEffect.message, sideEffect.description)
@@ -59,6 +60,6 @@ internal fun CoupleInviteRoute(
 
     CoupleInviteScreen(
         state = state,
-        onIntent = { intent -> viewModel.intent(intent) }
+        onIntent = { intent -> viewModel.intent(intent) },
     )
 }

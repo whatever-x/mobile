@@ -15,7 +15,7 @@ data object SettingRoute
 fun NavController.navigateToSetting(navOptions: NavOptions? = null) {
     navigate(
         route = SettingRoute,
-        navOptions = navOptions
+        navOptions = navOptions,
     )
 }
 
@@ -26,7 +26,7 @@ fun NavGraphBuilder.settingScreen(
     navigateToEditBirthday: (String) -> Unit,
     navigateToEditNickName: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
-    showErrorToast: (String) -> Unit
+    showErrorToast: (String) -> Unit,
 ) {
     composable<SettingRoute>(
         exitTransition = { ExitTransition.None },
@@ -39,7 +39,7 @@ fun NavGraphBuilder.settingScreen(
             navigateToEditCountDown = navigateToEditCountDown,
             navigateToLogin = navigateToLogin,
             showErrorDialog = showErrorDialog,
-            showErrorToast = showErrorToast
+            showErrorToast = showErrorToast,
         )
     }
 }

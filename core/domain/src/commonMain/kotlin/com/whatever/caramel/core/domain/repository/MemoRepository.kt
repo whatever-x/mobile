@@ -8,14 +8,20 @@ import com.whatever.caramel.core.domain.vo.memo.MemoWithCursor
 
 interface MemoRepository {
     suspend fun createMemo(parameter: MemoParameter): MemoMetadata
+
     suspend fun getMemos(
         size: Int?,
         cursor: String?,
         sortType: String?,
-        tagId: Long?
+        tagId: Long?,
     ): MemoWithCursor
 
-    suspend fun updateMemo(memoId: Long, parameter: MemoEditParameter)
+    suspend fun updateMemo(
+        memoId: Long,
+        parameter: MemoEditParameter,
+    )
+
     suspend fun deleteMemo(memoId: Long)
+
     suspend fun getMemo(memoId: Long): Memo
 }

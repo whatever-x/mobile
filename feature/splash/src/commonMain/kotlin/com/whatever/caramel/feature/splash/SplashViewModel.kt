@@ -12,9 +12,8 @@ import kotlinx.coroutines.delay
 class SplashViewModel(
     private val refreshUserSessionUseCase: RefreshUserSessionUseCase,
     private val deepLinkHandler: DeepLinkHandler,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SplashState, SplashSideEffect, SplashIntent>(savedStateHandle) {
-
     init {
         launch {
             delay(1000L)
@@ -29,10 +28,7 @@ class SplashViewModel(
         postSideEffect(SplashSideEffect.NavigateToLogin)
     }
 
-    override fun createInitialState(savedStateHandle: SavedStateHandle): SplashState {
-        return SplashState()
-    }
+    override fun createInitialState(savedStateHandle: SavedStateHandle): SplashState = SplashState()
 
     override suspend fun handleIntent(intent: SplashIntent) {}
-
 }

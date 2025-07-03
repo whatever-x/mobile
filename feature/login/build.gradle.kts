@@ -1,5 +1,4 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import io.github.frankois944.spmForKmp.definition.SwiftDependency
 import java.net.URI
 import java.util.Locale
 
@@ -20,7 +19,7 @@ kotlin {
         listOf(
             iosX64(),
             iosArm64(),
-            iosSimulatorArm64()
+            iosSimulatorArm64(),
         ).forEach { iosTarget ->
             iosTarget.compilations {
                 val main by getting {
@@ -62,7 +61,7 @@ swiftPackageConfig {
             remotePackageVersion(
                 url = URI("https://github.com/kakao/kakao-ios-sdk"),
                 version = "2.24.4",
-                products = { add("KakaoSDK") }
+                products = { add("KakaoSDK") },
             )
         }
     }
@@ -79,6 +78,6 @@ android {
         val kakaoNativeAppKey = gradleLocalProperties(rootDir, providers).getProperty("KAKAO_NATIVE_APP_KEY")
         buildConfigField("String", "KAKAO_NATIVE_APP_KEY", kakaoNativeAppKey)
 
-        manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] = kakaoNativeAppKey.replace("\"","")
+        manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] = kakaoNativeAppKey.replace("\"", "")
     }
 }

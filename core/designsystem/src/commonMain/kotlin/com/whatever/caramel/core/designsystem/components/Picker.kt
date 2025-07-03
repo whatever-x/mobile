@@ -36,7 +36,7 @@ import kotlin.math.abs
 fun <T> rememberPickerState(initialItem: T) = remember { PickerState(initialItem) }
 
 class PickerState<T>(
-    initialItem: T
+    initialItem: T,
 ) {
     var selectedItem by mutableStateOf(initialItem)
 }
@@ -49,7 +49,7 @@ class PickerState<T>(
  */
 enum class PickerScrollMode {
     LOOPING,
-    BOUNDED
+    BOUNDED,
 }
 
 /**
@@ -88,7 +88,7 @@ fun <T> CaramelTextWheelPicker(
         items: List<T>,
         state: PickerState<T>,
         visibleItemsCount: Int,
-        scrollMode: PickerScrollMode
+        scrollMode: PickerScrollMode,
     ): Int =
         when (scrollMode) {
             BOUNDED -> items.indexOf(state.selectedItem).coerceAtLeast(0)
@@ -102,22 +102,22 @@ fun <T> CaramelTextWheelPicker(
             }
         }
 
-    val listState = rememberLazyListState(
-        initialFirstVisibleItemIndex =
-            getInitialFirstVisibleItemIndex(items, state, visibleItemsCount, scrollMode)
-    )
+    val listState =
+        rememberLazyListState(initialFirstVisibleItemIndex = getInitialFirstVisibleItemIndex(items, state, visibleItemsCount, scrollMode))
     val flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
 
     // @ham2174 TODO : MVP 이후 리스트 업데이트 시 이전 선택된 값과 가까운 인덱스로 변경하는 로직 구현
     val selectedItemIndex by remember {
         derivedStateOf {
-            val center = listState.layoutInfo.viewportStartOffset +
+            val center =
+                listState.layoutInfo.viewportStartOffset +
                     (listState.layoutInfo.viewportEndOffset - listState.layoutInfo.viewportStartOffset) / 2
 
-            listState.layoutInfo.visibleItemsInfo.minByOrNull { item ->
-                val itemCenter = item.offset + item.size / 2
-                abs(itemCenter - center)
-            }?.index ?: 0
+            listState.layoutInfo.visibleItemsInfo
+                .minByOrNull { item ->
+                    val itemCenter = item.offset + item.size / 2
+                    abs(itemCenter - center)
+                }?.index ?: 0
         }
     }
 
@@ -131,87 +131,100 @@ fun <T> CaramelTextWheelPicker(
     }
 
     SubcomposeLayout(modifier = modifier) { constraints ->
-        val itemPlaceable = subcompose("item") {
-            Text(
-                text = items.firstOrNull()?.toString().orEmpty(),
-                style = textStyle,
-            )
-        }.first().measure(constraints)
+        val itemPlaceable =
+            subcompose("item") {
+                Text(
+                    text = items.firstOrNull()?.toString().orEmpty(),
+                    style = textStyle,
+                )
+            }.first().measure(constraints)
 
         val itemHeight = itemPlaceable.measuredHeight.toDp()
         val itemSpace = itemSpacing + dividerThickness
         val contentVerticalPadding = itemHeight + itemSpace
-        val lazyColumnHeight =
-            (itemHeight * visibleItemsCount) + (itemSpace * (visibleItemsCount - 1))
+        val lazyColumnHeight = (itemHeight * visibleItemsCount) + (itemSpace * (visibleItemsCount - 1))
 
-        val lazyColumnPlaceable = subcompose("list") {
-            Box {
-                LazyColumn(
-                    modifier = Modifier
-                        .align(alignment = Alignment.Center)
-                        .height(height = lazyColumnHeight),
-                    contentPadding = PaddingValues(
-                        vertical = when (scrollMode) {
-                            LOOPING -> 0.dp
-                            BOUNDED -> contentVerticalPadding
+        val lazyColumnPlaceable =
+            subcompose("list") {
+                Box {
+                    LazyColumn(
+                        modifier =
+                            Modifier
+                                .align(alignment = Alignment.Center)
+                                .height(height = lazyColumnHeight),
+                        contentPadding =
+                            PaddingValues(
+                                vertical =
+                                    when (scrollMode) {
+                                        LOOPING -> 0.dp
+                                        BOUNDED -> contentVerticalPadding
+                                    },
+                            ),
+                        state = listState,
+                        flingBehavior = flingBehavior,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement =
+                            Arrangement.spacedBy(
+                                space = itemSpace,
+                            ),
+                    ) {
+                        items(
+                            count =
+                                when (scrollMode) {
+                                    LOOPING -> Int.MAX_VALUE
+                                    BOUNDED -> items.size
+                                },
+                            key = { it -> getItem(it).hashCode() },
+                        ) { index ->
+                            Text(
+                                text = getItem(index).toString(),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                style = textStyle,
+                                textAlign = TextAlign.Center,
+                                color =
+                                    if (index == selectedItemIndex) {
+                                        CaramelTheme.color.text.primary
+                                    } else {
+                                        CaramelTheme.color.text.tertiary
+                                    },
+                            )
                         }
-                    ),
-                    state = listState,
-                    flingBehavior = flingBehavior,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(
-                        space = itemSpace
-                    ),
-                ) {
-                    items(
-                        count = when (scrollMode) {
-                            LOOPING -> Int.MAX_VALUE
-                            BOUNDED -> items.size
-                        },
-                        key = { it -> getItem(it).hashCode() },
-                    ) { index ->
-                        Text(
-                            text = getItem(index).toString(),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            style = textStyle,
-                            textAlign = TextAlign.Center,
-                            color = if (index == selectedItemIndex) {
-                                CaramelTheme.color.text.primary
-                            } else {
-                                CaramelTheme.color.text.tertiary
-                            },
+                    }
+
+                    if (dividerThickness != 0.dp) {
+                        val visibleItemsMiddle = visibleItemsCount / 2
+                        val topDividerOffset =
+                            ((itemHeight * visibleItemsMiddle) + (itemSpace * visibleItemsMiddle)) -
+                                (itemSpace / 2) - (dividerThickness / 2)
+                        val bottomDividerOffset =
+                            (
+                                (itemHeight * (visibleItemsMiddle + 1)) + (itemSpace * visibleItemsMiddle) -
+                                    dividerThickness
+                            ) + (itemSpace / 2) + (dividerThickness / 2)
+
+                        // Top-Divider
+                        HorizontalDivider(
+                            color = dividerColor,
+                            thickness = dividerThickness,
+                            modifier =
+                                Modifier
+                                    .offset(y = topDividerOffset)
+                                    .width(width = dividerWidth),
+                        )
+
+                        // Bottom-Divider
+                        HorizontalDivider(
+                            color = dividerColor,
+                            thickness = dividerThickness,
+                            modifier =
+                                Modifier
+                                    .offset(y = bottomDividerOffset)
+                                    .width(width = dividerWidth),
                         )
                     }
                 }
-
-                if (dividerThickness != 0.dp) {
-                    val visibleItemsMiddle = visibleItemsCount / 2
-                    val topDividerOffset =
-                        ((itemHeight * visibleItemsMiddle) + (itemSpace * visibleItemsMiddle)) - (itemSpace / 2) - (dividerThickness / 2)
-                    val bottomDividerOffset =
-                        ((itemHeight * (visibleItemsMiddle + 1)) + (itemSpace * visibleItemsMiddle) - dividerThickness) + (itemSpace / 2) + (dividerThickness / 2)
-
-                    // Top-Divider
-                    HorizontalDivider(
-                        color = dividerColor,
-                        thickness = dividerThickness,
-                        modifier = Modifier
-                            .offset(y = topDividerOffset)
-                            .width(width = dividerWidth)
-                    )
-
-                    // Bottom-Divider
-                    HorizontalDivider(
-                        color = dividerColor,
-                        thickness = dividerThickness,
-                        modifier = Modifier
-                            .offset(y = bottomDividerOffset)
-                            .width(width = dividerWidth)
-                    )
-                }
-            }
-        }.first().measure(constraints)
+            }.first().measure(constraints)
 
         layout(lazyColumnPlaceable.width, lazyColumnPlaceable.height) {
             lazyColumnPlaceable.placeRelative(0, 0)

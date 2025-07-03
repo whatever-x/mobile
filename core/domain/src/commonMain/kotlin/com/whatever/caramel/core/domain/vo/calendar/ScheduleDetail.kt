@@ -12,5 +12,5 @@ data class ScheduleDetail(
     val parentScheduleId: Long?,
     val title: String?,
     val description: String?,
-    val tags: List<Tag>
+    val tags: List<Tag>,
 )

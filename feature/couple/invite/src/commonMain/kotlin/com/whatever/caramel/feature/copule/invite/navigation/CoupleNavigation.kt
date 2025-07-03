@@ -23,12 +23,12 @@ fun NavGraphBuilder.inviteCoupleScreen(
     showErrorDialog: (String, String?) -> Unit,
     showErrorToast: (String) -> Unit,
 ) {
-    composable<CoupleInviteRote>() {
+    composable<CoupleInviteRote> {
         CoupleInviteRoute(
             navigateToConnectCouple = navigateToConnectCouple,
             navigateToLogin = navigateToLogin,
             showErrorDialog = showErrorDialog,
-            showErrorToast = showErrorToast
+            showErrorToast = showErrorToast,
         )
     }
 }

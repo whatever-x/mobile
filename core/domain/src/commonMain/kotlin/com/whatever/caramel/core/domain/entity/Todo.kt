@@ -7,7 +7,7 @@ data class Todo(
     val startDate: LocalDateTime,
     val endDate: LocalDateTime,
     val title: String,
-    val description: String
+    val description: String,
 ) {
     val url: String?
         get() {
@@ -16,8 +16,9 @@ data class Todo(
         }
 
     companion object {
-        val URL_PATTERN = Regex(
-            "(https?://|www\\.)[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)"
-        )
+        val URL_PATTERN =
+            Regex(
+                "(https?://|www\\.)[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)",
+            )
     }
 }

@@ -5,6 +5,7 @@ import com.whatever.caramel.core.designsystem.util.IOSHapticController
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-actual val hapticControllerModule: Module = module {
-    single<HapticController> { IOSHapticController() }
-}
+actual val hapticControllerModule: Module =
+    module {
+        single<HapticController> { IOSHapticController() }
+    }

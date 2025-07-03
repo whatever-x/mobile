@@ -9,15 +9,14 @@ fun LocalDateTime.copy(
     hour: Int = this.hour,
     minute: Int = this.minute,
     second: Int = this.second,
-    nanosecond: Int = this.nanosecond
-): LocalDateTime {
-    return LocalDateTime(
+    nanosecond: Int = this.nanosecond,
+): LocalDateTime =
+    LocalDateTime(
         year = year,
         monthNumber = monthNumber,
         dayOfMonth = dayOfMonth,
         hour = hour,
         minute = minute,
         second = second,
-        nanosecond = nanosecond
+        nanosecond = nanosecond,
     )
-}

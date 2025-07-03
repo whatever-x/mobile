@@ -22,43 +22,39 @@ data class HomeState(
     val partnerChoiceOption: BalanceGameOptionState = BalanceGameOptionState(),
     val isShowDialog: Boolean = false,
     val dialogTitle: String = "",
-    val coupleState: CoupleState = CoupleState.IDLE
+    val coupleState: CoupleState = CoupleState.IDLE,
 ) : UiState {
-
     val isSetAnniversary: Boolean
         get() = daysTogether != 0
 
     val balanceGameAnswerState: BalanceGameAnswerState
-        get() = if (myChoiceOption.notSelected) { // 내가 대답하지 않은 상태
-            BalanceGameAnswerState.IDLE
-        } else {
-            if (partnerChoiceOption.notSelected) { // 내가 대답하고 / 상대가 대답하지 않은 상태
-                BalanceGameAnswerState.WAITING
+        get() =
+            if (myChoiceOption.notSelected) { // 내가 대답하지 않은 상태
+                BalanceGameAnswerState.IDLE
             } else {
-                BalanceGameAnswerState.CHECK_RESULT // 내가 대답하고 / 상대도 대답한 상태
+                if (partnerChoiceOption.notSelected) { // 내가 대답하고 / 상대가 대답하지 않은 상태
+                    BalanceGameAnswerState.WAITING
+                } else {
+                    BalanceGameAnswerState.CHECK_RESULT // 내가 대답하고 / 상대도 대답한 상태
+                }
             }
-        }
 
     enum class BalanceGameAnswerState {
         IDLE,
         WAITING,
         CHECK_RESULT,
-        ;
     }
 
     enum class BalanceGameCardState {
         IDLE,
         CONFIRM,
-        ;
     }
 
     enum class CoupleState {
         IDLE,
         CONNECT,
         DISCONNECT,
-        ;
     }
-
 }
 
 @Immutable

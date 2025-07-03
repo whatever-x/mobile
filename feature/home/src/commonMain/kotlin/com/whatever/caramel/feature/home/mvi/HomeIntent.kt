@@ -11,17 +11,23 @@ sealed interface HomeIntent : UiIntent {
 
     data object HideShareMessageEditBottomSheet : HomeIntent
 
-    data class SaveShareMessage(val newShareMessage: String) : HomeIntent
+    data class SaveShareMessage(
+        val newShareMessage: String,
+    ) : HomeIntent
 
     data object CreateTodoContent : HomeIntent
 
-    data class ClickTodoContent(val todoContentId: Long) : HomeIntent
+    data class ClickTodoContent(
+        val todoContentId: Long,
+    ) : HomeIntent
 
     data object PullToRefresh : HomeIntent
 
     data object ClickAnniversaryNudgeCard : HomeIntent
 
-    data class ClickBalanceGameOptionButton(val option: BalanceGameOptionState) : HomeIntent
+    data class ClickBalanceGameOptionButton(
+        val option: BalanceGameOptionState,
+    ) : HomeIntent
 
     data object ChangeBalanceGameCardState : HomeIntent
 

@@ -26,36 +26,38 @@ internal fun EditStartDate(
     dateUiState: DateUiState,
     onYearChange: (Int) -> Unit,
     onMonthChange: (Int) -> Unit,
-    onDayChange: (Int) -> Unit
+    onDayChange: (Int) -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .padding(top = CaramelTheme.spacing.m),
+        modifier =
+            modifier
+                .padding(top = CaramelTheme.spacing.m),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xl)
+        verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xl),
     ) {
         Icon(
             modifier = Modifier.size(width = 68.dp, height = 32.dp),
             painter = painterResource(Resources.Image.img_couple_on_ground),
             contentDescription = null,
-            tint = Color.Unspecified
+            tint = Color.Unspecified,
         )
         Text(
             text = "언제부터 사귀기\n시작했나요?",
             textAlign = TextAlign.Center,
             style = CaramelTheme.typography.heading1,
-            color = CaramelTheme.color.text.primary
+            color = CaramelTheme.color.text.primary,
         )
         Text(
             modifier = Modifier.padding(vertical = CaramelTheme.spacing.xl),
             text = "${dateUiState.year}년 ${dateUiState.month}월 ${dateUiState.day}일",
             style = CaramelTheme.typography.heading2,
-            color = CaramelTheme.color.text.primary
+            color = CaramelTheme.color.text.primary,
         )
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 40.dp)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 40.dp),
         ) {
             CaramelDatePicker(
                 modifier = Modifier.align(Alignment.BottomCenter),

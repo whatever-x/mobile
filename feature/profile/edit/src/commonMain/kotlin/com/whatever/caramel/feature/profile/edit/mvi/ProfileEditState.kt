@@ -6,16 +6,17 @@ import com.whatever.caramel.core.viewmodel.UiState
 data class ProfileEditState(
     val editUiType: ProfileEditType = ProfileEditType.NONE,
     val nickName: String = "",
-    val birthDay : DateUiState = DateUiState.currentDate(),
-    val startDate: DateUiState = DateUiState.currentDate()
+    val birthDay: DateUiState = DateUiState.currentDate(),
+    val startDate: DateUiState = DateUiState.currentDate(),
 ) : UiState {
-    val isSaveButtonEnabled : Boolean
-        get() = when(editUiType) {
-            ProfileEditType.NICKNAME -> nickName.isNotEmpty()
-            ProfileEditType.BIRTHDAY -> true
-            ProfileEditType.START_DATE -> true
-            else -> false
-        }
+    val isSaveButtonEnabled: Boolean
+        get() =
+            when (editUiType) {
+                ProfileEditType.NICKNAME -> nickName.isNotEmpty()
+                ProfileEditType.BIRTHDAY -> true
+                ProfileEditType.START_DATE -> true
+                else -> false
+            }
 }
 
 enum class ProfileEditType {
@@ -23,5 +24,4 @@ enum class ProfileEditType {
     NICKNAME,
     BIRTHDAY,
     START_DATE,
-    ;
 }

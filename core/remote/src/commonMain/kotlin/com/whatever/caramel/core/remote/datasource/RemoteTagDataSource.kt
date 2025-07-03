@@ -4,4 +4,4 @@ import com.whatever.caramel.core.remote.dto.tag.TagDataResponse
 
 interface RemoteTagDataSource {
     suspend fun getTags(): TagDataResponse
-} 
+}

@@ -13,16 +13,17 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 object HttpClientFactory {
-    fun create(engine: HttpClientEngine): HttpClient {
-        return HttpClient(engine) {
+    fun create(engine: HttpClientEngine): HttpClient =
+        HttpClient(engine) {
             expectSuccess = true
 
             install(ContentNegotiation) {
                 json(
-                    json = Json {
-                        ignoreUnknownKeys = true
-                        prettyPrint = true
-                    }
+                    json =
+                        Json {
+                            ignoreUnknownKeys = true
+                            prettyPrint = true
+                        },
                 )
             }
             install(HttpTimeout) {
@@ -35,5 +36,4 @@ object HttpClientFactory {
                 level = if (NetworkConfig.isDebug) LogLevel.ALL else LogLevel.NONE
             }
         }
-    }
 }

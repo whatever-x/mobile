@@ -4,5 +4,4 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.ClipEntry
 
 @OptIn(ExperimentalComposeUiApi::class)
-actual fun createPlatformClipEntry(inviteCode: String): ClipEntry =
-    ClipEntry.withPlainText(inviteCode)
+actual fun createPlatformClipEntry(inviteCode: String): ClipEntry = ClipEntry.withPlainText(inviteCode)

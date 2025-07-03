@@ -8,13 +8,15 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 actual val networkClientEngineModule: Module
-    get() = module {
-        single<HttpClientEngine> { OkHttp.create() }
-    }
+    get() =
+        module {
+            single<HttpClientEngine> { OkHttp.create() }
+        }
 
 actual val deviceIdModule: Module
-    get() = module {
-        single<DeviceIdProvider> {
-            AndroidDeviceIdProvider(get())
+    get() =
+        module {
+            single<DeviceIdProvider> {
+                AndroidDeviceIdProvider(get())
+            }
         }
-    }

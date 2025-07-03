@@ -41,6 +41,8 @@ turbine = "1.2.1"
 mokkery = "2.9.0"
 kotlinx-collections-immutable = "0.4.0"
 apps-flyer = "6.17.0"
+ktlint-cli = "1.6.0"
+spotless = "7.0.4"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -133,6 +135,7 @@ googleServices = { id = "com.google.gms.google-services", version.ref = "gms" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crahslytics" }
 jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
+spotless = { id = "com.diffplug.gradle.spotless", version.ref = "spotless"}
 
 [bundles]
 ktor = [

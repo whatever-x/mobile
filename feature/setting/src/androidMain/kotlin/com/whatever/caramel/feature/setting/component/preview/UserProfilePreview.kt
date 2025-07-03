@@ -14,7 +14,7 @@ fun UserProfilePreview() {
             gender = Gender.FEMALE,
             nickname = "유승우",
             birthDay = "1997.11.18",
-            isEditable = false
+            isEditable = false,
         )
     }
 }

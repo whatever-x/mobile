@@ -3,7 +3,6 @@ package com.whatever.caramel.feature.setting.mvi
 import com.whatever.caramel.core.viewmodel.UiIntent
 
 sealed interface SettingIntent : UiIntent {
-
     data object RefreshCoupleData : SettingIntent
 
     data object ClickEditCountDownButton : SettingIntent

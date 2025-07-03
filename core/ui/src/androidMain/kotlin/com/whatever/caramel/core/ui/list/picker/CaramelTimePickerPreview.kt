@@ -17,11 +17,11 @@ private fun CaramelTimePickerPreview() {
     CaramelTheme {
         Box(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             CaramelTimePicker(
                 timeUiState = TimeUiState.default(),
-                onMinuteChanged = { minute -> Napier.d { "minute changed: $minute" }},
+                onMinuteChanged = { minute -> Napier.d { "minute changed: $minute" } },
                 onHourChanged = { hour -> Napier.d { "hour changed: $hour" } },
                 onPeriodChanged = { period -> Napier.d { "period changed: $period" } },
             )

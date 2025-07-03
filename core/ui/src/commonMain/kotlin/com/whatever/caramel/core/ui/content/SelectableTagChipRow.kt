@@ -25,7 +25,7 @@ import kotlinx.collections.immutable.ImmutableList
 
 data class TagChip(
     val id: Long,
-    val label: String
+    val label: String,
 )
 
 @Composable
@@ -38,7 +38,7 @@ fun SelectableTagChipRow(
     LazyRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s),
-        contentPadding = PaddingValues(horizontal = CaramelTheme.spacing.xl)
+        contentPadding = PaddingValues(horizontal = CaramelTheme.spacing.xl),
     ) {
         items(tagChips) { tag ->
             SelectableTagChip(
@@ -46,7 +46,7 @@ fun SelectableTagChipRow(
                 selected = selectedTagChips.contains(tag),
                 onClick = {
                     onTagChipClick(tag)
-                }
+                },
             )
         }
     }
@@ -60,30 +60,30 @@ private fun SelectableTagChip(
     onClick: () -> Unit,
 ) {
     val backgroundColor by animateColorAsState(
-        targetValue = if (selected) CaramelTheme.color.fill.primary else CaramelTheme.color.background.primary
+        targetValue = if (selected) CaramelTheme.color.fill.primary else CaramelTheme.color.background.primary,
     )
     val textColor =
         if (selected) CaramelTheme.color.text.inverse else CaramelTheme.color.text.disabledPrimary
     val borderColor = if (selected) Color.Transparent else CaramelTheme.color.text.disabledPrimary
 
     Box(
-        modifier = modifier
-            .height(34.dp)
-            .clip(RoundedCornerShape(24.dp))
-            .background(backgroundColor)
-            .border(
-                width = 1.dp,
-                color = borderColor,
-                shape = RoundedCornerShape(24.dp)
-            )
-            .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .height(34.dp)
+                .clip(RoundedCornerShape(24.dp))
+                .background(backgroundColor)
+                .border(
+                    width = 1.dp,
+                    color = borderColor,
+                    shape = RoundedCornerShape(24.dp),
+                ).clickable(onClick = onClick)
+                .padding(horizontal = 12.dp),
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = text,
             style = CaramelTheme.typography.body4.regular,
-            color = textColor
+            color = textColor,
         )
     }
 }

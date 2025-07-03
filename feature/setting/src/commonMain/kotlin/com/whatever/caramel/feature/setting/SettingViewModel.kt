@@ -13,7 +13,6 @@ import com.whatever.caramel.feature.setting.mvi.CoupleUser
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
 import com.whatever.caramel.feature.setting.mvi.SettingSideEffect
 import com.whatever.caramel.feature.setting.mvi.SettingState
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.joinAll
 
 class SettingViewModel(
@@ -22,12 +21,9 @@ class SettingViewModel(
     private val getUserSettingUseCase: GetUserSettingUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val signOutUseCase: SignOutUseCase,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<SettingState, SettingSideEffect, SettingIntent>(savedStateHandle) {
-
-    override fun createInitialState(savedStateHandle: SavedStateHandle): SettingState {
-        return SettingState()
-    }
+    override fun createInitialState(savedStateHandle: SavedStateHandle): SettingState = SettingState()
 
     override suspend fun handleIntent(intent: SettingIntent) {
         when (intent) {
@@ -40,11 +36,12 @@ class SettingViewModel(
             SettingIntent.ClickLogoutConfirmButton -> logout()
             SettingIntent.ClickEditBirthDayButton -> navigateEditBirthday()
             SettingIntent.ClickEditNicknameButton -> navigateEditNickname()
-            SettingIntent.ClickEditCountDownButton -> postSideEffect(
-                SettingSideEffect.NavigateToEditCountDown(
-                    startDate = currentState.startDate
+            SettingIntent.ClickEditCountDownButton ->
+                postSideEffect(
+                    SettingSideEffect.NavigateToEditCountDown(
+                        startDate = currentState.startDate,
+                    ),
                 )
-            )
 
             SettingIntent.ToggleUserCancelledButton -> toggleUserCancelledButton()
             SettingIntent.ClickAppUpdateButton -> TODO("앱 업데이트 기능 확인 필요")
@@ -57,32 +54,35 @@ class SettingViewModel(
         super.handleClientException(throwable)
         if (throwable is CaramelException) {
             when (throwable.errorUiType) {
-                ErrorUiType.TOAST -> postSideEffect(
-                    SettingSideEffect.ShowErrorToast(
-                        message = throwable.message
+                ErrorUiType.TOAST ->
+                    postSideEffect(
+                        SettingSideEffect.ShowErrorToast(
+                            message = throwable.message,
+                        ),
                     )
-                )
-                ErrorUiType.DIALOG -> postSideEffect(
-                    SettingSideEffect.ShowErrorDialog(
-                        message = throwable.message,
-                        description = throwable.description
+                ErrorUiType.DIALOG ->
+                    postSideEffect(
+                        SettingSideEffect.ShowErrorDialog(
+                            message = throwable.message,
+                            description = throwable.description,
+                        ),
                     )
-                )
             }
         } else {
             postSideEffect(
                 SettingSideEffect.ShowErrorToast(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
-                )
+                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다.",
+                ),
             )
         }
     }
 
     private fun toggleUpdateNotificationSetting() {
         launch {
-            val result = updateUserSettingUseCase(
-                notificationEnabled = !currentState.isNotificationEnabled
-            )
+            val result =
+                updateUserSettingUseCase(
+                    notificationEnabled = !currentState.isNotificationEnabled,
+                )
 
             reduce { copy(isNotificationEnabled = result) }
         }
@@ -99,24 +99,26 @@ class SettingViewModel(
         launch {
             reduce { copy(isLoading = true) }
 
-            val coupleJob = launch {
-                val couple = getCoupleRelationshipInfoUseCase()
+            val coupleJob =
+                launch {
+                    val couple = getCoupleRelationshipInfoUseCase()
 
-                reduce {
-                    copy(
-                        isLoading = false,
-                        startDate = couple.info.startDate,
-                        myInfo = CoupleUser.toCoupleInfo(couple.myInfo),
-                        partnerInfo = CoupleUser.toCoupleInfo(couple.partnerInfo),
-                    )
+                    reduce {
+                        copy(
+                            isLoading = false,
+                            startDate = couple.info.startDate,
+                            myInfo = CoupleUser.toCoupleInfo(couple.myInfo),
+                            partnerInfo = CoupleUser.toCoupleInfo(couple.partnerInfo),
+                        )
+                    }
                 }
-            }
 
-            val notificationEnabledJob = launch {
-                val notificationEnabled = getUserSettingUseCase()
+            val notificationEnabledJob =
+                launch {
+                    val notificationEnabled = getUserSettingUseCase()
 
-                reduce { copy(isNotificationEnabled = notificationEnabled) }
-            }
+                    reduce { copy(isNotificationEnabled = notificationEnabled) }
+                }
 
             joinAll(coupleJob, notificationEnabledJob)
         }
@@ -125,7 +127,7 @@ class SettingViewModel(
     private fun toggleUserCancelledButton() {
         reduce {
             copy(
-                isShowUserCancelledDialog = !isShowUserCancelledDialog
+                isShowUserCancelledDialog = !isShowUserCancelledDialog,
             )
         }
     }
@@ -133,7 +135,7 @@ class SettingViewModel(
     private fun toggleLogoutButton() {
         reduce {
             copy(
-                isShowLogoutDialog = !isShowLogoutDialog
+                isShowLogoutDialog = !isShowLogoutDialog,
             )
         }
     }
@@ -141,7 +143,7 @@ class SettingViewModel(
     private fun toggleEditProfileBottomSheet() {
         reduce {
             copy(
-                isShowEditProfileBottomSheet = !isShowEditProfileBottomSheet
+                isShowEditProfileBottomSheet = !isShowEditProfileBottomSheet,
             )
         }
     }
@@ -150,8 +152,8 @@ class SettingViewModel(
         toggleEditProfileBottomSheet()
         postSideEffect(
             SettingSideEffect.NavigateToEditNickname(
-                nickname = currentState.myInfo.nickname
-            )
+                nickname = currentState.myInfo.nickname,
+            ),
         )
     }
 
@@ -159,8 +161,8 @@ class SettingViewModel(
         toggleEditProfileBottomSheet()
         postSideEffect(
             SettingSideEffect.NavigateToEditBirthday(
-                birthday = currentState.myInfo.birthday
-            )
+                birthday = currentState.myInfo.birthday,
+            ),
         )
     }
 
@@ -170,5 +172,4 @@ class SettingViewModel(
             postSideEffect(SettingSideEffect.NavigateLogin)
         }
     }
-
 }

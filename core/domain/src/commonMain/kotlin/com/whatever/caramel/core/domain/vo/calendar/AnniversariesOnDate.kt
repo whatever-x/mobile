@@ -5,5 +5,5 @@ import kotlinx.datetime.LocalDate
 
 data class AnniversariesOnDate(
     val date: LocalDate,
-    val anniversaries: List<Anniversary>
+    val anniversaries: List<Anniversary>,
 )

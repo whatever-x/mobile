@@ -70,8 +70,8 @@ private fun BottomSheetContent(
         mutableStateOf(
             TextFieldValue(
                 text = initialShareMessage,
-                selection = TextRange(initialShareMessage.length)
-            )
+                selection = TextRange(initialShareMessage.length),
+            ),
         )
     }
 
@@ -90,15 +90,17 @@ private fun BottomSheetContent(
             },
             minLines = 1,
             maxLines = 2,
-            textStyle = CaramelTheme.typography.heading3.copy(
-                color = CaramelTheme.color.text.primary
-            ),
-            cursorBrush = SolidColor(CaramelTheme.color.fill.brand)
+            textStyle =
+                CaramelTheme.typography.heading3.copy(
+                    color = CaramelTheme.color.text.primary,
+                ),
+            cursorBrush = SolidColor(CaramelTheme.color.fill.brand),
         ) { innerTextField ->
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(height = 52.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(height = 52.dp),
             ) {
                 innerTextField()
 
@@ -106,7 +108,7 @@ private fun BottomSheetContent(
                     Text(
                         text = "기억하고 싶은 말을 남겨보세요",
                         style = CaramelTheme.typography.heading3,
-                        color = CaramelTheme.color.text.placeholder
+                        color = CaramelTheme.color.text.placeholder,
                     )
                 }
             }
@@ -117,16 +119,18 @@ private fun BottomSheetContent(
         Text(
             text = "${newShareMessage.text.length}/24",
             style = CaramelTheme.typography.body3.bold,
-            color = CaramelTheme.color.text.placeholder
+            color = CaramelTheme.color.text.placeholder,
         )
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = CaramelTheme.spacing.xl),
-            horizontalArrangement = Arrangement.spacedBy(
-                space = CaramelTheme.spacing.m
-            )
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = CaramelTheme.spacing.xl),
+            horizontalArrangement =
+                Arrangement.spacedBy(
+                    space = CaramelTheme.spacing.m,
+                ),
         ) {
             CaramelButton(
                 modifier = Modifier.weight(1f),
@@ -136,7 +140,7 @@ private fun BottomSheetContent(
                 onClick = {
                     newShareMessage =
                         TextFieldValue(selection = TextRange(initialShareMessage.length))
-                }
+                },
             )
 
             CaramelButton(
@@ -147,7 +151,7 @@ private fun BottomSheetContent(
                 onClick = {
                     keyboardController?.hide()
                     onClickSave(newShareMessage.text)
-                }
+                },
             )
         }
     }

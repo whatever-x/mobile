@@ -20,15 +20,18 @@ internal fun HttpClientConfig<*>.caramelResponseValidator() {
                         BaseResponse<Unit>(
                             success = false,
                             data = null,
-                            error = ErrorResponse(
-                                code = exception.response.status.value.toString(),
-                                message = "예상치 못한 에러가 발생했습니다.",
-                                debugMessage =
-                                    "Error Code : ${exception.response.status}\n"
-                                            + "Error Message : ${exception.message}",
-                                description = null,
-                                errorUiType = "DIALOG"
-                            )
+                            error =
+                                ErrorResponse(
+                                    code =
+                                        exception.response.status.value
+                                            .toString(),
+                                    message = "예상치 못한 에러가 발생했습니다.",
+                                    debugMessage =
+                                        "Error Code : ${exception.response.status}\n" +
+                                            "Error Message : ${exception.message}",
+                                    description = null,
+                                    errorUiType = "DIALOG",
+                                ),
                         )
                     }
                 throw CaramelNetworkException(
@@ -36,7 +39,7 @@ internal fun HttpClientConfig<*>.caramelResponseValidator() {
                     baseResponse.error.debugMessage,
                     baseResponse.error.message,
                     baseResponse.error.description,
-                    baseResponse.error.errorUiType
+                    baseResponse.error.errorUiType,
                 )
             }
         }

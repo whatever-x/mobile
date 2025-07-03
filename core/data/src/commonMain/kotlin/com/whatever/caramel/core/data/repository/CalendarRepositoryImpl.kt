@@ -20,33 +20,38 @@ class CalendarRepositoryImpl(
     private val remoteCalendarDataSource: RemoteCalendarDataSource,
 ) : CalendarRepository {
     override suspend fun createSchedule(parameter: ScheduleParameter): ScheduleMetadata {
-        val request = CreateScheduleRequest(
-            title = parameter.title,
-            description = parameter.description,
-            isCompleted = parameter.isCompleted,
-            startDateTime = parameter.startDateTime,
-            startTimeZone = parameter.startTimeZone,
-            endDateTime = parameter.endDateTime,
-            endTimeZone = parameter.endTimeZone,
-            tagIds = parameter.tagIds
-        )
+        val request =
+            CreateScheduleRequest(
+                title = parameter.title,
+                description = parameter.description,
+                isCompleted = parameter.isCompleted,
+                startDateTime = parameter.startDateTime,
+                startTimeZone = parameter.startTimeZone,
+                endDateTime = parameter.endDateTime,
+                endTimeZone = parameter.endTimeZone,
+                tagIds = parameter.tagIds,
+            )
         return safeCall {
             remoteCalendarDataSource.createSchedule(request).toScheduleMetaData()
         }
     }
 
-    override suspend fun updateSchedule(scheduleId: Long, parameter: ScheduleEditParameter) {
-        val request = UpdateScheduleRequest(
-            selectedDate = parameter.selectedDate,
-            title = parameter.title,
-            description = parameter.description,
-            isCompleted = parameter.isCompleted,
-            startDateTime = parameter.dateTimeInfo?.startDateTime,
-            startTimeZone = parameter.dateTimeInfo?.startTimezone,
-            endDateTime = parameter.dateTimeInfo?.endDateTime,
-            endTimeZone = parameter.dateTimeInfo?.endTimezone,
-            tagIds = parameter.tagIds
-        )
+    override suspend fun updateSchedule(
+        scheduleId: Long,
+        parameter: ScheduleEditParameter,
+    ) {
+        val request =
+            UpdateScheduleRequest(
+                selectedDate = parameter.selectedDate,
+                title = parameter.title,
+                description = parameter.description,
+                isCompleted = parameter.isCompleted,
+                startDateTime = parameter.dateTimeInfo?.startDateTime,
+                startTimeZone = parameter.dateTimeInfo?.startTimezone,
+                endDateTime = parameter.dateTimeInfo?.endDateTime,
+                endTimeZone = parameter.dateTimeInfo?.endTimezone,
+                tagIds = parameter.tagIds,
+            )
         safeCall {
             remoteCalendarDataSource.updateSchedule(scheduleId, request)
         }
@@ -61,24 +66,21 @@ class CalendarRepositoryImpl(
     override suspend fun getTodos(
         startDate: String,
         endDate: String,
-        userTimezone: String?
-    ): List<Todo> {
-        return safeCall {
+        userTimezone: String?,
+    ): List<Todo> =
+        safeCall {
             remoteCalendarDataSource.getSchedules(startDate, endDate, userTimezone).toTodo()
         }
-    }
 
-    override suspend fun getHolidays(year: Int): List<Holiday> {
-        return safeCall {
+    override suspend fun getHolidays(year: Int): List<Holiday> =
+        safeCall {
             val yearString = year.toString()
             remoteCalendarDataSource.getHolidaysByYear(year = yearString).toHoliday()
         }
-    }
 
-    override suspend fun getSchedule(scheduleId: Long): ScheduleDetail {
-        return safeCall {
+    override suspend fun getSchedule(scheduleId: Long): ScheduleDetail =
+        safeCall {
             val response = remoteCalendarDataSource.getScheduleDetail(scheduleId)
             response.toScheduleDetailVO()
         }
-    }
-} 
+}

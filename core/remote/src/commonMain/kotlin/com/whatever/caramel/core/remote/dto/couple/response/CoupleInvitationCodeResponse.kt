@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CoupleInvitationCodeResponse(
-    @SerialName("invitationCode") val invitationCode : String,
+    @SerialName("invitationCode") val invitationCode: String,
     @SerialName("expirationDateTime") val expirationDateTime: String,
 )

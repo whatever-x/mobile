@@ -30,7 +30,7 @@ import androidx.compose.ui.util.fastMapTo
 fun SlideInSlideOutSnackbarHost(
     current: SnackbarData?,
     modifier: Modifier = Modifier,
-    content: @Composable (SnackbarData) -> Unit
+    content: @Composable (SnackbarData) -> Unit,
 ) {
     val state = remember { FadeInFadeOutState<SnackbarData?>() }
     if (current != state.current) {
@@ -43,47 +43,52 @@ fun SlideInSlideOutSnackbarHost(
         keys.fastFilterNotNull().fastMapTo(state.items) { key ->
             FadeInFadeOutAnimationItem(key) { children ->
                 val isVisible = key == current
-                val duration = if (isVisible) SnackbarFadeInMillis else SnackbarFadeOutMillis
-                val delay = SnackbarFadeOutMillis + SnackbarInBetweenDelayMillis
+                val duration = if (isVisible) SNACK_BAR_FADE_IN_MILLIS else SNACK_BAR_FADE_OUT_MILLIS
+                val delay = SNACK_BAR_FADE_OUT_MILLIS + SNACK_BAR_IN_BETWEEN_DELAY_MILLIS
                 val animationDelay =
                     if (isVisible && keys.fastFilterNotNull().size != 1) {
                         delay
                     } else {
                         0
                     }
-                val offsetY = animatedSlideOffsetY(
-                    animation = tween(
-                        easing = LinearEasing,
-                        delayMillis = animationDelay,
-                        durationMillis = duration
-                    ),
-                    visible = isVisible,
-                    onAnimationFinish = {
-                        if (key != state.current) {
-                            state.items.removeAll { it.key == key }
-                            state.scope?.invalidate()
-                        }
-                    }
-                )
-                val opacity = animatedOpacity(
-                    animation = tween(
-                        easing = LinearEasing,
-                        delayMillis = animationDelay,
-                        durationMillis = duration
-                    ),
-                    visible = isVisible
-                )
-                Box(
-                    modifier = Modifier
-                        .offset(y = offsetY.value.dp)
-                        .graphicsLayer(alpha = opacity.value)
-                        .semantics {
-                            liveRegion = LiveRegionMode.Polite
-                            dismiss {
-                                key.dismiss()
-                                true
+                val offsetY =
+                    animatedSlideOffsetY(
+                        animation =
+                            tween(
+                                easing = LinearEasing,
+                                delayMillis = animationDelay,
+                                durationMillis = duration,
+                            ),
+                        visible = isVisible,
+                        onAnimationFinish = {
+                            if (key != state.current) {
+                                state.items.removeAll { it.key == key }
+                                state.scope?.invalidate()
                             }
-                        }
+                        },
+                    )
+                val opacity =
+                    animatedOpacity(
+                        animation =
+                            tween(
+                                easing = LinearEasing,
+                                delayMillis = animationDelay,
+                                durationMillis = duration,
+                            ),
+                        visible = isVisible,
+                    )
+                Box(
+                    modifier =
+                        Modifier
+                            .offset(y = offsetY.value.dp)
+                            .graphicsLayer(alpha = opacity.value)
+                            .semantics {
+                                liveRegion = LiveRegionMode.Polite
+                                dismiss {
+                                    key.dismiss()
+                                    true
+                                }
+                            },
                 ) {
                     children()
                 }
@@ -104,7 +109,7 @@ private class FadeInFadeOutState<T> {
 
 private data class FadeInFadeOutAnimationItem<T>(
     val key: T,
-    val transition: FadeInFadeOutTransition
+    val transition: FadeInFadeOutTransition,
 )
 
 private typealias FadeInFadeOutTransition = @Composable (content: @Composable () -> Unit) -> Unit
@@ -113,7 +118,7 @@ private typealias FadeInFadeOutTransition = @Composable (content: @Composable ()
 private fun animatedOpacity(
     animation: AnimationSpec<Float>,
     visible: Boolean,
-    onAnimationFinish: () -> Unit = {}
+    onAnimationFinish: () -> Unit = {},
 ): State<Float> {
     val alpha = remember { Animatable(if (!visible) 1f else 0f) }
     LaunchedEffect(visible) {
@@ -127,19 +132,19 @@ private fun animatedOpacity(
 private fun animatedSlideOffsetY(
     animation: AnimationSpec<Float>,
     visible: Boolean,
-    onAnimationFinish: () -> Unit = {}
+    onAnimationFinish: () -> Unit = {},
 ): State<Float> {
     val offsetY = remember { Animatable(if (visible) 100f else 0f) }
     LaunchedEffect(visible) {
         offsetY.animateTo(
             targetValue = if (visible) 0f else 100f,
-            animationSpec = animation
+            animationSpec = animation,
         )
         onAnimationFinish()
     }
     return offsetY.asState()
 }
 
-private const val SnackbarFadeInMillis = 150
-private const val SnackbarFadeOutMillis = 150
-private const val SnackbarInBetweenDelayMillis = 0
+private const val SNACK_BAR_FADE_IN_MILLIS = 150
+private const val SNACK_BAR_FADE_OUT_MILLIS = 150
+private const val SNACK_BAR_IN_BETWEEN_DELAY_MILLIS = 0

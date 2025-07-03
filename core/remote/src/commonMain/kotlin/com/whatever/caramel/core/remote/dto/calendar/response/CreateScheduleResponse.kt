@@ -8,5 +8,5 @@ data class CreateScheduleResponse(
     @SerialName("contentId")
     val contentId: Long,
     @SerialName("contentType")
-    val contentType: String
+    val contentType: String,
 )

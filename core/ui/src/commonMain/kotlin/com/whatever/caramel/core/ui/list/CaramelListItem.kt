@@ -17,21 +17,22 @@ fun CaramelListItem(
     content: @Composable () -> Unit,
     leading: (@Composable () -> Unit)? = null,
     trailing: (@Composable () -> Unit)? = null,
-    onClick: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null,
 ) {
     Row(
-        modifier = modifier
-            .background(color = CaramelTheme.color.background.primary)
-            .clickable {
-                onClick?.invoke()
-            }
-            .padding(vertical = 14.dp, horizontal = 20.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            modifier
+                .background(color = CaramelTheme.color.background.primary)
+                .clickable {
+                    onClick?.invoke()
+                }.padding(vertical = 14.dp, horizontal = 20.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         leading?.invoke()
         Box(
-            modifier = Modifier
-                .weight(1f)
+            modifier =
+                Modifier
+                    .weight(1f),
         ) {
             content()
         }

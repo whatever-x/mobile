@@ -12,11 +12,11 @@ import androidx.compose.ui.unit.sp
 internal fun SplashBox() {
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = "스플래쉬 화면입니다.",
-            fontSize = 32.sp
+            fontSize = 32.sp,
         )
     }
 }

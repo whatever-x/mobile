@@ -18,9 +18,8 @@ import kotlinx.coroutines.launch
 class CaramelViewModel(
     private val connectCoupleUseCase: ConnectCoupleUseCase,
     private val deepLinkHandler: DeepLinkHandler,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<AppState, AppSideEffect, AppIntent>(savedStateHandle) {
-
     init {
         viewModelScope.launch {
             deepLinkHandler.deepLinkFlow.collect { deepLink ->
@@ -36,8 +35,7 @@ class CaramelViewModel(
         }
     }
 
-    override fun createInitialState(savedStateHandle: SavedStateHandle): AppState =
-        AppState()
+    override fun createInitialState(savedStateHandle: SavedStateHandle): AppState = AppState()
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
@@ -49,7 +47,7 @@ class CaramelViewModel(
                 reduce {
                     copy(
                         isShowErrorDialog = true,
-                        dialogMessage = exception.message
+                        dialogMessage = exception.message,
                     )
                 }
             }
@@ -61,7 +59,7 @@ class CaramelViewModel(
     }
 
     override suspend fun handleIntent(intent: AppIntent) {
-        when(intent) {
+        when (intent) {
             is AppIntent.NavigateToStartDestination -> startDestination(userStatus = intent.userStatus)
             is AppIntent.CloseErrorDialog -> reduce { copy(isShowErrorDialog = false) }
             is AppIntent.ShowErrorDialog -> showErrorDialog(message = intent.message, description = intent.description)
@@ -69,12 +67,15 @@ class CaramelViewModel(
         }
     }
 
-    private fun showErrorDialog(message : String, description : String?) {
+    private fun showErrorDialog(
+        message: String,
+        description: String?,
+    ) {
         reduce {
             copy(
                 isShowErrorDialog = true,
                 dialogMessage = message,
-                dialogDescription = description ?: ""
+                dialogDescription = description ?: "",
             )
         }
     }
@@ -86,7 +87,7 @@ class CaramelViewModel(
                 UserStatus.NEW -> postSideEffect(AppSideEffect.NavigateToCreateProfile)
                 UserStatus.SINGLE -> {
                     if (deepLinkHandler.deepLinkData?.first == AppsFlyerDeepLinkValue.INVITE) {
-                        val inviteCode = deepLinkHandler.deepLinkData?.second?.get(0)?: ""
+                        val inviteCode = deepLinkHandler.deepLinkData?.second?.get(0) ?: ""
                         runCatching {
                             tryToConnectCouple(inviteCode = inviteCode)
                         }.onFailure { throwable ->
@@ -99,7 +100,7 @@ class CaramelViewModel(
                 }
                 UserStatus.COUPLED -> {
                     if (deepLinkHandler.deepLinkData?.first == AppsFlyerDeepLinkValue.INVITE) {
-                        val inviteCode = deepLinkHandler.deepLinkData?.second?.get(0)?: ""
+                        val inviteCode = deepLinkHandler.deepLinkData?.second?.get(0) ?: ""
                         runCatching {
                             tryToConnectCouple(inviteCode = inviteCode)
                         }.onFailure { throwable ->
@@ -119,5 +120,4 @@ class CaramelViewModel(
         deepLinkHandler.clearDeepLinkData()
         postSideEffect(AppSideEffect.NavigateToConnectingCoupleScreen)
     }
-
 }
