@@ -45,6 +45,12 @@ sealed interface CalendarIntent : UiIntent {
     data class UpdateSelectPickerMonth(
         val month: Int,
     ) : CalendarIntent
-    data class UpdateCalendarBottomSheet(val sheetState: BottomSheetState) : CalendarIntent
-    data class DraggingCalendarBottomSheet(val isDragging: Boolean) : CalendarIntent
+
+    data class UpdateCalendarBottomSheet(
+        val sheetState: BottomSheetState,
+    ) : CalendarIntent
+
+    data class DraggingCalendarBottomSheet(
+        val isDragging: Boolean,
+    ) : CalendarIntent
 }

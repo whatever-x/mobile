@@ -17,7 +17,6 @@ import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect
-import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect.*
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 import kotlinx.datetime.LocalDate
@@ -80,7 +79,7 @@ class CalendarViewModel(
             is CalendarIntent.ClickAddScheduleButton -> navigateToAddSchedule(intent.date)
             is CalendarIntent.ClickTodoItemInBottomSheet ->
                 postSideEffect(
-                    NavigateToTodoDetail(
+                    CalendarSideEffect.NavigateToTodoDetail(
                         id = intent.todoId,
                         contentType = ContentType.CALENDAR,
                     ),
@@ -90,7 +89,7 @@ class CalendarViewModel(
             is CalendarIntent.ClickCalendarCell -> clickCalendarCell(intent.selectedDate)
             is CalendarIntent.ClickTodoItemInCalendar ->
                 postSideEffect(
-                    NavigateToTodoDetail(
+                    CalendarSideEffect.NavigateToTodoDetail(
                         id = intent.todoId,
                         contentType = ContentType.CALENDAR,
                     ),
@@ -121,7 +120,7 @@ class CalendarViewModel(
     private fun draggingBottomSheetHandle(isDragging: Boolean) {
         reduce {
             copy(
-                isBottomSheetDragging = isDragging
+                isBottomSheetDragging = isDragging,
             )
         }
     }
@@ -273,7 +272,7 @@ class CalendarViewModel(
 
     private fun showCalendarDatePicker() {
         launch {
-            if(currentState.isBottomSheetDragging) return@launch
+            if (currentState.isBottomSheetDragging) return@launch
             clickOutSideBottomSheet()
             reduce {
                 copy(
@@ -305,7 +304,7 @@ class CalendarViewModel(
         getSchedules(
             year = pickerYear,
             startMonthNumber = pickerMonth.number,
-            isRefresh = isSame
+            isRefresh = isSame,
         )
     }
 
