@@ -101,7 +101,12 @@ internal fun CalendarScreen(
             SheetValue.Expanded -> BottomSheetState.EXPANDED
             SheetValue.PartiallyExpanded -> BottomSheetState.PARTIALLY_EXPANDED
         }
-        onIntent(CalendarIntent.ToggleCalendarBottomSheet(updateStateValue))
+        onIntent(CalendarIntent.UpdateCalendarBottomSheet(updateStateValue))
+    }
+
+    LaunchedEffect(bottomSheetState.targetValue) {
+        val isDragging = bottomSheetState.currentValue != bottomSheetState.targetValue
+        onIntent(CalendarIntent.DraggingCalendarBottomSheet(isDragging))
     }
 
     LaunchedEffect(pagerState.currentPage) {
@@ -139,10 +144,7 @@ internal fun CalendarScreen(
                 sheetContainerColor = CaramelTheme.color.background.primary,
                 sheetContentColor = CaramelTheme.color.background.tertiary,
                 sheetDragHandle = {
-                    CaramelBottomSheetHandle(
-                        bottomSheetState = state.bottomSheetState,
-                        onDragSheetHandle = { onIntent(CalendarIntent.DragBottomSheetHandle) }
-                    )
+                    CaramelBottomSheetHandle(bottomSheetState = state.bottomSheetState)
                 },
                 topBar = {
                     CaramelTopBar(

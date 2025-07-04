@@ -20,7 +20,8 @@ data class CalendarState(
     val isShowDatePicker: Boolean = false,
     val bottomSheetState: BottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
     val monthSchedules: List<DaySchedule> = emptyList(),
-    val isRefreshing: Boolean = false
+    val isRefreshing: Boolean = false,
+    val isBottomSheetDragging : Boolean = false
 ) : UiState
 
 enum class BottomSheetState {

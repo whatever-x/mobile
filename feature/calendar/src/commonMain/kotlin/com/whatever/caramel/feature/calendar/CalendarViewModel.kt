@@ -17,7 +17,6 @@ import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect
-import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect.*
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 import kotlinx.datetime.LocalDate
@@ -55,6 +54,7 @@ class CalendarViewModel(
                         message = throwable.message
                     )
                 )
+
                 ErrorUiType.DIALOG -> postSideEffect(
                     CalendarSideEffect.ShowErrorDialog(
                         message = throwable.message,
@@ -74,10 +74,10 @@ class CalendarViewModel(
     override suspend fun handleIntent(intent: CalendarIntent) {
         when (intent) {
             is CalendarIntent.ClickDatePicker -> showCalendarDatePicker()
-            is CalendarIntent.ToggleCalendarBottomSheet -> toggleCalendarBottomSheet(intent.sheetState)
+            is CalendarIntent.UpdateCalendarBottomSheet -> updateCalendarBottomSheet(intent.sheetState)
             is CalendarIntent.ClickAddScheduleButton -> navigateToAddSchedule(intent.date)
             is CalendarIntent.ClickTodoItemInBottomSheet -> postSideEffect(
-                NavigateToTodoDetail(
+                CalendarSideEffect.NavigateToTodoDetail(
                     id = intent.todoId,
                     contentType = ContentType.CALENDAR,
                 )
@@ -86,7 +86,7 @@ class CalendarViewModel(
             is CalendarIntent.ClickTodoUrl -> clickTodoUrl(intent.url)
             is CalendarIntent.ClickCalendarCell -> clickCalendarCell(intent.selectedDate)
             is CalendarIntent.ClickTodoItemInCalendar -> postSideEffect(
-                NavigateToTodoDetail(
+                CalendarSideEffect.NavigateToTodoDetail(
                     id = intent.todoId,
                     contentType = ContentType.CALENDAR,
                 )
@@ -99,7 +99,7 @@ class CalendarViewModel(
             CalendarIntent.ClickDatePickerOutSide -> dismissCalendarDatePicker()
             CalendarIntent.RefreshCalendar -> refreshCalendar()
             CalendarIntent.Initialize -> initialize()
-            is CalendarIntent.DragBottomSheetHandle -> draggingBottomSheetHandle()
+            is CalendarIntent.DraggingCalendarBottomSheet -> draggingBottomSheetHandle(intent.isDragging)
         }
     }
 
@@ -114,11 +114,10 @@ class CalendarViewModel(
         )
     }
 
-    private fun draggingBottomSheetHandle() {
-        if(!currentState.isShowDatePicker) return
+    private fun draggingBottomSheetHandle(isDragging: Boolean) {
         reduce {
             copy(
-                isShowDatePicker = false
+                isBottomSheetDragging = isDragging
             )
         }
     }
@@ -257,16 +256,13 @@ class CalendarViewModel(
         }
     }
 
-    private fun toggleCalendarBottomSheet(bottomSheetState: BottomSheetState) {
-        reduce {
-            copy(
-                bottomSheetState = bottomSheetState
-            )
-        }
+    private fun updateCalendarBottomSheet(bottomSheetState: BottomSheetState) {
+        reduce { copy(bottomSheetState = bottomSheetState, isBottomSheetDragging = false) }
     }
 
     private fun showCalendarDatePicker() {
         launch {
+            if(currentState.isBottomSheetDragging) return@launch
             clickOutSideBottomSheet()
             reduce {
                 copy(
@@ -325,7 +321,8 @@ class CalendarViewModel(
             .forEach { todo ->
                 val date = todo.date
                 val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] = existingSchedule.copy(todos =  existingSchedule.todos + todo.todos)
+                scheduleMap[date] =
+                    existingSchedule.copy(todos = existingSchedule.todos + todo.todos)
             }
 
         anniversariesOnDate
@@ -333,7 +330,8 @@ class CalendarViewModel(
             .forEach { anniversary ->
                 val date = anniversary.date
                 val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] = existingSchedule.copy(anniversaries = existingSchedule.anniversaries + anniversary.anniversaries)
+                scheduleMap[date] =
+                    existingSchedule.copy(anniversaries = existingSchedule.anniversaries + anniversary.anniversaries)
             }
 
         holidaysOnDate
@@ -341,7 +339,8 @@ class CalendarViewModel(
             .forEach { holiday ->
                 val date = holiday.date
                 val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] = existingSchedule.copy(holidays = existingSchedule.holidays + holiday.holidays)
+                scheduleMap[date] =
+                    existingSchedule.copy(holidays = existingSchedule.holidays + holiday.holidays)
             }
 
         if (!scheduleMap.containsKey(updatedSelectedDate)) {

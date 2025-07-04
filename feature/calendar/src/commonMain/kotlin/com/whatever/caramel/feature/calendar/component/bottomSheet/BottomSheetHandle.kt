@@ -22,21 +22,11 @@ import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 internal fun CaramelBottomSheetHandle(
     modifier: Modifier = Modifier,
     bottomSheetState: BottomSheetState,
-    onDragSheetHandle: () -> Unit,
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = CaramelTheme.color.background.tertiary)
-            .pointerInput(Unit) {
-                while(true) {
-                    awaitPointerEventScope {
-                        awaitFirstDown()
-                        onDragSheetHandle()
-                        waitForUpOrCancellation()
-                    }
-                }
-            },
+            .background(color = CaramelTheme.color.background.tertiary),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
