@@ -11,6 +11,7 @@ class SignOutUseCase(
 ) {
     suspend operator fun invoke() {
         authRepository.signOut()
+        authRepository.deleteToken()
         userRepository.deleteUserStatus()
         coupleRepository.deleteCoupleId()
     }
