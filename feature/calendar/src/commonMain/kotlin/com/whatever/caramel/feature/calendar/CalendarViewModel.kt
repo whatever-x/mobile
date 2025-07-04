@@ -146,8 +146,10 @@ class CalendarViewModel(
 
     private fun clickOutSideBottomSheet() {
         reduce {
+            val newBottomSheetState =
+                if (currentState.isBottomSheetDragging) currentState.bottomSheetState else BottomSheetState.PARTIALLY_EXPANDED
             copy(
-                bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
+                bottomSheetState = newBottomSheetState,
             )
         }
     }
@@ -285,7 +287,7 @@ class CalendarViewModel(
     private fun dismissCalendarDatePicker() {
         val pickerYear = currentState.pickerDate.year
         val pickerMonth = Month.entries[currentState.pickerDate.month - 1]
-
+        val isSame = pickerYear == currentState.year && pickerMonth == currentState.month
         reduce {
             copy(
                 year = pickerYear,
@@ -303,6 +305,7 @@ class CalendarViewModel(
         getSchedules(
             year = pickerYear,
             startMonthNumber = pickerMonth.number,
+            isRefresh = isSame
         )
     }
 
