@@ -20,7 +20,8 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import org.jetbrains.compose.resources.painterResource
 
 enum class CreateMode {
-    MEMO, CALENDAR
+    MEMO,
+    CALENDAR,
 }
 
 @Composable
@@ -30,24 +31,25 @@ fun CreateModeSwitch(
     onCreateModeSelect: (CreateMode) -> Unit,
 ) {
     Row(
-        modifier = modifier
-            .clip(CaramelTheme.shape.xl)
-            .background(CaramelTheme.color.fill.quaternary)
-            .padding(CaramelTheme.spacing.xxs),
+        modifier =
+            modifier
+                .clip(CaramelTheme.shape.xl)
+                .background(CaramelTheme.color.fill.quaternary)
+                .padding(CaramelTheme.spacing.xxs),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         CreateMode.entries.forEach {
-            val icon = when (it) {
-                CreateMode.MEMO -> painterResource(Resources.Icon.ic_memo_24)
-                CreateMode.CALENDAR -> painterResource(Resources.Icon.ic_calendar_24)
-            }
+            val icon =
+                when (it) {
+                    CreateMode.MEMO -> painterResource(Resources.Icon.ic_memo_24)
+                    CreateMode.CALENDAR -> painterResource(Resources.Icon.ic_calendar_24)
+                }
             ToggleIconButton(
                 icon = icon,
                 isSelected = createMode == it,
                 onClick = { onCreateModeSelect(it) },
             )
         }
-
     }
 }
 
@@ -58,18 +60,19 @@ private fun ToggleIconButton(
     onClick: () -> Unit,
 ) {
     Box(
-        modifier = Modifier
-            .size(36.dp)
-            .clip(CircleShape)
-            .background(color = if (isSelected) CaramelTheme.color.fill.inverse else Color.Transparent)
-            .clickable(onClick = onClick),
-        contentAlignment = Alignment.Center
+        modifier =
+            Modifier
+                .size(36.dp)
+                .clip(CircleShape)
+                .background(color = if (isSelected) CaramelTheme.color.fill.inverse else Color.Transparent)
+                .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center,
     ) {
         Icon(
             painter = icon,
             contentDescription = null,
             tint = CaramelTheme.color.icon.primary,
-            modifier = Modifier.size(18.dp)
+            modifier = Modifier.size(18.dp),
         )
     }
 }

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,113 +41,119 @@ internal fun BottomSheetTodoListHeader(
     anniversaries: List<Anniversary>? = null,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 3.dp)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(vertical = 3.dp),
     ) {
         Box {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterStart),
-                verticalAlignment = Alignment.CenterVertically
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterStart),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     style = CaramelTheme.typography.heading2,
                     color = CaramelTheme.color.text.primary,
                     textAlign = TextAlign.Center,
-                    text = "${date.month.number}.${date.dayOfMonth}."
+                    text = "${date.month.number}.${date.dayOfMonth}.",
                 )
                 Text(
                     style = CaramelTheme.typography.heading3,
                     color = CaramelTheme.color.text.primary,
                     textAlign = TextAlign.Center,
-                    text = date.dayOfWeek.toUiText()
+                    text = date.dayOfWeek.toUiText(),
                 )
                 if (isToday) {
                     Spacer(modifier = Modifier.size(size = CaramelTheme.spacing.xs))
                     Text(
-                        modifier = Modifier
-                            .background(
-                                color = CaramelTheme.color.fill.brand,
-                                shape = CaramelTheme.shape.m
-                            )
-                            .padding(
-                                horizontal = CaramelTheme.spacing.s,
-                                vertical = CaramelTheme.spacing.xxs
-                            ),
+                        modifier =
+                            Modifier
+                                .background(
+                                    color = CaramelTheme.color.fill.brand,
+                                    shape = CaramelTheme.shape.m,
+                                ).padding(
+                                    horizontal = CaramelTheme.spacing.s,
+                                    vertical = CaramelTheme.spacing.xxs,
+                                ),
                         textAlign = TextAlign.Center,
                         text = "오늘",
                         style = CaramelTheme.typography.label3.bold,
-                        color = CaramelTheme.color.text.inverse
+                        color = CaramelTheme.color.text.inverse,
                     )
                 }
                 holidays?.let {
                     Spacer(modifier = Modifier.size(size = if (isToday) CaramelTheme.spacing.xxs else CaramelTheme.spacing.xs))
-                    LazyRow (
-                        horizontalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xxs)
-                    ){
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xxs),
+                    ) {
                         items(items = it) { holiday ->
                             Text(
-                                modifier = Modifier
-                                    .background(
-                                        color = CaramelTheme.color.fill.labelAccent1,
-                                        shape = CaramelTheme.shape.m
-                                    )
-                                    .padding(
-                                        horizontal = CaramelTheme.spacing.s,
-                                        vertical = CaramelTheme.spacing.xxs
-                                    ),
+                                modifier =
+                                    Modifier
+                                        .background(
+                                            color = CaramelTheme.color.fill.labelAccent1,
+                                            shape = CaramelTheme.shape.m,
+                                        ).padding(
+                                            horizontal = CaramelTheme.spacing.s,
+                                            vertical = CaramelTheme.spacing.xxs,
+                                        ),
                                 textAlign = TextAlign.Center,
                                 text = holiday.name,
                                 style = CaramelTheme.typography.label3.bold,
-                                color = CaramelTheme.color.text.inverse
+                                color = CaramelTheme.color.text.inverse,
                             )
                         }
                     }
                 }
             }
             Icon(
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(all = CaramelTheme.spacing.s)
-                    .clickable(
-                        interactionSource = null,
-                        indication = null,
-                        onClick = { onClickAddSchedule(date) }
-                    ),
+                modifier =
+                    Modifier
+                        .align(Alignment.CenterEnd)
+                        .padding(all = CaramelTheme.spacing.s)
+                        .clickable(
+                            interactionSource = null,
+                            indication = null,
+                            onClick = { onClickAddSchedule(date) },
+                        ),
                 painter = painterResource(Resources.Icon.ic_plus_20),
                 tint = CaramelTheme.color.icon.tertiary,
-                contentDescription = null
+                contentDescription = null,
             )
         }
 
         if (!anniversaries.isNullOrEmpty()) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = CaramelTheme.spacing.s),
-                verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xs)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = CaramelTheme.spacing.s),
+                verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xs),
             ) {
                 anniversaries.fastForEach { anniversary ->
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = CaramelTheme.spacing.xs)
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = CaramelTheme.spacing.xs),
                     ) {
                         Icon(
                             painter = painterResource(Resources.Image.img_anniversary),
                             tint = Color.Unspecified,
-                            contentDescription = null
+                            contentDescription = null,
                         )
                         Text(
-                            modifier = Modifier
-                                .padding(start = CaramelTheme.spacing.m)
-                                .align(Alignment.CenterVertically),
+                            modifier =
+                                Modifier
+                                    .padding(start = CaramelTheme.spacing.m)
+                                    .align(Alignment.CenterVertically),
                             style = CaramelTheme.typography.body2.bold,
                             color = CaramelTheme.color.text.brand,
                             text = "${anniversary.label}을 축하해!",
-                            textAlign = TextAlign.Start
+                            textAlign = TextAlign.Start,
                         )
                     }
                 }
@@ -157,15 +162,17 @@ internal fun BottomSheetTodoListHeader(
 
         if (isEmpty) {
             Text(
-                modifier = Modifier
-                    .padding(top = CaramelTheme.spacing.s, bottom = CaramelTheme.spacing.l),
-                text = if (isToday) {
-                    "오늘의 할 일이 아직 없어요"
-                } else {
-                    "할 일이 아직 없어요"
-                },
+                modifier =
+                    Modifier
+                        .padding(top = CaramelTheme.spacing.s, bottom = CaramelTheme.spacing.l),
+                text =
+                    if (isToday) {
+                        "오늘의 할 일이 아직 없어요"
+                    } else {
+                        "할 일이 아직 없어요"
+                    },
                 style = CaramelTheme.typography.body3.regular,
-                color = CaramelTheme.color.text.tertiary
+                color = CaramelTheme.color.text.tertiary,
             )
         }
     }

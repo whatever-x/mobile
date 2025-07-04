@@ -10,18 +10,14 @@ import com.whatever.caramel.feature.main.mvi.MainState
 class MainViewModel(
     private val fcmTokenProvider: FcmTokenProvider,
     savedStateHandle: SavedStateHandle,
-): BaseViewModel<MainState, MainSideEffect, MainIntent>(savedStateHandle) {
-
+) : BaseViewModel<MainState, MainSideEffect, MainIntent>(savedStateHandle) {
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
     }
 
-    override fun createInitialState(savedStateHandle: SavedStateHandle): MainState {
-        return MainState
-    }
+    override fun createInitialState(savedStateHandle: SavedStateHandle): MainState = MainState
 
     override suspend fun handleIntent(intent: MainIntent) {
-
     }
 
     fun updateFcmToken() {
@@ -29,5 +25,4 @@ class MainViewModel(
             fcmTokenProvider.updateToken()
         }
     }
-
 }

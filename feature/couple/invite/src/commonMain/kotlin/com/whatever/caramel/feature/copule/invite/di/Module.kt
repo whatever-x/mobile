@@ -7,6 +7,7 @@ import org.koin.dsl.module
 
 expect val shareServiceModule: Module
 
-val coupleInviteFeatureModule = module {
-    viewModelOf(::CoupleInviteViewModel)
-}
+val coupleInviteFeatureModule =
+    module {
+        viewModelOf(::CoupleInviteViewModel)
+    }

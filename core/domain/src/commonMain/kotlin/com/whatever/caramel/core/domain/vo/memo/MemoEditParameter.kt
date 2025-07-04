@@ -7,5 +7,5 @@ data class MemoEditParameter(
     val description: String?,
     val isCompleted: Boolean?,
     val tagIds: List<Long>?,
-    val dateTimeInfo: DateTimeInfo?
-) 
+    val dateTimeInfo: DateTimeInfo?,
+)

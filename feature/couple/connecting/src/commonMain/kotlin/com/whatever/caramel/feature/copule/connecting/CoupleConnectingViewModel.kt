@@ -8,9 +8,8 @@ import com.whatever.caramel.feature.copule.connecting.mvi.CoupleConnectingState
 import kotlinx.coroutines.delay
 
 class CoupleConnectingViewModel(
-    savedStateHandle: SavedStateHandle
-): BaseViewModel<CoupleConnectingState, CoupleConnectingSideEffect, CoupleConnectingIntent>(savedStateHandle) {
-
+    savedStateHandle: SavedStateHandle,
+) : BaseViewModel<CoupleConnectingState, CoupleConnectingSideEffect, CoupleConnectingIntent>(savedStateHandle) {
     init {
         launch {
             delay(2000L)
@@ -18,10 +17,8 @@ class CoupleConnectingViewModel(
         }
     }
 
-    override fun createInitialState(savedStateHandle: SavedStateHandle): CoupleConnectingState =
-        CoupleConnectingState()
+    override fun createInitialState(savedStateHandle: SavedStateHandle): CoupleConnectingState = CoupleConnectingState()
 
     override suspend fun handleIntent(intent: CoupleConnectingIntent) {
-
     }
 }

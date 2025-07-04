@@ -22,7 +22,6 @@ data class ContentCreateState(
     val dateTime: LocalDateTime = DateUtil.todayLocalDateTime(),
     val showEditConfirmDialog: Boolean = false,
 ) : UiState {
-
     val isSaveButtonEnable: Boolean
         get() = title.isNotBlank() || content.isNotBlank()
 

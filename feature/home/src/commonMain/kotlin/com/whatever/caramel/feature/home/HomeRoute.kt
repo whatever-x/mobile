@@ -11,7 +11,6 @@ import com.whatever.caramel.feature.home.mvi.HomeIntent
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect
 import org.koin.compose.viewmodel.koinViewModel
 
-
 @Composable
 internal fun HomeRoute(
     viewModel: HomeViewModel = koinViewModel(),
@@ -20,7 +19,7 @@ internal fun HomeRoute(
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: (ContentType) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
-    showErrorToast: (String) -> Unit
+    showErrorToast: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -29,16 +28,18 @@ internal fun HomeRoute(
             when (sideEffect) {
                 is HomeSideEffect.NavigateToSetting -> navigateToSetting()
                 is HomeSideEffect.NavigateToCreateContent -> navigateToCreateTodo(ContentType.CALENDAR)
-                is HomeSideEffect.NavigateToContentDetail -> navigateToTodoDetail(
-                    sideEffect.contentId,
-                    sideEffect.contentType
-                )
+                is HomeSideEffect.NavigateToContentDetail ->
+                    navigateToTodoDetail(
+                        sideEffect.contentId,
+                        sideEffect.contentType,
+                    )
 
                 is HomeSideEffect.NavigateToEditAnniversary -> navigateToStaredCoupleDay()
-                is HomeSideEffect.ShowErrorDialog -> showErrorDialog(
-                    sideEffect.message,
-                    sideEffect.description
-                )
+                is HomeSideEffect.ShowErrorDialog ->
+                    showErrorDialog(
+                        sideEffect.message,
+                        sideEffect.description,
+                    )
 
                 is HomeSideEffect.ShowErrorToast -> showErrorToast(sideEffect.message)
             }
@@ -53,6 +54,6 @@ internal fun HomeRoute(
 
     HomeScreen(
         state = state,
-        onIntent = { intent -> viewModel.intent(intent) }
+        onIntent = { intent -> viewModel.intent(intent) },
     )
 }

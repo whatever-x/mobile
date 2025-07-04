@@ -24,63 +24,69 @@ internal fun CoupleConnectContents(
     onCodeChange: (String) -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = "받은 초대 코드를\n입력해 주세요",
             style = CaramelTheme.typography.heading1,
             color = CaramelTheme.color.text.primary,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
         BasicTextField(
             value = code,
             onValueChange = onCodeChange,
             cursorBrush = SolidColor(CaramelTheme.color.fill.brand),
-            textStyle = CaramelTheme.typography.heading2.copy(
-                color = CaramelTheme.color.text.primary,
-                textAlign = if (code.isNotEmpty()) {
-                    TextAlign.Center
-                } else {
-                    TextAlign.Start
-                }
-            ),
+            textStyle =
+                CaramelTheme.typography.heading2.copy(
+                    color = CaramelTheme.color.text.primary,
+                    textAlign =
+                        if (code.isNotEmpty()) {
+                            TextAlign.Center
+                        } else {
+                            TextAlign.Start
+                        },
+                ),
             singleLine = true,
         ) { innerTextField ->
             SubcomposeLayout { constraints ->
-                val placeHolderPlaceable = subcompose("placeHolder") {
-                    PlaceHolder()
-                }.first().measure(constraints)
+                val placeHolderPlaceable =
+                    subcompose("placeHolder") {
+                        PlaceHolder()
+                    }.first().measure(constraints)
 
                 val placeHolderWidth = placeHolderPlaceable.width
 
-                val decorationBox = subcompose("decorationBox") {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
+                val decorationBox =
+                    subcompose("decorationBox") {
                         Box(
-                            modifier = Modifier
-                                .then(
-                                    if (code.isNotEmpty()) {
-                                        Modifier
-                                    } else {
-                                        Modifier.width(width = placeHolderWidth.toDp())
-                                    }
-                                ),
-                            contentAlignment = Alignment.Center
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center,
                         ) {
-                            innerTextField.invoke()
+                            Box(
+                                modifier =
+                                    Modifier
+                                        .then(
+                                            if (code.isNotEmpty()) {
+                                                Modifier
+                                            } else {
+                                                Modifier.width(width = placeHolderWidth.toDp())
+                                            },
+                                        ),
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                innerTextField.invoke()
 
-                            if (code.isEmpty()) {
-                                PlaceHolder()
+                                if (code.isEmpty()) {
+                                    PlaceHolder()
+                                }
                             }
                         }
-                    }
-                }.first().measure(constraints)
+                    }.first().measure(constraints)
 
                 layout(decorationBox.width, decorationBox.height) {
                     decorationBox.placeRelative(0, 0)
@@ -95,6 +101,6 @@ private fun PlaceHolder() {
     Text(
         text = "코드 입력",
         style = CaramelTheme.typography.heading2,
-        color = CaramelTheme.color.text.placeholder
+        color = CaramelTheme.color.text.placeholder,
     )
 }

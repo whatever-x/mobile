@@ -37,32 +37,34 @@ internal fun CurrentDateMenu(
     year: Int,
     month: Month,
     isShowDropMenu: Boolean,
-    onClickDatePicker: () -> Unit
+    onClickDatePicker: () -> Unit,
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Row(
-            modifier = modifier
-                .clickable(
-                    interactionSource = null,
-                    indication = null,
-                    onClick = onClickDatePicker
-                ),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                modifier
+                    .clickable(
+                        interactionSource = null,
+                        indication = null,
+                        onClick = onClickDatePicker,
+                    ),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "${year}.${month.number}",
+                text = "$year.${month.number}",
                 style = CaramelTheme.typography.heading1,
-                color = CaramelTheme.color.text.primary
+                color = CaramelTheme.color.text.primary,
             )
             Spacer(modifier = Modifier.size(size = CaramelTheme.spacing.xs))
             Icon(
-                painter = if (isShowDropMenu) {
-                    painterResource(Resources.Icon.ic_arrow_up_16)
-                } else {
-                    painterResource(Resources.Icon.ic_arrow_down_16)
-                },
+                painter =
+                    if (isShowDropMenu) {
+                        painterResource(Resources.Icon.ic_arrow_up_16)
+                    } else {
+                        painterResource(Resources.Icon.ic_arrow_down_16)
+                    },
                 contentDescription = null,
-                tint = CaramelTheme.color.icon.primary
+                tint = CaramelTheme.color.icon.primary,
             )
         }
     }
@@ -82,18 +84,19 @@ internal fun CalendarDatePicker(
         AnimatedVisibility(
             visible = isShowDropMenu,
             enter = fadeIn(animationSpec = tween(durationMillis = 150)),
-            exit = fadeOut(animationSpec = tween(durationMillis = 150))
+            exit = fadeOut(animationSpec = tween(durationMillis = 150)),
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(CaramelTheme.color.alpha.primary)
-                    .padding(top = CalendarDimension.datePickerHeight)
-                    .clickable(
-                        indication = null,
-                        interactionSource = null,
-                        onClick = onDismiss
-                    )
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .background(CaramelTheme.color.alpha.primary)
+                        .padding(top = CalendarDimension.datePickerHeight)
+                        .clickable(
+                            indication = null,
+                            interactionSource = null,
+                            onClick = onDismiss,
+                        ),
             )
         }
 
@@ -101,29 +104,29 @@ internal fun CalendarDatePicker(
             modifier = modifier,
             visible = isShowDropMenu,
             enter = slideInVertically(initialOffsetY = { -it }),
-            exit = slideOutVertically(targetOffsetY = { -it })
+            exit = slideOutVertically(targetOffsetY = { -it }),
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = CaramelTheme.color.background.primary,
-                        shape = RoundedCornerShape(bottomEnd = 24.dp, bottomStart = 24.dp)
-                    )
-                    .padding(top = CaramelTheme.spacing.s, bottom = CaramelTheme.spacing.l)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = CaramelTheme.color.background.primary,
+                            shape = RoundedCornerShape(bottomEnd = 24.dp, bottomStart = 24.dp),
+                        ).padding(top = CaramelTheme.spacing.s, bottom = CaramelTheme.spacing.l),
             ) {
                 CaramelDateMonthPicker(
                     modifier = Modifier.align(Alignment.TopCenter),
-                    dateUiState = DateUiState(
-                        year = year,
-                        month = month.number,
-                        day = 1
-                    ),
+                    dateUiState =
+                        DateUiState(
+                            year = year,
+                            month = month.number,
+                            day = 1,
+                        ),
                     onYearChanged = { onYearChanged(it) },
-                    onMonthChanged = { onMonthChanged(it) }
+                    onMonthChanged = { onMonthChanged(it) },
                 )
             }
         }
     }
 }
-

@@ -23,6 +23,6 @@ fun DateBottomSheet(
         containerColor = CaramelTheme.color.background.tertiary,
         scrimColor = CaramelTheme.color.alpha.primary,
         sheetState = sheetState,
-        content = content
+        content = content,
     )
 }

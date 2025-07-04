@@ -4,4 +4,4 @@ data object ScheduleErrorCode {
     private const val PREFIX = "SCHEDULE"
 
     const val SCHEDULE_NOT_FOUND = PREFIX + "003"
-} 
+}

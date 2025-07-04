@@ -7,13 +7,12 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import kotlinx.coroutines.flow.first
 
 class CoupleDataSourceImpl(
-    private val dataStore: DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>,
 ) : CoupleDataSource {
-    override suspend fun fetchCoupleId(): Long {
-        return dataStore.data.first().let { prefs ->
+    override suspend fun fetchCoupleId(): Long =
+        dataStore.data.first().let { prefs ->
             prefs[coupleIdKey] ?: 0L
         }
-    }
 
     override suspend fun saveCoupleId(coupleId: Long) {
         dataStore.edit { prefs ->

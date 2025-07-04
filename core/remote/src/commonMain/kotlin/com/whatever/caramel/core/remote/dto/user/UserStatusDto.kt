@@ -5,8 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class UserStatusDto {
-    @SerialName("NEW") NEW,
-    @SerialName("SINGLE") SINGLE,
-    @SerialName("COUPLED") COUPLED,
-    ;
+    @SerialName("NEW")
+    NEW,
+
+    @SerialName("SINGLE")
+    SINGLE,
+
+    @SerialName("COUPLED")
+    COUPLED,
 }

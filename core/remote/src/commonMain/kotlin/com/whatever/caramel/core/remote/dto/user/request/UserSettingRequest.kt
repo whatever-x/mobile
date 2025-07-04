@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserSettingRequest(
-    @SerialName("notificationEnabled") val notificationEnabled : Boolean
+    @SerialName("notificationEnabled") val notificationEnabled: Boolean,
 )

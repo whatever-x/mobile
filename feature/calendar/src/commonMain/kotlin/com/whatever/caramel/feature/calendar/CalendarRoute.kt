@@ -42,6 +42,6 @@ internal fun CalendarRoute(
 
     CalendarScreen(
         state = state,
-        onIntent = { intent -> viewModel.intent(intent) }
+        onIntent = { intent -> viewModel.intent(intent) },
     )
 }

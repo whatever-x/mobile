@@ -24,29 +24,30 @@ internal fun CaramelBottomSheetHandle(
     bottomSheetState: BottomSheetState,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(color = CaramelTheme.color.background.tertiary),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(color = CaramelTheme.color.background.tertiary),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
-            modifier = Modifier
-                .padding(13.dp)
-                .size(
-                    width = CalendarDimension.sheetHandleWidth,
-                    height = CalendarDimension.sheetHandleHeight
-                )
-                .background(
-                    color = CaramelTheme.color.fill.quaternary,
-                    shape = CaramelTheme.shape.s
-                )
+            modifier =
+                Modifier
+                    .padding(13.dp)
+                    .size(
+                        width = CalendarDimension.sheetHandleWidth,
+                        height = CalendarDimension.sheetHandleHeight,
+                    ).background(
+                        color = CaramelTheme.color.fill.quaternary,
+                        shape = CaramelTheme.shape.s,
+                    ),
         )
         if (bottomSheetState == BottomSheetState.PARTIALLY_EXPANDED) {
             Text(
                 modifier = Modifier.padding(bottom = CalendarDimension.sheetPartiallyExpandedTextHeight),
                 style = CaramelTheme.typography.label1.regular,
                 color = CaramelTheme.color.text.tertiary,
-                text = "우리의 할 일"
+                text = "우리의 할 일",
             )
         }
     }

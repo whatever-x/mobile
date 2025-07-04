@@ -21,36 +21,41 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 fun BoxScope.CaramelPullToRefreshIndicator(
     modifier: Modifier = Modifier,
     isRefreshing: Boolean,
-    state: PullToRefreshState
+    state: PullToRefreshState,
 ) {
     Box(
-        modifier = modifier
-            .align(alignment = Alignment.TopCenter)
-            .pullToRefreshIndicator(
-                state = state,
-                isRefreshing = isRefreshing,
-                containerColor = Color.Unspecified,
-                elevation = 0.dp
-            )
+        modifier =
+            modifier
+                .align(alignment = Alignment.TopCenter)
+                .pullToRefreshIndicator(
+                    state = state,
+                    isRefreshing = isRefreshing,
+                    containerColor = Color.Unspecified,
+                    elevation = 0.dp,
+                ),
     ) {
         Crossfade(
             targetState = isRefreshing,
-            animationSpec = tween(durationMillis = 300)
+            animationSpec = tween(durationMillis = 300),
         ) { refreshing ->
             if (refreshing) {
                 CircularProgressIndicator(
                     color = CaramelTheme.color.fill.brand,
-                    trackColor = CaramelTheme.color.fill.brand.copy(alpha = 0.3f),
+                    trackColor =
+                        CaramelTheme.color.fill.brand
+                            .copy(alpha = 0.3f),
                     strokeWidth = 5.dp,
-                    strokeCap = StrokeCap.Round
+                    strokeCap = StrokeCap.Round,
                 )
             } else {
                 CircularProgressIndicator(
                     progress = { state.distanceFraction },
                     color = CaramelTheme.color.fill.brand,
-                    trackColor = CaramelTheme.color.fill.brand.copy(alpha = 0.3f),
+                    trackColor =
+                        CaramelTheme.color.fill.brand
+                            .copy(alpha = 0.3f),
                     strokeWidth = 5.dp,
-                    strokeCap = StrokeCap.Round
+                    strokeCap = StrokeCap.Round,
                 )
             }
         }

@@ -40,9 +40,9 @@ internal fun MainRoute(
     navigateToStaredCoupleDay: () -> Unit,
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: (ContentType) -> Unit,
-    navigateToCreateSchedule : (ContentType, String) -> Unit,
+    navigateToCreateSchedule: (ContentType, String) -> Unit,
     showErrorToast: (String) -> Unit,
-    showErrorDialog: (String, String?) -> Unit
+    showErrorDialog: (String, String?) -> Unit,
 ) {
     val hapticFeedback = LocalHapticFeedback.current
     val mainNavHostController = rememberNavController()
@@ -57,9 +57,10 @@ internal fun MainRoute(
     MainScaffold(
         bottomBar = {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = CaramelTheme.color.background.tertiary),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .background(color = CaramelTheme.color.background.tertiary),
             ) {
                 CaramelBottomNavigationWithTrailingButton(
                     modifier = Modifier.navigationBarsPadding(),
@@ -99,12 +100,12 @@ internal fun MainRoute(
                     },
                     trailingButton = {
                         CaramelNavItemCreateButton(
-                            onClickButton = { navigateToCreateTodo(ContentType.MEMO) }
+                            onClickButton = { navigateToCreateTodo(ContentType.MEMO) },
                         )
-                    }
+                    },
                 )
             }
-        }
+        },
     ) { innerPadding ->
         NavHost(
             modifier = Modifier.padding(paddingValues = innerPadding),
@@ -112,7 +113,7 @@ internal fun MainRoute(
             startDestination = HomeRoute,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None },
-            popEnterTransition = { EnterTransition.None},
+            popEnterTransition = { EnterTransition.None },
             popExitTransition = { ExitTransition.None },
         ) {
             homeContent(
@@ -121,20 +122,19 @@ internal fun MainRoute(
                 navigateToTodoDetail = navigateToTodoDetail,
                 navigateToCreateTodo = navigateToCreateTodo,
                 showErrorDialog = showErrorDialog,
-                showErrorToast = showErrorToast
+                showErrorToast = showErrorToast,
             )
             calendarContent(
                 navigateToCreateSchedule = navigateToCreateSchedule,
                 navigateToTodoDetail = navigateToTodoDetail,
                 showErrorDialog = showErrorDialog,
-                showErrorToast = showErrorToast
+                showErrorToast = showErrorToast,
             )
             memoContent(
                 navigateToTodoDetail = navigateToTodoDetail,
                 showErrorToast = showErrorToast,
-                showErrorDialog = showErrorDialog
+                showErrorDialog = showErrorDialog,
             )
         }
     }
-
 }

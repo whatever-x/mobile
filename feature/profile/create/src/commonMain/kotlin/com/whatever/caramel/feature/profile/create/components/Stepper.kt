@@ -15,29 +15,33 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 internal fun Stepper(
     modifier: Modifier = Modifier,
-    currentIndex: Int
+    currentIndex: Int,
 ) {
     Row(
-        modifier = modifier
-            .padding(
-                top = CaramelTheme.spacing.s,
-                bottom = CaramelTheme.spacing.xl
+        modifier =
+            modifier
+                .padding(
+                    top = CaramelTheme.spacing.s,
+                    bottom = CaramelTheme.spacing.xl,
+                ),
+        horizontalArrangement =
+            Arrangement.spacedBy(
+                space = CaramelTheme.spacing.xs,
             ),
-        horizontalArrangement = Arrangement.spacedBy(
-            space = CaramelTheme.spacing.xs
-        )
     ) {
         ProfileCreateStep.entries.forEach { step ->
             Icon(
-                painter = painterResource(
-                    resource = if (step.ordinal <= currentIndex) {
-                        Resources.Icon.ic_progress_dot_active_18
-                    } else {
-                        Resources.Icon.ic_progress_dot_inactive_18
-                    }
-                ),
+                painter =
+                    painterResource(
+                        resource =
+                            if (step.ordinal <= currentIndex) {
+                                Resources.Icon.ic_progress_dot_active_18
+                            } else {
+                                Resources.Icon.ic_progress_dot_inactive_18
+                            },
+                    ),
                 tint = Color.Unspecified,
-                contentDescription = null
+                contentDescription = null,
             )
         }
     }

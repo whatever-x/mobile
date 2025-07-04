@@ -17,7 +17,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun ContentEditRoute(
     viewModel: ContentEditViewModel = koinViewModel(),
     popBackStack: () -> Unit,
-    showErrorDialog: (String, String?) -> Unit
+    showErrorDialog: (String, String?) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = LocalSnackbarHostState.current
@@ -34,7 +34,7 @@ fun ContentEditRoute(
                     showSnackbarMessage(
                         snackbarHostState = snackbarHostState,
                         coroutineScope = this,
-                        message = sideEffect.message ?: ""
+                        message = sideEffect.message ?: "",
                     )
                 }
 
@@ -45,7 +45,7 @@ fun ContentEditRoute(
 
     ContentEditScreen(
         state = state,
-        onIntent = viewModel::intent
+        onIntent = viewModel::intent,
     )
 
     CaramelDialog(
@@ -55,7 +55,7 @@ fun ContentEditRoute(
         subButtonText = "머무르기",
         onDismissRequest = { viewModel.intent(ContentEditIntent.DismissExitDialog) },
         onMainButtonClick = { viewModel.intent(ContentEditIntent.ConfirmExitDialog) },
-        onSubButtonClick = { viewModel.intent(ContentEditIntent.DismissExitDialog) }
+        onSubButtonClick = { viewModel.intent(ContentEditIntent.DismissExitDialog) },
     ) {
         DefaultCaramelDialogLayout() // Or your custom layout
     }
@@ -68,7 +68,7 @@ fun ContentEditRoute(
         subButtonText = "유지하기",
         onDismissRequest = { viewModel.intent(ContentEditIntent.DismissDeleteDialog) },
         onMainButtonClick = { viewModel.intent(ContentEditIntent.ConfirmDeleteDialog) },
-        onSubButtonClick = { viewModel.intent(ContentEditIntent.DismissDeleteDialog) }
+        onSubButtonClick = { viewModel.intent(ContentEditIntent.DismissDeleteDialog) },
     ) {
         DefaultCaramelDialogLayout()
     }
@@ -78,7 +78,7 @@ fun ContentEditRoute(
         title = "삭제된 메모에요",
         mainButtonText = "확인",
         onDismissRequest = { viewModel.intent(ContentEditIntent.DismissDeletedContentDialog) },
-        onMainButtonClick = { viewModel.intent(ContentEditIntent.DismissDeletedContentDialog) }
+        onMainButtonClick = { viewModel.intent(ContentEditIntent.DismissDeletedContentDialog) },
     ) {
         DefaultCaramelDialogLayout()
     }

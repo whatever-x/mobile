@@ -7,12 +7,11 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
 
 class TokenDataSourceImpl(
-    private val dataStore : DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>,
 ) : TokenDataSource {
-    
     override suspend fun createToken(
         accessToken: String,
-        refreshToken: String
+        refreshToken: String,
     ) {
         dataStore.edit { prefs ->
             prefs[accessTokenKey] = accessToken
@@ -27,17 +26,15 @@ class TokenDataSourceImpl(
         }
     }
 
-    override suspend fun fetchAccessToken(): String {
-        return dataStore.data.first().let { prefs ->
+    override suspend fun fetchAccessToken(): String =
+        dataStore.data.first().let { prefs ->
             prefs[accessTokenKey] ?: ""
         }
-    }
 
-    override suspend fun fetchRefreshToken(): String {
-        return dataStore.data.first().let { prefs ->
+    override suspend fun fetchRefreshToken(): String =
+        dataStore.data.first().let { prefs ->
             prefs[refreshTokenKey] ?: ""
         }
-    }
 
     companion object {
         private const val PREFS_KEY_ACCESS_TOKEN = "accessToken"

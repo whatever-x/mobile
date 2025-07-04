@@ -23,10 +23,7 @@ class ProfileCreateViewModel(
     private val permissionsController: PermissionsController,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<ProfileCreateState, ProfileCreateSideEffect, ProfileCreateIntent>(savedStateHandle) {
-
-    override fun createInitialState(savedStateHandle: SavedStateHandle): ProfileCreateState {
-        return ProfileCreateState()
-    }
+    override fun createInitialState(savedStateHandle: SavedStateHandle): ProfileCreateState = ProfileCreateState()
 
     override suspend fun handleIntent(intent: ProfileCreateIntent) {
         when (intent) {
@@ -37,9 +34,10 @@ class ProfileCreateViewModel(
             is ProfileCreateIntent.ClickGenderButton -> selectGender(gender = intent.gender)
             is ProfileCreateIntent.TogglePersonalInfoTerm -> togglePersonalTermCheckBox()
             is ProfileCreateIntent.ToggleServiceTerm -> toggleServiceTermCheckBox()
-            is ProfileCreateIntent.ClickPersonalInfoTermLabel -> postSideEffect(
-                ProfileCreateSideEffect.NavigateToPersonalInfoTermNotion
-            )
+            is ProfileCreateIntent.ClickPersonalInfoTermLabel ->
+                postSideEffect(
+                    ProfileCreateSideEffect.NavigateToPersonalInfoTermNotion,
+                )
 
             is ProfileCreateIntent.ClickServiceTermLabel -> postSideEffect(ProfileCreateSideEffect.NavigateToServiceTermNotion)
             is ProfileCreateIntent.ChangeDayPicker -> changeDay(day = intent.day)
@@ -52,23 +50,25 @@ class ProfileCreateViewModel(
         super.handleClientException(throwable)
         if (throwable is CaramelException) {
             when (throwable.errorUiType) {
-                ErrorUiType.TOAST -> postSideEffect(
-                    ProfileCreateSideEffect.ShowErrorToast(
-                        message = throwable.message
+                ErrorUiType.TOAST ->
+                    postSideEffect(
+                        ProfileCreateSideEffect.ShowErrorToast(
+                            message = throwable.message,
+                        ),
                     )
-                )
-                ErrorUiType.DIALOG -> postSideEffect(
-                    ProfileCreateSideEffect.ShowErrorDialog(
-                        message = throwable.message,
-                        description = throwable.description
+                ErrorUiType.DIALOG ->
+                    postSideEffect(
+                        ProfileCreateSideEffect.ShowErrorDialog(
+                            message = throwable.message,
+                            description = throwable.description,
+                        ),
                     )
-                )
             }
         } else {
             postSideEffect(
                 ProfileCreateSideEffect.ShowErrorToast(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
-                )
+                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다.",
+                ),
             )
         }
     }
@@ -77,7 +77,7 @@ class ProfileCreateViewModel(
         if (currentState.currentStep != ProfileCreateStep.NICKNAME) {
             reduce {
                 copy(
-                    currentStep = ProfileCreateStep.entries[currentIndex - 1]
+                    currentStep = ProfileCreateStep.entries[currentIndex - 1],
                 )
             }
         } else {
@@ -89,27 +89,30 @@ class ProfileCreateViewModel(
         if (currentState.currentStep != ProfileCreateStep.NEED_TERMS) {
             reduce {
                 copy(
-                    currentStep = ProfileCreateStep.entries[currentIndex + 1]
+                    currentStep = ProfileCreateStep.entries[currentIndex + 1],
                 )
             }
         } else {
             launch {
-                val userStatus = createUserProfileUseCase(
-                    nickname = currentState.nickname,
-                    birthDay = createDateString(
-                        currentState.birthday.year,
-                        currentState.birthday.month,
-                        currentState.birthday.day
-                    ),
-                    gender = currentState.gender,
-                    agreementServiceTerms = currentState.isServiceTermChecked,
-                    agreementPrivacyPolicy = currentState.isPersonalInfoTermChecked
-                )
+                val userStatus =
+                    createUserProfileUseCase(
+                        nickname = currentState.nickname,
+                        birthDay =
+                            createDateString(
+                                currentState.birthday.year,
+                                currentState.birthday.month,
+                                currentState.birthday.day,
+                            ),
+                        gender = currentState.gender,
+                        agreementServiceTerms = currentState.isServiceTermChecked,
+                        agreementPrivacyPolicy = currentState.isPersonalInfoTermChecked,
+                    )
 
                 updateUserSettingUseCase(
-                    notificationEnabled = permissionsController.isPermissionGranted(
-                        permission = Permission.REMOTE_NOTIFICATION
-                    )
+                    notificationEnabled =
+                        permissionsController.isPermissionGranted(
+                            permission = Permission.REMOTE_NOTIFICATION,
+                        ),
                 )
                 postSideEffect(ProfileCreateSideEffect.NavigateToStartDestination(userStatus = userStatus))
             }
@@ -120,7 +123,7 @@ class ProfileCreateViewModel(
         UserValidator.checkInputNicknameValidate(nickname).getOrThrow()
         reduce {
             copy(
-                nickname = nickname
+                nickname = nickname,
             )
         }
     }
@@ -128,7 +131,7 @@ class ProfileCreateViewModel(
     private fun selectGender(gender: Gender) {
         reduce {
             copy(
-                gender = gender
+                gender = gender,
             )
         }
     }
@@ -136,7 +139,7 @@ class ProfileCreateViewModel(
     private fun toggleServiceTermCheckBox() {
         reduce {
             copy(
-                isServiceTermChecked = !currentState.isServiceTermChecked
+                isServiceTermChecked = !currentState.isServiceTermChecked,
             )
         }
     }
@@ -144,7 +147,7 @@ class ProfileCreateViewModel(
     private fun togglePersonalTermCheckBox() {
         reduce {
             copy(
-                isPersonalInfoTermChecked = !currentState.isPersonalInfoTermChecked
+                isPersonalInfoTermChecked = !currentState.isPersonalInfoTermChecked,
             )
         }
     }
@@ -152,9 +155,10 @@ class ProfileCreateViewModel(
     private fun changeYear(year: Int) {
         reduce {
             copy(
-                birthday = birthday.copy(
-                    year = year
-                )
+                birthday =
+                    birthday.copy(
+                        year = year,
+                    ),
             )
         }
 
@@ -164,9 +168,10 @@ class ProfileCreateViewModel(
     private fun changeMonth(month: Int) {
         reduce {
             copy(
-                birthday = birthday.copy(
-                    month = month
-                )
+                birthday =
+                    birthday.copy(
+                        month = month,
+                    ),
             )
         }
 
@@ -176,9 +181,10 @@ class ProfileCreateViewModel(
     private fun changeDay(day: Int) {
         reduce {
             copy(
-                birthday = birthday.copy(
-                    day = day
-                )
+                birthday =
+                    birthday.copy(
+                        day = day,
+                    ),
             )
         }
 

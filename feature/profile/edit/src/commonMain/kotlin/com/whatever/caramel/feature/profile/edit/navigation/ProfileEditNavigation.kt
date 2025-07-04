@@ -15,7 +15,7 @@ data class ProfileEditRoute(
     val editType: String,
     val nickname: String,
     val birthday: String,
-    val startDate: String
+    val startDate: String,
 )
 
 fun NavHostController.navigateToEditProfile(
@@ -23,42 +23,43 @@ fun NavHostController.navigateToEditProfile(
     nickname: String = "",
     birthday: String = "",
     startDate: String = "",
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = null,
 ) {
     navigate(
-        route = ProfileEditRoute(
-            editType = editType.name,
-            nickname = nickname,
-            birthday = birthday,
-            startDate = startDate
-        ),
-        navOptions = navOptions
+        route =
+            ProfileEditRoute(
+                editType = editType.name,
+                nickname = nickname,
+                birthday = birthday,
+                startDate = startDate,
+            ),
+        navOptions = navOptions,
     )
 }
 
 fun NavGraphBuilder.editProfileScreen(
     popBackStack: () -> Unit,
     showErrorDialog: (title: String, message: String?) -> Unit,
-    showErrorToast: (message: String) -> Unit
+    showErrorToast: (message: String) -> Unit,
 ) {
     composable<ProfileEditRoute>(
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Up,
-                animationSpec = tween(400)
+                animationSpec = tween(400),
             )
         },
         exitTransition = {
             slideOutOfContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Down,
-                animationSpec = tween(400)
+                animationSpec = tween(400),
             )
-        }
+        },
     ) {
         ProfileEditRoute(
             popBackStack = popBackStack,
             showErrorDialog = showErrorDialog,
-            showErrorToast = showErrorToast
+            showErrorToast = showErrorToast,
         )
     }
 }

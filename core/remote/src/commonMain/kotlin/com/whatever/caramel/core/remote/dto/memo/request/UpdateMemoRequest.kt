@@ -9,7 +9,7 @@ data class UpdateMemoRequest(
     val description: String?,
     val isCompleted: Boolean?,
     val tagList: List<TagRequest>?,
-    val dateTimeInfo: DateTimeInfoRequest?
+    val dateTimeInfo: DateTimeInfoRequest?,
 )
 
 @Serializable
@@ -17,5 +17,5 @@ data class DateTimeInfoRequest(
     val startDateTime: String,
     val startTimezone: String,
     val endDateTime: String?,
-    val endTimezone: String?
+    val endTimezone: String?,
 )

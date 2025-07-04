@@ -14,7 +14,7 @@ data object HomeRoute
 fun NavHostController.navigateToHome(builder: NavOptionsBuilder.() -> Unit) {
     navigate(
         route = HomeRoute,
-        builder = builder
+        builder = builder,
     )
 }
 
@@ -24,7 +24,7 @@ fun NavGraphBuilder.homeContent(
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: (ContentType) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
-    showErrorToast: (String) -> Unit
+    showErrorToast: (String) -> Unit,
 ) {
     composable<HomeRoute> {
         HomeRoute(
@@ -33,7 +33,7 @@ fun NavGraphBuilder.homeContent(
             navigateToTodoDetail = navigateToTodoDetail,
             navigateToCreateTodo = navigateToCreateTodo,
             showErrorDialog = showErrorDialog,
-            showErrorToast = showErrorToast
+            showErrorToast = showErrorToast,
         )
     }
 }

@@ -22,18 +22,20 @@ import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 fun CalendarScheduleList(
     modifier: Modifier = Modifier,
     schedule: DaySchedule,
-    onClickTodo: (Long) -> Unit
+    onClickTodo: (Long) -> Unit,
 ) {
     val density = LocalDensity.current
-    val spacingBetweenItems = density.run {
-        CaramelTheme.spacing.xxs.roundToPx()
-    }
+    val spacingBetweenItems =
+        density.run {
+            CaramelTheme.spacing.xxs.roundToPx()
+        }
 
     SubcomposeLayout(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = CaramelTheme.spacing.xxs)
-            .background(color = CaramelTheme.color.background.primary)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(horizontal = CaramelTheme.spacing.xxs)
+                .background(color = CaramelTheme.color.background.primary),
     ) { constraints ->
         val parentHeight = constraints.maxHeight
         var totalHeight = 0
@@ -42,9 +44,10 @@ fun CalendarScheduleList(
         val totalListSize = schedule.totalScheduleCount
 
         schedule.holidays.forEachIndexed { index, holiday ->
-            val placeable = subcompose("holiday_$index") {
-                CalendarHolidayItem(holiday = holiday)
-            }.first().measure(constraints)
+            val placeable =
+                subcompose("holiday_$index") {
+                    CalendarHolidayItem(holiday = holiday)
+                }.first().measure(constraints)
 
             val newHeight = totalHeight + placeable.height + spacingBetweenItems
             if (newHeight + placeable.height <= parentHeight) {
@@ -57,9 +60,10 @@ fun CalendarScheduleList(
         }
 
         schedule.anniversaries.forEachIndexed { index, anniversary ->
-            val placeable = subcompose("anniversary_$index") {
-                CalendarAnniversaryItem(anniversary = anniversary)
-            }.first().measure(constraints)
+            val placeable =
+                subcompose("anniversary_$index") {
+                    CalendarAnniversaryItem(anniversary = anniversary)
+                }.first().measure(constraints)
 
             val newHeight = totalHeight + placeable.height + spacingBetweenItems
             if (newHeight + placeable.height <= parentHeight) {
@@ -72,9 +76,10 @@ fun CalendarScheduleList(
         }
 
         schedule.todos.forEachIndexed { index, todo ->
-            val placeable = subcompose("todo_$index") {
-                CalendarTodoItem(todo = todo, onClickTodo = onClickTodo)
-            }.first().measure(constraints)
+            val placeable =
+                subcompose("todo_$index") {
+                    CalendarTodoItem(todo = todo, onClickTodo = onClickTodo)
+                }.first().measure(constraints)
 
             val newHeight = totalHeight + placeable.height + spacingBetweenItems
             if (newHeight + placeable.height <= parentHeight) {
@@ -88,17 +93,19 @@ fun CalendarScheduleList(
 
         val hasMoreItems = totalListSize > visibleItemCount
         if (hasMoreItems) {
-            val morePlaceable = subcompose("more") {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = CaramelTheme.spacing.xs),
-                    textAlign = TextAlign.Center,
-                    style = CaramelTheme.typography.label3.regular,
-                    color = CaramelTheme.color.text.secondary,
-                    text = "+${totalListSize - visibleItemCount}개"
-                )
-            }.first().measure(constraints)
+            val morePlaceable =
+                subcompose("more") {
+                    Text(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = CaramelTheme.spacing.xs),
+                        textAlign = TextAlign.Center,
+                        style = CaramelTheme.typography.label3.regular,
+                        color = CaramelTheme.color.text.secondary,
+                        text = "+${totalListSize - visibleItemCount}개",
+                    )
+                }.first().measure(constraints)
             itemsToPlace.add(morePlaceable to totalHeight + spacingBetweenItems)
         }
 
@@ -113,42 +120,42 @@ fun CalendarScheduleList(
 @Composable
 private fun CalendarAnniversaryItem(
     modifier: Modifier = Modifier,
-    anniversary: Anniversary
+    anniversary: Anniversary,
 ) {
     Text(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(
-                color = CaramelTheme.color.fill.brand,
-                shape = CaramelTheme.shape.xxs
-            )
-            .padding(horizontal = CaramelTheme.spacing.xxs),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(
+                    color = CaramelTheme.color.fill.brand,
+                    shape = CaramelTheme.shape.xxs,
+                ).padding(horizontal = CaramelTheme.spacing.xxs),
         maxLines = 1,
         overflow = TextOverflow.Clip,
         text = anniversary.label,
         style = CaramelTheme.typography.label3.bold,
-        color = CaramelTheme.color.text.inverse
+        color = CaramelTheme.color.text.inverse,
     )
 }
 
 @Composable
 private fun CalendarHolidayItem(
     modifier: Modifier = Modifier,
-    holiday: Holiday
+    holiday: Holiday,
 ) {
     Text(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(
-                color = CaramelTheme.color.fill.labelAccent1,
-                shape = CaramelTheme.shape.xxs
-            )
-            .padding(horizontal = CaramelTheme.spacing.xxs),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(
+                    color = CaramelTheme.color.fill.labelAccent1,
+                    shape = CaramelTheme.shape.xxs,
+                ).padding(horizontal = CaramelTheme.spacing.xxs),
         maxLines = 1,
         overflow = TextOverflow.Clip,
         text = holiday.name,
         style = CaramelTheme.typography.label3.bold,
-        color = CaramelTheme.color.text.inverse
+        color = CaramelTheme.color.text.inverse,
     )
 }
 
@@ -156,25 +163,25 @@ private fun CalendarHolidayItem(
 private fun CalendarTodoItem(
     modifier: Modifier = Modifier,
     todo: Todo,
-    onClickTodo: (Long) -> Unit
+    onClickTodo: (Long) -> Unit,
 ) {
     Text(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(
-                color = CaramelTheme.color.fill.labelBrand,
-                shape = CaramelTheme.shape.xxs
-            )
-            .padding(horizontal = CaramelTheme.spacing.xxs)
-            .clickable(
-                interactionSource = null,
-                indication = null,
-                onClick = { onClickTodo(todo.id) }
-            ),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(
+                    color = CaramelTheme.color.fill.labelBrand,
+                    shape = CaramelTheme.shape.xxs,
+                ).padding(horizontal = CaramelTheme.spacing.xxs)
+                .clickable(
+                    interactionSource = null,
+                    indication = null,
+                    onClick = { onClickTodo(todo.id) },
+                ),
         maxLines = 1,
         overflow = TextOverflow.Clip,
         text = todo.title.ifEmpty { todo.description },
         style = CaramelTheme.typography.label3.bold,
-        color = CaramelTheme.color.text.labelBrand
+        color = CaramelTheme.color.text.labelBrand,
     )
 }

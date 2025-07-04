@@ -39,7 +39,7 @@ internal fun CaramelNavHost(
     NavHost(
         modifier = modifier,
         navController = navHostController,
-        startDestination = SplashRoute
+        startDestination = SplashRoute,
     ) {
         with(navHostController) {
             splashScreen(
@@ -63,7 +63,7 @@ internal fun CaramelNavHost(
                 },
                 showErrorToast = { message ->
                     onIntent(AppIntent.ShowToast(message))
-                }
+                },
             )
             createProfileScreen(
                 navigateToLogin = {
@@ -81,10 +81,10 @@ internal fun CaramelNavHost(
                 },
                 showErrorDialog = { title, message ->
                     onIntent(AppIntent.ShowErrorDialog(title, message))
-                }
+                },
             )
             connectingScreen(
-                navigateToMain = { navigateToMain() }
+                navigateToMain = { navigateToMain() },
             )
             connectCoupleScreen(
                 navigateToMain = { navigateToMain() },
@@ -94,7 +94,7 @@ internal fun CaramelNavHost(
                 },
                 showErrorToast = { message ->
                     onIntent(AppIntent.ShowToast(message))
-                }
+                },
             )
             inviteCoupleScreen(
                 navigateToConnectCouple = { navigateToConnectCouple() },
@@ -104,20 +104,20 @@ internal fun CaramelNavHost(
                 },
                 showErrorToast = { message ->
                     onIntent(AppIntent.ShowToast(message))
-                }
+                },
             )
             settingScreen(
                 navigateToHome = { popBackStack() },
                 navigateToEditBirthday = { birthday ->
                     navigateToEditProfile(
                         editType = ProfileEditType.BIRTHDAY,
-                        birthday = birthday
+                        birthday = birthday,
                     )
                 },
                 navigateToEditNickName = { nickname ->
                     navigateToEditProfile(
                         editType = ProfileEditType.NICKNAME,
-                        nickname = nickname
+                        nickname = nickname,
                     )
                 },
                 navigateToLogin = {
@@ -130,7 +130,7 @@ internal fun CaramelNavHost(
                 navigateToEditCountDown = { startDate ->
                     navigateToEditProfile(
                         editType = ProfileEditType.START_DATE,
-                        startDate = startDate
+                        startDate = startDate,
                     )
                 },
                 showErrorDialog = { message, description ->
@@ -138,7 +138,7 @@ internal fun CaramelNavHost(
                 },
                 showErrorToast = { message ->
                     onIntent(AppIntent.ShowToast(message))
-                }
+                },
             )
             contentCreateScreen(
                 navigateToBackStack = { popBackStack() },
@@ -153,13 +153,13 @@ internal fun CaramelNavHost(
                 },
                 showErrorToast = { message ->
                     onIntent(AppIntent.ShowToast(message))
-                }
+                },
             )
             mainGraph(
                 navigateToSetting = { navigateToSetting() },
                 navigateToStaredCoupleDay = {
                     navigateToEditProfile(
-                        editType = ProfileEditType.START_DATE
+                        editType = ProfileEditType.START_DATE,
                     )
                 },
                 navigateToTodoDetail = { contentId, contentType ->
@@ -169,7 +169,7 @@ internal fun CaramelNavHost(
                 navigateToCreateSchedule = { contentType, dateTimeString ->
                     navigateToContentCreate(
                         contentType = contentType,
-                        dateTimeString = dateTimeString
+                        dateTimeString = dateTimeString,
                     )
                 },
                 showErrorDialog = { title, message ->
@@ -177,13 +177,13 @@ internal fun CaramelNavHost(
                 },
                 showErrorToast = { message ->
                     onIntent(AppIntent.ShowToast(message))
-                }
+                },
             )
             contentEditScreen(
                 popBackStack = { popBackStack() },
                 showErrorDialog = { title, message ->
                     onIntent(AppIntent.ShowErrorDialog(title, message))
-                }
+                },
             )
             contentDetailScreen(
                 popBackStack = { popBackStack() },
@@ -195,7 +195,7 @@ internal fun CaramelNavHost(
                 },
                 showErrorDialog = { title, message ->
                     onIntent(AppIntent.ShowErrorDialog(title, message))
-                }
+                },
             )
         }
     }

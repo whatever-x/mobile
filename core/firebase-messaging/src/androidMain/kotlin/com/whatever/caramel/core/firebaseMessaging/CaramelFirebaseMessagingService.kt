@@ -19,7 +19,6 @@ import org.koin.android.ext.android.inject
 import java.util.UUID
 
 class CaramelFirebaseMessagingService : FirebaseMessagingService() {
-
     private val fcmTokenProvider: FcmTokenProvider by inject()
     private val notificationIntent: NotificationIntentProvider by inject()
 
@@ -49,27 +48,29 @@ class CaramelFirebaseMessagingService : FirebaseMessagingService() {
 
         val intent = notificationIntent.provideNotificationIntent(context = applicationContext)
 
-        val pendingIntent = PendingIntent.getActivity(
-            applicationContext,
-            UUID.randomUUID().hashCode(),
-            intent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
+        val pendingIntent =
+            PendingIntent.getActivity(
+                applicationContext,
+                UUID.randomUUID().hashCode(),
+                intent,
+                PendingIntent.FLAG_IMMUTABLE,
+            )
 
-        val builder = NotificationCompat.Builder(applicationContext, getString(R.string.fcm_id_01))
-            .setSmallIcon(R.drawable.ic_notification_small)
-            .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_notification))
-            .setColor(getColor(R.color.notification_color))
-            .setColorized(true)
-            .setContentTitle(notification.title)
-            .setContentText(notification.body)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
+        val builder =
+            NotificationCompat
+                .Builder(applicationContext, getString(R.string.fcm_id_01))
+                .setSmallIcon(R.drawable.ic_notification_small)
+                .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_notification))
+                .setColor(getColor(R.color.notification_color))
+                .setColorized(true)
+                .setContentTitle(notification.title)
+                .setContentText(notification.body)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
 
         NotificationManagerCompat.from(this).notify(
             UUID.randomUUID().hashCode(),
-            builder.build()
+            builder.build(),
         )
     }
-
 }

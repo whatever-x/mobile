@@ -5,7 +5,7 @@ import android.content.Context
 import android.provider.Settings
 
 class AndroidDeviceIdProvider(
-    private val context: Context
+    private val context: Context,
 ) : DeviceIdProvider {
     override val deviceId: String
         @SuppressLint("HardwareIds")

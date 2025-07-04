@@ -29,48 +29,50 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-internal fun LazyListScope.Todo(
+internal fun LazyListScope.todo(
     todoList: ImmutableList<TodoState>,
     isSetAnniversary: Boolean,
     onClickAnniversaryNudgeCard: () -> Unit,
     onClickTodoItem: (todoContentId: Long) -> Unit,
-    onClickEmptyTodo: () -> Unit
+    onClickEmptyTodo: () -> Unit,
 ) {
     item(key = "Todos") {
         Column(
-            modifier = Modifier
-                .padding(
-                    start = CaramelTheme.spacing.xl,
-                    end = CaramelTheme.spacing.xl,
-                    bottom = CaramelTheme.spacing.xl,
+            modifier =
+                Modifier
+                    .padding(
+                        start = CaramelTheme.spacing.xl,
+                        end = CaramelTheme.spacing.xl,
+                        bottom = CaramelTheme.spacing.xl,
+                    ),
+            verticalArrangement =
+                Arrangement.spacedBy(
+                    space = CaramelTheme.spacing.s,
                 ),
-            verticalArrangement = Arrangement.spacedBy(
-                space = CaramelTheme.spacing.s
-            )
         ) {
             if (!isSetAnniversary) {
                 NudgeCard(
                     text = stringResource(resource = Res.string.start_couple_date_guid),
                     iconResource = Resources.Icon.ic_arrow_right_16,
-                    onClick = onClickAnniversaryNudgeCard
+                    onClick = onClickAnniversaryNudgeCard,
                 )
             }
 
             TodoList(
-                modifier = Modifier
-                    .background(
-                        color = CaramelTheme.color.fill.quaternary,
-                        shape = CaramelTheme.shape.l
-                    )
-                    .padding(
-                        bottom = CaramelTheme.spacing.m,
-                        top = CaramelTheme.spacing.l,
-                        start = CaramelTheme.spacing.l,
-                        end = CaramelTheme.spacing.l
-                    ),
+                modifier =
+                    Modifier
+                        .background(
+                            color = CaramelTheme.color.fill.quaternary,
+                            shape = CaramelTheme.shape.l,
+                        ).padding(
+                            bottom = CaramelTheme.spacing.m,
+                            top = CaramelTheme.spacing.l,
+                            start = CaramelTheme.spacing.l,
+                            end = CaramelTheme.spacing.l,
+                        ),
                 todoList = todoList,
                 onClickTodoItem = onClickTodoItem,
-                onClickEmptyTodo = onClickEmptyTodo
+                onClickEmptyTodo = onClickEmptyTodo,
             )
         }
     }
@@ -81,50 +83,50 @@ private fun TodoList(
     modifier: Modifier = Modifier,
     todoList: ImmutableList<TodoState>,
     onClickTodoItem: (todoContentId: Long) -> Unit,
-    onClickEmptyTodo: () -> Unit
+    onClickEmptyTodo: () -> Unit,
 ) {
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = "오늘 일정",
             style = CaramelTheme.typography.heading3,
-            color = CaramelTheme.color.text.primary
+            color = CaramelTheme.color.text.primary,
         )
 
         Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.xs))
 
         if (todoList.isEmpty()) {
             EmptyTodo(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(
-                        onClick = onClickEmptyTodo,
-                        interactionSource = null,
-                        indication = null
-                    )
-                    .padding(vertical = CaramelTheme.spacing.s),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable(
+                            onClick = onClickEmptyTodo,
+                            interactionSource = null,
+                            indication = null,
+                        ).padding(vertical = CaramelTheme.spacing.s),
             )
         } else {
             todoList.forEachIndexed { index, todo ->
                 TodoItem(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(
-                            onClick = { onClickTodoItem(todo.id) },
-                            interactionSource = null,
-                            indication = null
-                        )
-                        .padding(
-                            vertical = CaramelTheme.spacing.s,
-                        ),
-                    title = todo.title
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable(
+                                onClick = { onClickTodoItem(todo.id) },
+                                interactionSource = null,
+                                indication = null,
+                            ).padding(
+                                vertical = CaramelTheme.spacing.s,
+                            ),
+                    title = todo.title,
                 )
 
                 if (index < todoList.size - 1) {
                     HorizontalDivider(
                         modifier = Modifier.padding(vertical = CaramelTheme.spacing.xs),
                         thickness = 1.dp,
-                        color = CaramelTheme.color.divider.tertiary
+                        color = CaramelTheme.color.divider.tertiary,
                     )
                 }
             }
@@ -139,10 +141,11 @@ private fun TodoItem(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(
-            space = CaramelTheme.spacing.m
-        ),
-        verticalAlignment = Alignment.CenterVertically
+        horizontalArrangement =
+            Arrangement.spacedBy(
+                space = CaramelTheme.spacing.m,
+            ),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             modifier = Modifier.weight(weight = 1f),
@@ -150,38 +153,36 @@ private fun TodoItem(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = CaramelTheme.typography.body3.regular,
-            color = CaramelTheme.color.text.primary
+            color = CaramelTheme.color.text.primary,
         )
 
         Icon(
             painter = painterResource(resource = Resources.Icon.ic_arrow_right_16),
             tint = CaramelTheme.color.icon.tertiary,
-            contentDescription = null
+            contentDescription = null,
         )
     }
 }
 
 @Composable
-private fun EmptyTodo(
-    modifier: Modifier = Modifier,
-) {
+private fun EmptyTodo(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = "오늘 할 일을 등록해 주세요",
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = CaramelTheme.typography.body3.regular,
-            color = CaramelTheme.color.text.placeholder
+            color = CaramelTheme.color.text.placeholder,
         )
 
         Icon(
             painter = painterResource(resource = Resources.Icon.ic_plus_16),
             tint = CaramelTheme.color.icon.tertiary,
-            contentDescription = null
+            contentDescription = null,
         )
     }
 }
@@ -191,29 +192,28 @@ private fun NudgeCard(
     modifier: Modifier = Modifier,
     text: String,
     iconResource: DrawableResource,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(
-                color = CaramelTheme.color.fill.quaternary,
-                shape = CaramelTheme.shape.l
-            )
-            .clip(shape = CaramelTheme.shape.l)
-            .clickable(
-                onClick = onClick,
-                indication = null,
-                interactionSource = null
-            )
-            .padding(all = CaramelTheme.spacing.l),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(
+                    color = CaramelTheme.color.fill.quaternary,
+                    shape = CaramelTheme.shape.l,
+                ).clip(shape = CaramelTheme.shape.l)
+                .clickable(
+                    onClick = onClick,
+                    indication = null,
+                    interactionSource = null,
+                ).padding(all = CaramelTheme.spacing.l),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = text,
             style = CaramelTheme.typography.body3.bold,
-            color = CaramelTheme.color.text.primary
+            color = CaramelTheme.color.text.primary,
         )
 
         Icon(

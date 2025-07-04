@@ -28,49 +28,52 @@ data class CaramelShape(
     val xxl: Shape,
 ) {
     companion object {
-        fun defaultRadius(): CaramelShape = CaramelShape (
-            xxs = CaramelShapeDefaults.RADIUS_XXS.shape,
-            xs = CaramelShapeDefaults.RADIUS_XS.shape,
-            s = CaramelShapeDefaults.RADIUS_S.shape,
-            m = CaramelShapeDefaults.RADIUS_M.shape,
-            l = CaramelShapeDefaults.RADIUS_L.shape,
-            xl = CaramelShapeDefaults.RADIUS_XL.shape,
-            xxl = CaramelShapeDefaults.RADIUS_XXL.shape
-        )
+        fun defaultRadius(): CaramelShape =
+            CaramelShape(
+                xxs = CaramelShapeDefaults.RADIUS_XXS.shape,
+                xs = CaramelShapeDefaults.RADIUS_XS.shape,
+                s = CaramelShapeDefaults.RADIUS_S.shape,
+                m = CaramelShapeDefaults.RADIUS_M.shape,
+                l = CaramelShapeDefaults.RADIUS_L.shape,
+                xl = CaramelShapeDefaults.RADIUS_XL.shape,
+                xxl = CaramelShapeDefaults.RADIUS_XXL.shape,
+            )
     }
 }
 
 @Composable
 fun CaramelShapePreview() {
     CaramelTheme {
-        val shapes = mapOf(
-            CaramelTheme.shape.xxs to "XXS",
-            CaramelTheme.shape.xs to "XS",
-            CaramelTheme.shape.s to "S",
-            CaramelTheme.shape.m to "M",
-            CaramelTheme.shape.l to "L",
-            CaramelTheme.shape.xl to "XL",
-        )
+        val shapes =
+            mapOf(
+                CaramelTheme.shape.xxs to "XXS",
+                CaramelTheme.shape.xs to "XS",
+                CaramelTheme.shape.s to "S",
+                CaramelTheme.shape.m to "M",
+                CaramelTheme.shape.l to "L",
+                CaramelTheme.shape.xl to "XL",
+            )
 
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             for (shape in shapes.entries) {
                 Box(
-                    modifier = Modifier
-                        .size(100.dp)
-                        .border(
-                            width = 2.dp,
-                            color = Color.Black,
-                            shape = shape.key
-                        ),
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .size(100.dp)
+                            .border(
+                                width = 2.dp,
+                                color = Color.Black,
+                                shape = shape.key,
+                            ),
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = shape.value,
-                        fontSize = 18.sp
+                        fontSize = 18.sp,
                     )
                 }
             }

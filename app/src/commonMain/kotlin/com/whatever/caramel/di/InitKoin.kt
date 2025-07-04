@@ -38,40 +38,31 @@ fun initKoin(config: KoinAppDeclaration? = null) {
     startKoin {
         config?.invoke(this)
         modules(
-            /* === App Layer === */
+            // === App Layer ===
             appViewModelModule,
             deepLinkModule,
-
-            /* ==== Data Layer ==== */
+            // ==== Data Layer ====
             repositoryModule,
-
-            /* Remote Module */
+            // Remote Module
             networkModule,
             networkClientEngineModule,
             networkInterceptorModule,
             remoteDataSourceModule,
             deviceIdModule,
-
-            /* DataBase Module */
+            // DataBase Module
             platformDatabaseModule,
             databaseModule,
-
-            /* DataStore Module */
+            // DataStore Module
             platformDataStoreModule,
             dataStoreModule,
-
-            /* FirebaseMessaging Module */
+            // FirebaseMessaging Module
             firebaseMessagingModule,
-
-            /* ==== Domain Layer ==== */
+            // ==== Domain Layer ====
             useCaseModule,
-
-            /* ==== Presentation Layer ==== */
-
-            /* DesignSystem Module */
+            // ==== Presentation Layer ====
+            // DesignSystem Module
             hapticControllerModule,
-
-            /* Feature Module */
+            // Feature Module
             calendarFeatureModule,
             contentCreateFeatureModule,
             contentDetailFeatureModule,

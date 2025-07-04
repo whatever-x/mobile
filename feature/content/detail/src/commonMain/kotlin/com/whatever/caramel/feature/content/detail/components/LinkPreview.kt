@@ -25,30 +25,32 @@ fun LinkPreview(
     onLinkPreviewClick: () -> Unit,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(CaramelTheme.shape.s)
-            .background(CaramelTheme.color.background.tertiary)
-            .clickable { onLinkPreviewClick() }
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clip(CaramelTheme.shape.s)
+                .background(CaramelTheme.color.background.tertiary)
+                .clickable { onLinkPreviewClick() },
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             AsyncImage(
                 model = imageUrl,
                 contentDescription = title,
-                modifier = Modifier
-                    .size(width = 62.dp, height = 90.dp)
-                    .clip(CaramelTheme.shape.s),
-                contentScale = ContentScale.Crop
+                modifier =
+                    Modifier
+                        .size(width = 62.dp, height = 90.dp)
+                        .clip(CaramelTheme.shape.s),
+                contentScale = ContentScale.Crop,
             )
 
             Text(
                 text = title,
                 style = CaramelTheme.typography.body4.regular,
-                color = CaramelTheme.color.text.brand
+                color = CaramelTheme.color.text.brand,
             )
         }
     }
-} 
+}

@@ -25,41 +25,43 @@ data class CaramelSpacing(
     val xxs: Dp,
 ) {
     companion object {
-        fun defaultSpacing(): CaramelSpacing = CaramelSpacing(
-            xxl = CaramelSpacingDefaults.SPACING_XXL.spacing,
-            xl = CaramelSpacingDefaults.SPACING_XL.spacing,
-            l = CaramelSpacingDefaults.SPACING_LG.spacing,
-            m = CaramelSpacingDefaults.SPACING_M.spacing,
-            s = CaramelSpacingDefaults.SPACING_S.spacing,
-            xs = CaramelSpacingDefaults.SPACING_XS.spacing,
-            xxs = CaramelSpacingDefaults.SPACING_XXS.spacing,
-        )
+        fun defaultSpacing(): CaramelSpacing =
+            CaramelSpacing(
+                xxl = CaramelSpacingDefaults.SPACING_XXL.spacing,
+                xl = CaramelSpacingDefaults.SPACING_XL.spacing,
+                l = CaramelSpacingDefaults.SPACING_LG.spacing,
+                m = CaramelSpacingDefaults.SPACING_M.spacing,
+                s = CaramelSpacingDefaults.SPACING_S.spacing,
+                xs = CaramelSpacingDefaults.SPACING_XS.spacing,
+                xxs = CaramelSpacingDefaults.SPACING_XXS.spacing,
+            )
     }
 }
 
 @Composable
 fun CaramelSpacingPreview() {
     CaramelTheme {
-        val spacings = listOf(
-            CaramelTheme.spacing.xxs,
-            CaramelTheme.spacing.xs,
-            CaramelTheme.spacing.s,
-            CaramelTheme.spacing.m,
-            CaramelTheme.spacing.l,
-            CaramelTheme.spacing.xl,
-            CaramelTheme.spacing.xxl,
-        )
+        val spacings =
+            listOf(
+                CaramelTheme.spacing.xxs,
+                CaramelTheme.spacing.xs,
+                CaramelTheme.spacing.s,
+                CaramelTheme.spacing.m,
+                CaramelTheme.spacing.l,
+                CaramelTheme.spacing.xl,
+                CaramelTheme.spacing.xxl,
+            )
 
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             for (spacing in spacings.listIterator()) {
                 HorizontalDivider(
                     modifier = Modifier.width(30.dp),
                     thickness = spacing,
-                    color = Color.Black
+                    color = Color.Black,
                 )
             }
         }

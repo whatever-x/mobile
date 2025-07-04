@@ -29,38 +29,41 @@ internal fun LoginScreen(
     val pagerState = rememberPagerState { OnboardingStep.entries.size }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                color = CaramelTheme.color.background.primary
-            )
-            .systemBarsPadding(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(
+                    color = CaramelTheme.color.background.primary,
+                ).systemBarsPadding(),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         OnboardingPager(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(weight = 1f),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .weight(weight = 1f),
             pagerState = pagerState,
         )
 
         Column(
-            modifier = Modifier
-                .padding(horizontal = CaramelTheme.spacing.xl)
-                .padding(bottom = CaramelTheme.spacing.xl),
-            verticalArrangement = Arrangement.spacedBy(
-                space = CaramelTheme.spacing.s
-            ),
+            modifier =
+                Modifier
+                    .padding(horizontal = CaramelTheme.spacing.xl)
+                    .padding(bottom = CaramelTheme.spacing.xl),
+            verticalArrangement =
+                Arrangement.spacedBy(
+                    space = CaramelTheme.spacing.s,
+                ),
         ) {
             SocialLoginButton(
                 socialLoginType = SocialLoginType.KAKAO,
-                onLaunch = { onLaunch(SocialLoginType.KAKAO) }
+                onLaunch = { onLaunch(SocialLoginType.KAKAO) },
             )
 
             if (Platform.isIos) {
                 SocialLoginButton(
                     socialLoginType = SocialLoginType.APPLE,
-                    onLaunch = { onLaunch(SocialLoginType.APPLE) }
+                    onLaunch = { onLaunch(SocialLoginType.APPLE) },
                 )
             }
         }

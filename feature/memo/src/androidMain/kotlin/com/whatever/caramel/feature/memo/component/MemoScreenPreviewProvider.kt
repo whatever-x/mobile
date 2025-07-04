@@ -12,28 +12,32 @@ import kotlinx.collections.immutable.toImmutableList
 
 internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
     override val values: Sequence<MemoState>
-        get() = sequenceOf(
-            MemoState(
-                isMemoLoading = true,
-                memos = persistentListOf(),
-                tags = persistentListOf(),
-                selectedTag = null
-            ),
-            MemoState(
-                isMemoLoading = false,
-                memos = createTempMemoList(size = 100, emptyTitle = true),
-                tags = createTempTagUiList(size = 100),
-                selectedTag = TagUiModel(1, "label1")
-            ),
-            MemoState(
-                isMemoLoading = false,
-                memos = createTempMemoList(size = 5, emptyTitle = false),
-                tags = createTempTagUiList(size = 5),
-                selectedTag = TagUiModel(1, "label1")
-            ),
-        )
+        get() =
+            sequenceOf(
+                MemoState(
+                    isMemoLoading = true,
+                    memos = persistentListOf(),
+                    tags = persistentListOf(),
+                    selectedTag = null,
+                ),
+                MemoState(
+                    isMemoLoading = false,
+                    memos = createTempMemoList(size = 100, emptyTitle = true),
+                    tags = createTempTagUiList(size = 100),
+                    selectedTag = TagUiModel(1, "label1"),
+                ),
+                MemoState(
+                    isMemoLoading = false,
+                    memos = createTempMemoList(size = 5, emptyTitle = false),
+                    tags = createTempTagUiList(size = 5),
+                    selectedTag = TagUiModel(1, "label1"),
+                ),
+            )
 
-    private fun createTempMemoList(size: Int, emptyTitle: Boolean = false): ImmutableList<Memo> {
+    private fun createTempMemoList(
+        size: Int,
+        emptyTitle: Boolean = false,
+    ): ImmutableList<Memo> {
         val list = mutableListOf<Memo>()
         for (index in 0 until size) {
             list.add(
@@ -43,8 +47,8 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
                     description = "description$index",
                     isCompleted = false,
                     tagList = createTempTagList(index),
-                    createdAt = DateUtil.today()
-                )
+                    createdAt = DateUtil.today(),
+                ),
             )
         }
         return list.toImmutableList()
@@ -56,8 +60,8 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
             list.add(
                 Tag(
                     id = index.toLong(),
-                    label = "label$index"
-                )
+                    label = "label$index",
+                ),
             )
         }
         return list.toImmutableList()
@@ -69,8 +73,8 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
             list.add(
                 Tag(
                     id = index.toLong(),
-                    label = "label$index"
-                )
+                    label = "label$index",
+                ),
             )
         }
         return list.map { TagUiModel.toUiModel(it) }.toImmutableList()

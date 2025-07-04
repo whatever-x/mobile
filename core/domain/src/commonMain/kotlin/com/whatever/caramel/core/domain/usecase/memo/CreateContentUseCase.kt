@@ -6,10 +6,10 @@ import com.whatever.caramel.core.domain.vo.content.ContentParameterType
 
 class CreateContentUseCase(
     private val calendarRepository: CalendarRepository,
-    private val memoRepository: MemoRepository
+    private val memoRepository: MemoRepository,
 ) {
-    suspend operator fun invoke(parameter: ContentParameterType): Long {
-        return when (parameter) {
+    suspend operator fun invoke(parameter: ContentParameterType): Long =
+        when (parameter) {
             is ContentParameterType.Calendar -> {
                 calendarRepository.createSchedule(parameter.param).contentId
             }
@@ -18,5 +18,4 @@ class CreateContentUseCase(
                 memoRepository.createMemo(parameter.param).contentId
             }
         }
-    }
 }

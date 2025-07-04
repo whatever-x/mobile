@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 data class BaseResponse<T>(
     @SerialName("success") val success: Boolean,
     @SerialName("data") val data: T?,
-    @SerialName("error") val error: ErrorResponse?
+    @SerialName("error") val error: ErrorResponse?,
 )
 
 // @ham2174 TODO : 회의 이후 ErrorResponse 필드 변경 예정
@@ -20,13 +20,12 @@ data class ErrorResponse(
     @SerialName("description") val description: String?,
     @SerialName("errorUiType") val errorUiType: String,
 ) {
-    fun toException() : CaramelNetworkException {
-        return CaramelNetworkException(
+    fun toException(): CaramelNetworkException =
+        CaramelNetworkException(
             code = this.code,
             message = this.message,
             debugMessage = this.debugMessage,
             description = this.description,
-            errorUiType = this.errorUiType
+            errorUiType = this.errorUiType,
         )
-    }
 }

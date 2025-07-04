@@ -16,7 +16,7 @@ private fun BottomNavigationPreview() {
             onClickNavItem = {},
             trailingButton = {
                 CaramelNavItemCreateButton { }
-            }
+            },
         )
     }
 }

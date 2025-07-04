@@ -8,5 +8,5 @@ data class ScheduleParameter(
     val startTimeZone: String,
     val endDateTime: String?,
     val endTimeZone: String?,
-    val tagIds: List<Long>?
-) 
+    val tagIds: List<Long>?,
+)

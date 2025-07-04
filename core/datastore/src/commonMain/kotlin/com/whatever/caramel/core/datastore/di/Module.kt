@@ -11,8 +11,9 @@ import org.koin.dsl.module
 
 expect val platformDataStoreModule: Module
 
-val dataStoreModule = module {
-    single<TokenDataSource> { TokenDataSourceImpl(dataStore = get()) }
-    single<UserDataSource> { UserDataSourceImpl(dataStore = get()) }
-    single<CoupleDataSource> { CoupleDataSourceImpl(dataStore = get()) }
-}
+val dataStoreModule =
+    module {
+        single<TokenDataSource> { TokenDataSourceImpl(dataStore = get()) }
+        single<UserDataSource> { UserDataSourceImpl(dataStore = get()) }
+        single<CoupleDataSource> { CoupleDataSourceImpl(dataStore = get()) }
+    }

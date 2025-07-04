@@ -39,21 +39,22 @@ internal fun MemoItem(
     description: String,
     categoriesText: String,
     createdDateText: String,
-    onClickMemoItem: (Long) -> Unit
+    onClickMemoItem: (Long) -> Unit,
 ) {
     val isTitleOrDescriptionEmpty = title.isEmpty() || description.isEmpty()
     val mainText = title.ifEmpty { description.replace(lineBreakRegex, "") }
 
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(all = CaramelTheme.spacing.xl)
-            .clickable(
-                indication = null,
-                interactionSource = null,
-                onClick = { onClickMemoItem(id) }
-            ),
-        verticalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xs)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(all = CaramelTheme.spacing.xl)
+                .clickable(
+                    indication = null,
+                    interactionSource = null,
+                    onClick = { onClickMemoItem(id) },
+                ),
+        verticalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xs),
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -61,7 +62,7 @@ internal fun MemoItem(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = CaramelTheme.typography.body2.bold,
-            color = CaramelTheme.color.text.primary
+            color = CaramelTheme.color.text.primary,
         )
         if (!isTitleOrDescriptionEmpty) {
             Text(
@@ -70,32 +71,33 @@ internal fun MemoItem(
                 maxLines = 4,
                 overflow = TextOverflow.Ellipsis,
                 style = CaramelTheme.typography.body2.regular,
-                color = CaramelTheme.color.text.primary
+                color = CaramelTheme.color.text.primary,
             )
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xs)
+            horizontalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xs),
         ) {
             Text(
                 text = createdDateText,
                 style = CaramelTheme.typography.label1.regular,
-                color = CaramelTheme.color.text.secondary
+                color = CaramelTheme.color.text.secondary,
             )
             if (categoriesText.isNotEmpty()) {
                 Box(
-                    modifier = Modifier
-                        .size(size = 2.dp)
-                        .clip(CircleShape)
-                        .background(color = CaramelTheme.color.text.secondary)
+                    modifier =
+                        Modifier
+                            .size(size = 2.dp)
+                            .clip(CircleShape)
+                            .background(color = CaramelTheme.color.text.secondary),
                 )
                 Text(
                     text = categoriesText,
                     maxLines = 1,
                     style = CaramelTheme.typography.label1.regular,
                     color = CaramelTheme.color.text.secondary,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }
@@ -103,18 +105,16 @@ internal fun MemoItem(
 }
 
 @Composable
-internal fun EmptyMemo(
-    modifier: Modifier = Modifier
-) {
+internal fun EmptyMemo(modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier.align(Alignment.Center),
         ) {
             Icon(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 painter = painterResource(Resources.Image.img_blank_memo),
                 tint = Color.Unspecified,
-                contentDescription = null
+                contentDescription = null,
             )
             Spacer(modifier = Modifier.size(CaramelTheme.spacing.l))
             Text(
@@ -122,7 +122,7 @@ internal fun EmptyMemo(
                 text = stringResource(Res.string.empty_memo),
                 style = CaramelTheme.typography.body3.regular,
                 color = CaramelTheme.color.text.primary,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
     }

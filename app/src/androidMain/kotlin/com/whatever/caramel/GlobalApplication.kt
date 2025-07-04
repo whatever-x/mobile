@@ -6,14 +6,13 @@ import android.app.NotificationManager
 import com.appsflyer.AppsFlyerLib
 import com.google.firebase.FirebaseApp
 import com.whatever.caramel.app.BuildConfig
+import com.whatever.caramel.core.firebaseMessaging.R
 import com.whatever.caramel.di.initKoin
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import org.koin.android.ext.koin.androidContext
-import com.whatever.caramel.core.firebaseMessaging.R
 
 class GlobalApplication : Application() {
-
     override fun onCreate() {
         super.onCreate()
 
@@ -37,11 +36,12 @@ class GlobalApplication : Application() {
             applicationContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         val channelId = getString(R.string.fcm_id_01)
         val channelName = getString(R.string.fcm_name_01)
-        val notificationChannel = NotificationChannel(
-            channelId,
-            channelName,
-            NotificationManager.IMPORTANCE_HIGH
-        )
+        val notificationChannel =
+            NotificationChannel(
+                channelId,
+                channelName,
+                NotificationManager.IMPORTANCE_HIGH,
+            )
 
         notificationManager.createNotificationChannel(notificationChannel)
     }

@@ -7,9 +7,8 @@ import io.ktor.client.request.setBody
 import org.koin.core.annotation.Named
 
 class RemoteFirebaseControllerDataSourceImpl(
-    @Named("AuthClient") private val authClient: HttpClient
-): RemoteFirebaseControllerDataSource {
-
+    @Named("AuthClient") private val authClient: HttpClient,
+) : RemoteFirebaseControllerDataSource {
     override suspend fun postFcmToken(token: String) {
         authClient.post(FIREBASE_CONTROLLER_BASE_URL + "fcm") {
             setBody(body = FcmTokenRequest(token = token))

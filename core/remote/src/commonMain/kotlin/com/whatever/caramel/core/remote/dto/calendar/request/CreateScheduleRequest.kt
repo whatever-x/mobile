@@ -20,5 +20,5 @@ data class CreateScheduleRequest(
     @SerialName("endTimeZone")
     val endTimeZone: String?,
     @SerialName("tagIds")
-    val tagIds: List<Long>?
-) 
+    val tagIds: List<Long>?,
+)

@@ -21,34 +21,37 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 internal fun SettingEditProfileBottomSheet(
     modifier: Modifier = Modifier,
-    navigateToProfileEditNickName : () -> Unit,
-    navigateToProfileEditBrithDay : () -> Unit,
+    navigateToProfileEditNickName: () -> Unit,
+    navigateToProfileEditBrithDay: () -> Unit,
 ) {
-    Column (
-        modifier = modifier
-            .background(color = CaramelTheme.color.background.tertiary)
-            .padding(horizontal = CaramelTheme.spacing.xl)
-    ){
+    Column(
+        modifier =
+            modifier
+                .background(color = CaramelTheme.color.background.tertiary)
+                .padding(horizontal = CaramelTheme.spacing.xl),
+    ) {
         Text(
             text = "프로필 편집",
             modifier = Modifier.padding(top = CaramelTheme.spacing.xxl),
             style = CaramelTheme.typography.heading3,
-            color = CaramelTheme.color.text.primary
+            color = CaramelTheme.color.text.primary,
         )
         Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.s))
         SettingProfileChangeMenuItem(
-            modifier = Modifier
-                .padding(vertical = 14.dp),
+            modifier =
+                Modifier
+                    .padding(vertical = 14.dp),
             iconRes = Resources.Icon.ic_nickname_20,
             menu = "닉네임",
-            onClick = navigateToProfileEditNickName
+            onClick = navigateToProfileEditNickName,
         )
         SettingProfileChangeMenuItem(
-            modifier = Modifier
-                .padding(vertical = 14.dp),
+            modifier =
+                Modifier
+                    .padding(vertical = 14.dp),
             iconRes = Resources.Icon.ic_gift_20,
             menu = "생일",
-            onClick = navigateToProfileEditBrithDay
+            onClick = navigateToProfileEditBrithDay,
         )
         Spacer(modifier = Modifier.padding(top = 14.dp))
     }
@@ -59,29 +62,30 @@ internal fun SettingProfileChangeMenuItem(
     modifier: Modifier = Modifier,
     iconRes: DrawableResource,
     menu: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(
-                onClick = onClick,
-                indication = null,
-                interactionSource = null
-            ),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clickable(
+                    onClick = onClick,
+                    indication = null,
+                    interactionSource = null,
+                ),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             modifier = Modifier,
             painter = painterResource(iconRes),
             tint = CaramelTheme.color.icon.primary,
-            contentDescription = null
+            contentDescription = null,
         )
         Spacer(modifier = Modifier.padding(end = CaramelTheme.spacing.s))
         Text(
             text = menu,
             style = CaramelTheme.typography.body2.regular,
-            color = CaramelTheme.color.text.primary
+            color = CaramelTheme.color.text.primary,
         )
     }
 }

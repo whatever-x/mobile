@@ -17,28 +17,32 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 
 @Composable
 fun Modifier.shimmer(
-    colorList: List<Color> = listOf(
-        CaramelTheme.color.skeleton.primary,
-        CaramelTheme.color.skeleton.secondary,
-        CaramelTheme.color.skeleton.primary
-    ),
-    shape: Shape = RectangleShape
+    colorList: List<Color> =
+        listOf(
+            CaramelTheme.color.skeleton.primary,
+            CaramelTheme.color.skeleton.secondary,
+            CaramelTheme.color.skeleton.primary,
+        ),
+    shape: Shape = RectangleShape,
 ): Modifier {
     val transition = rememberInfiniteTransition()
-    val translateAnim = transition.animateFloat(
-        initialValue = 0f,
-        targetValue = 1000f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1200, delayMillis = 300),
-            repeatMode = RepeatMode.Restart
+    val translateAnim =
+        transition.animateFloat(
+            initialValue = 0f,
+            targetValue = 1000f,
+            animationSpec =
+                infiniteRepeatable(
+                    animation = tween(durationMillis = 1200, delayMillis = 300),
+                    repeatMode = RepeatMode.Restart,
+                ),
         )
-    )
     return this.background(
-        brush = Brush.linearGradient(
-            colors = colorList,
-            start = Offset.Zero,
-            end = Offset(x = translateAnim.value, y = translateAnim.value)
-        ),
-        shape = shape
+        brush =
+            Brush.linearGradient(
+                colors = colorList,
+                start = Offset.Zero,
+                end = Offset(x = translateAnim.value, y = translateAnim.value),
+            ),
+        shape = shape,
     )
 }

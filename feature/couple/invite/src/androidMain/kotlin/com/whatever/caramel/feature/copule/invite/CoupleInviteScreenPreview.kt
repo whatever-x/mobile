@@ -11,7 +11,7 @@ private fun CoupleInviteScreenPreview() {
     CaramelTheme {
         CoupleInviteScreen(
             state = CoupleInviteState(),
-            onIntent = {}
+            onIntent = {},
         )
     }
 }

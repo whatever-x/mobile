@@ -17,12 +17,10 @@ fun NavController.navigateToConnectingCouple(builder: NavOptionsBuilder.() -> Un
     }
 }
 
-fun NavGraphBuilder.connectingScreen(
-    navigateToMain: () -> Unit,
-) {
+fun NavGraphBuilder.connectingScreen(navigateToMain: () -> Unit) {
     composable<ConnectingRoute> {
         CoupleConnectingRoute(
-            navigateToMain = navigateToMain
+            navigateToMain = navigateToMain,
         )
     }
 }

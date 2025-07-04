@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.ui.picker.CaramelDatePicker
@@ -26,38 +25,41 @@ internal fun EditBirthday(
     dateUiState: DateUiState,
     onYearChange: (Int) -> Unit,
     onMonthChange: (Int) -> Unit,
-    onDayChange: (Int) -> Unit
+    onDayChange: (Int) -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier =
+            modifier
+                .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xl),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
             painter = painterResource(Resources.Icon.ic_gift_36),
             contentDescription = null,
-            tint = Color.Unspecified
+            tint = Color.Unspecified,
         )
 
         Text(
             text = "생일을\n알려주세요",
             textAlign = TextAlign.Center,
             style = CaramelTheme.typography.heading1,
-            color = CaramelTheme.color.text.primary
+            color = CaramelTheme.color.text.primary,
         )
 
         Text(
-            modifier = Modifier
-                .padding(vertical = CaramelTheme.spacing.xl),
+            modifier =
+                Modifier
+                    .padding(vertical = CaramelTheme.spacing.xl),
             text = "${dateUiState.year}년 ${dateUiState.month}월 ${dateUiState.day}일",
             style = CaramelTheme.typography.heading2,
-            color = CaramelTheme.color.text.primary
+            color = CaramelTheme.color.text.primary,
         )
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = CaramelTheme.spacing.xxl)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(bottom = CaramelTheme.spacing.xxl),
         ) {
             CaramelDatePicker(
                 modifier = Modifier.align(Alignment.BottomCenter),

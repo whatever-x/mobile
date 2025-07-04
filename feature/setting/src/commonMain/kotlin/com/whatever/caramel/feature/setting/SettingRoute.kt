@@ -22,7 +22,7 @@ internal fun SettingRoute(
     navigateToEditBirthday: (String) -> Unit,
     navigateToEditNickName: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
-    showErrorToast: (String) -> Unit
+    showErrorToast: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val uriHandler = LocalUriHandler.current
@@ -45,10 +45,11 @@ internal fun SettingRoute(
                 is SettingSideEffect.NavigateToEditCountDown -> navigateToEditCountDown(sideEffect.startDate)
                 is SettingSideEffect.NavigateToEditNickname -> navigateToEditNickName(sideEffect.nickname)
                 is SettingSideEffect.NavigateToEditBirthday -> navigateToEditBirthday(sideEffect.birthday)
-                is SettingSideEffect.ShowErrorDialog -> showErrorDialog(
-                    sideEffect.message,
-                    sideEffect.description
-                )
+                is SettingSideEffect.ShowErrorDialog ->
+                    showErrorDialog(
+                        sideEffect.message,
+                        sideEffect.description,
+                    )
 
                 is SettingSideEffect.ShowErrorToast -> showErrorToast(sideEffect.message)
             }
@@ -57,6 +58,6 @@ internal fun SettingRoute(
 
     SettingScreen(
         state = state,
-        onIntent = { intent -> viewModel.intent(intent) }
+        onIntent = { intent -> viewModel.intent(intent) },
     )
 }

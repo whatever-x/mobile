@@ -5,7 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class CoupleStatusDto {
-    @SerialName("ACTIVE") ACTIVE,
-    @SerialName("INACTIVE") INACTIVE,
-    ;
+    @SerialName("ACTIVE")
+    ACTIVE,
+
+    @SerialName("INACTIVE")
+    INACTIVE,
 }

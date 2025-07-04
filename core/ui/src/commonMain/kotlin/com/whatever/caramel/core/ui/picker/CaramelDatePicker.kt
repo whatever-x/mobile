@@ -43,25 +43,27 @@ fun CaramelDatePicker(
     }
 
     Row(
-        modifier = modifier
-            .padding(
-                vertical = CaramelTheme.spacing.m,
-                horizontal = CaramelTheme.spacing.xl
+        modifier =
+            modifier
+                .padding(
+                    vertical = CaramelTheme.spacing.m,
+                    horizontal = CaramelTheme.spacing.xl,
+                ),
+        horizontalArrangement =
+            Arrangement.spacedBy(
+                space = 40.dp,
             ),
-        horizontalArrangement = Arrangement.spacedBy(
-            space = 40.dp
-        ),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         CaramelTextWheelPicker(
             items = years,
             state = yearState,
             dividerWidth = 50.dp,
             scrollMode = LOOPING,
-            onItemSelected = { year -> 
+            onItemSelected = { year ->
                 hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                onYearChanged(year) 
-            }
+                onYearChanged(year)
+            },
         )
 
         CaramelTextWheelPicker(
@@ -69,21 +71,22 @@ fun CaramelDatePicker(
             state = monthState,
             dividerWidth = 50.dp,
             scrollMode = LOOPING,
-            onItemSelected = { month -> 
+            onItemSelected = { month ->
                 hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                onMonthChanged(month) 
-            }
+                onMonthChanged(month)
+            },
         )
 
         CaramelTextWheelPicker(
             items = days,
             state = dayState,
             dividerWidth = 60.dp,
-            scrollMode = BOUNDED, // @ham2174 FIXME : MVP 이후 day 피커 LOOPING 모드로 수정
-            onItemSelected = { day -> 
+            // @ham2174 FIXME : MVP 이후 day 피커 LOOPING 모드로 수정
+            scrollMode = BOUNDED,
+            onItemSelected = { day ->
                 hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                onDayChanged(day) 
-            }
+                onDayChanged(day)
+            },
         )
     }
 }

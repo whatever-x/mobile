@@ -5,8 +5,9 @@ import com.whatever.caramel.core.remote.dto.balanceGame.response.BalanceGameResp
 
 interface RemoteBalanceGameDataSource {
     suspend fun fetchTodayBalanceGame(): BalanceGameResponse
+
     suspend fun postChoiceOption(
         gameId: Long,
-        request: ChooseBalanceGameRequest
+        request: ChooseBalanceGameRequest,
     ): BalanceGameResponse
 }
