@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         FirebaseApp.configure()
         CaramelAnalytics_iosKt.firebaseCallback(callback: FirebaseLoggingCallback())
+        CaramelCrashlytics_iosKt.setFirebaseCrashlyticsCallback(callback: FirebaseCrashlyticsCallback())
         
         Messaging.messaging().delegate = self
 
@@ -107,6 +108,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    class FirebaseCrashlyticsCallback : IosCrashlyticsCallback {
+        func log(message : String) {
+            Crashlytics.crashlytics().log(message)
+        }
+        
+        func recordException(errorTrace : String) {
+            let error = NSError(
+                domain : "KotlinException",
+                code : 0,
+                userInfo: [NSLocalizedDescriptionKey : errorTrace]
+            )
+            Crashlytics.crashlytics().record(error: error)
+        }
+        
+        func setKey(key : String, value : Any?) {
+            let crashlytics = Crashlytics.crashlytics()
+            guard let value = value else {
+                crashlytics.setCustomValue("null", forKey: key)
+                return
+            }
+            
+            switch value{
+            case let string as String:
+                crashlytics.setCustomValue(string, forKey: key)
+                
+            case let number as NSNumber:
+                crashlytics.setCustomValue(number, forKey: key)
+            default :
+                crashlytics.setCustomValue(String(describing: value), forKey: key)
+            }
+        }
+    }
+
 }
 
 extension AppDelegate: DeepLinkDelegate {
