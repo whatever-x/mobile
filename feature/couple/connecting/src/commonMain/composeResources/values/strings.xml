@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-    <string name="welcome_to_caramel">카라멜에 오신것을 환영해요</string>
-    <string name="go_to_home">연인이 초대한\n카라멜 홈으로 들어가는 중!</string>
+	<string name="welcome_to_caramel">카라멜에 오신것을 환영해요</string>
+	<string name="go_to_home">연인이 초대한\n카라멜 홈으로 들어가는 중!</string>
 </resources>

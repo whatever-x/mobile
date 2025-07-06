@@ -1,3 +1,5 @@
+import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
+
 plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.androidLibrary) apply false
@@ -22,13 +24,29 @@ subprojects {
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         kotlin {
             target("**/*.kt")
-            targetExclude("**/build/**", "**/generated/**")
+            targetExclude(
+                "**/build/**",
+                "**/generated/**"
+            )
             ktlint(ktlintCliVersion)
         }
 
         kotlinGradle {
             target("**/*.gradle.kts")
             ktlint(ktlintCliVersion)
+        }
+
+        format("xml") {
+            target(
+                "src/**/values/*.xml",
+                "src/**/AndroidManifest.xml"
+            )
+            targetExclude(
+                "**/build/**",
+                "**/generated/**"
+            )
+
+            eclipseWtp(EclipseWtpFormatterStep.XML)
         }
     }
 }

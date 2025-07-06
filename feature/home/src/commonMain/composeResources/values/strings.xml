@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-    <!-- Header -->
-    <string name="we_dated">우리가 만난지</string>
-    <string name="day">%1$d일</string>
-    <string name="leave_something_to_remember_together">함께 기억할 말을 남겨보세요</string>
+	<!-- Header -->
+	<string name="we_dated">우리가 만난지</string>
+	<string name="day">%1$d일</string>
+	<string name="leave_something_to_remember_together">함께 기억할 말을 남겨보세요</string>
 
-    <!-- Quiz -->
-    <string name="today_caramel">오늘의 카라멜</string>
+	<!-- Quiz -->
+	<string name="today_caramel">오늘의 카라멜</string>
 
-    <string name="waku_we_will_choice_same">두근! 우리의 선택이 같을까?</string>
-    <string name="waiting_for_partner_answer">%1$s의 선택을 기다리는 중이에요</string>
-    <string name="check_our_choice">서로의 선택이 같은지 확인해 보세요</string>
-    <string name="check_choice_button">서로의 선택 확인하기</string>
+	<string name="waku_we_will_choice_same">두근! 우리의 선택이 같을까?</string>
+	<string name="waiting_for_partner_answer">%1$s의 선택을 기다리는 중이에요</string>
+	<string name="check_our_choice">서로의 선택이 같은지 확인해 보세요</string>
+	<string name="check_choice_button">서로의 선택 확인하기</string>
 
-    <!-- Todo -->
-    <string name="start_couple_date_guid">커플 시작일을 입력해 주세요.\n기념일이 다가오면 알려드릴게요.</string>
+	<!-- Todo -->
+	<string name="start_couple_date_guid">커플 시작일을 입력해 주세요.\n기념일이 다가오면 알려드릴게요.</string>
 
-    <!-- UnConnectCard -->
-    <string name="unconnected_couple">연인과의 연결이 해제되었어요</string>
-    <string name="do_not_update_home_data">오늘의 카라말 퀴즈 풀기, 메모 남기기 등\n데이터를 더 이상 변경할 수 없어요.</string>
+	<!-- UnConnectCard -->
+	<string name="unconnected_couple">연인과의 연결이 해제되었어요</string>
+	<string name="do_not_update_home_data">오늘의 카라말 퀴즈 풀기, 메모 남기기 등\n데이터를 더 이상 변경할 수 없어요.</string>
 
 </resources>

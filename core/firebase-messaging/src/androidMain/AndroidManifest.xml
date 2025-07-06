@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <application>
+	<application>
 
-        <service
-            android:name="com.whatever.caramel.core.firebaseMessaging.CaramelFirebaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+		<service
+			android:name="com.whatever.caramel.core.firebaseMessaging.CaramelFirebaseMessagingService"
+			android:exported="false">
+			<intent-filter>
+				<action android:name="com.google.firebase.MESSAGING_EVENT" />
+			</intent-filter>
+		</service>
 
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notification_small" />
+		<meta-data
+			android:name="com.google.firebase.messaging.default_notification_icon"
+			android:resource="@drawable/ic_notification_small" />
 
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/notification_color" />
+		<meta-data
+			android:name="com.google.firebase.messaging.default_notification_color"
+			android:resource="@color/notification_color" />
 
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/fcm_id_01" />
+		<meta-data
+			android:name="com.google.firebase.messaging.default_notification_channel_id"
+			android:value="@string/fcm_id_01" />
 
-    </application>
+	</application>
 
 </manifest>
