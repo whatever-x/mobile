@@ -1,7 +1,6 @@
-package com.whatver.caramel.core.crashlytics
+package com.whatever.caramel.core.crashlytics
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 
 class CaramelCrashlyticsImpl : CaramelCrashlytics {
     private val crashlytics = FirebaseCrashlytics.getInstance()
