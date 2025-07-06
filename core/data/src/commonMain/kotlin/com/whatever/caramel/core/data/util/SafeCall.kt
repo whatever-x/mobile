@@ -1,5 +1,6 @@
 package com.whatever.caramel.core.data.util
 
+import com.whatever.caramel.core.crashlytics.getCaramelCrashlytics
 import com.whatever.caramel.core.data.mapper.toCaramelException
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
@@ -13,6 +14,10 @@ suspend fun <T> safeCall(block: suspend () -> T): T =
     } catch (e: CaramelNetworkException) {
         throw e.toCaramelException()
     } catch (e: Exception) {
+        getCaramelCrashlytics().run {
+            log("Repository 호출중 예상치 못한 오류 발생")
+            recordException(e)
+        }
         throw CaramelException(
             code = NetworkErrorCode.UNKNOWN,
             message = "예상치 못한 에러가 발생했습니다.",
