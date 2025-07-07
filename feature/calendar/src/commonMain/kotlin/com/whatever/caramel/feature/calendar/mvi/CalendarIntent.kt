@@ -26,10 +26,6 @@ sealed interface CalendarIntent : UiIntent {
         val url: String?,
     ) : CalendarIntent
 
-    data class ToggleCalendarBottomSheet(
-        val sheetState: BottomSheetState,
-    ) : CalendarIntent
-
     data class ClickCalendarCell(
         val selectedDate: LocalDate,
     ) : CalendarIntent
@@ -48,5 +44,13 @@ sealed interface CalendarIntent : UiIntent {
 
     data class UpdateSelectPickerMonth(
         val month: Int,
+    ) : CalendarIntent
+
+    data class UpdateCalendarBottomSheet(
+        val sheetState: BottomSheetState,
+    ) : CalendarIntent
+
+    data class DraggingCalendarBottomSheet(
+        val isDragging: Boolean,
     ) : CalendarIntent
 }

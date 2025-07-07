@@ -75,7 +75,7 @@ class CalendarViewModel(
     override suspend fun handleIntent(intent: CalendarIntent) {
         when (intent) {
             is CalendarIntent.ClickDatePicker -> showCalendarDatePicker()
-            is CalendarIntent.ToggleCalendarBottomSheet -> toggleCalendarBottomSheet(intent.sheetState)
+            is CalendarIntent.UpdateCalendarBottomSheet -> updateCalendarBottomSheet(intent.sheetState)
             is CalendarIntent.ClickAddScheduleButton -> navigateToAddSchedule(intent.date)
             is CalendarIntent.ClickTodoItemInBottomSheet ->
                 postSideEffect(
@@ -102,6 +102,7 @@ class CalendarViewModel(
             CalendarIntent.ClickDatePickerOutSide -> dismissCalendarDatePicker()
             CalendarIntent.RefreshCalendar -> refreshCalendar()
             CalendarIntent.Initialize -> initialize()
+            is CalendarIntent.DraggingCalendarBottomSheet -> draggingBottomSheetHandle(intent.isDragging)
         }
     }
 
@@ -114,6 +115,14 @@ class CalendarViewModel(
             initialize = currentState.monthSchedules.isEmpty(),
             isRefresh = true,
         )
+    }
+
+    private fun draggingBottomSheetHandle(isDragging: Boolean) {
+        reduce {
+            copy(
+                isBottomSheetDragging = isDragging,
+            )
+        }
     }
 
     private fun navigateToAddSchedule(date: LocalDate) {
@@ -136,8 +145,10 @@ class CalendarViewModel(
 
     private fun clickOutSideBottomSheet() {
         reduce {
+            val newBottomSheetState =
+                if (currentState.isBottomSheetDragging) currentState.bottomSheetState else BottomSheetState.PARTIALLY_EXPANDED
             copy(
-                bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
+                bottomSheetState = newBottomSheetState,
             )
         }
     }
@@ -255,16 +266,13 @@ class CalendarViewModel(
         }
     }
 
-    private fun toggleCalendarBottomSheet(bottomSheetState: BottomSheetState) {
-        reduce {
-            copy(
-                bottomSheetState = bottomSheetState,
-            )
-        }
+    private fun updateCalendarBottomSheet(bottomSheetState: BottomSheetState) {
+        reduce { copy(bottomSheetState = bottomSheetState, isBottomSheetDragging = false) }
     }
 
     private fun showCalendarDatePicker() {
         launch {
+            if (currentState.isBottomSheetDragging) return@launch
             clickOutSideBottomSheet()
             reduce {
                 copy(
@@ -278,7 +286,7 @@ class CalendarViewModel(
     private fun dismissCalendarDatePicker() {
         val pickerYear = currentState.pickerDate.year
         val pickerMonth = Month.entries[currentState.pickerDate.month - 1]
-
+        val isSame = pickerYear == currentState.year && pickerMonth == currentState.month
         reduce {
             copy(
                 year = pickerYear,
@@ -296,6 +304,7 @@ class CalendarViewModel(
         getSchedules(
             year = pickerYear,
             startMonthNumber = pickerMonth.number,
+            isRefresh = isSame,
         )
     }
 
