@@ -150,6 +150,7 @@ internal fun CalendarScreen(
                 sheetDragHandle = {
                     CaramelBottomSheetHandle(
                         bottomSheetState = state.bottomSheetState,
+                        isDragging = state.isBottomSheetDragging,
                     )
                 },
                 topBar = {

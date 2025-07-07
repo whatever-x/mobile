@@ -19,7 +19,9 @@ import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 internal fun CaramelBottomSheetHandle(
     modifier: Modifier = Modifier,
     bottomSheetState: BottomSheetState,
+    isDragging: Boolean,
 ) {
+    val topDescVisibility = !isDragging && bottomSheetState == BottomSheetState.PARTIALLY_EXPANDED
     Column(
         modifier =
             modifier
@@ -39,7 +41,7 @@ internal fun CaramelBottomSheetHandle(
                         shape = CaramelTheme.shape.s,
                     ),
         )
-        if (bottomSheetState == BottomSheetState.PARTIALLY_EXPANDED) {
+        if (topDescVisibility) {
             Text(
                 modifier = Modifier.padding(bottom = CalendarDimension.sheetPartiallyExpandedTextHeight),
                 style = CaramelTheme.typography.label1.regular,
