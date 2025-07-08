@@ -58,6 +58,8 @@ internal fun ShareMessageBottomSheet(
     }
 }
 
+fun countGraphemeClusters(text: String): Int = Regex("\\X").findAll(text).count()
+
 @Composable
 private fun BottomSheetContent(
     modifier: Modifier = Modifier,
@@ -74,6 +76,10 @@ private fun BottomSheetContent(
             ),
         )
     }
+    val graphemeCount =
+        remember(newShareMessage.text) {
+            countGraphemeClusters(newShareMessage.text)
+        }
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
@@ -84,7 +90,8 @@ private fun BottomSheetContent(
             modifier = Modifier.focusRequester(focusRequester = focusRequester),
             value = newShareMessage,
             onValueChange = { newValue ->
-                if (!newValue.text.contains("\n") && newValue.text.length <= 24) {
+                val graphemeCount = countGraphemeClusters(newValue.text)
+                if (!newValue.text.contains("\n") && graphemeCount <= 24) {
                     newShareMessage = newValue
                 }
             },
@@ -117,7 +124,7 @@ private fun BottomSheetContent(
         Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.l))
 
         Text(
-            text = "${newShareMessage.text.length}/24",
+            text = "$graphemeCount/24",
             style = CaramelTheme.typography.body3.bold,
             color = CaramelTheme.color.text.placeholder,
         )
