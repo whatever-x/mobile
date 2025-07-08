@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.data.util
 
-import com.whatever.caramel.core.crashlytics.getCaramelCrashlytics
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.data.mapper.toCaramelException
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
@@ -8,6 +8,8 @@ import com.whatever.caramel.core.domain.exception.code.NetworkErrorCode
 import com.whatever.caramel.core.remote.network.exception.CaramelNetworkException
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.io.IOException
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
 // @ham2174 TODO : 로컬 관련 커스텀 예외 추가시 catch 추가
 suspend fun <T> safeCall(block: suspend () -> T): T =
@@ -17,7 +19,9 @@ suspend fun <T> safeCall(block: suspend () -> T): T =
         throw e.toCaramelExceptionWithReporting()
     }
 
-private fun Throwable.toCaramelExceptionWithReporting(): CaramelException =
+private fun Throwable.toCaramelExceptionWithReporting(
+    caramelCrashlytics: CaramelCrashlytics = object : KoinComponent {}.get(),
+): CaramelException =
     when (this) {
         is CaramelNetworkException -> this.toCaramelException()
         is IOException ->
@@ -35,7 +39,7 @@ private fun Throwable.toCaramelExceptionWithReporting(): CaramelException =
                 errorUiType = ErrorUiType.DIALOG,
             )
         else -> {
-            getCaramelCrashlytics().run {
+            caramelCrashlytics.run {
                 log("Repository 호출중 예상치 못한 오류 발생")
                 recordException(this@toCaramelExceptionWithReporting)
             }

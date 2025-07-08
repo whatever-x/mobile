@@ -1,7 +1,5 @@
 package com.whatever.caramel.core.crashlytics
 
-expect fun getCaramelCrashlytics(): CaramelCrashlytics
-
 interface CaramelCrashlytics {
     fun log(message: String)
 

@@ -27,5 +27,3 @@ class CaramelCrashlyticsImpl : CaramelCrashlytics {
         }
     }
 }
-
-actual fun getCaramelCrashlytics(): CaramelCrashlytics = CaramelCrashlyticsImpl()
