@@ -137,7 +137,7 @@ extension AppDelegate: DeepLinkDelegate {
             
             deepLinkHandler.handleAppsFlyerDataRaw(
                 deepLinkValue: deeplinkValue,
-                rawParams: rawParams
+                rawParams: rawParams as [String : Any]
             )
         }
     }
