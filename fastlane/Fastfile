@@ -1,0 +1,38 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+require 'dotenv'
+Dotenv.load('.env')
+
+platform :android do
+  desc "안드로이드 테스트 배포"
+  lane :beta do
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: "./"
+    )
+
+    firebase_app_distribution(
+      app: "1:240831513869:android:25441e47503fdff9211c44",
+      groups: "caramel-팀원",
+      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+      release_notes_file: "fastlane/android-release-notes.txt",
+      android_artifact_type: "AAB"
+    )
+    end
+end
