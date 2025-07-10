@@ -106,7 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Analytics.logEvent(eventId, parameters: dict)
         }
     }
-    
+
 }
 
 extension AppDelegate: DeepLinkDelegate {
