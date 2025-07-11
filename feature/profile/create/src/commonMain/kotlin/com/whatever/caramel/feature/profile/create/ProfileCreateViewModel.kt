@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.profile.create
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
@@ -22,7 +23,8 @@ class ProfileCreateViewModel(
     private val updateUserSettingUseCase: UpdateUserSettingUseCase,
     private val permissionsController: PermissionsController,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<ProfileCreateState, ProfileCreateSideEffect, ProfileCreateIntent>(savedStateHandle) {
+    crashlytics: CaramelCrashlytics
+) : BaseViewModel<ProfileCreateState, ProfileCreateSideEffect, ProfileCreateIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): ProfileCreateState = ProfileCreateState()
 
     override suspend fun handleIntent(intent: ProfileCreateIntent) {
@@ -65,9 +67,11 @@ class ProfileCreateViewModel(
                     )
             }
         } else {
+            caramelCrashlytics.recordException(throwable)
             postSideEffect(
-                ProfileCreateSideEffect.ShowErrorToast(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다.",
+                ProfileCreateSideEffect.ShowErrorDialog(
+                    message = "알 수 없는 오류가 발생했습니다.",
+                    description = null
                 ),
             )
         }

@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.content.detail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
@@ -23,12 +24,13 @@ import kotlinx.coroutines.flow.onStart
 
 class ContentDetailViewModel(
     savedStateHandle: SavedStateHandle,
+    crashlytics : CaramelCrashlytics,
     private val getMemoUseCase: GetMemoUseCase,
     private val getScheduleUseCase: GetScheduleUseCase,
     private val deleteMemoUseCase: DeleteMemoUseCase,
     private val deleteScheduleUseCase: DeleteScheduleUseCase,
     private val getLinkPreviewsForContentUseCase: GetLinkPreviewsForContentUseCase,
-) : BaseViewModel<ContentDetailState, ContentDetailSideEffect, ContentDetailIntent>(savedStateHandle) {
+) : BaseViewModel<ContentDetailState, ContentDetailSideEffect, ContentDetailIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): ContentDetailState {
         val arguments = savedStateHandle.toRoute<ContentDetailRoute>()
         return ContentDetailState(
@@ -80,9 +82,11 @@ class ContentDetailViewModel(
                 }
             }
         } else {
+            caramelCrashlytics.recordException(throwable)
             postSideEffect(
-                ContentDetailSideEffect.ShowErrorSnackBar(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다.",
+                ContentDetailSideEffect.ShowErrorDialog(
+                    message = "알 수 없는 오류가 발생했습니다.",
+                    description = null
                 ),
             )
         }

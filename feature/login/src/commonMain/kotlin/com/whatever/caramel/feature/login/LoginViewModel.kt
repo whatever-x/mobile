@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.login
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
@@ -16,9 +17,10 @@ import com.whatever.caramel.feature.login.social.kakao.KakaoUser
 
 class LoginViewModel(
     savedStateHandle: SavedStateHandle,
+    crashlytics : CaramelCrashlytics,
     private val signInWithSocialPlatformUseCase: SignInWithSocialPlatformUseCase,
     private val fcmTokenProvider: FcmTokenProvider,
-) : BaseViewModel<LoginState, LoginSideEffect, LoginIntent>(savedStateHandle) {
+) : BaseViewModel<LoginState, LoginSideEffect, LoginIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): LoginState = LoginState
 
     override suspend fun handleIntent(intent: LoginIntent) {
@@ -47,9 +49,11 @@ class LoginViewModel(
                     )
             }
         } else {
+            caramelCrashlytics.recordException(throwable)
             postSideEffect(
-                LoginSideEffect.ShowErrorToast(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다.",
+                LoginSideEffect.ShowErrorDialog(
+                    message = "알 수 없는 오류가 발생했습니다.",
+                    description = null
                 ),
             )
         }

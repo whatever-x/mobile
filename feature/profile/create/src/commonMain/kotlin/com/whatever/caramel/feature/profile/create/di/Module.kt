@@ -13,6 +13,7 @@ val profileCreateFeatureModule =
                 createUserProfileUseCase = get(),
                 updateUserSettingUseCase = get(),
                 permissionsController = permissionsController,
+                crashlytics = get()
             )
         }
     }

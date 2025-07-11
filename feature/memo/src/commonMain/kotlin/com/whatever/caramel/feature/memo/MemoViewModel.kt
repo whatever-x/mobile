@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.memo
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.content.GetMemosUseCase
@@ -18,7 +19,8 @@ class MemoViewModel(
     private val getMemosUseCase: GetMemosUseCase,
     private val getTagUseCase: GetTagUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle) {
+    crashlytics : CaramelCrashlytics
+) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): MemoState = MemoState()
 
     override suspend fun handleIntent(intent: MemoIntent) {
@@ -57,9 +59,11 @@ class MemoViewModel(
                     )
             }
         } else {
+            caramelCrashlytics.recordException(throwable)
             postSideEffect(
-                MemoSideEffect.ShowErrorToast(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다.",
+                MemoSideEffect.ShowErrorDialog(
+                    message = "알 수 없는 오류가 발생했습니다.",
+                    description = null
                 ),
             )
         }
