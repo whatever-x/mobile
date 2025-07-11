@@ -11,7 +11,6 @@ import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.viewmodel.BaseViewModel
-import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect
 import com.whatever.caramel.mvi.AppIntent
 import com.whatever.caramel.mvi.AppSideEffect
 import com.whatever.caramel.mvi.AppState
@@ -42,7 +41,7 @@ class CaramelViewModel(
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
-        if(throwable is CaramelException) {
+        if (throwable is CaramelException) {
             when (throwable.code) {
                 CoupleErrorCode.INVITATION_CODE_EXPIRED -> {
                     reduce {

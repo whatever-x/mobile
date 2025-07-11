@@ -23,7 +23,7 @@ class SettingViewModel(
     private val logoutUseCase: LogoutUseCase,
     private val signOutUseCase: SignOutUseCase,
     savedStateHandle: SavedStateHandle,
-    crashlytics: CaramelCrashlytics
+    crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<SettingState, SettingSideEffect, SettingIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): SettingState = SettingState()
 
@@ -75,7 +75,7 @@ class SettingViewModel(
             postSideEffect(
                 SettingSideEffect.ShowErrorDialog(
                     message = "알 수 없는 오류가 발생했습니다.",
-                    description = null
+                    description = null,
                 ),
             )
         }

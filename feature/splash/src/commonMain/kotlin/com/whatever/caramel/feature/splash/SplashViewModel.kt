@@ -15,7 +15,7 @@ class SplashViewModel(
     private val refreshUserSessionUseCase: RefreshUserSessionUseCase,
     private val deepLinkHandler: DeepLinkHandler,
     savedStateHandle: SavedStateHandle,
-    crashlytics: CaramelCrashlytics
+    crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<SplashState, SplashSideEffect, SplashIntent>(savedStateHandle, crashlytics) {
     init {
         launch {
@@ -28,7 +28,7 @@ class SplashViewModel(
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
-        if(throwable !is CaramelException) {
+        if (throwable !is CaramelException) {
             caramelCrashlytics.recordException(throwable)
         }
         postSideEffect(SplashSideEffect.NavigateToLogin)

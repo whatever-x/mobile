@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.onStart
 
 class ContentDetailViewModel(
     savedStateHandle: SavedStateHandle,
-    crashlytics : CaramelCrashlytics,
+    crashlytics: CaramelCrashlytics,
     private val getMemoUseCase: GetMemoUseCase,
     private val getScheduleUseCase: GetScheduleUseCase,
     private val deleteMemoUseCase: DeleteMemoUseCase,
@@ -86,7 +86,7 @@ class ContentDetailViewModel(
             postSideEffect(
                 ContentDetailSideEffect.ShowErrorDialog(
                     message = "알 수 없는 오류가 발생했습니다.",
-                    description = null
+                    description = null,
                 ),
             )
         }

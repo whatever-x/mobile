@@ -21,7 +21,7 @@ class ProfileEditViewModel(
     private val editProfileUseCase: EditProfileUseCase,
     private val editCoupleStartDateUseCase: EditCoupleStartDateUseCase,
     savedStateHandle: SavedStateHandle,
-    crashlytics : CaramelCrashlytics
+    crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<ProfileEditState, ProfileEditSideEffect, ProfileEditIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): ProfileEditState {
         val arguments = savedStateHandle.toRoute<ProfileEditRoute>()
@@ -80,7 +80,7 @@ class ProfileEditViewModel(
             postSideEffect(
                 ProfileEditSideEffect.ShowErrorDialog(
                     message = "알 수 없는 오류가 발생했습니다.",
-                    description = null
+                    description = null,
                 ),
             )
         }

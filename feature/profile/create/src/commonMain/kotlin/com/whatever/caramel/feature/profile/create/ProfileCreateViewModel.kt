@@ -23,7 +23,7 @@ class ProfileCreateViewModel(
     private val updateUserSettingUseCase: UpdateUserSettingUseCase,
     private val permissionsController: PermissionsController,
     savedStateHandle: SavedStateHandle,
-    crashlytics: CaramelCrashlytics
+    crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<ProfileCreateState, ProfileCreateSideEffect, ProfileCreateIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): ProfileCreateState = ProfileCreateState()
 
@@ -71,7 +71,7 @@ class ProfileCreateViewModel(
             postSideEffect(
                 ProfileCreateSideEffect.ShowErrorDialog(
                     message = "알 수 없는 오류가 발생했습니다.",
-                    description = null
+                    description = null,
                 ),
             )
         }

@@ -19,7 +19,7 @@ class MemoViewModel(
     private val getMemosUseCase: GetMemosUseCase,
     private val getTagUseCase: GetTagUseCase,
     savedStateHandle: SavedStateHandle,
-    crashlytics : CaramelCrashlytics
+    crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): MemoState = MemoState()
 
@@ -63,7 +63,7 @@ class MemoViewModel(
             postSideEffect(
                 MemoSideEffect.ShowErrorDialog(
                     message = "알 수 없는 오류가 발생했습니다.",
-                    description = null
+                    description = null,
                 ),
             )
         }

@@ -17,7 +17,7 @@ import com.whatever.caramel.feature.login.social.kakao.KakaoUser
 
 class LoginViewModel(
     savedStateHandle: SavedStateHandle,
-    crashlytics : CaramelCrashlytics,
+    crashlytics: CaramelCrashlytics,
     private val signInWithSocialPlatformUseCase: SignInWithSocialPlatformUseCase,
     private val fcmTokenProvider: FcmTokenProvider,
 ) : BaseViewModel<LoginState, LoginSideEffect, LoginIntent>(savedStateHandle, crashlytics) {
@@ -53,7 +53,7 @@ class LoginViewModel(
             postSideEffect(
                 LoginSideEffect.ShowErrorDialog(
                     message = "알 수 없는 오류가 발생했습니다.",
-                    description = null
+                    description = null,
                 ),
             )
         }

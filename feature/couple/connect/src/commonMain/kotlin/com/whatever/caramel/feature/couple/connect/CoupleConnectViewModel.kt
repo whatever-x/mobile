@@ -48,7 +48,7 @@ class CoupleConnectViewModel(
             postSideEffect(
                 CoupleConnectSideEffect.ShowErrorDialog(
                     message = "알 수 없는 오류가 발생했습니다.",
-                    description = null
+                    description = null,
                 ),
             )
         }

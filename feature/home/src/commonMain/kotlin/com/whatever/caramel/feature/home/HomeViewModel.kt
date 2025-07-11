@@ -29,7 +29,7 @@ class HomeViewModel(
     private val getTodayBalanceGameUseCase: GetTodayBalanceGameUseCase,
     private val submitBalanceGameChoiceUseCase: SubmitBalanceGameChoiceUseCase,
     savedStateHandle: SavedStateHandle,
-    crashlytics: CaramelCrashlytics
+    crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): HomeState = HomeState()
 
@@ -59,7 +59,7 @@ class HomeViewModel(
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
-        if(throwable is CaramelException){
+        if (throwable is CaramelException) {
             when (throwable.code) {
                 CoupleErrorCode.CAN_NOT_LOAD_DATA -> {
                     reduce {
@@ -105,7 +105,7 @@ class HomeViewModel(
             postSideEffect(
                 HomeSideEffect.ShowErrorDialog(
                     message = "알 수 없는 오류가 발생했습니다.",
-                    description = null
+                    description = null,
                 ),
             )
         }

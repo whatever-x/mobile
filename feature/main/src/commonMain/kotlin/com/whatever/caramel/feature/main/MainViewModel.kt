@@ -11,7 +11,7 @@ import com.whatever.caramel.feature.main.mvi.MainState
 class MainViewModel(
     private val fcmTokenProvider: FcmTokenProvider,
     savedStateHandle: SavedStateHandle,
-    crashlytics : CaramelCrashlytics
+    crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<MainState, MainSideEffect, MainIntent>(savedStateHandle, crashlytics) {
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)

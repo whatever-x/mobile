@@ -19,9 +19,10 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 abstract class BaseViewModel<S : UiState, SE : UiSideEffect, I : UiIntent>(
     val savedStateHandle: SavedStateHandle,
-    protected val caramelCrashlytics : CaramelCrashlytics
+    protected val caramelCrashlytics: CaramelCrashlytics,
 ) : ViewModel() {
     private val initialState: S by lazy { createInitialState(savedStateHandle) }
+
     protected abstract fun createInitialState(savedStateHandle: SavedStateHandle): S
 
     protected abstract suspend fun handleIntent(intent: I)

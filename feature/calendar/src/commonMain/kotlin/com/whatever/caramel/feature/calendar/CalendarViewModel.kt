@@ -30,7 +30,7 @@ class CalendarViewModel(
     private val getTodosGroupByStartDateUseCase: GetTodosGroupByStartDateUseCase,
     private val getHolidaysUseCase: GetHolidaysUseCase,
     private val getAnniversariesUseCase: GetAnniversariesUseCase,
-    crashlytics : CaramelCrashlytics,
+    crashlytics: CaramelCrashlytics,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): CalendarState {
@@ -70,7 +70,7 @@ class CalendarViewModel(
             postSideEffect(
                 CalendarSideEffect.ShowErrorDialog(
                     message = "알 수 없는 오류가 발생했습니다.",
-                    description = null
+                    description = null,
                 ),
             )
         }

@@ -41,9 +41,9 @@ class ContentEditViewModel(
     private val updateScheduleUseCase: UpdateScheduleUseCase,
     private val deleteScheduleUseCase: DeleteScheduleUseCase,
 ) : BaseViewModel<ContentEditState, ContentEditSideEffect, ContentEditIntent>(
-    savedStateHandle = savedStateHandle,
-    caramelCrashlytics = crashlytics
-) {
+        savedStateHandle = savedStateHandle,
+        caramelCrashlytics = crashlytics,
+    ) {
     init {
         loadContent()
         loadTags()
@@ -89,7 +89,7 @@ class ContentEditViewModel(
             postSideEffect(
                 ContentEditSideEffect.ShowErrorDialog(
                     message = "알 수 없는 오류가 발생했습니다.",
-                    description = null
+                    description = null,
                 ),
             )
         }

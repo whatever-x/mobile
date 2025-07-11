@@ -1,6 +1,5 @@
 package com.whatever.caramel.core.data.util
 
-import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.data.mapper.toCaramelException
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
@@ -8,7 +7,6 @@ import com.whatever.caramel.core.domain.exception.code.NetworkErrorCode
 import com.whatever.caramel.core.remote.network.exception.CaramelNetworkException
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.io.IOException
-import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
 // @ham2174 TODO : 로컬 관련 커스텀 예외 추가시 catch 추가
