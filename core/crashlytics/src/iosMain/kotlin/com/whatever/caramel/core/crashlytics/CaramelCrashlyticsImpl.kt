@@ -17,7 +17,8 @@ class CaramelCrashlyticsImpl(
                 appendLine(throwable.toString())
                 throwable.stackTraceToString().lines().forEach { appendLine(it) }
             }
-        firebaseCrashlytics.recordExceptionWithErrorTrace(errorTrace = errorInfo)
+        val errorClassName = throwable::class.simpleName ?: "UnknownException"
+        firebaseCrashlytics.recordExceptionWithErrorClassName(errorClassName = errorClassName, errorTrace = errorInfo)
     }
 
     override fun setKey(
