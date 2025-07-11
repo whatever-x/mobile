@@ -16,10 +16,6 @@ android {
 }
 
 kotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-Xexpect-actual-classes")
-    }
-
     val isWindow = System.getProperty("os.name").lowercase(Locale.getDefault()).contains("windows")
 
     if (!isWindow) {
