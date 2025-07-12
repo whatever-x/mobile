@@ -81,4 +81,4 @@ jobs:
   # ✅ 커밋 푸시
   notify-push:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/')
-    uses: ./.github/workflows/slack/push-committed.yml
+    uses: whatever-x/mobile/.github/workflows/slack/push-committed.yml@refactor/slack-notifier-workflow
