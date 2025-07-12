@@ -26,35 +26,21 @@ jobs:
           echo "first_commit=$(printf "%s" "$FIRST_COMMIT" | jq -Rs .)" >> $GITHUB_OUTPUT
 
       - name: Send Slack Notification
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v2.1.1
         with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
           payload: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "🚀 \`${{ github.ref_name }}\` 브랜치에 커밋이 푸시되었습니다."
-                  }
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": ${{ steps.commit-info.outputs.first_commit }}
-                  }
-                },
-                {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "by <https://github.com/${{ github.actor }}|${{ github.actor }}>"
-                    }
-                  ]
-                }
-              ]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+            blocks:
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "🚀 `${{ github.ref_name }}` 브랜치에 커밋이 푸시되었습니다."
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: ${{ steps.commit-info.outputs.first_commit }}
+              - type: "context"
+                elements:
+                  - type: "mrkdwn"
+                    text: "by <https://github.com/${{ github.actor }}|${{ github.actor }}>"
