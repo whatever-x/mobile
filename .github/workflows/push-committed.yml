@@ -2,6 +2,9 @@ name: Slack - Push Committed
 
 on:
   workflow_call:
+    secrets:
+      SLACK_WEBHOOK_URL:
+        required: true
 
 jobs:
   send-slack:
