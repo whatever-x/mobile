@@ -1,0 +1,57 @@
+name: Slack - Push Committed
+
+on:
+  workflow_call:
+
+jobs:
+  send-slack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract first commit info
+        id: commit-info
+        run: |
+          COMMIT_COUNT=$(jq '.commits | length' "$GITHUB_EVENT_PATH")
+          FIRST_COMMIT=$(jq -r '.commits[0] | "- \(.message) (`\(.author.name)`) "' "$GITHUB_EVENT_PATH")
+
+          if [ "$COMMIT_COUNT" -gt 1 ]; then
+            OTHERS_COUNT=$((COMMIT_COUNT - 1))
+            FIRST_COMMIT="${FIRST_COMMIT}(외 ${OTHERS_COUNT}개의 커밋이 포함되어있습니다.)"
+          fi
+
+          # JSON-safe escape
+          echo "first_commit=$(printf "%s" "$FIRST_COMMIT" | jq -Rs .)" >> $GITHUB_OUTPUT
+
+      - name: Send Slack Notification
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "🚀 \`${{ github.ref_name }}\` 브랜치에 커밋이 푸시되었습니다."
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ${{ steps.commit-info.outputs.first_commit }}
+                  }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "by <https://github.com/${{ github.actor }}|${{ github.actor }}>"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
