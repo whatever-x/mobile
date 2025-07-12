@@ -29,7 +29,9 @@ jobs:
           fi
 
           HEADER_TEXT="✅ PR 생성"
-          SECTION1="*<${PR_URL}|${PR_TITLE}>* #${PR_NUMBER}\n\`${PR_HEAD_BRANCH}\` → \`${PR_BASE_BRANCH}\`\n${PR_COMMITS}개의 커밋이 있습니다."
+
+          SECTION1=$(printf "*<%s|%s>* #%s\n\`%s\` → \`%s\`\n%s개의 커밋이 있습니다." "$PR_URL" "$PR_TITLE" "$PR_NUMBER" "$PR_HEAD_BRANCH" "$PR_BASE_BRANCH" "$PR_COMMITS")
+
           SECTION2="\`\`\`${PR_BODY}\`\`\`"
 
           echo "header_text=$(printf "%s" "$HEADER_TEXT" | jq -Rs .)" >> $GITHUB_OUTPUT
