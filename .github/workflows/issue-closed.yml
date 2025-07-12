@@ -5,7 +5,7 @@ on:
     secrets:
       SLACK_WEBHOOK_URL:
         required: true
-      GITHUB_TOKEN:
+      REPOSITORY_TOKEN:
         required: true
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
       - name: Extract issue info and linked PRs
         id: issue-info
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
         run: |
           REPO="${{ github.repository }}"
           ISSUE_NUMBER=$(jq -r '.issue.number' "$GITHUB_EVENT_PATH")
@@ -26,7 +26,7 @@ jobs:
           ISSUE_USER_AVATAR=$(jq -r '.issue.user.avatar_url' "$GITHUB_EVENT_PATH")
 
           LINKED_PRS=$(curl -s \
-            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            -H "Authorization: Bearer ${REPOSITORY_TOKEN}" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/${REPO}/issues/${ISSUE_NUMBER}/events" \
             | jq -r '
