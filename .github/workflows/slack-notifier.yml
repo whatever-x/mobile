@@ -1,0 +1,124 @@
+name: Slack Notifier
+
+on:
+  issues:
+    types: [opened, closed]
+  issue_comment:
+    types: [created]
+  pull_request:
+    types: [opened, closed]
+  pull_request_review:
+    types: [submitted]
+  pull_request_review_comment:
+    types: [created]
+  push:
+  create:
+    branches:
+  delete:
+    branches:
+
+jobs:
+  # ✅ 이슈 생성 알림
+  notify-issue-opened:
+    if: github.event_name == 'issues' && github.event.action == 'opened'
+    uses: whatever-x/mobile/.github/workflows/issue-opened.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # ✅ 이슈 종료 알림
+  notify-issue-closed:
+    if: github.event_name == 'issues' && github.event.action == 'closed'
+    uses: whatever-x/mobile/.github/workflows/issue-closed.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
+
+  # ✅ 이슈 코멘트
+  notify-issue-commented:
+    if: github.event_name == 'issue_comment' && github.event.action == 'created' && github.event.issue.pull_request == null
+    uses: whatever-x/mobile/.github/workflows/issue-commented.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # ✅ PR 생성 알림
+  notify-pr-opened:
+    if: github.event_name == 'pull_request' && github.event.action == 'opened'
+    uses: whatever-x/mobile/.github/workflows/pr-opened.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # ✅ PR 병합 알림
+  notify-pr-merged:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    uses: whatever-x/mobile/.github/workflows/pr-merged.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # ✅ PR 강제 종료 알림
+  notify-pr-force-closed:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == false
+    uses: whatever-x/mobile/.github/workflows/pr-force-closed.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # ✅ PR 리뷰 승인
+  notify-pr-review-approved:
+    if: github.event_name == 'pull_request_review' && github.event.action == 'submitted' && github.event.review.state == 'approved'
+    uses: whatever-x/mobile/.github/workflows/pr-review-submitted.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    with:
+      review_header: "✅ PR 리뷰 승인"
+
+  # ✅ PR 리뷰 변경 요청
+  notify-pr-review-changes:
+    if: github.event_name == 'pull_request_review' && github.event.action == 'submitted' && github.event.review.state == 'changes_requested'
+    uses: whatever-x/mobile/.github/workflows/pr-review-submitted.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    with:
+      review_header: "❗ PR 리뷰 변경 요청"
+
+  # ✅ PR 리뷰 코멘트
+  notify-pr-review-commented:
+    if: github.event_name == 'pull_request_review' && github.event.action == 'submitted' && github.event.review.state == 'commented'
+    uses: whatever-x/mobile/.github/workflows/pr-review-submitted.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    with:
+      review_header: "💬 PR 리뷰 코멘트"
+
+  # ✅ PR 라인 코멘트
+  notify-pr-line-commented:
+    if: github.event_name == 'pull_request_review_comment' && github.event.action == 'created'
+    uses: whatever-x/mobile/.github/workflows/pr-line-commented.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # ✅ PR 일반 코멘트
+  notify-pr-general-commented:
+    if: github.event_name == 'issue_comment' && github.event.action == 'created' && github.event.issue.pull_request != null
+    uses: whatever-x/mobile/.github/workflows/pr-commented.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # ✅ 브랜치 생성
+  notify-branch-created:
+    if: github.event.ref_type == 'branch' && github.event_name == 'create'
+    uses: whatever-x/mobile/.github/workflows/branch-created.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # ✅ 브랜치 삭제
+  notify-branch-deleted:
+    if: github.event.ref_type == 'branch' && github.event_name == 'delete'
+    uses: whatever-x/mobile/.github/workflows/branch-deleted.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # ✅ 커밋 푸시
+  notify-push:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/')
+    uses: whatever-x/mobile/.github/workflows/push-committed.yml
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

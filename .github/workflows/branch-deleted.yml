@@ -1,0 +1,39 @@
+name: Slack - Branch Deleted
+
+on:
+  workflow_call:
+    secrets:
+      SLACK_WEBHOOK_URL:
+        required: true
+
+jobs:
+  send-slack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract branch deleted info
+        id: branch-info
+        run: |
+          BRANCH_NAME=$(jq -r '.ref' "$GITHUB_EVENT_PATH")
+          ACTOR="${{ github.actor }}"
+          ACTOR_URL="https://github.com/${ACTOR}"
+
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "actor=$ACTOR" >> $GITHUB_OUTPUT
+          echo "actor_url=$ACTOR_URL" >> $GITHUB_OUTPUT
+
+      - name: Send Slack Notification
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            blocks:
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "🗑️ \`${{ steps.branch-info.outputs.branch_name }}\` 브랜치가 삭제되었습니다."
+              - type: "context"
+                elements:
+                  - type: "mrkdwn"
+                    text: "by <${{ steps.branch-info.outputs.actor_url }}|${{ steps.branch-info.outputs.actor }}>"

@@ -1,0 +1,43 @@
+name: Slack - PR Force Closed
+
+on:
+  workflow_call:
+    secrets:
+      SLACK_WEBHOOK_URL:
+        required: true
+
+jobs:
+  send-slack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract PR force closed info
+        id: pr-force-info
+        run: |
+          PR_NUMBER=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")
+          PR_TITLE=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
+          PR_URL=$(jq -r '.pull_request.html_url' "$GITHUB_EVENT_PATH")
+          CLOSED_BY="${{ github.actor }}"
+
+          HEADER_TEXT="🗑️ PR 강제 종료"
+          SECTION_TEXT="*<${PR_URL}|${PR_TITLE}>* #${PR_NUMBER}\n\n‼ *${CLOSED_BY}* 님이 PR을 강제로 닫았습니다.‼"
+
+          echo "header_text=$(printf "%s" "$HEADER_TEXT" | jq -Rs .)" >> $GITHUB_OUTPUT
+          echo "section_text=$(printf "%s" "$SECTION_TEXT" | jq -Rs .)" >> $GITHUB_OUTPUT
+
+      - name: Send Slack Notification
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            blocks:
+              - type: "header"
+                text:
+                  type: "plain_text"
+                  text: ${{ steps.pr-force-info.outputs.header_text }}
+                  emoji: true
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: ${{ steps.pr-force-info.outputs.section_text }}
