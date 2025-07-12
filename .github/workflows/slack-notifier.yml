@@ -18,121 +18,74 @@ on:
     branches:
 
 jobs:
-  notify:
+  slack-notifier:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set env vars
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-          ACTION: ${{ github.event.action }}
-        run: |
-          echo "EVENT_NAME=${EVENT_NAME}" >> $GITHUB_ENV
-          echo "ACTION=${ACTION}" >> $GITHUB_ENV
+  # ✅ 이슈 생성 알림
+  notify-issue-opened:
+    if: github.event_name == 'issues' && github.event.action == 'opened'
+    uses: ./.github/workflows/slack/issue-opened.yml
 
-      # ✅ 이슈 생성
-      - name: Notify Issue Opened
-        if: env.EVENT_NAME == 'issues' && env.ACTION == 'opened'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: bash scripts/slack/issue_opened.sh
+  # ✅ 이슈 종료 알림
+  notify-issue-closed:
+    if: github.event_name == 'issues' && github.event.action == 'closed'
+    uses: ./.github/workflows/slack/issue-closed.yml
 
-      # ✅ 이슈 종료
-      - name: Notify Issue Closed
-        if: env.EVENT_NAME == 'issues' && env.ACTION == 'closed'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: bash scripts/slack/issue_closed.sh
+  # ✅ PR 생성 알림
+  notify-pr-opened:
+    if: github.event_name == 'pull_request' && github.event.action == 'opened'
+    uses: ./.github/workflows/slack/pr-opened.yml
 
-      # ✅ 이슈 코멘트
-      - name: Notify Issue Commented
-        if: env.EVENT_NAME == 'issue_comment' && env.ACTION == 'created' && github.event.issue.pull_request == null
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: bash scripts/slack/issue_commented.sh
+  # ✅ PR 병합 알림
+  notify-pr-merged:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    uses: ./.github/workflows/slack/pr-merged.yml
 
-      # ✅ PR 생성
-      - name: Notify PR Opened
-        if: env.EVENT_NAME == 'pull_request' && env.ACTION == 'opened'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: bash scripts/slack/pr_opened.sh
+  # ✅ PR 강제 종료 알림
+  notify-pr-force-closed:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == false
+    uses: ./.github/workflows/slack/pr-force-closed.yml
 
-      # ✅ PR 병합
-      - name: Notify PR Merged
-        if: env.EVENT_NAME == 'pull_request' && env.ACTION == 'closed' && github.event.pull_request.merged == true
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: bash scripts/slack/pr_merged.sh
+  # ✅ PR 리뷰 승인
+  notify-pr-review-approved:
+    if: github.event_name == 'pull_request_review' && github.event.action == 'submitted' && github.event.review.state == 'approved'
+    uses: ./.github/workflows/slack/pr-review-approved.yml
 
-      # ✅ PR 강제 종료
-      - name: Notify PR Force Closed
-        if: env.EVENT_NAME == 'pull_request' && env.ACTION == 'closed' && github.event.pull_request.merged == false
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: bash scripts/slack/pr_force_closed.sh
+  # ✅ PR 리뷰 변경 요청
+  notify-pr-review-changes:
+    if: github.event_name == 'pull_request_review' && github.event.action == 'submitted' && github.event.review.state == 'changes_requested'
+    uses: ./.github/workflows/slack/pr-review-changes.yml
 
-      # ✅ PR 리뷰 승인
-      - name: Notify PR Review Submitted - Approved
-        if: env.EVENT_NAME == 'pull_request_review' && env.ACTION == 'submitted' && github.event.review.state == 'approved'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          REVIEW_HEADER: "✅ PR 리뷰 승인"
-        run: bash scripts/slack/pr_review_submitted.sh
+  # ✅ PR 라인 코멘트
+  notify-pr-line-commented:
+    if: github.event_name == 'pull_request_review_comment' && github.event.action == 'created'
+    uses: ./.github/workflows/slack/pr-line-commented.yml
 
-      # ✅ PR 리뷰 변경 요청
-      - name: Notify PR Review Submitted - Changes Requested
-        if: env.EVENT_NAME == 'pull_request_review' && env.ACTION == 'submitted' && github.event.review.state == 'changes_requested'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          REVIEW_HEADER: "❗ PR 리뷰 변경 요청"
-        run: bash scripts/slack/pr_review_submitted.sh
+  # ✅ 이슈 코멘트
+  notify-issue-commented:
+    if: github.event_name == 'issue_comment' && github.event.action == 'created' && github.event.issue.pull_request == null
+    uses: ./.github/workflows/slack/issue-commented.yml
 
-      # ✅ PR 리뷰 코멘트
-      - name: Notify PR Review Submitted - Commented
-        if: env.EVENT_NAME == 'pull_request_review' && env.ACTION == 'submitted' && github.event.review.state == 'commented'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          REVIEW_HEADER: "💬 PR 리뷰 코멘트"
-        run: bash scripts/slack/pr_review_submitted.sh
+  # ✅ PR 일반 코멘트
+  notify-pr-general-commented:
+    if: github.event_name == 'issue_comment' && github.event.action == 'created' && github.event.issue.pull_request != null
+    uses: ./.github/workflows/slack/pr-commented.yml
 
-      # ✅ PR 라인 코멘트
-      - name: Notify PR Line Commented
-        if: env.EVENT_NAME == 'pull_request_review_comment' && env.ACTION == 'created'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: bash scripts/slack/pr_line_commented.sh
+  # ✅ 브랜치 생성
+  notify-branch-created:
+    if: github.event.ref_type == 'branch' && github.event_name == 'create'
+    uses: ./.github/workflows/slack/branch-created.yml
 
-      # ✅ PR 코멘트
-      - name: Notify PR General Commented
-        if: env.EVENT_NAME == 'issue_comment' && env.ACTION == 'created' && github.event.issue.pull_request != null
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: bash scripts/slack/pr_commented.sh
+  # ✅ 브랜치 삭제
+  notify-branch-deleted:
+    if: github.event.ref_type == 'branch' && github.event_name == 'delete'
+    uses: ./.github/workflows/slack/branch-deleted.yml
 
-      # ✅ 브랜치 생성
-      - name: Notify Branch Created
-        if: github.event.ref_type == 'branch'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: bash scripts/slack/branch_created.sh
-
-      # ✅ 브랜치 삭제
-      - name: Notify Branch Deleted
-        if: github.event.ref_type == 'branch'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: bash scripts/slack/branch_deleted.sh
-
-      # ✅ 커밋 푸시
-      - name: Notify Push Commits
-        if: env.EVENT_NAME == 'push' && startsWith(github.ref, 'refs/heads/')
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          BRANCH_NAME: ${{ github.ref_name }}
-          PUSHER: ${{ github.actor }}
-        run: bash scripts/slack/push_committed.sh
-
+  # ✅ 커밋 푸시
+  notify-push:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/')
+    uses: ./.github/workflows/slack/push-committed.yml
