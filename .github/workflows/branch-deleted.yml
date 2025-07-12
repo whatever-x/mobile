@@ -17,8 +17,9 @@ jobs:
           BRANCH_NAME=$(jq -r '.ref' "$GITHUB_EVENT_PATH")
           ACTOR="${{ github.actor }}"
           ACTOR_URL="https://github.com/${ACTOR}"
-
-          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          BRANCH_MESSAGE="🗑️ ${BRANCH_NAME} 브랜치가 삭제되었습니다."
+          
+          echo "branch_message=$(printf "%s" "$BRANCH_MESSAGE" | jq -Rs .)" >> $GITHUB_OUTPUT
           echo "actor=$ACTOR" >> $GITHUB_OUTPUT
           echo "actor_url=$ACTOR_URL" >> $GITHUB_OUTPUT
 
@@ -32,7 +33,7 @@ jobs:
               - type: "section"
                 text:
                   type: "mrkdwn"
-                  text: "🗑️ \`${{ steps.branch-info.outputs.branch_name }}\` 브랜치가 삭제되었습니다."
+                  text: ${{ steps.branch-info.outputs.branch_message }}
               - type: "context"
                 elements:
                   - type: "mrkdwn"
