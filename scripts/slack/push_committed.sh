@@ -15,6 +15,8 @@ if [ "$COMMIT_COUNT" -gt 1 ]; then
   FIRST_COMMIT="${FIRST_COMMIT}(외 ${OTHERS_COUNT}개의 커밋이 포함되어있습니다.)"
 fi
 
+FIRST_COMMIT_ESCAPED=$(printf "%s" "$FIRST_COMMIT" | jq -Rs .)
+
 cat <<EOF > payload.json
 {
   "blocks": [
@@ -29,7 +31,7 @@ cat <<EOF > payload.json
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "${FIRST_COMMIT}"
+        "text": ${FIRST_COMMIT_ESCAPED}
       }
     },
     {
