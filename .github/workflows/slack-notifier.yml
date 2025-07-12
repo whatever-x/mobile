@@ -82,3 +82,5 @@ jobs:
   notify-push:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/')
     uses: whatever-x/mobile/.github/workflows/push-committed.yml@refactor/slack-notifier-workflow
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
