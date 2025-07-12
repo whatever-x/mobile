@@ -2,8 +2,8 @@
 
 set -e
 
-BRANCH_NAME="${{ github.ref_name }}"
-PUSHER="${{ github.actor }}"
+BRANCH_NAME="${BRANCH_NAME}"
+PUSHER="${PUSHER}"
 PUSHER_URL="https://github.com/${PUSHER}"
 
 COMMIT_COUNT=$(jq '.commits | length' "$GITHUB_EVENT_PATH")
