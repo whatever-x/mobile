@@ -20,7 +20,6 @@ kotlin {
             implementation(projects.core.remote)
 
             implementation(projects.core.util)
-            implementation(projects.core.crashlytics)
 
             implementation(libs.koin.core)
 

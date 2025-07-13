@@ -11,9 +11,9 @@ import FirebaseCrashlytics
         Crashlytics.crashlytics().log(message)
     }
 
-    public func recordException(errorTrace : String) {
+    public func recordException(errorClassName : String, errorTrace : String) {
         let error = NSError(
-            domain : "KotlinException",
+            domain : errorClassName,
             code : 0,
             userInfo: [NSLocalizedDescriptionKey : errorTrace]
         )

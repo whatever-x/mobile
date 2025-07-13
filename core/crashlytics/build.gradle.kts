@@ -8,7 +8,12 @@ plugins {
     alias(libs.plugins.kmp.spm)
 }
 
-android.namespace = "com.whatever.caramel.core.crashlytics"
+android {
+    namespace = "com.whatever.caramel.core.crashlytics"
+    buildFeatures {
+        buildConfig = true
+    }
+}
 
 kotlin {
     val isWindow = System.getProperty("os.name").lowercase(Locale.getDefault()).contains("windows")

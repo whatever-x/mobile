@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.setting
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
@@ -22,7 +23,8 @@ class SettingViewModel(
     private val logoutUseCase: LogoutUseCase,
     private val signOutUseCase: SignOutUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<SettingState, SettingSideEffect, SettingIntent>(savedStateHandle) {
+    crashlytics: CaramelCrashlytics,
+) : BaseViewModel<SettingState, SettingSideEffect, SettingIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): SettingState = SettingState()
 
     override suspend fun handleIntent(intent: SettingIntent) {
@@ -69,9 +71,11 @@ class SettingViewModel(
                     )
             }
         } else {
+            caramelCrashlytics.recordException(throwable)
             postSideEffect(
-                SettingSideEffect.ShowErrorToast(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다.",
+                SettingSideEffect.ShowErrorDialog(
+                    message = "알 수 없는 오류가 발생했습니다.",
+                    description = null,
                 ),
             )
         }

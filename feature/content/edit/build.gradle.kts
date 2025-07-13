@@ -15,7 +15,7 @@ kotlin {
             implementation(projects.core.designsystem)
             implementation(projects.core.ui)
             implementation(projects.core.util)
-            implementation(projects.core.analytics)
+            implementation(projects.core.crashlytics)
             implementation(projects.core.viewmodel)
 
             implementation(libs.koin.core)

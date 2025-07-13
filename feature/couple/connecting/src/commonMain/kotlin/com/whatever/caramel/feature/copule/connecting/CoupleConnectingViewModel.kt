@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.copule.connecting
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.copule.connecting.mvi.CoupleConnectingIntent
 import com.whatever.caramel.feature.copule.connecting.mvi.CoupleConnectingSideEffect
@@ -9,7 +10,8 @@ import kotlinx.coroutines.delay
 
 class CoupleConnectingViewModel(
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<CoupleConnectingState, CoupleConnectingSideEffect, CoupleConnectingIntent>(savedStateHandle) {
+    crashlytics: CaramelCrashlytics,
+) : BaseViewModel<CoupleConnectingState, CoupleConnectingSideEffect, CoupleConnectingIntent>(savedStateHandle, crashlytics) {
     init {
         launch {
             delay(2000L)

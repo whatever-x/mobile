@@ -3,7 +3,10 @@ package com.whatever.caramel.core.crashlytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 class CaramelCrashlyticsImpl : CaramelCrashlytics {
-    private val crashlytics = FirebaseCrashlytics.getInstance()
+    private val crashlytics =
+        FirebaseCrashlytics.getInstance().apply {
+            isCrashlyticsCollectionEnabled = !BuildConfig.DEBUG
+        }
 
     override fun log(message: String) {
         crashlytics.log(message)
