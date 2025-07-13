@@ -22,7 +22,9 @@ jobs:
           ISSUE_MILESTONE=$(jq -r '.issue.milestone.title // "❌"' "$GITHUB_EVENT_PATH")
 
           HEADER_TEXT="✅ 이슈 생성"
-          ISSUE_SECTION="*[<${ISSUE_URL}|#${ISSUE_NUMBER}>]*\n${ISSUE_TITLE}\n${ISSUE_MILESTONE}"
+          ISSUE_SECTION="*[<${ISSUE_URL}|#${ISSUE_NUMBER}>]*
+          ${ISSUE_TITLE}
+          📆 마일스톤 : ${ISSUE_MILESTONE}"
 
           echo "header_text=$(printf "%s" "$HEADER_TEXT" | jq -Rs .)" >> $GITHUB_OUTPUT
           echo "issue_section=$(printf "%s" "$ISSUE_SECTION" | jq -Rs .)" >> $GITHUB_OUTPUT
