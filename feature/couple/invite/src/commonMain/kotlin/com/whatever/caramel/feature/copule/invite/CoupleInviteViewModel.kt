@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.copule.invite
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.repository.CoupleRepository
@@ -12,7 +13,8 @@ import com.whatever.caramel.feature.copule.invite.mvi.CoupleInviteState
 class CoupleInviteViewModel(
     private val coupleRepository: CoupleRepository,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<CoupleInviteState, CoupleInviteSideEffect, CoupleInviteIntent>(savedStateHandle) {
+    crashlytics: CaramelCrashlytics,
+) : BaseViewModel<CoupleInviteState, CoupleInviteSideEffect, CoupleInviteIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): CoupleInviteState = CoupleInviteState()
 
     override suspend fun handleIntent(intent: CoupleInviteIntent) {
@@ -43,9 +45,11 @@ class CoupleInviteViewModel(
                     )
             }
         } else {
+            caramelCrashlytics.recordException(throwable)
             postSideEffect(
-                CoupleInviteSideEffect.ShowErrorToast(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다.",
+                CoupleInviteSideEffect.ShowErrorDialog(
+                    message = "알 수 없는 오류가 발생했습니다.",
+                    description = null,
                 ),
             )
         }

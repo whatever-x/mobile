@@ -1,0 +1,52 @@
+name: Slack - PR Merged
+
+on:
+  workflow_call:
+    secrets:
+      SLACK_WEBHOOK_URL:
+        required: true
+
+jobs:
+  send-slack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract PR merged info
+        id: pr-merged-info
+        run: |
+          PR_NUMBER=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")
+          PR_TITLE=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
+          PR_URL=$(jq -r '.pull_request.html_url' "$GITHUB_EVENT_PATH")
+          PR_HEAD_BRANCH=$(jq -r '.pull_request.head.ref' "$GITHUB_EVENT_PATH")
+          PR_BASE_BRANCH=$(jq -r '.pull_request.base.ref' "$GITHUB_EVENT_PATH")
+          MERGED_BY=$(jq -r '.pull_request.merged_by.login' "$GITHUB_EVENT_PATH")
+          MERGED_BY_URL="https://github.com/${MERGED_BY}"
+
+          HEADER_TEXT="🗑️ PR 병합"
+          SECTION1="*<${PR_URL}|${PR_TITLE}>* #${PR_NUMBER}\n\`${PR_HEAD_BRANCH}\` → \`${PR_BASE_BRANCH}\`"
+          SECTION2="*<${MERGED_BY_URL}|${MERGED_BY}>* 님이 PR을 병합했습니다."
+
+          echo "header_text=$(printf "%s" "$HEADER_TEXT" | jq -Rs .)" >> $GITHUB_OUTPUT
+          echo "section1=$(printf "%s" "$SECTION1" | jq -Rs .)" >> $GITHUB_OUTPUT
+          echo "section2=$(printf "%s" "$SECTION2" | jq -Rs .)" >> $GITHUB_OUTPUT
+
+      - name: Send Slack Notification
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            blocks:
+              - type: "header"
+                text:
+                  type: "plain_text"
+                  text: ${{ steps.pr-merged-info.outputs.header_text }}
+                  emoji: true
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: ${{ steps.pr-merged-info.outputs.section1 }}
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: ${{ steps.pr-merged-info.outputs.section2 }}

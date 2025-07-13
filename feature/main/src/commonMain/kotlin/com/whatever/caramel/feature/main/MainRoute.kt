@@ -108,7 +108,9 @@ internal fun MainRoute(
         },
     ) { innerPadding ->
         NavHost(
-            modifier = Modifier.padding(paddingValues = innerPadding),
+            modifier =
+                Modifier
+                    .padding(bottom = innerPadding.calculateBottomPadding()),
             navController = mainNavHostController,
             startDestination = HomeRoute,
             enterTransition = { EnterTransition.None },

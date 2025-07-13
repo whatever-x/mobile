@@ -3,6 +3,7 @@ package com.whatever.caramel.core.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +19,7 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 abstract class BaseViewModel<S : UiState, SE : UiSideEffect, I : UiIntent>(
     val savedStateHandle: SavedStateHandle,
+    protected val caramelCrashlytics: CaramelCrashlytics,
 ) : ViewModel() {
     private val initialState: S by lazy { createInitialState(savedStateHandle) }
 
@@ -41,6 +43,7 @@ abstract class BaseViewModel<S : UiState, SE : UiSideEffect, I : UiIntent>(
 
     fun intent(intent: I) {
         launch {
+            caramelCrashlytics.log("${this@BaseViewModel::class.simpleName} > received intent : $intent")
             handleIntent(intent)
         }
     }
