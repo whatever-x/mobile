@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.content.create
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
@@ -26,10 +27,11 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
 class ContentCreateViewModel(
+    crashlytics: CaramelCrashlytics,
     savedStateHandle: SavedStateHandle,
     private val getTagUseCase: GetTagUseCase,
     private val createContentUseCase: CreateContentUseCase,
-) : BaseViewModel<ContentCreateState, ContentCreateSideEffect, ContentCreateIntent>(savedStateHandle) {
+) : BaseViewModel<ContentCreateState, ContentCreateSideEffect, ContentCreateIntent>(savedStateHandle, crashlytics) {
     init {
         launch {
             val tags = getTagUseCase()
@@ -78,9 +80,11 @@ class ContentCreateViewModel(
                     )
             }
         } else {
+            caramelCrashlytics.recordException(throwable)
             postSideEffect(
-                ContentCreateSideEffect.ShowToast(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다.",
+                ContentCreateSideEffect.ShowErrorDialog(
+                    message = "알 수 없는 오류가 발생했습니다.",
+                    description = null,
                 ),
             )
         }

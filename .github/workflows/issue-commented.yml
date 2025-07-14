@@ -1,0 +1,62 @@
+name: Slack - Issue Commented
+
+on:
+  workflow_call:
+    secrets:
+      SLACK_WEBHOOK_URL:
+        required: true
+
+jobs:
+  send-slack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract Issue comment info
+        id: issue-comment
+        run: |
+          ISSUE_NUMBER=$(jq -r '.issue.number' "$GITHUB_EVENT_PATH")
+          ISSUE_TITLE=$(jq -r '.issue.title' "$GITHUB_EVENT_PATH")
+          ISSUE_URL=$(jq -r '.issue.html_url' "$GITHUB_EVENT_PATH")
+          COMMENT_BODY=$(jq -r '.comment.body' "$GITHUB_EVENT_PATH")
+
+          COMMENT_AUTHOR=$(jq -r '.comment.user.login' "$GITHUB_EVENT_PATH")
+          COMMENT_AUTHOR_URL="https://github.com/${COMMENT_AUTHOR}"
+          COMMENT_AUTHOR_AVATAR=$(jq -r '.comment.user.avatar_url' "$GITHUB_EVENT_PATH")
+
+          if [ -z "$COMMENT_BODY" ] || [ "$COMMENT_BODY" == "null" ]; then
+            COMMENT_BODY="(코멘트가 없습니다)"
+          fi
+
+          echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+          echo "issue_title=$ISSUE_TITLE" >> $GITHUB_OUTPUT
+          echo "issue_url=$ISSUE_URL" >> $GITHUB_OUTPUT
+          echo "comment_author=$COMMENT_AUTHOR" >> $GITHUB_OUTPUT
+          echo "comment_author_url=$COMMENT_AUTHOR_URL" >> $GITHUB_OUTPUT
+          echo "comment_author_avatar=$COMMENT_AUTHOR_AVATAR" >> $GITHUB_OUTPUT
+          echo "comment_body=$(printf "%s" "$COMMENT_BODY" | jq -Rs .)" >> $GITHUB_OUTPUT
+
+      - name: Send Slack Notification
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            blocks:
+              - type: "header"
+                text:
+                  type: "plain_text"
+                  text: "💬 이슈 코멘트"
+                  emoji: true
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "*[#${{ steps.issue-comment.outputs.issue_number }} ${{ steps.issue-comment.outputs.issue_title }}]*\n```${{ fromJson(steps.issue-comment.outputs.comment_body) }}```\n<${{ steps.issue-comment.outputs.issue_url }}|이슈 바로가기>"
+                accessory:
+                  type: "image"
+                  image_url: "${{ steps.issue-comment.outputs.comment_author_avatar }}"
+                  alt_text: "by ${{ steps.issue-comment.outputs.comment_author }}"
+              - type: "context"
+                elements:
+                  - type: "mrkdwn"
+                    text: "by <https://github.com/${{ steps.issue-comment.outputs.comment_author }}|${{ steps.issue-comment.outputs.comment_author }}>"
+

@@ -44,6 +44,7 @@ kotlin {
             implementation(projects.core.database)
             implementation(projects.core.remote)
             api(projects.core.analytics)
+            api(projects.core.crashlytics)
             implementation(projects.core.viewmodel)
             api(projects.core.deeplink)
             api(projects.core.firebaseMessaging)

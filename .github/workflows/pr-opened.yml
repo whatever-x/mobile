@@ -1,0 +1,70 @@
+name: Slack - PR Opened
+
+on:
+  workflow_call:
+    secrets:
+      SLACK_WEBHOOK_URL:
+        required: true
+
+jobs:
+  send-slack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract PR info
+        id: pr-info
+        run: |
+          PR_NUMBER=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")
+          PR_TITLE=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
+          PR_URL=$(jq -r '.pull_request.html_url' "$GITHUB_EVENT_PATH")
+          PR_BODY=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH")
+          PR_USER=$(jq -r '.pull_request.user.login' "$GITHUB_EVENT_PATH")
+          PR_USER_AVATAR=$(jq -r '.pull_request.user.avatar_url' "$GITHUB_EVENT_PATH")
+          PR_COMMITS=$(jq -r '.pull_request.commits' "$GITHUB_EVENT_PATH")
+          PR_HEAD_BRANCH=$(jq -r '.pull_request.head.ref' "$GITHUB_EVENT_PATH")
+          PR_BASE_BRANCH=$(jq -r '.pull_request.base.ref' "$GITHUB_EVENT_PATH")
+
+          if [ -z "$PR_BODY" ] || [ "$PR_BODY" == "null" ]; then
+            PR_BODY="(❌본문이 없습니다)"
+          fi
+
+          HEADER_TEXT="✅ PR 생성"
+
+          SECTION1=$(printf "*<%s|%s>* #%s\n\`%s\` → \`%s\`\n%s개의 커밋이 있습니다." "$PR_URL" "$PR_TITLE" "$PR_NUMBER" "$PR_HEAD_BRANCH" "$PR_BASE_BRANCH" "$PR_COMMITS")
+
+          SECTION2="\`\`\`${PR_BODY}\`\`\`"
+
+          echo "header_text=$(printf "%s" "$HEADER_TEXT" | jq -Rs .)" >> $GITHUB_OUTPUT
+          echo "section1=$(printf "%s" "$SECTION1" | jq -Rs .)" >> $GITHUB_OUTPUT
+          echo "section2=$(printf "%s" "$SECTION2" | jq -Rs .)" >> $GITHUB_OUTPUT
+          echo "pr_user=${PR_USER}" >> $GITHUB_OUTPUT
+          echo "pr_user_avatar=${PR_USER_AVATAR}" >> $GITHUB_OUTPUT
+
+      - name: Send Slack Notification
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            blocks:
+              - type: "header"
+                text:
+                  type: "plain_text"
+                  text: ${{ steps.pr-info.outputs.header_text }}
+                  emoji: true
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: ${{ steps.pr-info.outputs.section1 }}
+                accessory:
+                  type: "image"
+                  image_url: "${{ steps.pr-info.outputs.pr_user_avatar }}"
+                  alt_text: "by ${{ steps.pr-info.outputs.pr_user }}"
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: ${{ steps.pr-info.outputs.section2 }}
+              - type: "context"
+                elements:
+                  - type: "mrkdwn"
+                    text: "by <https://github.com/${{ steps.pr-info.outputs.pr_user }}|${{ steps.pr-info.outputs.pr_user }}>"

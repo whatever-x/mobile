@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.calendar
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.calendar.GetHolidaysUseCase
@@ -29,8 +30,9 @@ class CalendarViewModel(
     private val getTodosGroupByStartDateUseCase: GetTodosGroupByStartDateUseCase,
     private val getHolidaysUseCase: GetHolidaysUseCase,
     private val getAnniversariesUseCase: GetAnniversariesUseCase,
+    crashlytics: CaramelCrashlytics,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(savedStateHandle) {
+) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): CalendarState {
         val currentDate = DateUtil.today()
         return CalendarState(
@@ -64,9 +66,11 @@ class CalendarViewModel(
                     )
             }
         } else {
+            caramelCrashlytics.recordException(throwable)
             postSideEffect(
-                CalendarSideEffect.ShowErrorToast(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다.",
+                CalendarSideEffect.ShowErrorDialog(
+                    message = "알 수 없는 오류가 발생했습니다.",
+                    description = null,
                 ),
             )
         }
