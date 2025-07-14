@@ -23,7 +23,7 @@ Caramel 프로젝트는 **Fastlane**을 사용해 Android 앱을 Firebase App Di
   ```
   
 ## ✅ 2. 의존성 설치
-- 프로젝트 루트로 이동 후
+- 프로젝트 루트에서 다음 명령어 실행
   ```bash
   bundle install
   ```
@@ -38,17 +38,25 @@ Caramel 프로젝트는 **Fastlane**을 사용해 Android 앱을 Firebase App Di
   firebase login:ci
   ```
 
-- 로그인 이후 획득한 FirebaseCLI 토큰은 **.env** 파일에 적용
+- 로그인 이후 획득한 FirebaseCLI 토큰은 `.env` 파일에 적용
   - ex) `FIREBASE_CLI_TOKEN=<획득한 토큰>`
 
 ## 🚀 4. 배포 진행
-- 환경 설정이 완료되면 다음을 꼭 체크
-  - ✅ 버전코드 확인
-  - ✅ 릴리즈 노트 확인
+- 환경 설정이 완료되면 다음을 꼭 체크 ✅
+  - Android
+    - ✅ `version-code` 확인
+    - ✅ `version-name` 확인
+    - ✅ 릴리즈 노트 확인
+  - iOS
+    - ✅ `Build Version` 확인
+    - ✅ `Version Code` 확인
+    - ✅ 릴리즈 노트 확인
+
 - 체크가 완료되면 프로젝트 루트에서 다음을 실행
   ```bash
   # Android 배포 명령어
-  bundle exec fastlane android beta
+  fastlane android beta
   
   # iOS 배포 명령어
+  fastlane ios beta
   ```
