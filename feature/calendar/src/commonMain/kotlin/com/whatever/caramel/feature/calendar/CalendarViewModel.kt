@@ -20,6 +20,7 @@ import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
@@ -32,7 +33,10 @@ class CalendarViewModel(
     private val getAnniversariesUseCase: GetAnniversariesUseCase,
     crashlytics: CaramelCrashlytics,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(savedStateHandle, crashlytics) {
+) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(
+        savedStateHandle,
+        crashlytics,
+    ) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): CalendarState {
         val currentDate = DateUtil.today()
         return CalendarState(
@@ -57,6 +61,7 @@ class CalendarViewModel(
                             message = throwable.message,
                         ),
                     )
+
                 ErrorUiType.DIALOG ->
                     postSideEffect(
                         CalendarSideEffect.ShowErrorDialog(
@@ -111,12 +116,10 @@ class CalendarViewModel(
     }
 
     private fun initialize() {
-        val year = currentState.year
-        val monthNumber = currentState.month.number
-        getSchedules(
-            year = year,
-            startMonthNumber = monthNumber,
-            initialize = currentState.monthSchedules.isEmpty(),
+        reduce { copy(cachedYearSchedules = emptyMap()) }
+        getYearSchedules(
+            year = currentState.year,
+            initialize = currentState.yearSchedule.isEmpty(),
             isRefresh = true,
         )
     }
@@ -139,10 +142,11 @@ class CalendarViewModel(
     }
 
     private fun refreshCalendar() {
-        reduce { copy(isRefreshing = true) }
-        getSchedules(
+        reduce {
+            copy(isRefreshing = true, cachedYearSchedules = emptyMap())
+        }
+        getYearSchedules(
             year = currentState.year,
-            startMonthNumber = currentState.month.number,
             isRefresh = true,
         )
     }
@@ -178,6 +182,7 @@ class CalendarViewModel(
 
         val year = (pageIndex / 12) + 1900
         val monthNumber = pageIndex % 12
+        getYearSchedules(year = year)
         reduce {
             copy(
                 year = year,
@@ -185,7 +190,6 @@ class CalendarViewModel(
                 pageIndex = pageIndex,
             )
         }
-        getSchedules(year = year, startMonthNumber = monthNumber + 1)
     }
 
     private fun clickTodoUrl(url: String?) {
@@ -195,7 +199,7 @@ class CalendarViewModel(
 
     private fun clickCalendarCell(newSelectedDate: LocalDate) {
         reduce {
-            val newSchedule = currentState.monthSchedules.toMutableList()
+            val newSchedule = currentState.yearSchedule.toMutableList()
             // 이전에 선택된 날짜에 스케쥴이 존재하지 않는 경우 리스트에서 삭제
             newSchedule.find { it.date == currentState.selectedDate }?.let {
                 if (it.holidays.isEmpty() && it.todos.isEmpty() && it.anniversaries.isEmpty()) {
@@ -210,36 +214,62 @@ class CalendarViewModel(
             copy(
                 bottomSheetState = BottomSheetState.EXPANDED,
                 selectedDate = newSelectedDate,
-                monthSchedules = newSchedule.sortedBy { it.date },
+                yearSchedule = newSchedule.sortedBy { it.date },
             )
         }
     }
 
-    private fun getSchedules(
+    private fun applyCachedSchedulesIfExists(updateSelectedDate: LocalDate): Boolean {
+        // 현재 년도에 적용된 캐싱 데이터가 존재하는가?
+        if (currentState.cachedYearSchedules.contains(updateSelectedDate.year)) {
+            // API 기준으로 캐싱된 값
+            val filteredCachedSchedule =
+                (
+                    currentState.cachedYearSchedules[updateSelectedDate.year]
+                        ?: emptyList()
+                ).toMutableList()
+            // 선택된 값이 존재하지 않는다면 추가로 넣어줘야한다.
+            if (filteredCachedSchedule.find { daySchedule -> daySchedule.date == updateSelectedDate } == null) {
+                filteredCachedSchedule.add(0, DaySchedule(date = updateSelectedDate))
+            }
+            reduce {
+                copy(
+                    isRefreshing = false,
+                    selectedDate = updateSelectedDate,
+                    yearSchedule = filteredCachedSchedule,
+                )
+            }
+            return true
+        }
+        return false
+    }
+
+    private fun getYearSchedules(
         year: Int,
-        startMonthNumber: Int,
-        endMonthNumber: Int = startMonthNumber,
         initialize: Boolean = false,
         isRefresh: Boolean = false,
     ) {
         launch {
-            val updatedSelectedDate =
+            val updateSelectedDate =
                 when {
                     initialize -> currentState.today
                     isRefresh -> currentState.selectedDate
                     else -> LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
                 }
+            // 만약 캐싱 데이터가 존재하면 캐싱 데이터를 사용하고 밑의 로직은 사용되지 않는다.
+            if (applyCachedSchedulesIfExists(updateSelectedDate)) return@launch
+
             val firstDayOfMonth =
                 DateFormatter.createDateString(
                     year = year,
-                    month = startMonthNumber,
+                    month = 1,
                     day = 1,
                 )
-            val lastDay = DateUtil.getLastDayOfMonth(year = year, month = endMonthNumber)
+            val lastDay = DateUtil.getLastDayOfMonth(year = year, month = 12)
             val lastDayOfMonth =
                 DateFormatter.createDateString(
                     year = year,
-                    month = endMonthNumber,
+                    month = 12,
                     day = lastDay,
                 )
             val todos =
@@ -254,17 +284,34 @@ class CalendarViewModel(
                     endDate = lastDayOfMonth,
                 )
             val holidays = getHolidaysUseCase(year = year)
+            // 저장되는 값
+            val yearSchedule =
+                createYearSchedules(
+                    todosOnDate = todos,
+                    holidaysOnDate = holidays,
+                    anniversariesOnDate = anniversaries,
+                )
+            // 캐시 최대 허용량 넘어가는 경우
+            if (currentState.cachedYearSchedules.size >= 3) {
+                val currentCachedSchedule =
+                    currentState.cachedYearSchedules.toMutableMap().apply {
+                        remove(entries.first().key)
+                    }
+                reduce { copy(cachedYearSchedules = currentCachedSchedule) }
+            }
+            val yearScheduleByCached = mapOf(year to yearSchedule)
+            // updateSelectedDate가 존재하는지 확인
             reduce {
                 copy(
                     isRefreshing = false,
-                    selectedDate = updatedSelectedDate,
-                    monthSchedules =
-                        createMonthSchedules(
-                            todosOnDate = todos,
-                            holidaysOnDate = holidays,
-                            anniversariesOnDate = anniversaries,
-                            updatedSelectedDate = updatedSelectedDate,
-                        ),
+                    selectedDate = updateSelectedDate,
+                    yearSchedule =
+                        if (yearSchedule.find { daySchedule -> daySchedule.date == updateSelectedDate } == null) {
+                            (yearSchedule + DaySchedule(date = updateSelectedDate)).sortedBy { it.date }
+                        } else {
+                            yearSchedule
+                        },
+                    cachedYearSchedules = cachedYearSchedules + yearScheduleByCached,
                 )
             }
         }
@@ -291,6 +338,11 @@ class CalendarViewModel(
         val pickerYear = currentState.pickerDate.year
         val pickerMonth = Month.entries[currentState.pickerDate.month - 1]
         val isSame = pickerYear == currentState.year && pickerMonth == currentState.month
+        getYearSchedules(
+            year = pickerYear,
+            isRefresh = isSame,
+        )
+
         reduce {
             copy(
                 year = pickerYear,
@@ -305,11 +357,6 @@ class CalendarViewModel(
                 bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
             )
         }
-        getSchedules(
-            year = pickerYear,
-            startMonthNumber = pickerMonth.number,
-            isRefresh = isSame,
-        )
     }
 
     private fun createCurrentDateList(
@@ -324,41 +371,35 @@ class CalendarViewModel(
         return dateList.toList()
     }
 
-    private fun createMonthSchedules(
+    private fun createYearSchedules(
         todosOnDate: List<TodosOnDate>,
         holidaysOnDate: List<HolidaysOnDate>,
         anniversariesOnDate: List<AnniversariesOnDate>,
-        updatedSelectedDate: LocalDate,
     ): List<DaySchedule> {
         val scheduleMap = mutableMapOf<LocalDate, DaySchedule>()
-
         todosOnDate
-            .filter { it.date.year == currentState.year && it.date.month == currentState.month }
             .forEach { todo ->
                 val date = todo.date
                 val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] = existingSchedule.copy(todos = existingSchedule.todos + todo.todos)
+                scheduleMap[date] =
+                    existingSchedule.copy(todos = existingSchedule.todos + todo.todos)
             }
 
         anniversariesOnDate
-            .filter { it.date.year == currentState.year && it.date.month == currentState.month }
             .forEach { anniversary ->
                 val date = anniversary.date
                 val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] = existingSchedule.copy(anniversaries = existingSchedule.anniversaries + anniversary.anniversaries)
+                scheduleMap[date] =
+                    existingSchedule.copy(anniversaries = existingSchedule.anniversaries + anniversary.anniversaries)
             }
 
         holidaysOnDate
-            .filter { it.date.year == currentState.year && it.date.month == currentState.month }
             .forEach { holiday ->
                 val date = holiday.date
                 val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] = existingSchedule.copy(holidays = existingSchedule.holidays + holiday.holidays)
+                scheduleMap[date] =
+                    existingSchedule.copy(holidays = existingSchedule.holidays + holiday.holidays)
             }
-
-        if (!scheduleMap.containsKey(updatedSelectedDate)) {
-            scheduleMap[updatedSelectedDate] = DaySchedule(date = updatedSelectedDate)
-        }
 
         return scheduleMap.values.sortedBy { it.date }
     }
