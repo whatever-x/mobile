@@ -19,6 +19,11 @@ Dotenv.load('.env')
 platform :android do
   desc "Android Firebase Distribution 배포"
   lane :beta do
+    version_file = File.expand_path("../gradle/libs.versions.toml", __dir__)
+    current_code = sh("grep 'version-code' #{version_file} | awk -F '\"' '{print $2}'").strip.to_i
+    new_code = current_code + 1
+    sh("sed -i '' 's/version-code = \"#{current_code}\"/version-code = \"#{new_code}\"/' #{version_file}")
+
     gradle(
       task: "bundle",
       build_type: "Release",
@@ -33,10 +38,8 @@ platform :android do
       android_artifact_type: "AAB"
     )
 
-    version_file = File.expand_path("../gradle/libs.versions.toml", __dir__)
     version_code = sh("grep 'version-code' #{version_file} | awk -F '\"' '{print $2}'").strip
     version_name = sh("grep 'version-name' #{version_file} | awk -F '\"' '{print $2}'").strip
-
     release_notes = File.read("#{__dir__}/android-release-notes.txt").strip
 
     slack(
