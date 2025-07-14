@@ -16,6 +16,7 @@ captures
 *.apk
 fastlane/.env
 fastlane/report.xml
+fastlane/*.p8
 
 # ComposeApp
 app/google-services.json
