@@ -3,10 +3,14 @@ package com.whatever.caramel.feature.calendar.component.calendar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,6 +20,7 @@ import caramel.feature.calendar.generated.resources.day_of_week
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
@@ -28,7 +33,7 @@ fun CaramelCalendar(
     year: Int,
     month: Month,
     selectedDate: LocalDate,
-    schedules: List<DaySchedule>,
+    schedules: ImmutableList<DaySchedule>,
     onClickTodo: (Long) -> Unit,
     onClickCell: (LocalDate) -> Unit,
 ) {
@@ -36,37 +41,34 @@ fun CaramelCalendar(
     val firstDayOfWeek =
         if (firstDay.dayOfWeek == DayOfWeek.SUNDAY) 0 else firstDay.dayOfWeek.ordinal + 1
     val lastDay = DateUtil.getLastDayOfMonth(year, month.number)
+    val totalCells = firstDayOfWeek + lastDay
+    val column = (totalCells + 6) / 7
 
-    Column(modifier = modifier) {
-        val totalCells = firstDayOfWeek + lastDay
-        val totalRows = (totalCells + 6) / 7
-        repeat(totalRows) { row ->
-            Column(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-            ) {
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    repeat(7) { column ->
-                        val dayOfMonth = row * 7 + column - firstDayOfWeek + 1
-                        Box(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f),
-                        ) {
-                            if (dayOfMonth in 1..lastDay) {
-                                val date = LocalDate(year, month, dayOfMonth)
-                                CalendarDayOfMonthCell(
-                                    schedule = schedules.find { it.date == date },
-                                    date = date,
-                                    isFocus = selectedDate == date,
-                                    onClickCell = { onClickCell(it) },
-                                    onClickTodo = { onClickTodo(it) },
-                                )
-                            }
-                        }
+    BoxWithConstraints(modifier = modifier) {
+        LazyVerticalGrid(
+            modifier = modifier.fillMaxSize(),
+            columns = GridCells.Fixed(7),
+            userScrollEnabled = false,
+        ) {
+            val calcHeight = maxHeight / column
+            items(totalCells) { index ->
+                val dayOfMonth = index - firstDayOfWeek + 1
+                Box(
+                    modifier =
+                        Modifier
+                            .height(calcHeight)
+                            .fillMaxWidth(),
+                ) {
+                    if (dayOfMonth in 1..lastDay) {
+                        val date = LocalDate(year, month, dayOfMonth)
+                        CalendarDayOfMonthCell(
+                            modifier = Modifier.fillMaxSize(),
+                            schedule = schedules.find { it.date == date },
+                            date = date,
+                            isFocus = selectedDate == date,
+                            onClickCell = { onClickCell(it) },
+                            onClickTodo = { onClickTodo(it) },
+                        )
                     }
                 }
             }
