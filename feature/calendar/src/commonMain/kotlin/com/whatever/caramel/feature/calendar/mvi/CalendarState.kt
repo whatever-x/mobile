@@ -19,10 +19,14 @@ data class CalendarState(
     val pickerDate: DateUiState = DateUiState.currentDate(),
     val isShowDatePicker: Boolean = false,
     val bottomSheetState: BottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
-    val monthSchedules: List<DaySchedule> = emptyList(),
+    val yearSchedule: List<DaySchedule> = emptyList(),
+    val cachedYearSchedules: Map<Int, List<DaySchedule>> = emptyMap(),
     val isRefreshing: Boolean = false,
     val isBottomSheetDragging: Boolean = false,
-) : UiState
+) : UiState {
+    val monthSchedule: List<DaySchedule>
+        get() = yearSchedule.filter { it.date.month == month }
+}
 
 enum class BottomSheetState {
     HIDDEN,
