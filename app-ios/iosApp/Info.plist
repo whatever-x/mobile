@@ -4,6 +4,8 @@
 <dict>
 	<key>AppsFlyerKey</key>
 	<string>$(APPS_FLYER_KEY)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
