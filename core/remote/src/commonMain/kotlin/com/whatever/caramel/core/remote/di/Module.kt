@@ -24,6 +24,7 @@ import com.whatever.caramel.core.remote.di.qualifier.SampleClient
 import com.whatever.caramel.core.remote.network.HttpClientFactory
 import com.whatever.caramel.core.remote.network.config.NetworkConfig
 import com.whatever.caramel.core.remote.network.config.addDeviceIdHeader
+import com.whatever.caramel.core.remote.network.config.addTimeZoneHeader
 import com.whatever.caramel.core.remote.network.config.caramelDefaultRequest
 import com.whatever.caramel.core.remote.network.config.caramelResponseValidator
 import com.whatever.caramel.core.remote.network.interceptor.TokenInterceptor
@@ -58,6 +59,7 @@ val networkModule =
         single(DefaultClient) {
             get<HttpClient>().config {
                 addDeviceIdHeader(get())
+                addTimeZoneHeader()
                 caramelResponseValidator()
                 caramelDefaultRequest()
             }
