@@ -23,4 +23,6 @@ sealed interface HomeSideEffect : UiSideEffect {
     data class ShowErrorToast(
         val message: String,
     ) : HomeSideEffect
+
+    data object HideKeyboard : HomeSideEffect
 }

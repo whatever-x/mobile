@@ -71,9 +71,12 @@ internal fun HomeScreen(
                         end = CaramelTheme.spacing.xl,
                     ),
             sheetState = sheetState,
-            initialShareMessage = state.shareMessage,
+            shareMessage = state.bottomSheetShareMessage,
             onDismiss = { onIntent(HomeIntent.HideShareMessageEditBottomSheet) },
-            onClickSave = { newShareMessage -> onIntent(HomeIntent.SaveShareMessage(newShareMessage = newShareMessage)) },
+            onClickSave = { onIntent(HomeIntent.SaveShareMessage) },
+            messageLength = state.bottomSheetShareMessageLength,
+            onInputShareMessage = { newShareMessage -> onIntent(HomeIntent.InputShareMessage(newShareMessage = newShareMessage)) },
+            onClearMessage = { onIntent(HomeIntent.ClearShareMessage) },
         )
     }
 

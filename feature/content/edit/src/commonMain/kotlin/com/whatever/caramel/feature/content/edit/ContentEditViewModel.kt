@@ -19,6 +19,7 @@ import com.whatever.caramel.core.domain.vo.common.DateTimeInfo
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoEditParameter
 import com.whatever.caramel.core.ui.content.CreateMode
+import com.whatever.caramel.core.ui.util.validateInputText
 import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditIntent
@@ -129,11 +130,43 @@ class ContentEditViewModel(
     }
 
     private fun handleOnTitleChanged(intent: ContentEditIntent.OnTitleChanged) {
-        reduce { copy(title = intent.title) }
+        validateInputText(
+            text = intent.title,
+            limitLength = ContentEditState.MAX_TITLE_LENGTH,
+            onPass = { text ->
+                reduce {
+                    copy(
+                        title = text,
+                    )
+                }
+            },
+            onContainsNewline = {
+                postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("줄바꿈을 포함할수 없어요"))
+            },
+            onExceedLimit = {
+                postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("제목은 ${ContentEditState.MAX_TITLE_LENGTH}자까지 입력할 수 있어요"))
+            },
+        )
     }
 
     private fun handleOnContentChanged(intent: ContentEditIntent.OnContentChanged) {
-        reduce { copy(content = intent.content) }
+        validateInputText(
+            text = intent.content,
+            limitLength = ContentEditState.MAX_CONTENT_LENGTH,
+            onPass = { text ->
+                reduce {
+                    copy(
+                        title = text,
+                    )
+                }
+            },
+            onContainsNewline = {
+                postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("줄바꿈을 포함할수 없어요"))
+            },
+            onExceedLimit = {
+                postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("내용은 ${ContentEditState.MAX_CONTENT_LENGTH}자까지 입력할 수 있어요"))
+            },
+        )
     }
 
     private fun toggleTagSelection(intent: ContentEditIntent.ClickTag) {
