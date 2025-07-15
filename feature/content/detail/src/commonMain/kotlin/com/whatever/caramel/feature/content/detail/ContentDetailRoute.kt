@@ -49,7 +49,7 @@ internal fun ContentDetailRoute(
     }
 
     ObserveLifecycleEvent { event ->
-        if (event == Lifecycle.Event.ON_START) {
+        if (event == Lifecycle.Event.ON_RESUME) {
             viewModel.intent(ContentDetailIntent.LoadDataOnStart)
         }
     }
