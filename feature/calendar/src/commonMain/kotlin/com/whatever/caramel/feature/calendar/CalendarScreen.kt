@@ -48,6 +48,7 @@ import com.whatever.caramel.feature.calendar.dimension.CalendarDimension
 import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.datetime.Month
 import kotlin.math.roundToInt
 
@@ -79,11 +80,11 @@ internal fun CalendarScreen(
 
     LaunchedEffect(state.selectedDate) {
         if (state.bottomSheetState == BottomSheetState.EXPANDED) {
-            val scheduleIndex = state.monthSchedules.indexOfFirst { it.date == state.selectedDate }
+            val scheduleIndex = state.yearSchedule.indexOfFirst { it.date == state.selectedDate }
             if (scheduleIndex >= 0) {
                 val itemPosition =
                     scheduleIndex +
-                        state.monthSchedules.take(scheduleIndex).sumOf { it.todos.size }
+                        state.yearSchedule.take(scheduleIndex).sumOf { it.todos.size }
                 lazyListState.scrollToItem(index = itemPosition)
             }
         }
@@ -191,7 +192,7 @@ internal fun CalendarScreen(
                                 ).height(availableHeight),
                         state = lazyListState,
                     ) {
-                        state.monthSchedules.forEach { schedule ->
+                        state.monthSchedule.forEach { schedule ->
                             item {
                                 BottomSheetTodoListHeader(
                                     date = schedule.date,
@@ -205,7 +206,12 @@ internal fun CalendarScreen(
                                 )
                                 Spacer(modifier = Modifier.height(CaramelTheme.spacing.s))
                             }
-                            items(items = schedule.todos) { todo ->
+                            items(
+                                items = schedule.todos,
+                                key = { todo ->
+                                    todo.id
+                                },
+                            ) { todo ->
                                 BottomSheetTodoItem(
                                     id = todo.id,
                                     title = todo.title,
@@ -245,26 +251,26 @@ internal fun CalendarScreen(
                         CalendarDayOfWeek(
                             modifier =
                                 Modifier
-                                    .height(height = CalendarDimension.datePickerHeight)
+                                    .height(height = CalendarDimension.dayOfWeekHeight)
                                     .clickable(
                                         indication = null,
                                         interactionSource = null,
                                         onClick = { onIntent(CalendarIntent.ClickOutSideBottomSheet) },
                                     ),
                         )
+                        val availableCalendarHeight =
+                            totalHeight - CalendarDimension.datePickerHeight - CalendarDimension.dayOfWeekHeight
 
                         HorizontalPager(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier.height(height = availableCalendarHeight),
                             state = pagerState,
-                        ) {
+                            beyondViewportPageCount = 2,
+                        ) { pageIndex ->
                             CaramelCalendar(
                                 modifier =
-                                    Modifier
-                                        .padding(bottom = CalendarDimension.sheetPeekHeight)
-                                        .background(color = CaramelTheme.color.background.primary),
-                                year = state.year,
-                                month = state.month,
-                                schedules = state.monthSchedules,
+                                    Modifier.background(color = CaramelTheme.color.background.primary),
+                                pageIndex = pageIndex,
+                                schedules = state.yearSchedule.toImmutableList(),
                                 selectedDate = state.selectedDate,
                                 onClickTodo = { onIntent(CalendarIntent.ClickTodoItemInCalendar(it)) },
                                 onClickCell = { onIntent(CalendarIntent.ClickCalendarCell(it)) },

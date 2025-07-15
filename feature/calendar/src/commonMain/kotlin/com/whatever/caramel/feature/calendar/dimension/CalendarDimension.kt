@@ -15,5 +15,5 @@ internal data object CalendarDimension {
     val datePickerHeight = 52.dp
 
     // calendar
-    val dayOfWeekHeight = 34.dp
+    val dayOfWeekHeight = 37.dp
 }

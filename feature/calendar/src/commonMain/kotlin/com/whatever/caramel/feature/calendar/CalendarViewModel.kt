@@ -20,6 +20,9 @@ import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
+import com.whatever.caramel.feature.calendar.util.getYearAndMonthFromPageIndex
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
@@ -32,7 +35,10 @@ class CalendarViewModel(
     private val getAnniversariesUseCase: GetAnniversariesUseCase,
     crashlytics: CaramelCrashlytics,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(savedStateHandle, crashlytics) {
+) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(
+        savedStateHandle,
+        crashlytics,
+    ) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): CalendarState {
         val currentDate = DateUtil.today()
         return CalendarState(
@@ -57,6 +63,7 @@ class CalendarViewModel(
                             message = throwable.message,
                         ),
                     )
+
                 ErrorUiType.DIALOG ->
                     postSideEffect(
                         CalendarSideEffect.ShowErrorDialog(
@@ -111,12 +118,10 @@ class CalendarViewModel(
     }
 
     private fun initialize() {
-        val year = currentState.year
-        val monthNumber = currentState.month.number
-        getSchedules(
-            year = year,
-            startMonthNumber = monthNumber,
-            initialize = currentState.monthSchedules.isEmpty(),
+        reduce { copy(cachedYearSchedules = emptyMap()) }
+        getYearSchedules(
+            year = currentState.year,
+            initialize = currentState.yearSchedule.isEmpty(),
             isRefresh = true,
         )
     }
@@ -139,10 +144,11 @@ class CalendarViewModel(
     }
 
     private fun refreshCalendar() {
-        reduce { copy(isRefreshing = true) }
-        getSchedules(
+        reduce {
+            copy(isRefreshing = true, cachedYearSchedules = emptyMap())
+        }
+        getYearSchedules(
             year = currentState.year,
-            startMonthNumber = currentState.month.number,
             isRefresh = true,
         )
     }
@@ -176,16 +182,15 @@ class CalendarViewModel(
     private fun updatePageIndex(pageIndex: Int) {
         if (pageIndex == currentState.pageIndex) return
 
-        val year = (pageIndex / 12) + 1900
-        val monthNumber = pageIndex % 12
+        val (year, month) = getYearAndMonthFromPageIndex(index = pageIndex)
+        getYearSchedules(year = year)
         reduce {
             copy(
                 year = year,
-                month = Month.entries[monthNumber],
+                month = month,
                 pageIndex = pageIndex,
             )
         }
-        getSchedules(year = year, startMonthNumber = monthNumber + 1)
     }
 
     private fun clickTodoUrl(url: String?) {
@@ -195,76 +200,116 @@ class CalendarViewModel(
 
     private fun clickCalendarCell(newSelectedDate: LocalDate) {
         reduce {
-            val newSchedule = currentState.monthSchedules.toMutableList()
-            // 이전에 선택된 날짜에 스케쥴이 존재하지 않는 경우 리스트에서 삭제
+            val newSchedule = currentState.yearSchedule.toMutableList()
             newSchedule.find { it.date == currentState.selectedDate }?.let {
                 if (it.holidays.isEmpty() && it.todos.isEmpty() && it.anniversaries.isEmpty()) {
                     newSchedule.remove(it)
                 }
             }
-            // 새로 선택된 날짜에 스케쥴이 없으면 빈 스케쥴 추가
             if (!newSchedule.any { it.date == newSelectedDate }) {
                 newSchedule.add(DaySchedule(date = newSelectedDate))
             }
-
             copy(
                 bottomSheetState = BottomSheetState.EXPANDED,
                 selectedDate = newSelectedDate,
-                monthSchedules = newSchedule.sortedBy { it.date },
+                yearSchedule = newSchedule.sortedBy { it.date },
             )
         }
     }
 
-    private fun getSchedules(
+    private fun applyCachedSchedulesIfExists(updateSelectedDate: LocalDate): Boolean {
+        if (currentState.cachedYearSchedules.contains(updateSelectedDate.year)) {
+            val filteredCachedSchedule =
+                (
+                    currentState.cachedYearSchedules[updateSelectedDate.year]
+                        ?: emptyList()
+                ).toMutableList()
+            if (filteredCachedSchedule.find { daySchedule -> daySchedule.date == updateSelectedDate } == null) {
+                filteredCachedSchedule.add(0, DaySchedule(date = updateSelectedDate))
+            }
+            reduce {
+                copy(
+                    isRefreshing = false,
+                    selectedDate = updateSelectedDate,
+                    yearSchedule = filteredCachedSchedule,
+                )
+            }
+            return true
+        }
+        return false
+    }
+
+    private fun getYearSchedules(
         year: Int,
-        startMonthNumber: Int,
-        endMonthNumber: Int = startMonthNumber,
         initialize: Boolean = false,
         isRefresh: Boolean = false,
     ) {
         launch {
-            val updatedSelectedDate =
+            val updateSelectedDate =
                 when {
                     initialize -> currentState.today
                     isRefresh -> currentState.selectedDate
                     else -> LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
                 }
+            if (applyCachedSchedulesIfExists(updateSelectedDate)) return@launch
             val firstDayOfMonth =
                 DateFormatter.createDateString(
                     year = year,
-                    month = startMonthNumber,
+                    month = 1,
                     day = 1,
                 )
-            val lastDay = DateUtil.getLastDayOfMonth(year = year, month = endMonthNumber)
+            val lastDay = DateUtil.getLastDayOfMonth(year = year, month = 12)
             val lastDayOfMonth =
                 DateFormatter.createDateString(
                     year = year,
-                    month = endMonthNumber,
+                    month = 12,
                     day = lastDay,
                 )
-            val todos =
-                getTodosGroupByStartDateUseCase(
-                    startDate = firstDayOfMonth,
-                    endDate = lastDayOfMonth,
-                    userTimezone = TimeZone.currentSystemDefault().toString(),
+            val todosDeferred =
+                async {
+                    getTodosGroupByStartDateUseCase(
+                        startDate = firstDayOfMonth,
+                        endDate = lastDayOfMonth,
+                        userTimezone = TimeZone.currentSystemDefault().toString(),
+                    )
+                }
+            val anniversariesDeferred =
+                async {
+                    getAnniversariesUseCase(
+                        startDate = firstDayOfMonth,
+                        endDate = lastDayOfMonth,
+                    )
+                }
+            val holidaysDeferred = async { getHolidaysUseCase(year) }
+
+            val todos = todosDeferred.await()
+            val anniversaries = anniversariesDeferred.await()
+            val holidays = holidaysDeferred.await()
+
+            var yearSchedule =
+                createYearSchedules(
+                    todosOnDate = todos,
+                    holidaysOnDate = holidays,
+                    anniversariesOnDate = anniversaries,
                 )
-            val anniversaries =
-                getAnniversariesUseCase(
-                    startDate = firstDayOfMonth,
-                    endDate = lastDayOfMonth,
-                )
-            val holidays = getHolidaysUseCase(year = year)
+
+            if (updateSelectedDate !in yearSchedule.map { it.date }) {
+                yearSchedule = (yearSchedule + DaySchedule(date = updateSelectedDate)).sortedBy { it.date }
+            }
+            val updatedCache =
+                currentState.cachedYearSchedules
+                    .toMutableMap()
+                    .apply {
+                        if (size >= 3) remove(keys.first())
+                        put(year, yearSchedule)
+                    }
+
             reduce {
                 copy(
                     isRefreshing = false,
-                    selectedDate = updatedSelectedDate,
-                    monthSchedules =
-                        createMonthSchedules(
-                            todosOnDate = todos,
-                            holidaysOnDate = holidays,
-                            anniversariesOnDate = anniversaries,
-                            updatedSelectedDate = updatedSelectedDate,
-                        ),
+                    selectedDate = updateSelectedDate,
+                    yearSchedule = yearSchedule,
+                    cachedYearSchedules = updatedCache,
                 )
             }
         }
@@ -291,6 +336,11 @@ class CalendarViewModel(
         val pickerYear = currentState.pickerDate.year
         val pickerMonth = Month.entries[currentState.pickerDate.month - 1]
         val isSame = pickerYear == currentState.year && pickerMonth == currentState.month
+        getYearSchedules(
+            year = pickerYear,
+            isRefresh = isSame,
+        )
+
         reduce {
             copy(
                 year = pickerYear,
@@ -305,11 +355,6 @@ class CalendarViewModel(
                 bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
             )
         }
-        getSchedules(
-            year = pickerYear,
-            startMonthNumber = pickerMonth.number,
-            isRefresh = isSame,
-        )
     }
 
     private fun createCurrentDateList(
@@ -324,41 +369,35 @@ class CalendarViewModel(
         return dateList.toList()
     }
 
-    private fun createMonthSchedules(
+    private fun createYearSchedules(
         todosOnDate: List<TodosOnDate>,
         holidaysOnDate: List<HolidaysOnDate>,
         anniversariesOnDate: List<AnniversariesOnDate>,
-        updatedSelectedDate: LocalDate,
     ): List<DaySchedule> {
         val scheduleMap = mutableMapOf<LocalDate, DaySchedule>()
-
         todosOnDate
-            .filter { it.date.year == currentState.year && it.date.month == currentState.month }
             .forEach { todo ->
                 val date = todo.date
                 val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] = existingSchedule.copy(todos = existingSchedule.todos + todo.todos)
+                scheduleMap[date] =
+                    existingSchedule.copy(todos = existingSchedule.todos + todo.todos)
             }
 
         anniversariesOnDate
-            .filter { it.date.year == currentState.year && it.date.month == currentState.month }
             .forEach { anniversary ->
                 val date = anniversary.date
                 val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] = existingSchedule.copy(anniversaries = existingSchedule.anniversaries + anniversary.anniversaries)
+                scheduleMap[date] =
+                    existingSchedule.copy(anniversaries = existingSchedule.anniversaries + anniversary.anniversaries)
             }
 
         holidaysOnDate
-            .filter { it.date.year == currentState.year && it.date.month == currentState.month }
             .forEach { holiday ->
                 val date = holiday.date
                 val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] = existingSchedule.copy(holidays = existingSchedule.holidays + holiday.holidays)
+                scheduleMap[date] =
+                    existingSchedule.copy(holidays = existingSchedule.holidays + holiday.holidays)
             }
-
-        if (!scheduleMap.containsKey(updatedSelectedDate)) {
-            scheduleMap[updatedSelectedDate] = DaySchedule(date = updatedSelectedDate)
-        }
 
         return scheduleMap.values.sortedBy { it.date }
     }
