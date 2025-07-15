@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import caramel.feature.memo.generated.resources.Res
 import caramel.feature.memo.generated.resources.memo
+import com.whatever.caramel.core.designsystem.animation.animateScrollToItemCenter
 import com.whatever.caramel.core.designsystem.components.CaramelPullToRefreshIndicator
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.util.DateFormatter.formatWithSeparator
@@ -54,6 +55,7 @@ internal fun MemoScreen(
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
     val scrollState = rememberScrollState()
+    val lazyRowState = rememberLazyListState()
     val lazyListState =
         rememberLazyListState().apply {
             onLastReached(
@@ -75,6 +77,10 @@ internal fun MemoScreen(
         if (state.isMemoLoading) {
             lazyListState.scrollToItem(0)
         }
+    }
+
+    LaunchedEffect(state.selectedChipIndex) {
+        lazyRowState.animateScrollToItemCenter(state.selectedChipIndex)
     }
 
     PullToRefreshBox(
@@ -119,6 +125,7 @@ internal fun MemoScreen(
                             .padding(top = CaramelTheme.spacing.xs)
                             .padding(bottom = CaramelTheme.spacing.m),
                     horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s),
+                    state = lazyRowState,
                 ) {
                     itemsIndexed(state.tags) { index, tag ->
                         TagChip(
@@ -130,7 +137,7 @@ internal fun MemoScreen(
                                 },
                             tag = tag,
                             isSelected = state.selectedTag == tag,
-                            onClickChip = { onIntent(MemoIntent.ClickTagChip(tag = it)) },
+                            onClickChip = { onIntent(MemoIntent.ClickTagChip(tag = it, index = index)) },
                         )
                     }
                 }

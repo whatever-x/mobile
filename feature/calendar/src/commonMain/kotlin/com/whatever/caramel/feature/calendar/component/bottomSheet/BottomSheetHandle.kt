@@ -13,12 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.calendar.dimension.CalendarDimension
-import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 
 @Composable
 internal fun CaramelBottomSheetHandle(
     modifier: Modifier = Modifier,
-    bottomSheetState: BottomSheetState,
+    topDescVisibility: Boolean,
 ) {
     Column(
         modifier =
@@ -39,7 +38,7 @@ internal fun CaramelBottomSheetHandle(
                         shape = CaramelTheme.shape.s,
                     ),
         )
-        if (bottomSheetState == BottomSheetState.PARTIALLY_EXPANDED) {
+        if (topDescVisibility) {
             Text(
                 modifier = Modifier.padding(bottom = CalendarDimension.sheetPartiallyExpandedTextHeight),
                 style = CaramelTheme.typography.label1.regular,

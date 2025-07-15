@@ -26,7 +26,11 @@ data class CalendarState(
 ) : UiState {
     val monthSchedule: List<DaySchedule>
         get() = yearSchedule.filter { it.date.month == month }
+
+    val isBottomSheetTopDescVisible
+        get() = !isBottomSheetDragging && bottomSheetState == BottomSheetState.PARTIALLY_EXPANDED
 }
+
 
 enum class BottomSheetState {
     HIDDEN,

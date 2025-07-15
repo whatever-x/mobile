@@ -13,6 +13,7 @@ sealed interface MemoIntent : UiIntent {
 
     data class ClickTagChip(
         val tag: TagUiModel,
+        val index: Int,
     ) : MemoIntent
 
     data object ReachedEndOfList : MemoIntent
