@@ -30,7 +30,7 @@ internal fun SettingRoute(
     val termsOfServiceUrl = stringResource(Resources.String.terms_of_service_url)
 
     ObserveLifecycleEvent { event ->
-        if (event == Lifecycle.Event.ON_START) {
+        if (event == Lifecycle.Event.ON_RESUME) {
             viewModel.intent(SettingIntent.RefreshCoupleData)
         }
     }

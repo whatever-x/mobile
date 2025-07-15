@@ -31,7 +31,7 @@ internal fun MemoRoute(
     }
 
     ObserveLifecycleEvent { event ->
-        if (event == Lifecycle.Event.ON_START) {
+        if (event == Lifecycle.Event.ON_RESUME) {
             viewModel.intent(MemoIntent.Initialize)
         }
     }
