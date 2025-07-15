@@ -12,6 +12,7 @@ import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfo
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.user.Gender
+import com.whatever.caramel.core.ui.util.isValidLimitedText
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.home.mvi.BalanceGameOptionState
 import com.whatever.caramel.feature.home.mvi.BalanceGameState
@@ -61,7 +62,7 @@ class HomeViewModel(
     }
 
     private fun inputShareMessage(text: String) {
-        if (!text.contains("\n") && Regex("\\X").findAll(text).count() <= 24) {
+        if (isValidLimitedText(text = text, limitLength = 24)) {
             reduce {
                 copy(
                     bottomSheetShareMessage = text
