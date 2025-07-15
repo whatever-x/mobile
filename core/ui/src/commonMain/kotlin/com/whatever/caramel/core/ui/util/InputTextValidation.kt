@@ -16,8 +16,8 @@ fun validateInputText(
     text: String,
     limitLength: Int,
     onPass: (String) -> Unit,
-    onContainsNewline: () -> Unit,
-    onExceedLimit: () -> Unit,
+    onContainsNewline: () -> Unit = { },
+    onExceedLimit: () -> Unit = { },
 ) {
     when {
         text.contains("\n") -> {
