@@ -79,6 +79,7 @@ class MemoViewModel(
                     memos = persistentListOf(),
                     tags = persistentListOf(),
                     selectedTag = null,
+                    selectedChipIndex = 0,
                     cursor = null,
                 )
             }
@@ -121,6 +122,7 @@ class MemoViewModel(
                 selectedTag = intent.tag,
                 cursor = null,
                 memos = persistentListOf(),
+                selectedChipIndex = intent.index
             )
         }
         getMemos()
