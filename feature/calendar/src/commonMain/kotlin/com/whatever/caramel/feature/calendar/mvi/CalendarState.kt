@@ -31,7 +31,6 @@ data class CalendarState(
         get() = !isBottomSheetDragging && bottomSheetState == BottomSheetState.PARTIALLY_EXPANDED
 }
 
-
 enum class BottomSheetState {
     HIDDEN,
     EXPANDED,
