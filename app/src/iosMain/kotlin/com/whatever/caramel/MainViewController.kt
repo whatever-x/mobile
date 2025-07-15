@@ -2,6 +2,7 @@
 
 package com.whatever.caramel
 
+import androidx.compose.ui.uikit.OnFocusBehavior
 import androidx.compose.ui.window.ComposeUIViewController
 import androidx.navigation.compose.rememberNavController
 import com.whatever.caramel.app.CaramelComposeApp
@@ -13,7 +14,10 @@ import kotlin.experimental.ExperimentalNativeApi
 @OptIn(ExperimentalNativeApi::class)
 fun mainViewController() =
     ComposeUIViewController(
-        configure = { initKoin() },
+        configure = {
+            initKoin()
+            onFocusBehavior = OnFocusBehavior.DoNothing
+        },
     ) {
         if (Platform.isDebugBinary) {
             Napier.base(DebugAntilog())
