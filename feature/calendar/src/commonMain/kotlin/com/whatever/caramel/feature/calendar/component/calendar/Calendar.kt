@@ -25,9 +25,7 @@ import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 import com.whatever.caramel.feature.calendar.util.getFirstDayOffset
 import com.whatever.caramel.feature.calendar.util.getYearAndMonthFromPageIndex
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.Month
 import kotlinx.datetime.number
 import org.jetbrains.compose.resources.stringArrayResource
 
@@ -40,9 +38,10 @@ fun CaramelCalendar(
     onClickTodo: (Long) -> Unit,
     onClickCell: (LocalDate) -> Unit,
 ) {
-    val scheduleMap = remember(schedules) {
-        schedules.associateBy { it.date }
-    }
+    val scheduleMap =
+        remember(schedules) {
+            schedules.associateBy { it.date }
+        }
     val (year, month) = getYearAndMonthFromPageIndex(index = pageIndex)
     val firstDay = LocalDate(year = year, month = month, dayOfMonth = 1)
     val firstDayOfWeek = getFirstDayOffset(firstDay)
@@ -59,9 +58,10 @@ fun CaramelCalendar(
             val cellHeight = maxHeight / column
             items(totalCells) { index ->
                 val dayOfMonth = index - firstDayOfWeek + 1
-                val boxModifier = Modifier
-                    .height(cellHeight)
-                    .fillMaxWidth()
+                val boxModifier =
+                    Modifier
+                        .height(cellHeight)
+                        .fillMaxWidth()
                 Box(modifier = boxModifier) {
                     if (dayOfMonth in 1..lastDay) {
                         val date = LocalDate(year, month, dayOfMonth)

@@ -10,6 +10,4 @@ internal fun getYearAndMonthFromPageIndex(index: Int): Pair<Int, Month> {
     return year to month
 }
 
-internal fun getFirstDayOffset(firstDay: LocalDate): Int {
-    return if (firstDay.dayOfWeek == DayOfWeek.SUNDAY) 0 else firstDay.dayOfWeek.ordinal + 1
-}
+internal fun getFirstDayOffset(firstDay: LocalDate): Int = if (firstDay.dayOfWeek == DayOfWeek.SUNDAY) 0 else firstDay.dayOfWeek.ordinal + 1

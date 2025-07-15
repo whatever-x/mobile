@@ -22,7 +22,6 @@ import com.whatever.caramel.feature.calendar.mvi.CalendarState
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 import com.whatever.caramel.feature.calendar.util.getYearAndMonthFromPageIndex
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
@@ -37,9 +36,9 @@ class CalendarViewModel(
     crashlytics: CaramelCrashlytics,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(
-    savedStateHandle,
-    crashlytics,
-) {
+        savedStateHandle,
+        crashlytics,
+    ) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): CalendarState {
         val currentDate = DateUtil.today()
         return CalendarState(
@@ -220,8 +219,11 @@ class CalendarViewModel(
 
     private fun applyCachedSchedulesIfExists(updateSelectedDate: LocalDate): Boolean {
         if (currentState.cachedYearSchedules.contains(updateSelectedDate.year)) {
-            val filteredCachedSchedule = (currentState.cachedYearSchedules[updateSelectedDate.year]
-                ?: emptyList()).toMutableList()
+            val filteredCachedSchedule =
+                (
+                    currentState.cachedYearSchedules[updateSelectedDate.year]
+                        ?: emptyList()
+                ).toMutableList()
             if (filteredCachedSchedule.find { daySchedule -> daySchedule.date == updateSelectedDate } == null) {
                 filteredCachedSchedule.add(0, DaySchedule(date = updateSelectedDate))
             }
@@ -243,57 +245,64 @@ class CalendarViewModel(
         isRefresh: Boolean = false,
     ) {
         launch {
-            val updateSelectedDate = when {
-                initialize -> currentState.today
-                isRefresh -> currentState.selectedDate
-                else -> LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
-            }
+            val updateSelectedDate =
+                when {
+                    initialize -> currentState.today
+                    isRefresh -> currentState.selectedDate
+                    else -> LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
+                }
             if (applyCachedSchedulesIfExists(updateSelectedDate)) return@launch
-            val firstDayOfMonth = DateFormatter.createDateString(
-                year = year,
-                month = 1,
-                day = 1,
-            )
+            val firstDayOfMonth =
+                DateFormatter.createDateString(
+                    year = year,
+                    month = 1,
+                    day = 1,
+                )
             val lastDay = DateUtil.getLastDayOfMonth(year = year, month = 12)
-            val lastDayOfMonth = DateFormatter.createDateString(
-                year = year,
-                month = 12,
-                day = lastDay,
-            )
-            val todosDeferred = async {
-                getTodosGroupByStartDateUseCase(
-                    startDate = firstDayOfMonth,
-                    endDate = lastDayOfMonth,
-                    userTimezone = TimeZone.currentSystemDefault().toString()
+            val lastDayOfMonth =
+                DateFormatter.createDateString(
+                    year = year,
+                    month = 12,
+                    day = lastDay,
                 )
-            }
-            val anniversariesDeferred = async {
-                getAnniversariesUseCase(
-                    startDate = firstDayOfMonth,
-                    endDate = lastDayOfMonth
-                )
-            }
+            val todosDeferred =
+                async {
+                    getTodosGroupByStartDateUseCase(
+                        startDate = firstDayOfMonth,
+                        endDate = lastDayOfMonth,
+                        userTimezone = TimeZone.currentSystemDefault().toString(),
+                    )
+                }
+            val anniversariesDeferred =
+                async {
+                    getAnniversariesUseCase(
+                        startDate = firstDayOfMonth,
+                        endDate = lastDayOfMonth,
+                    )
+                }
             val holidaysDeferred = async { getHolidaysUseCase(year) }
 
             val todos = todosDeferred.await()
             val anniversaries = anniversariesDeferred.await()
             val holidays = holidaysDeferred.await()
 
-            var yearSchedule = createYearSchedules(
-                todosOnDate = todos,
-                holidaysOnDate = holidays,
-                anniversariesOnDate = anniversaries,
-            )
+            var yearSchedule =
+                createYearSchedules(
+                    todosOnDate = todos,
+                    holidaysOnDate = holidays,
+                    anniversariesOnDate = anniversaries,
+                )
 
             if (updateSelectedDate !in yearSchedule.map { it.date }) {
                 yearSchedule = (yearSchedule + DaySchedule(date = updateSelectedDate)).sortedBy { it.date }
             }
-            val updatedCache = currentState.cachedYearSchedules
-                .toMutableMap()
-                .apply {
-                    if (size >= 3) remove(keys.first())
-                    put(year, yearSchedule)
-                }
+            val updatedCache =
+                currentState.cachedYearSchedules
+                    .toMutableMap()
+                    .apply {
+                        if (size >= 3) remove(keys.first())
+                        put(year, yearSchedule)
+                    }
 
             reduce {
                 copy(
