@@ -14,6 +14,7 @@ data class MemoState(
     val memos: ImmutableList<Memo> = persistentListOf(),
     val tags: ImmutableList<TagUiModel> = persistentListOf(),
     val selectedTag: TagUiModel? = null,
+    val selectedChipIndex: Int = 0,
     val cursor: String? = null,
 ) : UiState {
     val isEmpty: Boolean
