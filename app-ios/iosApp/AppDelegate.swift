@@ -29,6 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+#if DEBUG
+        Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(false)
+#endif
         FirebaseApp.configure()
         CaramelAnalytics_iosKt.firebaseCallback(callback: FirebaseLoggingCallback())
         
@@ -106,7 +109,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Analytics.logEvent(eventId, parameters: dict)
         }
     }
-    
+
 }
 
 extension AppDelegate: DeepLinkDelegate {

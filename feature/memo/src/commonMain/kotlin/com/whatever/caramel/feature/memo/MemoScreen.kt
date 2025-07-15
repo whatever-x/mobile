@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
@@ -77,7 +78,10 @@ internal fun MemoScreen(
     }
 
     PullToRefreshBox(
-        modifier = Modifier.background(color = CaramelTheme.color.background.primary),
+        modifier =
+            Modifier
+                .background(color = CaramelTheme.color.background.primary)
+                .statusBarsPadding(),
         state = pullToRefreshState,
         isRefreshing = state.isRefreshing,
         onRefresh = { onIntent(MemoIntent.PullToRefresh) },

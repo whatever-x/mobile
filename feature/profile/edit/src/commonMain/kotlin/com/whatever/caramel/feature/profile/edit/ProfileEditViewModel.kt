@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.profile.edit
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.couple.EditCoupleStartDateUseCase
@@ -20,7 +21,8 @@ class ProfileEditViewModel(
     private val editProfileUseCase: EditProfileUseCase,
     private val editCoupleStartDateUseCase: EditCoupleStartDateUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<ProfileEditState, ProfileEditSideEffect, ProfileEditIntent>(savedStateHandle) {
+    crashlytics: CaramelCrashlytics,
+) : BaseViewModel<ProfileEditState, ProfileEditSideEffect, ProfileEditIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): ProfileEditState {
         val arguments = savedStateHandle.toRoute<ProfileEditRoute>()
         return ProfileEditState(
@@ -74,9 +76,11 @@ class ProfileEditViewModel(
                     )
             }
         } else {
+            caramelCrashlytics.recordException(throwable)
             postSideEffect(
-                ProfileEditSideEffect.ShowErrorToast(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다.",
+                ProfileEditSideEffect.ShowErrorDialog(
+                    message = "알 수 없는 오류가 발생했습니다.",
+                    description = null,
                 ),
             )
         }

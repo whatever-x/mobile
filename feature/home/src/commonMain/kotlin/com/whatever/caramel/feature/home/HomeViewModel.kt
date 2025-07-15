@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.home
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
@@ -29,7 +30,8 @@ class HomeViewModel(
     private val getTodayBalanceGameUseCase: GetTodayBalanceGameUseCase,
     private val submitBalanceGameChoiceUseCase: SubmitBalanceGameChoiceUseCase,
     savedStateHandle: SavedStateHandle,
-) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle) {
+    crashlytics: CaramelCrashlytics,
+) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): HomeState = HomeState()
 
     override suspend fun handleIntent(intent: HomeIntent) {
@@ -78,48 +80,55 @@ class HomeViewModel(
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
-
-        val exception = throwable as CaramelException
-
-        when (exception.code) {
-            CoupleErrorCode.CAN_NOT_LOAD_DATA -> {
-                reduce {
-                    copy(
-                        isShowBottomSheet = false,
-                        isShowDialog = true,
-                        dialogTitle = exception.message,
-                        coupleState = HomeState.CoupleState.DISCONNECT,
-                    )
-                }
-            }
-            CoupleErrorCode.MEMBER_NOT_FOUND -> {
-                if (currentState.coupleState != HomeState.CoupleState.DISCONNECT) {
+        if (throwable is CaramelException) {
+            when (throwable.code) {
+                CoupleErrorCode.CAN_NOT_LOAD_DATA -> {
                     reduce {
                         copy(
+                            isShowBottomSheet = false,
                             isShowDialog = true,
-                            dialogTitle = exception.message,
+                            dialogTitle = throwable.message,
                             coupleState = HomeState.CoupleState.DISCONNECT,
                         )
                     }
                 }
-            }
-            else -> {
-                when (exception.errorUiType) {
-                    ErrorUiType.TOAST ->
-                        postSideEffect(
-                            HomeSideEffect.ShowErrorToast(
-                                message = throwable.message,
-                            ),
-                        )
-                    ErrorUiType.DIALOG ->
-                        postSideEffect(
-                            HomeSideEffect.ShowErrorDialog(
-                                message = throwable.message,
-                                description = throwable.description,
-                            ),
-                        )
+                CoupleErrorCode.MEMBER_NOT_FOUND -> {
+                    if (currentState.coupleState != HomeState.CoupleState.DISCONNECT) {
+                        reduce {
+                            copy(
+                                isShowDialog = true,
+                                dialogTitle = throwable.message,
+                                coupleState = HomeState.CoupleState.DISCONNECT,
+                            )
+                        }
+                    }
+                }
+                else -> {
+                    when (throwable.errorUiType) {
+                        ErrorUiType.TOAST ->
+                            postSideEffect(
+                                HomeSideEffect.ShowErrorToast(
+                                    message = throwable.message,
+                                ),
+                            )
+                        ErrorUiType.DIALOG ->
+                            postSideEffect(
+                                HomeSideEffect.ShowErrorDialog(
+                                    message = throwable.message,
+                                    description = throwable.description,
+                                ),
+                            )
+                    }
                 }
             }
+        } else {
+            caramelCrashlytics.recordException(throwable)
+            postSideEffect(
+                HomeSideEffect.ShowErrorDialog(
+                    message = "알 수 없는 오류가 발생했습니다.",
+                    description = null,
+                ),
+            )
         }
     }
 
