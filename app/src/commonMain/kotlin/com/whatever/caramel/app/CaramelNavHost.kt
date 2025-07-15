@@ -23,7 +23,6 @@ import com.whatever.caramel.feature.profile.create.navigation.createProfileScree
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditType
 import com.whatever.caramel.feature.profile.edit.navigation.editProfileScreen
 import com.whatever.caramel.feature.profile.edit.navigation.navigateToEditProfile
-import com.whatever.caramel.feature.setting.navigation.SettingRoute
 import com.whatever.caramel.feature.setting.navigation.navigateToSetting
 import com.whatever.caramel.feature.setting.navigation.settingScreen
 import com.whatever.caramel.feature.splash.navigation.SplashRoute
@@ -122,7 +121,7 @@ internal fun CaramelNavHost(
                 },
                 navigateToLogin = {
                     navigateToLogin {
-                        popUpTo(SettingRoute) {
+                        popUpTo(0) {
                             inclusive = true
                         }
                     }
