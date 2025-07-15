@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,6 +14,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import caramel.feature.calendar.generated.resources.Res
@@ -20,6 +22,8 @@ import caramel.feature.calendar.generated.resources.day_of_week
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
+import com.whatever.caramel.feature.calendar.util.getFirstDayOffset
+import com.whatever.caramel.feature.calendar.util.getYearAndMonthFromPageIndex
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
@@ -30,45 +34,47 @@ import org.jetbrains.compose.resources.stringArrayResource
 @Composable
 fun CaramelCalendar(
     modifier: Modifier = Modifier,
-    year: Int,
-    month: Month,
+    pageIndex: Int,
     selectedDate: LocalDate,
     schedules: ImmutableList<DaySchedule>,
     onClickTodo: (Long) -> Unit,
     onClickCell: (LocalDate) -> Unit,
 ) {
+    val scheduleMap = remember(schedules) {
+        schedules.associateBy { it.date }
+    }
+    val (year, month) = getYearAndMonthFromPageIndex(index = pageIndex)
     val firstDay = LocalDate(year = year, month = month, dayOfMonth = 1)
-    val firstDayOfWeek =
-        if (firstDay.dayOfWeek == DayOfWeek.SUNDAY) 0 else firstDay.dayOfWeek.ordinal + 1
+    val firstDayOfWeek = getFirstDayOffset(firstDay)
     val lastDay = DateUtil.getLastDayOfMonth(year, month.number)
     val totalCells = firstDayOfWeek + lastDay
     val column = (totalCells + 6) / 7
 
-    BoxWithConstraints(modifier = modifier) {
+    BoxWithConstraints(modifier = modifier.fillMaxSize()) {
         LazyVerticalGrid(
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier,
             columns = GridCells.Fixed(7),
             userScrollEnabled = false,
         ) {
-            val calcHeight = maxHeight / column
+            val cellHeight = maxHeight / column
             items(totalCells) { index ->
                 val dayOfMonth = index - firstDayOfWeek + 1
-                Box(
-                    modifier =
-                        Modifier
-                            .height(calcHeight)
-                            .fillMaxWidth(),
-                ) {
+                val boxModifier = Modifier
+                    .height(cellHeight)
+                    .fillMaxWidth()
+                Box(modifier = boxModifier) {
                     if (dayOfMonth in 1..lastDay) {
                         val date = LocalDate(year, month, dayOfMonth)
                         CalendarDayOfMonthCell(
                             modifier = Modifier.fillMaxSize(),
-                            schedule = schedules.find { it.date == date },
+                            schedule = scheduleMap[date],
                             date = date,
                             isFocus = selectedDate == date,
                             onClickCell = { onClickCell(it) },
                             onClickTodo = { onClickTodo(it) },
                         )
+                    } else {
+                        Spacer(modifier = boxModifier)
                     }
                 }
             }

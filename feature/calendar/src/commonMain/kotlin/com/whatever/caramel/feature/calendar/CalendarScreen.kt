@@ -267,19 +267,12 @@ internal fun CalendarScreen(
                             modifier = Modifier.height(height = availableCalendarHeight),
                             state = pagerState,
                             beyondViewportPageCount = 2,
-                        ) { page ->
-                            val currentYear = (page / 12) + 1900
-                            val currentMonth = Month.entries[page % 12]
+                        ) { pageIndex ->
                             CaramelCalendar(
                                 modifier =
                                     Modifier.background(color = CaramelTheme.color.background.primary),
-                                year = currentYear,
-                                month = currentMonth,
-                                schedules =
-                                    state.yearSchedule
-                                        .filter { daySchedule ->
-                                            daySchedule.date.year == currentYear && daySchedule.date.month == currentMonth
-                                        }.toImmutableList(),
+                                pageIndex = pageIndex,
+                                schedules = state.yearSchedule.toImmutableList(),
                                 selectedDate = state.selectedDate,
                                 onClickTodo = { onIntent(CalendarIntent.ClickTodoItemInCalendar(it)) },
                                 onClickCell = { onIntent(CalendarIntent.ClickCalendarCell(it)) },
