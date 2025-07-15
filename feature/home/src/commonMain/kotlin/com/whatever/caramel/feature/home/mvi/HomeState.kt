@@ -14,6 +14,7 @@ data class HomeState(
     val daysTogether: Int = 0,
     val shareMessage: String = "",
     val todos: List<TodoState> = emptyList(),
+    val bottomSheetShareMessage: String = "",
     val isShowBottomSheet: Boolean = false,
     val isLoading: Boolean = false,
     val balanceGameState: BalanceGameState = BalanceGameState(),
@@ -26,6 +27,9 @@ data class HomeState(
 ) : UiState {
     val isSetAnniversary: Boolean
         get() = daysTogether != 0
+
+    val bottomSheetShareMessageLength: Int
+        get() = Regex("\\X").findAll(bottomSheetShareMessage).count()
 
     val balanceGameAnswerState: BalanceGameAnswerState
         get() =

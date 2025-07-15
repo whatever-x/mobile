@@ -11,9 +11,7 @@ sealed interface HomeIntent : UiIntent {
 
     data object HideShareMessageEditBottomSheet : HomeIntent
 
-    data class SaveShareMessage(
-        val newShareMessage: String,
-    ) : HomeIntent
+    data object SaveShareMessage : HomeIntent
 
     data object CreateTodoContent : HomeIntent
 
@@ -32,4 +30,10 @@ sealed interface HomeIntent : UiIntent {
     data object ChangeBalanceGameCardState : HomeIntent
 
     data object HideDialog : HomeIntent
+
+    data class InputShareMessage(
+        val newShareMessage: String
+    ) : HomeIntent
+
+    data object ClearShareMessage : HomeIntent
 }
