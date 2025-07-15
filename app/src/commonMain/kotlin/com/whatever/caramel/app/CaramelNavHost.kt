@@ -122,7 +122,7 @@ internal fun CaramelNavHost(
                 },
                 navigateToLogin = {
                     navigateToLogin {
-                        popUpTo(SettingRoute) {
+                        popUpTo(0) {
                             inclusive = true
                         }
                     }
