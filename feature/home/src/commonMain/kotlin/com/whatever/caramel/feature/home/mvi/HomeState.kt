@@ -59,6 +59,10 @@ data class HomeState(
         CONNECT,
         DISCONNECT,
     }
+
+    companion object {
+        const val MAX_SHARE_MESSAGE_LENGTH = 24
+    }
 }
 
 @Immutable

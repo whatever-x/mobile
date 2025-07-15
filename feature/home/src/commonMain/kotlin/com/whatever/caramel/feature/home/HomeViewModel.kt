@@ -12,13 +12,13 @@ import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfo
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.user.Gender
-import com.whatever.caramel.core.ui.util.isValidLimitedText
+import com.whatever.caramel.core.ui.util.validateInputText
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.home.mvi.BalanceGameOptionState
 import com.whatever.caramel.feature.home.mvi.BalanceGameState
 import com.whatever.caramel.feature.home.mvi.HomeIntent
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect
-import com.whatever.caramel.feature.home.mvi.HomeSideEffect.*
+import com.whatever.caramel.feature.home.mvi.HomeSideEffect.NavigateToContentDetail
 import com.whatever.caramel.feature.home.mvi.HomeState
 import com.whatever.caramel.feature.home.mvi.TodoState
 import kotlinx.collections.immutable.toImmutableList
@@ -62,13 +62,17 @@ class HomeViewModel(
     }
 
     private fun inputShareMessage(text: String) {
-        if (isValidLimitedText(text = text, limitLength = 24)) {
-            reduce {
-                copy(
-                    bottomSheetShareMessage = text
-                )
-            }
-        }
+        validateInputText(
+            text = text,
+            limitLength = HomeState.MAX_SHARE_MESSAGE_LENGTH,
+            onPass = { text ->
+                reduce {
+                    copy(
+                        bottomSheetShareMessage = text,
+                    )
+                }
+            },
+        )
     }
 
     private fun clearShareMessage() {
