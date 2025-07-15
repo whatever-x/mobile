@@ -35,7 +35,6 @@ import com.whatever.caramel.feature.setting.component.SettingEditProfileBottomSh
 import com.whatever.caramel.feature.setting.component.SettingListButton
 import com.whatever.caramel.feature.setting.component.SettingListText
 import com.whatever.caramel.feature.setting.component.SettingUserProfile
-import com.whatever.caramel.feature.setting.component.SettingUserProfileSkeleton
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
 import com.whatever.caramel.feature.setting.mvi.SettingState
 import com.whatever.caramel.feature.setting.util.Platform
@@ -133,26 +132,22 @@ internal fun SettingScreen(
                     )
                 }
                 Spacer(modifier = Modifier.padding(bottom = 20.dp))
-                if (state.isLoading) {
-                    SettingUserProfileSkeleton()
-                    Spacer(modifier = Modifier.padding(bottom = CaramelTheme.spacing.m))
-                    SettingUserProfileSkeleton()
-                } else {
-                    SettingUserProfile(
-                        gender = state.myInfo.gender,
-                        nickname = state.myInfo.nickname,
-                        birthDay = state.myInfo.birthday,
-                        isEditable = true,
-                        onClickEditProfile = { onIntent(SettingIntent.ToggleEditProfile) },
-                    )
-                    Spacer(modifier = Modifier.padding(bottom = CaramelTheme.spacing.m))
-                    SettingUserProfile(
-                        gender = state.partnerInfo.gender,
-                        nickname = state.partnerInfo.nickname,
-                        birthDay = state.partnerInfo.birthday,
-                        isEditable = false,
-                    )
-                }
+                SettingUserProfile(
+                    isLoading = state.isLoading,
+                    gender = state.myInfo.gender,
+                    nickname = state.myInfo.nickname,
+                    birthDay = state.myInfo.birthday,
+                    isEditable = true,
+                    onClickEditProfile = { onIntent(SettingIntent.ToggleEditProfile) },
+                )
+                Spacer(modifier = Modifier.padding(bottom = CaramelTheme.spacing.m))
+                SettingUserProfile(
+                    isLoading = state.isLoading,
+                    gender = state.partnerInfo.gender,
+                    nickname = state.partnerInfo.nickname,
+                    birthDay = state.partnerInfo.birthday,
+                    isEditable = false,
+                )
             }
             HorizontalDivider(
                 modifier =

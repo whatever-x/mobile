@@ -25,6 +25,30 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 internal fun SettingUserProfile(
     modifier: Modifier = Modifier,
+    isLoading: Boolean,
+    gender: Gender,
+    nickname: String,
+    birthDay: String,
+    isEditable: Boolean,
+    onClickEditProfile: (() -> Unit)? = null,
+) {
+    if (isLoading) {
+        SettingUserProfileSkeleton()
+    } else {
+        SettingUserProfileContent(
+            modifier = modifier,
+            gender = gender,
+            nickname = nickname,
+            birthDay = birthDay,
+            isEditable = isEditable,
+            onClickEditProfile = onClickEditProfile,
+        )
+    }
+}
+
+@Composable
+internal fun SettingUserProfileContent(
+    modifier: Modifier = Modifier,
     gender: Gender,
     nickname: String,
     birthDay: String,
@@ -36,7 +60,6 @@ internal fun SettingUserProfile(
             Gender.IDLE, Gender.MALE -> Resources.Image.img_gender_man
             Gender.FEMALE -> Resources.Image.img_gender_woman
         }
-
     Row(
         modifier =
             modifier
@@ -53,7 +76,6 @@ internal fun SettingUserProfile(
             painter = painterResource(genderImageResource),
             tint = Color.Unspecified,
         )
-
         Spacer(modifier = Modifier.size(size = CaramelTheme.spacing.m))
         Column(
             modifier =
@@ -104,7 +126,13 @@ internal fun SettingUserProfile(
 @Composable
 internal fun SettingUserProfileSkeleton(modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier,
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(
+                    color = CaramelTheme.color.fill.inverse,
+                    shape = CaramelTheme.shape.xl,
+                ).padding(all = CaramelTheme.spacing.m),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(
