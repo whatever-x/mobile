@@ -17,11 +17,11 @@ jobs:
           BRANCH_NAME=$(jq -r '.ref' "$GITHUB_EVENT_PATH")
           ACTOR="${{ github.actor }}"
           ACTOR_URL="https://github.com/${ACTOR}"
-          BRANCH_MESSAGE="🗑️ ${BRANCH_NAME} 브랜치가 삭제되었습니다."
+          BRANCH_MESSAGE="🗑️ \`${BRANCH_NAME}\` 브랜치가 삭제되었습니다."
           
           echo "branch_message=$(printf "%s" "$BRANCH_MESSAGE" | jq -Rs .)" >> $GITHUB_OUTPUT
-          echo "actor=$ACTOR" >> $GITHUB_OUTPUT
-          echo "actor_url=$ACTOR_URL" >> $GITHUB_OUTPUT
+          echo "actor=$(printf "%s" "$ACTOR" | jq -Rs .)" >> $GITHUB_OUTPUT
+          echo "actor_url=$(printf "%s" "$ACTOR_URL" | jq -Rs .)" >> $GITHUB_OUTPUT
 
       - name: Send Slack Notification
         uses: slackapi/slack-github-action@v2.1.1

@@ -23,7 +23,8 @@ jobs:
           MERGED_BY_URL="https://github.com/${MERGED_BY}"
 
           HEADER_TEXT="🗑️ PR 병합"
-          SECTION1="*<${PR_URL}|${PR_TITLE}>* #${PR_NUMBER}\n\`${PR_HEAD_BRANCH}\` → \`${PR_BASE_BRANCH}\`"
+          SECTION1="*<${PR_URL}|${PR_TITLE}>* #${PR_NUMBER}
+          \`${PR_HEAD_BRANCH}\` → \`${PR_BASE_BRANCH}\`"
           SECTION2="*<${MERGED_BY_URL}|${MERGED_BY}>* 님이 PR을 병합했습니다."
 
           echo "header_text=$(printf "%s" "$HEADER_TEXT" | jq -Rs .)" >> $GITHUB_OUTPUT

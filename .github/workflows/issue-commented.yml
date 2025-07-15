@@ -57,3 +57,6 @@ jobs:
                   alt_text: "by ${{ steps.issue-comment.outputs.comment_author }}"
               - type: "context"
                 elements:
+                  - type: "mrkdwn"
+                    text: "by <https://github.com/${{ steps.issue-comment.outputs.comment_author }}|${{ steps.issue-comment.outputs.comment_author }}>"
+

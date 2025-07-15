@@ -35,14 +35,16 @@ jobs:
               | select(.source.issue.pull_request)
               | "- [#\(.source.issue.number)] \(.source.issue.title)"'
           )
-
+          
           if [ -z "$LINKED_PRS" ]; then
-            LINKED_PRS="연결된 PR이 없습니다!"
+          LINKED_PRS="연결된 PR이 없습니다!"
+          else
+          LINKED_PRS=$(echo "$LINKED_PRS" | sed ':a;N;$!ba;s/\n/\\n/g')
           fi
-
-          # JSON-safe escape
-          HEADER_TEXT="🗑️ 이슈 종료"
+          
           ISSUE_SECTION="*[<${ISSUE_URL}|#${ISSUE_NUMBER}>]*\n${ISSUE_TITLE}\n\n${LINKED_PRS}"
+          
+          HEADER_TEXT="🗑️ 이슈 종료"
 
           echo "header_text=$(printf "%s" "$HEADER_TEXT" | jq -Rs .)" >> $GITHUB_OUTPUT
           echo "issue_section=$(printf "%s" "$ISSUE_SECTION" | jq -Rs .)" >> $GITHUB_OUTPUT
