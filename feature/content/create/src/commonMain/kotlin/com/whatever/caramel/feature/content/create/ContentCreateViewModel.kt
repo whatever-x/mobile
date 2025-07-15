@@ -13,6 +13,7 @@ import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.util.DateUtil
+import com.whatever.caramel.core.util.TimeUtil.roundToNearest5Minutes
 import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
@@ -21,10 +22,8 @@ import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
 import com.whatever.caramel.feature.content.create.navigation.ContentCreateRoute
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 class ContentCreateViewModel(
     crashlytics: CaramelCrashlytics,
@@ -43,9 +42,10 @@ class ContentCreateViewModel(
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): ContentCreateState {
         val arguments = savedStateHandle.toRoute<ContentCreateRoute>()
-        val dateTime =
+        val dateTime: LocalDateTime =
             if (arguments.dateTimeString.isEmpty()) {
-                DateUtil.todayLocalDateTime()
+                val now = DateUtil.todayLocalDateTime()
+                roundToNearest5Minutes(dateTime = now)
             } else {
                 LocalDateTime.parse(
                     arguments.dateTimeString,
@@ -171,17 +171,8 @@ class ContentCreateViewModel(
                 createMode = intent.createMode,
                 dateTime =
                     if (intent.createMode == CreateMode.CALENDAR) {
-                        val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-                        val roundedMinute = ((now.minute + 2) / 5) * 5
-                        val adjustedHour = if (roundedMinute >= 60) now.hour + 1 else now.hour
-                        val finalMinute = if (roundedMinute >= 60) 0 else roundedMinute
-
-                        now.copy(
-                            hour = adjustedHour,
-                            minute = finalMinute,
-                            second = 0,
-                            nanosecond = 0,
-                        )
+                        val now = DateUtil.todayLocalDateTime()
+                        roundToNearest5Minutes(dateTime = now)
                     } else {
                         dateTime
                     },
