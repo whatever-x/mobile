@@ -12,6 +12,7 @@ import com.whatever.caramel.core.domain.vo.content.ContentParameterType
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.ui.content.CreateMode
+import com.whatever.caramel.core.ui.util.validateInputText
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
@@ -129,27 +130,43 @@ class ContentCreateViewModel(
     }
 
     private fun inputTitle(intent: ContentCreateIntent.InputTitle) {
-        if (intent.text.length <= ContentCreateState.MAX_TITLE_LENGTH) {
-            reduce {
-                copy(
-                    title = intent.text,
-                )
+        validateInputText(
+            text = intent.text,
+            limitLength = ContentCreateState.MAX_TITLE_LENGTH,
+            onPass = { text ->
+                reduce {
+                    copy(
+                        title = text,
+                    )
+                }
+            },
+            onContainsNewline = {
+                postSideEffect(ContentCreateSideEffect.ShowToast("줄바꿈을 포함할수 없어요"))
+            },
+            onExceedLimit = {
+                postSideEffect(ContentCreateSideEffect.ShowToast("제목은 ${ContentCreateState.MAX_TITLE_LENGTH}자까지 입력할 수 있어요"))
             }
-        } else {
-            postSideEffect(ContentCreateSideEffect.ShowToast("제목은 ${ContentCreateState.MAX_TITLE_LENGTH}자까지 입력할 수 있어요"))
-        }
+        )
     }
 
     private fun inputContent(intent: ContentCreateIntent.InputContent) {
-        if (intent.text.length <= ContentCreateState.MAX_CONTENT_LENGTH) {
-            reduce {
-                copy(
-                    content = intent.text,
-                )
+        validateInputText(
+            text = intent.text,
+            limitLength = ContentCreateState.MAX_CONTENT_LENGTH,
+            onPass = { text ->
+                reduce {
+                    copy(
+                        title = text,
+                    )
+                }
+            },
+            onContainsNewline = {
+                postSideEffect(ContentCreateSideEffect.ShowToast("줄바꿈을 포함할수 없어요"))
+            },
+            onExceedLimit = {
+                postSideEffect(ContentCreateSideEffect.ShowToast("내용은 ${ContentCreateState.MAX_CONTENT_LENGTH}자까지 입력할 수 있어요"))
             }
-        } else {
-            postSideEffect(ContentCreateSideEffect.ShowToast("내용은 ${ContentCreateState.MAX_CONTENT_LENGTH}자까지 입력할 수 있어요"))
-        }
+        )
     }
 
     private fun toggleTagSelection(intent: ContentCreateIntent.ClickTag) {
