@@ -145,7 +145,7 @@ class ContentCreateViewModel(
             },
             onExceedLimit = {
                 postSideEffect(ContentCreateSideEffect.ShowToast("제목은 ${ContentCreateState.MAX_TITLE_LENGTH}자까지 입력할 수 있어요"))
-            }
+            },
         )
     }
 
@@ -165,7 +165,7 @@ class ContentCreateViewModel(
             },
             onExceedLimit = {
                 postSideEffect(ContentCreateSideEffect.ShowToast("내용은 ${ContentCreateState.MAX_CONTENT_LENGTH}자까지 입력할 수 있어요"))
-            }
+            },
         )
     }
 

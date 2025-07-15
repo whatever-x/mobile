@@ -32,7 +32,7 @@ sealed interface HomeIntent : UiIntent {
     data object HideDialog : HomeIntent
 
     data class InputShareMessage(
-        val newShareMessage: String
+        val newShareMessage: String,
     ) : HomeIntent
 
     data object ClearShareMessage : HomeIntent

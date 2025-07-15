@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelButton
 import com.whatever.caramel.core.designsystem.components.CaramelButtonSize
@@ -38,7 +37,7 @@ internal fun ShareMessageBottomSheet(
     onInputShareMessage: (String) -> Unit,
     onDismiss: () -> Unit,
     onClickSave: () -> Unit,
-    onClearMessage: () -> Unit
+    onClearMessage: () -> Unit,
 ) {
     ModalBottomSheet(
         modifier = modifier,
@@ -54,7 +53,7 @@ internal fun ShareMessageBottomSheet(
             messageLength = messageLength,
             onInputShareMessage = onInputShareMessage,
             onClickSave = onClickSave,
-            onClearMessage = onClearMessage
+            onClearMessage = onClearMessage,
         )
     }
 }
@@ -66,7 +65,7 @@ private fun BottomSheetContent(
     messageLength: Int,
     onInputShareMessage: (String) -> Unit,
     onClickSave: () -> Unit,
-    onClearMessage: () -> Unit
+    onClearMessage: () -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -78,7 +77,7 @@ private fun BottomSheetContent(
         BasicTextField(
             modifier = Modifier.focusRequester(focusRequester = focusRequester),
             value = shareMessage,
-            onValueChange = { newValue -> onInputShareMessage(newValue)},
+            onValueChange = { newValue -> onInputShareMessage(newValue) },
             minLines = 1,
             maxLines = 2,
             textStyle =

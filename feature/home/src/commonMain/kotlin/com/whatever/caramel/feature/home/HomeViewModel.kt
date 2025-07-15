@@ -78,7 +78,7 @@ class HomeViewModel(
     private fun clearShareMessage() {
         reduce {
             copy(
-                bottomSheetShareMessage = ""
+                bottomSheetShareMessage = "",
             )
         }
     }
@@ -193,7 +193,7 @@ class HomeViewModel(
         reduce {
             copy(
                 bottomSheetShareMessage = currentState.shareMessage,
-                isShowBottomSheet = true
+                isShowBottomSheet = true,
             )
         }
     }

@@ -145,7 +145,7 @@ class ContentEditViewModel(
             },
             onExceedLimit = {
                 postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("제목은 ${ContentEditState.MAX_TITLE_LENGTH}자까지 입력할 수 있어요"))
-            }
+            },
         )
     }
 
@@ -165,7 +165,7 @@ class ContentEditViewModel(
             },
             onExceedLimit = {
                 postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("내용은 ${ContentEditState.MAX_CONTENT_LENGTH}자까지 입력할 수 있어요"))
-            }
+            },
         )
     }
 
