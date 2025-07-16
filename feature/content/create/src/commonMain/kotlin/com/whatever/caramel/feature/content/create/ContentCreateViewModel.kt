@@ -156,7 +156,7 @@ class ContentCreateViewModel(
             onPass = { text ->
                 reduce {
                     copy(
-                        title = text,
+                        content = text,
                     )
                 }
             },
