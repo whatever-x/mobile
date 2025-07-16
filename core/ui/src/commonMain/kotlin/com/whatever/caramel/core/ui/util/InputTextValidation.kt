@@ -27,7 +27,6 @@ fun validateInputText(
         }
 
         text.codePointCount() > limitLength -> {
-            Napier.d { "여기 오류 발생" }
             onExceedLimit()
         }
 
