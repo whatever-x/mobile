@@ -1,7 +1,5 @@
 package com.whatever.caramel.core.ui.util
 
-import io.github.aakira.napier.Napier
-
 /**
  * [text]가 한 줄이고,
  * 이모지를 포함한 [text] 기준으로 최대 [limitLength] 이하인지 검사한 뒤,
