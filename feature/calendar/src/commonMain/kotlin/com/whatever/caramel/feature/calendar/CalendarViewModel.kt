@@ -129,6 +129,7 @@ class CalendarViewModel(
     private fun draggingBottomSheetHandle(isDragging: Boolean) {
         reduce {
             copy(
+                isShowDatePicker = if (isDragging) false else currentState.isShowDatePicker,
                 isBottomSheetDragging = isDragging,
             )
         }
@@ -320,15 +321,13 @@ class CalendarViewModel(
     }
 
     private fun showCalendarDatePicker() {
-        launch {
-            if (currentState.isBottomSheetDragging) return@launch
-            clickOutSideBottomSheet()
-            reduce {
-                copy(
-                    isShowDatePicker = true,
-                    pickerDate = pickerDate.copy(year = year, month = month.number),
-                )
-            }
+        if (currentState.isBottomSheetDragging) return
+        reduce {
+            copy(
+                isShowDatePicker = true,
+                bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
+                pickerDate = pickerDate.copy(year = year, month = month.number),
+            )
         }
     }
 

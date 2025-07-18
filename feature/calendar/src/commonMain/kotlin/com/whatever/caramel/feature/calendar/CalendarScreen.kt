@@ -106,6 +106,7 @@ internal fun CalendarScreen(
                 SheetValue.Expanded -> BottomSheetState.EXPANDED
                 SheetValue.PartiallyExpanded -> BottomSheetState.PARTIALLY_EXPANDED
             }
+        onIntent(CalendarIntent.DraggingCalendarBottomSheet(false))
         onIntent(CalendarIntent.UpdateCalendarBottomSheet(updateStateValue))
     }
 
