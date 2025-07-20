@@ -107,18 +107,18 @@ internal fun ContentDetailScreen(
                     ) {
                         Icon(
                             painter = painterResource(resource = Resources.Icon.ic_calendar_18),
-                            tint = CaramelTheme.color.icon.brand,
+                            tint = CaramelTheme.color.icon.primary,
                             contentDescription = null,
                         )
                         Text(
                             text = state.date,
                             style = CaramelTheme.typography.body2.regular,
-                            color = CaramelTheme.color.text.brand,
+                            color = CaramelTheme.color.text.primary,
                         )
                         Text(
                             text = state.time,
                             style = CaramelTheme.typography.body2.regular,
-                            color = CaramelTheme.color.text.brand,
+                            color = CaramelTheme.color.text.primary,
                         )
                     }
                 }
