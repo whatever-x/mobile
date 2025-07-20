@@ -22,7 +22,6 @@ interface RemoteCoupleDataSource {
 
     suspend fun updateCoupleStartDate(
         coupleId: Long,
-        timeZone: String,
         request: CoupleStartDateUpdateRequest,
     ): CoupleBasicResponse
 
