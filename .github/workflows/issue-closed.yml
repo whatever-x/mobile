@@ -40,8 +40,11 @@ jobs:
             LINKED_PRS="연결된 PR이 없습니다!"
           fi
 
-          ISSUE_SECTION="*[<${ISSUE_URL}|#${ISSUE_NUMBER}>]*\n${ISSUE_TITLE}\n\n${LINKED_PRS}"          
           HEADER_TEXT="🗑️ 이슈 종료"
+          
+          ISSUE_SECTION="*[<${ISSUE_URL}|#${ISSUE_NUMBER}>]*
+          ${ISSUE_TITLE}
+          ${LINKED_PRS}"
 
           echo "header_text=$(printf "%s" "$HEADER_TEXT" | jq -Rs .)" >> $GITHUB_OUTPUT
           echo "issue_section=$(printf "%s" "$ISSUE_SECTION" | jq -Rs .)" >> $GITHUB_OUTPUT
