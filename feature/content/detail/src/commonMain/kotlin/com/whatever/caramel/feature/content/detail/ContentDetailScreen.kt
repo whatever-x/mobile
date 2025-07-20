@@ -103,20 +103,22 @@ internal fun ContentDetailScreen(
                                 space = CaramelTheme.spacing.s,
                                 alignment = Alignment.Start,
                             ),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(
-                            painter = painterResource(resource = Resources.Icon.ic_calendar_24),
+                            painter = painterResource(resource = Resources.Icon.ic_calendar_18),
+                            tint = CaramelTheme.color.icon.brand,
                             contentDescription = null,
                         )
                         Text(
                             text = state.date,
                             style = CaramelTheme.typography.body2.regular,
-                            color = CaramelTheme.color.text.primary,
+                            color = CaramelTheme.color.text.brand,
                         )
                         Text(
                             text = state.time,
                             style = CaramelTheme.typography.body2.regular,
-                            color = CaramelTheme.color.text.primary,
+                            color = CaramelTheme.color.text.brand,
                         )
                     }
                 }
