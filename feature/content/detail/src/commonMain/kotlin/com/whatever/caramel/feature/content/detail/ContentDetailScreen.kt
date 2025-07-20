@@ -103,9 +103,11 @@ internal fun ContentDetailScreen(
                                 space = CaramelTheme.spacing.s,
                                 alignment = Alignment.Start,
                             ),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(
-                            painter = painterResource(resource = Resources.Icon.ic_calendar_24),
+                            painter = painterResource(resource = Resources.Icon.ic_calendar_18),
+                            tint = CaramelTheme.color.icon.primary,
                             contentDescription = null,
                         )
                         Text(
