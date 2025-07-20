@@ -22,7 +22,6 @@ import com.whatever.caramel.feature.calendar.mvi.CalendarState
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 import com.whatever.caramel.feature.calendar.util.getYearAndMonthFromPageIndex
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
@@ -114,6 +113,15 @@ class CalendarViewModel(
             CalendarIntent.RefreshCalendar -> refreshCalendar()
             CalendarIntent.Initialize -> initialize()
             is CalendarIntent.DraggingCalendarBottomSheet -> draggingBottomSheetHandle(intent.isDragging)
+            is CalendarIntent.PressCalendarBottomSheetHandle -> pressBottomSheetHandle()
+        }
+    }
+
+    private fun pressBottomSheetHandle() {
+        reduce {
+            copy(
+                isShowDatePicker = false,
+            )
         }
     }
 
@@ -129,7 +137,6 @@ class CalendarViewModel(
     private fun draggingBottomSheetHandle(isDragging: Boolean) {
         reduce {
             copy(
-                isShowDatePicker = if (isDragging) false else currentState.isShowDatePicker,
                 isBottomSheetDragging = isDragging,
             )
         }
@@ -321,7 +328,6 @@ class CalendarViewModel(
     }
 
     private fun showCalendarDatePicker() {
-        if (currentState.isBottomSheetDragging) return
         reduce {
             copy(
                 isShowDatePicker = true,

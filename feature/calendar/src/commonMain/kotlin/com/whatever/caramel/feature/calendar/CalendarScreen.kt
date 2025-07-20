@@ -154,7 +154,14 @@ internal fun CalendarScreen(
                 sheetContainerColor = CaramelTheme.color.background.primary,
                 sheetContentColor = CaramelTheme.color.background.tertiary,
                 sheetDragHandle = {
-                    CaramelBottomSheetHandle(topDescVisibility = state.isBottomSheetTopDescVisible)
+                    CaramelBottomSheetHandle(
+                        topDescVisibility = state.isBottomSheetTopDescVisible,
+                        onPressSheetHandle = {
+                            onIntent(
+                                CalendarIntent.PressCalendarBottomSheetHandle,
+                            )
+                        },
+                    )
                 },
                 topBar = {
                     CaramelTopBar(
