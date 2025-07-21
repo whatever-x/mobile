@@ -8,35 +8,39 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.toList
 
 class GetLinkPreviewsForContentUseCase(
-    private val linkMetadataRepository: LinkMetadataRepository
+    private val linkMetadataRepository: LinkMetadataRepository,
 ) {
     private val urlRegex = Regex("""(https?://\S+)""")
 
     @OptIn(ExperimentalCoroutinesApi::class)
     operator fun invoke(content: String?): Flow<List<LinkMetaData>> {
-        val distinctUrls = content.takeIf { !it.isNullOrBlank() }
-            ?.let { nonEmptyContent ->
-                urlRegex.findAll(nonEmptyContent)
-                    .map { it.value }
-                    .toList()
-                    .distinct()
-                    .takeIf { it.isNotEmpty() }
-            }
+        val distinctUrls =
+            content
+                .takeIf { !it.isNullOrBlank() }
+                ?.let { nonEmptyContent ->
+                    urlRegex
+                        .findAll(nonEmptyContent)
+                        .map { it.value }
+                        .toList()
+                        .distinct()
+                        .takeIf { it.isNotEmpty() }
+                }
 
         return if (distinctUrls.isNullOrEmpty()) {
             flowOf(emptyList())
         } else {
             flow {
-                val linkPreviews = distinctUrls.asFlow()
-                    .flatMapMerge { url ->
-                        flow { emit(linkMetadataRepository.getLinkMetadata(url)) }
-                    }
-                    .filterNotNull()
-                    .toList()
+                val linkPreviews =
+                    distinctUrls
+                        .asFlow()
+                        .flatMapMerge { url ->
+                            flow { emit(linkMetadataRepository.getLinkMetadata(url)) }
+                        }.filterNotNull()
+                        .toList()
                 emit(linkPreviews)
             }
         }

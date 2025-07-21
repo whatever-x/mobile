@@ -16,24 +16,32 @@ data class CalendarState(
     val pageIndex: Int,
     val today: LocalDate = DateUtil.today(),
     val selectedDate: LocalDate = DateUtil.today(),
-    val pickerDate : DateUiState = DateUiState.currentDate(),
+    val pickerDate: DateUiState = DateUiState.currentDate(),
     val isShowDatePicker: Boolean = false,
     val bottomSheetState: BottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
-    val monthSchedules: List<DaySchedule> = emptyList(),
-    val isRefreshing: Boolean = false
-) : UiState
+    val yearSchedule: List<DaySchedule> = emptyList(),
+    val cachedYearSchedules: Map<Int, List<DaySchedule>> = emptyMap(),
+    val isRefreshing: Boolean = false,
+    val isBottomSheetDragging: Boolean = false,
+) : UiState {
+    val monthSchedule: List<DaySchedule>
+        get() = yearSchedule.filter { it.date.month == month }
+
+    val isBottomSheetTopDescVisible
+        get() = !isBottomSheetDragging && bottomSheetState == BottomSheetState.PARTIALLY_EXPANDED
+}
 
 enum class BottomSheetState {
     HIDDEN,
     EXPANDED,
-    PARTIALLY_EXPANDED
+    PARTIALLY_EXPANDED,
 }
 
 data class DaySchedule(
     val date: LocalDate,
     val todos: List<Todo> = emptyList(),
     val holidays: List<Holiday> = emptyList(),
-    val anniversaries: List<Anniversary> = emptyList()
+    val anniversaries: List<Anniversary> = emptyList(),
 ) {
     val totalScheduleCount: Int
         get() = todos.size + holidays.size + anniversaries.size

@@ -1,5 +1,6 @@
 import SwiftUI
 import AppsFlyerLib
+import KakaoSDKAuth
 
 @main
 struct iOSApp: App {
@@ -17,6 +18,10 @@ struct iOSApp: App {
                 }
                 .onOpenURL { url in
                     AppsFlyerLib.shared().handleOpen(url, options: [:])
+
+                    if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                        AuthController.handleOpenUrl(url: url)
+                    }
                 }
                 .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { userActivity in
                     AppsFlyerLib.shared().continue(userActivity, restorationHandler: nil)

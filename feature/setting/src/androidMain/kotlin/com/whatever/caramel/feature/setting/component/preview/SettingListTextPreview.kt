@@ -11,7 +11,7 @@ import com.whatever.caramel.feature.setting.component.data.SettingListTextPrevie
 @Preview(showBackground = true)
 @Composable
 private fun SettingListTextPreview(
-    @PreviewParameter(SettingListTextPreviewDataProvider::class) data: SettingListTextPreviewData
+    @PreviewParameter(SettingListTextPreviewDataProvider::class) data: SettingListTextPreviewData,
 ) {
     CaramelTheme {
         SettingListText(
@@ -19,13 +19,13 @@ private fun SettingListTextPreview(
             tailText = data.tailText,
             mainTextColor = CaramelTheme.color.text.primary,
             onClickListItem = {},
-            onClickTailText = null
+            onClickTailText = null,
         )
 
         SettingListText(
             mainText = data.text,
             mainTextColor = CaramelTheme.color.text.tertiary,
-            onClickListItem = {}
+            onClickListItem = {},
         )
     }
 }

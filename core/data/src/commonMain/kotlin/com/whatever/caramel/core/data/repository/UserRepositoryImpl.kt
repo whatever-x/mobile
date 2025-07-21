@@ -14,14 +14,13 @@ import com.whatever.caramel.core.remote.dto.user.request.UserSettingRequest
 
 class UserRepositoryImpl(
     private val userRemoteDataSource: RemoteUserDataSource,
-    private val userDataSource: UserDataSource
+    private val userDataSource: UserDataSource,
 ) : UserRepository {
-    override suspend fun getUserStatus(): UserStatus {
-        return safeCall {
+    override suspend fun getUserStatus(): UserStatus =
+        safeCall {
             val userStatus = userDataSource.getUserStatus()
             UserStatus.valueOf(value = userStatus)
         }
-    }
 
     override suspend fun setUserStatus(status: UserStatus) {
         safeCall {
@@ -34,46 +33,46 @@ class UserRepositoryImpl(
         birthDay: String,
         gender: Gender,
         agreementServiceTerms: Boolean,
-        agreementPrivacyPolicy: Boolean
-    ): User {
-        return safeCall {
-            val request = UserProfileRequest(
-                nickname = nickname,
-                birthday = birthDay,
-                gender = gender.name,
-                agreementServiceTerms = agreementServiceTerms,
-                agreementPrivatePolicy = agreementPrivacyPolicy
-            )
+        agreementPrivacyPolicy: Boolean,
+    ): User =
+        safeCall {
+            val request =
+                UserProfileRequest(
+                    nickname = nickname,
+                    birthday = birthDay,
+                    gender = gender.name,
+                    agreementServiceTerms = agreementServiceTerms,
+                    agreementPrivatePolicy = agreementPrivacyPolicy,
+                )
             userRemoteDataSource.createUserProfile(request).toUser()
         }
-    }
 
-    override suspend fun updateUserProfile(nickname: String?, birthday: String?): User {
-        return safeCall {
-            val request = EditUserProfileRequest(
-                nickname = nickname,
-                birthday = birthday
-            )
+    override suspend fun updateUserProfile(
+        nickname: String?,
+        birthday: String?,
+    ): User =
+        safeCall {
+            val request =
+                EditUserProfileRequest(
+                    nickname = nickname,
+                    birthday = birthday,
+                )
             userRemoteDataSource.editUserProfile(request).toUser()
         }
-    }
 
-    override suspend fun getUserInfo(): User {
-        return safeCall {
+    override suspend fun getUserInfo(): User =
+        safeCall {
             userRemoteDataSource.getUserInfo().toUser()
         }
-    }
 
     override suspend fun deleteUserStatus() {
         safeCall { userDataSource.deleteUserStatus() }
     }
 
-    override suspend fun updateUserSetting(notificationEnabled: Boolean) : Boolean {
+    override suspend fun updateUserSetting(notificationEnabled: Boolean): Boolean {
         val request = UserSettingRequest(notificationEnabled = notificationEnabled)
         return safeCall { userRemoteDataSource.patchUserSetting(request).notificationEnabled }
     }
 
-    override suspend fun getUserSetting(): Boolean {
-        return safeCall { userRemoteDataSource.getUserSetting().notificationEnabled }
-    }
+    override suspend fun getUserSetting(): Boolean = safeCall { userRemoteDataSource.getUserSetting().notificationEnabled }
 }

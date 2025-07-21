@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
@@ -30,19 +29,20 @@ fun CaramelBottomNavigationWithTrailingButton(
     trailingButton: @Composable () -> Unit,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(height = 56.dp)
-            .background(color = CaramelTheme.color.background.tertiary),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(height = 56.dp)
+                .background(color = CaramelTheme.color.background.tertiary),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceAround
+        horizontalArrangement = Arrangement.SpaceAround,
     ) {
         BottomNavItem.entries.forEach { bottomNavItem ->
             CaramelNavigationItem(
                 icon = bottomNavItem.icon,
                 text = bottomNavItem.text,
                 isSelected = currentItem == bottomNavItem,
-                onClick = { onClickNavItem(bottomNavItem) }
+                onClick = { onClickNavItem(bottomNavItem) },
             )
         }
 
@@ -52,12 +52,11 @@ fun CaramelBottomNavigationWithTrailingButton(
 
 enum class BottomNavItem(
     val text: String,
-    val icon: DrawableResource
+    val icon: DrawableResource,
 ) {
     HOME(text = "홈", icon = Resources.Icon.ic_home_24),
     CALENDAR(text = "캘린더", icon = Resources.Icon.ic_calendar_24),
     MEMO(text = "메모", icon = Resources.Icon.ic_memo_24),
-    ;
 }
 
 @Composable
@@ -69,33 +68,36 @@ fun CaramelNavigationItem(
     onClick: () -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .clickable(
-                enabled = !isSelected,
-                onClick = onClick,
-                indication = null,
-                interactionSource = null
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            modifier
+                .clickable(
+                    enabled = !isSelected,
+                    onClick = onClick,
+                    indication = null,
+                    interactionSource = null,
+                ),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
             painter = painterResource(resource = icon),
-            tint = if (isSelected) {
-                CaramelTheme.color.icon.primary
-            } else {
-                CaramelTheme.color.icon.disabledPrimary
-            },
-            contentDescription = null
+            tint =
+                if (isSelected) {
+                    CaramelTheme.color.icon.primary
+                } else {
+                    CaramelTheme.color.icon.disabledPrimary
+                },
+            contentDescription = null,
         )
 
         Text(
             text = text,
             style = CaramelTheme.typography.label3.regular,
-            color = if (isSelected) {
-                CaramelTheme.color.text.primary
-            } else {
-                CaramelTheme.color.text.tertiary
-            },
+            color =
+                if (isSelected) {
+                    CaramelTheme.color.text.primary
+                } else {
+                    CaramelTheme.color.text.tertiary
+                },
         )
     }
 }
@@ -103,27 +105,27 @@ fun CaramelNavigationItem(
 @Composable
 fun CaramelNavItemCreateButton(
     modifier: Modifier = Modifier,
-    onClickButton: () -> Unit
+    onClickButton: () -> Unit,
 ) {
     Box(
-        modifier = modifier
-            .size(40.dp)
-            .background(
-                color = CaramelTheme.color.fill.quinary,
-                shape = CaramelTheme.shape.s
-            )
-            .clip(shape = CaramelTheme.shape.s)
-            .clickable(
-                onClick = onClickButton,
-                indication = null,
-                interactionSource = null
-            ),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .size(40.dp)
+                .background(
+                    color = CaramelTheme.color.fill.quinary,
+                    shape = CaramelTheme.shape.s,
+                ).clip(shape = CaramelTheme.shape.s)
+                .clickable(
+                    onClick = onClickButton,
+                    indication = null,
+                    interactionSource = null,
+                ),
+        contentAlignment = Alignment.Center,
     ) {
         Icon(
             painter = painterResource(resource = Resources.Icon.ic_circle_plus_solid_24),
             tint = CaramelTheme.color.icon.brand,
-            contentDescription = null
+            contentDescription = null,
         )
     }
 }

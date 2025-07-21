@@ -7,18 +7,16 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class DateUtilTest {
-    private val VALID_MILLISECOND: Long = 1744416000000 // 2025년 04월 12일
-
     @Test
     fun `변환 가능한 Millisecond라면 toFormattedDate은 구분자를 포함해서 날짜를 생성한다`() {
         assertEquals(
             expected = "2025-04-12",
-            actual = VALID_MILLISECOND.toFormattedDate()
+            actual = Companion.VALID_MILLISECOND.toFormattedDate(),
         )
 
         assertEquals(
             expected = "1970-01-01",
-            actual = 0L.toFormattedDate()
+            actual = 0L.toFormattedDate(),
         )
     }
 
@@ -27,29 +25,32 @@ class DateUtilTest {
         // 날짜 형식이 아님
         assertEquals(
             expected = "",
-            actual = createDateString(
-                year = 1234,
-                month = 56,
-                day = 78
-            )
+            actual =
+                createDateString(
+                    year = 1234,
+                    month = 56,
+                    day = 78,
+                ),
         )
         // 일이 없음
         assertEquals(
             expected = "",
-            actual = createDateString(
-                year = 2025,
-                month = 4,
-                day = 0
-            )
+            actual =
+                createDateString(
+                    year = 2025,
+                    month = 4,
+                    day = 0,
+                ),
         )
         // 2월은 31일이 없음
         assertEquals(
             expected = "",
-            actual = createDateString(
-                year = 2025,
-                month = 2,
-                day = 31
-            )
+            actual =
+                createDateString(
+                    year = 2025,
+                    month = 2,
+                    day = 31,
+                ),
         )
     }
 
@@ -57,50 +58,53 @@ class DateUtilTest {
     fun `createDateFormat은 년월일에 올바른 값이 적용됐다면 날짜형식으로 반환한다`() {
         assertEquals(
             expected = "2025-04-09",
-            actual = createDateString(
-                year = 2025,
-                month = 4,
-                day = 9
-            )
+            actual =
+                createDateString(
+                    year = 2025,
+                    month = 4,
+                    day = 9,
+                ),
         )
         assertEquals(
             expected = "2025-04-09",
-            actual = createDateString(
-                year = 2025,
-                month = 4,
-                day = 9
-            )
+            actual =
+                createDateString(
+                    year = 2025,
+                    month = 4,
+                    day = 9,
+                ),
         )
         assertEquals(
             expected = "2025-12-13",
-            actual = createDateString(
-                year = 2025,
-                month = 12,
-                day = 13
-            )
+            actual =
+                createDateString(
+                    year = 2025,
+                    month = 12,
+                    day = 13,
+                ),
         )
     }
 
     @Test
     fun `toMillisecond는 올바른 날짜가 들어온다면 밀리초로 변환된다`() {
         assertEquals(
-            expected = VALID_MILLISECOND,
-            actual = "20250412".toMillisecond()
+            expected = Companion.VALID_MILLISECOND,
+            actual = "20250412".toMillisecond(),
         )
 
         assertEquals(
-            expected = VALID_MILLISECOND,
-            actual = "20250412T00:00:00.000Z".toMillisecond()
+            expected = Companion.VALID_MILLISECOND,
+            actual = "20250412T00:00:00.000Z".toMillisecond(),
         )
 
         assertEquals(
-            expected = VALID_MILLISECOND,
-            actual = "2025.04.12".toMillisecond()
+            expected = Companion.VALID_MILLISECOND,
+            actual = "2025.04.12".toMillisecond(),
         )
 
         assertEquals(
-            expected = VALID_MILLISECOND,
-            actual = "1900-04-12".toMillisecond()
+            expected = Companion.VALID_MILLISECOND,
+            actual = "1900-04-12".toMillisecond(),
         )
     }
 
@@ -109,24 +113,27 @@ class DateUtilTest {
         // 올바른 날짜 형식 아님
         assertEquals(
             expected = null,
-            actual = "20254999".toMillisecond()
+            actual = "20254999".toMillisecond(),
         )
         assertEquals(
             expected = null,
-            actual = "202549".toMillisecond()
+            actual = "202549".toMillisecond(),
         )
         assertEquals(
             expected = null,
-            actual = "20254999T00:00:00.000Z".toMillisecond()
+            actual = "20254999T00:00:00.000Z".toMillisecond(),
         )
         assertEquals(
             expected = null,
-            actual = "adfdnfdlkT00:00:00.000Z".toMillisecond()
+            actual = "adfdnfdlkT00:00:00.000Z".toMillisecond(),
         )
         assertEquals(
             expected = null,
-            actual = "2025-4-12".toMillisecond()
+            actual = "2025-4-12".toMillisecond(),
         )
     }
-}
 
+    companion object {
+        private const val VALID_MILLISECOND: Long = 1744416000000 // 2025년 04월 12일
+    }
+}

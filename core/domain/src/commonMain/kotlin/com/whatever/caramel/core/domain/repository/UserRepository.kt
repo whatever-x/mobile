@@ -6,20 +6,27 @@ import com.whatever.caramel.core.domain.vo.user.UserStatus
 
 interface UserRepository {
     suspend fun getUserStatus(): UserStatus
+
     suspend fun setUserStatus(status: UserStatus)
+
     suspend fun createUserProfile(
-        nickname : String,
-        birthDay : String,
+        nickname: String,
+        birthDay: String,
         gender: Gender,
         agreementServiceTerms: Boolean,
-        agreementPrivacyPolicy: Boolean
-    ) : User
+        agreementPrivacyPolicy: Boolean,
+    ): User
+
     suspend fun updateUserProfile(
         nickname: String?,
-        birthday: String?
-    ) : User
+        birthday: String?,
+    ): User
+
     suspend fun getUserInfo(): User
+
     suspend fun deleteUserStatus()
-    suspend fun updateUserSetting(notificationEnabled : Boolean) : Boolean
-    suspend fun getUserSetting() : Boolean
+
+    suspend fun updateUserSetting(notificationEnabled: Boolean): Boolean
+
+    suspend fun getUserSetting(): Boolean
 }

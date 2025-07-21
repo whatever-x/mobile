@@ -16,7 +16,7 @@ import org.koin.compose.viewmodel.koinViewModel
 internal fun ContentCreateRoute(
     viewModel: ContentCreateViewModel = koinViewModel(),
     navigateToBackStack: () -> Unit,
-    showErrorDialog: (String, String?) -> Unit
+    showErrorDialog: (String, String?) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = LocalSnackbarHostState.current
@@ -29,14 +29,14 @@ internal fun ContentCreateRoute(
                     showSnackbarMessage(
                         snackbarHostState = snackbarHostState,
                         coroutineScope = this,
-                        message = sideEffect.message ?: ""
+                        message = sideEffect.message ?: "",
                     )
                 }
                 is ContentCreateSideEffect.ShowToast -> {
                     showSnackbarMessage(
                         snackbarHostState = snackbarHostState,
                         coroutineScope = this,
-                        message = sideEffect.message
+                        message = sideEffect.message,
                     )
                 }
 
@@ -47,17 +47,18 @@ internal fun ContentCreateRoute(
 
     ContentScreen(
         state = state,
-        onIntent = viewModel::intent
+        onIntent = viewModel::intent,
     )
     CaramelDialog(
         show = state.showEditConfirmDialog,
-        title = "작성한 내용이 저장되지 않아요.\n" +
+        title =
+            "작성한 내용이 저장되지 않아요.\n" +
                 "그대로 나가시겠어요?",
         mainButtonText = "유지하기",
         subButtonText = "나가기",
         onDismissRequest = { viewModel.intent(ContentCreateIntent.ClickEditDialogRightButton) },
         onMainButtonClick = { viewModel.intent(ContentCreateIntent.ClickEditDialogRightButton) },
-        onSubButtonClick = { viewModel.intent(ContentCreateIntent.ClickEditDialogLeftButton) }
+        onSubButtonClick = { viewModel.intent(ContentCreateIntent.ClickEditDialogLeftButton) },
     ) {
         DefaultCaramelDialogLayout()
     }

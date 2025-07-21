@@ -35,7 +35,6 @@ import com.whatever.caramel.feature.setting.component.SettingEditProfileBottomSh
 import com.whatever.caramel.feature.setting.component.SettingListButton
 import com.whatever.caramel.feature.setting.component.SettingListText
 import com.whatever.caramel.feature.setting.component.SettingUserProfile
-import com.whatever.caramel.feature.setting.component.SettingUserProfileSkeleton
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
 import com.whatever.caramel.feature.setting.mvi.SettingState
 import com.whatever.caramel.feature.setting.util.Platform
@@ -44,7 +43,7 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 internal fun SettingScreen(
     state: SettingState,
-    onIntent: (SettingIntent) -> Unit
+    onIntent: (SettingIntent) -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -58,101 +57,105 @@ internal fun SettingScreen(
         toggleLogoutDialog = { onIntent(SettingIntent.ToggleLogout) },
         toggleUserCancelledDialog = { onIntent(SettingIntent.ToggleUserCancelledButton) },
         onClickLogout = { onIntent(SettingIntent.ClickLogoutConfirmButton) },
-        onClickUserCancelled = { onIntent(SettingIntent.ClickUserCancelledConfirmButton) }
+        onClickUserCancelled = { onIntent(SettingIntent.ClickUserCancelledConfirmButton) },
     )
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = CaramelTheme.color.background.primary)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(color = CaramelTheme.color.background.primary),
     ) {
         CaramelTopBar(
-            modifier = Modifier
-                .statusBarsPadding(),
+            modifier =
+                Modifier
+                    .statusBarsPadding(),
             centerContents = {
                 Text(
                     text = "설정",
                     style = CaramelTheme.typography.heading3,
-                    color = CaramelTheme.color.text.primary
+                    color = CaramelTheme.color.text.primary,
                 )
             },
             leadingContent = {
                 Icon(
-                    modifier = Modifier
-                        .clickable(
-                            indication = null,
-                            interactionSource = null,
-                            onClick = { onIntent(SettingIntent.ClickSettingBackButton) }
-                        ),
+                    modifier =
+                        Modifier
+                            .clickable(
+                                indication = null,
+                                interactionSource = null,
+                                onClick = { onIntent(SettingIntent.ClickSettingBackButton) },
+                            ),
                     painter = painterResource(Resources.Icon.ic_arrow_left_24),
-                    contentDescription = null
+                    contentDescription = null,
                 )
-            }
+            },
         )
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState),
         ) {
             Column(modifier = Modifier.padding(all = CaramelTheme.spacing.xl)) {
                 Text(
                     text = "우리의 시작",
                     style = CaramelTheme.typography.heading1,
-                    color = CaramelTheme.color.text.primary
+                    color = CaramelTheme.color.text.primary,
                 )
                 Row(
-                    modifier = Modifier
-                        .clickable(
-                            onClick = { onIntent(SettingIntent.ClickEditCountDownButton) },
-                            interactionSource = null,
-                            indication = null
-                        )
+                    modifier =
+                        Modifier
+                            .clickable(
+                                onClick = { onIntent(SettingIntent.ClickEditCountDownButton) },
+                                interactionSource = null,
+                                indication = null,
+                            ),
                 ) {
                     Text(
-                        text = state.startDate.ifEmpty {
-                            "언제부터 사귀기 시작했나요?"
-                        },
+                        text =
+                            state.startDate.ifEmpty {
+                                "언제부터 사귀기 시작했나요?"
+                            },
                         style = CaramelTheme.typography.body2.regular,
-                        color = CaramelTheme.color.text.secondary
+                        color = CaramelTheme.color.text.secondary,
                     )
                     Icon(
-                        modifier = Modifier.padding(
-                            all = CaramelTheme.spacing.xs
-                        ),
+                        modifier =
+                            Modifier.padding(
+                                all = CaramelTheme.spacing.xs,
+                            ),
                         painter = painterResource(Resources.Icon.ic_edit_14),
                         tint = CaramelTheme.color.icon.tertiary,
-                        contentDescription = null
+                        contentDescription = null,
                     )
                 }
                 Spacer(modifier = Modifier.padding(bottom = 20.dp))
-                if (state.isLoading) {
-                    SettingUserProfileSkeleton()
-                    Spacer(modifier = Modifier.padding(bottom = CaramelTheme.spacing.m))
-                    SettingUserProfileSkeleton()
-                } else {
-                    SettingUserProfile(
-                        gender = state.myInfo.gender,
-                        nickname = state.myInfo.nickname,
-                        birthDay = state.myInfo.birthday,
-                        isEditable = true,
-                        onClickEditProfile = { onIntent(SettingIntent.ToggleEditProfile) }
-                    )
-                    Spacer(modifier = Modifier.padding(bottom = CaramelTheme.spacing.m))
-                    SettingUserProfile(
-                        gender = state.partnerInfo.gender,
-                        nickname = state.partnerInfo.nickname,
-                        birthDay = state.partnerInfo.birthday,
-                        isEditable = false
-                    )
-                }
+                SettingUserProfile(
+                    isLoading = state.isLoading,
+                    gender = state.myInfo.gender,
+                    nickname = state.myInfo.nickname,
+                    birthDay = state.myInfo.birthday,
+                    isEditable = true,
+                    onClickEditProfile = { onIntent(SettingIntent.ToggleEditProfile) },
+                )
+                Spacer(modifier = Modifier.padding(bottom = CaramelTheme.spacing.m))
+                SettingUserProfile(
+                    isLoading = state.isLoading,
+                    gender = state.partnerInfo.gender,
+                    nickname = state.partnerInfo.nickname,
+                    birthDay = state.partnerInfo.birthday,
+                    isEditable = false,
+                )
             }
             HorizontalDivider(
-                modifier = Modifier.padding(
-                    top = 10.dp,
-                    bottom = 30.dp
-                ),
-                color = CaramelTheme.color.divider.primary
+                modifier =
+                    Modifier.padding(
+                        top = 10.dp,
+                        bottom = 30.dp,
+                    ),
+                color = CaramelTheme.color.divider.primary,
             )
 
             Column(modifier = Modifier.padding(horizontal = CaramelTheme.spacing.xl)) {
@@ -160,27 +163,28 @@ internal fun SettingScreen(
                     modifier = Modifier,
                     text = "서비스 소개",
                     style = CaramelTheme.typography.heading3,
-                    color = CaramelTheme.color.text.primary
+                    color = CaramelTheme.color.text.primary,
                 )
                 Spacer(
-                    modifier = Modifier.padding(
-                        bottom = CaramelTheme.spacing.s
-                    )
+                    modifier =
+                        Modifier.padding(
+                            bottom = CaramelTheme.spacing.s,
+                        ),
                 )
                 SettingListButton(
                     mainText = "알림",
                     isChecked = state.isNotificationEnabled,
-                    onClickTailButton = { onIntent(SettingIntent.ClickNotificationToggleButton) }
+                    onClickTailButton = { onIntent(SettingIntent.ClickNotificationToggleButton) },
                 )
                 SettingListText(
                     mainText = "앱 버전 v.${Platform.versionName}",
                     mainTextColor = CaramelTheme.color.text.primary,
-                    onClickTailText = { onIntent(SettingIntent.ClickAppUpdateButton) }
+                    onClickTailText = { onIntent(SettingIntent.ClickAppUpdateButton) },
                 )
                 SettingListText(
                     mainText = "서비스 이용약관",
                     mainTextColor = CaramelTheme.color.text.primary,
-                    onClickListItem = { onIntent(SettingIntent.ClickTermsOfServiceButtons) }
+                    onClickListItem = { onIntent(SettingIntent.ClickTermsOfServiceButtons) },
                 )
                 SettingListText(
                     mainText = "개인정보 처리방침",
@@ -191,11 +195,12 @@ internal fun SettingScreen(
             Spacer(modifier = Modifier.weight(1f))
             Box(modifier = Modifier.fillMaxSize()) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                        .navigationBarsPadding()
-                        .align(Alignment.BottomStart)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp)
+                            .navigationBarsPadding()
+                            .align(Alignment.BottomStart),
                 ) {
                     SettingListText(
                         mainText = "로그아웃",
@@ -226,25 +231,27 @@ fun SettingDialogHost(
     onClickEditNickname: () -> Unit,
     onClickEditBrithDay: () -> Unit,
     onClickLogout: () -> Unit,
-    onClickUserCancelled: () -> Unit
+    onClickUserCancelled: () -> Unit,
 ) {
     if (isShowEditProfileBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = toggleEditProfileDialog,
             contentWindowInsets = { WindowInsets(0, 0, 0, 0) },
             dragHandle = null,
-            shape = RoundedCornerShape(
-                topStart = 24.dp,
-                topEnd = 24.dp
-            ),
+            shape =
+                RoundedCornerShape(
+                    topStart = 24.dp,
+                    topEnd = 24.dp,
+                ),
             scrimColor = CaramelTheme.color.alpha.primary,
         ) {
             SettingEditProfileBottomSheet(
-                modifier = Modifier
-                    .background(color = CaramelTheme.color.background.tertiary)
-                    .navigationBarsPadding(),
+                modifier =
+                    Modifier
+                        .background(color = CaramelTheme.color.background.tertiary)
+                        .navigationBarsPadding(),
                 navigateToProfileEditNickName = onClickEditNickname,
-                navigateToProfileEditBrithDay = onClickEditBrithDay
+                navigateToProfileEditBrithDay = onClickEditBrithDay,
             )
         }
     }
@@ -259,7 +266,7 @@ fun SettingDialogHost(
             onClickLogout()
         },
         onSubButtonClick = toggleLogoutDialog,
-        onDismissRequest = toggleLogoutDialog
+        onDismissRequest = toggleLogoutDialog,
     ) {
         DefaultCaramelDialogLayout()
     }
@@ -275,7 +282,7 @@ fun SettingDialogHost(
             onClickUserCancelled()
         },
         onSubButtonClick = toggleUserCancelledDialog,
-        onDismissRequest = toggleUserCancelledDialog
+        onDismissRequest = toggleUserCancelledDialog,
     ) {
         DefaultCaramelDialogLayout()
     }

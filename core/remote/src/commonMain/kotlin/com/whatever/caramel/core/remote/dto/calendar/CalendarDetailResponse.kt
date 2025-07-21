@@ -5,12 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CalendarDetailResponse(
-    @SerialName("calendarResult") val calendarResult: CalendarApiResult
+    @SerialName("calendarResult") val calendarResult: CalendarApiResult,
 )
 
 @Serializable
 data class CalendarApiResult(
-    @SerialName("scheduleList") val scheduleList : List<ScheduleApiResult>
+    @SerialName("scheduleList") val scheduleList: List<ScheduleApiResult>,
 )
 
 @Serializable
@@ -23,5 +23,5 @@ data class ScheduleApiResult(
     @SerialName("isCompleted") val isCompleted: Boolean,
     @SerialName("parentScheduleId") val parentScheduleId: Long?,
     @SerialName("title") val title: String?,
-    @SerialName("description") val description: String?
+    @SerialName("description") val description: String?,
 )

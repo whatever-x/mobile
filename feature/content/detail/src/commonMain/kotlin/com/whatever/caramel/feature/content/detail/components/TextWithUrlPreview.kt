@@ -23,69 +23,72 @@ fun TextWithUrlPreview(
     onLinkPreviewClick: (String) -> Unit,
 ) {
     val urlRegex = Regex("""(https?://\S+)""")
-    val parts = remember(text, linkMetaData) {
-        val matches = urlRegex.findAll(text).toList()
-        val result = mutableListOf<Any>()
-        var lastIndex = 0
+    val parts =
+        remember(text, linkMetaData) {
+            val matches = urlRegex.findAll(text).toList()
+            val result = mutableListOf<Any>()
+            var lastIndex = 0
 
-        val urlToPreviewMap = linkMetaData.associateBy { it.url }
+            val urlToPreviewMap = linkMetaData.associateBy { it.url }
 
-        matches.forEach { matchResult ->
-            if (matchResult.range.first > lastIndex) {
-                result.add(text.substring(lastIndex, matchResult.range.first))
+            matches.forEach { matchResult ->
+                if (matchResult.range.first > lastIndex) {
+                    result.add(text.substring(lastIndex, matchResult.range.first))
+                }
+                val urlString = matchResult.value
+                result.add(urlToPreviewMap[urlString] ?: urlString)
+                lastIndex = matchResult.range.last + 1
             }
-            val urlString = matchResult.value
-            result.add(urlToPreviewMap[urlString] ?: urlString)
-            lastIndex = matchResult.range.last + 1
+            if (lastIndex < text.length) {
+                result.add(text.substring(lastIndex))
+            }
+            result
         }
-        if (lastIndex < text.length) {
-            result.add(text.substring(lastIndex))
-        }
-        result
-    }
 
     Column(modifier = modifier) {
         parts.forEach { item ->
             when (item) {
                 is String -> {
                     if (urlRegex.matches(item)) {
-                        val annotatedString = buildAnnotatedString {
-                            pushStyle(
-                                SpanStyle(
-                                    color = CaramelTheme.color.text.primary,
-                                    textDecoration = TextDecoration.Underline
+                        val annotatedString =
+                            buildAnnotatedString {
+                                pushStyle(
+                                    SpanStyle(
+                                        color = CaramelTheme.color.text.primary,
+                                        textDecoration = TextDecoration.Underline,
+                                    ),
                                 )
-                            )
-                            append(item)
-                            pop()
-                        }
+                                append(item)
+                                pop()
+                            }
                         ClickableText(
                             text = annotatedString,
-                            onClick = { onLinkPreviewClick(item) }
+                            onClick = { onLinkPreviewClick(item) },
                         )
                     } else {
                         Text(
                             text = item,
                             style = CaramelTheme.typography.body1.regular,
-                            color = CaramelTheme.color.text.primary
+                            color = CaramelTheme.color.text.primary,
                         )
                     }
                 }
 
                 is LinkMetaData -> {
-                    val annotatedLinkString = buildAnnotatedString {
-                        pushStyle(
-                            SpanStyle(
-                                color = CaramelTheme.color.text.primary,
-                                textDecoration = TextDecoration.Underline
+                    val annotatedLinkString =
+                        buildAnnotatedString {
+                            pushStyle(
+                                SpanStyle(
+                                    color = CaramelTheme.color.text.primary,
+                                    textDecoration = TextDecoration.Underline,
+                                ),
                             )
-                        )
-                        append(item.url)
-                        pop()
-                    }
+                            append(item.url)
+                            pop()
+                        }
                     ClickableText(
                         text = annotatedLinkString,
-                        onClick = { onLinkPreviewClick(item.url) }
+                        onClick = { onLinkPreviewClick(item.url) },
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     LinkPreview(
@@ -93,11 +96,10 @@ fun TextWithUrlPreview(
                         imageUrl = item.imageUrl,
                         onLinkPreviewClick = {
                             onLinkPreviewClick(item.url)
-                        }
+                        },
                     )
                 }
             }
         }
     }
 }
-

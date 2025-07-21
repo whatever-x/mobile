@@ -40,24 +40,23 @@ import org.jetbrains.compose.resources.stringResource
 internal enum class OnboardingStep(
     val res: DrawableResource,
     val title: StringResource,
-    val description: StringResource
+    val description: StringResource,
 ) {
     FIRST(
         res = Resources.Image.img_onboarding01,
         title = Res.string.step_1_title,
-        description = Res.string.step_1_description
+        description = Res.string.step_1_description,
     ),
     SECOND(
         res = Resources.Image.img_onboarding02,
         title = Res.string.step_2_title,
-        description = Res.string.step_2_description
+        description = Res.string.step_2_description,
     ),
     THIRD(
         res = Resources.Image.img_onboarding03,
         title = Res.string.step_3_title,
-        description = Res.string.step_3_description
+        description = Res.string.step_3_description,
     ),
-    ;
 }
 
 @Composable
@@ -67,21 +66,22 @@ internal fun OnboardingPager(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(
-            space = 36.dp,
-            alignment = Alignment.CenterVertically
-        )
+        verticalArrangement =
+            Arrangement.spacedBy(
+                space = 36.dp,
+                alignment = Alignment.CenterVertically,
+            ),
     ) {
         HorizontalPager(
             state = pagerState,
         ) { page ->
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Image(
                     painter = painterResource(resource = OnboardingStep.entries[page].res),
-                    contentDescription = null
+                    contentDescription = null,
                 )
 
                 Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.xxl))
@@ -90,7 +90,7 @@ internal fun OnboardingPager(
                     text = stringResource(resource = OnboardingStep.entries[page].title),
                     style = CaramelTheme.typography.heading1,
                     color = CaramelTheme.color.text.primary,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
 
                 Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.s))
@@ -98,7 +98,7 @@ internal fun OnboardingPager(
                 Text(
                     text = stringResource(resource = OnboardingStep.entries[page].description),
                     style = CaramelTheme.typography.body3.regular,
-                    color = CaramelTheme.color.text.primary
+                    color = CaramelTheme.color.text.primary,
                 )
             }
         }
@@ -106,7 +106,7 @@ internal fun OnboardingPager(
         StepperIndicator(
             pageCount = OnboardingStep.entries.size,
             currentPage = pagerState.currentPage,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
@@ -119,30 +119,36 @@ private fun StepperIndicator(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(
-            space = CaramelTheme.spacing.xs,
-            alignment = Alignment.CenterHorizontally
-        ),
+        horizontalArrangement =
+            Arrangement.spacedBy(
+                space = CaramelTheme.spacing.xs,
+                alignment = Alignment.CenterHorizontally,
+            ),
     ) {
         repeat(pageCount) { index ->
             val isSelected = index == currentPage
 
             val width by animateDpAsState(
                 targetValue = if (isSelected) 20.dp else 6.dp,
-                animationSpec = tween(durationMillis = 300)
+                animationSpec = tween(durationMillis = 300),
             )
             val color by animateColorAsState(
-                targetValue = if (isSelected) CaramelTheme.color.fill.primary
-                else CaramelTheme.color.fill.tertiary,
-                animationSpec = tween(durationMillis = 300)
+                targetValue =
+                    if (isSelected) {
+                        CaramelTheme.color.fill.primary
+                    } else {
+                        CaramelTheme.color.fill.tertiary
+                    },
+                animationSpec = tween(durationMillis = 300),
             )
 
             Box(
-                modifier = Modifier
-                    .height(height = 6.dp)
-                    .width(width = width)
-                    .clip(shape = CaramelTheme.shape.xs)
-                    .background(color = color)
+                modifier =
+                    Modifier
+                        .height(height = 6.dp)
+                        .width(width = width)
+                        .clip(shape = CaramelTheme.shape.xs)
+                        .background(color = color),
             )
         }
     }

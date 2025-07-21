@@ -1,6 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.FileInputStream
-import java.time.LocalDate
 import java.util.Properties
 
 plugins {
@@ -45,6 +44,7 @@ kotlin {
             implementation(projects.core.database)
             implementation(projects.core.remote)
             api(projects.core.analytics)
+            api(projects.core.crashlytics)
             implementation(projects.core.viewmodel)
             api(projects.core.deeplink)
             api(projects.core.firebaseMessaging)
@@ -101,7 +101,7 @@ android {
         buildConfigField(
             type = "String",
             name = appsFlyerKey,
-            value = properties.getProperty(appsFlyerKey)
+            value = properties.getProperty(appsFlyerKey),
         )
     }
 
@@ -134,7 +134,7 @@ android {
             signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
 
@@ -143,7 +143,7 @@ android {
             isDebuggable = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }

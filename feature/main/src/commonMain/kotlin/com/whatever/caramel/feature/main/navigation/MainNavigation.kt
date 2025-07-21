@@ -27,12 +27,12 @@ fun NavGraphBuilder.mainGraph(
     navigateToCreateTodo: (ContentType) -> Unit,
     navigateToCreateSchedule: (ContentType, String) -> Unit,
     showErrorToast: (String) -> Unit,
-    showErrorDialog: (String, String?) -> Unit
+    showErrorDialog: (String, String?) -> Unit,
 ) {
     composable<MainRoute>(
         exitTransition = { ExitTransition.None },
         popEnterTransition = { EnterTransition.None },
-        popExitTransition = { ExitTransition.None }
+        popExitTransition = { ExitTransition.None },
     ) {
         MainRoute(
             navigateToSetting = navigateToSetting,
@@ -41,7 +41,7 @@ fun NavGraphBuilder.mainGraph(
             navigateToCreateTodo = navigateToCreateTodo,
             navigateToCreateSchedule = navigateToCreateSchedule,
             showErrorToast = showErrorToast,
-            showErrorDialog = showErrorDialog
+            showErrorDialog = showErrorDialog,
         )
     }
 }

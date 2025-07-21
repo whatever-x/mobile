@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.home
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
@@ -11,11 +12,13 @@ import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfo
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.user.Gender
+import com.whatever.caramel.core.ui.util.validateInputText
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.home.mvi.BalanceGameOptionState
 import com.whatever.caramel.feature.home.mvi.BalanceGameState
 import com.whatever.caramel.feature.home.mvi.HomeIntent
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect
+import com.whatever.caramel.feature.home.mvi.HomeSideEffect.NavigateToContentDetail
 import com.whatever.caramel.feature.home.mvi.HomeState
 import com.whatever.caramel.feature.home.mvi.TodoState
 import kotlinx.collections.immutable.toImmutableList
@@ -27,12 +30,10 @@ class HomeViewModel(
     private val getTodayScheduleUseCase: GetTodayScheduleUseCase,
     private val getTodayBalanceGameUseCase: GetTodayBalanceGameUseCase,
     private val submitBalanceGameChoiceUseCase: SubmitBalanceGameChoiceUseCase,
-    savedStateHandle: SavedStateHandle
-) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle) {
-
-    override fun createInitialState(savedStateHandle: SavedStateHandle): HomeState {
-        return HomeState()
-    }
+    savedStateHandle: SavedStateHandle,
+    crashlytics: CaramelCrashlytics,
+) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle, crashlytics) {
+    override fun createInitialState(savedStateHandle: SavedStateHandle): HomeState = HomeState()
 
     override suspend fun handleIntent(intent: HomeIntent) {
         when (intent) {
@@ -40,14 +41,14 @@ class HomeViewModel(
             is HomeIntent.ClickSettingButton -> postSideEffect(HomeSideEffect.NavigateToSetting)
             is HomeIntent.ClickTodoContent -> {
                 postSideEffect(
-                    HomeSideEffect.NavigateToContentDetail(
+                    NavigateToContentDetail(
                         contentId = intent.todoContentId,
-                        contentType = ContentType.CALENDAR
-                    )
+                        contentType = ContentType.CALENDAR,
+                    ),
                 )
             }
             is HomeIntent.CreateTodoContent -> postSideEffect(HomeSideEffect.NavigateToCreateContent)
-            is HomeIntent.SaveShareMessage -> saveShareMessage(newShareMessage = intent.newShareMessage)
+            is HomeIntent.SaveShareMessage -> saveShareMessage()
             is HomeIntent.ShowShareMessageEditBottomSheet -> showBottomSheet()
             is HomeIntent.HideShareMessageEditBottomSheet -> hideBottomSheet()
             is HomeIntent.PullToRefresh -> refreshHomeData()
@@ -55,51 +56,84 @@ class HomeViewModel(
             is HomeIntent.ChangeBalanceGameCardState -> changeBalanceGameCardState()
             is HomeIntent.LoadDataOnStart -> loadDataOnStart()
             is HomeIntent.HideDialog -> hideDialog()
+            is HomeIntent.ClearShareMessage -> clearShareMessage()
+            is HomeIntent.InputShareMessage -> inputShareMessage(text = intent.newShareMessage)
+        }
+    }
+
+    private fun inputShareMessage(text: String) {
+        validateInputText(
+            text = text,
+            limitLength = HomeState.MAX_SHARE_MESSAGE_LENGTH,
+            onPass = { text ->
+                reduce {
+                    copy(
+                        bottomSheetShareMessage = text,
+                    )
+                }
+            },
+        )
+    }
+
+    private fun clearShareMessage() {
+        reduce {
+            copy(
+                bottomSheetShareMessage = "",
+            )
         }
     }
 
     override fun handleClientException(throwable: Throwable) {
         super.handleClientException(throwable)
-
-        val exception = throwable as CaramelException
-
-        when (exception.code) {
-            CoupleErrorCode.CAN_NOT_LOAD_DATA -> {
-                reduce {
-                    copy(
-                        isShowBottomSheet = false,
-                        isShowDialog = true,
-                        dialogTitle = exception.message,
-                        coupleState = HomeState.CoupleState.DISCONNECT
-                    )
-                }
-            }
-            CoupleErrorCode.MEMBER_NOT_FOUND -> {
-                if (currentState.coupleState != HomeState.CoupleState.DISCONNECT) {
+        if (throwable is CaramelException) {
+            when (throwable.code) {
+                CoupleErrorCode.CAN_NOT_LOAD_DATA -> {
                     reduce {
                         copy(
+                            isShowBottomSheet = false,
                             isShowDialog = true,
-                            dialogTitle = exception.message,
-                            coupleState = HomeState.CoupleState.DISCONNECT
+                            dialogTitle = throwable.message,
+                            coupleState = HomeState.CoupleState.DISCONNECT,
                         )
                     }
                 }
-            }
-            else -> {
-                when (exception.errorUiType) {
-                    ErrorUiType.TOAST -> postSideEffect(
-                        HomeSideEffect.ShowErrorToast(
-                            message = throwable.message
-                        )
-                    )
-                    ErrorUiType.DIALOG -> postSideEffect(
-                        HomeSideEffect.ShowErrorDialog(
-                            message = throwable.message,
-                            description = throwable.description
-                        )
-                    )
+                CoupleErrorCode.MEMBER_NOT_FOUND -> {
+                    if (currentState.coupleState != HomeState.CoupleState.DISCONNECT) {
+                        reduce {
+                            copy(
+                                isShowDialog = true,
+                                dialogTitle = throwable.message,
+                                coupleState = HomeState.CoupleState.DISCONNECT,
+                            )
+                        }
+                    }
+                }
+                else -> {
+                    when (throwable.errorUiType) {
+                        ErrorUiType.TOAST ->
+                            postSideEffect(
+                                HomeSideEffect.ShowErrorToast(
+                                    message = throwable.message,
+                                ),
+                            )
+                        ErrorUiType.DIALOG ->
+                            postSideEffect(
+                                HomeSideEffect.ShowErrorDialog(
+                                    message = throwable.message,
+                                    description = throwable.description,
+                                ),
+                            )
+                    }
                 }
             }
+        } else {
+            caramelCrashlytics.recordException(throwable)
+            postSideEffect(
+                HomeSideEffect.ShowErrorDialog(
+                    message = "알 수 없는 오류가 발생했습니다.",
+                    description = null,
+                ),
+            )
         }
     }
 
@@ -107,7 +141,7 @@ class HomeViewModel(
         reduce {
             copy(
                 isShowDialog = false,
-                dialogTitle = ""
+                dialogTitle = "",
             )
         }
     }
@@ -122,14 +156,15 @@ class HomeViewModel(
         }
     }
 
-    private suspend fun saveShareMessage(newShareMessage: String) {
+    private suspend fun saveShareMessage() {
         launch {
-            val updatedMessage = updateShareMessageUseCase(shareMessage = newShareMessage)
+            updateShareMessageUseCase(shareMessage = currentState.bottomSheetShareMessage)
+            postSideEffect(HomeSideEffect.HideKeyboard)
 
             reduce {
                 copy(
-                    shareMessage = updatedMessage,
-                    isShowBottomSheet = false
+                    shareMessage = currentState.bottomSheetShareMessage,
+                    isShowBottomSheet = false,
                 )
             }
         }
@@ -140,7 +175,7 @@ class HomeViewModel(
             reduce {
                 copy(
                     isLoading = true,
-                    coupleState = HomeState.CoupleState.IDLE
+                    coupleState = HomeState.CoupleState.IDLE,
                 )
             }
 
@@ -156,7 +191,10 @@ class HomeViewModel(
 
     private fun showBottomSheet() {
         reduce {
-            copy(isShowBottomSheet = true)
+            copy(
+                bottomSheetShareMessage = currentState.shareMessage,
+                isShowBottomSheet = true,
+            )
         }
     }
 
@@ -177,7 +215,7 @@ class HomeViewModel(
                 partnerGender = coupleRelationShip.partnerInfo.userProfile?.gender ?: Gender.IDLE,
                 daysTogether = coupleRelationShip.info.daysTogether,
                 shareMessage = coupleRelationShip.info.sharedMessage,
-                coupleState = HomeState.CoupleState.CONNECT
+                coupleState = HomeState.CoupleState.CONNECT,
             )
         }
     }
@@ -185,19 +223,15 @@ class HomeViewModel(
     private suspend fun initSchedules() {
         val schedules = getTodayScheduleUseCase()
 
-        if (schedules.isNotEmpty()) {
-            val todoUiState = schedules.map { todo ->
-                TodoState(
-                    id = todo.id,
-                    title = todo.title,
-                )
-            }
-
-            reduce {
-                copy(
-                    todos = todoUiState
-                )
-            }
+        reduce {
+            copy(
+                todos =
+                    if (schedules.isNotEmpty()) {
+                        schedules.map { todo -> TodoState(id = todo.id, title = todo.title.ifEmpty { todo.description }) }
+                    } else {
+                        emptyList()
+                    },
+            )
         }
     }
 
@@ -207,25 +241,28 @@ class HomeViewModel(
 
             reduce {
                 copy(
-                    balanceGameState = BalanceGameState(
-                        id = todayBalanceGame.gameInfo.id,
-                        question = todayBalanceGame.gameInfo.question,
-                        options = todayBalanceGame.gameInfo.options.map {
-                            BalanceGameOptionState(
-                                id = it.optionId,
-                                name = it.text
-                            )
-                        }.toImmutableList()
-                    ),
+                    balanceGameState =
+                        BalanceGameState(
+                            id = todayBalanceGame.gameInfo.id,
+                            question = todayBalanceGame.gameInfo.question,
+                            options =
+                                todayBalanceGame.gameInfo.options
+                                    .map {
+                                        BalanceGameOptionState(
+                                            id = it.optionId,
+                                            name = it.text,
+                                        )
+                                    }.toImmutableList(),
+                        ),
                     myChoiceOption =
                         BalanceGameOptionState(
                             id = todayBalanceGame.myChoice?.optionId ?: 0L,
-                            name = todayBalanceGame.myChoice?.text ?: ""
+                            name = todayBalanceGame.myChoice?.text ?: "",
                         ),
                     partnerChoiceOption =
                         BalanceGameOptionState(
                             id = todayBalanceGame.partnerChoice?.optionId ?: 0L,
-                            name = todayBalanceGame.partnerChoice?.text ?: ""
+                            name = todayBalanceGame.partnerChoice?.text ?: "",
                         ),
                 )
             }
@@ -234,22 +271,23 @@ class HomeViewModel(
 
     private fun submitBalanceGameOption(balanceGameOptionState: BalanceGameOptionState) {
         launch {
-            val result = submitBalanceGameChoiceUseCase(
-                gameId = currentState.balanceGameState.id,
-                optionId = balanceGameOptionState.id
-            )
+            val result =
+                submitBalanceGameChoiceUseCase(
+                    gameId = currentState.balanceGameState.id,
+                    optionId = balanceGameOptionState.id,
+                )
 
             reduce {
                 copy(
                     myChoiceOption =
                         BalanceGameOptionState(
                             id = result.myChoice?.optionId ?: 0L,
-                            name = result.myChoice?.text ?: ""
+                            name = result.myChoice?.text ?: "",
                         ),
                     partnerChoiceOption =
                         BalanceGameOptionState(
                             id = result.partnerChoice?.optionId ?: 0L,
-                            name = result.partnerChoice?.text ?: ""
+                            name = result.partnerChoice?.text ?: "",
                         ),
                 )
             }
@@ -261,5 +299,4 @@ class HomeViewModel(
             copy(balanceGameCardState = HomeState.BalanceGameCardState.CONFIRM)
         }
     }
-
 }

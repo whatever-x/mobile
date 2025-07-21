@@ -21,19 +21,20 @@ fun CaramelBalloonPopupWithImage(
     modifier: Modifier = Modifier,
     balloonPopupModifier: Modifier = Modifier,
     text: String,
-    image: @Composable () -> Unit
+    image: @Composable () -> Unit,
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(
-            space = CaramelTheme.spacing.s,
-            alignment = Alignment.CenterVertically
-        ),
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement =
+            Arrangement.spacedBy(
+                space = CaramelTheme.spacing.s,
+                alignment = Alignment.CenterVertically,
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CaramelBalloonPopup(
             modifier = balloonPopupModifier,
-            text = text
+            text = text,
         )
 
         image.invoke()
@@ -43,32 +44,32 @@ fun CaramelBalloonPopupWithImage(
 @Composable
 fun CaramelBalloonPopup(
     modifier: Modifier = Modifier,
-    text: String
+    text: String,
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            modifier = modifier
-                .background(
-                    color = CaramelTheme.color.fill.quaternary,
-                    shape = CaramelTheme.shape.s
-                )
-                .padding(
-                    horizontal = CaramelTheme.spacing.l,
-                    vertical = CaramelTheme.spacing.m
-                ),
+            modifier =
+                modifier
+                    .background(
+                        color = CaramelTheme.color.fill.quaternary,
+                        shape = CaramelTheme.shape.s,
+                    ).padding(
+                        horizontal = CaramelTheme.spacing.l,
+                        vertical = CaramelTheme.spacing.m,
+                    ),
             textAlign = TextAlign.Center,
             text = text,
             style = CaramelTheme.typography.body4.regular,
-            color = CaramelTheme.color.text.primary
+            color = CaramelTheme.color.text.primary,
         )
 
         Icon(
             modifier = Modifier.offset(y = (-0.2).dp),
             painter = painterResource(resource = Resources.Icon.ic_vertex_17_9),
             contentDescription = null,
-            tint = CaramelTheme.color.fill.quaternary
+            tint = CaramelTheme.color.fill.quaternary,
         )
     }
 }

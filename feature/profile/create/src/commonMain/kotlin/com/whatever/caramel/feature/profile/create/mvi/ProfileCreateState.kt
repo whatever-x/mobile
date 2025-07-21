@@ -12,24 +12,24 @@ data class ProfileCreateState(
     val isPersonalInfoTermChecked: Boolean = false,
     val currentStep: ProfileCreateStep = ProfileCreateStep.NICKNAME,
 ) : UiState {
-
     val isNextButtonEnabled: Boolean
-        get() = when (currentStep) {
-            ProfileCreateStep.NICKNAME -> nickname.isNotEmpty()
-            ProfileCreateStep.GENDER -> gender != Gender.IDLE
-            ProfileCreateStep.BIRTHDAY -> true
-            ProfileCreateStep.NEED_TERMS -> isServiceTermChecked && isPersonalInfoTermChecked
-        }
+        get() =
+            when (currentStep) {
+                ProfileCreateStep.NICKNAME -> nickname.isNotEmpty()
+                ProfileCreateStep.GENDER -> gender != Gender.IDLE
+                ProfileCreateStep.BIRTHDAY -> true
+                ProfileCreateStep.NEED_TERMS -> isServiceTermChecked && isPersonalInfoTermChecked
+            }
 
     val currentIndex: Int
         get() = ProfileCreateStep.entries.indexOf(currentStep)
 
     val buttonText: String
-        get() = when (currentStep) {
-            ProfileCreateStep.NEED_TERMS -> "가입 완료!"
-            else -> "다음"
-        }
-
+        get() =
+            when (currentStep) {
+                ProfileCreateStep.NEED_TERMS -> "가입 완료!"
+                else -> "다음"
+            }
 }
 
 enum class ProfileCreateStep {
@@ -37,5 +37,4 @@ enum class ProfileCreateStep {
     GENDER,
     BIRTHDAY,
     NEED_TERMS,
-    ;
 }

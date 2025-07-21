@@ -1,0 +1,104 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+require 'dotenv'
+Dotenv.load('.env')
+
+platform :android do
+  desc "Android Firebase Distribution 배포"
+  lane :beta do
+    version_file = File.expand_path("../gradle/libs.versions.toml", __dir__)
+    current_code = sh("grep 'version-code' #{version_file} | awk -F '\"' '{print $2}'").strip.to_i
+    new_code = current_code + 1
+    sh("sed -i '' 's/version-code = \"#{current_code}\"/version-code = \"#{new_code}\"/' #{version_file}")
+
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      project_dir: "./"
+    )
+
+    firebase_app_distribution(
+      app: "1:240831513869:android:25441e47503fdff9211c44",
+      groups: "caramel-팀원",
+      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+      release_notes_file: "fastlane/android-release-notes.txt",
+      android_artifact_type: "AAB"
+    )
+
+    version_code = sh("grep 'version-code' #{version_file} | awk -F '\"' '{print $2}'").strip
+    version_name = sh("grep 'version-name' #{version_file} | awk -F '\"' '{print $2}'").strip
+    release_notes = File.read("#{__dir__}/android-release-notes.txt").strip
+
+    slack(
+      message: "✅ *Android Firebase 내부 테스트 배포 완료*",
+      success: true,
+      payload: {
+        "Version Name" => version_name,
+        "Version Code" => version_code,
+        "Deployer" => ENV["DEPLOYER_NAME"],
+        "Release Notes" => release_notes
+      },
+      slack_url: ENV["SLACK_WEBHOOK_URL"]
+    )
+    end
+end
+
+platform :ios do
+  desc "iOS TestFlight 배포"
+  lane :beta do
+    match(
+      type: "appstore",
+      readonly: false
+    )
+
+    increment_build_number(
+      xcodeproj: "app-ios/iosApp.xcodeproj"
+    )
+
+    build_app(
+      scheme: "iosApp",
+      export_method: "app-store",
+      project: "app-ios/iosApp.xcodeproj"
+    )
+
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_API_ISSUER_ID"],
+      key_filepath: ENV["APP_STORE_CONNECT_API_KEY_FILE"]
+    )
+
+    upload_to_testflight(
+      api_key: api_key,
+      skip_waiting_for_build_processing: false,
+      distribute_external: false,
+      changelog: File.read(File.expand_path("ios-release-notes.txt", __dir__))
+    )
+
+    release_notes = File.read("#{__dir__}/ios-release-notes.txt").strip
+
+    slack(
+      message: "✅ *iOS TestFlight 내부 테스트 배포 완료*",
+      success: true,
+      payload: {
+        "Version Name" => get_version_number(xcodeproj: "app-ios/iosApp.xcodeproj"),
+        "Build Number" => get_build_number(xcodeproj: "app-ios/iosApp.xcodeproj"),
+        "Deployer" => ENV["DEPLOYER_NAME"],
+        "Release Notes" => release_notes
+      },
+      slack_url: ENV["SLACK_WEBHOOK_URL"]
+    )
+  end
+end

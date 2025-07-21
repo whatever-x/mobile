@@ -7,12 +7,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CursoredContentResponse(
     @SerialName("list") val list: List<MemoResponse>,
-    @SerialName("cursor") val cursor: Cursor
+    @SerialName("cursor") val cursor: Cursor,
 )
 
 @Serializable
 data class Cursor(
-    @SerialName("next") val next: String?
+    @SerialName("next") val next: String?,
 )
 
 @Serializable

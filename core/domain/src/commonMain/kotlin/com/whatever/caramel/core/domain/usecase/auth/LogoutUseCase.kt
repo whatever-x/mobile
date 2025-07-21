@@ -4,10 +4,10 @@ import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.repository.CoupleRepository
 import com.whatever.caramel.core.domain.repository.UserRepository
 
-class LogoutUseCase (
+class LogoutUseCase(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
-    private val coupleRepository: CoupleRepository
+    private val coupleRepository: CoupleRepository,
 ) {
     suspend operator fun invoke() {
         authRepository.deleteToken()

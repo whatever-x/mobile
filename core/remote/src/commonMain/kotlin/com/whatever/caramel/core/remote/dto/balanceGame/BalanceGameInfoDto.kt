@@ -8,5 +8,5 @@ data class BalanceGameInfoDto(
     @SerialName("id") val id: Long,
     @SerialName("date") val date: String,
     @SerialName("question") val question: String,
-    @SerialName("options") val options: List<OptionInfoDto>
+    @SerialName("options") val options: List<OptionInfoDto>,
 )

@@ -6,7 +6,7 @@ import com.whatever.caramel.core.domain.vo.user.UserStatus
 
 class RefreshUserSessionUseCase(
     private val authRepository: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
     suspend operator fun invoke(): UserStatus {
         val localSavedToken = authRepository.getAuthToken()

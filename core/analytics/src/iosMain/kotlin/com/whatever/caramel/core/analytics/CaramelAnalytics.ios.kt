@@ -1,7 +1,10 @@
 package com.whatever.caramel.core.analytics
 
 class CaramelAnalyticsImpl : CaramelAnalytics {
-    override fun logEvent(eventName: String, params: Map<String, Any>?) {
+    override fun logEvent(
+        eventName: String,
+        params: Map<String, Any>?,
+    ) {
         iosAnalyticsCallback?.logEvent(eventName, params.toString())
     }
 
@@ -10,20 +13,24 @@ class CaramelAnalyticsImpl : CaramelAnalytics {
 
         val sb = StringBuilder()
         this.forEach { (key, value) ->
-            sb.append("${key}:${value},")
+            sb.append("$key:$value,")
         }
         return sb.toString()
     }
 }
+
 actual fun getCaramelAnalytics(): CaramelAnalytics = CaramelAnalyticsImpl()
 
 interface IosAnalyticsCallback {
-    fun logEvent(eventId : String, params : String)
+    fun logEvent(
+        eventId: String,
+        params: String,
+    )
 }
 
-private var iosAnalyticsCallback : IosAnalyticsCallback? = null
+private var iosAnalyticsCallback: IosAnalyticsCallback? = null
 
 @Suppress("unused")
-fun firebaseCallback(callback : IosAnalyticsCallback) {
+fun firebaseCallback(callback: IosAnalyticsCallback) {
     iosAnalyticsCallback = callback
 }

@@ -4,6 +4,7 @@ import com.whatever.caramel.feature.splash.SplashViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-val splashFeatureModule = module {
-    viewModelOf(::SplashViewModel)
-}
+val splashFeatureModule =
+    module {
+        viewModelOf(::SplashViewModel)
+    }

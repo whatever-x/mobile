@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.compose.rememberNavController
 import com.appsflyer.AppsFlyerLib
 import com.appsflyer.deeplink.DeepLink
@@ -18,7 +17,6 @@ import io.github.aakira.napier.Napier
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
-
     private val deepLinkHandler: DeepLinkHandler by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +58,7 @@ class MainActivity : ComponentActivity() {
 
                     deepLinkHandler.handleAppsFlyerData(
                         deepLinkValue = deepLinkValue,
-                        params = params
+                        params = params,
                     )
                 }
             }
@@ -69,12 +67,11 @@ class MainActivity : ComponentActivity() {
 
     private fun setupSystemBars() {
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        
+
         windowInsetsController.isAppearanceLightStatusBars = true
         windowInsetsController.isAppearanceLightNavigationBars = true
-        
+
         window.navigationBarColor = android.graphics.Color.TRANSPARENT
         window.statusBarColor = android.graphics.Color.TRANSPARENT
     }
-
 }

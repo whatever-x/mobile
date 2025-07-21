@@ -1,0 +1,60 @@
+name: Slack - PR Review Submitted
+
+on:
+  workflow_call:
+    secrets:
+      SLACK_WEBHOOK_URL:
+        required: true
+    inputs:
+      review_header:
+        required: true
+        type: string
+
+jobs:
+  send-slack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract PR review info
+        id: pr-review-info
+        run: |
+          PR_NUMBER=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")
+          PR_TITLE=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
+          PR_URL=$(jq -r '.pull_request.html_url' "$GITHUB_EVENT_PATH")
+          REVIEWER=$(jq -r '.review.user.login' "$GITHUB_EVENT_PATH")
+          REVIEWER_URL="https://github.com/${REVIEWER}"
+          REVIEWER_AVATAR=$(jq -r '.review.user.avatar_url' "$GITHUB_EVENT_PATH")
+          REVIEW_BODY=$(jq -r '.review.body' "$GITHUB_EVENT_PATH")
+
+          if [ -z "$REVIEW_BODY" ] || [ "$REVIEW_BODY" == "null" ]; then
+            REVIEW_BODY="(❌코멘트가 없습니다)"
+          fi
+
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+          echo "pr_title=$PR_TITLE" >> $GITHUB_OUTPUT
+          echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
+          echo "reviewer=$REVIEWER" >> $GITHUB_OUTPUT
+          echo "reviewer_url=$REVIEWER_URL" >> $GITHUB_OUTPUT
+          echo "reviewer_avatar=$REVIEWER_AVATAR" >> $GITHUB_OUTPUT
+          echo "review_body=$(printf "%s" "$REVIEW_BODY" | jq -Rs .)" >> $GITHUB_OUTPUT
+
+      - name: Send Slack Notification
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            blocks:
+              - type: "header"
+                text:
+                  type: "plain_text"
+                  text: "${{ inputs.review_header }}"
+                  emoji: true
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "- *<${{ steps.pr-review-info.outputs.pr_url }}|${{ steps.pr-review-info.outputs.pr_title }}>* #${{ steps.pr-review-info.outputs.pr_number }}\n- *<${{ steps.pr-review-info.outputs.reviewer_url }}|${{ steps.pr-review-info.outputs.reviewer }}>* 님의 리뷰 코멘트\n```${{ fromJson(steps.pr-review-info.outputs.review_body) }}```"
+                accessory:
+                  type: "image"
+                  image_url: "${{ steps.pr-review-info.outputs.reviewer_avatar }}"
+                  alt_text: "by ${{ steps.pr-review-info.outputs.reviewer }}"

@@ -4,80 +4,82 @@ import com.whatever.caramel.core.data.interceptor.TokenInterceptorImpl
 import com.whatever.caramel.core.data.repository.AuthRepositoryImpl
 import com.whatever.caramel.core.data.repository.BalanceGameRepositoryImpl
 import com.whatever.caramel.core.data.repository.CalendarRepositoryImpl
-import com.whatever.caramel.core.data.repository.MemoRepositoryImpl
 import com.whatever.caramel.core.data.repository.CoupleRepositoryImpl
-import com.whatever.caramel.core.data.repository.UserRepositoryImpl
-import com.whatever.caramel.core.data.repository.TagRepositoryImpl
 import com.whatever.caramel.core.data.repository.LinkMetadataRepositoryImpl
+import com.whatever.caramel.core.data.repository.MemoRepositoryImpl
+import com.whatever.caramel.core.data.repository.TagRepositoryImpl
+import com.whatever.caramel.core.data.repository.UserRepositoryImpl
 import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.repository.BalanceGameRepository
 import com.whatever.caramel.core.domain.repository.CalendarRepository
-import com.whatever.caramel.core.domain.repository.MemoRepository
 import com.whatever.caramel.core.domain.repository.CoupleRepository
-import com.whatever.caramel.core.domain.repository.UserRepository
-import com.whatever.caramel.core.domain.repository.TagRepository
 import com.whatever.caramel.core.domain.repository.LinkMetadataRepository
+import com.whatever.caramel.core.domain.repository.MemoRepository
+import com.whatever.caramel.core.domain.repository.TagRepository
+import com.whatever.caramel.core.domain.repository.UserRepository
 import com.whatever.caramel.core.remote.network.interceptor.TokenInterceptor
 import org.koin.dsl.module
 
-val networkInterceptorModule = module {
-    single<TokenInterceptor> {
-        TokenInterceptorImpl(
-            tokenDataSource = get(),
-            authDataSource = get()
-        )
-    }
-}
-
-val repositoryModule = module {
-    single<AuthRepository> {
-        AuthRepositoryImpl(
-            remoteAuthDataSource = get(),
-            tokenDataSource = get()
-        )
+val networkInterceptorModule =
+    module {
+        single<TokenInterceptor> {
+            TokenInterceptorImpl(
+                tokenDataSource = get(),
+                authDataSource = get(),
+            )
+        }
     }
 
-    single<UserRepository> {
-        UserRepositoryImpl(
-            userRemoteDataSource = get(),
-            userDataSource = get()
-        )
-    }
+val repositoryModule =
+    module {
+        single<AuthRepository> {
+            AuthRepositoryImpl(
+                remoteAuthDataSource = get(),
+                tokenDataSource = get(),
+            )
+        }
 
-    single<CoupleRepository> {
-        CoupleRepositoryImpl(
-            localCoupleDataSource = get(),
-            remoteCoupleDataSource = get()
-        )
-    }
+        single<UserRepository> {
+            UserRepositoryImpl(
+                userRemoteDataSource = get(),
+                userDataSource = get(),
+            )
+        }
 
-    single<CalendarRepository> {
-        CalendarRepositoryImpl(
-            remoteCalendarDataSource = get()
-        )
-    }
+        single<CoupleRepository> {
+            CoupleRepositoryImpl(
+                localCoupleDataSource = get(),
+                remoteCoupleDataSource = get(),
+            )
+        }
 
-    single<MemoRepository> {
-        MemoRepositoryImpl(
-            remoteMemoDataSource = get()
-        )
-    }
+        single<CalendarRepository> {
+            CalendarRepositoryImpl(
+                remoteCalendarDataSource = get(),
+            )
+        }
 
-    single<TagRepository> {
-        TagRepositoryImpl(
-            remoteTagDataSource = get()
-        )
-    }
+        single<MemoRepository> {
+            MemoRepositoryImpl(
+                remoteMemoDataSource = get(),
+            )
+        }
 
-    single<BalanceGameRepository> {
-        BalanceGameRepositoryImpl(
-            remoteBalanceGameDataSource = get()
-        )
-    }
+        single<TagRepository> {
+            TagRepositoryImpl(
+                remoteTagDataSource = get(),
+            )
+        }
 
-    single<LinkMetadataRepository> {
-        LinkMetadataRepositoryImpl(
-            remoteDataSource = get()
-        )
+        single<BalanceGameRepository> {
+            BalanceGameRepositoryImpl(
+                remoteBalanceGameDataSource = get(),
+            )
+        }
+
+        single<LinkMetadataRepository> {
+            LinkMetadataRepositoryImpl(
+                remoteDataSource = get(),
+            )
+        }
     }
-}

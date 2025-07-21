@@ -8,12 +8,12 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 @Preview
 @Composable
 private fun ProfileCreateScreenPreview(
-    @PreviewParameter(ProfileCreateScreenPreviewProvider::class) data: ProfileCreateScreenPreviewData
+    @PreviewParameter(ProfileCreateScreenPreviewProvider::class) data: ProfileCreateScreenPreviewData,
 ) {
     CaramelTheme {
         ProfileCreateScreen(
             state = data.state,
-            onIntent = { }
+            onIntent = { },
         )
     }
 }

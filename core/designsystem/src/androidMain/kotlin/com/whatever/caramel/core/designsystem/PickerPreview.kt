@@ -17,7 +17,7 @@ private fun CaramelWheelPickerPreview() {
     CaramelTheme {
         Box(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             val items = listOf("갉", "나", "다", "라", "마", "바", "사", "아", "자", "차", "카", "타", "파", "하")
 
@@ -25,7 +25,7 @@ private fun CaramelWheelPickerPreview() {
                 items = items,
                 state = rememberPickerState("나"),
                 scrollMode = PickerScrollMode.LOOPING,
-                onItemSelected = {}
+                onItemSelected = {},
             )
         }
     }

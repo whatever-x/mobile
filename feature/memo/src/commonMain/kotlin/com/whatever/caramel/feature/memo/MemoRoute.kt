@@ -16,7 +16,7 @@ internal fun MemoRoute(
     viewModel: MemoViewModel = koinViewModel(),
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     showErrorToast: (String) -> Unit,
-    showErrorDialog: (String, String?) -> Unit
+    showErrorDialog: (String, String?) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -31,13 +31,13 @@ internal fun MemoRoute(
     }
 
     ObserveLifecycleEvent { event ->
-        if (event == Lifecycle.Event.ON_START) {
+        if (event == Lifecycle.Event.ON_RESUME) {
             viewModel.intent(MemoIntent.Initialize)
         }
     }
 
     MemoScreen(
         state = state,
-        onIntent = { intent -> viewModel.intent(intent) }
+        onIntent = { intent -> viewModel.intent(intent) },
     )
 }

@@ -35,13 +35,13 @@ internal fun CalendarRoute(
     }
 
     ObserveLifecycleEvent { event ->
-        if (event == Lifecycle.Event.ON_START) {
+        if (event == Lifecycle.Event.ON_RESUME) {
             viewModel.intent(CalendarIntent.Initialize)
         }
     }
 
     CalendarScreen(
         state = state,
-        onIntent = { intent -> viewModel.intent(intent) }
+        onIntent = { intent -> viewModel.intent(intent) },
     )
 }

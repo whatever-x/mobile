@@ -2,9 +2,9 @@ package com.whatever.caramel.feature.content.detail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
-import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
 import com.whatever.caramel.core.domain.exception.code.ScheduleErrorCode
 import com.whatever.caramel.core.domain.usecase.calendar.DeleteScheduleUseCase
@@ -24,13 +24,13 @@ import kotlinx.coroutines.flow.onStart
 
 class ContentDetailViewModel(
     savedStateHandle: SavedStateHandle,
+    crashlytics: CaramelCrashlytics,
     private val getMemoUseCase: GetMemoUseCase,
     private val getScheduleUseCase: GetScheduleUseCase,
     private val deleteMemoUseCase: DeleteMemoUseCase,
     private val deleteScheduleUseCase: DeleteScheduleUseCase,
-    private val getLinkPreviewsForContentUseCase: GetLinkPreviewsForContentUseCase
-) : BaseViewModel<ContentDetailState, ContentDetailSideEffect, ContentDetailIntent>(savedStateHandle) {
-
+    private val getLinkPreviewsForContentUseCase: GetLinkPreviewsForContentUseCase,
+) : BaseViewModel<ContentDetailState, ContentDetailSideEffect, ContentDetailIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): ContentDetailState {
         val arguments = savedStateHandle.toRoute<ContentDetailRoute>()
         return ContentDetailState(
@@ -39,19 +39,17 @@ class ContentDetailViewModel(
         )
     }
 
-
     private fun fetchLinkPreviews(content: String) {
         launch {
             getLinkPreviewsForContentUseCase(content)
                 .onStart { reduce { copy(isLoadingLinkPreview = true) } }
                 .catch { e ->
                     reduce { copy(isLoadingLinkPreview = false) }
-                }
-                .collect { linkMetaDataList ->
+                }.collect { linkMetaDataList ->
                     reduce {
                         copy(
                             linkMetaDataList = linkMetaDataList.toImmutableList(),
-                            isLoadingLinkPreview = false
+                            isLoadingLinkPreview = false,
                         )
                     }
                 }
@@ -67,28 +65,31 @@ class ContentDetailViewModel(
                 }
                 else -> {
                     when (throwable.errorUiType) {
-                        ErrorUiType.TOAST -> postSideEffect(
-                            ContentDetailSideEffect.ShowErrorSnackBar(
-                                message = throwable.message
+                        ErrorUiType.TOAST ->
+                            postSideEffect(
+                                ContentDetailSideEffect.ShowErrorSnackBar(
+                                    message = throwable.message,
+                                ),
                             )
-                        )
-                        ErrorUiType.DIALOG -> postSideEffect(
-                            ContentDetailSideEffect.ShowErrorDialog(
-                                message = throwable.message,
-                                description = throwable.description
+                        ErrorUiType.DIALOG ->
+                            postSideEffect(
+                                ContentDetailSideEffect.ShowErrorDialog(
+                                    message = throwable.message,
+                                    description = throwable.description,
+                                ),
                             )
-                        )
                     }
                 }
             }
         } else {
+            caramelCrashlytics.recordException(throwable)
             postSideEffect(
-                ContentDetailSideEffect.ShowErrorSnackBar(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
-                )
+                ContentDetailSideEffect.ShowErrorDialog(
+                    message = "알 수 없는 오류가 발생했습니다.",
+                    description = null,
+                ),
             )
         }
-
     }
 
     override suspend fun handleIntent(intent: ContentDetailIntent) {
@@ -101,8 +102,8 @@ class ContentDetailViewModel(
                 postSideEffect(
                     ContentDetailSideEffect.NavigateToEdit(
                         currentState.contentId,
-                        currentState.contentType
-                    )
+                        currentState.contentType,
+                    ),
                 )
             }
 
@@ -169,4 +170,4 @@ class ContentDetailViewModel(
             }
         }
     }
-} 
+}

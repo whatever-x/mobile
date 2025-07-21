@@ -26,9 +26,7 @@ data class ContentEditState(
     val showExitConfirmDialog: Boolean = false,
     val showDeleteConfirmDialog: Boolean = false,
     val showDeletedContentDialog: Boolean = false,
-
-    ) : UiState {
-
+) : UiState {
     val isSaveButtonEnable: Boolean
         get() = title.isNotBlank() || content.isNotBlank()
 
@@ -41,6 +39,7 @@ data class ContentEditState(
         }"
 
     companion object {
-        val INITIAL = ContentEditState()
+        const val MAX_TITLE_LENGTH = 30
+        const val MAX_CONTENT_LENGTH = 5000
     }
-} 
+}

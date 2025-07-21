@@ -4,17 +4,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.user.Gender
-import com.whatever.caramel.feature.setting.component.SettingUserProfile
+import com.whatever.caramel.feature.setting.component.SettingUserProfileContent
 
 @Preview(showBackground = true)
 @Composable
 fun UserProfilePreview() {
     CaramelTheme {
-        SettingUserProfile(
+        SettingUserProfileContent(
             gender = Gender.FEMALE,
             nickname = "유승우",
             birthDay = "1997.11.18",
-            isEditable = false
+            isEditable = false,
         )
     }
 }

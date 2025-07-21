@@ -10,5 +10,5 @@ data class GetMemoResponse(
     val description: String,
     val isCompleted: Boolean,
     val tagList: List<TagDetailResponse>,
-    val createdAt: String
+    val createdAt: String,
 )

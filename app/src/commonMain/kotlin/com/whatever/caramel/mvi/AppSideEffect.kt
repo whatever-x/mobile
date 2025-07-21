@@ -3,7 +3,6 @@ package com.whatever.caramel.mvi
 import com.whatever.caramel.core.viewmodel.UiSideEffect
 
 sealed interface AppSideEffect : UiSideEffect {
-
     data object NavigateToConnectingCoupleScreen : AppSideEffect
 
     data object NavigateToInviteCoupleScreen : AppSideEffect
@@ -14,5 +13,7 @@ sealed interface AppSideEffect : UiSideEffect {
 
     data object NavigateToMain : AppSideEffect
 
-    data class ShowToast(val message: String) : AppSideEffect
+    data class ShowToast(
+        val message: String,
+    ) : AppSideEffect
 }

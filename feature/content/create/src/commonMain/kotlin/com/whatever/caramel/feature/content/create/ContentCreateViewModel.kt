@@ -2,9 +2,9 @@ package com.whatever.caramel.feature.content.create
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
-import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
@@ -12,7 +12,9 @@ import com.whatever.caramel.core.domain.vo.content.ContentParameterType
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.ui.content.CreateMode
+import com.whatever.caramel.core.ui.util.validateInputText
 import com.whatever.caramel.core.util.DateUtil
+import com.whatever.caramel.core.util.TimeUtil.roundToNearest5Minutes
 import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
@@ -21,17 +23,15 @@ import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
 import com.whatever.caramel.feature.content.create.navigation.ContentCreateRoute
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 class ContentCreateViewModel(
+    crashlytics: CaramelCrashlytics,
     savedStateHandle: SavedStateHandle,
     private val getTagUseCase: GetTagUseCase,
-    private val createContentUseCase: CreateContentUseCase
-) : BaseViewModel<ContentCreateState, ContentCreateSideEffect, ContentCreateIntent>(savedStateHandle) {
-
+    private val createContentUseCase: CreateContentUseCase,
+) : BaseViewModel<ContentCreateState, ContentCreateSideEffect, ContentCreateIntent>(savedStateHandle, crashlytics) {
     init {
         launch {
             val tags = getTagUseCase()
@@ -43,16 +43,22 @@ class ContentCreateViewModel(
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): ContentCreateState {
         val arguments = savedStateHandle.toRoute<ContentCreateRoute>()
-        val dateTime =
-            if (arguments.dateTimeString.isEmpty()) DateUtil.todayLocalDateTime() else LocalDateTime.parse(
-                arguments.dateTimeString
-            )
+        val dateTime: LocalDateTime =
+            if (arguments.dateTimeString.isEmpty()) {
+                val now = DateUtil.todayLocalDateTime()
+                roundToNearest5Minutes(dateTime = now)
+            } else {
+                LocalDateTime.parse(
+                    arguments.dateTimeString,
+                )
+            }
         return ContentCreateState(
-            createMode = when (ContentType.valueOf(arguments.contentType)) {
-                ContentType.MEMO -> CreateMode.MEMO
-                ContentType.CALENDAR -> CreateMode.CALENDAR
-            },
-            dateTime = dateTime
+            createMode =
+                when (ContentType.valueOf(arguments.contentType)) {
+                    ContentType.MEMO -> CreateMode.MEMO
+                    ContentType.CALENDAR -> CreateMode.CALENDAR
+                },
+            dateTime = dateTime,
         )
     }
 
@@ -60,23 +66,27 @@ class ContentCreateViewModel(
         super.handleClientException(throwable)
         if (throwable is CaramelException) {
             when (throwable.errorUiType) {
-                ErrorUiType.TOAST -> postSideEffect(
-                    ContentCreateSideEffect.ShowToast(
-                        message = throwable.message
+                ErrorUiType.TOAST ->
+                    postSideEffect(
+                        ContentCreateSideEffect.ShowToast(
+                            message = throwable.message,
+                        ),
                     )
-                )
-                ErrorUiType.DIALOG -> postSideEffect(
-                    ContentCreateSideEffect.ShowErrorDialog(
-                        message = throwable.message,
-                        description = throwable.description
+                ErrorUiType.DIALOG ->
+                    postSideEffect(
+                        ContentCreateSideEffect.ShowErrorDialog(
+                            message = throwable.message,
+                            description = throwable.description,
+                        ),
                     )
-                )
             }
         } else {
+            caramelCrashlytics.recordException(throwable)
             postSideEffect(
-                ContentCreateSideEffect.ShowToast(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
-                )
+                ContentCreateSideEffect.ShowErrorDialog(
+                    message = "알 수 없는 오류가 발생했습니다.",
+                    description = null,
+                ),
             )
         }
     }
@@ -120,37 +130,54 @@ class ContentCreateViewModel(
     }
 
     private fun inputTitle(intent: ContentCreateIntent.InputTitle) {
-        if (intent.text.length <= ContentCreateState.MAX_TITLE_LENGTH) {
-            reduce {
-                copy(
-                    title = intent.text
-                )
-            }
-        } else {
-            postSideEffect(ContentCreateSideEffect.ShowToast("제목은 ${ContentCreateState.MAX_TITLE_LENGTH}자까지 입력할 수 있어요"))
-        }
+        validateInputText(
+            text = intent.text,
+            limitLength = ContentCreateState.MAX_TITLE_LENGTH,
+            onPass = { text ->
+                reduce {
+                    copy(
+                        title = text,
+                    )
+                }
+            },
+            onContainsNewline = {
+                postSideEffect(ContentCreateSideEffect.ShowToast("줄바꿈을 포함할수 없어요"))
+            },
+            onExceedLimit = {
+                postSideEffect(ContentCreateSideEffect.ShowToast("제목은 ${ContentCreateState.MAX_TITLE_LENGTH}자까지 입력할 수 있어요"))
+            },
+        )
     }
 
     private fun inputContent(intent: ContentCreateIntent.InputContent) {
-        if (intent.text.length <= ContentCreateState.MAX_CONTENT_LENGTH) {
-            reduce {
-                copy(
-                    content = intent.text
-                )
-            }
-        } else {
-            postSideEffect(ContentCreateSideEffect.ShowToast("내용은 ${ContentCreateState.MAX_CONTENT_LENGTH}자까지 입력할 수 있어요"))
-        }
+        validateInputText(
+            text = intent.text,
+            limitLength = ContentCreateState.MAX_CONTENT_LENGTH,
+            onPass = { text ->
+                reduce {
+                    copy(
+                        content = text,
+                    )
+                }
+            },
+            onContainsNewline = {
+                postSideEffect(ContentCreateSideEffect.ShowToast("줄바꿈을 포함할수 없어요"))
+            },
+            onExceedLimit = {
+                postSideEffect(ContentCreateSideEffect.ShowToast("내용은 ${ContentCreateState.MAX_CONTENT_LENGTH}자까지 입력할 수 있어요"))
+            },
+        )
     }
 
     private fun toggleTagSelection(intent: ContentCreateIntent.ClickTag) {
         reduce {
             copy(
-                selectedTags = if (selectedTags.contains(intent.tag)) {
-                    selectedTags - intent.tag
-                } else {
-                    selectedTags + intent.tag
-                }.toImmutableSet()
+                selectedTags =
+                    if (selectedTags.contains(intent.tag)) {
+                        selectedTags - intent.tag
+                    } else {
+                        selectedTags + intent.tag
+                    }.toImmutableSet(),
             )
         }
     }
@@ -159,21 +186,13 @@ class ContentCreateViewModel(
         reduce {
             copy(
                 createMode = intent.createMode,
-                dateTime = if (intent.createMode == CreateMode.CALENDAR) {
-                    val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-                    val roundedMinute = ((now.minute + 2) / 5) * 5
-                    val adjustedHour = if (roundedMinute >= 60) now.hour + 1 else now.hour
-                    val finalMinute = if (roundedMinute >= 60) 0 else roundedMinute
-
-                    now.copy(
-                        hour = adjustedHour,
-                        minute = finalMinute,
-                        second = 0,
-                        nanosecond = 0
-                    )
-                } else {
-                    dateTime
-                }
+                dateTime =
+                    if (intent.createMode == CreateMode.CALENDAR) {
+                        val now = DateUtil.todayLocalDateTime()
+                        roundToNearest5Minutes(dateTime = now)
+                    } else {
+                        dateTime
+                    },
             )
         }
     }
@@ -219,15 +238,16 @@ class ContentCreateViewModel(
         reduce {
             val currentDateTime = dateTime
             val currentHour24 = currentDateTime.hour
-            val newHour24 = when {
-                currentHour24 < 12 -> { // 현재 AM
-                    if (newHour12 == 12) 0 else newHour12 // 12 AM은 0시, 나머지는 그대로
-                }
+            val newHour24 =
+                when {
+                    currentHour24 < 12 -> { // 현재 AM
+                        if (newHour12 == 12) 0 else newHour12 // 12 AM은 0시, 나머지는 그대로
+                    }
 
-                else -> { // 현재 PM
-                    if (newHour12 == 12) 12 else newHour12 + 12 // 12 PM은 12시, 나머지는 +12
+                    else -> { // 현재 PM
+                        if (newHour12 == 12) 12 else newHour12 + 12 // 12 PM은 12시, 나머지는 +12
+                    }
                 }
-            }
             copy(dateTime = currentDateTime.copy(hour = newHour24))
         }
     }
@@ -236,11 +256,12 @@ class ContentCreateViewModel(
         reduce {
             val currentDateTime = dateTime
             val currentHour24 = currentDateTime.hour
-            val finalNewHour24 = when (intent.period) {
-                "오전" -> if (currentHour24 >= 12) currentHour24 - 12 else currentHour24 // PM -> AM
-                "오후" -> if (currentHour24 < 12) currentHour24 + 12 else currentHour24  // AM -> PM
-                else -> currentHour24
-            }
+            val finalNewHour24 =
+                when (intent.period) {
+                    "오전" -> if (currentHour24 >= 12) currentHour24 - 12 else currentHour24 // PM -> AM
+                    "오후" -> if (currentHour24 < 12) currentHour24 + 12 else currentHour24 // AM -> PM
+                    else -> currentHour24
+                }
             copy(dateTime = currentDateTime.copy(hour = finalNewHour24))
         }
     }
@@ -248,29 +269,32 @@ class ContentCreateViewModel(
     private fun clickSaveButton(intent: ContentCreateIntent.ClickSaveButton) {
         launch {
             val state = currentState
-            val parameter = when (state.createMode) {
-                CreateMode.MEMO -> ContentParameterType.Memo(
-                    MemoParameter(
-                        title = state.title.ifBlank { null },
-                        description = state.content.ifBlank { null },
-                        isCompleted = false,
-                        tags = state.selectedTags.map { it.id }.toList()
-                    )
-                )
+            val parameter =
+                when (state.createMode) {
+                    CreateMode.MEMO ->
+                        ContentParameterType.Memo(
+                            MemoParameter(
+                                title = state.title.ifBlank { null },
+                                description = state.content.ifBlank { null },
+                                isCompleted = false,
+                                tags = state.selectedTags.map { it.id }.toList(),
+                            ),
+                        )
 
-                CreateMode.CALENDAR -> ContentParameterType.Calendar(
-                    ScheduleParameter(
-                        title = state.title.ifBlank { null },
-                        description = state.content.ifBlank { null },
-                        isCompleted = false,
-                        startDateTime = state.dateTime.toString(),
-                        startTimeZone = TimeZone.currentSystemDefault().id,
-                        endDateTime = null,
-                        endTimeZone = null,
-                        tagIds = state.selectedTags.map { it.id }.toList()
-                    )
-                )
-            }
+                    CreateMode.CALENDAR ->
+                        ContentParameterType.Calendar(
+                            ScheduleParameter(
+                                title = state.title.ifBlank { null },
+                                description = state.content.ifBlank { null },
+                                isCompleted = false,
+                                startDateTime = state.dateTime.toString(),
+                                startTimeZone = TimeZone.currentSystemDefault().id,
+                                endDateTime = null,
+                                endTimeZone = null,
+                                tagIds = state.selectedTags.map { it.id }.toList(),
+                            ),
+                        )
+                }
             createContentUseCase(parameter)
             postSideEffect(ContentCreateSideEffect.NavigateToBackStack)
         }

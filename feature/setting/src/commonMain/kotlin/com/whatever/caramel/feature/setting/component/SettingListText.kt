@@ -18,38 +18,40 @@ internal fun SettingListText(
     mainTextColor: Color,
     tailText: String? = null,
     onClickListItem: (() -> Unit)? = null,
-    onClickTailText: (() -> Unit)? = null
+    onClickTailText: (() -> Unit)? = null,
 ) {
     Row(
-        modifier = modifier
-            .padding(vertical = 14.dp)
+        modifier =
+            modifier
+                .padding(vertical = 14.dp),
     ) {
         Box(
-            modifier = Modifier
-                .weight(1f)
-                .clickable(
-                    interactionSource = null,
-                    indication = null,
-                    onClick = { onClickListItem?.invoke() }
-                )
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .clickable(
+                        interactionSource = null,
+                        indication = null,
+                        onClick = { onClickListItem?.invoke() },
+                    ),
         ) {
             Text(
                 text = mainText,
                 style = CaramelTheme.typography.body2.regular,
-                color = mainTextColor
+                color = mainTextColor,
             )
         }
         if (tailText != null) {
             Text(
-                modifier = Modifier
-                    .padding(
-                        start = 16.dp
-                    )
-                    .clickable(
-                        interactionSource = null,
-                        indication = null,
-                        onClick = { onClickTailText?.invoke() }
-                    ),
+                modifier =
+                    Modifier
+                        .padding(
+                            start = 16.dp,
+                        ).clickable(
+                            interactionSource = null,
+                            indication = null,
+                            onClick = { onClickTailText?.invoke() },
+                        ),
                 text = tailText,
                 style = CaramelTheme.typography.body3.regular,
                 color = CaramelTheme.color.text.brand,

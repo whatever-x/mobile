@@ -1,0 +1,74 @@
+name: Slack - Issue Closed
+
+on:
+  workflow_call:
+    secrets:
+      SLACK_WEBHOOK_URL:
+        required: true
+      REPOSITORY_TOKEN:
+        required: true
+
+jobs:
+  send-slack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract issue info and linked PRs
+        id: issue-info
+        env:
+          REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
+        run: |
+          REPO="${{ github.repository }}"
+          ISSUE_NUMBER=$(jq -r '.issue.number' "$GITHUB_EVENT_PATH")
+          ISSUE_TITLE=$(jq -r '.issue.title' "$GITHUB_EVENT_PATH")
+          ISSUE_URL=$(jq -r '.issue.html_url' "$GITHUB_EVENT_PATH")
+          ISSUE_USER=$(jq -r '.issue.user.login' "$GITHUB_EVENT_PATH")
+          ISSUE_USER_AVATAR=$(jq -r '.issue.user.avatar_url' "$GITHUB_EVENT_PATH")
+
+          LINKED_PRS=$(curl -s \
+            -H "Authorization: Bearer ${REPOSITORY_TOKEN}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${REPO}/issues/${ISSUE_NUMBER}/events" \
+            | jq -r '
+              .[]
+              | select(.event == "cross-referenced")
+              | select(.source.issue.pull_request)
+              | "- [#\(.source.issue.number)] \(.source.issue.title)"'
+          )
+
+          if [ -z "$LINKED_PRS" ]; then
+            LINKED_PRS="연결된 PR이 없습니다!"
+          fi
+
+          ISSUE_SECTION="*[<${ISSUE_URL}|#${ISSUE_NUMBER}>]*\n${ISSUE_TITLE}\n\n${LINKED_PRS}"          
+          HEADER_TEXT="🗑️ 이슈 종료"
+
+          echo "header_text=$(printf "%s" "$HEADER_TEXT" | jq -Rs .)" >> $GITHUB_OUTPUT
+          echo "issue_section=$(printf "%s" "$ISSUE_SECTION" | jq -Rs .)" >> $GITHUB_OUTPUT
+          echo "issue_user=${ISSUE_USER}" >> $GITHUB_OUTPUT
+          echo "issue_user_avatar=${ISSUE_USER_AVATAR}" >> $GITHUB_OUTPUT
+
+      - name: Send Slack Notification
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            blocks:
+              - type: "header"
+                text:
+                  type: "plain_text"
+                  text: ${{ steps.issue-info.outputs.header_text }}
+                  emoji: true
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: ${{ steps.issue-info.outputs.issue_section }}
+                accessory:
+                  type: "image"
+                  image_url: "${{ steps.issue-info.outputs.issue_user_avatar }}"
+                  alt_text: "by ${{ steps.issue-info.outputs.issue_user }}"
+              - type: "context"
+                elements:
+                  - type: "mrkdwn"
+                    text: "by <https://github.com/${{ steps.issue-info.outputs.issue_user }}|${{ steps.issue-info.outputs.issue_user }}>"

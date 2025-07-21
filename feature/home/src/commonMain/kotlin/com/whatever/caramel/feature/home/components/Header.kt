@@ -27,67 +27,73 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
-internal fun LazyListScope.Header(
+internal fun LazyListScope.header(
     daysTogether: Int,
     shareMessage: String,
-    onClickShareMessage: () -> Unit
+    onClickShareMessage: () -> Unit,
 ) {
     item(key = "Header") {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = CaramelTheme.spacing.xl)
-                .padding(bottom = CaramelTheme.spacing.l),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = CaramelTheme.spacing.xl)
+                    .padding(bottom = CaramelTheme.spacing.l),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = stringResource(resource = Res.string.we_dated),
                 style = CaramelTheme.typography.heading1,
-                color = CaramelTheme.color.text.primary
+                color = CaramelTheme.color.text.primary,
             )
 
             Text(
                 modifier = Modifier.offset(y = (-8).dp),
                 text = stringResource(resource = Res.string.day, formatArgs = arrayOf(daysTogether)),
                 style = CaramelTheme.typography.display,
-                color = CaramelTheme.color.text.primary
+                color = CaramelTheme.color.text.primary,
             )
 
-            val shareMessageAnnotatedString = buildAnnotatedString {
-                append(shareMessage.ifEmpty { stringResource(resource = Res.string.leave_something_to_remember_together) })
-                append(" ")
-                appendInlineContent(id = "edit icon")
-            }
-            val inlineContentMap = mapOf(
-                "edit icon" to InlineTextContent(
-                    placeholder = Placeholder(
-                        width = 16.sp,
-                        height = 16.sp,
-                        placeholderVerticalAlign = PlaceholderVerticalAlign.Center
-                    ),
-                    children = {
-                        Icon(
-                            painter = painterResource(resource = Resources.Icon.ic_edit_16),
-                            contentDescription = null,
-                            tint = CaramelTheme.color.icon.secondary
-                        )
-                    },
+            val shareMessageAnnotatedString =
+                buildAnnotatedString {
+                    append(shareMessage.ifEmpty { stringResource(resource = Res.string.leave_something_to_remember_together) })
+                    append(" ")
+                    appendInlineContent(id = "edit icon")
+                }
+            val inlineContentMap =
+                mapOf(
+                    "edit icon" to
+                        InlineTextContent(
+                            placeholder =
+                                Placeholder(
+                                    width = 16.sp,
+                                    height = 16.sp,
+                                    placeholderVerticalAlign = PlaceholderVerticalAlign.Center,
+                                ),
+                            children = {
+                                Icon(
+                                    painter = painterResource(resource = Resources.Icon.ic_edit_16),
+                                    contentDescription = null,
+                                    tint = CaramelTheme.color.icon.secondary,
+                                )
+                            },
+                        ),
                 )
-            )
 
             Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(
-                        onClick = onClickShareMessage,
-                        interactionSource = null,
-                        indication = null
-                    ),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable(
+                            onClick = onClickShareMessage,
+                            interactionSource = null,
+                            indication = null,
+                        ),
                 text = shareMessageAnnotatedString,
                 inlineContent = inlineContentMap,
                 color = CaramelTheme.color.text.secondary,
                 style = CaramelTheme.typography.body3.bold,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
     }

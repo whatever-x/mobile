@@ -4,6 +4,7 @@ import com.whatever.caramel.feature.calendar.CalendarViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-val calendarFeatureModule = module {
-    viewModelOf(::CalendarViewModel)
-}
+val calendarFeatureModule =
+    module {
+        viewModelOf(::CalendarViewModel)
+    }

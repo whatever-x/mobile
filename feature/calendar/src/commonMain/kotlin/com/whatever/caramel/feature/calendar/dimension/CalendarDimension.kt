@@ -3,7 +3,7 @@ package com.whatever.caramel.feature.calendar.dimension
 import androidx.compose.ui.unit.dp
 
 internal data object CalendarDimension {
-    /* Bottom Sheet */
+    // Bottom Sheet
     val sheetPeekHeight = 62.dp
     val sheetTopStartCornerRadius = 24.dp
     val sheetTopEndCornerRadius = 24.dp
@@ -11,9 +11,9 @@ internal data object CalendarDimension {
     val sheetHandleWidth = 60.dp
     val sheetHandleHeight = 4.dp
 
-    /* Date Picker */
+    // Date Picker
     val datePickerHeight = 52.dp
 
-    /* calendar */
-    val dayOfWeekHeight = 34.dp
+    // calendar
+    val dayOfWeekHeight = 37.dp
 }

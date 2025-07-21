@@ -40,34 +40,37 @@ internal fun ProfileCreateScreen(
     val focusManager = LocalFocusManager.current
 
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .pointerInput(Unit) {
-                detectTapGestures(onTap = { focusManager.clearFocus() })
-            },
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = { focusManager.clearFocus() })
+                },
         containerColor = CaramelTheme.color.background.primary,
         bottomBar = {
             ProfileCreateBottomBar(
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .imePadding(),
+                modifier =
+                    Modifier
+                        .navigationBarsPadding()
+                        .imePadding(),
                 buttonEnabled = state.isNextButtonEnabled,
                 buttonText = state.buttonText,
-                onClickButton = { onIntent(ProfileCreateIntent.ClickNextButton) }
+                onClickButton = { onIntent(ProfileCreateIntent.ClickNextButton) },
             )
         },
         topBar = {
             ProfileCreateTopBar(
                 modifier = Modifier.statusBarsPadding(),
-                onClickBackButton = { onIntent(ProfileCreateIntent.ClickBackButton) }
+                onClickBackButton = { onIntent(ProfileCreateIntent.ClickBackButton) },
             )
-        }
+        },
     ) { innerPadding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues = innerPadding),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues = innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Stepper(currentIndex = state.currentIndex)
 
@@ -75,12 +78,14 @@ internal fun ProfileCreateScreen(
                 transitionSpec = {
                     if (targetState > initialState) {
                         (slideInHorizontally { width -> width } + fadeIn()).togetherWith(
-                            slideOutHorizontally { width -> -width } + fadeOut())
+                            slideOutHorizontally { width -> -width } + fadeOut(),
+                        )
                     } else {
                         (slideInHorizontally { width -> -width } + fadeIn()).togetherWith(
-                            slideOutHorizontally { width -> width } + fadeOut())
+                            slideOutHorizontally { width -> width } + fadeOut(),
+                        )
                     }.using(
-                        SizeTransform(clip = false)
+                        SizeTransform(clip = false),
                     )
                 },
                 targetState = state.currentStep,
@@ -92,10 +97,10 @@ internal fun ProfileCreateScreen(
                             onNicknameChange = { nickname ->
                                 onIntent(
                                     ProfileCreateIntent.ChangeNickname(
-                                        nickname = nickname
-                                    )
+                                        nickname = nickname,
+                                    ),
                                 )
-                            }
+                            },
                         )
                     }
 
@@ -105,8 +110,8 @@ internal fun ProfileCreateScreen(
                             onClickGenderButton = { selectedGender ->
                                 onIntent(
                                     ProfileCreateIntent.ClickGenderButton(
-                                        gender = selectedGender
-                                    )
+                                        gender = selectedGender,
+                                    ),
                                 )
                             },
                         )
@@ -128,7 +133,7 @@ internal fun ProfileCreateScreen(
                             onClickServiceTerm = { onIntent(ProfileCreateIntent.ToggleServiceTerm) },
                             onClickPersonalInfoTerm = { onIntent(ProfileCreateIntent.TogglePersonalInfoTerm) },
                             onClickServiceTermLabel = { onIntent(ProfileCreateIntent.ClickServiceTermLabel) },
-                            onClickPersonalInfoLabel = { onIntent(ProfileCreateIntent.ClickPersonalInfoTermLabel) }
+                            onClickPersonalInfoLabel = { onIntent(ProfileCreateIntent.ClickPersonalInfoTermLabel) },
                         )
                     }
                 }

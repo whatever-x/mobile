@@ -1,0 +1,56 @@
+name: Spotless Lint Check
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  spotless-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: wrapper
+          cache-read-only: false
+
+      - name: Generate local.properties
+        run: |
+          echo "${{ secrets.LOCAL_PROPERTIES }}" > local.properties
+          echo "sdk.dir=$ANDROID_HOME" >> local.properties
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Run spotlessCheck
+        id: spotless
+        run: |
+          ./gradlew spotlessCheck --no-daemon --continue
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+
+      - name: Slack notify result
+        if: always()
+        run: |
+          if [ "${{ steps.spotless.outputs.exit_code }}" == "0" ]; then
+            STATUS="✅ 린트 검사 통과 ✅\nPR : <https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}|#${{ github.event.pull_request.number }}>\n작성자 : <https://github.com/${{ github.actor }}|${{ github.actor }}>"
+          else
+            STATUS="❌ 린트 검사 실패 ❌\nPR : <https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}|#${{ github.event.pull_request.number }}>\n작성자 : <https://github.com/${{ github.actor }}|${{ github.actor }}>"
+          fi
+          
+          curl -X POST -H 'Content-type: application/json' \
+            --data "{\"text\":\"$STATUS\"}" \
+            ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Fail if lint failed
+        if: steps.spotless.outputs.exit_code != '0'
+        run: exit 1

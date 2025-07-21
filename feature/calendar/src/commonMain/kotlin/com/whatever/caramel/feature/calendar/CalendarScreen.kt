@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -47,6 +48,7 @@ import com.whatever.caramel.feature.calendar.dimension.CalendarDimension
 import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.datetime.Month
 import kotlin.math.roundToInt
 
@@ -55,7 +57,7 @@ import kotlin.math.roundToInt
 @Composable
 internal fun CalendarScreen(
     state: CalendarState,
-    onIntent: (CalendarIntent) -> Unit
+    onIntent: (CalendarIntent) -> Unit,
 ) {
     val pagerState =
         rememberPagerState(initialPage = state.pageIndex) { Calendar.yearSize * Month.entries.size }
@@ -66,21 +68,23 @@ internal fun CalendarScreen(
     val pullToRefreshState = rememberPullToRefreshState()
     val verticalScrollState = rememberScrollState()
     val calendarScreenOffset by animateIntAsState(
-        targetValue = when {
-            state.isRefreshing -> 250
-            state.bottomSheetState == BottomSheetState.EXPANDED -> 0
-            pullToRefreshState.distanceFraction in 0f..1f -> (250 * pullToRefreshState.distanceFraction).roundToInt()
-            pullToRefreshState.distanceFraction > 1f -> (250 + ((pullToRefreshState.distanceFraction - 1f) * 1f) * 100).roundToInt()
-            else -> 0
-        }
+        targetValue =
+            when {
+                state.isRefreshing -> 250
+                state.bottomSheetState == BottomSheetState.EXPANDED -> 0
+                pullToRefreshState.distanceFraction in 0f..1f -> (250 * pullToRefreshState.distanceFraction).roundToInt()
+                pullToRefreshState.distanceFraction > 1f -> (250 + ((pullToRefreshState.distanceFraction - 1f) * 1f) * 100).roundToInt()
+                else -> 0
+            },
     )
 
     LaunchedEffect(state.selectedDate) {
         if (state.bottomSheetState == BottomSheetState.EXPANDED) {
-            val scheduleIndex = state.monthSchedules.indexOfFirst { it.date == state.selectedDate }
+            val scheduleIndex = state.yearSchedule.indexOfFirst { it.date == state.selectedDate }
             if (scheduleIndex >= 0) {
-                val itemPosition = scheduleIndex +
-                        state.monthSchedules.take(scheduleIndex).sumOf { it.todos.size }
+                val itemPosition =
+                    scheduleIndex +
+                        state.yearSchedule.take(scheduleIndex).sumOf { it.todos.size }
                 lazyListState.scrollToItem(index = itemPosition)
             }
         }
@@ -96,12 +100,19 @@ internal fun CalendarScreen(
         }
     }
     LaunchedEffect(bottomSheetState.currentValue) {
-        val updateStateValue = when (bottomSheetState.currentValue) {
-            SheetValue.Hidden -> BottomSheetState.HIDDEN
-            SheetValue.Expanded -> BottomSheetState.EXPANDED
-            SheetValue.PartiallyExpanded -> BottomSheetState.PARTIALLY_EXPANDED
-        }
-        onIntent(CalendarIntent.ToggleCalendarBottomSheet(updateStateValue))
+        val updateStateValue =
+            when (bottomSheetState.currentValue) {
+                SheetValue.Hidden -> BottomSheetState.HIDDEN
+                SheetValue.Expanded -> BottomSheetState.EXPANDED
+                SheetValue.PartiallyExpanded -> BottomSheetState.PARTIALLY_EXPANDED
+            }
+        onIntent(CalendarIntent.DraggingCalendarBottomSheet(false))
+        onIntent(CalendarIntent.UpdateCalendarBottomSheet(updateStateValue))
+    }
+
+    LaunchedEffect(bottomSheetState.targetValue) {
+        val isDragging = bottomSheetState.currentValue != bottomSheetState.targetValue
+        onIntent(CalendarIntent.DraggingCalendarBottomSheet(isDragging))
     }
 
     LaunchedEffect(pagerState.currentPage) {
@@ -116,69 +127,80 @@ internal fun CalendarScreen(
     }
 
     PullToRefreshBox(
-        modifier = Modifier.background(color = CaramelTheme.color.background.primary),
+        modifier =
+            Modifier
+                .background(color = CaramelTheme.color.background.primary)
+                .statusBarsPadding(),
         state = pullToRefreshState,
         isRefreshing = state.isRefreshing,
         onRefresh = { onIntent(CalendarIntent.RefreshCalendar) },
         indicator = {
             CaramelPullToRefreshIndicator(
                 state = pullToRefreshState,
-                isRefreshing = state.isRefreshing
+                isRefreshing = state.isRefreshing,
             )
-        }
+        },
     ) {
         BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
             val totalHeight = maxHeight - CalendarDimension.sheetPeekHeight
             BottomSheetScaffold(
                 scaffoldState = bottomSheetScaffoldState,
                 sheetPeekHeight = CalendarDimension.sheetPeekHeight,
-                sheetShape = RoundedCornerShape(
-                    topStart = CalendarDimension.sheetTopStartCornerRadius,
-                    topEnd = CalendarDimension.sheetTopEndCornerRadius
-                ),
+                sheetShape =
+                    RoundedCornerShape(
+                        topStart = CalendarDimension.sheetTopStartCornerRadius,
+                        topEnd = CalendarDimension.sheetTopEndCornerRadius,
+                    ),
                 sheetContainerColor = CaramelTheme.color.background.primary,
                 sheetContentColor = CaramelTheme.color.background.tertiary,
                 sheetDragHandle = {
                     CaramelBottomSheetHandle(
-                        bottomSheetState = state.bottomSheetState
+                        topDescVisibility = state.isBottomSheetTopDescVisible,
+                        onPressSheetHandle = {
+                            onIntent(
+                                CalendarIntent.PressCalendarBottomSheetHandle,
+                            )
+                        },
                     )
                 },
                 topBar = {
                     CaramelTopBar(
-                        modifier = Modifier
-                            .background(color = CaramelTheme.color.background.primary)
-                            .clickable(
-                                indication = null,
-                                interactionSource = null,
-                                onClick = { onIntent(CalendarIntent.ClickOutSideBottomSheet) }
-                            ),
+                        modifier =
+                            Modifier
+                                .background(color = CaramelTheme.color.background.primary)
+                                .clickable(
+                                    indication = null,
+                                    interactionSource = null,
+                                    onClick = { onIntent(CalendarIntent.ClickOutSideBottomSheet) },
+                                ),
                         leadingContent = {
                             CurrentDateMenu(
                                 year = state.year,
                                 month = state.month,
                                 isShowDropMenu = state.isShowDatePicker,
-                                onClickDatePicker = { onIntent(CalendarIntent.ClickDatePicker) }
+                                onClickDatePicker = { onIntent(CalendarIntent.ClickDatePicker) },
                             )
-                        }
+                        },
                     )
                 },
                 sheetContent = {
                     val availableHeight =
-                        totalHeight - CalendarDimension.datePickerHeight - CalendarDimension.dayOfWeekHeight + CalendarDimension.sheetPartiallyExpandedTextHeight
+                        totalHeight - CalendarDimension.datePickerHeight - CalendarDimension.dayOfWeekHeight +
+                            CalendarDimension.sheetPartiallyExpandedTextHeight
                     LazyColumn(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(color = CaramelTheme.color.background.tertiary)
-                            .padding(
-                                top = CaramelTheme.spacing.xs,
-                                bottom = CaramelTheme.spacing.l,
-                                start = CaramelTheme.spacing.xl,
-                                end = CaramelTheme.spacing.xl
-                            )
-                            .height(availableHeight),
-                        state = lazyListState
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .background(color = CaramelTheme.color.background.tertiary)
+                                .padding(
+                                    top = CaramelTheme.spacing.xs,
+                                    bottom = CaramelTheme.spacing.l,
+                                    start = CaramelTheme.spacing.xl,
+                                    end = CaramelTheme.spacing.xl,
+                                ).height(availableHeight),
+                        state = lazyListState,
                     ) {
-                        state.monthSchedules.forEach { schedule ->
+                        state.monthSchedule.forEach { schedule ->
                             item {
                                 BottomSheetTodoListHeader(
                                     date = schedule.date,
@@ -188,11 +210,16 @@ internal fun CalendarScreen(
                                     isToday = schedule.date == state.today,
                                     isEmpty = schedule.todos.isEmpty(),
                                     holidays = schedule.holidays,
-                                    anniversaries = schedule.anniversaries
+                                    anniversaries = schedule.anniversaries,
                                 )
                                 Spacer(modifier = Modifier.height(CaramelTheme.spacing.s))
                             }
-                            items(items = schedule.todos) { todo ->
+                            items(
+                                items = schedule.todos,
+                                key = { todo ->
+                                    todo.id
+                                },
+                            ) { todo ->
                                 BottomSheetTodoItem(
                                     id = todo.id,
                                     title = todo.title,
@@ -202,10 +229,10 @@ internal fun CalendarScreen(
                                     onClickTodo = {
                                         onIntent(
                                             CalendarIntent.ClickTodoItemInBottomSheet(
-                                                it
-                                            )
+                                                it,
+                                            ),
                                         )
-                                    }
+                                    },
                                 ) {
                                     DefaultBottomSheetTodoItem()
                                 }
@@ -213,45 +240,48 @@ internal fun CalendarScreen(
                             }
                         }
                     }
-                }
+                },
             ) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(color = CaramelTheme.color.background.primary)
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .background(color = CaramelTheme.color.background.primary),
                 ) {
                     Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .graphicsLayer {
-                                translationY = calendarScreenOffset.toFloat()
-                            }
-                            .verticalScroll(verticalScrollState)
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .graphicsLayer {
+                                    translationY = calendarScreenOffset.toFloat()
+                                }.verticalScroll(verticalScrollState),
                     ) {
                         CalendarDayOfWeek(
-                            modifier = Modifier
-                                .height(height = CalendarDimension.datePickerHeight)
-                                .clickable(
-                                    indication = null,
-                                    interactionSource = null,
-                                    onClick = { onIntent(CalendarIntent.ClickOutSideBottomSheet) }
-                                )
+                            modifier =
+                                Modifier
+                                    .height(height = CalendarDimension.dayOfWeekHeight)
+                                    .clickable(
+                                        indication = null,
+                                        interactionSource = null,
+                                        onClick = { onIntent(CalendarIntent.ClickOutSideBottomSheet) },
+                                    ),
                         )
+                        val availableCalendarHeight =
+                            totalHeight - CalendarDimension.datePickerHeight - CalendarDimension.dayOfWeekHeight
 
                         HorizontalPager(
-                            modifier = Modifier.weight(1f),
-                            state = pagerState
-                        ) {
+                            modifier = Modifier.height(height = availableCalendarHeight),
+                            state = pagerState,
+                            beyondViewportPageCount = 2,
+                        ) { pageIndex ->
                             CaramelCalendar(
-                                modifier = Modifier
-                                    .padding(bottom = CalendarDimension.sheetPeekHeight)
-                                    .background(color = CaramelTheme.color.background.primary),
-                                year = state.year,
-                                month = state.month,
-                                schedules = state.monthSchedules,
+                                modifier =
+                                    Modifier.background(color = CaramelTheme.color.background.primary),
+                                pageIndex = pageIndex,
+                                schedules = state.yearSchedule.toImmutableList(),
                                 selectedDate = state.selectedDate,
                                 onClickTodo = { onIntent(CalendarIntent.ClickTodoItemInCalendar(it)) },
-                                onClickCell = { onIntent(CalendarIntent.ClickCalendarCell(it)) }
+                                onClickCell = { onIntent(CalendarIntent.ClickCalendarCell(it)) },
                             )
                         }
                     }
@@ -262,11 +292,10 @@ internal fun CalendarScreen(
                         isShowDropMenu = state.isShowDatePicker,
                         onDismiss = { onIntent(CalendarIntent.ClickDatePickerOutSide) },
                         onYearChanged = { onIntent(CalendarIntent.UpdateSelectPickerYear(it)) },
-                        onMonthChanged = { onIntent(CalendarIntent.UpdateSelectPickerMonth(it)) }
+                        onMonthChanged = { onIntent(CalendarIntent.UpdateSelectPickerMonth(it)) },
                     )
                 }
             }
         }
     }
-
 }

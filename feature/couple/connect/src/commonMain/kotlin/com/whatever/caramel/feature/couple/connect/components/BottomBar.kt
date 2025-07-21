@@ -21,49 +21,52 @@ internal fun CoupleConnectBottomBar(
     modifier: Modifier = Modifier,
     buttonEnabled: Boolean,
     buttonText: String,
-    onClickButton: () -> Unit
+    onClickButton: () -> Unit,
 ) {
     val buttonShape = CaramelTheme.shape.xl
-    val buttonBackgroundColor = if (buttonEnabled) {
-        CaramelTheme.color.fill.brand
-    } else {
-        CaramelTheme.color.fill.disabledPrimary
-    }
-    val textColor = if (buttonEnabled) {
-        CaramelTheme.color.text.inverse
-    } else {
-        CaramelTheme.color.text.disabledPrimary
-    }
+    val buttonBackgroundColor =
+        if (buttonEnabled) {
+            CaramelTheme.color.fill.brand
+        } else {
+            CaramelTheme.color.fill.disabledPrimary
+        }
+    val textColor =
+        if (buttonEnabled) {
+            CaramelTheme.color.text.inverse
+        } else {
+            CaramelTheme.color.text.disabledPrimary
+        }
 
     Box(
-        modifier = modifier
-            .padding(
-                start = CaramelTheme.spacing.xl,
-                end = CaramelTheme.spacing.xl,
-                bottom = CaramelTheme.spacing.xl,
-            ),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .padding(
+                    start = CaramelTheme.spacing.xl,
+                    end = CaramelTheme.spacing.xl,
+                    bottom = CaramelTheme.spacing.xl,
+                ),
+        contentAlignment = Alignment.Center,
     ) {
         Row(
-            modifier = Modifier
-                .height(height = 50.dp)
-                .fillMaxWidth()
-                .background(
-                    color = buttonBackgroundColor,
-                    shape = buttonShape
-                )
-                .clip(shape = buttonShape)
-                .clickable(
-                    enabled = buttonEnabled,
-                    onClick = onClickButton
-                ),
+            modifier =
+                Modifier
+                    .height(height = 50.dp)
+                    .fillMaxWidth()
+                    .background(
+                        color = buttonBackgroundColor,
+                        shape = buttonShape,
+                    ).clip(shape = buttonShape)
+                    .clickable(
+                        enabled = buttonEnabled,
+                        onClick = onClickButton,
+                    ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Center,
         ) {
             Text(
                 text = buttonText,
                 style = CaramelTheme.typography.body1.bold,
-                color = textColor
+                color = textColor,
             )
         }
     }

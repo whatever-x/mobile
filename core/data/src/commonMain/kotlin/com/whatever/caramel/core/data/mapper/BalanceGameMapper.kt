@@ -9,18 +9,19 @@ import kotlinx.datetime.LocalDate
 
 fun BalanceGameResponse.toBalanceGameResult(): BalanceGameResult =
     BalanceGameResult(
-        gameInfo = BalanceGame(
-            id = this.gameInfo.id,
-            date = LocalDate.parse(this.gameInfo.date),
-            question = this.gameInfo.question,
-            options = this.gameInfo.options.map { it.toBalanceGameOption() },
-        ),
+        gameInfo =
+            BalanceGame(
+                id = this.gameInfo.id,
+                date = LocalDate.parse(this.gameInfo.date),
+                question = this.gameInfo.question,
+                options = this.gameInfo.options.map { it.toBalanceGameOption() },
+            ),
         myChoice = this.myChoice?.toBalanceGameOption(),
-        partnerChoice = this.partnerChoice?.toBalanceGameOption()
+        partnerChoice = this.partnerChoice?.toBalanceGameOption(),
     )
 
 fun OptionInfoDto.toBalanceGameOption(): BalanceGameOption =
     BalanceGameOption(
         optionId = this.optionId,
-        text = this.text
+        text = this.text,
     )

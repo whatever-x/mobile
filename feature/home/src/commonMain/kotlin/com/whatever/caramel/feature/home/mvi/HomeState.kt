@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.home.mvi
 
 import androidx.compose.runtime.Immutable
 import com.whatever.caramel.core.domain.vo.user.Gender
+import com.whatever.caramel.core.ui.util.codePointCount
 import com.whatever.caramel.core.viewmodel.UiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -14,6 +15,7 @@ data class HomeState(
     val daysTogether: Int = 0,
     val shareMessage: String = "",
     val todos: List<TodoState> = emptyList(),
+    val bottomSheetShareMessage: String = "",
     val isShowBottomSheet: Boolean = false,
     val isLoading: Boolean = false,
     val balanceGameState: BalanceGameState = BalanceGameState(),
@@ -22,43 +24,46 @@ data class HomeState(
     val partnerChoiceOption: BalanceGameOptionState = BalanceGameOptionState(),
     val isShowDialog: Boolean = false,
     val dialogTitle: String = "",
-    val coupleState: CoupleState = CoupleState.IDLE
+    val coupleState: CoupleState = CoupleState.IDLE,
 ) : UiState {
-
     val isSetAnniversary: Boolean
         get() = daysTogether != 0
 
+    val bottomSheetShareMessageLength: Int
+        get() = bottomSheetShareMessage.codePointCount()
+
     val balanceGameAnswerState: BalanceGameAnswerState
-        get() = if (myChoiceOption.notSelected) { // 내가 대답하지 않은 상태
-            BalanceGameAnswerState.IDLE
-        } else {
-            if (partnerChoiceOption.notSelected) { // 내가 대답하고 / 상대가 대답하지 않은 상태
-                BalanceGameAnswerState.WAITING
+        get() =
+            if (myChoiceOption.notSelected) { // 내가 대답하지 않은 상태
+                BalanceGameAnswerState.IDLE
             } else {
-                BalanceGameAnswerState.CHECK_RESULT // 내가 대답하고 / 상대도 대답한 상태
+                if (partnerChoiceOption.notSelected) { // 내가 대답하고 / 상대가 대답하지 않은 상태
+                    BalanceGameAnswerState.WAITING
+                } else {
+                    BalanceGameAnswerState.CHECK_RESULT // 내가 대답하고 / 상대도 대답한 상태
+                }
             }
-        }
 
     enum class BalanceGameAnswerState {
         IDLE,
         WAITING,
         CHECK_RESULT,
-        ;
     }
 
     enum class BalanceGameCardState {
         IDLE,
         CONFIRM,
-        ;
     }
 
     enum class CoupleState {
         IDLE,
         CONNECT,
         DISCONNECT,
-        ;
     }
 
+    companion object {
+        const val MAX_SHARE_MESSAGE_LENGTH = 24
+    }
 }
 
 @Immutable

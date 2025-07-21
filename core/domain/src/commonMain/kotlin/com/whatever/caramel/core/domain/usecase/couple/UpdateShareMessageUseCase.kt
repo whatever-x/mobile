@@ -8,10 +8,11 @@ class UpdateShareMessageUseCase(
     suspend operator fun invoke(shareMessage: String): String {
         val coupleId = coupleRepository.getCoupleId()
 
-        val coupleInfo = coupleRepository.updateShareMessage(
-            coupleId = coupleId,
-            shareMessage = shareMessage,
-        )
+        val coupleInfo =
+            coupleRepository.updateShareMessage(
+                coupleId = coupleId,
+                shareMessage = shareMessage,
+            )
 
         return coupleInfo.sharedMessage
     }

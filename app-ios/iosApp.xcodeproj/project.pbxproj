@@ -11,7 +11,7 @@
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		583FC0462DEBEB5A002005A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 583FC0452DEBEB5A002005A1 /* Assets.xcassets */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
-		BA981A912D6B7F0000F4630B /* (null) in Resources */ = {isa = PBXBuildFile; };
+		BA798D050359A3FCD8D56DD7 /* FirebaseCrashlyticsBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA798D5911C08037AABB0C2E /* FirebaseCrashlyticsBridge.swift */; };
 		BAA2B7AB2D72DA330017F868 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = BAA2B7AA2D72DA330017F868 /* FirebaseAnalytics */; };
 		BAA2B7AD2D72DA330017F868 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = BAA2B7AC2D72DA330017F868 /* FirebaseAnalyticsOnDeviceConversion */; };
 		BAA2B7AF2D72DA330017F868 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = BAA2B7AE2D72DA330017F868 /* FirebaseAnalyticsWithoutAdIdSupport */; };
@@ -50,6 +50,7 @@
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BA4C47392DEBF62200435A54 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		BA4C473A2DEBF62F00435A54 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		BA798D5911C08037AABB0C2E /* FirebaseCrashlyticsBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FirebaseCrashlyticsBridge.swift; path = firebaseCrashlyticsBridge/FirebaseCrashlyticsBridge.swift; sourceTree = "<group>"; };
 		E93275342DD225A7004AE2BF /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		E93275362DD225BB004AE2BF /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 		E96349E22D7C238E00F6BBF7 /* iosApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iosApp.entitlements; sourceTree = "<group>"; };
@@ -94,6 +95,7 @@
 				7555FF7D242A565900829871 /* iosApp */,
 				7555FF7C242A565900829871 /* Products */,
 				7555FFB0242A642200829871 /* Frameworks */,
+				BA798D5911C08037AABB0C2E /* FirebaseCrashlyticsBridge.swift */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 0;
@@ -213,7 +215,6 @@
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
 				583FC0462DEBEB5A002005A1 /* Assets.xcassets in Resources */,
 				E97442F32DF2DB2B00B9CDEE /* GoogleService-Info.plist in Resources */,
-				BA981A912D6B7F0000F4630B /* (null) in Resources */,
 				E97442F12DF2DAC400B9CDEE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -274,6 +275,7 @@
 				E987BEBF2DEB640800CE545C /* NotificationCenterDelegate.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 				E987BEBD2DEB63D200CE545C /* MessagingDelegate.swift in Sources */,
+				BA798D050359A3FCD8D56DD7 /* FirebaseCrashlyticsBridge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,7 +410,7 @@
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 10000002;
+				CURRENT_PROJECT_VERSION = 10000206;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = AR6HWFH5V3;
@@ -424,7 +426,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -433,7 +435,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.whatever.caramel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Caramel Provisioning - Dev / V2";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development com.whatever.caramel";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -451,7 +453,7 @@
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 10000002;
+				CURRENT_PROJECT_VERSION = 10000206;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = AR6HWFH5V3;
@@ -467,7 +469,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -476,7 +478,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.whatever.caramel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Caramel Provisioning - Prod / V2";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore com.whatever.caramel";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

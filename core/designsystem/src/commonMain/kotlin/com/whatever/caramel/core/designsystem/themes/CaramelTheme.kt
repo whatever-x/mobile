@@ -20,20 +20,19 @@ fun CaramelTheme(
     typography: CaramelTypography = CaramelTypography.defaultTypography(fontFamily = IbmPlexSans()),
     shape: CaramelShape = CaramelShape.defaultRadius(),
     spacing: CaramelSpacing = CaramelSpacing.defaultSpacing(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
         LocalCaramelColor provides color,
         LocalCaramelTypography provides typography,
         LocalCaramelShape provides shape,
-        LocalCaramelSpacing provides spacing
+        LocalCaramelSpacing provides spacing,
     ) {
         content.invoke()
     }
 }
 
 object CaramelTheme {
-
     val color: CaramelColor
         @Composable
         @ReadOnlyComposable
@@ -53,5 +52,4 @@ object CaramelTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalCaramelSpacing.current
-
 }

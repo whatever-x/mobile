@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import java.util.Properties
 
 plugins {
@@ -28,12 +27,12 @@ android {
             buildConfigField(
                 "String",
                 "BASE_URL",
-                properties.getProperty(releaseUrl)
+                properties.getProperty(releaseUrl),
             )
             buildConfigField(
                 "String",
                 "SAMPLE_URL",
-                properties.getProperty(sampleUrl)
+                properties.getProperty(sampleUrl),
             )
         }
 
@@ -41,12 +40,12 @@ android {
             buildConfigField(
                 "String",
                 "BASE_URL",
-                properties.getProperty(debugUrl)
+                properties.getProperty(debugUrl),
             )
             buildConfigField(
                 "String",
                 "SAMPLE_URL",
-                properties.getProperty(sampleUrl)
+                properties.getProperty(sampleUrl),
             )
         }
     }
@@ -83,10 +82,4 @@ dependencies {
     add("kspIosX64", libs.koin.ksp.compiler)
     add("kspIosArm64", libs.koin.ksp.compiler)
     add("kspIosSimulatorArm64", libs.koin.ksp.compiler)
-}
-
-project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-    if(name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
 }

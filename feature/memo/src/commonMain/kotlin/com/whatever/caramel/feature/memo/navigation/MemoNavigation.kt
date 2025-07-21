@@ -14,20 +14,20 @@ data object MemoRoute
 fun NavHostController.navigateToMemo(builder: NavOptionsBuilder.() -> Unit) {
     navigate(
         route = MemoRoute,
-        builder = builder
+        builder = builder,
     )
 }
 
 fun NavGraphBuilder.memoContent(
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     showErrorToast: (String) -> Unit,
-    showErrorDialog: (String, String?) -> Unit
+    showErrorDialog: (String, String?) -> Unit,
 ) {
     composable<MemoRoute> {
         MemoRoute(
             navigateToTodoDetail = navigateToTodoDetail,
             showErrorToast = showErrorToast,
-            showErrorDialog = showErrorDialog
+            showErrorDialog = showErrorDialog,
         )
     }
 }

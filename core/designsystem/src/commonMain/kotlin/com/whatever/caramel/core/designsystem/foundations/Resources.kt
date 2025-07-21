@@ -14,6 +14,7 @@ import caramel.core.designsystem.generated.resources.ic_arrow_right_16
 import caramel.core.designsystem.generated.resources.ic_arrow_right_24
 import caramel.core.designsystem.generated.resources.ic_arrow_up_16
 import caramel.core.designsystem.generated.resources.ic_arrow_up_24
+import caramel.core.designsystem.generated.resources.ic_calendar_18
 import caramel.core.designsystem.generated.resources.ic_calendar_24
 import caramel.core.designsystem.generated.resources.ic_cancel_16
 import caramel.core.designsystem.generated.resources.ic_cancel_24
@@ -69,7 +70,6 @@ import caramel.core.designsystem.generated.resources.privacy_policy_url
 import caramel.core.designsystem.generated.resources.terms_of_service_url
 
 object Resources {
-
     object Icon {
         val ic_arrow_down_16 = Res.drawable.ic_arrow_down_16
         val ic_arrow_down_24 = Res.drawable.ic_arrow_down_24
@@ -120,6 +120,7 @@ object Resources {
         val ic_alert_12 = Res.drawable.ic_alert_12
         val ic_alert_24 = Res.drawable.ic_alert_24
         val ic_alert_32 = Res.drawable.ic_alert_32
+        val ic_calendar_18 = Res.drawable.ic_calendar_18
     }
 
     object Image {

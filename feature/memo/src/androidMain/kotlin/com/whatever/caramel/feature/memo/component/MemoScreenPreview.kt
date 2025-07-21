@@ -10,7 +10,7 @@ import com.whatever.caramel.feature.memo.mvi.MemoState
 @Preview
 @Composable
 private fun MemoScreenPreview(
-    @PreviewParameter(MemoScreenPreviewProvider::class) data : MemoState
+    @PreviewParameter(MemoScreenPreviewProvider::class) data: MemoState,
 ) {
     CaramelTheme {
         MemoScreen(state = data) { }

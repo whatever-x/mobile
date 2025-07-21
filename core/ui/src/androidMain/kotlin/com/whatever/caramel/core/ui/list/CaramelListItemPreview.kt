@@ -15,7 +15,7 @@ import org.jetbrains.compose.resources.vectorResource
 @Preview
 @Composable
 private fun CaramelListItemPreview(
-    @PreviewParameter(CaramelListItemPreviewProvider::class) data: CaramelListViewPreviewData
+    @PreviewParameter(CaramelListItemPreviewProvider::class) data: CaramelListViewPreviewData,
 ) {
     CaramelTheme {
         CaramelListItem(
@@ -23,19 +23,19 @@ private fun CaramelListItemPreview(
                 Text(
                     text = data.content,
                     style = CaramelTheme.typography.body2.regular,
-                    color = CaramelTheme.color.text.primary
+                    color = CaramelTheme.color.text.primary,
                 )
             },
             leading = {
                 data.leadingIcon?.let {
                     Icon(
-                        modifier = Modifier
-                            .padding(end = 10.dp),
+                        modifier =
+                            Modifier
+                                .padding(end = 10.dp),
                         imageVector = vectorResource(it),
-                        contentDescription = null
+                        contentDescription = null,
                     )
                 }
-
             },
             trailing = {
                 if (data.trailingIconVisible) {
@@ -43,7 +43,7 @@ private fun CaramelListItemPreview(
                 } else if (!data.trailingText.isNullOrEmpty()) {
                     TrailingText(text = data.trailingText)
                 }
-            }
+            },
         )
     }
 }
@@ -53,7 +53,7 @@ private fun TrailingText(text: String) {
     Text(
         text = text,
         style = CaramelTheme.typography.body3.regular,
-        color = CaramelTheme.color.text.primary
+        color = CaramelTheme.color.text.primary,
     )
 }
 
@@ -61,6 +61,6 @@ private fun TrailingText(text: String) {
 private fun TrailingArrow() {
     Icon(
         imageVector = vectorResource(Resources.Icon.ic_arrow_right_14),
-        contentDescription = null
+        contentDescription = null,
     )
 }

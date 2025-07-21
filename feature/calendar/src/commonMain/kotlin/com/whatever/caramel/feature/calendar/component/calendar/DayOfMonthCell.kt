@@ -26,30 +26,31 @@ internal fun CalendarDayOfMonthCell(
     date: LocalDate,
     isFocus: Boolean,
     onClickCell: (LocalDate) -> Unit = {},
-    onClickTodo: (Long) -> Unit = {}
+    onClickTodo: (Long) -> Unit = {},
 ) {
     Box(modifier = modifier) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .clickable(
-                    indication = null,
-                    interactionSource = null,
-                    onClick = { onClickCell(date) }
-                ),
-            verticalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xxs)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .clickable(
+                        indication = null,
+                        interactionSource = null,
+                        onClick = { onClickCell(date) },
+                    ),
+            verticalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xxs),
         ) {
             CalendarDayOfMonthText(
                 modifier = Modifier.fillMaxWidth(),
                 dayOfWeek = date.dayOfWeek,
                 dayOfMonth = date.dayOfMonth,
                 isFocus = isFocus,
-                isHoliday = schedule?.holidays?.isNotEmpty() ?: false
+                isHoliday = schedule?.holidays?.isNotEmpty() ?: false,
             )
             if (schedule != null) {
                 CalendarScheduleList(
                     schedule = schedule,
-                    onClickTodo = { onClickTodo(it) }
+                    onClickTodo = { onClickTodo(it) },
                 )
             }
         }
@@ -62,34 +63,37 @@ private fun CalendarDayOfMonthText(
     dayOfWeek: DayOfWeek,
     dayOfMonth: Int,
     isFocus: Boolean,
-    isHoliday: Boolean
+    isHoliday: Boolean,
 ) {
     Box(modifier = modifier) {
         Box(
-            modifier = Modifier
-                .background(
-                    color = if (isFocus) {
-                        CaramelTheme.color.fill.primary
-                    } else {
-                        Color.Unspecified
-                    },
-                    shape = CaramelTheme.shape.s
-                )
-                .align(Alignment.Center)
-                .size(24.dp)
+            modifier =
+                Modifier
+                    .background(
+                        color =
+                            if (isFocus) {
+                                CaramelTheme.color.fill.primary
+                            } else {
+                                Color.Unspecified
+                            },
+                        shape = CaramelTheme.shape.s,
+                    ).align(Alignment.Center)
+                    .size(24.dp),
         )
 
         Text(
-            modifier = Modifier
-                .align(Alignment.Center),
+            modifier =
+                Modifier
+                    .align(Alignment.Center),
             text = dayOfMonth.toString(),
             style = CaramelTheme.typography.body4.regular,
-            color = when {
-                isFocus -> CaramelTheme.color.text.inverse
-                dayOfWeek == DayOfWeek.SATURDAY -> CaramelTheme.color.text.labelAccent2
-                isHoliday || dayOfWeek == DayOfWeek.SUNDAY -> CaramelTheme.color.text.labelAccent1
-                else -> CaramelTheme.color.text.primary
-            }
+            color =
+                when {
+                    isFocus -> CaramelTheme.color.text.inverse
+                    dayOfWeek == DayOfWeek.SATURDAY -> CaramelTheme.color.text.labelAccent2
+                    isHoliday || dayOfWeek == DayOfWeek.SUNDAY -> CaramelTheme.color.text.labelAccent1
+                    else -> CaramelTheme.color.text.primary
+                },
         )
     }
 }

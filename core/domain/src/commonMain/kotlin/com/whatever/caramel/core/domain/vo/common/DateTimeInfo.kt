@@ -5,4 +5,4 @@ data class DateTimeInfo(
     val startTimezone: String,
     val endDateTime: String?,
     val endTimezone: String?,
-) 
+)

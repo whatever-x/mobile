@@ -4,5 +4,4 @@ enum class AnniversaryType {
     N_TH_DAY,
     YEARLY,
     BIRTHDAY,
-    ;
 }

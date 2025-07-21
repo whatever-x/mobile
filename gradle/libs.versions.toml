@@ -3,45 +3,46 @@ agp = "8.9.1"
 android-compileSdk = "35"
 android-minSdk = "28"
 android-targetSdk = "35"
-version-code = "10000003" # major(10), minor(00), patch(00), build(00)
-version-name = "1.0.1" # major(1), minor(0), patch(0)
+version-code = "10000204" # major(10), minor(00), patch(00), build(00)
+version-name = "1.0.2" # major(1), minor(0), patch(0)
 
 androidx-activityCompose = "1.10.1"
-androidx-appcompat = "1.7.0"
+androidx-appcompat = "1.7.1"
 androidx-constraintlayout = "2.2.1"
-androidx-core-ktx = "1.15.0"
+androidx-core-ktx = "1.16.0"
 androidx-espresso-core = "3.6.1"
-androidx-lifecycle = "2.9.0-beta01"
+androidx-lifecycle = "2.9.1"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
-compose-plugin = "1.8.0"
+compose-plugin = "1.8.2"
 junit = "4.13.2"
-kotlin = "2.1.20"
+kotlin = "2.2.0"
 kotlinx-coroutines = "1.10.2"
-navigationCompose = "2.9.0-beta01"
-kotlinSerialization = "1.7.3"
-koin = "4.1.0-Beta8"
-koin-annotation = "2.0.1-RC1"
-ktor = "3.0.1"
+navigationCompose = "2.9.0-beta03"
+kotlinSerialization = "1.9.0"
+koin = "4.1.0"
+koin-annotation = "2.1.0"
+ktor = "3.1.3" # 3.2.0 이슈 | https://blog.jetbrains.com/kotlin/2025/06/ktor-3-2-0-is-now-available/
 coil3 = "3.0.4"
-ksp = "2.1.20-1.0.32" #2.1.0-1.0.29
+ksp = "2.2.0-2.0.2"
 sqlite = "2.5.0-rc03"
 room = "2.7.0-rc03"
 moko = "0.19.1"
 napier = "2.7.1"
 gms = "4.4.2"
-firebase-crahslytics = "3.0.3"
-firebase = "33.12.0"
-jetbrainsKotlinJvm = "1.9.24"
-datastore = "1.1.4"
-kakao = "2.21.0"
-kmp-spm = "0.8.2"
 kotlinx-date-time = "0.6.2"
-turbine = "1.2.0"
-mokkery = "2.7.2"
-animationCoreAndroid = "1.7.8"
-kotlinx-collections-immutable = "0.3.8"
+firebase-crahslytics = "3.0.4"
+firebase = "33.15.0"
+jetbrainsKotlinJvm = "2.2.0"
+datastore = "1.1.7"
+kakao = "2.21.4"
+kmp-spm = "0.11.3"
+turbine = "1.2.1"
+mokkery = "2.9.0"
+kotlinx-collections-immutable = "0.4.0"
 apps-flyer = "6.17.0"
+ktlint-cli = "1.6.0"
+spotless = "7.0.4"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -117,7 +118,6 @@ kotlinx-date-time = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime"
 compose-ui-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose-plugin" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 mokkery = { group = "dev.mokkery", name = "mokkery-gradle", version.ref = "mokkery" }
-androidx-animation-core-android = { group = "androidx.compose.animation", name = "animation-core-android", version.ref = "animationCoreAndroid" }
 
 apps-flyer = { group = "com.appsflyer", name = "af-android-sdk", version.ref = "apps-flyer"}
 
@@ -135,6 +135,7 @@ googleServices = { id = "com.google.gms.google-services", version.ref = "gms" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crahslytics" }
 jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
+spotless = { id = "com.diffplug.gradle.spotless", version.ref = "spotless"}
 
 [bundles]
 ktor = [

@@ -32,14 +32,14 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun CaramelComposeApp(
     navHostController: NavHostController,
-    viewModel: CaramelViewModel = koinViewModel()
+    viewModel: CaramelViewModel = koinViewModel(),
 ) {
     CaramelTheme {
         val snackBarHostState = remember { SnackbarHostState() }
 
         CompositionLocalProvider(
             LocalSnackbarHostState provides snackBarHostState,
-            LocalOverscrollFactory provides null
+            LocalOverscrollFactory provides null,
         ) {
             val appState by viewModel.state.collectAsStateWithLifecycle()
 
@@ -59,17 +59,17 @@ fun CaramelComposeApp(
             CaramelScaffold(
                 snackBarHost = {
                     CaramelSnackBarHost(
-                        modifier = Modifier
-                            .padding(
-                                start = 20.dp,
-                                end = 20.dp,
-                                bottom = 20.dp
-                            )
-                            .imePadding(),
+                        modifier =
+                            Modifier
+                                .padding(
+                                    start = 20.dp,
+                                    end = 20.dp,
+                                    bottom = 20.dp,
+                                ).imePadding(),
                         hostState = LocalSnackbarHostState.current,
                         snackbar = { snackbarData ->
                             CaramelSnackbar(
-                                snackbarData = snackbarData
+                                snackbarData = snackbarData,
                             )
                         },
                     )
@@ -118,11 +118,12 @@ fun CaramelComposeApp(
                                 }
                             }
 
-                            is AppSideEffect.ShowToast -> showSnackbarMessage(
-                                coroutineScope = this,
-                                snackbarHostState = snackBarHostState,
-                                message = sideEffect.message
-                            )
+                            is AppSideEffect.ShowToast ->
+                                showSnackbarMessage(
+                                    coroutineScope = this,
+                                    snackbarHostState = snackBarHostState,
+                                    message = sideEffect.message,
+                                )
                         }
                     }
                 }

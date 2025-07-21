@@ -17,7 +17,7 @@ kotlin {
         listOf(
             iosX64(),
             iosArm64(),
-            iosSimulatorArm64()
+            iosSimulatorArm64(),
         ).forEach { iosTarget ->
             iosTarget.compilations {
                 val main by getting {
@@ -54,7 +54,7 @@ swiftPackageConfig {
             remotePackageVersion(
                 url = URI("https://github.com/firebase/firebase-ios-sdk"),
                 version = "11.9.0",
-                products = { add("FirebaseMessaging") }
+                products = { add("FirebaseMessaging") },
             )
         }
     }

@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.profile.edit
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.couple.EditCoupleStartDateUseCase
@@ -15,29 +16,30 @@ import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditSideEffect
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditState
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditType
 import com.whatever.caramel.feature.profile.edit.navigation.ProfileEditRoute
-import io.github.aakira.napier.Napier
 
 class ProfileEditViewModel(
     private val editProfileUseCase: EditProfileUseCase,
     private val editCoupleStartDateUseCase: EditCoupleStartDateUseCase,
-    savedStateHandle: SavedStateHandle
-) : BaseViewModel<ProfileEditState, ProfileEditSideEffect, ProfileEditIntent>(savedStateHandle) {
-
+    savedStateHandle: SavedStateHandle,
+    crashlytics: CaramelCrashlytics,
+) : BaseViewModel<ProfileEditState, ProfileEditSideEffect, ProfileEditIntent>(savedStateHandle, crashlytics) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): ProfileEditState {
         val arguments = savedStateHandle.toRoute<ProfileEditRoute>()
         return ProfileEditState(
             editUiType = ProfileEditType.valueOf(arguments.editType),
             nickName = arguments.nickname,
-            birthDay = if (arguments.birthday.isEmpty()) {
-                DateUiState.currentDate()
-            } else {
-                DateUiState.get(arguments.birthday)
-            },
-            startDate = if (arguments.startDate.isEmpty()) {
-                DateUiState.currentDate()
-            } else {
-                DateUiState.get(arguments.startDate)
-            }
+            birthDay =
+                if (arguments.birthday.isEmpty()) {
+                    DateUiState.currentDate()
+                } else {
+                    DateUiState.get(arguments.birthday)
+                },
+            startDate =
+                if (arguments.startDate.isEmpty()) {
+                    DateUiState.currentDate()
+                } else {
+                    DateUiState.get(arguments.startDate)
+                },
         )
     }
 
@@ -59,29 +61,34 @@ class ProfileEditViewModel(
         super.handleClientException(throwable)
         if (throwable is CaramelException) {
             when (throwable.errorUiType) {
-                ErrorUiType.TOAST -> postSideEffect(
-                    ProfileEditSideEffect.ShowErrorToast(
-                        message = throwable.message
+                ErrorUiType.TOAST ->
+                    postSideEffect(
+                        ProfileEditSideEffect.ShowErrorToast(
+                            message = throwable.message,
+                        ),
                     )
-                )
-                ErrorUiType.DIALOG -> postSideEffect(
-                    ProfileEditSideEffect.ShowErrorDialog(
-                        message = throwable.message,
-                        description = throwable.description
+                ErrorUiType.DIALOG ->
+                    postSideEffect(
+                        ProfileEditSideEffect.ShowErrorDialog(
+                            message = throwable.message,
+                            description = throwable.description,
+                        ),
                     )
-                )
             }
         } else {
+            caramelCrashlytics.recordException(throwable)
             postSideEffect(
-                ProfileEditSideEffect.ShowErrorToast(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
-                )
+                ProfileEditSideEffect.ShowErrorDialog(
+                    message = "알 수 없는 오류가 발생했습니다.",
+                    description = null,
+                ),
             )
         }
     }
 
     private fun updateNickname(nickname: String) {
-        UserValidator.checkInputNicknameValidate(nickname)
+        UserValidator
+            .checkInputNicknameValidate(nickname)
             .onSuccess {
                 reduce {
                     copy(
@@ -94,7 +101,7 @@ class ProfileEditViewModel(
     private fun updateBirthdayYear(year: Int) {
         reduce {
             copy(
-                birthDay = birthDay.copy(year = year)
+                birthDay = birthDay.copy(year = year),
             )
         }
         postSideEffect(ProfileEditSideEffect.PerformHapticFeedback)
@@ -103,7 +110,7 @@ class ProfileEditViewModel(
     private fun updateBirthdayMonth(month: Int) {
         reduce {
             copy(
-                birthDay = birthDay.copy(month = month)
+                birthDay = birthDay.copy(month = month),
             )
         }
         postSideEffect(ProfileEditSideEffect.PerformHapticFeedback)
@@ -112,7 +119,7 @@ class ProfileEditViewModel(
     private fun updateBirthdayDay(day: Int) {
         reduce {
             copy(
-                birthDay = birthDay.copy(day = day)
+                birthDay = birthDay.copy(day = day),
             )
         }
         postSideEffect(ProfileEditSideEffect.PerformHapticFeedback)
@@ -121,7 +128,7 @@ class ProfileEditViewModel(
     private fun updateStartDateYear(year: Int) {
         reduce {
             copy(
-                startDate = startDate.copy(year = year)
+                startDate = startDate.copy(year = year),
             )
         }
         postSideEffect(ProfileEditSideEffect.PerformHapticFeedback)
@@ -130,7 +137,7 @@ class ProfileEditViewModel(
     private fun updateStartDateMonth(month: Int) {
         reduce {
             copy(
-                startDate = startDate.copy(month = month)
+                startDate = startDate.copy(month = month),
             )
         }
         postSideEffect(ProfileEditSideEffect.PerformHapticFeedback)
@@ -139,7 +146,7 @@ class ProfileEditViewModel(
     private fun updateStartDateDay(day: Int) {
         reduce {
             copy(
-                startDate = startDate.copy(day = day)
+                startDate = startDate.copy(day = day),
             )
         }
         postSideEffect(ProfileEditSideEffect.PerformHapticFeedback)
@@ -148,25 +155,30 @@ class ProfileEditViewModel(
     private suspend fun clickSaveButton() {
         when (currentState.editUiType) {
             ProfileEditType.NONE -> {}
-            ProfileEditType.NICKNAME -> editProfileUseCase(
-                nickname = currentState.nickName
-            )
-
-            ProfileEditType.BIRTHDAY -> editProfileUseCase(
-                birthday = DateFormatter.createDateString(
-                    year = currentState.birthDay.year,
-                    month = currentState.birthDay.month,
-                    day = currentState.birthDay.day
+            ProfileEditType.NICKNAME ->
+                editProfileUseCase(
+                    nickname = currentState.nickName,
                 )
-            )
 
-            ProfileEditType.START_DATE -> editCoupleStartDateUseCase(
-                startDate = DateFormatter.createDateString(
-                    year = currentState.startDate.year,
-                    month = currentState.startDate.month,
-                    day = currentState.startDate.day
+            ProfileEditType.BIRTHDAY ->
+                editProfileUseCase(
+                    birthday =
+                        DateFormatter.createDateString(
+                            year = currentState.birthDay.year,
+                            month = currentState.birthDay.month,
+                            day = currentState.birthDay.day,
+                        ),
                 )
-            )
+
+            ProfileEditType.START_DATE ->
+                editCoupleStartDateUseCase(
+                    startDate =
+                        DateFormatter.createDateString(
+                            year = currentState.startDate.year,
+                            month = currentState.startDate.month,
+                            day = currentState.startDate.day,
+                        ),
+                )
         }
         postSideEffect(ProfileEditSideEffect.PopBackStack)
     }

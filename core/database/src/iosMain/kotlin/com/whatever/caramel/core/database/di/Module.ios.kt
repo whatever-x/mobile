@@ -5,6 +5,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 actual val platformDatabaseModule: Module
-    get() = module {
-        single { DatabaseFactory() }
-    }
+    get() =
+        module {
+            single { DatabaseFactory() }
+        }

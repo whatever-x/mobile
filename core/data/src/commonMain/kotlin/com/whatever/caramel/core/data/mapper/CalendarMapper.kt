@@ -11,38 +11,35 @@ import com.whatever.caramel.core.remote.dto.calendar.response.GetScheduleRespons
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 
-fun CalendarDetailResponse.toTodo(): List<Todo> {
-    return this.calendarResult.scheduleList.map {
+fun CalendarDetailResponse.toTodo(): List<Todo> =
+    this.calendarResult.scheduleList.map {
         Todo(
             id = it.scheduleId,
             startDate = LocalDateTime.parse(it.startDateTime),
             endDate = LocalDateTime.parse(it.endDateTime),
             title = it.title ?: "",
-            description = it.description ?: ""
+            description = it.description ?: "",
         )
     }
-}
 
-internal fun CreateScheduleResponse.toScheduleMetaData(): ScheduleMetadata {
-    return ScheduleMetadata(
+internal fun CreateScheduleResponse.toScheduleMetaData(): ScheduleMetadata =
+    ScheduleMetadata(
         contentId = this.contentId,
-        contentType = this.contentType
+        contentType = this.contentType,
     )
-}
 
-fun HolidayDetailListResponse.toHoliday(): List<Holiday> {
-    return this.holidayList.map {
+fun HolidayDetailListResponse.toHoliday(): List<Holiday> =
+    this.holidayList.map {
         Holiday(
             id = it.id,
             date = LocalDate.parse(it.date),
             name = it.name,
-            isHoliday = it.isHoliday
+            isHoliday = it.isHoliday,
         )
     }
-}
 
-internal fun GetScheduleResponse.toScheduleDetailVO(): ScheduleDetail {
-    return with(scheduleDetail) {
+internal fun GetScheduleResponse.toScheduleDetailVO(): ScheduleDetail =
+    with(scheduleDetail) {
         ScheduleDetail(
             scheduleId = scheduleId,
             startDateTime = startDateTime,
@@ -53,7 +50,6 @@ internal fun GetScheduleResponse.toScheduleDetailVO(): ScheduleDetail {
             parentScheduleId = parentScheduleId,
             title = title,
             description = description,
-            tags = tags.map { it.toTag() }
+            tags = tags.map { it.toTag() },
         )
     }
-}

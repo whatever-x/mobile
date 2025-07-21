@@ -1,9 +1,9 @@
 package com.whatever.caramel.feature.login
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
-import com.whatever.caramel.core.domain.exception.code.AuthErrorCode
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
 import com.whatever.caramel.core.firebaseMessaging.FcmTokenProvider
@@ -17,13 +17,11 @@ import com.whatever.caramel.feature.login.social.kakao.KakaoUser
 
 class LoginViewModel(
     savedStateHandle: SavedStateHandle,
+    crashlytics: CaramelCrashlytics,
     private val signInWithSocialPlatformUseCase: SignInWithSocialPlatformUseCase,
     private val fcmTokenProvider: FcmTokenProvider,
-) : BaseViewModel<LoginState, LoginSideEffect, LoginIntent>(savedStateHandle) {
-
-    override fun createInitialState(savedStateHandle: SavedStateHandle): LoginState {
-        return LoginState
-    }
+) : BaseViewModel<LoginState, LoginSideEffect, LoginIntent>(savedStateHandle, crashlytics) {
+    override fun createInitialState(savedStateHandle: SavedStateHandle): LoginState = LoginState
 
     override suspend fun handleIntent(intent: LoginIntent) {
         when (intent) {
@@ -36,23 +34,27 @@ class LoginViewModel(
         super.handleClientException(throwable)
         if (throwable is CaramelException) {
             when (throwable.errorUiType) {
-                ErrorUiType.TOAST -> postSideEffect(
-                    LoginSideEffect.ShowErrorToast(
-                        message = throwable.message
+                ErrorUiType.TOAST ->
+                    postSideEffect(
+                        LoginSideEffect.ShowErrorToast(
+                            message = throwable.message,
+                        ),
                     )
-                )
-                ErrorUiType.DIALOG -> postSideEffect(
-                    LoginSideEffect.ShowErrorDialog(
-                        message = throwable.message,
-                        description = throwable.description
+                ErrorUiType.DIALOG ->
+                    postSideEffect(
+                        LoginSideEffect.ShowErrorDialog(
+                            message = throwable.message,
+                            description = throwable.description,
+                        ),
                     )
-                )
             }
         } else {
+            caramelCrashlytics.recordException(throwable)
             postSideEffect(
-                LoginSideEffect.ShowErrorToast(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
-                )
+                LoginSideEffect.ShowErrorDialog(
+                    message = "알 수 없는 오류가 발생했습니다.",
+                    description = null,
+                ),
             )
         }
     }
@@ -62,7 +64,7 @@ class LoginViewModel(
             is SocialAuthResult.Success -> {
                 login(
                     idToken = result.data.idToken,
-                    socialLoginType = SocialLoginType.KAKAO
+                    socialLoginType = SocialLoginType.KAKAO,
                 )
             }
 
@@ -81,7 +83,7 @@ class LoginViewModel(
             is SocialAuthResult.Success -> {
                 login(
                     idToken = result.data.idToken,
-                    socialLoginType = SocialLoginType.APPLE
+                    socialLoginType = SocialLoginType.APPLE,
                 )
             }
 
@@ -97,13 +99,14 @@ class LoginViewModel(
 
     private suspend fun login(
         idToken: String,
-        socialLoginType: SocialLoginType
+        socialLoginType: SocialLoginType,
     ) {
         launch {
-            val userStatus = signInWithSocialPlatformUseCase(
-                idToken = idToken,
-                socialLoginType = socialLoginType
-            )
+            val userStatus =
+                signInWithSocialPlatformUseCase(
+                    idToken = idToken,
+                    socialLoginType = socialLoginType,
+                )
             fcmTokenProvider.updateToken()
             postSideEffect(LoginSideEffect.NavigateToStartDestination(userStatus = userStatus))
         }

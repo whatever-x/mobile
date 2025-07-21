@@ -5,9 +5,8 @@ import com.whatever.caramel.core.remote.datasource.RemoteFirebaseControllerDataS
 import kotlinx.coroutines.tasks.await
 
 class FcmTokenProviderImpl(
-    private val remoteFirebaseControllerDataSource: RemoteFirebaseControllerDataSource
+    private val remoteFirebaseControllerDataSource: RemoteFirebaseControllerDataSource,
 ) : FcmTokenProvider {
-
     override suspend fun updateToken() {
         val fcmToken = FirebaseMessaging.getInstance().token.await()
 
@@ -17,5 +16,4 @@ class FcmTokenProviderImpl(
     override suspend fun updateToken(token: String) {
         remoteFirebaseControllerDataSource.postFcmToken(token = token)
     }
-
 }

@@ -14,8 +14,8 @@ import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.profile.edit.component.EditBirthday
-import com.whatever.caramel.feature.profile.edit.component.EditStartDate
 import com.whatever.caramel.feature.profile.edit.component.EditNickname
+import com.whatever.caramel.feature.profile.edit.component.EditStartDate
 import com.whatever.caramel.feature.profile.edit.component.ProfileEditBottomBar
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditIntent
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditState
@@ -25,47 +25,50 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 internal fun ProfileEditScreen(
     state: ProfileEditState,
-    onIntent: (ProfileEditIntent) -> Unit
+    onIntent: (ProfileEditIntent) -> Unit,
 ) {
     Scaffold(
         topBar = {
             CaramelTopBar(
-                modifier = Modifier
-                    .statusBarsPadding(),
+                modifier =
+                    Modifier
+                        .statusBarsPadding(),
                 trailingIcon = {
                     Icon(
-                        modifier = Modifier.clickable(
-                            interactionSource = null,
-                            indication = null,
-                            onClick = { onIntent(ProfileEditIntent.ClickCloseButton) }
-                        ),
+                        modifier =
+                            Modifier.clickable(
+                                interactionSource = null,
+                                indication = null,
+                                onClick = { onIntent(ProfileEditIntent.ClickCloseButton) },
+                            ),
                         painter = painterResource(Resources.Icon.ic_cancel_24),
-                        contentDescription = null
+                        contentDescription = null,
                     )
-                }
+                },
             )
         },
         bottomBar = {
             ProfileEditBottomBar(
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .imePadding(),
+                modifier =
+                    Modifier
+                        .navigationBarsPadding()
+                        .imePadding(),
                 buttonEnabled = state.isSaveButtonEnabled,
                 buttonText = "저장하기",
-                onClickButton = { onIntent(ProfileEditIntent.ClickSaveButton) }
+                onClickButton = { onIntent(ProfileEditIntent.ClickSaveButton) },
             )
         },
-        containerColor = CaramelTheme.color.background.primary
+        containerColor = CaramelTheme.color.background.primary,
     ) { innerPadding ->
         Box(
-            modifier = Modifier.padding(paddingValues = innerPadding)
+            modifier = Modifier.padding(paddingValues = innerPadding),
         ) {
             when (state.editUiType) {
                 ProfileEditType.NONE -> {}
                 ProfileEditType.NICKNAME -> {
                     EditNickname(
                         nickname = state.nickName,
-                        onNicknameChange = { onIntent(ProfileEditIntent.ChangeNickname(it)) }
+                        onNicknameChange = { onIntent(ProfileEditIntent.ChangeNickname(it)) },
                     )
                 }
 
@@ -74,7 +77,7 @@ internal fun ProfileEditScreen(
                         dateUiState = state.birthDay,
                         onYearChange = { onIntent(ProfileEditIntent.ChangeBirthDayYearPicker(it)) },
                         onMonthChange = { onIntent(ProfileEditIntent.ChangeBirthDayMonthPicker(it)) },
-                        onDayChange = { onIntent(ProfileEditIntent.ChangeBirthDayDayPicker(it)) }
+                        onDayChange = { onIntent(ProfileEditIntent.ChangeBirthDayDayPicker(it)) },
                     )
                 }
 
@@ -83,7 +86,7 @@ internal fun ProfileEditScreen(
                         dateUiState = state.startDate,
                         onYearChange = { onIntent(ProfileEditIntent.ChangeDDayYearPicker(it)) },
                         onMonthChange = { onIntent(ProfileEditIntent.ChangeDDayMonthPicker(it)) },
-                        onDayChange = { onIntent(ProfileEditIntent.ChangeDDayDayPicker(it)) }
+                        onDayChange = { onIntent(ProfileEditIntent.ChangeDDayDayPicker(it)) },
                     )
                 }
             }

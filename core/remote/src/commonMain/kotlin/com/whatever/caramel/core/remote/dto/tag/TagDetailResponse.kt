@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TagDataResponse(
     @SerialName("tagList")
-    val tags: List<TagDetailResponse>
+    val tags: List<TagDetailResponse>,
 )
 
 @Serializable
@@ -14,5 +14,5 @@ data class TagDetailResponse(
     @SerialName("id")
     val id: Long,
     @SerialName("label")
-    val label: String
+    val label: String,
 )

@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CoupleSharedMessageRequest(
-    @SerialName("sharedMessage") val sharedMessage: String
+    @SerialName("sharedMessage") val sharedMessage: String,
 )

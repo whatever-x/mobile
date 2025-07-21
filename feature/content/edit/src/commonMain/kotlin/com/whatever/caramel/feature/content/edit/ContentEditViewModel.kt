@@ -2,9 +2,9 @@ package com.whatever.caramel.feature.content.edit
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
+import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
-import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
 import com.whatever.caramel.core.domain.exception.code.ScheduleErrorCode
 import com.whatever.caramel.core.domain.usecase.calendar.DeleteScheduleUseCase
@@ -19,6 +19,7 @@ import com.whatever.caramel.core.domain.vo.common.DateTimeInfo
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoEditParameter
 import com.whatever.caramel.core.ui.content.CreateMode
+import com.whatever.caramel.core.ui.util.validateInputText
 import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditIntent
@@ -32,6 +33,7 @@ import kotlinx.datetime.TimeZone
 
 class ContentEditViewModel(
     savedStateHandle: SavedStateHandle,
+    crashlytics: CaramelCrashlytics,
     private val getTagUseCase: GetTagUseCase,
     private val getMemoUseCase: GetMemoUseCase,
     private val updateMemoUseCase: UpdateMemoUseCase,
@@ -40,9 +42,9 @@ class ContentEditViewModel(
     private val updateScheduleUseCase: UpdateScheduleUseCase,
     private val deleteScheduleUseCase: DeleteScheduleUseCase,
 ) : BaseViewModel<ContentEditState, ContentEditSideEffect, ContentEditIntent>(
-    savedStateHandle = savedStateHandle,
-) {
-
+        savedStateHandle = savedStateHandle,
+        caramelCrashlytics = crashlytics,
+    ) {
     init {
         loadContent()
         loadTags()
@@ -63,27 +65,33 @@ class ContentEditViewModel(
                 ContentErrorCode.CONTENT_NOT_FOUND, ScheduleErrorCode.SCHEDULE_NOT_FOUND -> {
                     reduce { copy(showDeletedContentDialog = true) }
                 }
+
                 else -> {
                     when (throwable.errorUiType) {
-                        ErrorUiType.TOAST -> postSideEffect(
-                            ContentEditSideEffect.ShowErrorSnackBar(
-                                message = throwable.message
+                        ErrorUiType.TOAST ->
+                            postSideEffect(
+                                ContentEditSideEffect.ShowErrorSnackBar(
+                                    message = throwable.message,
+                                ),
                             )
-                        )
-                        ErrorUiType.DIALOG -> postSideEffect(
-                            ContentEditSideEffect.ShowErrorDialog(
-                                message = throwable.message,
-                                description = throwable.description
+
+                        ErrorUiType.DIALOG ->
+                            postSideEffect(
+                                ContentEditSideEffect.ShowErrorDialog(
+                                    message = throwable.message,
+                                    description = throwable.description,
+                                ),
                             )
-                        )
                     }
                 }
             }
         } else {
+            caramelCrashlytics.recordException(throwable)
             postSideEffect(
-                ContentEditSideEffect.ShowErrorSnackBar(
-                    message = throwable.message ?: "알 수 없는 오류가 발생했습니다."
-                )
+                ContentEditSideEffect.ShowErrorDialog(
+                    message = "알 수 없는 오류가 발생했습니다.",
+                    description = null,
+                ),
             )
         }
     }
@@ -95,12 +103,13 @@ class ContentEditViewModel(
             is ContentEditIntent.ClickTag -> toggleTagSelection(intent)
             ContentEditIntent.ClickDate -> reduce { copy(showDateDialog = true) }
             ContentEditIntent.ClickTime -> reduce { copy(showTimeDialog = true) }
-            ContentEditIntent.HideDateTimeDialog -> reduce {
-                copy(
-                    showDateDialog = false,
-                    showTimeDialog = false
-                )
-            }
+            ContentEditIntent.HideDateTimeDialog ->
+                reduce {
+                    copy(
+                        showDateDialog = false,
+                        showTimeDialog = false,
+                    )
+                }
 
             is ContentEditIntent.OnYearChanged -> updateYear(intent)
             is ContentEditIntent.OnMonthChanged -> updateMonth(intent)
@@ -121,21 +130,54 @@ class ContentEditViewModel(
     }
 
     private fun handleOnTitleChanged(intent: ContentEditIntent.OnTitleChanged) {
-        reduce { copy(title = intent.title) }
+        validateInputText(
+            text = intent.title,
+            limitLength = ContentEditState.MAX_TITLE_LENGTH,
+            onPass = { text ->
+                reduce {
+                    copy(
+                        title = text,
+                    )
+                }
+            },
+            onContainsNewline = {
+                postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("줄바꿈을 포함할수 없어요"))
+            },
+            onExceedLimit = {
+                postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("제목은 ${ContentEditState.MAX_TITLE_LENGTH}자까지 입력할 수 있어요"))
+            },
+        )
     }
 
     private fun handleOnContentChanged(intent: ContentEditIntent.OnContentChanged) {
-        reduce { copy(content = intent.content) }
+        validateInputText(
+            text = intent.content,
+            limitLength = ContentEditState.MAX_CONTENT_LENGTH,
+            onPass = { text ->
+                reduce {
+                    copy(
+                        content = text,
+                    )
+                }
+            },
+            onContainsNewline = {
+                postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("줄바꿈을 포함할수 없어요"))
+            },
+            onExceedLimit = {
+                postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("내용은 ${ContentEditState.MAX_CONTENT_LENGTH}자까지 입력할 수 있어요"))
+            },
+        )
     }
 
     private fun toggleTagSelection(intent: ContentEditIntent.ClickTag) {
         reduce {
             copy(
-                selectedTags = if (selectedTags.contains(intent.tag)) {
-                    selectedTags - intent.tag
-                } else {
-                    selectedTags + intent.tag
-                }.toImmutableSet()
+                selectedTags =
+                    if (selectedTags.contains(intent.tag)) {
+                        selectedTags - intent.tag
+                    } else {
+                        selectedTags + intent.tag
+                    }.toImmutableSet(),
             )
         }
     }
@@ -147,41 +189,49 @@ class ContentEditViewModel(
                 ContentType.MEMO -> {
                     updateMemoUseCase(
                         memoId = state.contentId,
-                        parameter = MemoEditParameter(
-                            title = state.title.ifBlank { null },
-                            description = state.content.ifBlank { null },
-                            isCompleted = null,
-                            tagIds = state.selectedTags.map { it.id }.toList(),
-                            dateTimeInfo = if (state.createMode == CreateMode.CALENDAR) {
-                                DateTimeInfo(
-                                    startDateTime = state.dateTime.toString(),
-                                    startTimezone = TimeZone.currentSystemDefault().id,
-                                    endDateTime = null,
-                                    endTimezone = null
-                                )
-                            } else null
-                        )
+                        parameter =
+                            MemoEditParameter(
+                                title = state.title.ifBlank { null },
+                                description = state.content.ifBlank { null },
+                                isCompleted = null,
+                                tagIds = state.selectedTags.map { it.id }.toList(),
+                                dateTimeInfo =
+                                    if (state.createMode == CreateMode.CALENDAR) {
+                                        DateTimeInfo(
+                                            startDateTime = state.dateTime.toString(),
+                                            startTimezone = TimeZone.currentSystemDefault().id,
+                                            endDateTime = null,
+                                            endTimezone = null,
+                                        )
+                                    } else {
+                                        null
+                                    },
+                            ),
                     )
                 }
 
                 ContentType.CALENDAR -> {
                     updateScheduleUseCase(
                         scheduleId = state.contentId,
-                        parameter = ScheduleEditParameter(
-                            selectedDate = state.dateTime.date.toString(),
-                            title = state.title.ifBlank { null },
-                            description = state.content.ifBlank { null },
-                            isCompleted = false,
-                            dateTimeInfo = if (state.createMode == CreateMode.CALENDAR) {
-                                DateTimeInfo(
-                                    startDateTime = state.dateTime.toString(),
-                                    startTimezone = TimeZone.currentSystemDefault().id,
-                                    endDateTime = state.dateTime.toString(),
-                                    endTimezone = TimeZone.currentSystemDefault().id
-                                )
-                            } else null,
-                            tagIds = state.selectedTags.map { it.id }.toList()
-                        )
+                        parameter =
+                            ScheduleEditParameter(
+                                selectedDate = state.dateTime.date.toString(),
+                                title = state.title.ifBlank { null },
+                                description = state.content.ifBlank { null },
+                                isCompleted = false,
+                                dateTimeInfo =
+                                    if (state.createMode == CreateMode.CALENDAR) {
+                                        DateTimeInfo(
+                                            startDateTime = state.dateTime.toString(),
+                                            startTimezone = TimeZone.currentSystemDefault().id,
+                                            endDateTime = state.dateTime.toString(),
+                                            endTimezone = TimeZone.currentSystemDefault().id,
+                                        )
+                                    } else {
+                                        null
+                                    },
+                                tagIds = state.selectedTags.map { it.id }.toList(),
+                            ),
                     )
                 }
             }
@@ -258,15 +308,16 @@ class ContentEditViewModel(
         reduce {
             val currentDateTime = dateTime
             val currentHour24 = currentDateTime.hour
-            val newHour24 = when {
-                currentHour24 < 12 -> {
-                    if (newHour12 == 12) 0 else newHour12
-                }
+            val newHour24 =
+                when {
+                    currentHour24 < 12 -> {
+                        if (newHour12 == 12) 0 else newHour12
+                    }
 
-                else -> {
-                    if (newHour12 == 12) 12 else newHour12 + 12
+                    else -> {
+                        if (newHour12 == 12) 12 else newHour12 + 12
+                    }
                 }
-            }
             copy(dateTime = currentDateTime.copy(hour = newHour24))
         }
     }
@@ -275,11 +326,12 @@ class ContentEditViewModel(
         reduce {
             val currentDateTime = dateTime
             val currentHour24 = currentDateTime.hour
-            val finalNewHour24 = when (intent.period) {
-                "오전" -> if (currentHour24 >= 12) currentHour24 - 12 else currentHour24
-                "오후" -> if (currentHour24 < 12) currentHour24 + 12 else currentHour24
-                else -> currentHour24
-            }
+            val finalNewHour24 =
+                when (intent.period) {
+                    "오전" -> if (currentHour24 >= 12) currentHour24 - 12 else currentHour24
+                    "오후" -> if (currentHour24 < 12) currentHour24 + 12 else currentHour24
+                    else -> currentHour24
+                }
             copy(dateTime = currentDateTime.copy(hour = finalNewHour24))
         }
     }
@@ -295,7 +347,7 @@ class ContentEditViewModel(
                             isLoading = false,
                             title = memo.title,
                             content = memo.description,
-                            selectedTags = memo.tagList.toImmutableSet()
+                            selectedTags = memo.tagList.toImmutableSet(),
                         )
                     }
                 }
@@ -309,7 +361,7 @@ class ContentEditViewModel(
                             title = schedule.title ?: "",
                             content = schedule.description ?: "",
                             selectedTags = schedule.tags.toImmutableSet(),
-                            dateTime = scheduleDateTime
+                            dateTime = scheduleDateTime,
                         )
                     }
                 }
@@ -324,4 +376,4 @@ class ContentEditViewModel(
             reduce { copy(tags = tags.toImmutableList()) }
         }
     }
-} 
+}

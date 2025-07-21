@@ -9,12 +9,12 @@ import com.whatever.caramel.feature.couple.connect.mvi.CoupleConnectState
 @Preview
 @Composable
 private fun CoupleConnectScreenPreview(
-    @PreviewParameter(CoupleConnectScreenPreviewProvider::class) data: CoupleConnectState
+    @PreviewParameter(CoupleConnectScreenPreviewData::class) data: CoupleConnectState,
 ) {
     CaramelTheme {
         CoupleConnectScreen(
             state = data,
-            onIntent = { }
+            onIntent = { },
         )
     }
 }

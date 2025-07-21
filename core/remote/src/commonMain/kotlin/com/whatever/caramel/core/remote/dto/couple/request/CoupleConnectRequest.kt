@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CoupleConnectRequest(
-    @SerialName("invitationCode") val invitationCode: String
+    @SerialName("invitationCode") val invitationCode: String,
 )

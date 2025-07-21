@@ -34,11 +34,12 @@ internal fun NeedTermsStep(
     onClickServiceTerm: () -> Unit,
     onClickPersonalInfoTerm: () -> Unit,
     onClickServiceTermLabel: () -> Unit,
-    onClickPersonalInfoLabel: () -> Unit
+    onClickPersonalInfoLabel: () -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier =
+            modifier
+                .fillMaxWidth(),
     ) {
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -54,50 +55,55 @@ internal fun NeedTermsStep(
             image = {
                 Box {
                     Box(
-                        modifier = Modifier
-                            .offset(y = 55.dp)
-                            .fillMaxWidth()
-                            .height(height = 125.dp)
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color(0xFFFFE6C3),
-                                        Color(0xFFFFE6C3).copy(alpha = 0f)
-                                    )
-                                )
-                            )
+                        modifier =
+                            Modifier
+                                .offset(y = 55.dp)
+                                .fillMaxWidth()
+                                .height(height = 125.dp)
+                                .background(
+                                    brush =
+                                        Brush.verticalGradient(
+                                            colors =
+                                                listOf(
+                                                    Color(0xFFFFE6C3),
+                                                    Color(0xFFFFE6C3).copy(alpha = 0f),
+                                                ),
+                                        ),
+                                ),
                     )
 
                     Image(
-                        modifier = Modifier
-                            .align(alignment = Alignment.TopCenter)
-                            .size(
-                                width = 170.dp,
-                                height = 80.dp
-                            ),
+                        modifier =
+                            Modifier
+                                .align(alignment = Alignment.TopCenter)
+                                .size(
+                                    width = 170.dp,
+                                    height = 80.dp,
+                                ),
                         painter = painterResource(resource = Resources.Image.img_couple_on_ground),
-                        contentDescription = null
+                        contentDescription = null,
                     )
                 }
-            }
+            },
         )
 
         Column(
-            modifier = Modifier
-                .padding(bottom = CaramelTheme.spacing.xxl)
+            modifier =
+                Modifier
+                    .padding(bottom = CaramelTheme.spacing.xxl),
         ) {
             CheckTerm(
                 text = "(필수) 서비스 동의약관",
                 isChecked = isServiceTermChecked,
                 onClickCheckBox = onClickServiceTerm,
-                onClickLabel = onClickServiceTermLabel
+                onClickLabel = onClickServiceTermLabel,
             )
 
             CheckTerm(
                 text = "(필수) 개인정보 수집/이용 동의약관",
                 isChecked = isPersonalInfoTermChecked,
                 onClickCheckBox = onClickPersonalInfoTerm,
-                onClickLabel = onClickPersonalInfoLabel
+                onClickLabel = onClickPersonalInfoLabel,
             )
         }
     }
@@ -109,59 +115,65 @@ private fun CheckTerm(
     text: String,
     isChecked: Boolean,
     onClickCheckBox: () -> Unit,
-    onClickLabel: () -> Unit
+    onClickLabel: () -> Unit,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                vertical = CaramelTheme.spacing.s,
-                horizontal = CaramelTheme.spacing.xl
-            ),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(
+                    vertical = CaramelTheme.spacing.s,
+                    horizontal = CaramelTheme.spacing.xl,
+                ),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(
-            modifier = Modifier
-                .clickable(
-                    onClick = onClickCheckBox,
-                    interactionSource = null,
-                    indication = null
+            modifier =
+                Modifier
+                    .clickable(
+                        onClick = onClickCheckBox,
+                        interactionSource = null,
+                        indication = null,
+                    ),
+            horizontalArrangement =
+                Arrangement.spacedBy(
+                    space = CaramelTheme.spacing.s,
                 ),
-            horizontalArrangement = Arrangement.spacedBy(
-                space = CaramelTheme.spacing.s
-            ),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                painter = painterResource(
-                    resource = if (isChecked) {
-                        Resources.Icon.ic_check_box_20
-                    } else {
-                        Resources.Icon.ic_uncheck_box_20
-                    }
-                ),
+                painter =
+                    painterResource(
+                        resource =
+                            if (isChecked) {
+                                Resources.Icon.ic_check_box_20
+                            } else {
+                                Resources.Icon.ic_uncheck_box_20
+                            },
+                    ),
                 tint = Color.Unspecified,
-                contentDescription = null
+                contentDescription = null,
             )
 
             Text(
                 text = text,
                 style = CaramelTheme.typography.body2.regular,
-                color = CaramelTheme.color.text.primary
+                color = CaramelTheme.color.text.primary,
             )
         }
 
         Text(
-            modifier = Modifier
-                .clickable(
-                    onClick = onClickLabel,
-                    indication = null,
-                    interactionSource = null
-                ),
+            modifier =
+                Modifier
+                    .clickable(
+                        onClick = onClickLabel,
+                        indication = null,
+                        interactionSource = null,
+                    ),
             text = "자세히보기",
             style = CaramelTheme.typography.label1.regular,
-            color = CaramelTheme.color.text.secondary
+            color = CaramelTheme.color.text.secondary,
         )
     }
 }

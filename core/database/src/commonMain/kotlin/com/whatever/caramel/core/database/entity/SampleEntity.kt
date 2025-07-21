@@ -11,10 +11,9 @@ import androidx.room.Relation
 data class SampleEntity(
     @PrimaryKey
     @ColumnInfo("name")
-
     val name: String,
     @ColumnInfo("local_data_time")
-    val localDateTime: String
+    val localDateTime: String,
 )
 
 @Entity(tableName = "sample_detail")
@@ -23,14 +22,14 @@ data class SampleDetailEntity(
     @ColumnInfo("description")
     val description: String,
     @ColumnInfo("sample_name")
-    val sampleName: String
+    val sampleName: String,
 )
 
 data class SampleEntityWithDetail(
-    @Embedded val sample : SampleEntity,
+    @Embedded val sample: SampleEntity,
     @Relation(
         parentColumn = "name",
-        entityColumn = "sample_name"
+        entityColumn = "sample_name",
     )
-    val detailArray : List<SampleDetailEntity>
+    val detailArray: List<SampleDetailEntity>,
 )

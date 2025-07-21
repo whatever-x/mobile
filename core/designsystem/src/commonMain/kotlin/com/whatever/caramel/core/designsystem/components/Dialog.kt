@@ -43,7 +43,7 @@ class CaramelDefaultDialogScope(
     override val subButtonText: String?,
     override val onDismissRequest: () -> Unit,
     override val onMainButtonClick: () -> Unit,
-    override val onSubButtonClick: () -> Unit
+    override val onSubButtonClick: () -> Unit,
 ) : CaramelDialogScope
 
 @Composable
@@ -60,32 +60,33 @@ fun CaramelDialog(
 ) {
     if (!show) return
 
-    val scope = remember(
-        onDismissRequest,
-        title,
-        message,
-        onSubButtonClick,
-        subButtonText,
-        mainButtonText,
-        onMainButtonClick
-    ) {
-        CaramelDefaultDialogScope(
-            onDismissRequest = onDismissRequest,
-            title = title,
-            message = message,
-            mainButtonText = mainButtonText,
-            onMainButtonClick = onMainButtonClick,
-            subButtonText = subButtonText,
-            onSubButtonClick = onSubButtonClick
-        )
-    }
+    val scope =
+        remember(
+            onDismissRequest,
+            title,
+            message,
+            onSubButtonClick,
+            subButtonText,
+            mainButtonText,
+            onMainButtonClick,
+        ) {
+            CaramelDefaultDialogScope(
+                onDismissRequest = onDismissRequest,
+                title = title,
+                message = message,
+                mainButtonText = mainButtonText,
+                onMainButtonClick = onMainButtonClick,
+                subButtonText = subButtonText,
+                onSubButtonClick = onSubButtonClick,
+            )
+        }
     Dialog(
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
     ) {
         Surface(
             modifier = Modifier.wrapContentHeight(),
             shape = CaramelTheme.shape.l,
-            color = CaramelTheme.color.background.tertiary
+            color = CaramelTheme.color.background.tertiary,
         ) {
             scope.content()
         }
@@ -109,7 +110,7 @@ fun CaramelDialogScope.DefaultCaramelDialogLayout() {
         if (hasSubButton) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s)
+                horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s),
             ) {
                 CaramelDialogSubButton(modifier = Modifier.weight(1f))
                 CaramelDialogMainButton(modifier = Modifier.weight(1f))
@@ -121,74 +122,68 @@ fun CaramelDialogScope.DefaultCaramelDialogLayout() {
 }
 
 @Composable
-fun CaramelDialogScope.CaramelDialogTitle(
-    modifier: Modifier = Modifier,
-) {
+fun CaramelDialogScope.CaramelDialogTitle(modifier: Modifier = Modifier) {
     Text(
         modifier = modifier.fillMaxWidth(),
         text = this.title,
         style = CaramelTheme.typography.body1.bold,
-        color = CaramelTheme.color.text.primary
+        color = CaramelTheme.color.text.primary,
     )
 }
 
 @Composable
-fun CaramelDialogScope.CaramelDialogContent(
-    modifier: Modifier = Modifier,
-) {
+fun CaramelDialogScope.CaramelDialogContent(modifier: Modifier = Modifier) {
     val dialogMessage = this.message ?: return
     Text(
         modifier = modifier.fillMaxWidth(),
         text = dialogMessage,
         style = CaramelTheme.typography.body2.regular,
-        color = CaramelTheme.color.text.primary
+        color = CaramelTheme.color.text.primary,
     )
 }
 
 @Composable
-fun CaramelDialogScope.CaramelDialogMainButton(
-    modifier: Modifier = Modifier,
-) {
+fun CaramelDialogScope.CaramelDialogMainButton(modifier: Modifier = Modifier) {
     Button(
         modifier = modifier,
         contentPadding = PaddingValues(vertical = 11.dp, horizontal = CaramelTheme.spacing.l),
         onClick = this.onMainButtonClick,
-        colors = ButtonColors(
-            containerColor = CaramelTheme.color.fill.brand,
-            contentColor = CaramelTheme.color.text.inverse,
-            disabledContentColor = CaramelTheme.color.text.disabledPrimary,
-            disabledContainerColor = CaramelTheme.color.fill.disabledPrimary
-        ),
-        shape = CaramelTheme.shape.xxl
+        colors =
+            ButtonColors(
+                containerColor = CaramelTheme.color.fill.brand,
+                contentColor = CaramelTheme.color.text.inverse,
+                disabledContentColor = CaramelTheme.color.text.disabledPrimary,
+                disabledContainerColor = CaramelTheme.color.fill.disabledPrimary,
+            ),
+        shape = CaramelTheme.shape.xxl,
     ) {
         Text(
             text = mainButtonText,
-            style = CaramelTheme.typography.body3.bold
+            style = CaramelTheme.typography.body3.bold,
         )
     }
 }
 
 @Composable
-fun CaramelDialogScope.CaramelDialogSubButton(
-    modifier: Modifier = Modifier,
-) {
+fun CaramelDialogScope.CaramelDialogSubButton(modifier: Modifier = Modifier) {
     val subButtonText = this.subButtonText ?: return
 
     Button(
         modifier = modifier,
         contentPadding = PaddingValues(vertical = 11.dp, horizontal = CaramelTheme.spacing.l),
         onClick = this.onSubButtonClick,
-        colors = ButtonColors(
-            containerColor = CaramelTheme.color.fill.quinary,
-            contentColor = CaramelTheme.color.text.brand,
-            disabledContentColor = CaramelTheme.color.text.disabledPrimary,
-            disabledContainerColor = CaramelTheme.color.fill.disabledPrimary
-        ),
-        shape = CaramelTheme.shape.xxl
+        colors =
+            ButtonColors(
+                containerColor = CaramelTheme.color.fill.quinary,
+                contentColor = CaramelTheme.color.text.brand,
+                disabledContentColor = CaramelTheme.color.text.disabledPrimary,
+                disabledContainerColor = CaramelTheme.color.fill.disabledPrimary,
+            ),
+        shape = CaramelTheme.shape.xxl,
     ) {
         Text(
             text = subButtonText,
-            style = CaramelTheme.typography.body3.bold
+            style = CaramelTheme.typography.body3.bold,
         )
     }
 }

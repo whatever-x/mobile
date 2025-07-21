@@ -39,16 +39,17 @@ data class TimeUiState(
             return TimeUiState(
                 period = period,
                 hour = hourIn12.toString(),
-                minute = dateTime.minute.toString()
+                minute = dateTime.minute.toString(),
             )
         }
     }
 }
 
-enum class Period(val value: String) {
+enum class Period(
+    val value: String,
+) {
     AM(value = "오전"),
     PM(value = "오후"),
-    ;
 }
 
 @Composable
@@ -59,7 +60,7 @@ fun CaramelTimePicker(
     minute: List<String> = (0..59 step 5).map { it.toString().padStart(2, '0') },
     onPeriodChanged: (String) -> Unit,
     onHourChanged: (String) -> Unit,
-    onMinuteChanged: (String) -> Unit
+    onMinuteChanged: (String) -> Unit,
 ) {
     val hapticFeedback = LocalHapticFeedback.current
     val periodState = rememberPickerState(initialItem = timeUiState.period)
@@ -67,22 +68,23 @@ fun CaramelTimePicker(
     val minuteState = rememberPickerState(initialItem = timeUiState.minute)
 
     Row(
-        modifier = modifier
-            .padding(
-                vertical = CaramelTheme.spacing.m,
-                horizontal = CaramelTheme.spacing.xl
-            ),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            modifier
+                .padding(
+                    vertical = CaramelTheme.spacing.m,
+                    horizontal = CaramelTheme.spacing.xl,
+                ),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         CaramelTextWheelPicker(
             items = Period.entries.map { it.value },
             state = periodState,
             dividerWidth = 50.dp,
             scrollMode = BOUNDED,
-            onItemSelected = { period -> 
+            onItemSelected = { period ->
                 hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                onPeriodChanged(period) 
-            }
+                onPeriodChanged(period)
+            },
         )
 
         Spacer(modifier = Modifier.width(width = 40.dp))
@@ -92,10 +94,10 @@ fun CaramelTimePicker(
             state = hourState,
             dividerWidth = 50.dp,
             scrollMode = LOOPING,
-            onItemSelected = { hour -> 
+            onItemSelected = { hour ->
                 hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                onHourChanged(hour) 
-            }
+                onHourChanged(hour)
+            },
         )
 
         Spacer(modifier = Modifier.width(width = 20.dp))
@@ -103,7 +105,7 @@ fun CaramelTimePicker(
         Text(
             text = ":",
             style = CaramelTheme.typography.heading2,
-            color = Color.Black
+            color = Color.Black,
         )
 
         Spacer(modifier = Modifier.width(width = 20.dp))
@@ -113,10 +115,10 @@ fun CaramelTimePicker(
             state = minuteState,
             dividerWidth = 60.dp,
             scrollMode = LOOPING,
-            onItemSelected = { minute -> 
+            onItemSelected = { minute ->
                 hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                onMinuteChanged(minute) 
-            }
+                onMinuteChanged(minute)
+            },
         )
     }
 }

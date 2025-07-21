@@ -17,25 +17,27 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 internal fun ProfileCreateTopBar(
     modifier: Modifier = Modifier,
-    onClickBackButton: () -> Unit
+    onClickBackButton: () -> Unit,
 ) {
     Row(
-        modifier = modifier
-            .height(height = 52.dp)
-            .fillMaxWidth(),
+        modifier =
+            modifier
+                .height(height = 52.dp)
+                .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            modifier = Modifier
-                .padding(start = 16.dp)
-                .clickable(
-                    onClick = onClickBackButton,
-                    interactionSource = null,
-                    indication = null
-                ),
+            modifier =
+                Modifier
+                    .padding(start = 16.dp)
+                    .clickable(
+                        onClick = onClickBackButton,
+                        interactionSource = null,
+                        indication = null,
+                    ),
             painter = painterResource(resource = Resources.Icon.ic_arrow_left_24),
             tint = CaramelTheme.color.icon.primary,
-            contentDescription = null
+            contentDescription = null,
         )
     }
 }
