@@ -227,7 +227,7 @@ class HomeViewModel(
             copy(
                 todos =
                     if (schedules.isNotEmpty()) {
-                        schedules.map { todo -> TodoState(id = todo.id, title = todo.title) }
+                        schedules.map { todo -> TodoState(id = todo.id, title = todo.title.ifEmpty { todo.description }) }
                     } else {
                         emptyList()
                     },

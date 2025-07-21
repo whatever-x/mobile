@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.home.mvi
 
 import androidx.compose.runtime.Immutable
 import com.whatever.caramel.core.domain.vo.user.Gender
+import com.whatever.caramel.core.ui.util.codePointCount
 import com.whatever.caramel.core.viewmodel.UiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -29,7 +30,7 @@ data class HomeState(
         get() = daysTogether != 0
 
     val bottomSheetShareMessageLength: Int
-        get() = Regex("\\X").findAll(bottomSheetShareMessage).count()
+        get() = bottomSheetShareMessage.codePointCount()
 
     val balanceGameAnswerState: BalanceGameAnswerState
         get() =

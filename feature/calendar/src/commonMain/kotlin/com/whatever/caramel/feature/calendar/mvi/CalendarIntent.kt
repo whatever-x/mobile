@@ -53,4 +53,6 @@ sealed interface CalendarIntent : UiIntent {
     data class DraggingCalendarBottomSheet(
         val isDragging: Boolean,
     ) : CalendarIntent
+
+    data object PressCalendarBottomSheetHandle : CalendarIntent
 }

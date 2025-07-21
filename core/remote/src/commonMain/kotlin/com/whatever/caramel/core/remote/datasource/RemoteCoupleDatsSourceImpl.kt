@@ -7,11 +7,9 @@ import com.whatever.caramel.core.remote.dto.couple.response.CoupleAnniversaryRes
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleBasicResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleDetailResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleInvitationCodeResponse
-import com.whatever.caramel.core.remote.network.config.Header
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
-import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
@@ -44,12 +42,10 @@ class RemoteCoupleDatsSourceImpl(
 
     override suspend fun updateCoupleStartDate(
         coupleId: Long,
-        timeZone: String,
         request: CoupleStartDateUpdateRequest,
     ): CoupleBasicResponse =
         authClient
             .patch(COUPLE_BASE_URL + "$coupleId/start-date") {
-                header(Header.TIME_ZONE, timeZone)
                 setBody(request)
             }.getBody()
 
