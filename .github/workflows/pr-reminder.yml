@@ -43,15 +43,15 @@ jobs:
             fi
             DESCRIPTION="- 리뷰어 : $REVIEWER_LINKS
             - 담당자 : @<${AUTHOR_LINK}|${AUTHOR}>"
-
+          
             ITEM=$(cat <<EOF
-                - text:
-                    type: "mrkdwn"
-                    text: "$TEXT"
-                  description:
-                    type: "mrkdwn"
-                    text: "$DESCRIPTION"
-                  value: "pr-${PR_NUM}"
+            - text:
+                type: "mrkdwn"
+                text: "$TEXT"
+              description:
+                type: "mrkdwn"
+                text: "$DESCRIPTION"
+              value: "pr-${PR_NUM}"
             EOF
             )
   
@@ -63,7 +63,7 @@ jobs:
           done
       
           echo "options<<EOF" >> $GITHUB_OUTPUT
-          echo -e "$OPTIONS" >> $GITHUB_OUTPUT
+          echo "$OPTIONS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
             
           echo "initial_options<<EOF" >> $GITHUB_OUTPUT
