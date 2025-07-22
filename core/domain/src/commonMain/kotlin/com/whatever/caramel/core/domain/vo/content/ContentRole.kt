@@ -5,5 +5,4 @@ enum class ContentRole {
     MY,
     PARTNER,
     BOTH,
-    ;
 }
