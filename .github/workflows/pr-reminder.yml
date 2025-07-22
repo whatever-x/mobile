@@ -44,16 +44,16 @@ jobs:
             DESCRIPTION="- 리뷰어 : $REVIEWER_LINKS
             - 담당자 : @<${AUTHOR_LINK}|${AUTHOR}>"
   
-            ITEM=$(cat <<EOF
-- text:
-    type: "mrkdwn"
-    text: "$TEXT"
-  description:
-    type: "mrkdwn"
-    text: "$DESCRIPTION"
-  value: "pr-${PR_NUM}"
-EOF
-)
+            ITEM=$(cat <<-EOF
+            - text:
+                type: "mrkdwn"
+                text: "$TEXT"
+              description:
+                type: "mrkdwn"
+                text: "$DESCRIPTION"
+              value: "pr-${PR_NUM}"
+          EOF
+          )
           
             OPTIONS="${OPTIONS}${ITEM}"$'\n'
           
