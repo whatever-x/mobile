@@ -13,9 +13,6 @@ jobs:
       - name: Check out
         uses: actions/checkout@v3
 
-      - name: Setup GitHub CLI
-        uses: cli/cli-action@v2
-
       - name: Build Slack Payload Block
         id: build_payload
         env:
@@ -72,8 +69,15 @@ jobs:
           echo "initial_options<<EOF" >> $GITHUB_OUTPUT
           echo -e "$INITIAL_OPTIONS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+          
+          if [ -z "$OPTIONS" ]; then
+            echo "no_prs=true" >> $GITHUB_OUTPUT
+          else
+            echo "no_prs=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Send Slack Notification
+        if: steps.build_payload.outputs.no_prs == 'false'
         uses: slackapi/slack-github-action@v2.1.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -92,3 +96,21 @@ jobs:
                       ${{ steps.build_payload.outputs.options }}
                     initial_options:
                       ${{ steps.build_payload.outputs.initial_options }}
+
+      - name: Send Slack Notification (no PRs)
+        if: steps.build_payload.outputs.no_prs == 'true'
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            blocks:
+              - type: "header"
+                text:
+                  type: "plain_text"
+                  text: "⏰ 데일리 PR 리뷰 알림"
+                  emoji: true
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "현재 오픈된 PR이 없습니다! 👏"
