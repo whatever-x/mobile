@@ -43,29 +43,29 @@ jobs:
             fi
             DESCRIPTION="- 리뷰어 : $REVIEWER_LINKS
             - 담당자 : @<${AUTHOR_LINK}|${AUTHOR}>"
-          
-            ITEM=$(cat <<EOF
-            - text:
-                type: "mrkdwn"
-                text: "$TEXT"
-              description:
-                type: "mrkdwn"
-                text: "$DESCRIPTION"
-              value: "pr-${PR_NUM}"
-            EOF
-            )
   
-            OPTIONS="${OPTIONS}${ITEM}\n"
-
+            ITEM=$(cat <<EOF
+- text:
+    type: "mrkdwn"
+    text: "$TEXT"
+  description:
+    type: "mrkdwn"
+    text: "$DESCRIPTION"
+  value: "pr-${PR_NUM}"
+EOF
+)
+          
+            OPTIONS="${OPTIONS}${ITEM}"$'\n'
+          
             if echo "$REVIEWS" | grep -q "APPROVED"; then
-              INITIAL_OPTIONS="${INITIAL_OPTIONS}${ITEM}\n"
+              INITIAL_OPTIONS="${INITIAL_OPTIONS}${ITEM}"$'\n'
             fi
           done
-      
+          
           echo "options<<EOF" >> $GITHUB_OUTPUT
-          echo "$OPTIONS" >> $GITHUB_OUTPUT
+          echo -e "$OPTIONS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-            
+          
           echo "initial_options<<EOF" >> $GITHUB_OUTPUT
           echo -e "$INITIAL_OPTIONS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -92,10 +92,8 @@ jobs:
               - type: "actions"
                 elements:
                   - type: "checkboxes"
-                    options:
-                      ${{ steps.build_payload.outputs.options }}
-                    initial_options:
-                      ${{ steps.build_payload.outputs.initial_options }}
+                    options: ${{ steps.build_payload.outputs.options }}
+                    initial_options: ${{ steps.build_payload.outputs.initial_options }}
 
       - name: Send Slack Notification (no PRs)
         if: steps.build_payload.outputs.no_prs == 'true'
