@@ -19,9 +19,9 @@ jobs:
           ACTOR_URL="https://github.com/${ACTOR}"
           BRANCH_MESSAGE="🆕 ${BRANCH_NAME} 브랜치가 생성되었습니다."
           
-          echo "branch_message=$(printf "%s" "$BRANCH_MESSAGE" | jq -Rs .)" >> $GITHUB_OUTPUT
-          echo "actor=$(printf "%s" "$ACTOR" | jq -Rs .)" >> $GITHUB_OUTPUT
-          echo "actor_url=$(printf "%s" "$ACTOR_URL" | jq -Rs .)" >> $GITHUB_OUTPUT
+          echo "branch_message=${BRANCH_MESSAGE}" >> $GITHUB_OUTPUT
+          echo "actor=${ACTOR}" >> $GITHUB_OUTPUT
+          echo "actor_url=${ACTOR_URL}" >> $GITHUB_OUTPUT
 
       - name: Send Slack Notification
         uses: slackapi/slack-github-action@v2.1.1
@@ -33,8 +33,8 @@ jobs:
               - type: "section"
                 text:
                   type: "mrkdwn"
-                  text: ${{ steps.branch-info.outputs.branch_message }}
-            - type: "context"
-              elements:
-                - type: "mrkdwn"
-                  text: "by <${{ fromJson(steps.branch-info.outputs.actor_url) }}|${{ fromJson(steps.branch-info.outputs.actor) }}>"          
+                  text: ${{ toJSON(steps.branch-info.outputs.branch_message) }}
+              - type: "context"
+                elements:
+                  - type: "mrkdwn"
+                    text: "by <${{ steps.branch-info.outputs.actor_url }}|${{ steps.branch-info.outputs.actor }}>"   
