@@ -20,7 +20,7 @@ fun CalendarDetailResponse.toTodo(): List<Todo> =
             endDate = LocalDateTime.parse(it.endDateTime),
             title = it.title ?: "",
             description = it.description ?: "",
-            contentRole = ContentRole.MY // FIXME : API 연동 시 remote와 연결 필요
+            contentRole = ContentRole.MY, // FIXME : API 연동 시 remote와 연결 필요
         )
     }
 
