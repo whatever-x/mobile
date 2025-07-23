@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.platform.LocalDensity
@@ -15,6 +16,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
+import com.whatever.caramel.core.domain.vo.content.ContentRole
 import com.whatever.caramel.core.domain.vo.couple.Anniversary
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 
@@ -118,23 +120,44 @@ fun CalendarScheduleList(
 }
 
 @Composable
-private fun CalendarAnniversaryItem(
+private fun ScheduleItem(
     modifier: Modifier = Modifier,
-    anniversary: Anniversary,
+    content: String,
+    backgroundColor: Color,
+    textColor: Color,
+    onClick: () -> Unit = {}
 ) {
     Text(
         modifier =
             modifier
                 .fillMaxWidth()
                 .background(
-                    color = CaramelTheme.color.fill.brand,
+                    color = backgroundColor,
                     shape = CaramelTheme.shape.xxs,
-                ).padding(horizontal = CaramelTheme.spacing.xxs),
+                ).padding(horizontal = CaramelTheme.spacing.xxs)
+                .clickable(
+                    indication = null,
+                    interactionSource = null,
+                    onClick = onClick
+                ),
         maxLines = 1,
         overflow = TextOverflow.Clip,
-        text = anniversary.label,
+        text = content,
         style = CaramelTheme.typography.label3.bold,
-        color = CaramelTheme.color.text.inverse,
+        color = textColor,
+    )
+}
+
+@Composable
+private fun CalendarAnniversaryItem(
+    modifier: Modifier = Modifier,
+    anniversary: Anniversary,
+) {
+    ScheduleItem(
+        modifier = modifier,
+        content = anniversary.label,
+        backgroundColor = CaramelTheme.color.fill.brand,
+        textColor = CaramelTheme.color.text.inverse
     )
 }
 
@@ -143,19 +166,11 @@ private fun CalendarHolidayItem(
     modifier: Modifier = Modifier,
     holiday: Holiday,
 ) {
-    Text(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .background(
-                    color = CaramelTheme.color.fill.labelAccent1,
-                    shape = CaramelTheme.shape.xxs,
-                ).padding(horizontal = CaramelTheme.spacing.xxs),
-        maxLines = 1,
-        overflow = TextOverflow.Clip,
-        text = holiday.name,
-        style = CaramelTheme.typography.label3.bold,
-        color = CaramelTheme.color.text.inverse,
+    ScheduleItem(
+        modifier = modifier,
+        content = holiday.name,
+        backgroundColor = CaramelTheme.color.fill.labelAccent1,
+        textColor = CaramelTheme.color.text.inverse
     )
 }
 
@@ -165,23 +180,12 @@ private fun CalendarTodoItem(
     todo: Todo,
     onClickTodo: (Long) -> Unit,
 ) {
-    Text(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .background(
-                    color = CaramelTheme.color.fill.labelBrand,
-                    shape = CaramelTheme.shape.xxs,
-                ).padding(horizontal = CaramelTheme.spacing.xxs)
-                .clickable(
-                    interactionSource = null,
-                    indication = null,
-                    onClick = { onClickTodo(todo.id) },
-                ),
-        maxLines = 1,
-        overflow = TextOverflow.Clip,
-        text = todo.title.ifEmpty { todo.description },
-        style = CaramelTheme.typography.label3.bold,
-        color = CaramelTheme.color.text.labelBrand,
+
+    ScheduleItem(
+        modifier = modifier,
+        content = todo.title.ifEmpty { todo.description },
+        backgroundColor = backgroundColor,
+        textColor = textColor,
+        onClick = { onClickTodo(todo.id) }
     )
 }
