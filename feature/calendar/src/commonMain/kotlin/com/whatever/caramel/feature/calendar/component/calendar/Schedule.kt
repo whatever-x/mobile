@@ -180,6 +180,11 @@ private fun CalendarTodoItem(
     todo: Todo,
     onClickTodo: (Long) -> Unit,
 ) {
+    val (textColor, backgroundColor) = when (todo.contentRole) {
+        ContentRole.MY -> CaramelTheme.color.text.labelAccent4 to CaramelTheme.color.fill.labelAccent3
+        ContentRole.PARTNER -> CaramelTheme.color.text.labelAccent3 to CaramelTheme.color.fill.labelAccent4
+        ContentRole.NONE, ContentRole.BOTH -> CaramelTheme.color.text.labelBrand to CaramelTheme.color.fill.labelBrand
+    }
 
     ScheduleItem(
         modifier = modifier,
