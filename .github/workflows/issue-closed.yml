@@ -18,6 +18,8 @@ jobs:
         env:
           REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
         run: |
+          set -e
+
           REPO="${{ github.repository }}"
           REPO_OWNER=$(echo "$REPO" | cut -d'/' -f1)
           REPO_NAME=$(echo "$REPO" | cut -d'/' -f2)
@@ -26,6 +28,10 @@ jobs:
           ISSUE_URL=$(jq -r '.issue.html_url' "$GITHUB_EVENT_PATH")
           ISSUE_USER=$(jq -r '.issue.user.login' "$GITHUB_EVENT_PATH")
           ISSUE_USER_AVATAR=$(jq -r '.issue.user.avatar_url' "$GITHUB_EVENT_PATH")
+
+          echo "🔍 이슈 번호: $ISSUE_NUMBER"
+          echo "🔍 이슈 제목: $ISSUE_TITLE"
+          echo "🔍 레포지토리: $REPO_OWNER/$REPO_NAME"
 
           GRAPHQL_STRING='query($owner: String!, $name: String!, $number: Int!) {
             repository(owner: $owner, name: $name) {
@@ -59,34 +65,55 @@ jobs:
                 name: $name,
                 number: $number
               }
-            }'
-          )
+            }')
 
-          RESPONSE=$(curl -s -X POST https://api.github.com/graphql \
+          RESPONSE_GRAPHQL=$(curl -s -X POST https://api.github.com/graphql \
             -H "Authorization: Bearer $REPOSITORY_TOKEN" \
             -H "Content-Type: application/json" \
             -d "$GRAPHQL_QUERY")
 
-          ERROR_MESSAGE=$(echo "$RESPONSE" | jq -r '.errors[0].message // empty')
-          if [ -n "$ERROR_MESSAGE" ]; then
-            LINKED_PRS="⚠️ PR 조회 중 오류 발생: $ERROR_MESSAGE"
-          else
-            LINKED_PRS=$(echo "$RESPONSE" | jq -r '
-              .data.repository.issue.timelineItems.nodes[]
-              | select(.subject != null and .subject.number != null and .subject.title != null and .subject.url != null)
-              | "- [#\(.subject.number)](\(.subject.url)) \(.subject.title)"'
-            )
+          echo "🧪 GraphQL 응답: $(echo "$RESPONSE_GRAPHQL" | jq -c '.')"
 
-            if [ -z "$LINKED_PRS" ]; then
-              LINKED_PRS="❌ 연결된 PR이 없습니다!"
-            fi
+          PRS_GRAPHQL=$(echo "$RESPONSE_GRAPHQL" | jq -r '
+            .data.repository.issue.timelineItems.nodes[]
+            | select(.subject != null)
+            | select(.subject.number != null and .subject.title != null and .subject.url != null)
+            | "- [#\(.subject.number)](\(.subject.url)) \(.subject.title)"')
+
+          echo "🔗 GraphQL로 찾은 PR:"
+          echo "$PRS_GRAPHQL"
+
+          RESPONSE_REST=$(curl -s -H "Authorization: Bearer $REPOSITORY_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${REPO}/issues/${ISSUE_NUMBER}/events")
+
+          echo "🧪 REST 이벤트 응답: $(echo "$RESPONSE_REST" | jq -c '[.[] | select(.event == "cross-referenced")]')"
+
+          PRS_REST=$(echo "$RESPONSE_REST" | jq -r '
+            .[]
+            | select(.event == "cross-referenced")
+            | select(.source.issue.pull_request)
+            | "- [#\(.source.issue.number)](\(.source.issue.html_url)) \(.source.issue.title)"')
+
+          echo "🔗 REST로 찾은 PR:"
+          echo "$PRS_REST"
+
+          LINKED_PRS=$(printf "%s\n%s" "$PRS_GRAPHQL" "$PRS_REST" | sort | uniq)
+
+          echo "🧩 병합된 최종 PR 목록:"
+          echo "$LINKED_PRS"
+
+          if [ -z "$LINKED_PRS" ]; then
+            LINKED_PRS="❌ 연결된 PR이 없습니다!"
           fi
 
           HEADER_TEXT="🗑️ 이슈 종료"
-
           ISSUE_SECTION="*[<${ISSUE_URL}|#${ISSUE_NUMBER}>]*
           ${ISSUE_TITLE}
           ${LINKED_PRS}"
+
+          echo "✅ 최종 Slack 메시지:"
+          echo "$ISSUE_SECTION"
 
           echo "header_text=$(printf "%s" "$HEADER_TEXT" | jq -Rs .)" >> $GITHUB_OUTPUT
           echo "issue_section=$(printf "%s" "$ISSUE_SECTION" | jq -Rs .)" >> $GITHUB_OUTPUT
