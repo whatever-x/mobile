@@ -19,29 +19,71 @@ jobs:
           REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
         run: |
           REPO="${{ github.repository }}"
+          REPO_OWNER=$(echo "$REPO" | cut -d'/' -f1)
+          REPO_NAME=$(echo "$REPO" | cut -d'/' -f2)
           ISSUE_NUMBER=$(jq -r '.issue.number' "$GITHUB_EVENT_PATH")
           ISSUE_TITLE=$(jq -r '.issue.title' "$GITHUB_EVENT_PATH")
           ISSUE_URL=$(jq -r '.issue.html_url' "$GITHUB_EVENT_PATH")
           ISSUE_USER=$(jq -r '.issue.user.login' "$GITHUB_EVENT_PATH")
           ISSUE_USER_AVATAR=$(jq -r '.issue.user.avatar_url' "$GITHUB_EVENT_PATH")
 
-          LINKED_PRS=$(curl -s \
-            -H "Authorization: Bearer ${REPOSITORY_TOKEN}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/${REPO}/issues/${ISSUE_NUMBER}/events" \
-            | jq -r '
-              .[]
-              | select(.event == "cross-referenced")
-              | select(.source.issue.pull_request)
-              | "- [#\(.source.issue.number)] \(.source.issue.title)"'
+          GRAPHQL_STRING='query($owner: String!, $name: String!, $number: Int!) {
+            repository(owner: $owner, name: $name) {
+              issue(number: $number) {
+                timelineItems(itemTypes: [CONNECTED_EVENT], first: 100) {
+                  nodes {
+                    ... on ConnectedEvent {
+                      subject {
+                        ... on PullRequest {
+                          number
+                          title
+                          url
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }'
+
+          GRAPHQL_QUERY=$(jq -n \
+            --arg query "$GRAPHQL_STRING" \
+            --arg owner "$REPO_OWNER" \
+            --arg name "$REPO_NAME" \
+            --argjson number "$ISSUE_NUMBER" \
+            '{
+              query: $query,
+              variables: {
+                owner: $owner,
+                name: $name,
+                number: $number
+              }
+            }'
           )
 
-          if [ -z "$LINKED_PRS" ]; then
-            LINKED_PRS="연결된 PR이 없습니다!"
+          RESPONSE=$(curl -s -X POST https://api.github.com/graphql \
+            -H "Authorization: Bearer $REPOSITORY_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$GRAPHQL_QUERY")
+
+          ERROR_MESSAGE=$(echo "$RESPONSE" | jq -r '.errors[0].message // empty')
+          if [ -n "$ERROR_MESSAGE" ]; then
+            LINKED_PRS="⚠️ PR 조회 중 오류 발생: $ERROR_MESSAGE"
+          else
+            LINKED_PRS=$(echo "$RESPONSE" | jq -r '
+              .data.repository.issue.timelineItems.nodes[]
+              | select(.subject != null and .subject.number != null and .subject.title != null and .subject.url != null)
+              | "- [#\(.subject.number)](\(.subject.url)) \(.subject.title)"'
+            )
+
+            if [ -z "$LINKED_PRS" ]; then
+              LINKED_PRS="❌ 연결된 PR이 없습니다!"
+            fi
           fi
 
           HEADER_TEXT="🗑️ 이슈 종료"
-          
+
           ISSUE_SECTION="*[<${ISSUE_URL}|#${ISSUE_NUMBER}>]*
           ${ISSUE_TITLE}
           ${LINKED_PRS}"
