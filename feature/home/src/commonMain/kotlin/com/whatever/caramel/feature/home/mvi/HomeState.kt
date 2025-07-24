@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.home.mvi
 
 import androidx.compose.runtime.Immutable
+import com.whatever.caramel.core.domain.vo.content.ContentRole
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.ui.util.codePointCount
 import com.whatever.caramel.core.viewmodel.UiState
@@ -70,6 +71,7 @@ data class HomeState(
 data class TodoState(
     val id: Long,
     val title: String,
+    val role: ContentRole,
 )
 
 data class BalanceGameState(
