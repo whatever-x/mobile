@@ -125,7 +125,7 @@ private fun ScheduleItem(
     content: String,
     backgroundColor: Color,
     textColor: Color,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     Text(
         modifier =
@@ -138,7 +138,7 @@ private fun ScheduleItem(
                 .clickable(
                     indication = null,
                     interactionSource = null,
-                    onClick = onClick
+                    onClick = onClick,
                 ),
         maxLines = 1,
         overflow = TextOverflow.Clip,
@@ -157,7 +157,7 @@ private fun CalendarAnniversaryItem(
         modifier = modifier,
         content = anniversary.label,
         backgroundColor = CaramelTheme.color.fill.brand,
-        textColor = CaramelTheme.color.text.inverse
+        textColor = CaramelTheme.color.text.inverse,
     )
 }
 
@@ -170,7 +170,7 @@ private fun CalendarHolidayItem(
         modifier = modifier,
         content = holiday.name,
         backgroundColor = CaramelTheme.color.fill.labelAccent1,
-        textColor = CaramelTheme.color.text.inverse
+        textColor = CaramelTheme.color.text.inverse,
     )
 }
 
@@ -180,17 +180,18 @@ private fun CalendarTodoItem(
     todo: Todo,
     onClickTodo: (Long) -> Unit,
 ) {
-    val (textColor, backgroundColor) = when (todo.contentRole) {
-        ContentRole.MY -> CaramelTheme.color.text.labelAccent4 to CaramelTheme.color.fill.labelAccent3
-        ContentRole.PARTNER -> CaramelTheme.color.text.labelAccent3 to CaramelTheme.color.fill.labelAccent4
-        ContentRole.NONE, ContentRole.BOTH -> CaramelTheme.color.text.labelBrand to CaramelTheme.color.fill.labelBrand
-    }
+    val (textColor, backgroundColor) =
+        when (todo.contentRole) {
+            ContentRole.MY -> CaramelTheme.color.text.labelAccent4 to CaramelTheme.color.fill.labelAccent3
+            ContentRole.PARTNER -> CaramelTheme.color.text.labelAccent3 to CaramelTheme.color.fill.labelAccent4
+            ContentRole.NONE, ContentRole.BOTH -> CaramelTheme.color.text.labelBrand to CaramelTheme.color.fill.labelBrand
+        }
 
     ScheduleItem(
         modifier = modifier,
         content = todo.title.ifEmpty { todo.description },
         backgroundColor = backgroundColor,
         textColor = textColor,
-        onClick = { onClickTodo(todo.id) }
+        onClick = { onClickTodo(todo.id) },
     )
 }

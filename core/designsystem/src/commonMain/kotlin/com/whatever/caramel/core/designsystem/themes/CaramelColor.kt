@@ -46,7 +46,7 @@ data class CaramelColor(
         val labelAccent1: Color = Red500,
         val labelAccent2: Color = Green600,
         val labelAccent3: Color = Neutral900,
-        val labelAccent4: Color = Green700
+        val labelAccent4: Color = Green700,
     )
 
     @Immutable
@@ -76,7 +76,7 @@ data class CaramelColor(
         val labelAccent1: Color = Red500,
         val labelAccent2: Color = Orange500,
         val labelAccent3: Color = Green200,
-        val labelAccent4: Color = Neutral300
+        val labelAccent4: Color = Neutral300,
     )
 
     @Immutable

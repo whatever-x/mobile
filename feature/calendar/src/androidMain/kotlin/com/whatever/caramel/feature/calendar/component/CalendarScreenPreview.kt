@@ -10,12 +10,12 @@ import com.whatever.caramel.feature.calendar.mvi.CalendarState
 @Composable
 @Preview
 private fun CalendarScreenPreview(
-    @PreviewParameter(CalendarScreenPreviewData::class) state : CalendarState
+    @PreviewParameter(CalendarScreenPreviewData::class) state: CalendarState,
 ) {
     CaramelTheme {
         CalendarScreen(
             state = state,
-            onIntent = {}
+            onIntent = {},
         )
     }
 }
