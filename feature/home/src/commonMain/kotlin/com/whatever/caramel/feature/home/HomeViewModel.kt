@@ -232,7 +232,7 @@ class HomeViewModel(
                             TodoState(
                                 id = todo.id,
                                 title = todo.title.ifEmpty { todo.description },
-                                role = ContentRole.MY // @ham2174 FIXME : 오늘의 일정 가져오기 로직 수정시 변경
+                                role = ContentRole.MY, // @ham2174 FIXME : 오늘의 일정 가져오기 로직 수정시 변경
                             )
                         }
                     } else {
