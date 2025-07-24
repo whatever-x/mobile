@@ -8,17 +8,13 @@ on:
 jobs:
   remind-review:
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
     steps:
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y jq gh
-
-      - name: Authenticate GitHub CLI
-        env:
-          GH_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
-        run: |
-          echo "✅ GH_TOKEN으로 gh CLI 인증 자동 처리"
 
       - name: Get Open PRs
         run: |
