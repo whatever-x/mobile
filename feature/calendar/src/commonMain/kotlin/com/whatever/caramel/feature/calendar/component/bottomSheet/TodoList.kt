@@ -112,23 +112,25 @@ internal fun CaramelBottomTodoScope.DefaultBottomSheetTodoItem(modifier: Modifie
 
 @Composable
 internal fun CaramelBottomTodoScope.TodoRole(modifier: Modifier = Modifier) {
-    val (roleText, roleTextColor) = when (this.role) {
-        ContentRole.MY -> Res.string.my_schedule to CaramelTheme.color.text.labelAccent4
-        ContentRole.PARTNER -> Res.string.partner_schedule to CaramelTheme.color.text.primary
-        ContentRole.NONE, ContentRole.BOTH -> Res.string.both_schedule to CaramelTheme.color.text.brand
-    }
+    val (roleText, roleTextColor) =
+        when (this.role) {
+            ContentRole.MY -> Res.string.my_schedule to CaramelTheme.color.text.labelAccent4
+            ContentRole.PARTNER -> Res.string.partner_schedule to CaramelTheme.color.text.primary
+            ContentRole.NONE, ContentRole.BOTH -> Res.string.both_schedule to CaramelTheme.color.text.brand
+        }
 
     Text(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(
-                indication = null,
-                interactionSource = null,
-                onClick = { onClickTodo(id) },
-            ),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clickable(
+                    indication = null,
+                    interactionSource = null,
+                    onClick = { onClickTodo(id) },
+                ),
         text = stringResource(roleText),
         style = CaramelTheme.typography.body3.bold,
-        color = roleTextColor
+        color = roleTextColor,
     )
 }
 

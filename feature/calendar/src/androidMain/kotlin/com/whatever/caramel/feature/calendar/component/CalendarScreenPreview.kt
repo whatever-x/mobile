@@ -24,7 +24,6 @@ private fun CalendarScreenPreview(
     }
 }
 
-
 @Composable
 @Preview
 private fun CalendarBottomSheetPreview(
