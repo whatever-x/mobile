@@ -21,7 +21,8 @@ import com.whatever.caramel.feature.home.mvi.HomeIntent
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect.NavigateToContentDetail
 import com.whatever.caramel.feature.home.mvi.HomeState
-import com.whatever.caramel.feature.home.mvi.TodoState
+import com.whatever.caramel.feature.home.mvi.TodoItem
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.joinAll
 
@@ -226,17 +227,17 @@ class HomeViewModel(
 
         reduce {
             copy(
-                todos =
+                todoList =
                     if (schedules.isNotEmpty()) {
                         schedules.map { todo ->
-                            TodoState(
+                            TodoItem(
                                 id = todo.id,
                                 title = todo.title.ifEmpty { todo.description },
                                 role = ContentRole.MY, // @ham2174 FIXME : 오늘의 일정 가져오기 로직 수정시 변경
                             )
-                        }
+                        }.toImmutableList()
                     } else {
-                        emptyList()
+                        persistentListOf()
                     },
             )
         }

@@ -164,7 +164,7 @@ internal fun HomeScreen(
                 )
 
                 todo(
-                    todoList = state.todos.toImmutableList(),
+                    todoList = state.todoList,
                     isSetAnniversary = state.isSetAnniversary,
                     onClickAnniversaryNudgeCard = { onIntent(HomeIntent.ClickAnniversaryNudgeCard) },
                     onClickTodoItem = { todoContentId ->

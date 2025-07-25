@@ -3,7 +3,9 @@ package com.whatever.caramel.feature.home
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.whatever.caramel.core.domain.vo.content.ContentRole
 import com.whatever.caramel.feature.home.mvi.HomeState
-import com.whatever.caramel.feature.home.mvi.TodoState
+import com.whatever.caramel.feature.home.mvi.TodoItem
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 internal class HomeScreenPreviewData : PreviewParameterProvider<HomeState> {
     override val values: Sequence<HomeState> =
@@ -11,14 +13,14 @@ internal class HomeScreenPreviewData : PreviewParameterProvider<HomeState> {
             HomeState(
                 daysTogether = 0,
                 shareMessage = "",
-                todos = emptyList(),
+                todoList = persistentListOf(),
                 isShowBottomSheet = true,
                 isLoading = false,
             ),
             HomeState(
                 daysTogether = 0,
                 shareMessage = "",
-                todos = emptyList(),
+                todoList = persistentListOf(),
                 isShowBottomSheet = false,
                 isLoading = false,
                 coupleState = HomeState.CoupleState.DISCONNECT,
@@ -26,56 +28,56 @@ internal class HomeScreenPreviewData : PreviewParameterProvider<HomeState> {
             HomeState(
                 daysTogether = 0,
                 shareMessage = "",
-                todos = emptyList(),
+                todoList = persistentListOf(),
                 isShowBottomSheet = false,
                 isLoading = false,
             ),
             HomeState(
                 daysTogether = 1120,
                 shareMessage = "내일 여기서 만나",
-                todos = emptyList(),
+                todoList = persistentListOf(),
                 isShowBottomSheet = false,
                 isLoading = false,
             ),
             HomeState(
                 daysTogether = 1120,
                 shareMessage = "내일 여기서 만나",
-                todos =
+                todoList =
                     listOf(
-                        TodoState(
+                        TodoItem(
                             id = 1,
                             title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?",
                             role = ContentRole.MY,
                         ),
-                    ),
+                    ).toImmutableList(),
                 isShowBottomSheet = false,
                 isLoading = false,
             ),
             HomeState(
                 daysTogether = 1120,
                 shareMessage = "내일 여기서 만나",
-                todos =
+                todoList =
                     (0..7).map {
-                        TodoState(
+                        TodoItem(
                             id = it.toLong(),
                             title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?",
                             role = ContentRole.BOTH,
                         )
-                    },
+                    }.toImmutableList(),
                 isShowBottomSheet = false,
                 isLoading = false,
             ),
             HomeState(
                 daysTogether = 1120,
                 shareMessage = "내일 여기서 만나",
-                todos =
+                todoList =
                     (0..7).map {
-                        TodoState(
+                        TodoItem(
                             id = it.toLong(),
                             title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?",
                             role = ContentRole.PARTNER,
                         )
-                    },
+                    }.toImmutableList(),
                 isShowBottomSheet = false,
                 isLoading = true,
             ),

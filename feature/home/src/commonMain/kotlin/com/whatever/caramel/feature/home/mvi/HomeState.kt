@@ -15,7 +15,7 @@ data class HomeState(
     val partnerGender: Gender = Gender.IDLE,
     val daysTogether: Int = 0,
     val shareMessage: String = "",
-    val todos: List<TodoState> = emptyList(),
+    val todoList: ImmutableList<TodoItem> = persistentListOf(),
     val bottomSheetShareMessage: String = "",
     val isShowBottomSheet: Boolean = false,
     val isLoading: Boolean = false,
@@ -67,8 +67,7 @@ data class HomeState(
     }
 }
 
-@Immutable
-data class TodoState(
+data class TodoItem(
     val id: Long,
     val title: String,
     val role: ContentRole,
