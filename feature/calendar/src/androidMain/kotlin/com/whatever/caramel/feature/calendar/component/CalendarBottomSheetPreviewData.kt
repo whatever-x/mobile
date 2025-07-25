@@ -31,8 +31,8 @@ internal class CalendarBottomSheetPreviewData : PreviewParameterProvider<Caramel
                 CaramelDefaultBottomTodoScope(
                     id = idCounter++,
                     title = "URL이 잘 나오는지",
-                    description = "일정일정https://www.naver.com",
-                    url = null,
+                    description = "일정일정",
+                    url = "https://www.naver.com",
                     role = ContentRole.PARTNER,
                     onClickUrl = {},
                     onClickTodo = {},
