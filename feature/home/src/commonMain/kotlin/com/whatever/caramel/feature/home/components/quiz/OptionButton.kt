@@ -21,7 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.feature.home.mvi.HomeState
+import com.whatever.caramel.feature.home.mvi.BalanceGameCard
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -29,11 +29,11 @@ internal fun RowScope.OptionButton(
     modifier: Modifier = Modifier,
     text: String,
     isSelected: Boolean,
-    balanceGameAnswerState: HomeState.BalanceGameAnswerState,
-    onClick: () -> Unit,
+    gameResult: BalanceGameCard.GameResult,
+    onClickOption: () -> Unit,
 ) {
     val backgroundColor =
-        if (balanceGameAnswerState == HomeState.BalanceGameAnswerState.IDLE) {
+        if (gameResult == BalanceGameCard.GameResult.IDLE) {
             CaramelTheme.color.fill.quinary
         } else {
             if (isSelected) {
@@ -44,7 +44,7 @@ internal fun RowScope.OptionButton(
         }
 
     val textColor =
-        if (balanceGameAnswerState == HomeState.BalanceGameAnswerState.IDLE) {
+        if (gameResult == BalanceGameCard.GameResult.IDLE) {
             CaramelTheme.color.text.brand
         } else {
             if (isSelected) {
@@ -64,8 +64,8 @@ internal fun RowScope.OptionButton(
                     shape = CaramelTheme.shape.m,
                 ).clip(shape = CaramelTheme.shape.m)
                 .clickable(
-                    enabled = balanceGameAnswerState != HomeState.BalanceGameAnswerState.WAITING,
-                    onClick = onClick,
+                    enabled = gameResult != BalanceGameCard.GameResult.WAITING,
+                    onClick = onClickOption,
                 ).padding(all = CaramelTheme.spacing.m),
         contentAlignment = Alignment.Center,
     ) {

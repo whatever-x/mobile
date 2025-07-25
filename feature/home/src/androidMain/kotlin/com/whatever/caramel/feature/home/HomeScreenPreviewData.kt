@@ -57,13 +57,14 @@ internal class HomeScreenPreviewData : PreviewParameterProvider<HomeState> {
                 daysTogether = 1120,
                 shareMessage = "내일 여기서 만나",
                 todoList =
-                    (0..7).map {
-                        TodoItem(
-                            id = it.toLong(),
-                            title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?",
-                            role = ContentRole.BOTH,
-                        )
-                    }.toImmutableList(),
+                    (0..7)
+                        .map {
+                            TodoItem(
+                                id = it.toLong(),
+                                title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?",
+                                role = ContentRole.BOTH,
+                            )
+                        }.toImmutableList(),
                 isShowBottomSheet = false,
                 isLoading = false,
             ),
@@ -71,13 +72,14 @@ internal class HomeScreenPreviewData : PreviewParameterProvider<HomeState> {
                 daysTogether = 1120,
                 shareMessage = "내일 여기서 만나",
                 todoList =
-                    (0..7).map {
-                        TodoItem(
-                            id = it.toLong(),
-                            title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?",
-                            role = ContentRole.PARTNER,
-                        )
-                    }.toImmutableList(),
+                    (0..7)
+                        .map {
+                            TodoItem(
+                                id = it.toLong(),
+                                title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?",
+                                role = ContentRole.PARTNER,
+                            )
+                        }.toImmutableList(),
                 isShowBottomSheet = false,
                 isLoading = true,
             ),
