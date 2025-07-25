@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="both_content">우리의 일정·메모</string>
+    <string name="partner_content">연인의 일정·메모</string>
+    <string name="my_content">내 일정·메모</string>
+</resources>

@@ -1,5 +1,6 @@
 package com.whatever.caramel.core.domain.entity
 
+import com.whatever.caramel.core.domain.vo.content.ContentRole
 import kotlinx.datetime.LocalDate
 
 data class Memo(
@@ -9,4 +10,5 @@ data class Memo(
     val isCompleted: Boolean,
     val tagList: List<Tag>,
     val createdAt: LocalDate,
+    val role : ContentRole,
 )

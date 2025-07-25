@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleDetail
+import com.whatever.caramel.core.domain.vo.content.ContentRole
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.feature.content.detail.mvi.ContentDetailState
 
@@ -27,6 +28,7 @@ private fun ContentDetailScreenPreview() {
                             title = "test",
                             description = "asdasdsa",
                             tags = emptyList(),
+                            role = ContentRole.BOTH
                         ),
                 ),
             onIntent = {},

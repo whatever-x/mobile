@@ -4,6 +4,7 @@ import com.whatever.caramel.core.domain.entity.Memo
 import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleDetail
 import com.whatever.caramel.core.domain.vo.common.LinkMetaData
+import com.whatever.caramel.core.domain.vo.content.ContentRole
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.viewmodel.UiState
 import kotlinx.collections.immutable.ImmutableList
@@ -49,6 +50,12 @@ data class ContentDetailState(
             val parsed = LocalDateTime.parse(dateTime)
 
             return "${parsed.year}년 ${parsed.monthNumber}월 ${parsed.dayOfMonth}일"
+        }
+
+    val role : ContentRole
+        get() = when(contentType) {
+            ContentType.MEMO -> memoDetail?.role ?: ContentRole.BOTH
+            ContentType.CALENDAR -> scheduleDetail?.role ?: ContentRole.BOTH
         }
 
     val time: String

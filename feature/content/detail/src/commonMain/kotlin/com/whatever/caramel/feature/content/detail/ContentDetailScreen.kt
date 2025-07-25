@@ -20,14 +20,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
+import caramel.feature.content.detail.generated.resources.Res
+import caramel.feature.content.detail.generated.resources.both_content
+import caramel.feature.content.detail.generated.resources.my_content
+import caramel.feature.content.detail.generated.resources.partner_content
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.domain.vo.content.ContentRole
 import com.whatever.caramel.core.ui.content.TitleTextField
 import com.whatever.caramel.feature.content.detail.components.TextWithUrlPreview
 import com.whatever.caramel.feature.content.detail.mvi.ContentDetailIntent
 import com.whatever.caramel.feature.content.detail.mvi.ContentDetailState
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun ContentDetailScreen(
@@ -43,6 +49,17 @@ internal fun ContentDetailScreen(
             .padding(bottom = 50.dp)
             .background(color = CaramelTheme.color.background.primary)
     ) {
+        val (roleText, roleTextColor) = when (state.role) {
+            ContentRole.MY -> Res.string.my_content to CaramelTheme.color.text.labelAccent4
+            ContentRole.PARTNER -> Res.string.partner_content to CaramelTheme.color.text.primary
+            ContentRole.NONE, ContentRole.BOTH -> Res.string.both_content to CaramelTheme.color.text.brand
+        }
+        Text(
+            modifier = Modifier.padding(top = 3.dp),
+            text = stringResource(roleText),
+            color = roleTextColor,
+            style = CaramelTheme.typography.body2.bold
+        )
         CaramelTopBar(
             modifier = Modifier
                 .statusBarsPadding()
