@@ -21,8 +21,8 @@ import org.jetbrains.compose.resources.stringResource
 internal fun ContentRoleChip(role: ContentRole) {
     val chipBackgroundColor =
         when (role) {
-            ContentRole.NONE -> Color.Black
-            ContentRole.MY -> Color(0xFF009B08) // @ham2174 FIXME : 컬러 토큰 지정시 변경
+            ContentRole.NONE -> Color.Unspecified
+            ContentRole.MY -> CaramelTheme.color.fill.labelAccent1
             ContentRole.PARTNER -> CaramelTheme.color.fill.secondary
             ContentRole.BOTH -> CaramelTheme.color.fill.brand
         }
