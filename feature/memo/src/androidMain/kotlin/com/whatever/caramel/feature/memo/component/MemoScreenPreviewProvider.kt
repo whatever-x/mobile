@@ -43,6 +43,12 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
     ): ImmutableList<MemoUiModel> {
         val list = mutableListOf<Memo>()
         for (index in 0 until size) {
+            val role =
+                when {
+                    index % 2 == 0 -> ContentRole.BOTH
+                    index % 3 == 0 -> ContentRole.PARTNER
+                    else -> ContentRole.MY
+                }
             list.add(
                 Memo(
                     id = index.toLong(),
@@ -51,7 +57,7 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
                     isCompleted = false,
                     tagList = createTempTagList(index),
                     createdAt = DateUtil.today(),
-                    role = ContentRole.BOTH,
+                    role = role,
                 ),
             )
         }
