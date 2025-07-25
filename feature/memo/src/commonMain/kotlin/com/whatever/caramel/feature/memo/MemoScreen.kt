@@ -126,7 +126,9 @@ internal fun MemoScreen(
                     horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s),
                     state = lazyRowState,
                 ) {
-                    itemsIndexed(state.tags) { index, tag ->
+                    itemsIndexed(state.tags, key = { index, tag ->
+                        "${index}-${tag.id}"
+                    }) { index, tag ->
                         TagChip(
                             modifier =
                                 when (index) {
@@ -136,7 +138,14 @@ internal fun MemoScreen(
                                 },
                             tag = tag,
                             isSelected = state.selectedTag == tag,
-                            onClickChip = { onIntent(MemoIntent.ClickTagChip(tag = it, index = index)) },
+                            onClickChip = {
+                                onIntent(
+                                    MemoIntent.ClickTagChip(
+                                        tag = it,
+                                        index = index
+                                    )
+                                )
+                            },
                         )
                     }
                 }
@@ -159,7 +168,9 @@ internal fun MemoScreen(
                                 .weight(1f),
                         state = lazyListState,
                     ) {
-                        itemsIndexed(state.memos) { index, memo ->
+                        itemsIndexed(state.memos, key = { index, memo ->
+                            memo.id
+                        }) { index, memo ->
                             MemoItem(
                                 id = memo.id,
                                 title = memo.title,
@@ -195,13 +206,14 @@ internal fun LazyListState.onLastReached(
         remember {
             derivedStateOf {
                 val totalItemsCount = layoutInfo.totalItemsCount
-                val lastVisibleItemIndex = (layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
+                val lastVisibleItemIndex =
+                    (layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
                 totalItemsCount > 0 &&
-                    lastVisibleItemIndex >=
-                    max(
-                        a = (totalItemsCount - numberOfItemsBeforeEnd),
-                        b = 0,
-                    )
+                        lastVisibleItemIndex >=
+                        max(
+                            a = (totalItemsCount - numberOfItemsBeforeEnd),
+                            b = 0,
+                        )
             }
         }
 
