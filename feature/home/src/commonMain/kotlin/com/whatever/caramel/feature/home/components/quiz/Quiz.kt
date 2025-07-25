@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.home.components
+package com.whatever.caramel.feature.home.components.quiz
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -11,18 +11,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.text.InlineTextContent
-import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,12 +27,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.text.Placeholder
-import androidx.compose.ui.text.PlaceholderVerticalAlign
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import caramel.feature.home.generated.resources.Res
 import caramel.feature.home.generated.resources.check_choice_button
 import caramel.feature.home.generated.resources.check_our_choice
@@ -308,175 +298,6 @@ private fun ButtonArea(
                     style = CaramelTheme.typography.body3.bold,
                     color = CaramelTheme.color.text.inverse,
                 )
-            }
-        }
-    }
-}
-
-@Composable
-private fun RowScope.OptionButton(
-    modifier: Modifier = Modifier,
-    text: String,
-    isSelected: Boolean,
-    balanceGameAnswerState: HomeState.BalanceGameAnswerState,
-    onClick: () -> Unit,
-) {
-    val backgroundColor =
-        if (balanceGameAnswerState == HomeState.BalanceGameAnswerState.IDLE) {
-            CaramelTheme.color.fill.quinary
-        } else {
-            if (isSelected) {
-                CaramelTheme.color.fill.brand
-            } else {
-                CaramelTheme.color.fill.disabledPrimary
-            }
-        }
-
-    val textColor =
-        if (balanceGameAnswerState == HomeState.BalanceGameAnswerState.IDLE) {
-            CaramelTheme.color.text.brand
-        } else {
-            if (isSelected) {
-                CaramelTheme.color.text.inverse
-            } else {
-                CaramelTheme.color.text.disabledPrimary
-            }
-        }
-
-    Box(
-        modifier =
-            modifier
-                .weight(weight = 1f)
-                .fillMaxHeight()
-                .background(
-                    color = backgroundColor,
-                    shape = CaramelTheme.shape.m,
-                ).clip(shape = CaramelTheme.shape.m)
-                .clickable(
-                    enabled = balanceGameAnswerState != HomeState.BalanceGameAnswerState.WAITING,
-                    onClick = onClick,
-                ).padding(all = CaramelTheme.spacing.m),
-        contentAlignment = Alignment.Center,
-    ) {
-        if (isSelected) {
-            val optionString =
-                buildAnnotatedString {
-                    appendInlineContent(id = "check icon")
-                    append(" ")
-                    append(text)
-                }
-            val inlineContentMap =
-                mapOf(
-                    "check icon" to
-                        InlineTextContent(
-                            placeholder =
-                                Placeholder(
-                                    width = 16.sp,
-                                    height = 16.sp,
-                                    placeholderVerticalAlign = PlaceholderVerticalAlign.Center,
-                                ),
-                            children = {
-                                Icon(
-                                    painter = painterResource(resource = Resources.Icon.ic_check_16),
-                                    contentDescription = null,
-                                    tint = CaramelTheme.color.icon.inverse,
-                                )
-                            },
-                        ),
-                )
-
-            Text(
-                text = optionString,
-                inlineContent = inlineContentMap,
-                style = CaramelTheme.typography.body3.bold,
-                textAlign = TextAlign.Center,
-                color = textColor,
-            )
-        } else {
-            Text(
-                text = text,
-                style = CaramelTheme.typography.body3.bold,
-                textAlign = TextAlign.Center,
-                color = textColor,
-            )
-        }
-    }
-}
-
-@Composable
-private fun BalanceGameResult(
-    modifier: Modifier = Modifier,
-    myNickname: String,
-    myGender: Gender,
-    partnerNickname: String,
-    partnerGender: Gender,
-    myChoiceOption: BalanceGameOptionState,
-    partnerChoiceOption: BalanceGameOptionState,
-) {
-    val myGenderImage =
-        when (myGender) {
-            Gender.MALE -> Resources.Image.img_quiz_man
-            Gender.FEMALE -> Resources.Image.img_quiz_woman
-            else -> Resources.Image.img_quiz_man
-        }
-
-    val partnerGenderImage =
-        when (partnerGender) {
-            Gender.MALE -> Resources.Image.img_quiz_man
-            Gender.FEMALE -> Resources.Image.img_quiz_woman
-            else -> Resources.Image.img_quiz_man
-        }
-
-    Column(
-        modifier = modifier,
-        verticalArrangement =
-            Arrangement.spacedBy(
-                space = CaramelTheme.spacing.l,
-                alignment = Alignment.CenterVertically,
-            ),
-    ) {
-        repeat(2) { index ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement =
-                    Arrangement.spacedBy(
-                        space = CaramelTheme.spacing.m,
-                    ),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Image(
-                    modifier = Modifier.size(size = 50.dp),
-                    painter =
-                        painterResource(
-                            resource =
-                                if (index == 0) {
-                                    myGenderImage
-                                } else {
-                                    partnerGenderImage
-                                },
-                        ),
-                    contentDescription = null,
-                )
-
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement =
-                        Arrangement.spacedBy(
-                            space = CaramelTheme.spacing.xxs,
-                        ),
-                ) {
-                    Text(
-                        text = if (index == 0) myNickname else partnerNickname,
-                        style = CaramelTheme.typography.body4.regular,
-                        color = CaramelTheme.color.text.secondary,
-                    )
-
-                    Text(
-                        text = if (index == 0) myChoiceOption.name else partnerChoiceOption.name,
-                        style = CaramelTheme.typography.body1.bold,
-                        color = CaramelTheme.color.text.primary,
-                    )
-                }
             }
         }
     }

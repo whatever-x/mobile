@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.home.components
+package com.whatever.caramel.feature.home.components.header
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

@@ -15,6 +15,9 @@
 
 	<!-- Todo -->
 	<string name="start_couple_date_guid">커플 시작일을 입력해 주세요.\n기념일이 다가오면 알려드릴게요.</string>
+	<string name="my">나</string>
+	<string name="partner">연인</string>
+	<string name="both">우리</string>
 
 	<!-- UnConnectCard -->
 	<string name="unconnected_couple">연인과의 연결이 해제되었어요</string>

@@ -27,10 +27,10 @@ import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLay
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.home.components.ShareMessageBottomSheet
-import com.whatever.caramel.feature.home.components.disconnectedCard
-import com.whatever.caramel.feature.home.components.header
-import com.whatever.caramel.feature.home.components.quiz
-import com.whatever.caramel.feature.home.components.todo
+import com.whatever.caramel.feature.home.components.header.disconnectedCard
+import com.whatever.caramel.feature.home.components.header.header
+import com.whatever.caramel.feature.home.components.quiz.quiz
+import com.whatever.caramel.feature.home.components.todo.todo
 import com.whatever.caramel.feature.home.mvi.HomeIntent
 import com.whatever.caramel.feature.home.mvi.HomeState
 import kotlinx.collections.immutable.toImmutableList
