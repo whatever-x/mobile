@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import caramel.feature.memo.generated.resources.Res
 import caramel.feature.memo.generated.resources.tag_all
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.feature.memo.mvi.TagUiModel
+import com.whatever.caramel.feature.memo.model.TagUiModel
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
