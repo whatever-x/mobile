@@ -1,21 +1,19 @@
 package com.whatever.caramel.feature.content.detail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,124 +35,127 @@ internal fun ContentDetailScreen(
     onIntent: (ContentDetailIntent) -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        containerColor = CaramelTheme.color.background.primary,
-        topBar = {
-            Column(modifier = Modifier.statusBarsPadding()) {
-                CaramelTopBar(
-                    leadingContent = {
-                        Icon(
-                            modifier =
-                                Modifier
-                                    .clickable(
-                                        onClick = { onIntent(ContentDetailIntent.ClickBackButton) },
-                                        interactionSource = null,
-                                        indication = null,
-                                    ),
-                            painter = painterResource(resource = Resources.Icon.ic_arrow_left_24),
-                            contentDescription = null,
-                            tint = CaramelTheme.color.icon.primary,
-                        )
-                    },
-                    trailingIcon = {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                modifier =
-                                    Modifier.clickable {
-                                        onIntent(ContentDetailIntent.ClickDeleteButton)
-                                    },
-                                painter = painterResource(resource = Resources.Icon.ic_trash_24),
-                                tint = CaramelTheme.color.icon.primary,
-                                contentDescription = "Delete",
-                            )
-                            Spacer(modifier = Modifier.padding(start = 20.dp))
-                            Icon(
-                                modifier =
-                                    Modifier.clickable {
-                                        onIntent(ContentDetailIntent.ClickEditButton)
-                                    },
-                                painter = painterResource(resource = Resources.Icon.ic_edit_line_24),
-                                tint = CaramelTheme.color.icon.primary,
-                                contentDescription = "Edit",
-                            )
-                        }
-                    },
-                )
-                TitleTextField(
+    val verticalScrollState = rememberScrollState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 50.dp)
+            .background(color = CaramelTheme.color.background.primary)
+    ) {
+        CaramelTopBar(
+            modifier = Modifier
+                .statusBarsPadding()
+                .padding(horizontal = CaramelTheme.spacing.l),
+            leadingContent = {
+                Icon(
                     modifier =
                         Modifier
-                            .padding(top = CaramelTheme.spacing.s)
-                            .padding(horizontal = CaramelTheme.spacing.xl),
-                    value = state.title,
-                    onValueChange = {},
-                    onKeyboardAction = {},
-                    readOnly = true,
-                )
-                if (state.scheduleDetail != null) {
-                    Row(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(top = CaramelTheme.spacing.xl)
-                                .padding(horizontal = CaramelTheme.spacing.xl),
-                        horizontalArrangement =
-                            Arrangement.spacedBy(
-                                space = CaramelTheme.spacing.s,
-                                alignment = Alignment.Start,
+                            .clickable(
+                                onClick = { onIntent(ContentDetailIntent.ClickBackButton) },
+                                interactionSource = null,
+                                indication = null,
                             ),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(
-                            painter = painterResource(resource = Resources.Icon.ic_calendar_18),
-                            tint = CaramelTheme.color.icon.primary,
-                            contentDescription = null,
-                        )
-                        Text(
-                            text = state.date,
-                            style = CaramelTheme.typography.body2.regular,
-                            color = CaramelTheme.color.text.primary,
-                        )
-                        Text(
-                            text = state.time,
-                            style = CaramelTheme.typography.body2.regular,
-                            color = CaramelTheme.color.text.primary,
-                        )
-                    }
+                    painter = painterResource(resource = Resources.Icon.ic_arrow_left_24),
+                    contentDescription = null,
+                    tint = CaramelTheme.color.icon.primary,
+                )
+            },
+            trailingIcon = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        modifier =
+                            Modifier.clickable {
+                                onIntent(ContentDetailIntent.ClickDeleteButton)
+                            },
+                        painter = painterResource(resource = Resources.Icon.ic_trash_24),
+                        tint = CaramelTheme.color.icon.primary,
+                        contentDescription = "Delete",
+                    )
+                    Spacer(modifier = Modifier.padding(start = 20.dp))
+                    Icon(
+                        modifier =
+                            Modifier.clickable {
+                                onIntent(ContentDetailIntent.ClickEditButton)
+                            },
+                        painter = painterResource(resource = Resources.Icon.ic_edit_line_24),
+                        tint = CaramelTheme.color.icon.primary,
+                        contentDescription = "Edit",
+                    )
                 }
+            },
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = CaramelTheme.spacing.xl)
+                .verticalScroll(verticalScrollState),
+        ) {
+            TitleTextField(
+                modifier =
+                    Modifier.padding(top = CaramelTheme.spacing.m),
+                value = state.title,
+                onValueChange = {},
+                onKeyboardAction = {},
+                readOnly = true,
+            )
+            if (state.existsContent) {
                 HorizontalDivider(
-                    modifier = Modifier.padding(vertical = CaramelTheme.spacing.xl),
-                    color = CaramelTheme.color.divider.primary,
+                    modifier = Modifier.padding(top = CaramelTheme.spacing.l),
+                    color = CaramelTheme.color.divider.primary
                 )
             }
-        },
-        bottomBar = {
-            LazyRow(
-                modifier =
-                    Modifier
-                        .navigationBarsPadding()
-                        .padding(bottom = 50.dp),
-                contentPadding = PaddingValues(horizontal = CaramelTheme.spacing.xl),
-                horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xs),
-            ) {
-                items(state.tags) { tag ->
+            if (state.scheduleDetail != null) {
+                Row(
+                    modifier = Modifier
+                        .padding(vertical = CaramelTheme.spacing.l)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(
+                        space = CaramelTheme.spacing.s,
+                        alignment = Alignment.Start
+                    )
+                ) {
+                    Icon(
+                        painter = painterResource(resource = Resources.Icon.ic_calendar_18),
+                        tint = CaramelTheme.color.icon.primary,
+                        contentDescription = null,
+                    )
+
                     Text(
-                        text = "#${tag.label}",
-                        style = CaramelTheme.typography.body2.reading,
-                        color = CaramelTheme.color.text.brand,
+                        text = state.date,
+                        style = CaramelTheme.typography.body2.regular,
+                        color = CaramelTheme.color.text.primary,
+                    )
+                    Text(
+                        text = state.time,
+                        style = CaramelTheme.typography.body2.regular,
+                        color = CaramelTheme.color.text.primary,
+                    )
+                }
+                HorizontalDivider(color = CaramelTheme.color.divider.primary)
+            }
+            if (state.tags.isNotEmpty()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = CaramelTheme.spacing.l),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Icon(
+                        painter = painterResource(resource = Resources.Icon.ic_calendar_18),
+                        tint = CaramelTheme.color.icon.primary,
+                        contentDescription = null,
+                    )
+                    Text(
+                        text = state.tagString,
+                        style = CaramelTheme.typography.body2.regular,
+                        color = CaramelTheme.color.text.primary,
                     )
                 }
             }
-        },
-    ) { contentPadding ->
-        Column(
-            modifier =
-                Modifier
-                    .padding(contentPadding)
-                    .fillMaxSize(),
-        ) {
             TextWithUrlPreview(
-                modifier = Modifier.padding(horizontal = CaramelTheme.spacing.xl),
                 text = state.description,
                 linkMetaData = state.linkMetaDataList.toList(),
                 onLinkPreviewClick = {

@@ -60,4 +60,17 @@ data class ContentDetailState(
 
             return "$hour:$minute"
         }
+
+    val tagString : String
+        get() = tags.joinToString(", ") { it.label }
+
+    val existsContent: Boolean
+        get() {
+            return when(contentType) {
+                ContentType.MEMO -> {
+                    memoDetail != null && (memoDetail.description.isNotEmpty() || memoDetail.tagList.isNotEmpty())
+                }
+                ContentType.CALENDAR -> scheduleDetail != null
+            }
+        }
 }
