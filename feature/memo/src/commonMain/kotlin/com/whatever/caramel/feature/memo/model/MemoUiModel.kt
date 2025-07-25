@@ -6,6 +6,7 @@ import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.domain.vo.content.ContentRole
 import com.whatever.caramel.core.util.DateFormatter.formatWithSeparator
 
+@Immutable
 data class MemoUiModel(
     val id: Long,
     val title: String,
