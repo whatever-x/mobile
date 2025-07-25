@@ -108,8 +108,15 @@ class ContentCreateViewModel(
             is ContentCreateIntent.OnMinuteChanged -> updateMinute(intent)
             is ContentCreateIntent.ClickDate -> clickDate(intent)
             is ContentCreateIntent.ClickTime -> clickTime(intent)
-            ContentCreateIntent.ClickEditDialogRightButton -> clickEditDialogRightButton(intent)
-            ContentCreateIntent.ClickEditDialogLeftButton -> clickEditDialogLeftButton(intent)
+            is ContentCreateIntent.ClickEditDialogRightButton -> clickEditDialogRightButton(intent)
+            is ContentCreateIntent.ClickEditDialogLeftButton -> clickEditDialogLeftButton(intent)
+            is ContentCreateIntent.ClickRole -> clickRole(intent)
+        }
+    }
+
+    private fun clickRole(intent: ContentCreateIntent.ClickRole) {
+        reduce {
+            copy(selectedRole = intent.roleType)
         }
     }
 
