@@ -34,7 +34,6 @@ import caramel.feature.memo.generated.resources.memo
 import com.whatever.caramel.core.designsystem.animation.animateScrollToItemCenter
 import com.whatever.caramel.core.designsystem.components.CaramelPullToRefreshIndicator
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.util.DateFormatter.formatWithSeparator
 import com.whatever.caramel.feature.memo.component.EmptyMemo
 import com.whatever.caramel.feature.memo.component.MemoItem
 import com.whatever.caramel.feature.memo.component.MemoItemSkeleton
@@ -165,9 +164,10 @@ internal fun MemoScreen(
                                 id = memo.id,
                                 title = memo.title,
                                 description = memo.description,
-                                categoriesText = memo.tagList.joinToString(separator = ",") { it.label },
-                                createdDateText = memo.createdAt.formatWithSeparator(separator = "."),
+                                categoriesText = memo.tagListText,
+                                createdDateText = memo.createdAt,
                                 onClickMemoItem = { onIntent(MemoIntent.ClickMemo(memoId = it)) },
+                                role = memo.role,
                             )
                             if (index < state.memos.lastIndex) {
                                 HorizontalDivider(

@@ -23,7 +23,7 @@ internal fun MemoResponse.toMemo(): Memo =
         isCompleted = this.isCompleted,
         tagList = this.tagList.toTags(),
         createdAt = LocalDate.parse(this.createdAt),
-        role = ContentRole.BOTH // FIXME : API 연동 작업 시 변경
+        role = ContentRole.BOTH, // FIXME : API 연동 작업 시 변경
     )
 
 internal fun CursoredContentResponse.toMemosWithCursor(): MemoWithCursor =
