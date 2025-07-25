@@ -10,7 +10,6 @@ import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameCho
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodayScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
-import com.whatever.caramel.core.domain.vo.content.ContentRole
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.ui.util.validateInputText
@@ -240,7 +239,7 @@ class HomeViewModel(
                                 TodoItem(
                                     id = todo.id,
                                     title = todo.title.ifEmpty { todo.description },
-                                    role = ContentRole.MY, // @ham2174 FIXME : 오늘의 일정 가져오기 로직 수정시 변경
+                                    role = todo.contentRole,
                                 )
                             }.toImmutableList()
                     } else {

@@ -69,7 +69,12 @@ class CalendarRepositoryImpl(
         userTimezone: String?,
     ): List<Todo> =
         safeCall {
-            remoteCalendarDataSource.getSchedules(startDate, endDate, userTimezone).toTodo()
+            remoteCalendarDataSource
+                .getSchedules(
+                    startDate = startDate,
+                    endDate = endDate,
+                    userTimeZone = userTimezone,
+                ).toTodo()
         }
 
     override suspend fun getHolidays(year: Int): List<Holiday> =

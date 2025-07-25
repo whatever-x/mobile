@@ -4,7 +4,9 @@ import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleDetail
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleMetadata
+import com.whatever.caramel.core.domain.vo.content.ContentRole
 import com.whatever.caramel.core.remote.dto.calendar.CalendarDetailResponse
+import com.whatever.caramel.core.remote.dto.calendar.ContentAsignee
 import com.whatever.caramel.core.remote.dto.calendar.HolidayDetailListResponse
 import com.whatever.caramel.core.remote.dto.calendar.response.CreateScheduleResponse
 import com.whatever.caramel.core.remote.dto.calendar.response.GetScheduleResponse
@@ -19,6 +21,12 @@ fun CalendarDetailResponse.toTodo(): List<Todo> =
             endDate = LocalDateTime.parse(it.endDateTime),
             title = it.title ?: "",
             description = it.description ?: "",
+            contentRole =
+                when (it.contentAsignee) {
+                    ContentAsignee.ME -> ContentRole.MY
+                    ContentAsignee.US -> ContentRole.BOTH
+                    ContentAsignee.PARTNER -> ContentRole.PARTNER
+                },
         )
     }
 
