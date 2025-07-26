@@ -1,5 +1,6 @@
 package com.whatever.caramel.core.remote.dto.calendar
 
+import com.whatever.caramel.core.remote.dto.memo.ContentAsignee
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -24,4 +25,5 @@ data class ScheduleApiResult(
     @SerialName("parentScheduleId") val parentScheduleId: Long?,
     @SerialName("title") val title: String?,
     @SerialName("description") val description: String?,
+    @SerialName("contentAsignee") val contentAsignee: ContentAsignee,
 )
