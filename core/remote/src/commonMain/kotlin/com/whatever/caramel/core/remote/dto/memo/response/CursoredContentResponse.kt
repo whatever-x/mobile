@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.remote.dto.memo.response
 
-import com.whatever.caramel.core.remote.dto.memo.ContentAsignee
+import com.whatever.caramel.core.remote.dto.memo.ContentAsigneeDto
 import com.whatever.caramel.core.remote.dto.tag.TagDetailResponse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -24,5 +24,5 @@ data class MemoResponse(
     @SerialName("isCompleted") val isCompleted: Boolean,
     @SerialName("tagList") val tagList: List<TagDetailResponse>,
     @SerialName("createdAt") val createdAt: String,
-    @SerialName("contentAsignee") val contentAsignee: ContentAsignee,
+    @SerialName("contentAsignee") val contentAsignee: ContentAsigneeDto,
 )

@@ -2,7 +2,7 @@ package com.whatever.caramel.core.remote.dto.memo
 
 import kotlinx.serialization.SerialName
 
-enum class ContentAsignee {
+enum class ContentAsigneeDto {
     @SerialName("ME")
     ME,
 
