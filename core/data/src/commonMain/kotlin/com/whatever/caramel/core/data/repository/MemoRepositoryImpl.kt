@@ -27,7 +27,7 @@ class MemoRepositoryImpl(
                 description = parameter.description,
                 isCompleted = parameter.isCompleted,
                 tags = parameter.tags?.map { TagRequest(it) },
-                contentAsignee = ContentAsignee.US // @ham2174 FIXME : 파라미터로 넘겨받도록 수정
+                contentAsignee = ContentAsignee.US, // @ham2174 FIXME : 파라미터로 넘겨받도록 수정
             )
         return safeCall {
             remoteMemoDataSource.createMemo(request).toMemoMetaData()
@@ -53,7 +53,7 @@ class MemoRepositoryImpl(
                             endTimezone = endTimezone,
                         )
                     },
-                contentAsignee = ContentAsignee.US // @ham2174 FIXME : 파라미터로 넘겨받도록 수정
+                contentAsignee = ContentAsignee.US, // @ham2174 FIXME : 파라미터로 넘겨받도록 수정
             )
         safeCall {
             remoteMemoDataSource.updateMemo(memoId, request)
