@@ -15,6 +15,7 @@ import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
 import com.whatever.caramel.core.remote.datasource.RemoteCalendarDataSource
 import com.whatever.caramel.core.remote.dto.calendar.request.CreateScheduleRequest
 import com.whatever.caramel.core.remote.dto.calendar.request.UpdateScheduleRequest
+import com.whatever.caramel.core.remote.dto.memo.ContentAsignee
 
 class CalendarRepositoryImpl(
     private val remoteCalendarDataSource: RemoteCalendarDataSource,
@@ -30,6 +31,7 @@ class CalendarRepositoryImpl(
                 endDateTime = parameter.endDateTime,
                 endTimeZone = parameter.endTimeZone,
                 tagIds = parameter.tagIds,
+                contentAsignee = ContentAsignee.US // @ham2174 FIXME : 파라미터로 넘겨받도록 수정
             )
         return safeCall {
             remoteCalendarDataSource.createSchedule(request).toScheduleMetaData()
@@ -51,6 +53,7 @@ class CalendarRepositoryImpl(
                 endDateTime = parameter.dateTimeInfo?.endDateTime,
                 endTimeZone = parameter.dateTimeInfo?.endTimezone,
                 tagIds = parameter.tagIds,
+                contentAsignee = ContentAsignee.US // @ham2174 FIXME : 파라미터로 넘겨받도록 수정
             )
         safeCall {
             remoteCalendarDataSource.updateSchedule(scheduleId, request)
