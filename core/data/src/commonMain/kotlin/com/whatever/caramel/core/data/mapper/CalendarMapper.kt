@@ -49,8 +49,8 @@ internal fun GetScheduleResponse.toScheduleDetailVO(): ScheduleDetail =
             endDateTimezone = endDateTimezone,
             isCompleted = isCompleted,
             parentScheduleId = parentScheduleId,
-            title = title,
-            description = description,
+            title = title ?: "",
+            description = description ?: "",
             tags = tags.map { it.toTag() },
             role = ContentRole.BOTH // FIXME : API 연동 후 수정 예정
         )

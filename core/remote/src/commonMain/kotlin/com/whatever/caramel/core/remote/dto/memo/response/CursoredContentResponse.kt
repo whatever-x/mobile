@@ -18,8 +18,8 @@ data class Cursor(
 @Serializable
 data class MemoResponse(
     @SerialName("id") val id: Long,
-    @SerialName("title") val title: String,
-    @SerialName("description") val description: String,
+    @SerialName("title") val title: String?,
+    @SerialName("description") val description: String?,
     @SerialName("isCompleted") val isCompleted: Boolean,
     @SerialName("tagList") val tagList: List<TagDetailResponse>,
     @SerialName("createdAt") val createdAt: String,

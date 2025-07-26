@@ -26,15 +26,15 @@ data class ContentDetailState(
     val title: String
         get() =
             when (contentType) {
-                ContentType.MEMO -> memoDetail?.title ?: ""
-                ContentType.CALENDAR -> scheduleDetail?.title ?: ""
+                ContentType.MEMO -> memoDetail?.title?.ifEmpty { memoDetail.description } ?: ""
+                ContentType.CALENDAR -> scheduleDetail?.title?.ifEmpty { scheduleDetail.description } ?: ""
             }
 
     val description: String
         get() =
             when (contentType) {
-                ContentType.MEMO -> memoDetail?.description ?: ""
-                ContentType.CALENDAR -> scheduleDetail?.description ?: ""
+                ContentType.MEMO -> memoDetail?.description?.takeIf { memoDetail.title.isNotEmpty() } ?: ""
+                ContentType.CALENDAR -> scheduleDetail?.description?.takeIf { scheduleDetail.title.isNotEmpty() } ?: ""
             }
 
     val tags: ImmutableList<Tag>
