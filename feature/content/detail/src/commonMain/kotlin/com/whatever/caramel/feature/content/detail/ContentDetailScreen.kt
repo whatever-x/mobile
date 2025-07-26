@@ -21,13 +21,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import caramel.feature.content.detail.generated.resources.Res
-import caramel.feature.content.detail.generated.resources.both_content
-import caramel.feature.content.detail.generated.resources.my_content
-import caramel.feature.content.detail.generated.resources.partner_content
+import caramel.feature.content.detail.generated.resources.both
+import caramel.feature.content.detail.generated.resources.memo
+import caramel.feature.content.detail.generated.resources.my
+import caramel.feature.content.detail.generated.resources.partner
+import caramel.feature.content.detail.generated.resources.schedule
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.content.ContentRole
+import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.ui.content.TitleTextField
 import com.whatever.caramel.feature.content.detail.components.TextWithUrlPreview
 import com.whatever.caramel.feature.content.detail.mvi.ContentDetailIntent
@@ -42,6 +45,15 @@ internal fun ContentDetailScreen(
 ) {
     val uriHandler = LocalUriHandler.current
     val verticalScrollState = rememberScrollState()
+    val (roleTextRes, roleTextColor) = when (state.role) {
+        ContentRole.MY -> Res.string.my to CaramelTheme.color.text.labelAccent4
+        ContentRole.PARTNER -> Res.string.partner to CaramelTheme.color.text.primary
+        ContentRole.NONE, ContentRole.BOTH -> Res.string.both to CaramelTheme.color.text.brand
+    }
+    val contentTypeRes = when(state.contentType) {
+        ContentType.MEMO -> Res.string.memo
+        ContentType.CALENDAR -> Res.string.schedule
+    }
 
     Column(
         modifier = Modifier
@@ -49,21 +61,9 @@ internal fun ContentDetailScreen(
             .padding(bottom = 50.dp)
             .background(color = CaramelTheme.color.background.primary)
     ) {
-        val (roleText, roleTextColor) = when (state.role) {
-            ContentRole.MY -> Res.string.my_content to CaramelTheme.color.text.labelAccent4
-            ContentRole.PARTNER -> Res.string.partner_content to CaramelTheme.color.text.primary
-            ContentRole.NONE, ContentRole.BOTH -> Res.string.both_content to CaramelTheme.color.text.brand
-        }
-        Text(
-            modifier = Modifier.padding(top = 3.dp),
-            text = stringResource(roleText),
-            color = roleTextColor,
-            style = CaramelTheme.typography.body2.bold
-        )
         CaramelTopBar(
             modifier = Modifier
-                .statusBarsPadding()
-                .padding(horizontal = CaramelTheme.spacing.l),
+                .statusBarsPadding(),
             leadingContent = {
                 Icon(
                     modifier =
@@ -108,6 +108,13 @@ internal fun ContentDetailScreen(
                 .padding(horizontal = CaramelTheme.spacing.xl)
                 .verticalScroll(verticalScrollState),
         ) {
+            Text(
+                modifier = Modifier.padding(top = CaramelTheme.spacing.xs),
+                text = stringResource(roleTextRes) + " " + stringResource(contentTypeRes),
+                color = roleTextColor,
+                style = CaramelTheme.typography.body2.bold
+            )
+
             TitleTextField(
                 modifier =
                     Modifier.padding(top = CaramelTheme.spacing.m),
@@ -116,13 +123,11 @@ internal fun ContentDetailScreen(
                 onKeyboardAction = {},
                 readOnly = true,
             )
-            if (state.existsContent) {
+            if (state.scheduleDetail != null) {
                 HorizontalDivider(
                     modifier = Modifier.padding(top = CaramelTheme.spacing.l),
                     color = CaramelTheme.color.divider.primary
                 )
-            }
-            if (state.scheduleDetail != null) {
                 Row(
                     modifier = Modifier
                         .padding(vertical = CaramelTheme.spacing.l)
@@ -150,18 +155,24 @@ internal fun ContentDetailScreen(
                         color = CaramelTheme.color.text.primary,
                     )
                 }
-                HorizontalDivider(color = CaramelTheme.color.divider.primary)
             }
             if (state.tags.isNotEmpty()) {
+                HorizontalDivider(
+                    modifier = Modifier.padding(top = CaramelTheme.spacing.l),
+                    color = CaramelTheme.color.divider.primary
+                )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = CaramelTheme.spacing.l),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
+                    horizontalArrangement = Arrangement.spacedBy(
+                        space = CaramelTheme.spacing.s,
+                        alignment = Alignment.Start
+                    )
                 ) {
                     Icon(
-                        painter = painterResource(resource = Resources.Icon.ic_calendar_18),
+                        painter = painterResource(resource = Resources.Icon.ic_tag_18),
                         tint = CaramelTheme.color.icon.primary,
                         contentDescription = null,
                     )
@@ -172,13 +183,17 @@ internal fun ContentDetailScreen(
                     )
                 }
             }
-            TextWithUrlPreview(
-                text = state.description,
-                linkMetaData = state.linkMetaDataList.toList(),
-                onLinkPreviewClick = {
-                    uriHandler.openUri(it)
-                },
-            )
+            if(state.description.isNotEmpty()){
+                HorizontalDivider(color = CaramelTheme.color.divider.primary)
+                TextWithUrlPreview(
+                    modifier = Modifier.padding(top = CaramelTheme.spacing.l),
+                    text = state.description,
+                    linkMetaData = state.linkMetaDataList.toList(),
+                    onLinkPreviewClick = {
+                        uriHandler.openUri(it)
+                    },
+                )
+            }
         }
     }
 }
