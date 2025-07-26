@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.remote.dto.memo.request
 
-import com.whatever.caramel.core.remote.dto.memo.ContentAsigneeDto
+import com.whatever.caramel.core.remote.dto.memo.ContentAssigneeDto
 import com.whatever.caramel.core.remote.dto.tag.TagRequest
 import kotlinx.serialization.Serializable
 
@@ -11,7 +11,7 @@ data class UpdateMemoRequest(
     val isCompleted: Boolean?,
     val tagList: List<TagRequest>?,
     val dateTimeInfo: DateTimeInfoRequest?,
-    val contentAsignee: ContentAsigneeDto,
+    val contentAssignee: ContentAssigneeDto,
 )
 
 @Serializable
