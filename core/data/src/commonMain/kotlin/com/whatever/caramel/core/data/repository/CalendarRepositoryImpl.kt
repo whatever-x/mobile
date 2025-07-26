@@ -12,7 +12,9 @@ import com.whatever.caramel.core.domain.vo.calendar.ScheduleDetail
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleEditParameter
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleMetadata
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
+import com.whatever.caramel.core.domain.vo.content.ContentRole
 import com.whatever.caramel.core.remote.datasource.RemoteCalendarDataSource
+import com.whatever.caramel.core.remote.dto.calendar.ContentAsignee
 import com.whatever.caramel.core.remote.dto.calendar.request.CreateScheduleRequest
 import com.whatever.caramel.core.remote.dto.calendar.request.UpdateScheduleRequest
 
@@ -30,6 +32,11 @@ class CalendarRepositoryImpl(
                 endDateTime = parameter.endDateTime,
                 endTimeZone = parameter.endTimeZone,
                 tagIds = parameter.tagIds,
+                contentAsignee = when (parameter.contentRole) {
+                    ContentRole.MY -> ContentAsignee.ME
+                    ContentRole.BOTH -> ContentAsignee.US
+                    ContentRole.PARTNER -> ContentAsignee.PARTNER
+                }
             )
         return safeCall {
             remoteCalendarDataSource.createSchedule(request).toScheduleMetaData()
