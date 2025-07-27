@@ -49,7 +49,7 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
                     isCompleted = false,
                     tagList = createTempTagList(index),
                     createdAt = DateUtil.today(),
-                    role = ContentAssignee.US
+                    role = ContentAssignee.US,
                 ),
             )
         }

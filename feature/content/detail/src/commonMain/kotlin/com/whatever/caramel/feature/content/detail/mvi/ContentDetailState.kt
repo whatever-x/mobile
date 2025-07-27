@@ -52,11 +52,12 @@ data class ContentDetailState(
             return "${parsed.year}년 ${parsed.monthNumber}월 ${parsed.dayOfMonth}일"
         }
 
-    val role : ContentAssignee
-        get() = when(contentType) {
-            ContentType.MEMO -> memoDetail?.role ?: ContentAssignee.US
-            ContentType.CALENDAR -> scheduleDetail?.role ?: ContentAssignee.US
-        }
+    val role: ContentAssignee
+        get() =
+            when (contentType) {
+                ContentType.MEMO -> memoDetail?.role ?: ContentAssignee.US
+                ContentType.CALENDAR -> scheduleDetail?.role ?: ContentAssignee.US
+            }
 
     val time: String
         get() {
@@ -68,12 +69,12 @@ data class ContentDetailState(
             return "$hour:$minute"
         }
 
-    val tagString : String
+    val tagString: String
         get() = tags.joinToString(", ") { it.label }
 
     val existsContent: Boolean
         get() {
-            return when(contentType) {
+            return when (contentType) {
                 ContentType.MEMO -> {
                     memoDetail != null && (memoDetail.description.isNotEmpty() || memoDetail.tagList.isNotEmpty())
                 }

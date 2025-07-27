@@ -52,6 +52,6 @@ internal fun GetScheduleResponse.toScheduleDetailVO(): ScheduleDetail =
             title = title ?: "",
             description = description ?: "",
             tags = tags.map { it.toTag() },
-            role = ContentAssignee.US // FIXME : API 연동 후 수정 예정
+            role = ContentAssignee.US, // FIXME : API 연동 후 수정 예정
         )
     }

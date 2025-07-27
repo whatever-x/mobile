@@ -45,24 +45,28 @@ internal fun ContentDetailScreen(
 ) {
     val uriHandler = LocalUriHandler.current
     val verticalScrollState = rememberScrollState()
-    val (roleTextRes, roleTextColor) = when (state.role) {
-        ContentAssignee.ME -> Res.string.my to CaramelTheme.color.text.labelAccent4
-        ContentAssignee.PARTNER -> Res.string.partner to CaramelTheme.color.text.primary
-        ContentAssignee.US -> Res.string.both to CaramelTheme.color.text.brand
-    }
-    val contentTypeRes = when (state.contentType) {
-        ContentType.MEMO -> Res.string.memo
-        ContentType.CALENDAR -> Res.string.schedule
-    }
+    val (roleTextRes, roleTextColor) =
+        when (state.role) {
+            ContentAssignee.ME -> Res.string.my to CaramelTheme.color.text.labelAccent4
+            ContentAssignee.PARTNER -> Res.string.partner to CaramelTheme.color.text.primary
+            ContentAssignee.US -> Res.string.both to CaramelTheme.color.text.brand
+        }
+    val contentTypeRes =
+        when (state.contentType) {
+            ContentType.MEMO -> Res.string.memo
+            ContentType.CALENDAR -> Res.string.schedule
+        }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = CaramelTheme.color.background.primary)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(color = CaramelTheme.color.background.primary),
     ) {
         CaramelTopBar(
-            modifier = Modifier
-                .statusBarsPadding(),
+            modifier =
+                Modifier
+                    .statusBarsPadding(),
             leadingContent = {
                 Icon(
                     modifier =
@@ -102,16 +106,17 @@ internal fun ContentDetailScreen(
             },
         )
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = CaramelTheme.spacing.xl)
-                .verticalScroll(verticalScrollState),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = CaramelTheme.spacing.xl)
+                    .verticalScroll(verticalScrollState),
         ) {
             Text(
                 modifier = Modifier.padding(top = CaramelTheme.spacing.xs),
                 text = stringResource(roleTextRes) + " " + stringResource(contentTypeRes),
                 color = roleTextColor,
-                style = CaramelTheme.typography.body2.bold
+                style = CaramelTheme.typography.body2.bold,
             )
             TitleTextField(
                 modifier =
@@ -124,20 +129,22 @@ internal fun ContentDetailScreen(
 
             Column(
                 modifier = Modifier.padding(top = CaramelTheme.spacing.l),
-                verticalArrangement = Arrangement.spacedBy(
-                    space = CaramelTheme.spacing.l,
-                    alignment = Alignment.Top
-                ),
+                verticalArrangement =
+                    Arrangement.spacedBy(
+                        space = CaramelTheme.spacing.l,
+                        alignment = Alignment.Top,
+                    ),
             ) {
                 if (state.scheduleDetail != null) {
                     HorizontalDivider(color = CaramelTheme.color.divider.primary)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(
-                            space = CaramelTheme.spacing.s,
-                            alignment = Alignment.Start
-                        )
+                        horizontalArrangement =
+                            Arrangement.spacedBy(
+                                space = CaramelTheme.spacing.s,
+                                alignment = Alignment.Start,
+                            ),
                     ) {
                         Icon(
                             painter = painterResource(resource = Resources.Icon.ic_calendar_18),
@@ -161,10 +168,11 @@ internal fun ContentDetailScreen(
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(
-                            space = CaramelTheme.spacing.s,
-                            alignment = Alignment.Start
-                        )
+                        horizontalArrangement =
+                            Arrangement.spacedBy(
+                                space = CaramelTheme.spacing.s,
+                                alignment = Alignment.Start,
+                            ),
                     ) {
                         Icon(
                             painter = painterResource(resource = Resources.Icon.ic_tag_18),
@@ -181,9 +189,10 @@ internal fun ContentDetailScreen(
                 if (state.description.isNotEmpty()) {
                     HorizontalDivider(color = CaramelTheme.color.divider.primary)
                     TextWithUrlPreview(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 50.dp),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 50.dp),
                         text = state.description,
                         linkMetaData = state.linkMetaDataList.toList(),
                         onLinkPreviewClick = {
@@ -192,7 +201,6 @@ internal fun ContentDetailScreen(
                     )
                 }
             }
-
         }
     }
 }

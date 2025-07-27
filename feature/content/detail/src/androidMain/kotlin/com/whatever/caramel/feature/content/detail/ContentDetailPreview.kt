@@ -9,7 +9,7 @@ import com.whatever.caramel.feature.content.detail.mvi.ContentDetailState
 @Composable
 @Preview
 private fun ContentDetailScreenPreview(
-    @PreviewParameter(ContentDetailPreviewParameter::class) data: ContentDetailState
+    @PreviewParameter(ContentDetailPreviewParameter::class) data: ContentDetailState,
 ) {
     CaramelTheme {
         ContentDetailScreen(
