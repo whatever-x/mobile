@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
-import com.whatever.caramel.core.domain.vo.content.ContentRole
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.couple.Anniversary
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 
@@ -181,10 +181,10 @@ private fun CalendarTodoItem(
     onClickTodo: (Long) -> Unit,
 ) {
     val (textColor, backgroundColor) =
-        when (todo.contentRole) {
-            ContentRole.MY -> CaramelTheme.color.text.labelAccent4 to CaramelTheme.color.fill.labelAccent3
-            ContentRole.PARTNER -> CaramelTheme.color.text.labelAccent3 to CaramelTheme.color.fill.labelAccent4
-            ContentRole.NONE, ContentRole.BOTH -> CaramelTheme.color.text.labelBrand to CaramelTheme.color.fill.labelBrand
+        when (todo.assignee) {
+            ContentAssignee.ME -> CaramelTheme.color.text.labelAccent4 to CaramelTheme.color.fill.labelAccent3
+            ContentAssignee.PARTNER -> CaramelTheme.color.text.labelAccent3 to CaramelTheme.color.fill.labelAccent4
+            ContentAssignee.US -> CaramelTheme.color.text.labelBrand to CaramelTheme.color.fill.labelBrand
         }
 
     ScheduleItem(

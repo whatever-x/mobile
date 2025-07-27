@@ -4,7 +4,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
 import com.whatever.caramel.core.domain.vo.calendar.Calendar
-import com.whatever.caramel.core.domain.vo.content.ContentRole
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.couple.Anniversary
 import com.whatever.caramel.core.domain.vo.couple.AnniversaryType
 import com.whatever.caramel.core.util.DateUtil
@@ -72,20 +72,20 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
         fun todo(
             day: Int,
             title: String,
-            role: ContentRole,
+            role: ContentAssignee,
         ) = Todo(
             id = id++,
             title = title,
             startDate = dateTime(day),
             endDate = dateTime(day, 23, 59),
             description = "$title 내용",
-            contentRole = role,
+            assignee = role,
         )
 
         return listOf(
-            DaySchedule(date = date(1), todos = listOf(todo(1, "내 일정", ContentRole.MY))),
-            DaySchedule(date = date(2), todos = listOf(todo(2, "커플 일정", ContentRole.BOTH))),
-            DaySchedule(date = date(3), todos = listOf(todo(3, "상대 일정", ContentRole.PARTNER))),
+            DaySchedule(date = date(1), todos = listOf(todo(1, "내 일정", ContentAssignee.ME))),
+            DaySchedule(date = date(2), todos = listOf(todo(2, "커플 일정", ContentAssignee.US))),
+            DaySchedule(date = date(3), todos = listOf(todo(3, "상대 일정", ContentAssignee.PARTNER))),
             DaySchedule(
                 date = date(4),
                 holidays =
