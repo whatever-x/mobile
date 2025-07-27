@@ -8,6 +8,7 @@ import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentParameterType
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
@@ -108,8 +109,15 @@ class ContentCreateViewModel(
             is ContentCreateIntent.OnMinuteChanged -> updateMinute(intent)
             is ContentCreateIntent.ClickDate -> clickDate(intent)
             is ContentCreateIntent.ClickTime -> clickTime(intent)
-            ContentCreateIntent.ClickEditDialogRightButton -> clickEditDialogRightButton(intent)
-            ContentCreateIntent.ClickEditDialogLeftButton -> clickEditDialogLeftButton(intent)
+            is ContentCreateIntent.ClickEditDialogRightButton -> clickEditDialogRightButton(intent)
+            is ContentCreateIntent.ClickEditDialogLeftButton -> clickEditDialogLeftButton(intent)
+            is ContentCreateIntent.ClickAssignee -> clickAssignee(intent)
+        }
+    }
+
+    private fun clickAssignee(intent: ContentCreateIntent.ClickAssignee) {
+        reduce {
+            copy(selectedAssignee = intent.assignee)
         }
     }
 
@@ -278,6 +286,10 @@ class ContentCreateViewModel(
                                 description = state.content.ifBlank { null },
                                 isCompleted = false,
                                 tags = state.selectedTags.map { it.id }.toList(),
+                                contentAssignee =
+                                    ContentAssignee.valueOf(
+                                        value = state.selectedAssignee.name,
+                                    ),
                             ),
                         )
 
@@ -292,6 +304,10 @@ class ContentCreateViewModel(
                                 endDateTime = null,
                                 endTimeZone = null,
                                 tagIds = state.selectedTags.map { it.id }.toList(),
+                                contentAssignee =
+                                    ContentAssignee.valueOf(
+                                        value = state.selectedAssignee.name,
+                                    ),
                             ),
                         )
                 }
