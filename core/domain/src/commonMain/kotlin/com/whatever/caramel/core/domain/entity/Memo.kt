@@ -10,5 +10,5 @@ data class Memo(
     val isCompleted: Boolean,
     val tagList: List<Tag>,
     val createdAt: LocalDate,
-    val assignee: ContentAssignee,
+    val contentAssignee: ContentAssignee,
 )

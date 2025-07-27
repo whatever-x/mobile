@@ -25,7 +25,7 @@ fun Memo.toUiModel() =
         isCompleted = this.isCompleted,
         tagListText = this.tagList.joinToString(separator = ",") { it.label },
         createdAt = this.createdAt.formatWithSeparator(separator = "."),
-        assignee = this.assignee,
+        assignee = this.contentAssignee,
     )
 
 @Immutable
