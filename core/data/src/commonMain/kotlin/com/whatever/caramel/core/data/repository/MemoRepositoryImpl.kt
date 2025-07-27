@@ -27,7 +27,7 @@ class MemoRepositoryImpl(
                 description = parameter.description,
                 isCompleted = parameter.isCompleted,
                 tags = parameter.tags?.map { TagRequest(it) },
-                contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name)
+                contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
             )
         return safeCall {
             remoteMemoDataSource.createMemo(request).toMemoMetaData()
