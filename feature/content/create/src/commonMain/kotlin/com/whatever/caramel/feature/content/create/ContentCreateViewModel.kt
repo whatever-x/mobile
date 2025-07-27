@@ -8,11 +8,10 @@ import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentParameterType
-import com.whatever.caramel.core.domain.vo.content.ContentRole
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
-import com.whatever.caramel.core.ui.content.ContentRoleType
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.ui.util.validateInputText
 import com.whatever.caramel.core.util.DateUtil
@@ -112,13 +111,13 @@ class ContentCreateViewModel(
             is ContentCreateIntent.ClickTime -> clickTime(intent)
             is ContentCreateIntent.ClickEditDialogRightButton -> clickEditDialogRightButton(intent)
             is ContentCreateIntent.ClickEditDialogLeftButton -> clickEditDialogLeftButton(intent)
-            is ContentCreateIntent.ClickRole -> clickRole(intent)
+            is ContentCreateIntent.ClickAssignee -> clickAssignee(intent)
         }
     }
 
-    private fun clickRole(intent: ContentCreateIntent.ClickRole) {
+    private fun clickAssignee(intent: ContentCreateIntent.ClickAssignee) {
         reduce {
-            copy(selectedRole = intent.roleType)
+            copy(selectedAssignee = intent.assignee)
         }
     }
 
@@ -287,9 +286,10 @@ class ContentCreateViewModel(
                                 description = state.content.ifBlank { null },
                                 isCompleted = false,
                                 tags = state.selectedTags.map { it.id }.toList(),
-                                contentRole = ContentRole.valueOf(
-                                    value = state.selectedRole.name
-                                )
+                                contentAssignee =
+                                    ContentAssignee.valueOf(
+                                        value = state.selectedAssignee.name,
+                                    ),
                             ),
                         )
 
@@ -304,9 +304,10 @@ class ContentCreateViewModel(
                                 endDateTime = null,
                                 endTimeZone = null,
                                 tagIds = state.selectedTags.map { it.id }.toList(),
-                                contentRole = ContentRole.valueOf(
-                                    value = state.selectedRole.name
-                                )
+                                contentAssignee =
+                                    ContentAssignee.valueOf(
+                                        value = state.selectedAssignee.name,
+                                    ),
                             ),
                         )
                 }

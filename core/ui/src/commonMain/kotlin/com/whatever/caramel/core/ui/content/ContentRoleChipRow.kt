@@ -18,23 +18,23 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import caramel.core.designsystem.generated.resources.Res
-import caramel.core.designsystem.generated.resources.both
-import caramel.core.designsystem.generated.resources.my
+import caramel.core.designsystem.generated.resources.me
 import caramel.core.designsystem.generated.resources.partner
+import caramel.core.designsystem.generated.resources.us
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import org.jetbrains.compose.resources.stringResource
 
-enum class ContentRoleType {
-    MY,
+enum class ContentAssigneeUiModel {
+    ME,
     PARTNER,
-    BOTH,
+    US,
 }
 
 @Composable
-fun ContentRoleChipRow(
+fun ContentAssigneeChipRow(
     modifier: Modifier = Modifier,
-    selectedRoleChip: ContentRoleType,
-    onRoleChipClick: (ContentRoleType) -> Unit,
+    selectedAssigneeChip: ContentAssigneeUiModel,
+    onAssigneeChipClick: (ContentAssigneeUiModel) -> Unit,
 ) {
     Row(
         modifier = modifier,
@@ -43,25 +43,25 @@ fun ContentRoleChipRow(
                 space = CaramelTheme.spacing.s,
             ),
     ) {
-        ContentRoleType.entries.forEach { contentRole ->
+        ContentAssigneeUiModel.entries.forEach { contentAssignee ->
             val chipText =
-                when (contentRole) {
-                    ContentRoleType.MY -> stringResource(resource = Res.string.my)
-                    ContentRoleType.PARTNER -> stringResource(resource = Res.string.partner)
-                    ContentRoleType.BOTH -> stringResource(resource = Res.string.both)
+                when (contentAssignee) {
+                    ContentAssigneeUiModel.ME -> stringResource(resource = Res.string.me)
+                    ContentAssigneeUiModel.PARTNER -> stringResource(resource = Res.string.partner)
+                    ContentAssigneeUiModel.US -> stringResource(resource = Res.string.us)
                 }
 
-            ContentRoleChip(
+            ContentAssigneeChip(
                 text = chipText,
-                selected = selectedRoleChip == contentRole,
-                onClick = { onRoleChipClick(contentRole) },
+                selected = selectedAssigneeChip == contentAssignee,
+                onClick = { onAssigneeChipClick(contentAssignee) },
             )
         }
     }
 }
 
 @Composable
-private fun ContentRoleChip(
+private fun ContentAssigneeChip(
     modifier: Modifier = Modifier,
     text: String,
     selected: Boolean,

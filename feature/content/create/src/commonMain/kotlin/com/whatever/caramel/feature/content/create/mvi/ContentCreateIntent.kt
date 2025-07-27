@@ -1,7 +1,7 @@
 package com.whatever.caramel.feature.content.create.mvi
 
 import com.whatever.caramel.core.domain.entity.Tag
-import com.whatever.caramel.core.ui.content.ContentRoleType
+import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.viewmodel.UiIntent
 
@@ -18,8 +18,8 @@ sealed interface ContentCreateIntent : UiIntent {
         val text: String,
     ) : ContentCreateIntent
 
-    data class ClickRole(
-        val roleType: ContentRoleType,
+    data class ClickAssignee(
+        val assignee: ContentAssigneeUiModel,
     ) : ContentCreateIntent
 
     data class ClickTag(

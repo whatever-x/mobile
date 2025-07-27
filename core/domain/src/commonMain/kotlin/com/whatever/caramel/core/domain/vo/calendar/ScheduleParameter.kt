@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.domain.vo.calendar
 
-import com.whatever.caramel.core.domain.vo.content.ContentRole
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 
 data class ScheduleParameter(
     val title: String?,
@@ -11,5 +11,5 @@ data class ScheduleParameter(
     val endDateTime: String?,
     val endTimeZone: String?,
     val tagIds: List<Long>?,
-    val contentRole: ContentRole,
+    val contentAssignee: ContentAssignee,
 )
