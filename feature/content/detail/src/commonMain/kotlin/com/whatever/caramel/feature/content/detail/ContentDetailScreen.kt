@@ -29,7 +29,7 @@ import caramel.feature.content.detail.generated.resources.schedule
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.domain.vo.content.ContentRole
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.ui.content.TitleTextField
 import com.whatever.caramel.feature.content.detail.components.TextWithUrlPreview
@@ -58,7 +58,6 @@ internal fun ContentDetailScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = 50.dp)
             .background(color = CaramelTheme.color.background.primary)
     ) {
         CaramelTopBar(
@@ -114,7 +113,6 @@ internal fun ContentDetailScreen(
                 color = roleTextColor,
                 style = CaramelTheme.typography.body2.bold
             )
-
             TitleTextField(
                 modifier =
                     Modifier.padding(top = CaramelTheme.spacing.m),
@@ -123,77 +121,78 @@ internal fun ContentDetailScreen(
                 onKeyboardAction = {},
                 readOnly = true,
             )
-            if (state.scheduleDetail != null) {
-                HorizontalDivider(
-                    modifier = Modifier.padding(top = CaramelTheme.spacing.l),
-                    color = CaramelTheme.color.divider.primary
-                )
-                Row(
-                    modifier = Modifier
-                        .padding(vertical = CaramelTheme.spacing.l)
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(
-                        space = CaramelTheme.spacing.s,
-                        alignment = Alignment.Start
-                    )
-                ) {
-                    Icon(
-                        painter = painterResource(resource = Resources.Icon.ic_calendar_18),
-                        tint = CaramelTheme.color.icon.primary,
-                        contentDescription = null,
-                    )
 
-                    Text(
-                        text = state.date,
-                        style = CaramelTheme.typography.body2.regular,
-                        color = CaramelTheme.color.text.primary,
-                    )
-                    Text(
-                        text = state.time,
-                        style = CaramelTheme.typography.body2.regular,
-                        color = CaramelTheme.color.text.primary,
+            Column(
+                modifier = Modifier.padding(top = CaramelTheme.spacing.l),
+                verticalArrangement = Arrangement.spacedBy(
+                    space = CaramelTheme.spacing.l,
+                    alignment = Alignment.Top
+                ),
+            ) {
+                if (state.scheduleDetail != null) {
+                    HorizontalDivider(color = CaramelTheme.color.divider.primary)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(
+                            space = CaramelTheme.spacing.s,
+                            alignment = Alignment.Start
+                        )
+                    ) {
+                        Icon(
+                            painter = painterResource(resource = Resources.Icon.ic_calendar_18),
+                            tint = CaramelTheme.color.icon.primary,
+                            contentDescription = null,
+                        )
+                        Text(
+                            text = state.date,
+                            style = CaramelTheme.typography.body2.regular,
+                            color = CaramelTheme.color.text.primary,
+                        )
+                        Text(
+                            text = state.time,
+                            style = CaramelTheme.typography.body2.regular,
+                            color = CaramelTheme.color.text.primary,
+                        )
+                    }
+                }
+                if (state.tags.isNotEmpty()) {
+                    HorizontalDivider(color = CaramelTheme.color.divider.primary)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(
+                            space = CaramelTheme.spacing.s,
+                            alignment = Alignment.Start
+                        )
+                    ) {
+                        Icon(
+                            painter = painterResource(resource = Resources.Icon.ic_tag_18),
+                            tint = CaramelTheme.color.icon.primary,
+                            contentDescription = null,
+                        )
+                        Text(
+                            text = state.tagString,
+                            style = CaramelTheme.typography.body2.regular,
+                            color = CaramelTheme.color.text.primary,
+                        )
+                    }
+                }
+                if (state.description.isNotEmpty()) {
+                    HorizontalDivider(color = CaramelTheme.color.divider.primary)
+                    TextWithUrlPreview(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 50.dp),
+                        text = state.description,
+                        linkMetaData = state.linkMetaDataList.toList(),
+                        onLinkPreviewClick = {
+                            uriHandler.openUri(it)
+                        },
                     )
                 }
             }
-            if (state.tags.isNotEmpty()) {
-                HorizontalDivider(
-                    modifier = Modifier.padding(top = CaramelTheme.spacing.l),
-                    color = CaramelTheme.color.divider.primary
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = CaramelTheme.spacing.l),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(
-                        space = CaramelTheme.spacing.s,
-                        alignment = Alignment.Start
-                    )
-                ) {
-                    Icon(
-                        painter = painterResource(resource = Resources.Icon.ic_tag_18),
-                        tint = CaramelTheme.color.icon.primary,
-                        contentDescription = null,
-                    )
-                    Text(
-                        text = state.tagString,
-                        style = CaramelTheme.typography.body2.regular,
-                        color = CaramelTheme.color.text.primary,
-                    )
-                }
-            }
-            if(state.description.isNotEmpty()){
-                HorizontalDivider(color = CaramelTheme.color.divider.primary)
-                TextWithUrlPreview(
-                    modifier = Modifier.padding(top = CaramelTheme.spacing.l),
-                    text = state.description,
-                    linkMetaData = state.linkMetaDataList.toList(),
-                    onLinkPreviewClick = {
-                        uriHandler.openUri(it)
-                    },
-                )
-            }
+
         }
     }
 }
