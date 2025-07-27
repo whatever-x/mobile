@@ -20,7 +20,7 @@ fun CalendarDetailResponse.toTodo(): List<Todo> =
             endDate = LocalDateTime.parse(it.endDateTime),
             title = it.title ?: "",
             description = it.description ?: "",
-            assignee = ContentAssignee.valueOf(it.contentAssignee.name)
+            assignee = ContentAssignee.valueOf(it.contentAssignee.name),
         )
     }
 
