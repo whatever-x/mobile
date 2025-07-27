@@ -31,7 +31,7 @@ class CalendarRepositoryImpl(
                 endDateTime = parameter.endDateTime,
                 endTimeZone = parameter.endTimeZone,
                 tagIds = parameter.tagIds,
-                contentAssignee = ContentAssigneeDto.US, // @ham2174 FIXME : 파라미터로 넘겨받도록 수정
+                contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name)
             )
         return safeCall {
             remoteCalendarDataSource.createSchedule(request).toScheduleMetaData()
