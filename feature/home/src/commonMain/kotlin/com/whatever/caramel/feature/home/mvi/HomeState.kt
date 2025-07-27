@@ -1,8 +1,8 @@
 package com.whatever.caramel.feature.home.mvi
 
 import androidx.compose.runtime.Immutable
+import com.whatever.caramel.core.domain.validator.util.codePointCount
 import com.whatever.caramel.core.domain.vo.user.Gender
-import com.whatever.caramel.core.ui.util.codePointCount
 import com.whatever.caramel.core.viewmodel.UiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
