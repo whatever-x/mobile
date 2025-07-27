@@ -14,13 +14,14 @@ import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.ui.util.validateInputText
 import com.whatever.caramel.core.viewmodel.BaseViewModel
-import com.whatever.caramel.feature.home.mvi.BalanceGameOptionState
-import com.whatever.caramel.feature.home.mvi.BalanceGameState
+import com.whatever.caramel.feature.home.mvi.BalanceGameCard
+import com.whatever.caramel.feature.home.mvi.BalanceGameOptionItem
 import com.whatever.caramel.feature.home.mvi.HomeIntent
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect.NavigateToContentDetail
 import com.whatever.caramel.feature.home.mvi.HomeState
-import com.whatever.caramel.feature.home.mvi.TodoState
+import com.whatever.caramel.feature.home.mvi.TodoItem
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.joinAll
 
@@ -52,12 +53,18 @@ class HomeViewModel(
             is HomeIntent.ShowShareMessageEditBottomSheet -> showBottomSheet()
             is HomeIntent.HideShareMessageEditBottomSheet -> hideBottomSheet()
             is HomeIntent.PullToRefresh -> refreshHomeData()
-            is HomeIntent.ClickBalanceGameOptionButton -> submitBalanceGameOption(balanceGameOptionState = intent.option)
-            is HomeIntent.ChangeBalanceGameCardState -> changeBalanceGameCardState()
+            is HomeIntent.ClickBalanceGameOptionButton -> clickBalanceGameOption(balanceGameOptionState = intent.option)
             is HomeIntent.LoadDataOnStart -> loadDataOnStart()
             is HomeIntent.HideDialog -> hideDialog()
             is HomeIntent.ClearShareMessage -> clearShareMessage()
             is HomeIntent.InputShareMessage -> inputShareMessage(text = intent.newShareMessage)
+            is HomeIntent.RotateBalanceGameCard -> rotate()
+        }
+    }
+
+    private fun rotate() {
+        reduce {
+            copy(isBalanceGameCardRotated = true)
         }
     }
 
@@ -225,11 +232,18 @@ class HomeViewModel(
 
         reduce {
             copy(
-                todos =
+                todoList =
                     if (schedules.isNotEmpty()) {
-                        schedules.map { todo -> TodoState(id = todo.id, title = todo.title.ifEmpty { todo.description }) }
+                        schedules
+                            .map { todo ->
+                                TodoItem(
+                                    id = todo.id,
+                                    title = todo.title.ifEmpty { todo.description },
+                                    role = todo.contentAssignee,
+                                )
+                            }.toImmutableList()
                     } else {
-                        emptyList()
+                        persistentListOf()
                     },
             )
         }
@@ -241,62 +255,67 @@ class HomeViewModel(
 
             reduce {
                 copy(
-                    balanceGameState =
-                        BalanceGameState(
+                    balanceGameCard =
+                        BalanceGameCard(
                             id = todayBalanceGame.gameInfo.id,
                             question = todayBalanceGame.gameInfo.question,
                             options =
                                 todayBalanceGame.gameInfo.options
                                     .map {
-                                        BalanceGameOptionState(
+                                        BalanceGameOptionItem(
                                             id = it.optionId,
                                             name = it.text,
                                         )
                                     }.toImmutableList(),
-                        ),
-                    myChoiceOption =
-                        BalanceGameOptionState(
-                            id = todayBalanceGame.myChoice?.optionId ?: 0L,
-                            name = todayBalanceGame.myChoice?.text ?: "",
-                        ),
-                    partnerChoiceOption =
-                        BalanceGameOptionState(
-                            id = todayBalanceGame.partnerChoice?.optionId ?: 0L,
-                            name = todayBalanceGame.partnerChoice?.text ?: "",
+                            myOption =
+                                todayBalanceGame.myChoice?.let {
+                                    BalanceGameOptionItem(
+                                        id = it.optionId,
+                                        name = it.text,
+                                    )
+                                },
+                            partnerOption =
+                                todayBalanceGame.partnerChoice?.let {
+                                    BalanceGameOptionItem(
+                                        id = it.optionId,
+                                        name = it.text,
+                                    )
+                                },
                         ),
                 )
             }
         }
     }
 
-    private fun submitBalanceGameOption(balanceGameOptionState: BalanceGameOptionState) {
+    private fun clickBalanceGameOption(balanceGameOptionState: BalanceGameOptionItem) {
         launch {
             val result =
                 submitBalanceGameChoiceUseCase(
-                    gameId = currentState.balanceGameState.id,
+                    gameId = currentState.balanceGameCard.id,
                     optionId = balanceGameOptionState.id,
                 )
 
             reduce {
                 copy(
-                    myChoiceOption =
-                        BalanceGameOptionState(
-                            id = result.myChoice?.optionId ?: 0L,
-                            name = result.myChoice?.text ?: "",
-                        ),
-                    partnerChoiceOption =
-                        BalanceGameOptionState(
-                            id = result.partnerChoice?.optionId ?: 0L,
-                            name = result.partnerChoice?.text ?: "",
+                    balanceGameCard =
+                        currentState.balanceGameCard.copy(
+                            myOption =
+                                result.myChoice?.let {
+                                    BalanceGameOptionItem(
+                                        id = it.optionId,
+                                        name = it.text,
+                                    )
+                                },
+                            partnerOption =
+                                result.partnerChoice?.let {
+                                    BalanceGameOptionItem(
+                                        id = it.optionId,
+                                        name = it.text,
+                                    )
+                                },
                         ),
                 )
             }
-        }
-    }
-
-    private fun changeBalanceGameCardState() {
-        reduce {
-            copy(balanceGameCardState = HomeState.BalanceGameCardState.CONFIRM)
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.whatever.caramel.core.domain.entity
 
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import kotlinx.datetime.LocalDateTime
 
 data class Todo(
@@ -8,6 +9,7 @@ data class Todo(
     val endDate: LocalDateTime,
     val title: String,
     val description: String,
+    val contentAssignee: ContentAssignee,
 ) {
     val url: String?
         get() {

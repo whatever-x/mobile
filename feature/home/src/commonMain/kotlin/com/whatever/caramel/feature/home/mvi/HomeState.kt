@@ -1,6 +1,6 @@
 package com.whatever.caramel.feature.home.mvi
 
-import androidx.compose.runtime.Immutable
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.ui.util.codePointCount
 import com.whatever.caramel.core.viewmodel.UiState
@@ -14,14 +14,12 @@ data class HomeState(
     val partnerGender: Gender = Gender.IDLE,
     val daysTogether: Int = 0,
     val shareMessage: String = "",
-    val todos: List<TodoState> = emptyList(),
+    val todoList: ImmutableList<TodoItem> = persistentListOf(),
     val bottomSheetShareMessage: String = "",
     val isShowBottomSheet: Boolean = false,
     val isLoading: Boolean = false,
-    val balanceGameState: BalanceGameState = BalanceGameState(),
-    val balanceGameCardState: BalanceGameCardState = BalanceGameCardState.IDLE,
-    val myChoiceOption: BalanceGameOptionState = BalanceGameOptionState(),
-    val partnerChoiceOption: BalanceGameOptionState = BalanceGameOptionState(),
+    val balanceGameCard: BalanceGameCard = BalanceGameCard.initState(),
+    val isBalanceGameCardRotated: Boolean = false,
     val isShowDialog: Boolean = false,
     val dialogTitle: String = "",
     val coupleState: CoupleState = CoupleState.IDLE,
@@ -31,29 +29,6 @@ data class HomeState(
 
     val bottomSheetShareMessageLength: Int
         get() = bottomSheetShareMessage.codePointCount()
-
-    val balanceGameAnswerState: BalanceGameAnswerState
-        get() =
-            if (myChoiceOption.notSelected) { // 내가 대답하지 않은 상태
-                BalanceGameAnswerState.IDLE
-            } else {
-                if (partnerChoiceOption.notSelected) { // 내가 대답하고 / 상대가 대답하지 않은 상태
-                    BalanceGameAnswerState.WAITING
-                } else {
-                    BalanceGameAnswerState.CHECK_RESULT // 내가 대답하고 / 상대도 대답한 상태
-                }
-            }
-
-    enum class BalanceGameAnswerState {
-        IDLE,
-        WAITING,
-        CHECK_RESULT,
-    }
-
-    enum class BalanceGameCardState {
-        IDLE,
-        CONFIRM,
-    }
 
     enum class CoupleState {
         IDLE,
@@ -66,22 +41,46 @@ data class HomeState(
     }
 }
 
-@Immutable
-data class TodoState(
+data class TodoItem(
     val id: Long,
     val title: String,
+    val role: ContentAssignee,
 )
 
-data class BalanceGameState(
-    val id: Long = 0L,
-    val question: String = "",
-    val options: ImmutableList<BalanceGameOptionState> = persistentListOf(),
-)
-
-data class BalanceGameOptionState(
-    val id: Long = 0L,
-    val name: String = "",
+data class BalanceGameCard(
+    val id: Long, // 게임 ID
+    val question: String, // 질문
+    val options: ImmutableList<BalanceGameOptionItem>, // 옵션들
+    val myOption: BalanceGameOptionItem?, // 내가 선택한 옵션
+    val partnerOption: BalanceGameOptionItem?, // 상대가 선택한 옵션
 ) {
-    val notSelected: Boolean
-        get() = id == 0L && name.isEmpty()
+    val gameResult: GameResult
+        get() =
+            when {
+                myOption == null -> GameResult.IDLE
+                partnerOption == null -> GameResult.WAITING
+                else -> GameResult.CHECK_RESULT
+            }
+
+    enum class GameResult {
+        IDLE, // 내 선택 대기중
+        WAITING, // 내 선택 완료, 상대 선택 대기중
+        CHECK_RESULT, // 내 선택 완료, 상대 선택 완료
+    }
+
+    companion object {
+        fun initState(): BalanceGameCard =
+            BalanceGameCard(
+                id = 0L,
+                question = "",
+                options = persistentListOf(),
+                myOption = null,
+                partnerOption = null,
+            )
+    }
 }
+
+data class BalanceGameOptionItem(
+    val id: Long,
+    val name: String,
+)
