@@ -1,7 +1,7 @@
 package com.whatever.caramel.feature.home
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.whatever.caramel.core.domain.vo.content.ContentRole
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.feature.home.mvi.HomeState
 import com.whatever.caramel.feature.home.mvi.TodoItem
 import kotlinx.collections.immutable.persistentListOf
@@ -47,7 +47,7 @@ internal class HomeScreenPreviewData : PreviewParameterProvider<HomeState> {
                         TodoItem(
                             id = 1,
                             title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?",
-                            role = ContentRole.MY,
+                            role = ContentAssignee.ME,
                         ),
                     ).toImmutableList(),
                 isShowBottomSheet = false,
@@ -62,7 +62,7 @@ internal class HomeScreenPreviewData : PreviewParameterProvider<HomeState> {
                             TodoItem(
                                 id = it.toLong(),
                                 title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?",
-                                role = ContentRole.BOTH,
+                                role = ContentAssignee.US,
                             )
                         }.toImmutableList(),
                 isShowBottomSheet = false,
@@ -77,7 +77,7 @@ internal class HomeScreenPreviewData : PreviewParameterProvider<HomeState> {
                             TodoItem(
                                 id = it.toLong(),
                                 title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?",
-                                role = ContentRole.PARTNER,
+                                role = ContentAssignee.PARTNER,
                             )
                         }.toImmutableList(),
                 isShowBottomSheet = false,

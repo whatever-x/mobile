@@ -1,6 +1,6 @@
 package com.whatever.caramel.feature.home.mvi
 
-import com.whatever.caramel.core.domain.vo.content.ContentRole
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.ui.util.codePointCount
 import com.whatever.caramel.core.viewmodel.UiState
@@ -44,7 +44,7 @@ data class HomeState(
 data class TodoItem(
     val id: Long,
     val title: String,
-    val role: ContentRole,
+    val role: ContentAssignee,
 )
 
 data class BalanceGameCard(

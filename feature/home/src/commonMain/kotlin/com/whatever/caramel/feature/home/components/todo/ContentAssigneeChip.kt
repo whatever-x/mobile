@@ -7,31 +7,28 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import caramel.feature.home.generated.resources.Res
-import caramel.feature.home.generated.resources.both
-import caramel.feature.home.generated.resources.my
+import caramel.feature.home.generated.resources.me
 import caramel.feature.home.generated.resources.partner
+import caramel.feature.home.generated.resources.us
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.domain.vo.content.ContentRole
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-internal fun ContentRoleChip(role: ContentRole) {
+internal fun ContentAssigneeChip(assignee: ContentAssignee) {
     val chipBackgroundColor =
-        when (role) {
-            ContentRole.NONE -> Color.Unspecified
-            ContentRole.MY -> CaramelTheme.color.fill.labelAccent1
-            ContentRole.PARTNER -> CaramelTheme.color.fill.secondary
-            ContentRole.BOTH -> CaramelTheme.color.fill.brand
+        when (assignee) {
+            ContentAssignee.ME -> CaramelTheme.color.fill.labelAccent1
+            ContentAssignee.PARTNER -> CaramelTheme.color.fill.secondary
+            ContentAssignee.US -> CaramelTheme.color.fill.brand
         }
     val chipText =
-        when (role) {
-            ContentRole.NONE -> ""
-            ContentRole.MY -> stringResource(resource = Res.string.my)
-            ContentRole.PARTNER -> stringResource(resource = Res.string.partner)
-            ContentRole.BOTH -> stringResource(resource = Res.string.both)
+        when (assignee) {
+            ContentAssignee.ME -> stringResource(resource = Res.string.me)
+            ContentAssignee.PARTNER -> stringResource(resource = Res.string.partner)
+            ContentAssignee.US -> stringResource(resource = Res.string.us)
         }
 
     Box(
