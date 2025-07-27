@@ -3,7 +3,6 @@ package com.whatever.caramel.feature.memo.component
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.whatever.caramel.core.domain.entity.Memo
 import com.whatever.caramel.core.domain.entity.Tag
-import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.feature.memo.mvi.MemoState
 import com.whatever.caramel.feature.memo.mvi.TagUiModel
@@ -49,7 +48,6 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
                     isCompleted = false,
                     tagList = createTempTagList(index),
                     createdAt = DateUtil.today(),
-                    role = ContentAssignee.US,
                 ),
             )
         }
