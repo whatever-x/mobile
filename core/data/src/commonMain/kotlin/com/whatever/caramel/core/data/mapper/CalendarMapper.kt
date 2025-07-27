@@ -4,6 +4,7 @@ import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleDetail
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleMetadata
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.remote.dto.calendar.CalendarDetailResponse
 import com.whatever.caramel.core.remote.dto.calendar.HolidayDetailListResponse
 import com.whatever.caramel.core.remote.dto.calendar.response.CreateScheduleResponse
@@ -48,8 +49,9 @@ internal fun GetScheduleResponse.toScheduleDetailVO(): ScheduleDetail =
             endDateTimezone = endDateTimezone,
             isCompleted = isCompleted,
             parentScheduleId = parentScheduleId,
-            title = title,
-            description = description,
+            title = title ?: "",
+            description = description ?: "",
             tags = tags.map { it.toTag() },
+            contentAssignee = ContentAssignee.US, // FIXME : API 연동 후 수정 예정
         )
     }
