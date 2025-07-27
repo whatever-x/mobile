@@ -11,6 +11,7 @@ import com.whatever.caramel.core.domain.vo.memo.MemoMetadata
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.domain.vo.memo.MemoWithCursor
 import com.whatever.caramel.core.remote.datasource.RemoteMemoDataSource
+import com.whatever.caramel.core.remote.dto.memo.ContentAssigneeDto
 import com.whatever.caramel.core.remote.dto.memo.request.CreateMemoRequest
 import com.whatever.caramel.core.remote.dto.memo.request.DateTimeInfoRequest
 import com.whatever.caramel.core.remote.dto.memo.request.UpdateMemoRequest
@@ -26,6 +27,7 @@ class MemoRepositoryImpl(
                 description = parameter.description,
                 isCompleted = parameter.isCompleted,
                 tags = parameter.tags?.map { TagRequest(it) },
+                contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name)
             )
         return safeCall {
             remoteMemoDataSource.createMemo(request).toMemoMetaData()
@@ -51,6 +53,7 @@ class MemoRepositoryImpl(
                             endTimezone = endTimezone,
                         )
                     },
+                contentAssignee = ContentAssigneeDto.US, // @ham2174 FIXME : 파라미터로 넘겨받도록 수정
             )
         safeCall {
             remoteMemoDataSource.updateMemo(memoId, request)

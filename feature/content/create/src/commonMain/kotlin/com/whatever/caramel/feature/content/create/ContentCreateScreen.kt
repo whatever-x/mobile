@@ -38,7 +38,7 @@ import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.entity.Tag
-import com.whatever.caramel.core.ui.content.ContentRoleChipRow
+import com.whatever.caramel.core.ui.content.ContentAssigneeChipRow
 import com.whatever.caramel.core.ui.content.ContentTextArea
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.ui.content.CreateModeSwitch
@@ -133,14 +133,14 @@ internal fun ContentScreen(
                     Column(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        ContentRoleChipRow(
+                        ContentAssigneeChipRow(
                             modifier =
                                 Modifier
                                     .fillMaxWidth()
                                     .padding(horizontal = CaramelTheme.spacing.xl),
-                            selectedRoleChip = state.selectedRole,
-                            onRoleChipClick = { roleType ->
-                                onIntent(ContentCreateIntent.ClickRole(roleType = roleType))
+                            selectedAssigneeChip = state.selectedAssignee,
+                            onAssigneeChipClick = { assignee ->
+                                onIntent(ContentCreateIntent.ClickAssignee(assignee = assignee))
                             },
                         )
 
