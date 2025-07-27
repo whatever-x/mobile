@@ -48,6 +48,7 @@ import caramel.core.designsystem.generated.resources.ic_progress_dot_active_18
 import caramel.core.designsystem.generated.resources.ic_progress_dot_inactive_18
 import caramel.core.designsystem.generated.resources.ic_send_24
 import caramel.core.designsystem.generated.resources.ic_setting_24
+import caramel.core.designsystem.generated.resources.ic_tag_18
 import caramel.core.designsystem.generated.resources.ic_trash_24
 import caramel.core.designsystem.generated.resources.ic_uncheck_box_20
 import caramel.core.designsystem.generated.resources.ic_vertex_17_9
@@ -121,6 +122,7 @@ object Resources {
         val ic_alert_24 = Res.drawable.ic_alert_24
         val ic_alert_32 = Res.drawable.ic_alert_32
         val ic_calendar_18 = Res.drawable.ic_calendar_18
+        val ic_tag_18 = Res.drawable.ic_tag_18
     }
 
     object Image {
