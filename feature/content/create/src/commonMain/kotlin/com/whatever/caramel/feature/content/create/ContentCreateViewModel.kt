@@ -7,12 +7,12 @@ import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
+import com.whatever.caramel.core.domain.validator.ContentValidator
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
 import com.whatever.caramel.core.domain.vo.content.ContentParameterType
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.ui.content.CreateMode
-import com.whatever.caramel.core.ui.util.validateInputText
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.util.TimeUtil.roundToNearest5Minutes
 import com.whatever.caramel.core.util.copy
@@ -130,43 +130,19 @@ class ContentCreateViewModel(
     }
 
     private fun inputTitle(intent: ContentCreateIntent.InputTitle) {
-        validateInputText(
-            text = intent.text,
-            limitLength = ContentCreateState.MAX_TITLE_LENGTH,
-            onPass = { text ->
-                reduce {
-                    copy(
-                        title = text,
-                    )
-                }
-            },
-            onContainsNewline = {
-                postSideEffect(ContentCreateSideEffect.ShowToast("줄바꿈을 포함할수 없어요"))
-            },
-            onExceedLimit = {
-                postSideEffect(ContentCreateSideEffect.ShowToast("제목은 ${ContentCreateState.MAX_TITLE_LENGTH}자까지 입력할 수 있어요"))
-            },
-        )
+        val validatedTitle = ContentValidator.checkInputTitleValidate(input = intent.text).getOrThrow()
+
+        reduce {
+            copy(title = validatedTitle)
+        }
     }
 
     private fun inputContent(intent: ContentCreateIntent.InputContent) {
-        validateInputText(
-            text = intent.text,
-            limitLength = ContentCreateState.MAX_CONTENT_LENGTH,
-            onPass = { text ->
-                reduce {
-                    copy(
-                        content = text,
-                    )
-                }
-            },
-            onContainsNewline = {
-                postSideEffect(ContentCreateSideEffect.ShowToast("줄바꿈을 포함할수 없어요"))
-            },
-            onExceedLimit = {
-                postSideEffect(ContentCreateSideEffect.ShowToast("내용은 ${ContentCreateState.MAX_CONTENT_LENGTH}자까지 입력할 수 있어요"))
-            },
-        )
+        val validatedBody = ContentValidator.checkInputBodyValidate(input = intent.text).getOrThrow()
+
+        reduce {
+            copy(content = validatedBody)
+        }
     }
 
     private fun toggleTagSelection(intent: ContentCreateIntent.ClickTag) {

@@ -32,9 +32,4 @@ data class ContentCreateState(
         get() = "${dateTime.hour.toString().padStart(2, '0')}:${
             dateTime.minute.toString().padStart(2, '0')
         }"
-
-    companion object {
-        const val MAX_TITLE_LENGTH = 30
-        const val MAX_CONTENT_LENGTH = 5000
-    }
 }
