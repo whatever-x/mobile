@@ -14,5 +14,5 @@ data class ScheduleDetail(
     val title: String,
     val description: String,
     val tags: List<Tag>,
-    val role: ContentAssignee,
+    val contentAssignee: ContentAssignee,
 )

@@ -56,7 +56,7 @@ data class ContentDetailState(
         get() =
             when (contentType) {
                 ContentType.MEMO -> memoDetail?.role ?: ContentAssignee.US
-                ContentType.CALENDAR -> scheduleDetail?.role ?: ContentAssignee.US
+                ContentType.CALENDAR -> scheduleDetail?.contentAssignee ?: ContentAssignee.US
             }
 
     val time: String

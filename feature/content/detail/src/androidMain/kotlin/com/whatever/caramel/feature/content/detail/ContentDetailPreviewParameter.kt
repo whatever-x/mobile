@@ -25,7 +25,7 @@ class ContentDetailPreviewParameter : PreviewParameterProvider<ContentDetailStat
                             title = "제목1",
                             description = "내용1",
                             tags = listOf(Tag(id = 1, label = "tag1")),
-                            role = ContentAssignee.US,
+                            contentAssignee = ContentAssignee.US,
                         ),
                 ),
             )
