@@ -127,7 +127,7 @@ internal fun MemoScreen(
                     state = lazyRowState,
                 ) {
                     itemsIndexed(state.tags, key = { index, tag ->
-                        "${index}-${tag.id}"
+                        "$index-${tag.id}"
                     }) { index, tag ->
                         TagChip(
                             modifier =
@@ -142,8 +142,8 @@ internal fun MemoScreen(
                                 onIntent(
                                     MemoIntent.ClickTagChip(
                                         tag = it,
-                                        index = index
-                                    )
+                                        index = index,
+                                    ),
                                 )
                             },
                         )
@@ -178,7 +178,7 @@ internal fun MemoScreen(
                                 categoriesText = memo.tagListText,
                                 createdDateText = memo.createdAt,
                                 onClickMemoItem = { onIntent(MemoIntent.ClickMemo(memoId = it)) },
-                                role = memo.role,
+                                assignee = memo.assignee,
                             )
                             if (index < state.memos.lastIndex) {
                                 HorizontalDivider(
@@ -209,11 +209,11 @@ internal fun LazyListState.onLastReached(
                 val lastVisibleItemIndex =
                     (layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
                 totalItemsCount > 0 &&
-                        lastVisibleItemIndex >=
-                        max(
-                            a = (totalItemsCount - numberOfItemsBeforeEnd),
-                            b = 0,
-                        )
+                    lastVisibleItemIndex >=
+                    max(
+                        a = (totalItemsCount - numberOfItemsBeforeEnd),
+                        b = 0,
+                    )
             }
         }
 

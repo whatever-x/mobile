@@ -3,7 +3,7 @@ package com.whatever.caramel.feature.memo.model
 import androidx.compose.runtime.Immutable
 import com.whatever.caramel.core.domain.entity.Memo
 import com.whatever.caramel.core.domain.entity.Tag
-import com.whatever.caramel.core.domain.vo.content.ContentRole
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.util.DateFormatter.formatWithSeparator
 
 @Immutable
@@ -14,7 +14,7 @@ data class MemoUiModel(
     val isCompleted: Boolean,
     val tagListText: String,
     val createdAt: String,
-    val role: ContentRole,
+    val assignee: ContentAssignee,
 )
 
 fun Memo.toUiModel() =
@@ -25,7 +25,7 @@ fun Memo.toUiModel() =
         isCompleted = this.isCompleted,
         tagListText = this.tagList.joinToString(separator = ",") { it.label },
         createdAt = this.createdAt.formatWithSeparator(separator = "."),
-        role = this.role,
+        assignee = this.contentAssignee,
     )
 
 @Immutable
