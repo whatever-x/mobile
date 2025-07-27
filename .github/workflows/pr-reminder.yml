@@ -2,113 +2,118 @@ name: Pull Request Reminder
 
 on:
   schedule:
-    - cron: '0 1 * * *'
+    - cron: '0 23 * * *'
   workflow_dispatch:
 
 jobs:
   remind-review:
     runs-on: ubuntu-latest
-
+    env:
+      GH_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
     steps:
-      - name: Check out
-        uses: actions/checkout@v3
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-      - name: Build Slack Payload Block
-        id: build_payload
-        env:
-          GH_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}
+      - name: Install dependencies
         run: |
-          REPO="${{ github.repository }}"
-          PRS=$(gh pr list --state open --json number,title,url,author,reviewRequests,reviews --repo "$REPO")
-          echo "$PRS" > prs.json
+          sudo apt-get update
+          sudo apt-get install -y jq gh
 
-          OPTIONS=""
-          INITIAL_OPTIONS=""
+      - name: Get Open PRs
+        run: |
+          gh pr list \
+            --state open \
+            --json number,title,url,author,reviewRequests \
+            > prs.json
 
-          for row in $(jq -c '.[]' prs.json); do
-            PR_NUM=$(echo "$row" | jq -r '.number')
-            TITLE=$(echo "$row" | jq -r '.title')
-            URL=$(echo "$row" | jq -r '.url')
-            AUTHOR=$(echo "$row" | jq -r '.author.login')
-            REVIEWERS=$(echo "$row" | jq -r '[.reviewRequests[].login] | join(", ")')
-            REVIEWS=$(echo "$row" | jq -r '[.reviews[].state] | join(",")')
+      - name: Build Slack Payload
+        run: |
+          echo "🔧 PR JSON 수집 완료. Slack 메시지 생성 시작..."
 
-            AUTHOR_LINK="https://github.com/$AUTHOR"
-            REVIEWER_LINKS=$(echo "$REVIEWERS" | awk -F, '{for(i=1;i<=NF;i++) printf "@<https://github.com/%s|%s> ", $i, $i}')
+          HEADER_BLOCK=$(jq -nc '{
+            type: "header",
+            text: {
+              type: "plain_text",
+              text: "⏰ 데일리 PR 리뷰 알림",
+              emoji: true
+            }
+          }')
 
-            if echo "$REVIEWS" | grep -q "APPROVED"; then
-              TEXT="~<$URL|$TITLE #$PR_NUM>~"
-            else
-              TEXT="<$URL|$TITLE #$PR_NUM>"
+          BLOCKS="[$HEADER_BLOCK"
+          COUNT=0
+
+          PR_COUNT=$(jq length prs.json)
+          for i in $(seq 0 $((PR_COUNT - 1))); do
+            PR=$(jq ".[$i]" prs.json)
+            TITLE=$(echo "$PR" | jq -r '.title')
+            NUMBER=$(echo "$PR" | jq -r '.number')
+            URL=$(echo "$PR" | jq -r '.url')
+            AUTHOR=$(echo "$PR" | jq -r '.author.login')
+            REVIEWERS=$(echo "$PR" | jq -r '[.reviewRequests[].login] | join(", ")')
+
+            if [ -z "$REVIEWERS" ]; then
+              continue
             fi
-            DESCRIPTION="- 리뷰어 : $REVIEWER_LINKS
-            - 담당자 : @<${AUTHOR_LINK}|${AUTHOR}>"
-  
-            ITEM=$(cat <<-EOF
-            - text:
-                type: "mrkdwn"
-                text: "$TEXT"
-              description:
-                type: "mrkdwn"
-                text: "$DESCRIPTION"
-              value: "pr-${PR_NUM}"
-          EOF
-          )
-          
-            OPTIONS="${OPTIONS}${ITEM}"$'\n'
-          
-            if echo "$REVIEWS" | grep -q "APPROVED"; then
-              INITIAL_OPTIONS="${INITIAL_OPTIONS}${ITEM}"$'\n'
-            fi
+
+            SECTION=$(jq -nc --arg title "$TITLE" --arg number "$NUMBER" --arg url "$URL" '{
+              type: "section",
+              text: {
+                type: "mrkdwn",
+                text: "\($title) #\($number)"
+              },
+              accessory: {
+                type: "button",
+                text: {
+                  type: "plain_text",
+                  text: "PR 바로가기",
+                  emoji: true
+                },
+                value: "pr-\($number)",
+                url: $url,
+                action_id: "button-action"
+              }
+            }')
+
+            CONTEXT=$(jq -nc --arg reviewers "$REVIEWERS" --arg author "$AUTHOR" '{
+              type: "context",
+              elements: [
+                {
+                  type: "mrkdwn",
+                  text: "- 리뷰어: \($reviewers | split(", ") | map("<https://github.com/\(.)|@\(.)>") | join(", "))\n- 담당자: <https://github.com/\($author)|@\($author)>"
+                }
+              ]
+            }')
+
+            DIVIDER='{"type":"divider"}'
+
+            BLOCKS="$BLOCKS, $SECTION, $CONTEXT, $DIVIDER"
+            COUNT=$((COUNT + 1))
           done
-          
-          echo "options<<EOF" >> $GITHUB_OUTPUT
-          echo -e "$OPTIONS" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-          
-          echo "initial_options<<EOF" >> $GITHUB_OUTPUT
-          echo -e "$INITIAL_OPTIONS" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-          
-          if [ -z "$OPTIONS" ]; then
-            echo "no_prs=true" >> $GITHUB_OUTPUT
+
+          if [ "$COUNT" -eq 0 ]; then
+            BLOCKS="$BLOCKS, {\"type\": \"section\", \"text\": {\"type\": \"mrkdwn\", \"text\": \"오늘은 리뷰 요청된 PR이 없습니다! 🎉\"}}"
           else
-            echo "no_prs=false" >> $GITHUB_OUTPUT
+            BLOCKS=$(echo "$BLOCKS" | sed 's/,\s*{"type":"divider"}$//')
           fi
 
-      - name: Send Slack Notification
-        if: steps.build_payload.outputs.no_prs == 'false'
-        uses: slackapi/slack-github-action@v2.1.1
-        with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
-          webhook-type: incoming-webhook
-          payload: |
-            blocks:
-              - type: "header"
-                text:
-                  type: "plain_text"
-                  text: "⏰ 데일리 PR 리뷰 알림"
-                  emoji: true
-              - type: "actions"
-                elements:
-                  - type: "checkboxes"
-                    options: ${{ steps.build_payload.outputs.options }}
-                    initial_options: ${{ steps.build_payload.outputs.initial_options }}
+          BLOCKS="$BLOCKS]"
 
-      - name: Send Slack Notification (no PRs)
-        if: steps.build_payload.outputs.no_prs == 'true'
-        uses: slackapi/slack-github-action@v2.1.1
-        with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
-          webhook-type: incoming-webhook
-          payload: |
-            blocks:
-              - type: "header"
-                text:
-                  type: "plain_text"
-                  text: "⏰ 데일리 PR 리뷰 알림"
-                  emoji: true
-              - type: "section"
-                text:
-                  type: "mrkdwn"
-                  text: "현재 오픈된 PR이 없습니다! 👏"
+          echo "{\"blocks\": $BLOCKS}" > slack_payload.json
+
+          echo "🧪 생성된 Slack Payload 내용:"
+          cat slack_payload.json
+
+      - name: Send Slack Notification
+        run: |
+          echo "🚀 Slack 알림 전송 시작..."
+          HTTP_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST -H 'Content-type: application/json' \
+            --data "@slack_payload.json" \
+            ${{ secrets.SLACK_WEBHOOK_URL }})
+
+          if [ "$HTTP_RESPONSE" -eq 200 ]; then
+            echo "✅ Slack 알림 전송 성공 (HTTP $HTTP_RESPONSE)"
+          else
+            echo "❌ Slack 알림 전송 실패 (HTTP $HTTP_RESPONSE)"
+            exit 1
+          fi

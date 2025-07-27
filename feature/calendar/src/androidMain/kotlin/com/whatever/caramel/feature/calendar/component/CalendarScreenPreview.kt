@@ -1,6 +1,5 @@
 package com.whatever.caramel.feature.calendar.component
 
-import android.R.attr.description
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -35,7 +34,7 @@ private fun CalendarBottomSheetPreview(
             title = state.title,
             description = state.description,
             url = state.url,
-            role = state.role,
+            assignee = state.assignee,
             onClickTodo = state.onClickTodo,
             onClickUrl = state.onClickUrl,
         ) {

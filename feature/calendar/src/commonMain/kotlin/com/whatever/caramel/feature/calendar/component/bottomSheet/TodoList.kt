@@ -25,7 +25,7 @@ import caramel.feature.calendar.generated.resources.my_schedule
 import caramel.feature.calendar.generated.resources.partner_schedule
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.domain.vo.content.ContentRole
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -35,7 +35,7 @@ internal interface CaramelBottomTodoScope {
     val title: String
     val description: String
     val url: String?
-    val role: ContentRole
+    val assignee: ContentAssignee
     val onClickUrl: (String?) -> Unit
     val onClickTodo: (Long) -> Unit
 }
@@ -45,7 +45,7 @@ internal class CaramelDefaultBottomTodoScope(
     override val title: String,
     override val description: String,
     override val url: String?,
-    override val role: ContentRole,
+    override val assignee: ContentAssignee,
     override val onClickUrl: (String?) -> Unit,
     override val onClickTodo: (Long) -> Unit,
 ) : CaramelBottomTodoScope
@@ -56,7 +56,7 @@ internal fun BottomSheetTodoItem(
     title: String,
     description: String,
     url: String? = null,
-    role: ContentRole,
+    assignee: ContentAssignee,
     onClickTodo: (Long) -> Unit = {},
     onClickUrl: (String?) -> Unit = {},
     content: @Composable CaramelBottomTodoScope.() -> Unit,
@@ -77,7 +77,7 @@ internal fun BottomSheetTodoItem(
                 url = url,
                 onClickTodo = onClickTodo,
                 onClickUrl = onClickUrl,
-                role = role,
+                assignee = assignee,
             )
         }
     scope.content()
@@ -113,10 +113,10 @@ internal fun CaramelBottomTodoScope.DefaultBottomSheetTodoItem(modifier: Modifie
 @Composable
 internal fun CaramelBottomTodoScope.TodoRole(modifier: Modifier = Modifier) {
     val (roleText, roleTextColor) =
-        when (this.role) {
-            ContentRole.MY -> Res.string.my_schedule to CaramelTheme.color.text.labelAccent4
-            ContentRole.PARTNER -> Res.string.partner_schedule to CaramelTheme.color.text.primary
-            ContentRole.NONE, ContentRole.BOTH -> Res.string.both_schedule to CaramelTheme.color.text.brand
+        when (this.assignee) {
+            ContentAssignee.ME -> Res.string.my_schedule to CaramelTheme.color.text.labelAccent4
+            ContentAssignee.PARTNER -> Res.string.partner_schedule to CaramelTheme.color.text.primary
+            ContentAssignee.US -> Res.string.both_schedule to CaramelTheme.color.text.brand
         }
 
     Text(

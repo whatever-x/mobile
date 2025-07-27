@@ -225,7 +225,7 @@ internal fun CalendarScreen(
                                     title = todo.title,
                                     description = todo.description,
                                     url = todo.url,
-                                    role = todo.contentRole,
+                                    assignee = todo.assignee,
                                     onClickUrl = { onIntent(CalendarIntent.ClickTodoUrl(it)) },
                                     onClickTodo = {
                                         onIntent(
