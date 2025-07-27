@@ -22,14 +22,14 @@ import caramel.feature.home.generated.resources.Res
 import caramel.feature.home.generated.resources.start_couple_date_guid
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.domain.vo.content.ContentRole
-import com.whatever.caramel.feature.home.mvi.TodoState
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
+import com.whatever.caramel.feature.home.mvi.TodoItem
 import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 internal fun LazyListScope.todo(
-    todoList: ImmutableList<TodoState>,
+    todoList: ImmutableList<TodoItem>,
     isSetAnniversary: Boolean,
     onClickAnniversaryNudgeCard: () -> Unit,
     onClickTodoItem: (todoContentId: Long) -> Unit,
@@ -80,7 +80,7 @@ internal fun LazyListScope.todo(
 @Composable
 private fun TodoList(
     modifier: Modifier = Modifier,
-    todoList: ImmutableList<TodoState>,
+    todoList: ImmutableList<TodoItem>,
     onClickTodoItem: (todoContentId: Long) -> Unit,
     onClickEmptyTodo: () -> Unit,
 ) {
@@ -119,7 +119,7 @@ private fun TodoList(
                                 vertical = CaramelTheme.spacing.s,
                             ),
                     title = todo.title,
-                    role = todo.role,
+                    assignee = todo.role,
                 )
 
                 if (index < todoList.size - 1) {
@@ -138,7 +138,7 @@ private fun TodoList(
 private fun TodoItem(
     modifier: Modifier = Modifier,
     title: String,
-    role: ContentRole,
+    assignee: ContentAssignee,
 ) {
     Row(
         modifier = modifier,
@@ -156,7 +156,7 @@ private fun TodoItem(
                     space = CaramelTheme.spacing.s,
                 ),
         ) {
-            ContentRoleChip(role = role)
+            ContentAssigneeChip(assignee = assignee)
 
             Text(
                 text = title,

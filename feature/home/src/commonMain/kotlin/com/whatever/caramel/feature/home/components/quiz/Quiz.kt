@@ -38,8 +38,8 @@ import caramel.feature.home.generated.resources.waku_we_will_choice_same
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.user.Gender
-import com.whatever.caramel.feature.home.mvi.BalanceGameOptionState
-import com.whatever.caramel.feature.home.mvi.HomeState
+import com.whatever.caramel.feature.home.mvi.BalanceGameCard
+import com.whatever.caramel.feature.home.mvi.BalanceGameOptionItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -48,18 +48,14 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 internal fun LazyListScope.quiz(
+    balanceGameCard: BalanceGameCard,
+    isBalanceGameCardRotated: Boolean,
     myNickname: String,
     myGender: Gender,
     partnerNickname: String,
     partnerGender: Gender,
-    question: String,
-    options: ImmutableList<BalanceGameOptionState>,
-    myChoiceOption: BalanceGameOptionState,
-    partnerChoiceOption: BalanceGameOptionState,
-    balanceGameAnswerState: HomeState.BalanceGameAnswerState,
-    balanceGameCardState: HomeState.BalanceGameCardState,
-    onOptionClick: (BalanceGameOptionState) -> Unit,
-    onChangeCardState: () -> Unit,
+    onOptionClick: (BalanceGameOptionItem) -> Unit,
+    onRotateCard: () -> Unit,
 ) {
     item(key = "Quiz") {
         val rotation = remember { Animatable(0f) }
@@ -69,7 +65,7 @@ internal fun LazyListScope.quiz(
             snapshotFlow { rotation.value >= 90f }
                 .distinctUntilChanged()
                 .filter { it }
-                .collect { onChangeCardState() }
+                .collect { onRotateCard() }
         }
 
         Box(
@@ -112,62 +108,59 @@ internal fun LazyListScope.quiz(
                                 top = CaramelTheme.spacing.l,
                                 bottom = CaramelTheme.spacing.xxl,
                             ),
-                    question = question,
+                    question = balanceGameCard.question,
                 )
 
-                when (balanceGameCardState) {
-                    HomeState.BalanceGameCardState.IDLE -> {
-                        ImageArea(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = CaramelTheme.spacing.l)
-                                    .padding(top = CaramelTheme.spacing.s),
-                            balanceGameAnswerState = balanceGameAnswerState,
-                            partnerNickname = partnerNickname,
-                        )
+                if (!isBalanceGameCardRotated) {
+                    ImageArea(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = CaramelTheme.spacing.l)
+                                .padding(top = CaramelTheme.spacing.s),
+                        gameResult = balanceGameCard.gameResult,
+                        partnerNickname = partnerNickname,
+                    )
 
-                        ButtonArea(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(all = CaramelTheme.spacing.l),
-                            balanceGameOptionStates = options,
-                            balanceGameAnswerState = balanceGameAnswerState,
-                            myChoiceOption = myChoiceOption,
-                            onClickOption = onOptionClick,
-                            onClickResult = {
-                                scope.launch {
-                                    rotation.animateTo(
-                                        targetValue = rotation.value + 180f,
-                                        animationSpec = tween(durationMillis = 1000),
-                                    )
-                                }
-                            },
-                        )
-                    }
-                    HomeState.BalanceGameCardState.CONFIRM -> {
-                        HorizontalDivider(
-                            modifier =
-                                Modifier
-                                    .padding(horizontal = CaramelTheme.spacing.l),
-                            thickness = 1.dp,
-                            color = CaramelTheme.color.fill.quaternary,
-                        )
+                    ButtonArea(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(all = CaramelTheme.spacing.l),
+                        balanceGameOptionStates = balanceGameCard.options,
+                        gameResult = balanceGameCard.gameResult,
+                        myChoiceOption = balanceGameCard.myOption,
+                        onClickOption = onOptionClick,
+                        onClickResult = {
+                            scope.launch {
+                                rotation.animateTo(
+                                    targetValue = rotation.value + 180f,
+                                    animationSpec = tween(durationMillis = 1000),
+                                )
+                            }
+                        },
+                    )
+                } else {
+                    HorizontalDivider(
+                        modifier =
+                            Modifier
+                                .padding(horizontal = CaramelTheme.spacing.l),
+                        thickness = 1.dp,
+                        color = CaramelTheme.color.fill.quaternary,
+                    )
 
-                        BalanceGameResult(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(all = CaramelTheme.spacing.xl),
-                            myNickname = myNickname,
-                            myGender = myGender,
-                            partnerNickname = partnerNickname,
-                            partnerGender = partnerGender,
-                            myChoiceOption = myChoiceOption,
-                            partnerChoiceOption = partnerChoiceOption,
-                        )
-                    }
+                    BalanceGameResult(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(all = CaramelTheme.spacing.xl),
+                        myNickname = myNickname,
+                        myGender = myGender,
+                        partnerNickname = partnerNickname,
+                        partnerGender = partnerGender,
+                        myChoiceOption = balanceGameCard.myOption!!,
+                        partnerChoiceOption = balanceGameCard.partnerOption!!,
+                    )
                 }
             }
 
@@ -205,7 +198,7 @@ private fun QuestionArea(
 @Composable
 private fun ImageArea(
     modifier: Modifier = Modifier,
-    balanceGameAnswerState: HomeState.BalanceGameAnswerState,
+    gameResult: BalanceGameCard.GameResult,
     partnerNickname: String,
 ) {
     Column(
@@ -231,15 +224,15 @@ private fun ImageArea(
                     .padding(top = CaramelTheme.spacing.l),
             contentAlignment = Alignment.Center,
         ) {
-            val text =
-                when (balanceGameAnswerState) {
-                    HomeState.BalanceGameAnswerState.IDLE -> stringResource(Res.string.waku_we_will_choice_same)
-                    HomeState.BalanceGameAnswerState.WAITING -> stringResource(Res.string.waiting_for_partner_answer, partnerNickname)
-                    HomeState.BalanceGameAnswerState.CHECK_RESULT -> stringResource(Res.string.check_our_choice)
+            val description =
+                when (gameResult) {
+                    BalanceGameCard.GameResult.IDLE -> stringResource(Res.string.waku_we_will_choice_same)
+                    BalanceGameCard.GameResult.WAITING -> stringResource(Res.string.waiting_for_partner_answer, partnerNickname)
+                    BalanceGameCard.GameResult.CHECK_RESULT -> stringResource(Res.string.check_our_choice)
                 }
 
             Text(
-                text = text,
+                text = description,
                 style = CaramelTheme.typography.label1.bold,
                 color = CaramelTheme.color.text.secondary,
             )
@@ -250,15 +243,15 @@ private fun ImageArea(
 @Composable
 private fun ButtonArea(
     modifier: Modifier = Modifier,
-    myChoiceOption: BalanceGameOptionState,
-    balanceGameOptionStates: ImmutableList<BalanceGameOptionState>,
-    balanceGameAnswerState: HomeState.BalanceGameAnswerState,
-    onClickOption: (BalanceGameOptionState) -> Unit,
+    balanceGameOptionStates: ImmutableList<BalanceGameOptionItem>,
+    myChoiceOption: BalanceGameOptionItem?,
+    gameResult: BalanceGameCard.GameResult,
+    onClickOption: (BalanceGameOptionItem) -> Unit,
     onClickResult: () -> Unit,
 ) {
-    when (balanceGameAnswerState) {
-        HomeState.BalanceGameAnswerState.WAITING,
-        HomeState.BalanceGameAnswerState.IDLE,
+    when (gameResult) {
+        BalanceGameCard.GameResult.WAITING,
+        BalanceGameCard.GameResult.IDLE,
         -> {
             Row(
                 modifier = modifier.height(IntrinsicSize.Min),
@@ -269,17 +262,16 @@ private fun ButtonArea(
             ) {
                 balanceGameOptionStates.forEach { option ->
                     OptionButton(
-                        modifier = Modifier,
                         text = option.name,
-                        isSelected = myChoiceOption.id == option.id,
-                        balanceGameAnswerState = balanceGameAnswerState,
-                        onClick = { onClickOption(option) },
+                        isSelected = myChoiceOption?.id == option.id,
+                        gameResult = gameResult,
+                        onClickOption = { onClickOption(option) },
                     )
                 }
             }
         }
 
-        HomeState.BalanceGameAnswerState.CHECK_RESULT -> {
+        BalanceGameCard.GameResult.CHECK_RESULT -> {
             Box(
                 modifier =
                     modifier
@@ -288,7 +280,7 @@ private fun ButtonArea(
                             shape = CaramelTheme.shape.m,
                         ).clip(shape = CaramelTheme.shape.m)
                         .clickable(
-                            enabled = balanceGameAnswerState != HomeState.BalanceGameAnswerState.WAITING,
+                            enabled = gameResult != BalanceGameCard.GameResult.WAITING,
                             onClick = onClickResult,
                         ).padding(all = CaramelTheme.spacing.m),
                 contentAlignment = Alignment.Center,

@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.user.Gender
-import com.whatever.caramel.feature.home.mvi.BalanceGameOptionState
+import com.whatever.caramel.feature.home.mvi.BalanceGameOptionItem
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -24,8 +24,8 @@ internal fun BalanceGameResult(
     myGender: Gender,
     partnerNickname: String,
     partnerGender: Gender,
-    myChoiceOption: BalanceGameOptionState,
-    partnerChoiceOption: BalanceGameOptionState,
+    myChoiceOption: BalanceGameOptionItem,
+    partnerChoiceOption: BalanceGameOptionItem,
 ) {
     val myGenderImage =
         when (myGender) {

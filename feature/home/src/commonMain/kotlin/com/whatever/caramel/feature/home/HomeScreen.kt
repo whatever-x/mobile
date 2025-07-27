@@ -33,7 +33,6 @@ import com.whatever.caramel.feature.home.components.quiz.quiz
 import com.whatever.caramel.feature.home.components.todo.todo
 import com.whatever.caramel.feature.home.mvi.HomeIntent
 import com.whatever.caramel.feature.home.mvi.HomeState
-import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.painterResource
 import kotlin.math.roundToInt
 
@@ -149,22 +148,18 @@ internal fun HomeScreen(
                 }
 
                 quiz(
-                    question = state.balanceGameState.question,
-                    options = state.balanceGameState.options,
-                    balanceGameAnswerState = state.balanceGameAnswerState,
-                    balanceGameCardState = state.balanceGameCardState,
+                    balanceGameCard = state.balanceGameCard,
+                    isBalanceGameCardRotated = state.isBalanceGameCardRotated,
                     myNickname = state.myNickname,
                     myGender = state.myGender,
                     partnerNickname = state.partnerNickname,
                     partnerGender = state.partnerGender,
-                    myChoiceOption = state.myChoiceOption,
-                    partnerChoiceOption = state.partnerChoiceOption,
                     onOptionClick = { option -> onIntent(HomeIntent.ClickBalanceGameOptionButton(option = option)) },
-                    onChangeCardState = { onIntent(HomeIntent.ChangeBalanceGameCardState) },
+                    onRotateCard = { onIntent(HomeIntent.RotateBalanceGameCard) },
                 )
 
                 todo(
-                    todoList = state.todos.toImmutableList(),
+                    todoList = state.todoList,
                     isSetAnniversary = state.isSetAnniversary,
                     onClickAnniversaryNudgeCard = { onIntent(HomeIntent.ClickAnniversaryNudgeCard) },
                     onClickTodoItem = { todoContentId ->

@@ -24,10 +24,10 @@ sealed interface HomeIntent : UiIntent {
     data object ClickAnniversaryNudgeCard : HomeIntent
 
     data class ClickBalanceGameOptionButton(
-        val option: BalanceGameOptionState,
+        val option: BalanceGameOptionItem,
     ) : HomeIntent
 
-    data object ChangeBalanceGameCardState : HomeIntent
+    data object RotateBalanceGameCard : HomeIntent
 
     data object HideDialog : HomeIntent
 
