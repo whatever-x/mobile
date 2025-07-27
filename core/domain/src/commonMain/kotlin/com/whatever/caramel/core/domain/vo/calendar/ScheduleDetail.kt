@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.domain.vo.calendar
 
 import com.whatever.caramel.core.domain.entity.Tag
-import com.whatever.caramel.core.domain.vo.content.ContentRole
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 
 data class ScheduleDetail(
     val scheduleId: Long,
@@ -14,5 +14,5 @@ data class ScheduleDetail(
     val title: String,
     val description: String,
     val tags: List<Tag>,
-    val role : ContentRole,
+    val role : ContentAssignee,
 )

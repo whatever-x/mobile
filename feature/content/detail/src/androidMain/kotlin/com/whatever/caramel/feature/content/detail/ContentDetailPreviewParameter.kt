@@ -3,7 +3,7 @@ package com.whatever.caramel.feature.content.detail
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleDetail
-import com.whatever.caramel.core.domain.vo.content.ContentRole
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.feature.content.detail.mvi.ContentDetailState
 
@@ -23,7 +23,7 @@ class ContentDetailPreviewParameter : PreviewParameterProvider<ContentDetailStat
                     title = "제목1",
                     description = "내용1",
                     tags = listOf(Tag(id = 1, label = "tag1")),
-                    role = ContentRole.BOTH
+                    role = ContentAssignee.US
                 )
             )
         )

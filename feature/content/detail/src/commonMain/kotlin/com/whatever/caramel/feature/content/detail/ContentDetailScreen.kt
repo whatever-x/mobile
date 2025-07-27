@@ -46,11 +46,11 @@ internal fun ContentDetailScreen(
     val uriHandler = LocalUriHandler.current
     val verticalScrollState = rememberScrollState()
     val (roleTextRes, roleTextColor) = when (state.role) {
-        ContentRole.MY -> Res.string.my to CaramelTheme.color.text.labelAccent4
-        ContentRole.PARTNER -> Res.string.partner to CaramelTheme.color.text.primary
-        ContentRole.NONE, ContentRole.BOTH -> Res.string.both to CaramelTheme.color.text.brand
+        ContentAssignee.ME -> Res.string.my to CaramelTheme.color.text.labelAccent4
+        ContentAssignee.PARTNER -> Res.string.partner to CaramelTheme.color.text.primary
+        ContentAssignee.US -> Res.string.both to CaramelTheme.color.text.brand
     }
-    val contentTypeRes = when(state.contentType) {
+    val contentTypeRes = when (state.contentType) {
         ContentType.MEMO -> Res.string.memo
         ContentType.CALENDAR -> Res.string.schedule
     }
