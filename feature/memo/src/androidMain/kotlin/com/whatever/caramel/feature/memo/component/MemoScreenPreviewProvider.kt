@@ -3,7 +3,7 @@ package com.whatever.caramel.feature.memo.component
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.whatever.caramel.core.domain.entity.Memo
 import com.whatever.caramel.core.domain.entity.Tag
-import com.whatever.caramel.core.domain.vo.content.ContentRole
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.feature.memo.model.MemoUiModel
 import com.whatever.caramel.feature.memo.model.TagUiModel
@@ -45,9 +45,9 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
         for (index in 0 until size) {
             val role =
                 when {
-                    index % 2 == 0 -> ContentRole.BOTH
-                    index % 3 == 0 -> ContentRole.PARTNER
-                    else -> ContentRole.MY
+                    index % 2 == 0 -> ContentAssignee.US
+                    index % 3 == 0 -> ContentAssignee.PARTNER
+                    else -> ContentAssignee.ME
                 }
             list.add(
                 Memo(
@@ -57,7 +57,7 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
                     isCompleted = false,
                     tagList = createTempTagList(index),
                     createdAt = DateUtil.today(),
-                    role = role,
+                    assignee = role,
                 ),
             )
         }

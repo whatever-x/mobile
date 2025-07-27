@@ -29,7 +29,7 @@ import caramel.feature.memo.generated.resources.my_memo
 import caramel.feature.memo.generated.resources.partner_memo
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.domain.vo.content.ContentRole
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -43,7 +43,7 @@ internal fun MemoItem(
     description: String,
     categoriesText: String,
     createdDateText: String,
-    role: ContentRole,
+    assignee: ContentAssignee,
     onClickMemoItem: (Long) -> Unit,
 ) {
     val isTitleOrDescriptionEmpty = title.isEmpty() || description.isEmpty()
@@ -80,7 +80,7 @@ internal fun MemoItem(
             )
         }
         TabMetaData(
-            role = role,
+            assignee = assignee,
             createdDateText = createdDateText,
             categoriesText = categoriesText,
         )
@@ -89,16 +89,16 @@ internal fun MemoItem(
 
 @Composable
 internal fun TabMetaData(
-    role: ContentRole,
+    assignee: ContentAssignee,
     createdDateText: String,
     categoriesText: String,
 ) {
     val memoText =
         stringResource(
-            when (role) {
-                ContentRole.MY -> Res.string.my_memo
-                ContentRole.PARTNER -> Res.string.partner_memo
-                ContentRole.NONE, ContentRole.BOTH -> Res.string.both_memo
+            when (assignee) {
+                ContentAssignee.ME -> Res.string.my_memo
+                ContentAssignee.PARTNER -> Res.string.partner_memo
+                ContentAssignee.US -> Res.string.both_memo
             },
         )
 

@@ -178,7 +178,7 @@ internal fun MemoScreen(
                                 categoriesText = memo.tagListText,
                                 createdDateText = memo.createdAt,
                                 onClickMemoItem = { onIntent(MemoIntent.ClickMemo(memoId = it)) },
-                                role = memo.role,
+                                assignee = memo.assignee,
                             )
                             if (index < state.memos.lastIndex) {
                                 HorizontalDivider(
