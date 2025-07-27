@@ -23,7 +23,7 @@ internal fun MemoResponse.toMemo(): Memo =
         isCompleted = this.isCompleted,
         tagList = this.tagList.toTags(),
         createdAt = LocalDate.parse(this.createdAt),
-        assignee = ContentAssignee.valueOf(this.contentAssignee.name)
+        assignee = ContentAssignee.valueOf(this.contentAssignee.name),
     )
 
 internal fun CursoredContentResponse.toMemosWithCursor(): MemoWithCursor =
