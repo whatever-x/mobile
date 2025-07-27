@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.domain.vo.content
 
-enum class ContentRole {
-    MY,
+enum class ContentAssignee {
+    ME,
     PARTNER,
-    BOTH,
+    US,
 }

@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.remote.dto.calendar.request
 
-import com.whatever.caramel.core.remote.dto.calendar.ContentAsignee
+import com.whatever.caramel.core.remote.dto.memo.ContentAssigneeDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -22,6 +22,6 @@ data class CreateScheduleRequest(
     val endTimeZone: String?,
     @SerialName("tagIds")
     val tagIds: List<Long>?,
-    @SerialName("contentAsignee")
-    val contentAsignee: ContentAsignee,
+    @SerialName("contentAssignee")
+    val contentAssignee: ContentAssigneeDto,
 )
