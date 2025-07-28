@@ -35,7 +35,7 @@ internal interface CaramelBottomTodoScope {
     val title: String
     val description: String
     val url: String?
-    val assignee: ContentAssignee
+    val contentAssignee: ContentAssignee
     val onClickUrl: (String?) -> Unit
     val onClickTodo: (Long) -> Unit
 }
@@ -45,7 +45,7 @@ internal class CaramelDefaultBottomTodoScope(
     override val title: String,
     override val description: String,
     override val url: String?,
-    override val assignee: ContentAssignee,
+    override val contentAssignee: ContentAssignee,
     override val onClickUrl: (String?) -> Unit,
     override val onClickTodo: (Long) -> Unit,
 ) : CaramelBottomTodoScope
@@ -56,7 +56,7 @@ internal fun BottomSheetTodoItem(
     title: String,
     description: String,
     url: String? = null,
-    assignee: ContentAssignee,
+    contentAssignee: ContentAssignee,
     onClickTodo: (Long) -> Unit = {},
     onClickUrl: (String?) -> Unit = {},
     content: @Composable CaramelBottomTodoScope.() -> Unit,
@@ -77,7 +77,7 @@ internal fun BottomSheetTodoItem(
                 url = url,
                 onClickTodo = onClickTodo,
                 onClickUrl = onClickUrl,
-                assignee = assignee,
+                contentAssignee = contentAssignee,
             )
         }
     scope.content()
@@ -97,7 +97,7 @@ internal fun CaramelBottomTodoScope.DefaultBottomSheetTodoItem(modifier: Modifie
                     shape = CaramelTheme.shape.m,
                 ).padding(all = CaramelTheme.spacing.l),
     ) {
-        TodoRole()
+        TodoAssignee()
         Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.s))
         TodoTitle()
         if (hasAll) {
@@ -111,9 +111,9 @@ internal fun CaramelBottomTodoScope.DefaultBottomSheetTodoItem(modifier: Modifie
 }
 
 @Composable
-internal fun CaramelBottomTodoScope.TodoRole(modifier: Modifier = Modifier) {
-    val (roleText, roleTextColor) =
-        when (this.assignee) {
+internal fun CaramelBottomTodoScope.TodoAssignee(modifier: Modifier = Modifier) {
+    val (assigneeTextRes, assigneeTextColor) =
+        when (this.contentAssignee) {
             ContentAssignee.ME -> Res.string.my_schedule to CaramelTheme.color.text.labelAccent4
             ContentAssignee.PARTNER -> Res.string.partner_schedule to CaramelTheme.color.text.primary
             ContentAssignee.US -> Res.string.both_schedule to CaramelTheme.color.text.brand
@@ -128,9 +128,9 @@ internal fun CaramelBottomTodoScope.TodoRole(modifier: Modifier = Modifier) {
                     interactionSource = null,
                     onClick = { onClickTodo(id) },
                 ),
-        text = stringResource(roleText),
+        text = stringResource(assigneeTextRes),
         style = CaramelTheme.typography.body3.bold,
-        color = roleTextColor,
+        color = assigneeTextColor,
     )
 }
 

@@ -44,7 +44,7 @@ data class HomeState(
 data class TodoItem(
     val id: Long,
     val title: String,
-    val role: ContentAssignee,
+    val contentAssignee: ContentAssignee,
 )
 
 data class BalanceGameCard(

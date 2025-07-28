@@ -34,7 +34,7 @@ private fun CalendarBottomSheetPreview(
             title = state.title,
             description = state.description,
             url = state.url,
-            assignee = state.assignee,
+            contentAssignee = state.contentAssignee,
             onClickTodo = state.onClickTodo,
             onClickUrl = state.onClickUrl,
         ) {

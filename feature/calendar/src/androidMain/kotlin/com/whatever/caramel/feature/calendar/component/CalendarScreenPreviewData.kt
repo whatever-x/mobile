@@ -72,14 +72,14 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
         fun todo(
             day: Int,
             title: String,
-            role: ContentAssignee,
+            contentAssignee: ContentAssignee,
         ) = Todo(
             id = id++,
             title = title,
             startDate = dateTime(day),
             endDate = dateTime(day, 23, 59),
             description = "$title 내용",
-            assignee = role,
+            contentAssignee = contentAssignee,
         )
 
         return listOf(

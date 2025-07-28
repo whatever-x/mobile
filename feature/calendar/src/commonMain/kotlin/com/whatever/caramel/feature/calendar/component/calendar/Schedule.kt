@@ -181,7 +181,7 @@ private fun CalendarTodoItem(
     onClickTodo: (Long) -> Unit,
 ) {
     val (textColor, backgroundColor) =
-        when (todo.assignee) {
+        when (todo.contentAssignee) {
             ContentAssignee.ME -> CaramelTheme.color.text.labelAccent4 to CaramelTheme.color.fill.labelAccent3
             ContentAssignee.PARTNER -> CaramelTheme.color.text.labelAccent3 to CaramelTheme.color.fill.labelAccent4
             ContentAssignee.US -> CaramelTheme.color.text.labelBrand to CaramelTheme.color.fill.labelBrand
