@@ -18,12 +18,12 @@ internal fun CreateMemoResponse.toMemoMetaData(): MemoMetadata =
 internal fun MemoResponse.toMemo(): Memo =
     Memo(
         id = this.id,
-        title = this.title,
-        description = this.description,
+        title = this.title ?: "",
+        description = this.description ?: "",
         isCompleted = this.isCompleted,
         tagList = this.tagList.toTags(),
         createdAt = LocalDate.parse(this.createdAt),
-        contentAssignee = ContentAssignee.valueOf(value = this.contentAssignee.name),
+        contentAssignee = ContentAssignee.valueOf(this.contentAssignee.name),
     )
 
 internal fun CursoredContentResponse.toMemosWithCursor(): MemoWithCursor =

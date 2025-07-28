@@ -11,8 +11,8 @@ data class ScheduleDetail(
     val endDateTimezone: String,
     val isCompleted: Boolean,
     val parentScheduleId: Long?,
-    val title: String?,
-    val description: String?,
+    val title: String,
+    val description: String,
     val tags: List<Tag>,
     val contentAssignee: ContentAssignee,
 )

@@ -119,7 +119,7 @@ private fun TodoList(
                                 vertical = CaramelTheme.spacing.s,
                             ),
                     title = todo.title,
-                    assignee = todo.role,
+                    assignee = todo.contentAssignee,
                 )
 
                 if (index < todoList.size - 1) {

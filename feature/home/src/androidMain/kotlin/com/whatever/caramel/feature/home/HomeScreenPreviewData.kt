@@ -47,7 +47,7 @@ internal class HomeScreenPreviewData : PreviewParameterProvider<HomeState> {
                         TodoItem(
                             id = 1,
                             title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?",
-                            role = ContentAssignee.ME,
+                            contentAssignee = ContentAssignee.ME,
                         ),
                     ).toImmutableList(),
                 isShowBottomSheet = false,
@@ -62,7 +62,7 @@ internal class HomeScreenPreviewData : PreviewParameterProvider<HomeState> {
                             TodoItem(
                                 id = it.toLong(),
                                 title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?",
-                                role = ContentAssignee.US,
+                                contentAssignee = ContentAssignee.US,
                             )
                         }.toImmutableList(),
                 isShowBottomSheet = false,
@@ -77,7 +77,7 @@ internal class HomeScreenPreviewData : PreviewParameterProvider<HomeState> {
                             TodoItem(
                                 id = it.toLong(),
                                 title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?",
-                                role = ContentAssignee.PARTNER,
+                                contentAssignee = ContentAssignee.PARTNER,
                             )
                         }.toImmutableList(),
                 isShowBottomSheet = false,

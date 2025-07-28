@@ -50,9 +50,9 @@ internal fun GetScheduleResponse.toScheduleDetailVO(): ScheduleDetail =
             endDateTimezone = endDateTimezone,
             isCompleted = isCompleted,
             parentScheduleId = parentScheduleId,
-            title = title,
-            description = description,
+            title = title ?: "",
+            description = description ?: "",
             tags = tags.map { it.toTag() },
-            contentAssignee = ContentAssignee.valueOf(value = this.contentAssignee.name),
+            contentAssignee = ContentAssignee.valueOf(contentAssignee.name),
         )
     }

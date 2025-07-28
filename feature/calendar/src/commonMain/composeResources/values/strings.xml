@@ -8,6 +8,10 @@
 	<string name="saturday">토요일</string>
 	<string name="sunday">일요일</string>
 
+	<string name="partner_schedule">연인의 일정</string>
+	<string name="my_schedule">나의 일정</string>
+	<string name="both_schedule">우리 일정</string>
+
 	<string-array name="day_of_week">
 		<item>일</item>
 		<item>월</item>

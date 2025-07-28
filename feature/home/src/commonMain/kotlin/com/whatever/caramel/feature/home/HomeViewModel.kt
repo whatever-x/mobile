@@ -10,9 +10,9 @@ import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameCho
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodayScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
+import com.whatever.caramel.core.domain.validator.util.codePointCount
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.user.Gender
-import com.whatever.caramel.core.ui.util.validateInputText
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.home.mvi.BalanceGameCard
 import com.whatever.caramel.feature.home.mvi.BalanceGameOptionItem
@@ -20,6 +20,7 @@ import com.whatever.caramel.feature.home.mvi.HomeIntent
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect.NavigateToContentDetail
 import com.whatever.caramel.feature.home.mvi.HomeState
+import com.whatever.caramel.feature.home.mvi.HomeState.Companion.MAX_SHARE_MESSAGE_LENGTH
 import com.whatever.caramel.feature.home.mvi.TodoItem
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -69,17 +70,15 @@ class HomeViewModel(
     }
 
     private fun inputShareMessage(text: String) {
-        validateInputText(
-            text = text,
-            limitLength = HomeState.MAX_SHARE_MESSAGE_LENGTH,
-            onPass = { text ->
-                reduce {
-                    copy(
-                        bottomSheetShareMessage = text,
-                    )
-                }
-            },
-        )
+        if (text.codePointCount() > MAX_SHARE_MESSAGE_LENGTH || text.contains("\n")) {
+            return
+        } else {
+            reduce {
+                copy(
+                    bottomSheetShareMessage = text,
+                )
+            }
+        }
     }
 
     private fun clearShareMessage() {
@@ -239,7 +238,7 @@ class HomeViewModel(
                                 TodoItem(
                                     id = todo.id,
                                     title = todo.title.ifEmpty { todo.description },
-                                    role = todo.contentAssignee,
+                                    contentAssignee = todo.contentAssignee,
                                 )
                             }.toImmutableList()
                     } else {
