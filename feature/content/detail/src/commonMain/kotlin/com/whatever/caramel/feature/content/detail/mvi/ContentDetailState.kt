@@ -4,7 +4,6 @@ import com.whatever.caramel.core.domain.entity.Memo
 import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleDetail
 import com.whatever.caramel.core.domain.vo.common.LinkMetaData
-import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.viewmodel.UiState
 import kotlinx.collections.immutable.ImmutableList
@@ -26,15 +25,15 @@ data class ContentDetailState(
     val title: String
         get() =
             when (contentType) {
-                ContentType.MEMO -> memoDetail?.title?.ifEmpty { memoDetail.description } ?: ""
-                ContentType.CALENDAR -> scheduleDetail?.title?.ifEmpty { scheduleDetail.description } ?: ""
+                ContentType.MEMO -> memoDetail?.title ?: ""
+                ContentType.CALENDAR -> scheduleDetail?.title ?: ""
             }
 
     val description: String
         get() =
             when (contentType) {
-                ContentType.MEMO -> memoDetail?.description?.takeIf { memoDetail.title.isNotEmpty() } ?: ""
-                ContentType.CALENDAR -> scheduleDetail?.description?.takeIf { scheduleDetail.title.isNotEmpty() } ?: ""
+                ContentType.MEMO -> memoDetail?.description ?: ""
+                ContentType.CALENDAR -> scheduleDetail?.description ?: ""
             }
 
     val tags: ImmutableList<Tag>
@@ -52,13 +51,6 @@ data class ContentDetailState(
             return "${parsed.year}년 ${parsed.monthNumber}월 ${parsed.dayOfMonth}일"
         }
 
-    val role: ContentAssignee
-        get() =
-            when (contentType) {
-                ContentType.MEMO -> memoDetail?.role ?: ContentAssignee.US
-                ContentType.CALENDAR -> scheduleDetail?.contentAssignee ?: ContentAssignee.US
-            }
-
     val time: String
         get() {
             val dateTime = scheduleDetail?.startDateTime ?: ""
@@ -67,18 +59,5 @@ data class ContentDetailState(
             val minute = parsed.minute.toString().padStart(2, '0')
 
             return "$hour:$minute"
-        }
-
-    val tagString: String
-        get() = tags.joinToString(", ") { it.label }
-
-    val existsContent: Boolean
-        get() {
-            return when (contentType) {
-                ContentType.MEMO -> {
-                    memoDetail != null && (memoDetail.description.isNotEmpty() || memoDetail.tagList.isNotEmpty())
-                }
-                ContentType.CALENDAR -> scheduleDetail != null
-            }
         }
 }

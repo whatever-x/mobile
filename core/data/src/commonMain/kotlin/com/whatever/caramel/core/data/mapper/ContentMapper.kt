@@ -1,7 +1,6 @@
 package com.whatever.caramel.core.data.mapper
 
 import com.whatever.caramel.core.domain.entity.Memo
-import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.memo.MemoMetadata
 import com.whatever.caramel.core.domain.vo.memo.MemoWithCursor
 import com.whatever.caramel.core.remote.dto.memo.response.CreateMemoResponse
@@ -23,7 +22,6 @@ internal fun MemoResponse.toMemo(): Memo =
         isCompleted = this.isCompleted,
         tagList = this.tagList.toTags(),
         createdAt = LocalDate.parse(this.createdAt),
-        role = ContentAssignee.US, // FIXME : API 연동 작업 시 변경
     )
 
 internal fun CursoredContentResponse.toMemosWithCursor(): MemoWithCursor =
