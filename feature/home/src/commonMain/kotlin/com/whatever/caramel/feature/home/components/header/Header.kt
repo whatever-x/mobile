@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.home.components
+package com.whatever.caramel.feature.home.components.header
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

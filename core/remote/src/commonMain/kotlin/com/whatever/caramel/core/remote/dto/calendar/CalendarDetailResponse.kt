@@ -27,3 +27,14 @@ data class ScheduleApiResult(
     @SerialName("description") val description: String?,
     @SerialName("contentAssignee") val contentAssignee: ContentAssigneeDto,
 )
+
+enum class ContentAsignee {
+    @SerialName("ME")
+    ME,
+
+    @SerialName("PARTNER")
+    PARTNER,
+
+    @SerialName("US")
+    US,
+}

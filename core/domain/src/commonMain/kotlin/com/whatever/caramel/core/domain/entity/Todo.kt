@@ -9,7 +9,7 @@ data class Todo(
     val endDate: LocalDateTime,
     val title: String,
     val description: String,
-    val assignee: ContentAssignee,
+    val contentAssignee: ContentAssignee,
 ) {
     val url: String?
         get() {

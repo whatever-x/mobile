@@ -64,7 +64,7 @@ private fun SelectableTagChip(
     )
     val textColor =
         if (selected) CaramelTheme.color.text.inverse else CaramelTheme.color.text.disabledPrimary
-    val borderColor = if (selected) Color.Transparent else CaramelTheme.color.text.disabledPrimary
+    val borderColor = if (selected) Color.Transparent else CaramelTheme.color.fill.disabledPrimary
 
     Box(
         modifier =
