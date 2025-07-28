@@ -8,10 +8,11 @@ import com.whatever.caramel.core.domain.usecase.content.GetMemosUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.viewmodel.BaseViewModel
+import com.whatever.caramel.feature.memo.model.TagUiModel
+import com.whatever.caramel.feature.memo.model.toUiModel
 import com.whatever.caramel.feature.memo.mvi.MemoIntent
 import com.whatever.caramel.feature.memo.mvi.MemoSideEffect
 import com.whatever.caramel.feature.memo.mvi.MemoState
-import com.whatever.caramel.feature.memo.mvi.TagUiModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
@@ -152,7 +153,7 @@ class MemoViewModel(
                 if (newMemos.memos.isEmpty()) {
                     currentState.memos
                 } else {
-                    currentState.memos + newMemos.memos
+                    currentState.memos + newMemos.memos.map { it.toUiModel() }
                 }
             reduce {
                 copy(
