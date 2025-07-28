@@ -53,5 +53,6 @@ internal fun GetScheduleResponse.toScheduleDetailVO(): ScheduleDetail =
             title = title,
             description = description,
             tags = tags.map { it.toTag() },
+            contentAssignee = ContentAssignee.valueOf(value = this.contentAssignee.name),
         )
     }

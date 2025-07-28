@@ -53,7 +53,7 @@ class MemoRepositoryImpl(
                             endTimezone = endTimezone,
                         )
                     },
-                contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name)
+                contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
             )
         safeCall {
             remoteMemoDataSource.updateMemo(memoId, request)

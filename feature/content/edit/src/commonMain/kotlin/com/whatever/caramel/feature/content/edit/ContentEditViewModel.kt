@@ -215,7 +215,7 @@ class ContentEditViewModel(
                                     } else {
                                         null
                                     },
-                                contentAssignee = ContentAssignee.valueOf(value = state.selectedAssignee.name)
+                                contentAssignee = ContentAssignee.valueOf(value = state.selectedAssignee.name),
                             ),
                     )
                 }
@@ -241,7 +241,7 @@ class ContentEditViewModel(
                                         null
                                     },
                                 tagIds = state.selectedTags.map { it.id }.toList(),
-                                contentAssignee = ContentAssignee.valueOf(value = state.selectedAssignee.name)
+                                contentAssignee = ContentAssignee.valueOf(value = state.selectedAssignee.name),
                             ),
                     )
                 }
@@ -359,6 +359,7 @@ class ContentEditViewModel(
                             title = memo.title,
                             content = memo.description,
                             selectedTags = memo.tagList.toImmutableSet(),
+                            selectedAssignee = ContentAssigneeUiModel.valueOf(value = memo.contentAssignee.name),
                         )
                     }
                 }
@@ -373,6 +374,7 @@ class ContentEditViewModel(
                             content = schedule.description ?: "",
                             selectedTags = schedule.tags.toImmutableSet(),
                             dateTime = scheduleDateTime,
+                            selectedAssignee = ContentAssigneeUiModel.valueOf(value = schedule.contentAssignee.name),
                         )
                     }
                 }

@@ -53,7 +53,7 @@ class CalendarRepositoryImpl(
                 endDateTime = parameter.dateTimeInfo?.endDateTime,
                 endTimeZone = parameter.dateTimeInfo?.endTimezone,
                 tagIds = parameter.tagIds,
-                contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name)
+                contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
             )
         safeCall {
             remoteCalendarDataSource.updateSchedule(scheduleId, request)
