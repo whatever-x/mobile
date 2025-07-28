@@ -16,8 +16,10 @@ import com.whatever.caramel.core.domain.usecase.memo.UpdateMemoUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleEditParameter
 import com.whatever.caramel.core.domain.vo.common.DateTimeInfo
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoEditParameter
+import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.ui.util.validateInputText
 import com.whatever.caramel.core.util.copy
@@ -126,6 +128,13 @@ class ContentEditViewModel(
             ContentEditIntent.ConfirmDeleteDialog -> handleConfirmDeleteDialog()
             ContentEditIntent.DismissDeletedContentDialog -> handleDismissDeletedContentDialog()
             is ContentEditIntent.OnCreateModeSelected -> handleOnCreateModeSelected(intent)
+            is ContentEditIntent.ClickAssignee -> clickAssignee(intent)
+        }
+    }
+
+    private fun clickAssignee(intent: ContentEditIntent.ClickAssignee) {
+        reduce {
+            copy(selectedAssignee = intent.assignee)
         }
     }
 
@@ -206,6 +215,7 @@ class ContentEditViewModel(
                                     } else {
                                         null
                                     },
+                                contentAssignee = ContentAssignee.valueOf(value = state.selectedAssignee.name)
                             ),
                     )
                 }
@@ -231,6 +241,7 @@ class ContentEditViewModel(
                                         null
                                     },
                                 tagIds = state.selectedTags.map { it.id }.toList(),
+                                contentAssignee = ContentAssignee.valueOf(value = state.selectedAssignee.name)
                             ),
                     )
                 }
