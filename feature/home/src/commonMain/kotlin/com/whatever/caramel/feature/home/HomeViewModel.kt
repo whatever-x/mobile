@@ -238,7 +238,7 @@ class HomeViewModel(
                                 TodoItem(
                                     id = todo.id,
                                     title = todo.title.ifEmpty { todo.description },
-                                    role = todo.contentAssignee,
+                                    contentAssignee = todo.contentAssignee,
                                 )
                             }.toImmutableList()
                     } else {
