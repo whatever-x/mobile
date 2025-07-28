@@ -23,9 +23,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import caramel.feature.memo.generated.resources.Res
+import caramel.feature.memo.generated.resources.both_memo
 import caramel.feature.memo.generated.resources.empty_memo
+import caramel.feature.memo.generated.resources.my_memo
+import caramel.feature.memo.generated.resources.partner_memo
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -39,6 +43,7 @@ internal fun MemoItem(
     description: String,
     categoriesText: String,
     createdDateText: String,
+    contentAssignee: ContentAssignee,
     onClickMemoItem: (Long) -> Unit,
 ) {
     val isTitleOrDescriptionEmpty = title.isEmpty() || description.isEmpty()
@@ -74,32 +79,65 @@ internal fun MemoItem(
                 color = CaramelTheme.color.text.primary,
             )
         }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xs),
-        ) {
+        TabMetaData(
+            contentAssignee = contentAssignee,
+            createdDateText = createdDateText,
+            categoriesText = categoriesText,
+        )
+    }
+}
+
+@Composable
+internal fun TabMetaData(
+    contentAssignee: ContentAssignee,
+    createdDateText: String,
+    categoriesText: String,
+) {
+    val memoText =
+        stringResource(
+            when (contentAssignee) {
+                ContentAssignee.ME -> Res.string.my_memo
+                ContentAssignee.PARTNER -> Res.string.partner_memo
+                ContentAssignee.US -> Res.string.both_memo
+            },
+        )
+
+    @Composable
+    fun Dot() {
+        Box(
+            modifier =
+                Modifier
+                    .size(size = 2.dp)
+                    .clip(CircleShape)
+                    .background(color = CaramelTheme.color.text.secondary),
+        )
+    }
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xs),
+    ) {
+        Text(
+            text = memoText,
+            style = CaramelTheme.typography.label1.regular,
+            color = CaramelTheme.color.text.secondary,
+        )
+        Dot()
+        Text(
+            text = createdDateText,
+            style = CaramelTheme.typography.label1.regular,
+            color = CaramelTheme.color.text.secondary,
+        )
+        if (categoriesText.isNotEmpty()) {
+            Dot()
             Text(
-                text = createdDateText,
+                text = categoriesText,
+                maxLines = 1,
                 style = CaramelTheme.typography.label1.regular,
                 color = CaramelTheme.color.text.secondary,
+                overflow = TextOverflow.Ellipsis,
             )
-            if (categoriesText.isNotEmpty()) {
-                Box(
-                    modifier =
-                        Modifier
-                            .size(size = 2.dp)
-                            .clip(CircleShape)
-                            .background(color = CaramelTheme.color.text.secondary),
-                )
-                Text(
-                    text = categoriesText,
-                    maxLines = 1,
-                    style = CaramelTheme.typography.label1.regular,
-                    color = CaramelTheme.color.text.secondary,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
         }
     }
 }

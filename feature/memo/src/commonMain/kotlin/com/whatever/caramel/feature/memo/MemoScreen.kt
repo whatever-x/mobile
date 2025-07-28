@@ -34,7 +34,6 @@ import caramel.feature.memo.generated.resources.memo
 import com.whatever.caramel.core.designsystem.animation.animateScrollToItemCenter
 import com.whatever.caramel.core.designsystem.components.CaramelPullToRefreshIndicator
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.util.DateFormatter.formatWithSeparator
 import com.whatever.caramel.feature.memo.component.EmptyMemo
 import com.whatever.caramel.feature.memo.component.MemoItem
 import com.whatever.caramel.feature.memo.component.MemoItemSkeleton
@@ -127,7 +126,9 @@ internal fun MemoScreen(
                     horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s),
                     state = lazyRowState,
                 ) {
-                    itemsIndexed(state.tags) { index, tag ->
+                    itemsIndexed(state.tags, key = { index, tag ->
+                        "$index-${tag.id}"
+                    }) { index, tag ->
                         TagChip(
                             modifier =
                                 when (index) {
@@ -137,7 +138,14 @@ internal fun MemoScreen(
                                 },
                             tag = tag,
                             isSelected = state.selectedTag == tag,
-                            onClickChip = { onIntent(MemoIntent.ClickTagChip(tag = it, index = index)) },
+                            onClickChip = {
+                                onIntent(
+                                    MemoIntent.ClickTagChip(
+                                        tag = it,
+                                        index = index,
+                                    ),
+                                )
+                            },
                         )
                     }
                 }
@@ -160,14 +168,17 @@ internal fun MemoScreen(
                                 .weight(1f),
                         state = lazyListState,
                     ) {
-                        itemsIndexed(state.memos) { index, memo ->
+                        itemsIndexed(state.memos, key = { index, memo ->
+                            memo.id
+                        }) { index, memo ->
                             MemoItem(
                                 id = memo.id,
                                 title = memo.title,
                                 description = memo.description,
-                                categoriesText = memo.tagList.joinToString(separator = ",") { it.label },
-                                createdDateText = memo.createdAt.formatWithSeparator(separator = "."),
+                                categoriesText = memo.tagListText,
+                                createdDateText = memo.createdAt,
                                 onClickMemoItem = { onIntent(MemoIntent.ClickMemo(memoId = it)) },
+                                contentAssignee = memo.contentAssignee,
                             )
                             if (index < state.memos.lastIndex) {
                                 HorizontalDivider(
@@ -195,7 +206,8 @@ internal fun LazyListState.onLastReached(
         remember {
             derivedStateOf {
                 val totalItemsCount = layoutInfo.totalItemsCount
-                val lastVisibleItemIndex = (layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
+                val lastVisibleItemIndex =
+                    (layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
                 totalItemsCount > 0 &&
                     lastVisibleItemIndex >=
                     max(

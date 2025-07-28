@@ -5,8 +5,10 @@ import com.whatever.caramel.core.domain.entity.Memo
 import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.util.DateUtil
+import com.whatever.caramel.feature.memo.model.MemoUiModel
+import com.whatever.caramel.feature.memo.model.TagUiModel
+import com.whatever.caramel.feature.memo.model.toUiModel
 import com.whatever.caramel.feature.memo.mvi.MemoState
-import com.whatever.caramel.feature.memo.mvi.TagUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -38,9 +40,15 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
     private fun createTempMemoList(
         size: Int,
         emptyTitle: Boolean = false,
-    ): ImmutableList<Memo> {
+    ): ImmutableList<MemoUiModel> {
         val list = mutableListOf<Memo>()
         for (index in 0 until size) {
+            val contentAssignee =
+                when {
+                    index % 2 == 0 -> ContentAssignee.US
+                    index % 3 == 0 -> ContentAssignee.PARTNER
+                    else -> ContentAssignee.ME
+                }
             list.add(
                 Memo(
                     id = index.toLong(),
@@ -49,11 +57,11 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
                     isCompleted = false,
                     tagList = createTempTagList(index),
                     createdAt = DateUtil.today(),
-                    contentAssignee = ContentAssignee.US,
+                    contentAssignee = contentAssignee,
                 ),
             )
         }
-        return list.toImmutableList()
+        return list.map { it.toUiModel() }.toImmutableList()
     }
 
     private fun createTempTagList(size: Int): ImmutableList<Tag> {

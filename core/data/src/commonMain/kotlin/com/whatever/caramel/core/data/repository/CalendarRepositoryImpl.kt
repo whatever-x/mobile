@@ -31,7 +31,7 @@ class CalendarRepositoryImpl(
                 endDateTime = parameter.endDateTime,
                 endTimeZone = parameter.endTimeZone,
                 tagIds = parameter.tagIds,
-                contentAssignee = ContentAssigneeDto.US, // @ham2174 FIXME : 파라미터로 넘겨받도록 수정
+                contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
             )
         return safeCall {
             remoteCalendarDataSource.createSchedule(request).toScheduleMetaData()
@@ -72,7 +72,12 @@ class CalendarRepositoryImpl(
         userTimezone: String?,
     ): List<Todo> =
         safeCall {
-            remoteCalendarDataSource.getSchedules(startDate, endDate, userTimezone).toTodo()
+            remoteCalendarDataSource
+                .getSchedules(
+                    startDate = startDate,
+                    endDate = endDate,
+                    userTimeZone = userTimezone,
+                ).toTodo()
         }
 
     override suspend fun getHolidays(year: Int): List<Holiday> =

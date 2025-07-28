@@ -34,7 +34,7 @@ data class ContentDetailState(
         get() =
             when (contentType) {
                 ContentType.MEMO -> memoDetail?.description?.takeIf { memoDetail.title.isNotEmpty() } ?: ""
-                ContentType.CALENDAR -> scheduleDetail?.description?.takeIf { scheduleDetail.title.isNotEmpty() } ?: ""
+                ContentType.CALENDAR -> scheduleDetail?.description?.takeIf { scheduleDetail.title?.isNotEmpty() == true } ?: ""
             }
 
     val tags: ImmutableList<Tag>

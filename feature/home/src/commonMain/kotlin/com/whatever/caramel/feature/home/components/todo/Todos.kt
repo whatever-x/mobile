@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.home.components
+package com.whatever.caramel.feature.home.components.todo
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,21 +16,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import caramel.feature.home.generated.resources.Res
 import caramel.feature.home.generated.resources.start_couple_date_guid
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.feature.home.mvi.TodoState
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
+import com.whatever.caramel.feature.home.mvi.TodoItem
 import kotlinx.collections.immutable.ImmutableList
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 internal fun LazyListScope.todo(
-    todoList: ImmutableList<TodoState>,
+    todoList: ImmutableList<TodoItem>,
     isSetAnniversary: Boolean,
     onClickAnniversaryNudgeCard: () -> Unit,
     onClickTodoItem: (todoContentId: Long) -> Unit,
@@ -81,7 +80,7 @@ internal fun LazyListScope.todo(
 @Composable
 private fun TodoList(
     modifier: Modifier = Modifier,
-    todoList: ImmutableList<TodoState>,
+    todoList: ImmutableList<TodoItem>,
     onClickTodoItem: (todoContentId: Long) -> Unit,
     onClickEmptyTodo: () -> Unit,
 ) {
@@ -120,6 +119,7 @@ private fun TodoList(
                                 vertical = CaramelTheme.spacing.s,
                             ),
                     title = todo.title,
+                    assignee = todo.contentAssignee,
                 )
 
                 if (index < todoList.size - 1) {
@@ -138,6 +138,7 @@ private fun TodoList(
 private fun TodoItem(
     modifier: Modifier = Modifier,
     title: String,
+    assignee: ContentAssignee,
 ) {
     Row(
         modifier = modifier,
@@ -147,77 +148,27 @@ private fun TodoItem(
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(
+        Row(
             modifier = Modifier.weight(weight = 1f),
-            text = title,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            style = CaramelTheme.typography.body3.regular,
-            color = CaramelTheme.color.text.primary,
-        )
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement =
+                Arrangement.spacedBy(
+                    space = CaramelTheme.spacing.s,
+                ),
+        ) {
+            ContentAssigneeChip(assignee = assignee)
+
+            Text(
+                text = title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = CaramelTheme.typography.body3.regular,
+                color = CaramelTheme.color.text.primary,
+            )
+        }
 
         Icon(
             painter = painterResource(resource = Resources.Icon.ic_arrow_right_16),
-            tint = CaramelTheme.color.icon.tertiary,
-            contentDescription = null,
-        )
-    }
-}
-
-@Composable
-private fun EmptyTodo(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            text = "오늘 할 일을 등록해 주세요",
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            style = CaramelTheme.typography.body3.regular,
-            color = CaramelTheme.color.text.placeholder,
-        )
-
-        Icon(
-            painter = painterResource(resource = Resources.Icon.ic_plus_16),
-            tint = CaramelTheme.color.icon.tertiary,
-            contentDescription = null,
-        )
-    }
-}
-
-@Composable
-private fun NudgeCard(
-    modifier: Modifier = Modifier,
-    text: String,
-    iconResource: DrawableResource,
-    onClick: () -> Unit,
-) {
-    Row(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .background(
-                    color = CaramelTheme.color.fill.quaternary,
-                    shape = CaramelTheme.shape.l,
-                ).clip(shape = CaramelTheme.shape.l)
-                .clickable(
-                    onClick = onClick,
-                    indication = null,
-                    interactionSource = null,
-                ).padding(all = CaramelTheme.spacing.l),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            text = text,
-            style = CaramelTheme.typography.body3.bold,
-            color = CaramelTheme.color.text.primary,
-        )
-
-        Icon(
-            painter = painterResource(resource = iconResource),
             tint = CaramelTheme.color.icon.tertiary,
             contentDescription = null,
         )
