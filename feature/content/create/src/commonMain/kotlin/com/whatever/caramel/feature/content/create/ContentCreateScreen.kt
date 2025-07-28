@@ -38,6 +38,7 @@ import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.entity.Tag
+import com.whatever.caramel.core.ui.content.ContentAssigneeChipRow
 import com.whatever.caramel.core.ui.content.ContentTextArea
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.ui.content.CreateModeSwitch
@@ -54,6 +55,7 @@ import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
 import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 internal fun ContentScreen(
@@ -131,6 +133,25 @@ internal fun ContentScreen(
                     Column(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
+                        ContentAssigneeChipRow(
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = CaramelTheme.spacing.xl),
+                            selectedAssigneeChip = state.selectedAssignee,
+                            onAssigneeChipClick = { assignee ->
+                                onIntent(ContentCreateIntent.ClickAssignee(assignee = assignee))
+                            },
+                        )
+
+                        HorizontalDivider(
+                            modifier =
+                                Modifier.padding(
+                                    horizontal = CaramelTheme.spacing.xl,
+                                    vertical = CaramelTheme.spacing.m,
+                                ),
+                        )
+
                         SelectableTagChipRow(
                             modifier = Modifier.fillMaxWidth(),
                             tagChips =
@@ -145,7 +166,15 @@ internal fun ContentScreen(
                                 onIntent(ContentCreateIntent.ClickTag(Tag(it.id, it.label)))
                             },
                         )
-                        Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.xl))
+
+                        HorizontalDivider(
+                            modifier =
+                                Modifier.padding(
+                                    horizontal = CaramelTheme.spacing.xl,
+                                    vertical = CaramelTheme.spacing.m,
+                                ),
+                        )
+
                         Row(
                             modifier =
                                 Modifier
@@ -299,6 +328,27 @@ internal fun ContentScreen(
                     },
                 )
             },
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun ContentCreateScreenPreview() {
+    CaramelTheme {
+        ContentScreen(
+            state =
+                ContentCreateState(
+                    tags =
+                        (0L..5L)
+                            .map {
+                                Tag(
+                                    id = it,
+                                    label = "asd",
+                                )
+                            }.toImmutableList(),
+                ),
+            onIntent = {},
         )
     }
 }

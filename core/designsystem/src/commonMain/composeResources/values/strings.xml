@@ -2,4 +2,10 @@
 <resources>
 	<string name="terms_of_service_url">https://given-dragon.notion.site/20d870f222b980a885e6e5322b66ab42?pvs=74</string>
 	<string name="privacy_policy_url">https://given-dragon.notion.site/20d870f222b980519758ef53d6bf5753?pvs=74</string>
+
+	<!-- Content -->
+	<string name="me">나</string>
+	<string name="us">우리</string>
+	<string name="partner">연인</string>
+
 </resources>
