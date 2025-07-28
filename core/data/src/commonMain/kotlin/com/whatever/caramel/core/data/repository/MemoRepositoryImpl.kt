@@ -53,7 +53,7 @@ class MemoRepositoryImpl(
                             endTimezone = endTimezone,
                         )
                     },
-                contentAssignee = ContentAssigneeDto.US, // @ham2174 FIXME : 파라미터로 넘겨받도록 수정
+                contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
             )
         safeCall {
             remoteMemoDataSource.updateMemo(memoId, request)

@@ -51,6 +51,7 @@ import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.entity.Tag
+import com.whatever.caramel.core.ui.content.ContentAssigneeChipRow
 import com.whatever.caramel.core.ui.content.ContentTextArea
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.ui.content.CreateModeSwitch
@@ -145,6 +146,25 @@ internal fun ContentEditScreen(
                     Column(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
+                        ContentAssigneeChipRow(
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = CaramelTheme.spacing.xl),
+                            selectedAssigneeChip = state.selectedAssignee,
+                            onAssigneeChipClick = { assignee ->
+                                onIntent(ContentEditIntent.ClickAssignee(assignee = assignee))
+                            },
+                        )
+
+                        HorizontalDivider(
+                            modifier =
+                                Modifier.padding(
+                                    horizontal = CaramelTheme.spacing.xl,
+                                    vertical = CaramelTheme.spacing.m,
+                                ),
+                        )
+
                         SelectableTagChipRow(
                             modifier = Modifier.fillMaxWidth(),
                             tagChips =
@@ -159,7 +179,15 @@ internal fun ContentEditScreen(
                                 onIntent(ContentEditIntent.ClickTag(Tag(tagChip.id, tagChip.label)))
                             },
                         )
-                        Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.xl))
+
+                        HorizontalDivider(
+                            modifier =
+                                Modifier.padding(
+                                    horizontal = CaramelTheme.spacing.xl,
+                                    vertical = CaramelTheme.spacing.m,
+                                ),
+                        )
+
                         Row(
                             modifier =
                                 Modifier

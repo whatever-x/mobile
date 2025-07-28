@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.content.edit.mvi
 
 import com.whatever.caramel.core.domain.entity.Tag
+import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.viewmodel.UiIntent
 
@@ -28,6 +29,10 @@ sealed interface ContentEditIntent : UiIntent {
     data object ConfirmDeleteDialog : ContentEditIntent
 
     data object DismissDeletedContentDialog : ContentEditIntent
+
+    data class ClickAssignee(
+        val assignee: ContentAssigneeUiModel,
+    ) : ContentEditIntent
 
     data class ClickTag(
         val tag: Tag,

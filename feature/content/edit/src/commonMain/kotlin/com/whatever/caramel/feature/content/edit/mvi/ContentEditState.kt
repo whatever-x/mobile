@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.content.edit.mvi
 
 import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.domain.vo.content.ContentType
+import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.UiState
@@ -19,6 +20,7 @@ data class ContentEditState(
     val content: String = "",
     val tags: ImmutableList<Tag> = persistentListOf(),
     val selectedTags: ImmutableSet<Tag> = persistentSetOf(),
+    val selectedAssignee: ContentAssigneeUiModel = ContentAssigneeUiModel.ME,
     val createMode: CreateMode = if (type == ContentType.MEMO) CreateMode.MEMO else CreateMode.CALENDAR,
     val showDateDialog: Boolean = false,
     val showTimeDialog: Boolean = false,
