@@ -45,7 +45,7 @@ internal fun ContentDetailScreen(
 ) {
     val uriHandler = LocalUriHandler.current
     val verticalScrollState = rememberScrollState()
-    val (roleTextRes, roleTextColor) =
+    val (assigneeTextRes, assigneeTextColor) =
         when (state.role) {
             ContentAssignee.ME -> Res.string.my to CaramelTheme.color.text.labelAccent4
             ContentAssignee.PARTNER -> Res.string.partner to CaramelTheme.color.text.primary
@@ -114,8 +114,8 @@ internal fun ContentDetailScreen(
         ) {
             Text(
                 modifier = Modifier.padding(top = CaramelTheme.spacing.xs),
-                text = stringResource(roleTextRes) + " " + stringResource(contentTypeRes),
-                color = roleTextColor,
+                text = stringResource(assigneeTextRes) + " " + stringResource(contentTypeRes),
+                color = assigneeTextColor,
                 style = CaramelTheme.typography.body2.bold,
             )
             TitleTextField(
