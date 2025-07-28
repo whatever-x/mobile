@@ -55,7 +55,7 @@ data class ContentDetailState(
     val role: ContentAssignee
         get() =
             when (contentType) {
-                ContentType.MEMO -> memoDetail?.role ?: ContentAssignee.US
+                ContentType.MEMO -> memoDetail?.contentAssignee ?: ContentAssignee.US
                 ContentType.CALENDAR -> scheduleDetail?.contentAssignee ?: ContentAssignee.US
             }
 
