@@ -43,7 +43,7 @@ internal fun MemoItem(
     description: String,
     categoriesText: String,
     createdDateText: String,
-    assignee: ContentAssignee,
+    contentAssignee: ContentAssignee,
     onClickMemoItem: (Long) -> Unit,
 ) {
     val isTitleOrDescriptionEmpty = title.isEmpty() || description.isEmpty()
@@ -80,7 +80,7 @@ internal fun MemoItem(
             )
         }
         TabMetaData(
-            assignee = assignee,
+            contentAssignee = contentAssignee,
             createdDateText = createdDateText,
             categoriesText = categoriesText,
         )
@@ -89,13 +89,13 @@ internal fun MemoItem(
 
 @Composable
 internal fun TabMetaData(
-    assignee: ContentAssignee,
+    contentAssignee: ContentAssignee,
     createdDateText: String,
     categoriesText: String,
 ) {
     val memoText =
         stringResource(
-            when (assignee) {
+            when (contentAssignee) {
                 ContentAssignee.ME -> Res.string.my_memo
                 ContentAssignee.PARTNER -> Res.string.partner_memo
                 ContentAssignee.US -> Res.string.both_memo

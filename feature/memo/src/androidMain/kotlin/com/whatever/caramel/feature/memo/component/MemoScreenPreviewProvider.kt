@@ -43,7 +43,7 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
     ): ImmutableList<MemoUiModel> {
         val list = mutableListOf<Memo>()
         for (index in 0 until size) {
-            val role =
+            val contentAssignee =
                 when {
                     index % 2 == 0 -> ContentAssignee.US
                     index % 3 == 0 -> ContentAssignee.PARTNER
@@ -57,7 +57,7 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
                     isCompleted = false,
                     tagList = createTempTagList(index),
                     createdAt = DateUtil.today(),
-                    contentAssignee = role,
+                    contentAssignee = contentAssignee,
                 ),
             )
         }
