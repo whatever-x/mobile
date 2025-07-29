@@ -49,7 +49,7 @@ internal fun MemoItem(
 ) {
     val isTitleOrDescriptionEmpty = title.isEmpty() || description.isEmpty()
     val subText = description.replace(lineBreakRegex, " ")
-    val mainText = title.ifEmpty {subText }
+    val mainText = title.ifEmpty { subText }
 
     Column(
         modifier =
