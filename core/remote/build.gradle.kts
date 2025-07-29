@@ -19,7 +19,10 @@ android {
         val properties = Properties().apply { load(rootProject.file("local.properties").inputStream()) }
         val debugUrl = "CARAMEL_DEBUG_URL"
         val releaseUrl = "CARAMEL_RELEASE_URL"
-        val sampleUrl = "CARAMEL_SAMPLE_URL"
+
+        fun getEnvOrProp(key: String): String {
+            return System.getenv(key) ?: properties.getProperty(key)
+        }
 
         getByName("release") {
             isMinifyEnabled = false
@@ -27,12 +30,7 @@ android {
             buildConfigField(
                 "String",
                 "BASE_URL",
-                properties.getProperty(releaseUrl),
-            )
-            buildConfigField(
-                "String",
-                "SAMPLE_URL",
-                properties.getProperty(sampleUrl),
+                "\"${getEnvOrProp(key = releaseUrl)}\"",
             )
         }
 
@@ -40,12 +38,7 @@ android {
             buildConfigField(
                 "String",
                 "BASE_URL",
-                properties.getProperty(debugUrl),
-            )
-            buildConfigField(
-                "String",
-                "SAMPLE_URL",
-                properties.getProperty(sampleUrl),
+                "\"${properties.getProperty(debugUrl)}\"",
             )
         }
     }
