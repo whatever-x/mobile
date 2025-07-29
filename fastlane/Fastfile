@@ -26,7 +26,7 @@ platform :android do
 
     gradle(
       task: "bundle",
-      build_type: "Debug",
+      build_type: "Release",
       project_dir: "./"
     )
 
@@ -72,7 +72,8 @@ platform :ios do
       scheme: "iosApp",
       export_method: "app-store",
       project: "app-ios/iosApp.xcodeproj",
-      configuration: "Debug"
+      configuration: "Release",
+      xcargs: "CARAMEL_BASE_URL=#{ENV["CARAMEL_RELEASE_URL"]}"
     )
 
     api_key = app_store_connect_api_key(
