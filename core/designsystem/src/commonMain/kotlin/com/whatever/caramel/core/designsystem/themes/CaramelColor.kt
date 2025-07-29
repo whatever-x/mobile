@@ -73,6 +73,7 @@ data class CaramelColor(
         val disabledPrimary: Color = Neutral200,
         val disabledBrand: Color = Orange200,
         val labelBrand: Color = Orange300,
+        val accent1 : Color = Green600,
         val labelAccent1: Color = Red500,
         val labelAccent2: Color = Orange500,
         val labelAccent3: Color = Green200,
