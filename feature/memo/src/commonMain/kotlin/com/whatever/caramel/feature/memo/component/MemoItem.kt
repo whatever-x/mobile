@@ -48,7 +48,8 @@ internal fun MemoItem(
     onClickMemoItem: (Long) -> Unit,
 ) {
     val isTitleOrDescriptionEmpty = title.isEmpty() || description.isEmpty()
-    val mainText = title.ifEmpty { description.replace(lineBreakRegex, "") }
+    val subText = description.replace(lineBreakRegex, " ")
+    val mainText = title.ifEmpty {subText }
 
     Column(
         modifier =
@@ -73,7 +74,7 @@ internal fun MemoItem(
             Spacer(modifier = Modifier.height(CaramelTheme.spacing.xs))
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = description,
+                text = subText,
                 maxLines = 4,
                 overflow = TextOverflow.Ellipsis,
                 style = CaramelTheme.typography.body2.regular,
