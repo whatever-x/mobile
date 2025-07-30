@@ -2,13 +2,13 @@ package com.whatever.caramel.core.domain.repository
 
 import com.whatever.caramel.core.domain.vo.auth.AuthToken
 import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
-import com.whatever.caramel.core.domain.vo.auth.UserAuth
+import com.whatever.caramel.core.domain.vo.auth.AuthResult
 
 interface AuthRepository {
     suspend fun loginWithSocialPlatform(
         idToken: String,
         socialLoginType: SocialLoginType,
-    ): UserAuth
+    ): AuthResult
 
     suspend fun refreshAuthToken(oldToken: AuthToken): AuthToken
 
