@@ -222,7 +222,8 @@ internal fun CalendarScreen(
                                 },
                             ) { index, todo ->
                                 val isLastItem = index == schedule.todos.lastIndex
-                                val spacerHeight = if (isLastItem) CaramelTheme.spacing.l else CaramelTheme.spacing.s
+                                val spacerHeight =
+                                    if (isLastItem) CaramelTheme.spacing.l else CaramelTheme.spacing.s
 
                                 BottomSheetTodoItem(
                                     id = todo.id,
@@ -241,7 +242,10 @@ internal fun CalendarScreen(
                                 ) {
                                     DefaultBottomSheetTodoItem()
                                 }
-                                Spacer(modifier = Modifier.height(spacerHeight))
+                                Spacer(modifier = Modifier.height(height = spacerHeight))
+                                if (isLastItem) {
+                                    Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.xl))
+                                }
                             }
                         }
                     }
