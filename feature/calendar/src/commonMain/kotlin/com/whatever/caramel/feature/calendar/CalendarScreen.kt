@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -214,12 +215,15 @@ internal fun CalendarScreen(
                                 )
                                 Spacer(modifier = Modifier.height(CaramelTheme.spacing.s))
                             }
-                            items(
+                            itemsIndexed(
                                 items = schedule.todos,
-                                key = { todo ->
+                                key = { _, todo ->
                                     todo.id
                                 },
-                            ) { todo ->
+                            ) { index, todo ->
+                                val isLastItem = index == schedule.todos.lastIndex
+                                val spacerHeight = if (isLastItem) CaramelTheme.spacing.l else CaramelTheme.spacing.s
+
                                 BottomSheetTodoItem(
                                     id = todo.id,
                                     title = todo.title,
@@ -237,7 +241,7 @@ internal fun CalendarScreen(
                                 ) {
                                     DefaultBottomSheetTodoItem()
                                 }
-                                Spacer(modifier = Modifier.height(CaramelTheme.spacing.xl))
+                                Spacer(modifier = Modifier.height(spacerHeight))
                             }
                         }
                     }
