@@ -20,9 +20,7 @@ android {
         val debugUrl = "CARAMEL_DEBUG_URL"
         val releaseUrl = "CARAMEL_RELEASE_URL"
 
-        fun getEnvOrProp(key: String): String {
-            return System.getenv(key) ?: properties.getProperty(key)
-        }
+        fun getEnvOrProp(key: String): String = System.getenv(key) ?: properties.getProperty(key)
 
         getByName("release") {
             isMinifyEnabled = false
