@@ -128,10 +128,10 @@ internal fun ContentDetailScreen(
             )
 
             Column(
-                modifier = Modifier.padding(top = CaramelTheme.spacing.l),
+                modifier = Modifier.padding(top = CaramelTheme.spacing.xl),
                 verticalArrangement =
                     Arrangement.spacedBy(
-                        space = CaramelTheme.spacing.l,
+                        space = CaramelTheme.spacing.xl,
                         alignment = Alignment.Top,
                     ),
             ) {
