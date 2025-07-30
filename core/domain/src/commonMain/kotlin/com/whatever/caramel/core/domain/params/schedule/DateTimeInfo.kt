@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain.vo.common
+package com.whatever.caramel.core.domain.params.schedule
 
 data class DateTimeInfo(
     val startDateTime: String,

@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.domain.params.content
 
-import com.whatever.caramel.core.domain.vo.common.DateTimeInfo
+import com.whatever.caramel.core.domain.params.schedule.DateTimeInfo
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 
 data class MemoEditParameter(

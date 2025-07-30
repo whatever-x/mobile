@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.domain.params.schedule
 
-import com.whatever.caramel.core.domain.vo.common.DateTimeInfo
+import com.whatever.caramel.core.domain.params.schedule.DateTimeInfo
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 
 data class ScheduleEditParameter(

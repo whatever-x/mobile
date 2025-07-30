@@ -16,7 +16,7 @@ import com.whatever.caramel.core.domain.usecase.content.UpdateContentUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.validator.ContentValidator
 import com.whatever.caramel.core.domain.params.schedule.ScheduleEditParameter
-import com.whatever.caramel.core.domain.vo.common.DateTimeInfo
+import com.whatever.caramel.core.domain.params.schedule.DateTimeInfo
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.params.content.MemoEditParameter
