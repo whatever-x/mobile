@@ -2,7 +2,6 @@ package com.whatever.caramel.feature.content.detail.mvi
 
 import com.whatever.caramel.core.domain.entity.Memo
 import com.whatever.caramel.core.domain.entity.Tag
-import com.whatever.caramel.core.domain.vo.calendar.ScheduleDetail
 import com.whatever.caramel.core.domain.vo.common.LinkMetaData
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentType

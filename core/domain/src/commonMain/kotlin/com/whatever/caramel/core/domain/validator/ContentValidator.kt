@@ -1,9 +1,11 @@
 package com.whatever.caramel.core.domain.validator
 
+import com.whatever.caramel.core.domain.entity.Content.Companion.MAX_BODY_LENGTH
+import com.whatever.caramel.core.domain.entity.Content.Companion.MAX_TITLE_LENGTH
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
-import com.whatever.caramel.core.domain.validator.util.codePointCount
+import com.whatever.caramel.core.domain.legacy.core_util.codePointCount
 
 object ContentValidator {
     fun checkInputTitleValidate(input: String): Result<String> =
@@ -46,7 +48,4 @@ object ContentValidator {
                 )
             else -> Result.success(input)
         }
-
-    const val MAX_TITLE_LENGTH = 30
-    const val MAX_BODY_LENGTH = 5000
 }

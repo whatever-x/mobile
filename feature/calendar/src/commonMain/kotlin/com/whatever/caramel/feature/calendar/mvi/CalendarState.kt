@@ -1,6 +1,5 @@
 package com.whatever.caramel.feature.calendar.mvi
 
-import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
 import com.whatever.caramel.core.domain.vo.couple.Anniversary
 import com.whatever.caramel.core.ui.picker.model.DateUiState

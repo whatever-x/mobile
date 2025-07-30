@@ -1,9 +1,8 @@
 package com.whatever.caramel.feature.calendar.component
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
-import com.whatever.caramel.core.domain.vo.calendar.Calendar
+import com.whatever.caramel.core.domain.policy.CalendarPolicy
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.couple.Anniversary
 import com.whatever.caramel.core.domain.vo.couple.AnniversaryType
@@ -56,7 +55,7 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
         (1..DateUtil.getLastDayOfMonth(year, month.number))
             .map { LocalDate(year, month, it) }
 
-    private fun pageIndex(): Int = Calendar.YEAR_RANGE.indexOf(year) * 12 + (month.number - 1)
+    private fun pageIndex(): Int = CalendarPolicy.YEAR_RANGE.indexOf(year) * 12 + (month.number - 1)
 
     private fun date(day: Int) = LocalDate(year, month, day)
 

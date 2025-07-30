@@ -4,13 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
-import com.whatever.caramel.core.domain.usecase.calendar.GetHolidaysUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.GetTodosGroupByStartDateUseCase
-import com.whatever.caramel.core.domain.usecase.couple.GetAnniversariesUseCase
-import com.whatever.caramel.core.domain.vo.calendar.AnniversariesOnDate
-import com.whatever.caramel.core.domain.vo.calendar.Calendar
-import com.whatever.caramel.core.domain.vo.calendar.HolidaysOnDate
-import com.whatever.caramel.core.domain.vo.calendar.TodosOnDate
+import com.whatever.caramel.core.domain.usecase.schedule.GetHolidaysUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.GetTodosGroupByStartDateUseCase
+import com.whatever.caramel.core.domain.usecase.couple.GetAnniversariesByPeriodUseCase
+import com.whatever.caramel.core.domain.legacy.legacy_ui.AnniversariesOnDate
+import com.whatever.caramel.core.domain.policy.CalendarPolicy
+import com.whatever.caramel.core.domain.legacy.legacy_ui.HolidaysOnDate
+import com.whatever.caramel.core.domain.legacy.legacy_ui.TodosOnDate
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.util.DateFormatter
 import com.whatever.caramel.core.util.DateUtil
@@ -31,7 +31,7 @@ import kotlinx.datetime.number
 class CalendarViewModel(
     private val getTodosGroupByStartDateUseCase: GetTodosGroupByStartDateUseCase,
     private val getHolidaysUseCase: GetHolidaysUseCase,
-    private val getAnniversariesUseCase: GetAnniversariesUseCase,
+    private val getAnniversariesByPeriodUseCase: GetAnniversariesByPeriodUseCase,
     crashlytics: CaramelCrashlytics,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(
@@ -283,7 +283,7 @@ class CalendarViewModel(
                 }
             val anniversariesDeferred =
                 async {
-                    getAnniversariesUseCase(
+                    getAnniversariesByPeriodUseCase(
                         startDate = firstDayOfMonth,
                         endDate = lastDayOfMonth,
                     )
@@ -411,7 +411,7 @@ class CalendarViewModel(
         year: Int,
         month: Month,
     ): Int {
-        val index = Calendar.YEAR_RANGE.indexOf(year)
+        val index = CalendarPolicy.YEAR_RANGE.indexOf(year)
         return index * 12 + (month.number - 1)
     }
 }

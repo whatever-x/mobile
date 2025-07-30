@@ -1,6 +1,6 @@
 package com.whatever.caramel.feature.home.mvi
 
-import com.whatever.caramel.core.domain.validator.util.codePointCount
+import com.whatever.caramel.core.domain.legacy.core_util.codePointCount
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.viewmodel.UiState

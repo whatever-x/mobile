@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.data.mapper
 
 import com.whatever.caramel.core.domain.vo.auth.AuthToken
-import com.whatever.caramel.core.domain.vo.auth.UserAuth
+import com.whatever.caramel.core.domain.model.user.UserAuth
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.remote.dto.auth.ServiceTokenDto
 import com.whatever.caramel.core.remote.dto.auth.response.SignInResponse

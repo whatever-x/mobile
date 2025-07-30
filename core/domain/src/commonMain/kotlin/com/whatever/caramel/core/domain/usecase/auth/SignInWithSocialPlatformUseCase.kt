@@ -4,7 +4,7 @@ import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.repository.CoupleRepository
 import com.whatever.caramel.core.domain.repository.UserRepository
 import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
-import com.whatever.caramel.core.domain.vo.auth.UserAuth
+import com.whatever.caramel.core.domain.model.user.UserAuth
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 
 class SignInWithSocialPlatformUseCase(

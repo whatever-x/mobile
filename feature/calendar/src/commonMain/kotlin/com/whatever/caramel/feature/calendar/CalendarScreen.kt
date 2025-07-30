@@ -35,7 +35,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import com.whatever.caramel.core.designsystem.components.CaramelPullToRefreshIndicator
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.domain.vo.calendar.Calendar
+import com.whatever.caramel.core.domain.policy.CalendarPolicy
 import com.whatever.caramel.feature.calendar.component.CalendarDatePicker
 import com.whatever.caramel.feature.calendar.component.CurrentDateMenu
 import com.whatever.caramel.feature.calendar.component.bottomSheet.BottomSheetTodoItem
@@ -60,7 +60,7 @@ internal fun CalendarScreen(
     onIntent: (CalendarIntent) -> Unit,
 ) {
     val pagerState =
-        rememberPagerState(initialPage = state.pageIndex) { Calendar.yearSize * Month.entries.size }
+        rememberPagerState(initialPage = state.pageIndex) { CalendarPolicy.yearSize * Month.entries.size }
     val bottomSheetState = rememberStandardBottomSheetState()
     val bottomSheetScaffoldState =
         rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)

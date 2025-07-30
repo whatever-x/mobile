@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
-import com.whatever.caramel.core.domain.usecase.content.GetMemosUseCase
+import com.whatever.caramel.core.domain.usecase.content.GetContentsUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.viewmodel.BaseViewModel
@@ -17,7 +17,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 class MemoViewModel(
-    private val getMemosUseCase: GetMemosUseCase,
+    private val getContentsUseCase: GetContentsUseCase,
     private val getTagUseCase: GetTagUseCase,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
@@ -144,7 +144,7 @@ class MemoViewModel(
     private fun getMemos() {
         launch {
             val newMemos =
-                getMemosUseCase(
+                getContentsUseCase(
                     size = 10,
                     cursor = currentState.cursor,
                     tagId = currentState.selectedTag?.id,

@@ -1,9 +1,6 @@
 package com.whatever.caramel.core.data.mapper
 
-import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
-import com.whatever.caramel.core.domain.vo.calendar.ScheduleDetail
-import com.whatever.caramel.core.domain.vo.calendar.ScheduleMetadata
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.remote.dto.calendar.CalendarDetailResponse
 import com.whatever.caramel.core.remote.dto.calendar.HolidayDetailListResponse

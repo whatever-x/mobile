@@ -20,8 +20,8 @@ fun BalanceGameResponse.toBalanceGameResult(): BalanceGameResult =
         partnerChoice = this.partnerChoice?.toBalanceGameOption(),
     )
 
-fun OptionInfoDto.toBalanceGameOption(): BalanceGameOption =
-    BalanceGameOption(
+fun OptionInfoDto.toBalanceGameOption(): BalanceGame.BalanceGameOption =
+    BalanceGame.BalanceGameOption(
         optionId = this.optionId,
         text = this.text,
     )

@@ -2,7 +2,7 @@ package com.whatever.caramel.core.domain.repository
 
 import com.whatever.caramel.core.domain.vo.auth.AuthToken
 import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
-import com.whatever.caramel.core.domain.vo.auth.UserAuth
+import com.whatever.caramel.core.domain.model.user.UserAuth
 
 interface AuthRepository {
     suspend fun loginWithSocialPlatform(

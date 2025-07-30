@@ -1,5 +1,7 @@
 package com.whatever.caramel.core.domain.validator
 
+import com.whatever.caramel.core.domain.entity.User.Companion.NICKNAME_MAX_LENGTH
+import com.whatever.caramel.core.domain.entity.User.Companion.NICKNAME_MIN_LENGTH
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.UserErrorCode
@@ -67,8 +69,4 @@ object UserValidator {
                 )
             else -> Result.success(input)
         }
-
-    const val NICKNAME_MIN_LENGTH = 2
-    const val NICKNAME_MAX_LENGTH = 8
-    private val NICKNAME_VALID_PATTERN = Regex("^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]*\$")
 }

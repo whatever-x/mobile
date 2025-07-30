@@ -29,11 +29,6 @@ android {
                 "BASE_URL",
                 properties.getProperty(releaseUrl),
             )
-            buildConfigField(
-                "String",
-                "SAMPLE_URL",
-                properties.getProperty(sampleUrl),
-            )
         }
 
         getByName("debug") {
@@ -41,11 +36,6 @@ android {
                 "String",
                 "BASE_URL",
                 properties.getProperty(debugUrl),
-            )
-            buildConfigField(
-                "String",
-                "SAMPLE_URL",
-                properties.getProperty(sampleUrl),
             )
         }
     }
