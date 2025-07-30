@@ -195,9 +195,9 @@ internal fun CalendarScreen(
                                 .background(color = CaramelTheme.color.background.tertiary)
                                 .padding(
                                     top = CaramelTheme.spacing.xs,
-                                    bottom = CaramelTheme.spacing.l,
+                                    bottom = 36.dp,
                                     start = CaramelTheme.spacing.xl,
-                                    end = 36.dp,
+                                    end = CaramelTheme.spacing.xl,
                                 ).height(availableHeight),
                         state = lazyListState,
                     ) {
