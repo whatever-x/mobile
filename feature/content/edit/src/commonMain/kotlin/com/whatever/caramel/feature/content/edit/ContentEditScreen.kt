@@ -163,6 +163,7 @@ internal fun ContentEditScreen(
                                     horizontal = CaramelTheme.spacing.xl,
                                     vertical = CaramelTheme.spacing.m,
                                 ),
+                            color = CaramelTheme.color.divider.primary,
                         )
 
                         SelectableTagChipRow(
@@ -186,6 +187,7 @@ internal fun ContentEditScreen(
                                     horizontal = CaramelTheme.spacing.xl,
                                     vertical = CaramelTheme.spacing.m,
                                 ),
+                            color = CaramelTheme.color.divider.primary,
                         )
 
                         Row(
