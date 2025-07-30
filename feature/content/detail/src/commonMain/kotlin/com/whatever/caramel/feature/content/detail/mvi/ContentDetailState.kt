@@ -52,7 +52,7 @@ data class ContentDetailState(
             return "${parsed.year}년 ${parsed.monthNumber}월 ${parsed.dayOfMonth}일"
         }
 
-    val role: ContentAssignee
+    val contentAssignee: ContentAssignee
         get() =
             when (contentType) {
                 ContentType.MEMO -> memoDetail?.contentAssignee ?: ContentAssignee.US
