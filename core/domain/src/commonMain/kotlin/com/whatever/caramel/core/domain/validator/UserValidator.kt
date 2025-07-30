@@ -26,15 +26,6 @@ object UserValidator {
                         errorUiType = ErrorUiType.TOAST,
                     ),
                 )
-            !input.matches(NICKNAME_VALID_PATTERN) ->
-                Result.failure(
-                    CaramelException(
-                        code = UserErrorCode.INVALID_NICKNAME_CHARACTER,
-                        message = "닉네임은 영문, 숫자, 한글만 사용할 수 있습니다.",
-                        debugMessage = "Nickname should only contain English letters, numbers, and Korean characters.",
-                        errorUiType = ErrorUiType.TOAST,
-                    ),
-                )
             else -> Result.success(Unit)
         }
 
@@ -45,11 +36,11 @@ object UserValidator {
      * */
     fun checkNicknameValidate(input: String): Result<String> =
         when {
-            input.length > NICKNAME_MAX_LENGTH ->
+            input.length !in NICKNAME_MIN_LENGTH..NICKNAME_MAX_LENGTH ->
                 Result.failure(
                     CaramelException(
                         code = UserErrorCode.INVALID_NICKNAME_LENGTH,
-                        message = "닉네임은 $NICKNAME_MIN_LENGTH 자리 이상, $NICKNAME_MAX_LENGTH 자리 이하여야 합니다.",
+                        message = "닉네임은 ${NICKNAME_MIN_LENGTH}자리 이상, ${NICKNAME_MAX_LENGTH}자리 이하여야 합니다.",
                         debugMessage =
                             "Nicknames must have at least $NICKNAME_MIN_LENGTH " +
                                 "character and no more than $NICKNAME_MAX_LENGTH characters.",
@@ -70,5 +61,5 @@ object UserValidator {
 
     const val NICKNAME_MIN_LENGTH = 2
     const val NICKNAME_MAX_LENGTH = 8
-    private val NICKNAME_VALID_PATTERN = Regex("^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]*\$")
+    private val NICKNAME_VALID_PATTERN = Regex("^[가-힣a-zA-Z0-9]+$")
 }

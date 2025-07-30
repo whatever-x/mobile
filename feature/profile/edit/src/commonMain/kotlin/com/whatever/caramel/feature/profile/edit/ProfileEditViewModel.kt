@@ -87,15 +87,12 @@ class ProfileEditViewModel(
     }
 
     private fun updateNickname(nickname: String) {
-        UserValidator
-            .checkInputNicknameValidate(nickname)
-            .onSuccess {
-                reduce {
-                    copy(
-                        nickName = nickname,
-                    )
-                }
-            }
+        UserValidator.checkInputNicknameValidate(nickname).getOrThrow()
+        reduce {
+            copy(
+                nickName = nickname,
+            )
+        }
     }
 
     private fun updateBirthdayYear(year: Int) {

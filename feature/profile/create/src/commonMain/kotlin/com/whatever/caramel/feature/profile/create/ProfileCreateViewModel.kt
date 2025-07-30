@@ -24,13 +24,16 @@ class ProfileCreateViewModel(
     private val permissionsController: PermissionsController,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
-) : BaseViewModel<ProfileCreateState, ProfileCreateSideEffect, ProfileCreateIntent>(savedStateHandle, crashlytics) {
+) : BaseViewModel<ProfileCreateState, ProfileCreateSideEffect, ProfileCreateIntent>(
+        savedStateHandle,
+        crashlytics,
+    ) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): ProfileCreateState = ProfileCreateState()
 
     override suspend fun handleIntent(intent: ProfileCreateIntent) {
         when (intent) {
             is ProfileCreateIntent.ClickBackButton -> backStep()
-            is ProfileCreateIntent.ClickNextButton -> nextStep()
+            is ProfileCreateIntent.ClickNextButton -> checkNextStep()
             is ProfileCreateIntent.ClickSystemNavigationBackButton -> backStep()
             is ProfileCreateIntent.ChangeNickname -> inputNickname(nickname = intent.nickname)
             is ProfileCreateIntent.ClickGenderButton -> selectGender(gender = intent.gender)
@@ -58,6 +61,7 @@ class ProfileCreateViewModel(
                             message = throwable.message,
                         ),
                     )
+
                 ErrorUiType.DIALOG ->
                     postSideEffect(
                         ProfileCreateSideEffect.ShowErrorDialog(
@@ -89,15 +93,16 @@ class ProfileCreateViewModel(
         }
     }
 
-    private suspend fun nextStep() {
-        if (currentState.currentStep != ProfileCreateStep.NEED_TERMS) {
-            reduce {
-                copy(
-                    currentStep = ProfileCreateStep.entries[currentIndex + 1],
-                )
+    private suspend fun checkNextStep() {
+        when (currentState.currentStep) {
+            ProfileCreateStep.NICKNAME -> {
+                UserValidator
+                    .checkNicknameValidate(currentState.nickname)
+                    .onSuccess { moveNextStep() }
+                    .onFailure { throw it }
             }
-        } else {
-            launch {
+
+            ProfileCreateStep.NEED_TERMS -> {
                 val userStatus =
                     createUserProfileUseCase(
                         nickname = currentState.nickname,
@@ -120,6 +125,16 @@ class ProfileCreateViewModel(
                 )
                 postSideEffect(ProfileCreateSideEffect.NavigateToStartDestination(userStatus = userStatus))
             }
+
+            else -> moveNextStep()
+        }
+    }
+
+    private fun moveNextStep() {
+        reduce {
+            copy(
+                currentStep = ProfileCreateStep.entries[currentIndex + 1],
+            )
         }
     }
 
