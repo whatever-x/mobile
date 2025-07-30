@@ -1,15 +1,13 @@
 package com.whatever.caramel.core.data.repository
 
 import com.whatever.caramel.core.data.mapper.toMemo
-import com.whatever.caramel.core.data.mapper.toMemoMetaData
 import com.whatever.caramel.core.data.mapper.toMemosWithCursor
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.domain.entity.Memo
 import com.whatever.caramel.core.domain.repository.MemoRepository
-import com.whatever.caramel.core.domain.vo.memo.MemoEditParameter
-import com.whatever.caramel.core.domain.vo.memo.MemoMetadata
-import com.whatever.caramel.core.domain.vo.memo.MemoParameter
-import com.whatever.caramel.core.domain.vo.memo.MemoWithCursor
+import com.whatever.caramel.core.domain.vo.content.memo.CreateMemoParameter
+import com.whatever.caramel.core.domain.vo.content.memo.EditMemoParameter
+import com.whatever.caramel.core.domain.vo.content.memo.MemoWithCursor
 import com.whatever.caramel.core.remote.datasource.RemoteMemoDataSource
 import com.whatever.caramel.core.remote.dto.memo.ContentAssigneeDto
 import com.whatever.caramel.core.remote.dto.memo.request.CreateMemoRequest
@@ -20,7 +18,7 @@ import com.whatever.caramel.core.remote.dto.tag.TagRequest
 class MemoRepositoryImpl(
     private val remoteMemoDataSource: RemoteMemoDataSource,
 ) : MemoRepository {
-    override suspend fun createMemo(parameter: MemoParameter): MemoMetadata {
+    override suspend fun createMemo(parameter: CreateMemoParameter) {
         val request =
             CreateMemoRequest(
                 title = parameter.title,
@@ -30,13 +28,13 @@ class MemoRepositoryImpl(
                 contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
             )
         return safeCall {
-            remoteMemoDataSource.createMemo(request).toMemoMetaData()
+            remoteMemoDataSource.createMemo(request)
         }
     }
 
     override suspend fun updateMemo(
         memoId: Long,
-        parameter: MemoEditParameter,
+        parameter: EditMemoParameter,
     ) {
         val request =
             UpdateMemoRequest(

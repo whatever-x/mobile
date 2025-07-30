@@ -1,17 +1,14 @@
 package com.whatever.caramel.core.data.repository
 
-import com.whatever.caramel.core.data.mapper.toHoliday
-import com.whatever.caramel.core.data.mapper.toScheduleDetailVO
-import com.whatever.caramel.core.data.mapper.toScheduleMetaData
-import com.whatever.caramel.core.data.mapper.toTodo
+import com.whatever.caramel.core.data.mapper.toHolidays
+import com.whatever.caramel.core.data.mapper.toSchedule
+import com.whatever.caramel.core.data.mapper.toSchedules
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.domain.entity.Holiday
-import com.whatever.caramel.core.domain.entity.Todo
+import com.whatever.caramel.core.domain.entity.Schedule
 import com.whatever.caramel.core.domain.repository.CalendarRepository
-import com.whatever.caramel.core.domain.vo.calendar.ScheduleDetail
-import com.whatever.caramel.core.domain.vo.calendar.ScheduleEditParameter
-import com.whatever.caramel.core.domain.vo.calendar.ScheduleMetadata
-import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
+import com.whatever.caramel.core.domain.vo.content.schedule.EditScheduleParameter
+import com.whatever.caramel.core.domain.vo.content.schedule.CreateScheduleParameter
 import com.whatever.caramel.core.remote.datasource.RemoteCalendarDataSource
 import com.whatever.caramel.core.remote.dto.calendar.request.CreateScheduleRequest
 import com.whatever.caramel.core.remote.dto.calendar.request.UpdateScheduleRequest
@@ -20,7 +17,7 @@ import com.whatever.caramel.core.remote.dto.memo.ContentAssigneeDto
 class CalendarRepositoryImpl(
     private val remoteCalendarDataSource: RemoteCalendarDataSource,
 ) : CalendarRepository {
-    override suspend fun createSchedule(parameter: ScheduleParameter): ScheduleMetadata {
+    override suspend fun createSchedule(parameter: CreateScheduleParameter) { // @@@ : ScheduleMetadata { 스케쥴 생성 시 반환값이 필요 없음
         val request =
             CreateScheduleRequest(
                 title = parameter.title,
@@ -32,15 +29,15 @@ class CalendarRepositoryImpl(
                 endTimeZone = parameter.endTimeZone,
                 tagIds = parameter.tagIds,
                 contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
-            )
+            ) // @@@ Reuqest Mapper 구현
         return safeCall {
-            remoteCalendarDataSource.createSchedule(request).toScheduleMetaData()
+            remoteCalendarDataSource.createSchedule(request) // @@@ .toScheduleMetaData() 반환값이 필요 없으므로 확장 함수 제거
         }
     }
 
     override suspend fun updateSchedule(
         scheduleId: Long,
-        parameter: ScheduleEditParameter,
+        parameter: EditScheduleParameter,
     ) {
         val request =
             UpdateScheduleRequest(
@@ -70,25 +67,25 @@ class CalendarRepositoryImpl(
         startDate: String,
         endDate: String,
         userTimezone: String?,
-    ): List<Todo> =
+    ): List<Schedule> =
         safeCall {
             remoteCalendarDataSource
                 .getSchedules(
                     startDate = startDate,
                     endDate = endDate,
                     userTimeZone = userTimezone,
-                ).toTodo()
+                ).toSchedules()
         }
 
     override suspend fun getHolidays(year: Int): List<Holiday> =
         safeCall {
             val yearString = year.toString()
-            remoteCalendarDataSource.getHolidaysByYear(year = yearString).toHoliday()
+            remoteCalendarDataSource.getHolidaysByYear(year = yearString).toHolidays()
         }
 
-    override suspend fun getSchedule(scheduleId: Long): ScheduleDetail =
+    override suspend fun getSchedule(scheduleId: Long): Schedule =
         safeCall {
             val response = remoteCalendarDataSource.getScheduleDetail(scheduleId)
-            response.toScheduleDetailVO()
+            response.toSchedule()
         }
 }

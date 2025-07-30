@@ -1,17 +1,15 @@
 package com.whatever.caramel.core.data.mapper
 
 import com.whatever.caramel.core.domain.vo.auth.AuthToken
-import com.whatever.caramel.core.domain.vo.auth.UserAuth
+import com.whatever.caramel.core.domain.vo.auth.AuthResult
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.remote.dto.auth.ServiceTokenDto
 import com.whatever.caramel.core.remote.dto.auth.response.SignInResponse
 
-fun SignInResponse.toUserAuth(): UserAuth =
-    UserAuth(
+fun SignInResponse.toAuthResult(): AuthResult =
+    AuthResult(
         coupleId = this.coupleId,
-        nickname = this.nickname,
         userStatus = UserStatus.valueOf(this.userStatus.name),
-        birthday = this.birthDay ?: "",
         authToken = serviceToken.toAuthToken(),
     )
 

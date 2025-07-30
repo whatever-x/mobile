@@ -6,7 +6,6 @@ import com.whatever.caramel.core.domain.vo.couple.Anniversary
 import com.whatever.caramel.core.domain.vo.couple.AnniversaryType
 import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
 import com.whatever.caramel.core.domain.vo.couple.CoupleRelationship
-import com.whatever.caramel.core.domain.vo.couple.CoupleStatus
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.domain.vo.user.UserProfile
 import com.whatever.caramel.core.domain.vo.user.UserStatus
@@ -30,7 +29,6 @@ fun CoupleDetailResponse.toCoupleRelationship(): CoupleRelationship =
                 id = this.coupleId,
                 startDate = this.startDate?.replace("-", ".") ?: "",
                 sharedMessage = this.sharedMessage ?: "",
-                status = CoupleStatus.valueOf(this.status.name),
             ),
         myInfo = this.myInfo.toUser(),
         partnerInfo = this.partnerInfo.toUser(),
@@ -53,17 +51,16 @@ fun CoupleBasicResponse.toCouple(): Couple =
         id = this.coupleId,
         startDate = this.startDate?.replace("-", ".") ?: "",
         sharedMessage = this.sharedMessage ?: "",
-        status = CoupleStatus.valueOf(this.status.name),
     )
 
-fun CoupleAnniversaryResponse.toAnniversary(): List<Anniversary> {
+// @@@ 리팩토링 필요. Anniversary는 각각 타입이 정해져 있음. N주년, N일째, 생일 API 내려올 때 ID값을 받아 하나의 리스트로 내려오는게 기념일 리스트가 필요로 할 때 쓰기 더 쉬울듯함
+fun CoupleAnniversaryResponse.toAnniversaries(): List<Anniversary> {
     val hundredDayAnniversaries =
-        this.hundredDayAnniversaries.map {
+        this.hundredDayAnniversaries.map { coupleAnniversary ->
             Anniversary(
-                date = LocalDate.parse(it.date),
-                type = AnniversaryType.valueOf(it.type),
-                label = it.label,
-                isAdjustedForNonLeapYear = it.isAdjustedForNonLeapYear,
+                date = LocalDate.parse(coupleAnniversary.date),
+                type = AnniversaryType.valueOf(coupleAnniversary.type),
+                label = coupleAnniversary.label,
             )
         }
 
@@ -73,7 +70,6 @@ fun CoupleAnniversaryResponse.toAnniversary(): List<Anniversary> {
                 date = LocalDate.parse(it.date),
                 type = AnniversaryType.valueOf(it.type),
                 label = it.label,
-                isAdjustedForNonLeapYear = it.isAdjustedForNonLeapYear,
             )
         }
 
@@ -83,7 +79,6 @@ fun CoupleAnniversaryResponse.toAnniversary(): List<Anniversary> {
                 date = LocalDate.parse(it.date),
                 type = AnniversaryType.valueOf(it.type),
                 label = it.label,
-                isAdjustedForNonLeapYear = it.isAdjustedForNonLeapYear,
             )
         }
 
@@ -93,7 +88,6 @@ fun CoupleAnniversaryResponse.toAnniversary(): List<Anniversary> {
                 date = LocalDate.parse(it.date),
                 type = AnniversaryType.valueOf(it.type),
                 label = it.label,
-                isAdjustedForNonLeapYear = it.isAdjustedForNonLeapYear,
             )
         }
     return hundredDayAnniversaries + yearlyAnniversaries + myBirthdayAnniversaries + partnerBirthdayAnniversaries

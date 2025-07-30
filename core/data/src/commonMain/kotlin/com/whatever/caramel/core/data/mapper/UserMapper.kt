@@ -16,11 +16,13 @@ fun UserProfileResponse.toUser() =
         userProfile =
             UserProfile(
                 nickName = this.nickname,
-                gender = Gender.IDLE,
-                birthday = "",
+                gender = Gender.IDLE, // @@@ 유저 생성 시 선택한 성별 서버로부터 요청
+                birthday = "", // @@@ 유저 생성 시 선택한 생일 날짜 서버로부터 요청
             ),
     )
 
+// @@@ 위의 UserProfileResponse를 재활용하는게 좋아 보임
+// UserProfileResponse -> UserResponse로 변경
 fun EditUserProfileResponse.toUser() =
     User(
         id = this.id,
@@ -48,5 +50,5 @@ fun UserInfoResponse.toUser() =
                     },
                 birthday = this.birthDate ?: "",
             ),
-        userMetaData = null,
+        userAgreement = null,
     )

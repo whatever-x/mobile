@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.data.repository
 
-import com.whatever.caramel.core.data.mapper.toAnniversary
+import com.whatever.caramel.core.data.mapper.toAnniversaries
 import com.whatever.caramel.core.data.mapper.toCouple
 import com.whatever.caramel.core.data.mapper.toCoupleInvitationCode
 import com.whatever.caramel.core.data.mapper.toCoupleRelationship
@@ -91,7 +91,7 @@ class CoupleRepositoryImpl(
                     coupleId = coupleId,
                     startDate = startDate,
                     endDate = endDate,
-                ).toAnniversary()
+                ).toAnniversaries()
         }
 
     override suspend fun deleteCoupleId() {
