@@ -6,5 +6,4 @@ data class Anniversary(
     val type: AnniversaryType,
     val date: LocalDate,
     val label: String,
-    val isAdjustedForNonLeapYear: Boolean,
 )

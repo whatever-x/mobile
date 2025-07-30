@@ -1,8 +1,8 @@
-package com.whatever.caramel.core.domain.vo.calendar
+package com.whatever.caramel.core.domain.vo.content.schedule
 
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 
-data class ScheduleParameter(
+data class CreateScheduleParameter(
     val title: String?,
     val description: String?,
     val isCompleted: Boolean,

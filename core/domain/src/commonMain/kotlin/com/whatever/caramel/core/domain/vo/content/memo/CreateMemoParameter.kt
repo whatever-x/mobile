@@ -1,8 +1,8 @@
-package com.whatever.caramel.core.domain.vo.memo
+package com.whatever.caramel.core.domain.vo.content.memo
 
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 
-data class MemoParameter(
+data class CreateMemoParameter(
     val title: String?,
     val description: String?,
     val isCompleted: Boolean,

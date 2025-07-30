@@ -1,6 +1,9 @@
 package com.whatever.caramel.core.domain.entity
 
-import com.whatever.caramel.core.domain.vo.couple.CoupleStatus
+import com.whatever.caramel.core.domain.exception.CaramelException
+import com.whatever.caramel.core.domain.exception.ErrorUiType
+import com.whatever.caramel.core.domain.vo.couple.AnniversaryType
+import com.whatever.caramel.core.domain.vo.user.UserProfile
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -11,7 +14,6 @@ data class Couple(
     val id: Long,
     val startDate: String,
     val sharedMessage: String,
-    val status: CoupleStatus,
 ) {
     val daysTogether: Int
         get() {

@@ -1,9 +1,9 @@
-package com.whatever.caramel.core.domain.vo.calendar
+package com.whatever.caramel.core.domain.vo.content.schedule
 
 import com.whatever.caramel.core.domain.vo.common.DateTimeInfo
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 
-data class ScheduleEditParameter(
+data class EditScheduleParameter(
     val selectedDate: String,
     val title: String?,
     val description: String?,

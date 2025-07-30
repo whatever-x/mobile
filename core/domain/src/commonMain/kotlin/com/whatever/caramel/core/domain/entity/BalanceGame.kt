@@ -6,5 +6,10 @@ data class BalanceGame(
     val id: Long,
     val date: LocalDate,
     val question: String,
-    val options: List<BalanceGameOption>,
-)
+    val options: List<Option>,
+) {
+    data class Option(
+        val id: Long,
+        val name: String,
+    )
+}
