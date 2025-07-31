@@ -20,7 +20,7 @@ import org.jetbrains.compose.resources.stringResource
 internal fun ContentAssigneeChip(assignee: ContentAssignee) {
     val chipBackgroundColor =
         when (assignee) {
-            ContentAssignee.ME -> CaramelTheme.color.fill.labelAccent1
+            ContentAssignee.ME -> CaramelTheme.color.fill.accent1
             ContentAssignee.PARTNER -> CaramelTheme.color.fill.secondary
             ContentAssignee.US -> CaramelTheme.color.fill.brand
         }

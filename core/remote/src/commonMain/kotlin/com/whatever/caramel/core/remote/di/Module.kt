@@ -20,9 +20,7 @@ import com.whatever.caramel.core.remote.datasource.RemoteUserDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteUserDataSourceImpl
 import com.whatever.caramel.core.remote.di.qualifier.AuthClient
 import com.whatever.caramel.core.remote.di.qualifier.DefaultClient
-import com.whatever.caramel.core.remote.di.qualifier.SampleClient
 import com.whatever.caramel.core.remote.network.HttpClientFactory
-import com.whatever.caramel.core.remote.network.config.NetworkConfig
 import com.whatever.caramel.core.remote.network.config.addDeviceIdHeader
 import com.whatever.caramel.core.remote.network.config.addTimeZoneHeader
 import com.whatever.caramel.core.remote.network.config.caramelDefaultRequest
@@ -32,9 +30,6 @@ import io.ktor.client.HttpClient
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
-import io.ktor.client.plugins.defaultRequest
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -44,17 +39,6 @@ expect val deviceIdModule: Module
 val networkModule =
     module {
         single { HttpClientFactory.create(engine = get()) }
-
-        single(SampleClient) {
-            get<HttpClient>().config {
-                addDeviceIdHeader(get())
-                caramelResponseValidator()
-                defaultRequest {
-                    url(NetworkConfig.SAMPLE_URL)
-                    contentType(ContentType.Application.Json)
-                }
-            }
-        }
 
         single(DefaultClient) {
             get<HttpClient>().config {

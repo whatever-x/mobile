@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -47,7 +48,8 @@ internal fun MemoItem(
     onClickMemoItem: (Long) -> Unit,
 ) {
     val isTitleOrDescriptionEmpty = title.isEmpty() || description.isEmpty()
-    val mainText = title.ifEmpty { description.replace(lineBreakRegex, "") }
+    val subText = description.replace(lineBreakRegex, " ")
+    val mainText = title.ifEmpty { subText }
 
     Column(
         modifier =
@@ -59,7 +61,6 @@ internal fun MemoItem(
                     interactionSource = null,
                     onClick = { onClickMemoItem(id) },
                 ),
-        verticalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xs),
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -70,15 +71,17 @@ internal fun MemoItem(
             color = CaramelTheme.color.text.primary,
         )
         if (!isTitleOrDescriptionEmpty) {
+            Spacer(modifier = Modifier.height(CaramelTheme.spacing.xs))
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = description,
+                text = subText,
                 maxLines = 4,
                 overflow = TextOverflow.Ellipsis,
                 style = CaramelTheme.typography.body2.regular,
                 color = CaramelTheme.color.text.primary,
             )
         }
+        Spacer(modifier = Modifier.height(CaramelTheme.spacing.s))
         TabMetaData(
             contentAssignee = contentAssignee,
             createdDateText = createdDateText,
