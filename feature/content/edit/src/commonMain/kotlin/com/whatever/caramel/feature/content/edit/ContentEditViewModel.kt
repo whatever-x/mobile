@@ -5,6 +5,7 @@ import androidx.navigation.toRoute
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
+import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
 import com.whatever.caramel.core.domain.exception.code.ScheduleErrorCode
 import com.whatever.caramel.core.domain.usecase.calendar.DeleteScheduleUseCase
@@ -22,7 +23,9 @@ import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoEditParameter
 import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
-import com.whatever.caramel.core.util.copy
+import com.whatever.caramel.core.ui.picker.model.DateUiState
+import com.whatever.caramel.core.ui.picker.model.TimeUiState
+import com.whatever.caramel.core.ui.picker.model.toLocalDate
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditIntent
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditSideEffect
@@ -31,7 +34,9 @@ import com.whatever.caramel.feature.content.edit.navigation.ContentEditScreenRou
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atTime
 
 class ContentEditViewModel(
     savedStateHandle: SavedStateHandle,
@@ -103,8 +108,8 @@ class ContentEditViewModel(
             is ContentEditIntent.OnTitleChanged -> handleOnTitleChanged(intent)
             is ContentEditIntent.OnContentChanged -> handleOnContentChanged(intent)
             is ContentEditIntent.ClickTag -> toggleTagSelection(intent)
-            ContentEditIntent.ClickDate -> reduce { copy(showDateDialog = true) }
-            ContentEditIntent.ClickTime -> reduce { copy(showTimeDialog = true) }
+            is ContentEditIntent.ClickDate -> reduce { copy(showDateDialog = true) }
+            is ContentEditIntent.ClickTime -> reduce { copy(showTimeDialog = true) }
             ContentEditIntent.HideDateTimeDialog ->
                 reduce {
                     copy(
@@ -129,6 +134,36 @@ class ContentEditViewModel(
             ContentEditIntent.DismissDeletedContentDialog -> handleDismissDeletedContentDialog()
             is ContentEditIntent.OnCreateModeSelected -> handleOnCreateModeSelected(intent)
             is ContentEditIntent.ClickAssignee -> clickAssignee(intent)
+            is ContentEditIntent.ClickCompleteButton -> clickComplete(intent)
+        }
+    }
+
+    private fun clickComplete(intent: ContentEditIntent.ClickCompleteButton) {
+        val localDate = currentState.dateUiState.toLocalDate()
+        val localTime = with(currentState.timeUiState) {
+            val hour = this.hour.toInt()
+            val minute = this.minute.toInt()
+            val convertedHour = when (period) {
+                "오후" -> if (hour == 12) 12 else hour + 12 // 오후 : 12 ~ 23
+                "오전" -> if (hour == 12) 0 else hour // 오전 : 00 ~ 11
+                else -> throw CaramelException(
+                    code = AppErrorCode.UNKNOWN,
+                    message = "알 수 없는 오류 입니다.",
+                    debugMessage = "잘못된 Period",
+                    errorUiType = ErrorUiType.TOAST,
+                )
+            }
+
+            LocalTime(hour = convertedHour, minute = minute)
+        }
+        val localDateTime = localDate.atTime(time = localTime)
+
+        reduce {
+            copy(
+                showDateDialog = false,
+                showTimeDialog = false,
+                dateTime = localDateTime
+            )
         }
     }
 
@@ -274,53 +309,27 @@ class ContentEditViewModel(
     }
 
     private fun updateYear(intent: ContentEditIntent.OnYearChanged) {
-        reduce { copy(dateTime = dateTime.copy(year = intent.year)) }
+        reduce { copy(dateUiState = dateUiState.copy(year = intent.year)) }
     }
 
     private fun updateMonth(intent: ContentEditIntent.OnMonthChanged) {
-        reduce { copy(dateTime = dateTime.copy(monthNumber = intent.month)) }
+        reduce { copy(dateUiState = dateUiState.copy(month = intent.month)) }
     }
 
     private fun updateDay(intent: ContentEditIntent.OnDayChanged) {
-        reduce { copy(dateTime = dateTime.copy(dayOfMonth = intent.day)) }
+        reduce { copy(dateUiState = dateUiState.copy(day = intent.day)) }
     }
 
     private fun updateMinute(intent: ContentEditIntent.OnMinuteChanged) {
-        val minute = intent.minute.toIntOrNull() ?: currentState.dateTime.minute
-        reduce { copy(dateTime = dateTime.copy(minute = minute)) }
+        reduce { copy(timeUiState = timeUiState.copy(minute = intent.minute)) }
     }
 
     private fun updateHour(intent: ContentEditIntent.OnHourChanged) {
-        val newHour12 = intent.hour.toIntOrNull() ?: return
-        reduce {
-            val currentDateTime = dateTime
-            val currentHour24 = currentDateTime.hour
-            val newHour24 =
-                when {
-                    currentHour24 < 12 -> {
-                        if (newHour12 == 12) 0 else newHour12
-                    }
-
-                    else -> {
-                        if (newHour12 == 12) 12 else newHour12 + 12
-                    }
-                }
-            copy(dateTime = currentDateTime.copy(hour = newHour24))
-        }
+        reduce { copy(timeUiState = timeUiState.copy(hour = intent.hour)) }
     }
 
     private fun updatePeriod(intent: ContentEditIntent.OnPeriodChanged) {
-        reduce {
-            val currentDateTime = dateTime
-            val currentHour24 = currentDateTime.hour
-            val finalNewHour24 =
-                when (intent.period) {
-                    "오전" -> if (currentHour24 >= 12) currentHour24 - 12 else currentHour24
-                    "오후" -> if (currentHour24 < 12) currentHour24 + 12 else currentHour24
-                    else -> currentHour24
-                }
-            copy(dateTime = currentDateTime.copy(hour = finalNewHour24))
-        }
+        reduce { copy(timeUiState = timeUiState.copy(period = intent.period)) }
     }
 
     private fun loadContent() {
@@ -350,6 +359,8 @@ class ContentEditViewModel(
                             content = schedule.description ?: "",
                             selectedTags = schedule.tags.toImmutableSet(),
                             dateTime = scheduleDateTime,
+                            dateUiState = DateUiState.from(dateTime = scheduleDateTime),
+                            timeUiState = TimeUiState.from(dateTime = scheduleDateTime),
                             selectedAssignee = ContentAssigneeUiModel.valueOf(value = schedule.contentAssignee.name),
                         )
                     }

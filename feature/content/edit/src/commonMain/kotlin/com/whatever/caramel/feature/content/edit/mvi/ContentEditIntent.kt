@@ -30,6 +30,8 @@ sealed interface ContentEditIntent : UiIntent {
 
     data object DismissDeletedContentDialog : ContentEditIntent
 
+    data object ClickCompleteButton : ContentEditIntent
+
     data class ClickAssignee(
         val assignee: ContentAssigneeUiModel,
     ) : ContentEditIntent
