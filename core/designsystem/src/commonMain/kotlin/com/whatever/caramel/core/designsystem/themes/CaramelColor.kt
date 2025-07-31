@@ -3,7 +3,9 @@ package com.whatever.caramel.core.designsystem.themes
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import com.whatever.caramel.core.designsystem.foundations.Alpha100
+import com.whatever.caramel.core.designsystem.foundations.Green200
 import com.whatever.caramel.core.designsystem.foundations.Green600
+import com.whatever.caramel.core.designsystem.foundations.Green700
 import com.whatever.caramel.core.designsystem.foundations.Neutral100
 import com.whatever.caramel.core.designsystem.foundations.Neutral200
 import com.whatever.caramel.core.designsystem.foundations.Neutral300
@@ -43,6 +45,8 @@ data class CaramelColor(
         val labelBrand: Color = Orange700,
         val labelAccent1: Color = Red500,
         val labelAccent2: Color = Green600,
+        val labelAccent3: Color = Neutral900,
+        val labelAccent4: Color = Green700,
     )
 
     @Immutable
@@ -69,8 +73,11 @@ data class CaramelColor(
         val disabledPrimary: Color = Neutral200,
         val disabledBrand: Color = Orange200,
         val labelBrand: Color = Orange300,
+        val accent1: Color = Green600,
         val labelAccent1: Color = Red500,
         val labelAccent2: Color = Orange500,
+        val labelAccent3: Color = Green200,
+        val labelAccent4: Color = Neutral300,
     )
 
     @Immutable

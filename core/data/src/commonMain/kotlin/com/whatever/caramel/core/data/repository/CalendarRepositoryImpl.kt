@@ -15,6 +15,7 @@ import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
 import com.whatever.caramel.core.remote.datasource.RemoteCalendarDataSource
 import com.whatever.caramel.core.remote.dto.calendar.request.CreateScheduleRequest
 import com.whatever.caramel.core.remote.dto.calendar.request.UpdateScheduleRequest
+import com.whatever.caramel.core.remote.dto.memo.ContentAssigneeDto
 
 class CalendarRepositoryImpl(
     private val remoteCalendarDataSource: RemoteCalendarDataSource,
@@ -30,6 +31,7 @@ class CalendarRepositoryImpl(
                 endDateTime = parameter.endDateTime,
                 endTimeZone = parameter.endTimeZone,
                 tagIds = parameter.tagIds,
+                contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
             )
         return safeCall {
             remoteCalendarDataSource.createSchedule(request).toScheduleMetaData()
@@ -51,6 +53,7 @@ class CalendarRepositoryImpl(
                 endDateTime = parameter.dateTimeInfo?.endDateTime,
                 endTimeZone = parameter.dateTimeInfo?.endTimezone,
                 tagIds = parameter.tagIds,
+                contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
             )
         safeCall {
             remoteCalendarDataSource.updateSchedule(scheduleId, request)
@@ -69,7 +72,12 @@ class CalendarRepositoryImpl(
         userTimezone: String?,
     ): List<Todo> =
         safeCall {
-            remoteCalendarDataSource.getSchedules(startDate, endDate, userTimezone).toTodo()
+            remoteCalendarDataSource
+                .getSchedules(
+                    startDate = startDate,
+                    endDate = endDate,
+                    userTimeZone = userTimezone,
+                ).toTodo()
         }
 
     override suspend fun getHolidays(year: Int): List<Holiday> =

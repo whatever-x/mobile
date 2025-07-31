@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.memo.mvi
 
 import com.whatever.caramel.core.viewmodel.UiIntent
+import com.whatever.caramel.feature.memo.model.TagUiModel
 
 sealed interface MemoIntent : UiIntent {
     data object Initialize : MemoIntent

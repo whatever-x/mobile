@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -32,6 +32,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelPullToRefreshIndicator
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
@@ -194,13 +195,14 @@ internal fun CalendarScreen(
                                 .background(color = CaramelTheme.color.background.tertiary)
                                 .padding(
                                     top = CaramelTheme.spacing.xs,
-                                    bottom = CaramelTheme.spacing.l,
+                                    bottom = 36.dp,
                                     start = CaramelTheme.spacing.xl,
                                     end = CaramelTheme.spacing.xl,
                                 ).height(availableHeight),
                         state = lazyListState,
                     ) {
-                        state.monthSchedule.forEach { schedule ->
+                        state.monthSchedule.forEachIndexed { index, schedule ->
+                            val hasNextSchedule = index != state.monthSchedule.lastIndex
                             item {
                                 BottomSheetTodoListHeader(
                                     date = schedule.date,
@@ -214,17 +216,22 @@ internal fun CalendarScreen(
                                 )
                                 Spacer(modifier = Modifier.height(CaramelTheme.spacing.s))
                             }
-                            items(
+                            itemsIndexed(
                                 items = schedule.todos,
-                                key = { todo ->
+                                key = { _, todo ->
                                     todo.id
                                 },
-                            ) { todo ->
+                            ) { index, todo ->
+                                val isLastTodo = index == schedule.todos.lastIndex
+                                val spacerHeight =
+                                    if (isLastTodo) CaramelTheme.spacing.l else CaramelTheme.spacing.s
+
                                 BottomSheetTodoItem(
                                     id = todo.id,
                                     title = todo.title,
                                     description = todo.description,
                                     url = todo.url,
+                                    contentAssignee = todo.contentAssignee,
                                     onClickUrl = { onIntent(CalendarIntent.ClickTodoUrl(it)) },
                                     onClickTodo = {
                                         onIntent(
@@ -236,7 +243,10 @@ internal fun CalendarScreen(
                                 ) {
                                     DefaultBottomSheetTodoItem()
                                 }
-                                Spacer(modifier = Modifier.height(CaramelTheme.spacing.xl))
+                                Spacer(modifier = Modifier.height(height = spacerHeight))
+                                if (isLastTodo && hasNextSchedule) {
+                                    Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.xl))
+                                }
                             }
                         }
                     }

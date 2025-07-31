@@ -8,14 +8,14 @@ class CreateContentUseCase(
     private val calendarRepository: CalendarRepository,
     private val memoRepository: MemoRepository,
 ) {
-    suspend operator fun invoke(parameter: ContentParameterType): Long =
+    suspend operator fun invoke(parameter: ContentParameterType) =
         when (parameter) {
             is ContentParameterType.Calendar -> {
-                calendarRepository.createSchedule(parameter.param).contentId
+                calendarRepository.createSchedule(parameter.param)
             }
 
             is ContentParameterType.Memo -> {
-                memoRepository.createMemo(parameter.param).contentId
+                memoRepository.createMemo(parameter.param)
             }
         }
 }

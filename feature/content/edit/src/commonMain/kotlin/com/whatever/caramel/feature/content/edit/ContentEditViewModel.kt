@@ -14,12 +14,14 @@ import com.whatever.caramel.core.domain.usecase.memo.DeleteMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.GetMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.UpdateMemoUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
+import com.whatever.caramel.core.domain.validator.ContentValidator
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleEditParameter
 import com.whatever.caramel.core.domain.vo.common.DateTimeInfo
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoEditParameter
+import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
-import com.whatever.caramel.core.ui.util.validateInputText
 import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditIntent
@@ -126,47 +128,30 @@ class ContentEditViewModel(
             ContentEditIntent.ConfirmDeleteDialog -> handleConfirmDeleteDialog()
             ContentEditIntent.DismissDeletedContentDialog -> handleDismissDeletedContentDialog()
             is ContentEditIntent.OnCreateModeSelected -> handleOnCreateModeSelected(intent)
+            is ContentEditIntent.ClickAssignee -> clickAssignee(intent)
+        }
+    }
+
+    private fun clickAssignee(intent: ContentEditIntent.ClickAssignee) {
+        reduce {
+            copy(selectedAssignee = intent.assignee)
         }
     }
 
     private fun handleOnTitleChanged(intent: ContentEditIntent.OnTitleChanged) {
-        validateInputText(
-            text = intent.title,
-            limitLength = ContentEditState.MAX_TITLE_LENGTH,
-            onPass = { text ->
-                reduce {
-                    copy(
-                        title = text,
-                    )
-                }
-            },
-            onContainsNewline = {
-                postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("줄바꿈을 포함할수 없어요"))
-            },
-            onExceedLimit = {
-                postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("제목은 ${ContentEditState.MAX_TITLE_LENGTH}자까지 입력할 수 있어요"))
-            },
-        )
+        val validatedTitle = ContentValidator.checkInputTitleValidate(input = intent.title).getOrThrow()
+
+        reduce {
+            copy(title = validatedTitle)
+        }
     }
 
     private fun handleOnContentChanged(intent: ContentEditIntent.OnContentChanged) {
-        validateInputText(
-            text = intent.content,
-            limitLength = ContentEditState.MAX_CONTENT_LENGTH,
-            onPass = { text ->
-                reduce {
-                    copy(
-                        content = text,
-                    )
-                }
-            },
-            onContainsNewline = {
-                postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("줄바꿈을 포함할수 없어요"))
-            },
-            onExceedLimit = {
-                postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("내용은 ${ContentEditState.MAX_CONTENT_LENGTH}자까지 입력할 수 있어요"))
-            },
-        )
+        val validatedBody = ContentValidator.checkInputBodyValidate(input = intent.content).getOrThrow()
+
+        reduce {
+            copy(content = validatedBody)
+        }
     }
 
     private fun toggleTagSelection(intent: ContentEditIntent.ClickTag) {
@@ -206,6 +191,7 @@ class ContentEditViewModel(
                                     } else {
                                         null
                                     },
+                                contentAssignee = ContentAssignee.valueOf(value = state.selectedAssignee.name),
                             ),
                     )
                 }
@@ -231,6 +217,7 @@ class ContentEditViewModel(
                                         null
                                     },
                                 tagIds = state.selectedTags.map { it.id }.toList(),
+                                contentAssignee = ContentAssignee.valueOf(value = state.selectedAssignee.name),
                             ),
                     )
                 }
@@ -348,6 +335,7 @@ class ContentEditViewModel(
                             title = memo.title,
                             content = memo.description,
                             selectedTags = memo.tagList.toImmutableSet(),
+                            selectedAssignee = ContentAssigneeUiModel.valueOf(value = memo.contentAssignee.name),
                         )
                     }
                 }
@@ -362,6 +350,7 @@ class ContentEditViewModel(
                             content = schedule.description ?: "",
                             selectedTags = schedule.tags.toImmutableSet(),
                             dateTime = scheduleDateTime,
+                            selectedAssignee = ContentAssigneeUiModel.valueOf(value = schedule.contentAssignee.name),
                         )
                     }
                 }

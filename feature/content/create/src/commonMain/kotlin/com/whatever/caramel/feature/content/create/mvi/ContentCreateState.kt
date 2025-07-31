@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.content.create.mvi
 
 import com.whatever.caramel.core.domain.entity.Tag
+import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.UiState
@@ -14,6 +15,7 @@ data class ContentCreateState(
     val title: String = "",
     val content: String = "",
     val isLoading: Boolean = false,
+    val selectedAssignee: ContentAssigneeUiModel = ContentAssigneeUiModel.ME,
     val tags: ImmutableList<Tag> = persistentListOf(),
     val selectedTags: ImmutableSet<Tag> = persistentSetOf(),
     val createMode: CreateMode = CreateMode.MEMO,
@@ -32,9 +34,4 @@ data class ContentCreateState(
         get() = "${dateTime.hour.toString().padStart(2, '0')}:${
             dateTime.minute.toString().padStart(2, '0')
         }"
-
-    companion object {
-        const val MAX_TITLE_LENGTH = 30
-        const val MAX_CONTENT_LENGTH = 5000
-    }
 }

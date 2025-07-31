@@ -5,7 +5,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -15,10 +17,17 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import caramel.feature.calendar.generated.resources.Res
+import caramel.feature.calendar.generated.resources.both_schedule
+import caramel.feature.calendar.generated.resources.my_schedule
+import caramel.feature.calendar.generated.resources.partner_schedule
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Stable
 internal interface CaramelBottomTodoScope {
@@ -26,6 +35,7 @@ internal interface CaramelBottomTodoScope {
     val title: String
     val description: String
     val url: String?
+    val contentAssignee: ContentAssignee
     val onClickUrl: (String?) -> Unit
     val onClickTodo: (Long) -> Unit
 }
@@ -35,6 +45,7 @@ internal class CaramelDefaultBottomTodoScope(
     override val title: String,
     override val description: String,
     override val url: String?,
+    override val contentAssignee: ContentAssignee,
     override val onClickUrl: (String?) -> Unit,
     override val onClickTodo: (Long) -> Unit,
 ) : CaramelBottomTodoScope
@@ -45,6 +56,7 @@ internal fun BottomSheetTodoItem(
     title: String,
     description: String,
     url: String? = null,
+    contentAssignee: ContentAssignee,
     onClickTodo: (Long) -> Unit = {},
     onClickUrl: (String?) -> Unit = {},
     content: @Composable CaramelBottomTodoScope.() -> Unit,
@@ -65,6 +77,7 @@ internal fun BottomSheetTodoItem(
                 url = url,
                 onClickTodo = onClickTodo,
                 onClickUrl = onClickUrl,
+                contentAssignee = contentAssignee,
             )
         }
     scope.content()
@@ -83,14 +96,42 @@ internal fun CaramelBottomTodoScope.DefaultBottomSheetTodoItem(modifier: Modifie
                     color = Color(color = 0xFFF7F2EC),
                     shape = CaramelTheme.shape.m,
                 ).padding(all = CaramelTheme.spacing.l),
-        verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.l),
     ) {
+        TodoAssignee()
+        Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.s))
         TodoTitle()
-        if (hasAll) TodoDescription()
+        if (hasAll) {
+            Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.xxs))
+            TodoDescription()
+        }
         if (hasUrl) {
             TodoUrl()
         }
     }
+}
+
+@Composable
+internal fun CaramelBottomTodoScope.TodoAssignee(modifier: Modifier = Modifier) {
+    val (assigneeTextRes, assigneeTextColor) =
+        when (this.contentAssignee) {
+            ContentAssignee.ME -> Res.string.my_schedule to CaramelTheme.color.text.labelAccent4
+            ContentAssignee.PARTNER -> Res.string.partner_schedule to CaramelTheme.color.text.primary
+            ContentAssignee.US -> Res.string.both_schedule to CaramelTheme.color.text.brand
+        }
+
+    Text(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clickable(
+                    indication = null,
+                    interactionSource = null,
+                    onClick = { onClickTodo(id) },
+                ),
+        text = stringResource(assigneeTextRes),
+        style = CaramelTheme.typography.body3.bold,
+        color = assigneeTextColor,
+    )
 }
 
 @Composable
@@ -105,6 +146,8 @@ internal fun CaramelBottomTodoScope.TodoTitle(modifier: Modifier = Modifier) {
                     interactionSource = null,
                     onClick = { onClickTodo(id) },
                 ),
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
         text = mainText,
         style = CaramelTheme.typography.body3.regular,
         color = CaramelTheme.color.text.primary,
@@ -123,6 +166,8 @@ internal fun CaramelBottomTodoScope.TodoDescription(modifier: Modifier = Modifie
                     interactionSource = null,
                     onClick = { onClickTodo(id) },
                 ),
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
         text = descriptionText,
         style = CaramelTheme.typography.body3.regular,
         color = CaramelTheme.color.text.primary,
@@ -138,13 +183,13 @@ internal fun CaramelBottomTodoScope.TodoUrl(modifier: Modifier = Modifier) {
     ) {
         HorizontalDivider(
             thickness = 1.dp,
+            modifier = Modifier.padding(vertical = CaramelTheme.spacing.m),
             color = CaramelTheme.color.divider.tertiary,
         )
         Row(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(top = CaramelTheme.spacing.m)
                     .clickable(
                         interactionSource = null,
                         indication = null,

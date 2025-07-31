@@ -4,6 +4,7 @@ import com.whatever.caramel.core.domain.entity.Holiday
 import com.whatever.caramel.core.domain.entity.Todo
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleDetail
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleMetadata
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.remote.dto.calendar.CalendarDetailResponse
 import com.whatever.caramel.core.remote.dto.calendar.HolidayDetailListResponse
 import com.whatever.caramel.core.remote.dto.calendar.response.CreateScheduleResponse
@@ -19,6 +20,7 @@ fun CalendarDetailResponse.toTodo(): List<Todo> =
             endDate = LocalDateTime.parse(it.endDateTime),
             title = it.title ?: "",
             description = it.description ?: "",
+            contentAssignee = ContentAssignee.valueOf(value = it.contentAssignee.name),
         )
     }
 
@@ -48,8 +50,9 @@ internal fun GetScheduleResponse.toScheduleDetailVO(): ScheduleDetail =
             endDateTimezone = endDateTimezone,
             isCompleted = isCompleted,
             parentScheduleId = parentScheduleId,
-            title = title,
-            description = description,
+            title = title ?: "",
+            description = description ?: "",
             tags = tags.map { it.toTag() },
+            contentAssignee = ContentAssignee.valueOf(contentAssignee.name),
         )
     }
