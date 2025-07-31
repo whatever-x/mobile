@@ -5,7 +5,6 @@ package com.whatever.caramel.feature.content.create
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -49,8 +48,6 @@ import com.whatever.caramel.core.ui.content.TagChip
 import com.whatever.caramel.core.ui.content.TitleTextField
 import com.whatever.caramel.core.ui.picker.CaramelDatePicker
 import com.whatever.caramel.core.ui.picker.CaramelTimePicker
-import com.whatever.caramel.core.ui.picker.TimeUiState
-import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.ui.util.rememberKeyboardVisibleState
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
@@ -285,7 +282,7 @@ internal fun ContentScreen(
                                 Modifier
                                     .padding(top = CaramelTheme.spacing.xxl)
                                     .align(Alignment.CenterHorizontally),
-                            dateUiState = DateUiState.from(state.dateTime),
+                            dateUiState = state.dateUiState,
                             onYearChanged = { year ->
                                 onIntent(ContentCreateIntent.OnYearChanged(year))
                             },
@@ -304,7 +301,7 @@ internal fun ContentScreen(
                                 Modifier
                                     .padding(top = CaramelTheme.spacing.xxl)
                                     .align(Alignment.CenterHorizontally),
-                            timeUiState = TimeUiState.from(state.dateTime),
+                            timeUiState = state.timeUiState,
                             onPeriodChanged = { period ->
                                 onIntent(ContentCreateIntent.OnPeriodChanged(period))
                             },

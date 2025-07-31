@@ -14,9 +14,11 @@ import com.whatever.caramel.core.domain.vo.content.ContentParameterType
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.ui.content.CreateMode
+import com.whatever.caramel.core.ui.picker.model.DateUiState
+import com.whatever.caramel.core.ui.picker.model.TimeUiState
+import com.whatever.caramel.core.ui.picker.model.toLocalDate
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.util.TimeUtil.roundToNearest5Minutes
-import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateSideEffect
@@ -168,28 +170,25 @@ class ContentCreateViewModel(
 
     private fun selectCreateMode(intent: ContentCreateIntent.SelectCreateMode) {
         reduce {
-            copy(
-                createMode = intent.createMode,
-                dateTime =
-                    if (intent.createMode == CreateMode.CALENDAR) {
-                        val now = DateUtil.todayLocalDateTime()
-                        roundToNearest5Minutes(dateTime = now)
-                    } else {
-                        dateTime
-                    },
-            )
+            copy(createMode = intent.createMode)
         }
     }
 
     private fun clickDate(intent: ContentCreateIntent.ClickDate) {
         reduce {
-            copy(showDateDialog = true)
+            copy(
+                showDateDialog = true,
+                dateUiState = DateUiState.from(dateTime = dateTime),
+            )
         }
     }
 
     private fun clickTime(intent: ContentCreateIntent.ClickTime) {
         reduce {
-            copy(showTimeDialog = true)
+            copy(
+                showTimeDialog = true,
+                timeUiState = TimeUiState.from(dateTime = dateTime),
+            )
         }
     }
 
@@ -200,54 +199,27 @@ class ContentCreateViewModel(
     }
 
     private fun updateYear(intent: ContentCreateIntent.OnYearChanged) {
-        reduce { copy(dateTime = dateTime.copy(year = intent.year)) }
+        reduce { copy(dateUiState = dateUiState.copy(year = intent.year)) }
     }
 
     private fun updateMonth(intent: ContentCreateIntent.OnMonthChanged) {
-        reduce { copy(dateTime = dateTime.copy(monthNumber = intent.month)) }
+        reduce { copy(dateUiState = dateUiState.copy(month = intent.month)) }
     }
 
     private fun updateDay(intent: ContentCreateIntent.OnDayChanged) {
-        reduce { copy(dateTime = dateTime.copy(dayOfMonth = intent.day)) }
+        reduce { copy(dateUiState = dateUiState.copy(day = intent.day)) }
     }
 
     private fun updateMinute(intent: ContentCreateIntent.OnMinuteChanged) {
-        val minute = intent.minute.toIntOrNull() ?: currentState.dateTime.minute
-        reduce { copy(dateTime = dateTime.copy(minute = minute)) }
+        reduce { copy(timeUiState = timeUiState.copy(minute = intent.minute)) }
     }
 
     private fun updateHour(intent: ContentCreateIntent.OnHourChanged) {
-        val newHour12 = intent.hour.toIntOrNull() ?: return
-
-        reduce {
-            val currentDateTime = dateTime
-            val currentHour24 = currentDateTime.hour
-            val newHour24 =
-                when {
-                    currentHour24 < 12 -> { // 현재 AM
-                        if (newHour12 == 12) 0 else newHour12 // 12 AM은 0시, 나머지는 그대로
-                    }
-
-                    else -> { // 현재 PM
-                        if (newHour12 == 12) 12 else newHour12 + 12 // 12 PM은 12시, 나머지는 +12
-                    }
-                }
-            copy(dateTime = currentDateTime.copy(hour = newHour24))
-        }
+        reduce { copy(timeUiState = timeUiState.copy(hour = intent.hour)) }
     }
 
     private fun updatePeriod(intent: ContentCreateIntent.OnPeriodChanged) {
-        reduce {
-            val currentDateTime = dateTime
-            val currentHour24 = currentDateTime.hour
-            val finalNewHour24 =
-                when (intent.period) {
-                    "오전" -> if (currentHour24 >= 12) currentHour24 - 12 else currentHour24 // PM -> AM
-                    "오후" -> if (currentHour24 < 12) currentHour24 + 12 else currentHour24 // AM -> PM
-                    else -> currentHour24
-                }
-            copy(dateTime = currentDateTime.copy(hour = finalNewHour24))
-        }
+        reduce { copy(timeUiState = timeUiState.copy(period = intent.period)) }
     }
 
     private fun clickSaveButton(intent: ContentCreateIntent.ClickSaveButton) {
