@@ -38,5 +38,4 @@ data class DateUiState(
     }
 }
 
-fun DateUiState.toLocalDate(): LocalDate =
-    LocalDate(year, month, day)
+fun DateUiState.toLocalDate(): LocalDate = LocalDate(year, month, day)

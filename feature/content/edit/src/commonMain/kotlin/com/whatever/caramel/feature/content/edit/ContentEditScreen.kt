@@ -317,11 +317,14 @@ internal fun ContentEditScreen(
                                     .align(Alignment.CenterHorizontally),
                             dateUiState = state.dateUiState,
                             onYearChanged = { year ->
-                                onIntent(ContentEditIntent.OnYearChanged(year)) },
+                                onIntent(ContentEditIntent.OnYearChanged(year))
+                            },
                             onMonthChanged = { month ->
-                                onIntent(ContentEditIntent.OnMonthChanged(month)) },
+                                onIntent(ContentEditIntent.OnMonthChanged(month))
+                            },
                             onDayChanged = { day ->
-                                onIntent(ContentEditIntent.OnDayChanged(day)) },
+                                onIntent(ContentEditIntent.OnDayChanged(day))
+                            },
                         )
                     }
 

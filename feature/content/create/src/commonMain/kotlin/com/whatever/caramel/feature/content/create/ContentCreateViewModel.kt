@@ -123,29 +123,31 @@ class ContentCreateViewModel(
 
     private fun clickComplete(intent: ContentCreateIntent.ClickCompleteButton) {
         val localDate = currentState.dateUiState.toLocalDate()
-        val localTime = with(currentState.timeUiState) {
-            val hour = this.hour.toInt()
-            val minute = this.minute.toInt()
-            val convertedHour = when (period) {
-                "오후" -> if (hour == 12) 12 else hour + 12 // 오후 : 12 ~ 23
-                "오전" -> if (hour == 12) 0 else hour // 오전 : 00 ~ 11
-                else -> throw CaramelException(
-                    code = AppErrorCode.UNKNOWN,
-                    message = "알 수 없는 오류 입니다.",
-                    debugMessage = "잘못된 Period",
-                    errorUiType = ErrorUiType.TOAST,
-                )
-            }
+        val localTime =
+            with(currentState.timeUiState) {
+                val hour = this.hour.toInt()
+                val minute = this.minute.toInt()
+                val convertedHour =
+                    when (period) {
+                        "오후" -> if (hour == 12) 12 else hour + 12 // 오후 : 12 ~ 23
+                        "오전" -> if (hour == 12) 0 else hour // 오전 : 00 ~ 11
+                        else -> throw CaramelException(
+                            code = AppErrorCode.UNKNOWN,
+                            message = "알 수 없는 오류 입니다.",
+                            debugMessage = "잘못된 Period",
+                            errorUiType = ErrorUiType.TOAST,
+                        )
+                    }
 
-            LocalTime(hour = convertedHour, minute = minute)
-        }
+                LocalTime(hour = convertedHour, minute = minute)
+            }
         val localDateTime = localDate.atTime(time = localTime)
 
         reduce {
             copy(
                 showDateDialog = false,
                 showTimeDialog = false,
-                dateTime = localDateTime
+                dateTime = localDateTime,
             )
         }
     }

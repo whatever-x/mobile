@@ -20,11 +20,12 @@ private fun CaramelTimePickerPreview() {
             contentAlignment = Alignment.Center,
         ) {
             CaramelTimePicker(
-                timeUiState = TimeUiState(
-                    period = "오전",
-                    hour = "12",
-                    minute = "00",
-                ),
+                timeUiState =
+                    TimeUiState(
+                        period = "오전",
+                        hour = "12",
+                        minute = "00",
+                    ),
                 onMinuteChanged = { minute -> Napier.d { "minute changed: $minute" } },
                 onHourChanged = { hour -> Napier.d { "hour changed: $hour" } },
                 onPeriodChanged = { period -> Napier.d { "period changed: $period" } },
