@@ -7,6 +7,9 @@ import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
 import com.whatever.caramel.core.domain.legacy.core_util.codePointCount
 
+/**
+ * 현행 유지
+ * */
 object ContentValidator {
     fun checkInputTitleValidate(input: String): Result<String> =
         when {

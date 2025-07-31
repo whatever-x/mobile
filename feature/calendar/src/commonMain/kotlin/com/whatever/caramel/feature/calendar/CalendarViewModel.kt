@@ -7,10 +7,10 @@ import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.schedule.GetHolidaysUseCase
 import com.whatever.caramel.core.domain.usecase.schedule.GetTodosGroupByStartDateUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetAnniversariesByPeriodUseCase
-import com.whatever.caramel.core.domain.legacy.legacy_ui.AnniversariesOnDate
+import com.whatever.caramel.core.domain.model.couple.AnniversariesOnDate
 import com.whatever.caramel.core.domain.policy.CalendarPolicy
-import com.whatever.caramel.core.domain.legacy.legacy_ui.HolidaysOnDate
-import com.whatever.caramel.core.domain.legacy.legacy_ui.TodosOnDate
+import com.whatever.caramel.core.domain.model.schedule.HolidaysOnDate
+import com.whatever.caramel.core.domain.model.schedule.TodosOnDate
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.util.DateFormatter
 import com.whatever.caramel.core.util.DateUtil

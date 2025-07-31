@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.domain.usecase.couple
 
 import com.whatever.caramel.core.domain.repository.CoupleRepository
-import com.whatever.caramel.core.domain.legacy.legacy_ui.AnniversariesOnDate
+import com.whatever.caramel.core.domain.model.couple.AnniversariesOnDate
 
 class GetAnniversariesByPeriodUseCase(
     private val coupleRepository: CoupleRepository,

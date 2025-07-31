@@ -1,7 +1,11 @@
 package com.whatever.caramel.core.domain.legacy.core_util
 
-// 유틸성 확장함수, 유틸로 옮기는건?
-// CaramelException을 활용하기 위해 Domain으로 이동했다고 알고있는데 현재 보이지 않음
+/**
+ * 기존에 ui에 의존되는 기능이라 core:ui였지만 ContentVaildator에서 예외를 던지기 위해서 domain에 두었음
+ * 구조를 다음과 같이변경하면 core:ui에서 사용가능
+ * 1. ContentVaildator에서 check의 파라미터를 count로 변경
+ * 2. ViewModel에서 현재 입력된 count를 core:ui의 codePointCount를 통해 계산
+ * */
 fun CharSequence.codePointCount(
     beginIndex: Int = 0,
     endIndex: Int = this.length,
@@ -22,6 +26,5 @@ fun CharSequence.codePointCount(
 
         count++
     }
-
     return count
 }

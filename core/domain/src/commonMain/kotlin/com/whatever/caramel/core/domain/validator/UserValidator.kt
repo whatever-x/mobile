@@ -7,9 +7,7 @@ import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.UserErrorCode
 
 /**
- * User Entity에 대한 유효성 검증
- * @author RyuSw-cs
- * @since 2025.03.30
+ * 현행 유지
  * */
 object UserValidator {
     /**

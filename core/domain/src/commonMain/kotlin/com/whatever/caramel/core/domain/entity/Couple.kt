@@ -7,6 +7,9 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
 
+/**
+ * 변경사항 없음
+ * */
 data class Couple(
     val id: Long,
     val startDate: String,

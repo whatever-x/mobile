@@ -1,7 +1,6 @@
 package com.whatever.caramel.core.data.mapper
 
 import com.whatever.caramel.core.domain.entity.BalanceGame
-import com.whatever.caramel.core.domain.entity.BalanceGameOption
 import com.whatever.caramel.core.domain.vo.balanceGame.BalanceGameResult
 import com.whatever.caramel.core.remote.dto.balanceGame.OptionInfoDto
 import com.whatever.caramel.core.remote.dto.balanceGame.response.BalanceGameResponse
@@ -20,8 +19,8 @@ fun BalanceGameResponse.toBalanceGameResult(): BalanceGameResult =
         partnerChoice = this.partnerChoice?.toBalanceGameOption(),
     )
 
-fun OptionInfoDto.toBalanceGameOption(): BalanceGame.BalanceGameOption =
-    BalanceGame.BalanceGameOption(
+fun OptionInfoDto.toBalanceGameOption(): BalanceGame.Option =
+    BalanceGame.Option(
         optionId = this.optionId,
         text = this.text,
     )

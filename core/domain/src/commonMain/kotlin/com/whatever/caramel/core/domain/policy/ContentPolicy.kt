@@ -1,5 +1,8 @@
 package com.whatever.caramel.core.domain.policy
 
+/**
+ * 도메인 성격을 가진 정책
+ * */
 data object ContentPolicy {
     const val MAX_TITLE_LENGTH = 30
     const val MAX_BODY_LENGTH = 5000

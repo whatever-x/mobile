@@ -7,6 +7,9 @@ import com.whatever.caramel.core.domain.vo.user.UserMetaData
 import com.whatever.caramel.core.domain.vo.user.UserProfile
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 
+/**
+ * 변경사항 없음
+ * */
 data class User(
     private val id: Long? = null,
     val userStatus: UserStatus = UserStatus.NONE,

@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.domain.usecase.schedule
 
 import com.whatever.caramel.core.domain.repository.ScheduleRepository
-import com.whatever.caramel.core.domain.legacy.legacy_ui.HolidaysOnDate
+import com.whatever.caramel.core.domain.model.schedule.HolidaysOnDate
 
 class GetHolidaysUseCase(
     private val scheduleRepository: ScheduleRepository,

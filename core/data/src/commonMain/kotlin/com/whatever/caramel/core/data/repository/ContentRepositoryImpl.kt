@@ -45,7 +45,7 @@ class ContentRepositoryImpl(
                 isCompleted = parameter.isCompleted,
                 tagList = parameter.tagIds?.map { TagRequest(it) },
                 dateTimeInfo =
-                    parameter.dateTimeInfo?.run {
+                    parameter.scheduleDateTime?.run {
                         DateTimeInfoRequest(
                             startDateTime = startDateTime,
                             startTimezone = startTimezone,

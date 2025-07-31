@@ -5,6 +5,9 @@ import com.whatever.caramel.core.domain.vo.content.ContentInfo
 import kotlinx.datetime.LocalDateTime
 
 
+/**
+ * 스케쥴은 Content와 동일하지만 일정관련 데이터가 추가됨
+ * */
 data class Schedule(
     val id : Long,
     val parentScheduleId: Long?,
