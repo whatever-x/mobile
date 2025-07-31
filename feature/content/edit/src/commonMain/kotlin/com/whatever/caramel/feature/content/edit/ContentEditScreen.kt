@@ -50,7 +50,6 @@ import com.whatever.caramel.core.designsystem.components.CaramelButtonType
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.ui.content.ContentAssigneeChipRow
 import com.whatever.caramel.core.ui.content.ContentTextArea
 import com.whatever.caramel.core.ui.content.CreateMode

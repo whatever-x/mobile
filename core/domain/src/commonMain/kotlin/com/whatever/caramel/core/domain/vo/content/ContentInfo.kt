@@ -7,7 +7,8 @@ data class ContentInfo(
     val title: String,
     val description: String,
     val isCompleted: Boolean,
-    val tagList: List<Content.Tag>,
     val createdAt: LocalDate,
     val contentAssignee: ContentAssignee,
-)
+){
+    // 고유의 값들
+}

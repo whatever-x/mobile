@@ -1,0 +1,84 @@
+package com.whatever.caramel.core.domain_change.di
+
+import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
+import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
+import com.whatever.caramel.core.domain.usecase.auth.SignOutUseCase
+import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
+import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameChoiceUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.DeleteScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.GetHolidaysUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.GetTodayScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.GetTodosGroupByStartDateUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.UpdateScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.common.GetLinkPreviewsForContentUseCase
+import com.whatever.caramel.core.domain.usecase.content.GetContentsUseCase
+import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
+import com.whatever.caramel.core.domain.usecase.couple.EditCoupleStartDateUseCase
+import com.whatever.caramel.core.domain.usecase.couple.GetAnniversariesByPeriodUseCase
+import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInfoUseCase
+import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInvitationCodeUseCase
+import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
+import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
+import com.whatever.caramel.core.domain.usecase.content.CreateContentUseCase
+import com.whatever.caramel.core.domain.usecase.content.DeleteMemoUseCase
+import com.whatever.caramel.core.domain.usecase.memo.GetMemoUseCase
+import com.whatever.caramel.core.domain.usecase.content.UpdateContentUseCase
+import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
+import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
+import com.whatever.caramel.core.domain.usecase.user.EditProfileUseCase
+import com.whatever.caramel.core.domain.usecase.user.GetUserSettingUseCase
+import com.whatever.caramel.core.domain.usecase.user.GetUserStatusUseCase
+import com.whatever.caramel.core.domain.usecase.user.RefreshUserSessionUseCase
+import com.whatever.caramel.core.domain.usecase.user.UpdateUserSettingUseCase
+import org.koin.dsl.module
+
+val useCaseModule =
+    module {
+        // Auth
+        factory { SignInWithSocialPlatformUseCase(get(), get(), get()) }
+        factory { RefreshUserSessionUseCase(get(), get()) }
+        factory { LogoutUseCase(get(), get(), get()) }
+        factory { SignOutUseCase(get(), get(), get()) }
+
+        // User
+        factory { CreateUserProfileUseCase(get()) }
+        factory { EditProfileUseCase(get()) }
+        factory { GetUserStatusUseCase(get()) }
+        factory { UpdateUserSettingUseCase(get()) }
+        factory { GetUserSettingUseCase(get()) }
+
+        // Couple
+        factory { GetCoupleInvitationCodeUseCase(get()) }
+        factory { ConnectCoupleUseCase(get(), get()) }
+        factory { GetCoupleRelationshipInfoUseCase(get()) }
+        factory { EditCoupleStartDateUseCase(get()) }
+        factory { UpdateShareMessageUseCase(get()) }
+        factory { GetCoupleInfoUseCase(get()) }
+        factory { GetAnniversariesByPeriodUseCase(get()) }
+
+        // Calender
+        factory { GetTodosGroupByStartDateUseCase(get()) }
+        factory { GetHolidaysUseCase(get()) }
+        factory { GetTodayScheduleUseCase(get()) }
+        factory { UpdateScheduleUseCase(get()) }
+        factory { DeleteScheduleUseCase(get()) }
+        factory { GetScheduleUseCase(get()) }
+
+        // Tag
+        factory { GetTagUseCase(get()) }
+
+        // Content
+        factory { CreateContentUseCase(get(), get()) }
+        factory { UpdateContentUseCase(get()) }
+        factory { DeleteMemoUseCase(get()) }
+        factory { GetContentsUseCase(get()) }
+        factory { GetMemoUseCase(get()) }
+
+        // BalanceGame
+        factory { GetTodayBalanceGameUseCase(get()) }
+        factory { SubmitBalanceGameChoiceUseCase(get()) }
+
+        // Common
+        factory { GetLinkPreviewsForContentUseCase(get()) }
+    }

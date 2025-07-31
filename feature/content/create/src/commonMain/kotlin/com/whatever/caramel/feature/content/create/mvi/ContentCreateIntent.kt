@@ -1,6 +1,5 @@
 package com.whatever.caramel.feature.content.create.mvi
 
-import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.viewmodel.UiIntent

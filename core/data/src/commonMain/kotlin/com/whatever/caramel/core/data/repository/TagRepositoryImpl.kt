@@ -2,7 +2,6 @@ package com.whatever.caramel.core.data.repository
 
 import com.whatever.caramel.core.data.mapper.toTags
 import com.whatever.caramel.core.data.util.safeCall
-import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.remote.datasource.RemoteTagDataSource
 
 class TagRepositoryImpl(

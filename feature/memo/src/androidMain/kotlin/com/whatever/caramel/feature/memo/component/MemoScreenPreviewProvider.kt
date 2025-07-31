@@ -2,7 +2,6 @@ package com.whatever.caramel.feature.memo.component
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.whatever.caramel.core.domain.entity.Memo
-import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.feature.memo.model.MemoUiModel

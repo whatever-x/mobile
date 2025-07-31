@@ -1,6 +1,7 @@
 package com.whatever.caramel.core.domain.entity
 
 import com.whatever.caramel.core.domain.vo.content.ContentInfo
+import kotlinx.datetime.LocalDate
 
 /**
  * Content는 스케쥴이 될 수도 있지만 메모의 역할도 하고 있음
@@ -8,15 +9,6 @@ import com.whatever.caramel.core.domain.vo.content.ContentInfo
  * */
 data class Content(
     val id: Long,
-    val contentInfo: ContentInfo
-) {
-    /**
-     * 태그도 마찬가지로 Content와 강하게 연관이 있음
-     * */
-    data class Tag(
-        val id: Long,
-        val label: String,
-    )
-}
-
-
+    val contentInfo: ContentInfo,
+    val createdAt: LocalDate    // TODO : 서버에서 Cotnent에만 제공해줌
+)
