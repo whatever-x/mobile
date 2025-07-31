@@ -324,7 +324,7 @@ internal fun ContentScreen(
                     buttonSize = CaramelButtonSize.Large,
                     text = "완료",
                     onClick = {
-                        onIntent(ContentCreateIntent.HideDateTimeDialog)
+                        onIntent(ContentCreateIntent.ClickCompleteButton)
                     },
                 )
             },

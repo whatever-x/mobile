@@ -5,6 +5,7 @@ import androidx.navigation.toRoute
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
+import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.validator.ContentValidator
@@ -27,7 +28,9 @@ import com.whatever.caramel.feature.content.create.navigation.ContentCreateRoute
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atTime
 
 class ContentCreateViewModel(
     crashlytics: CaramelCrashlytics,
@@ -114,6 +117,36 @@ class ContentCreateViewModel(
             is ContentCreateIntent.ClickEditDialogRightButton -> clickEditDialogRightButton(intent)
             is ContentCreateIntent.ClickEditDialogLeftButton -> clickEditDialogLeftButton(intent)
             is ContentCreateIntent.ClickAssignee -> clickAssignee(intent)
+            is ContentCreateIntent.ClickCompleteButton -> clickComplete(intent)
+        }
+    }
+
+    private fun clickComplete(intent: ContentCreateIntent.ClickCompleteButton) {
+        val localDate = currentState.dateUiState.toLocalDate()
+        val localTime = with(currentState.timeUiState) {
+            val hour = this.hour.toInt()
+            val minute = this.minute.toInt()
+            val convertedHour = when (period) {
+                "오후" -> if (hour == 12) 12 else hour + 12 // 오후 : 12 ~ 23
+                "오전" -> if (hour == 12) 0 else hour // 오전 : 00 ~ 11
+                else -> throw CaramelException(
+                    code = AppErrorCode.UNKNOWN,
+                    message = "알 수 없는 오류 입니다.",
+                    debugMessage = "잘못된 Period",
+                    errorUiType = ErrorUiType.TOAST,
+                )
+            }
+
+            LocalTime(hour = convertedHour, minute = minute)
+        }
+        val localDateTime = localDate.atTime(time = localTime)
+
+        reduce {
+            copy(
+                showDateDialog = false,
+                showTimeDialog = false,
+                dateTime = localDateTime
+            )
         }
     }
 
