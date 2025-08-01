@@ -65,6 +65,8 @@ class ContentCreateViewModel(
                     ContentType.CALENDAR -> CreateMode.CALENDAR
                 },
             dateTime = dateTime,
+            dateUiState = DateUiState.from(dateTime = dateTime),
+            timeUiState = TimeUiState.from(dateTime = dateTime),
         )
     }
 
