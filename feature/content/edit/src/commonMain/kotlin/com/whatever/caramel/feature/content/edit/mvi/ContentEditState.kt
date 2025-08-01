@@ -4,6 +4,8 @@ import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
+import com.whatever.caramel.core.ui.picker.model.DateUiState
+import com.whatever.caramel.core.ui.picker.model.TimeUiState
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.UiState
 import kotlinx.collections.immutable.ImmutableList
@@ -25,6 +27,8 @@ data class ContentEditState(
     val showDateDialog: Boolean = false,
     val showTimeDialog: Boolean = false,
     val dateTime: LocalDateTime = DateUtil.todayLocalDateTime(),
+    val dateUiState: DateUiState = DateUiState.currentDate(),
+    val timeUiState: TimeUiState = TimeUiState.currentTime(),
     val showExitConfirmDialog: Boolean = false,
     val showDeleteConfirmDialog: Boolean = false,
     val showDeletedContentDialog: Boolean = false,

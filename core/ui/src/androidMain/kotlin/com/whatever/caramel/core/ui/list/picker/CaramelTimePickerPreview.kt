@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.ui.picker.CaramelTimePicker
-import com.whatever.caramel.core.ui.picker.TimeUiState
+import com.whatever.caramel.core.ui.picker.model.TimeUiState
 import io.github.aakira.napier.Napier
 
 @Preview
@@ -20,7 +20,12 @@ private fun CaramelTimePickerPreview() {
             contentAlignment = Alignment.Center,
         ) {
             CaramelTimePicker(
-                timeUiState = TimeUiState.default(),
+                timeUiState =
+                    TimeUiState(
+                        period = "오전",
+                        hour = "12",
+                        minute = "00",
+                    ),
                 onMinuteChanged = { minute -> Napier.d { "minute changed: $minute" } },
                 onHourChanged = { hour -> Napier.d { "hour changed: $hour" } },
                 onPeriodChanged = { period -> Napier.d { "period changed: $period" } },

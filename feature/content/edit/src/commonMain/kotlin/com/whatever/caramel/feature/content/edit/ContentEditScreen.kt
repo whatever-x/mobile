@@ -61,8 +61,6 @@ import com.whatever.caramel.core.ui.content.TagChip
 import com.whatever.caramel.core.ui.content.TitleTextField
 import com.whatever.caramel.core.ui.picker.CaramelDatePicker
 import com.whatever.caramel.core.ui.picker.CaramelTimePicker
-import com.whatever.caramel.core.ui.picker.TimeUiState
-import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditIntent
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditState
 import kotlinx.collections.immutable.toImmutableList
@@ -317,16 +315,16 @@ internal fun ContentEditScreen(
                                 Modifier
                                     .padding(top = CaramelTheme.spacing.xxl)
                                     .align(Alignment.CenterHorizontally),
-                            dateUiState = DateUiState.from(state.dateTime),
-                            onYearChanged = { year -> onIntent(ContentEditIntent.OnYearChanged(year)) },
-                            onMonthChanged = { month ->
-                                onIntent(
-                                    ContentEditIntent.OnMonthChanged(
-                                        month,
-                                    ),
-                                )
+                            dateUiState = state.dateUiState,
+                            onYearChanged = { year ->
+                                onIntent(ContentEditIntent.OnYearChanged(year))
                             },
-                            onDayChanged = { day -> onIntent(ContentEditIntent.OnDayChanged(day)) },
+                            onMonthChanged = { month ->
+                                onIntent(ContentEditIntent.OnMonthChanged(month))
+                            },
+                            onDayChanged = { day ->
+                                onIntent(ContentEditIntent.OnDayChanged(day))
+                            },
                         )
                     }
 
@@ -336,7 +334,7 @@ internal fun ContentEditScreen(
                                 Modifier
                                     .padding(top = CaramelTheme.spacing.xxl)
                                     .align(Alignment.CenterHorizontally),
-                            timeUiState = TimeUiState.from(state.dateTime),
+                            timeUiState = state.timeUiState,
                             onPeriodChanged = { period ->
                                 onIntent(
                                     ContentEditIntent.OnPeriodChanged(
@@ -364,7 +362,7 @@ internal fun ContentEditScreen(
                     buttonType = CaramelButtonType.Enabled1,
                     buttonSize = CaramelButtonSize.Large,
                     text = "완료",
-                    onClick = { onIntent(ContentEditIntent.HideDateTimeDialog) },
+                    onClick = { onIntent(ContentEditIntent.ClickCompleteButton) },
                 )
             },
         )
