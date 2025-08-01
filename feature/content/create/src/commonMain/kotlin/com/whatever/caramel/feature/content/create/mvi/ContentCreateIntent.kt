@@ -36,6 +36,8 @@ sealed interface ContentCreateIntent : UiIntent {
 
     data object HideDateTimeDialog : ContentCreateIntent
 
+    data object ClickCompleteButton : ContentCreateIntent
+
     data class OnYearChanged(
         val year: Int,
     ) : ContentCreateIntent

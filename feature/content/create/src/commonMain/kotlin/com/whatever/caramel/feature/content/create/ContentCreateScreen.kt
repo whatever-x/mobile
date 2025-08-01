@@ -49,8 +49,6 @@ import com.whatever.caramel.core.ui.content.TagChip
 import com.whatever.caramel.core.ui.content.TitleTextField
 import com.whatever.caramel.core.ui.picker.CaramelDatePicker
 import com.whatever.caramel.core.ui.picker.CaramelTimePicker
-import com.whatever.caramel.core.ui.picker.TimeUiState
-import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.ui.util.rememberKeyboardVisibleState
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
@@ -285,7 +283,7 @@ internal fun ContentScreen(
                                 Modifier
                                     .padding(top = CaramelTheme.spacing.xxl)
                                     .align(Alignment.CenterHorizontally),
-                            dateUiState = DateUiState.from(state.dateTime),
+                            dateUiState = state.dateUiState,
                             onYearChanged = { year ->
                                 onIntent(ContentCreateIntent.OnYearChanged(year))
                             },
@@ -304,7 +302,7 @@ internal fun ContentScreen(
                                 Modifier
                                     .padding(top = CaramelTheme.spacing.xxl)
                                     .align(Alignment.CenterHorizontally),
-                            timeUiState = TimeUiState.from(state.dateTime),
+                            timeUiState = state.timeUiState,
                             onPeriodChanged = { period ->
                                 onIntent(ContentCreateIntent.OnPeriodChanged(period))
                             },
@@ -327,7 +325,7 @@ internal fun ContentScreen(
                     buttonSize = CaramelButtonSize.Large,
                     text = "완료",
                     onClick = {
-                        onIntent(ContentCreateIntent.HideDateTimeDialog)
+                        onIntent(ContentCreateIntent.ClickCompleteButton)
                     },
                 )
             },

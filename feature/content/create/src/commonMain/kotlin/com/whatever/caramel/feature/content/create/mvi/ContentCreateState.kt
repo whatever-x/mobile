@@ -3,6 +3,8 @@ package com.whatever.caramel.feature.content.create.mvi
 import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
+import com.whatever.caramel.core.ui.picker.model.DateUiState
+import com.whatever.caramel.core.ui.picker.model.TimeUiState
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.UiState
 import kotlinx.collections.immutable.ImmutableList
@@ -22,6 +24,8 @@ data class ContentCreateState(
     val showDateDialog: Boolean = false,
     val showTimeDialog: Boolean = false,
     val dateTime: LocalDateTime = DateUtil.todayLocalDateTime(),
+    val dateUiState: DateUiState = DateUiState.currentDate(),
+    val timeUiState: TimeUiState = TimeUiState.currentTime(),
     val showEditConfirmDialog: Boolean = false,
 ) : UiState {
     val isSaveButtonEnable: Boolean

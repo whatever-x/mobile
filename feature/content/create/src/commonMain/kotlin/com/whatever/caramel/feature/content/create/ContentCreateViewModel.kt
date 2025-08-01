@@ -5,6 +5,7 @@ import androidx.navigation.toRoute
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
+import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
 import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
 import com.whatever.caramel.core.domain.validator.ContentValidator
@@ -14,9 +15,11 @@ import com.whatever.caramel.core.domain.vo.content.ContentParameterType
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.ui.content.CreateMode
+import com.whatever.caramel.core.ui.picker.model.DateUiState
+import com.whatever.caramel.core.ui.picker.model.TimeUiState
+import com.whatever.caramel.core.ui.picker.model.toLocalDate
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.util.TimeUtil.roundToNearest5Minutes
-import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateSideEffect
@@ -25,7 +28,9 @@ import com.whatever.caramel.feature.content.create.navigation.ContentCreateRoute
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atTime
 
 class ContentCreateViewModel(
     crashlytics: CaramelCrashlytics,
@@ -112,6 +117,38 @@ class ContentCreateViewModel(
             is ContentCreateIntent.ClickEditDialogRightButton -> clickEditDialogRightButton(intent)
             is ContentCreateIntent.ClickEditDialogLeftButton -> clickEditDialogLeftButton(intent)
             is ContentCreateIntent.ClickAssignee -> clickAssignee(intent)
+            is ContentCreateIntent.ClickCompleteButton -> clickComplete(intent)
+        }
+    }
+
+    private fun clickComplete(intent: ContentCreateIntent.ClickCompleteButton) {
+        val localDate = currentState.dateUiState.toLocalDate()
+        val localTime =
+            with(currentState.timeUiState) {
+                val hour = this.hour.toInt()
+                val minute = this.minute.toInt()
+                val convertedHour =
+                    when (period) {
+                        "오후" -> if (hour == 12) 12 else hour + 12 // 오후 : 12 ~ 23
+                        "오전" -> if (hour == 12) 0 else hour // 오전 : 00 ~ 11
+                        else -> throw CaramelException(
+                            code = AppErrorCode.UNKNOWN,
+                            message = "알 수 없는 오류 입니다.",
+                            debugMessage = "잘못된 Period",
+                            errorUiType = ErrorUiType.TOAST,
+                        )
+                    }
+
+                LocalTime(hour = convertedHour, minute = minute)
+            }
+        val localDateTime = localDate.atTime(time = localTime)
+
+        reduce {
+            copy(
+                showDateDialog = false,
+                showTimeDialog = false,
+                dateTime = localDateTime,
+            )
         }
     }
 
@@ -168,28 +205,25 @@ class ContentCreateViewModel(
 
     private fun selectCreateMode(intent: ContentCreateIntent.SelectCreateMode) {
         reduce {
-            copy(
-                createMode = intent.createMode,
-                dateTime =
-                    if (intent.createMode == CreateMode.CALENDAR) {
-                        val now = DateUtil.todayLocalDateTime()
-                        roundToNearest5Minutes(dateTime = now)
-                    } else {
-                        dateTime
-                    },
-            )
+            copy(createMode = intent.createMode)
         }
     }
 
     private fun clickDate(intent: ContentCreateIntent.ClickDate) {
         reduce {
-            copy(showDateDialog = true)
+            copy(
+                showDateDialog = true,
+                dateUiState = DateUiState.from(dateTime = dateTime),
+            )
         }
     }
 
     private fun clickTime(intent: ContentCreateIntent.ClickTime) {
         reduce {
-            copy(showTimeDialog = true)
+            copy(
+                showTimeDialog = true,
+                timeUiState = TimeUiState.from(dateTime = dateTime),
+            )
         }
     }
 
@@ -200,54 +234,27 @@ class ContentCreateViewModel(
     }
 
     private fun updateYear(intent: ContentCreateIntent.OnYearChanged) {
-        reduce { copy(dateTime = dateTime.copy(year = intent.year)) }
+        reduce { copy(dateUiState = dateUiState.copy(year = intent.year)) }
     }
 
     private fun updateMonth(intent: ContentCreateIntent.OnMonthChanged) {
-        reduce { copy(dateTime = dateTime.copy(monthNumber = intent.month)) }
+        reduce { copy(dateUiState = dateUiState.copy(month = intent.month)) }
     }
 
     private fun updateDay(intent: ContentCreateIntent.OnDayChanged) {
-        reduce { copy(dateTime = dateTime.copy(dayOfMonth = intent.day)) }
+        reduce { copy(dateUiState = dateUiState.copy(day = intent.day)) }
     }
 
     private fun updateMinute(intent: ContentCreateIntent.OnMinuteChanged) {
-        val minute = intent.minute.toIntOrNull() ?: currentState.dateTime.minute
-        reduce { copy(dateTime = dateTime.copy(minute = minute)) }
+        reduce { copy(timeUiState = timeUiState.copy(minute = intent.minute)) }
     }
 
     private fun updateHour(intent: ContentCreateIntent.OnHourChanged) {
-        val newHour12 = intent.hour.toIntOrNull() ?: return
-
-        reduce {
-            val currentDateTime = dateTime
-            val currentHour24 = currentDateTime.hour
-            val newHour24 =
-                when {
-                    currentHour24 < 12 -> { // 현재 AM
-                        if (newHour12 == 12) 0 else newHour12 // 12 AM은 0시, 나머지는 그대로
-                    }
-
-                    else -> { // 현재 PM
-                        if (newHour12 == 12) 12 else newHour12 + 12 // 12 PM은 12시, 나머지는 +12
-                    }
-                }
-            copy(dateTime = currentDateTime.copy(hour = newHour24))
-        }
+        reduce { copy(timeUiState = timeUiState.copy(hour = intent.hour)) }
     }
 
     private fun updatePeriod(intent: ContentCreateIntent.OnPeriodChanged) {
-        reduce {
-            val currentDateTime = dateTime
-            val currentHour24 = currentDateTime.hour
-            val finalNewHour24 =
-                when (intent.period) {
-                    "오전" -> if (currentHour24 >= 12) currentHour24 - 12 else currentHour24 // PM -> AM
-                    "오후" -> if (currentHour24 < 12) currentHour24 + 12 else currentHour24 // AM -> PM
-                    else -> currentHour24
-                }
-            copy(dateTime = currentDateTime.copy(hour = finalNewHour24))
-        }
+        reduce { copy(timeUiState = timeUiState.copy(period = intent.period)) }
     }
 
     private fun clickSaveButton(intent: ContentCreateIntent.ClickSaveButton) {

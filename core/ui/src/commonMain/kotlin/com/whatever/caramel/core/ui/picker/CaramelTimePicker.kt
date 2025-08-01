@@ -17,40 +17,8 @@ import com.whatever.caramel.core.designsystem.components.PickerScrollMode.BOUNDE
 import com.whatever.caramel.core.designsystem.components.PickerScrollMode.LOOPING
 import com.whatever.caramel.core.designsystem.components.rememberPickerState
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import kotlinx.datetime.LocalDateTime
-
-data class TimeUiState(
-    val period: String,
-    val hour: String,
-    val minute: String,
-) {
-    companion object {
-        fun default(): TimeUiState =
-            TimeUiState(
-                period = Period.AM.value,
-                hour = "12",
-                minute = "00",
-            )
-
-        fun from(dateTime: LocalDateTime): TimeUiState {
-            val currentHour = dateTime.hour
-            val period = if (currentHour < 12) "오전" else "오후"
-            val hourIn12 = if (currentHour == 0 || currentHour == 12) 12 else currentHour % 12
-            return TimeUiState(
-                period = period,
-                hour = hourIn12.toString(),
-                minute = dateTime.minute.toString(),
-            )
-        }
-    }
-}
-
-enum class Period(
-    val value: String,
-) {
-    AM(value = "오전"),
-    PM(value = "오후"),
-}
+import com.whatever.caramel.core.ui.picker.model.Period
+import com.whatever.caramel.core.ui.picker.model.TimeUiState
 
 @Composable
 fun CaramelTimePicker(
