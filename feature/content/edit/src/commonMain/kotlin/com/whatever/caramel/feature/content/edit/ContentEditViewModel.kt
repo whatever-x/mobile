@@ -26,6 +26,7 @@ import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.ui.picker.model.TimeUiState
 import com.whatever.caramel.core.ui.picker.model.toLocalDate
+import com.whatever.caramel.core.util.codePointCount
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditIntent
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditSideEffect
@@ -176,7 +177,10 @@ class ContentEditViewModel(
     }
 
     private fun handleOnTitleChanged(intent: ContentEditIntent.OnTitleChanged) {
-        val validatedTitle = ContentValidator.checkInputTitleValidate(input = intent.title).getOrThrow()
+        val validatedTitle = ContentValidator.checkInputTitleValidate(
+            input = intent.title,
+            inputLength = intent.title.codePointCount()
+        ).getOrThrow()
 
         reduce {
             copy(title = validatedTitle)
@@ -184,7 +188,10 @@ class ContentEditViewModel(
     }
 
     private fun handleOnContentChanged(intent: ContentEditIntent.OnContentChanged) {
-        val validatedBody = ContentValidator.checkInputBodyValidate(input = intent.content).getOrThrow()
+        val validatedBody = ContentValidator.checkInputBodyValidate(
+            input = intent.content,
+            inputLength = intent.content.codePointCount()
+        ).getOrThrow()
 
         reduce {
             copy(content = validatedBody)
