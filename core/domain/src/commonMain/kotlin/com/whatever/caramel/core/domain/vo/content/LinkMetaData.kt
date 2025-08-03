@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain.vo.common
+package com.whatever.caramel.core.domain.vo.content
 
 data class LinkMetaData(
     val url: String,

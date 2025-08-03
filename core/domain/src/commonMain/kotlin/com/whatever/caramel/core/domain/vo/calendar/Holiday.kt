@@ -1,9 +1,9 @@
 package com.whatever.caramel.core.domain.vo.calendar
 
-import com.whatever.caramel.core.domain.entity.Todo
 import kotlinx.datetime.LocalDate
 
-data class TodosOnDate(
+data class Holiday(
     val date: LocalDate,
-    val todos: List<Todo>,
+    val name: String,
+    val isHoliday: Boolean,
 )

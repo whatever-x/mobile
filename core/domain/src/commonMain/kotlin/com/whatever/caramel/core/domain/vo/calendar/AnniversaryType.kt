@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain.vo.couple
+package com.whatever.caramel.core.domain.vo.calendar
 
 enum class AnniversaryType {
     N_TH_DAY,
