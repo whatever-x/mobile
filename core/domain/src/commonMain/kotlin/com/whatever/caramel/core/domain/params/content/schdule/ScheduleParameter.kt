@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain.vo.calendar
+package com.whatever.caramel.core.domain.params.content.schdule
 
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 

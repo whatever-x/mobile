@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain.vo.memo
+package com.whatever.caramel.core.domain.params.content.memo
 
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 

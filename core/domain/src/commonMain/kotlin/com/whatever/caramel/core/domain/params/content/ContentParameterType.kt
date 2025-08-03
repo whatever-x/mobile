@@ -1,7 +1,7 @@
-package com.whatever.caramel.core.domain.vo.content
+package com.whatever.caramel.core.domain.params.content
 
-import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
-import com.whatever.caramel.core.domain.vo.memo.MemoParameter
+import com.whatever.caramel.core.domain.params.content.memo.MemoParameter
+import com.whatever.caramel.core.domain.params.content.schdule.ScheduleParameter
 
 sealed class ContentParameterType {
     data class Calendar(
