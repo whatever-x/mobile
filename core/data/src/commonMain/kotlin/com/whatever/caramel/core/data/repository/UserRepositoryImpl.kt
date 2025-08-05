@@ -57,12 +57,12 @@ class UserRepositoryImpl(
                     nickname = nickname,
                     birthday = birthday,
                 )
-            userRemoteDataSource.editUserProfile(request).toUser()
+            userRemoteDataSource.updateUserProfile(request).toUser()
         }
 
     override suspend fun getUserInfo(): User =
         safeCall {
-            userRemoteDataSource.getUserInfo().toUser()
+            userRemoteDataSource.fetchMyInfo().toUser()
         }
 
     override suspend fun deleteUserStatus() {
@@ -71,8 +71,8 @@ class UserRepositoryImpl(
 
     override suspend fun updateUserSetting(notificationEnabled: Boolean): Boolean {
         val request = UserSettingRequest(notificationEnabled = notificationEnabled)
-        return safeCall { userRemoteDataSource.patchUserSetting(request).notificationEnabled }
+        return safeCall { userRemoteDataSource.updateUserSetting(request).notificationEnabled }
     }
 
-    override suspend fun getUserSetting(): Boolean = safeCall { userRemoteDataSource.getUserSetting().notificationEnabled }
+    override suspend fun getUserSetting(): Boolean = safeCall { userRemoteDataSource.fetchUserSetting().notificationEnabled }
 }
