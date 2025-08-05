@@ -20,6 +20,7 @@ import com.whatever.caramel.core.ui.picker.model.TimeUiState
 import com.whatever.caramel.core.ui.picker.model.toLocalDate
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.util.TimeUtil.roundToNearest5Minutes
+import com.whatever.caramel.core.util.codePointCount
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateSideEffect
@@ -177,7 +178,10 @@ class ContentCreateViewModel(
     }
 
     private fun inputTitle(intent: ContentCreateIntent.InputTitle) {
-        val validatedTitle = ContentValidator.checkInputTitleValidate(input = intent.text).getOrThrow()
+        val validatedTitle = ContentValidator.checkInputTitleValidate(
+            input = intent.text,
+            inputLength = intent.text.codePointCount()
+        ).getOrThrow()
 
         reduce {
             copy(title = validatedTitle)
@@ -185,7 +189,10 @@ class ContentCreateViewModel(
     }
 
     private fun inputContent(intent: ContentCreateIntent.InputContent) {
-        val validatedBody = ContentValidator.checkInputBodyValidate(input = intent.text).getOrThrow()
+        val validatedBody = ContentValidator.checkInputBodyValidate(
+            input = intent.text,
+            inputLength = intent.text.codePointCount()
+        ).getOrThrow()
 
         reduce {
             copy(content = validatedBody)

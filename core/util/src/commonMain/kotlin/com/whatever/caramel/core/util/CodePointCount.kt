@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain.validator.util
+package com.whatever.caramel.core.util
 
 fun CharSequence.codePointCount(
     beginIndex: Int = 0,

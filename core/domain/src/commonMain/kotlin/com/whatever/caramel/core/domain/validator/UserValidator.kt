@@ -3,6 +3,9 @@ package com.whatever.caramel.core.domain.validator
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.UserErrorCode
+import com.whatever.caramel.core.domain.policy.UserPolicy.NICKNAME_MAX_LENGTH
+import com.whatever.caramel.core.domain.policy.UserPolicy.NICKNAME_MIN_LENGTH
+import com.whatever.caramel.core.domain.policy.UserPolicy.NICKNAME_PATTERN
 
 /**
  * User Entity에 대한 유효성 검증
@@ -47,7 +50,7 @@ object UserValidator {
                         errorUiType = ErrorUiType.TOAST,
                     ),
                 )
-            !input.matches(NICKNAME_VALID_PATTERN) ->
+            !input.matches(NICKNAME_PATTERN) ->
                 Result.failure(
                     CaramelException(
                         code = UserErrorCode.INVALID_NICKNAME_CHARACTER,
@@ -58,8 +61,4 @@ object UserValidator {
                 )
             else -> Result.success(input)
         }
-
-    const val NICKNAME_MIN_LENGTH = 2
-    const val NICKNAME_MAX_LENGTH = 8
-    private val NICKNAME_VALID_PATTERN = Regex("^[가-힣a-zA-Z0-9]+$")
 }

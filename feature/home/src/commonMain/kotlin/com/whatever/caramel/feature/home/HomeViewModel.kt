@@ -10,7 +10,7 @@ import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameCho
 import com.whatever.caramel.core.domain.usecase.calendar.GetTodayScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
-import com.whatever.caramel.core.domain.validator.util.codePointCount
+import com.whatever.caramel.core.util.codePointCount
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.viewmodel.BaseViewModel
