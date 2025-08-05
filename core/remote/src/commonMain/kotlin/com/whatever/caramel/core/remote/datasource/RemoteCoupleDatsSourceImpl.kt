@@ -20,23 +20,23 @@ class RemoteCoupleDatsSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteCoupleDataSource {
     override suspend fun generateCoupleInvitationCode(): CoupleInvitationCodeResponse =
-        authClient.post(COUPLE_BASE_URL + "invitation-code").getBody()
+        authClient.post("$COUPLE_BASE_URL/invitation-code").getBody()
 
-    override suspend fun connectCouple(request: CoupleConnectRequest): CoupleDetailResponse =
+    override suspend fun sendInvitationCode(request: CoupleConnectRequest): CoupleDetailResponse =
         authClient
-            .post(COUPLE_BASE_URL + "connect") {
+            .post("$COUPLE_BASE_URL/connect") {
                 setBody(request)
             }.getBody()
 
     override suspend fun fetchCoupleRelationshipInfo(coupleId: Long): CoupleDetailResponse =
-        authClient.get(COUPLE_BASE_URL + "$coupleId").getBody()
+        authClient.get("$COUPLE_BASE_URL/$coupleId").getBody()
 
-    override suspend fun patchShareMessage(
+    override suspend fun updateShareMessage(
         coupleId: Long,
         request: CoupleSharedMessageRequest,
     ): CoupleBasicResponse =
         authClient
-            .patch(COUPLE_BASE_URL + "$coupleId/shared-message") {
+            .patch("$COUPLE_BASE_URL/$coupleId/shared-message") {
                 setBody(body = request)
             }.getBody()
 
@@ -45,25 +45,26 @@ class RemoteCoupleDatsSourceImpl(
         request: CoupleStartDateUpdateRequest,
     ): CoupleBasicResponse =
         authClient
-            .patch(COUPLE_BASE_URL + "$coupleId/start-date") {
+            .patch("$COUPLE_BASE_URL/$coupleId/start-date") {
                 setBody(request)
             }.getBody()
 
-    override suspend fun getAnniversaries(
+    override suspend fun fetchAnniversaryList(
         coupleId: Long,
         startDate: String,
         endDate: String,
     ): CoupleAnniversaryResponse =
         authClient
-            .get(COUPLE_BASE_URL + "$coupleId/anniversaries") {
+            .get("$COUPLE_BASE_URL/$coupleId/anniversaries") {
                 parameter("couple-id", coupleId)
                 parameter("startDate", startDate)
                 parameter("endDate", endDate)
             }.getBody()
 
-    override suspend fun getCoupleInfo(): CoupleBasicResponse = authClient.get(COUPLE_BASE_URL + "me").getBody()
+    override suspend fun fetchMyCoupleInfo(): CoupleBasicResponse =
+        authClient.get("$COUPLE_BASE_URL/me").getBody()
 
     companion object {
-        private const val COUPLE_BASE_URL = "v1/couples/"
+        private const val COUPLE_BASE_URL = "/v1/couples"
     }
 }

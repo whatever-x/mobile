@@ -23,7 +23,7 @@ class SignInWithSocialPlatformUseCase(
             )
 
         with(signInUserAuth) {
-            authRepository.saveTokens(authToken = authToken)
+            authRepository.saveAuthToken(authToken = authToken)
             userRepository.setUserStatus(userStatus)
 
             if (coupleId != null) {
