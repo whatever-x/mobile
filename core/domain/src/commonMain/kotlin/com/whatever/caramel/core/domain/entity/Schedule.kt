@@ -6,6 +6,7 @@ import com.whatever.caramel.core.domain.vo.content.schedule.DateTimeInfo
 
 data class Schedule(
     val id: Long,
+    val tagList: List<Tag>,
     val contentData: ContentData,
     val dateTimeInfo: DateTimeInfo,
 ) {
