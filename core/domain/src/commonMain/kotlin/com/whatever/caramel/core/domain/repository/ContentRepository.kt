@@ -7,6 +7,6 @@ interface ContentRepository {
 
     suspend fun getLinkMetadata(url: String): LinkMetaData?
 
-    suspend fun getTags(): List<Tag>
+    suspend fun getTagList(): List<Tag>
 
 }

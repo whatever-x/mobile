@@ -12,11 +12,13 @@ interface AuthRepository {
 
     suspend fun refreshAuthToken(oldToken: AuthToken): AuthToken
 
-    suspend fun saveTokens(authToken: AuthToken)
+    suspend fun saveAuthToken(authToken: AuthToken)
 
     suspend fun getAuthToken(): AuthToken
 
-    suspend fun deleteToken()
+    suspend fun deleteAuthToken()
 
     suspend fun signOut()
+
+    // @ham2174 TODO : logOut 함수 정의
 }
