@@ -9,7 +9,7 @@ data class BalanceGame(
     val options: List<Option>,
 ) {
     data class Option(
-        val optionId: Long,
+        val id: Long,
         val text: String,
     )
 }

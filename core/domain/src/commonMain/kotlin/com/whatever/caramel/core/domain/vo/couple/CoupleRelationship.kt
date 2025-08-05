@@ -6,5 +6,5 @@ import com.whatever.caramel.core.domain.entity.User
 data class CoupleRelationship(
     val info: Couple,
     val myInfo: User,
-    val partnerInfo: User?,
+    val partnerInfo: User,
 )
