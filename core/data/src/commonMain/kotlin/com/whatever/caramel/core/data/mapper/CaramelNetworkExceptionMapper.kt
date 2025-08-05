@@ -4,7 +4,7 @@ import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.remote.network.exception.CaramelNetworkException
 
-fun CaramelNetworkException.toCaramelException(): CaramelException =
+internal fun CaramelNetworkException.toCaramelException(): CaramelException =
     CaramelException(
         code = this.code,
         message = this.message,
