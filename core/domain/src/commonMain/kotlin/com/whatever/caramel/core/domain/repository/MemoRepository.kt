@@ -1,15 +1,15 @@
 package com.whatever.caramel.core.domain.repository
 
 import com.whatever.caramel.core.domain.entity.Memo
-import com.whatever.caramel.core.domain.vo.memo.MemoEditParameter
-import com.whatever.caramel.core.domain.vo.memo.MemoMetadata
-import com.whatever.caramel.core.domain.vo.memo.MemoParameter
-import com.whatever.caramel.core.domain.vo.memo.MemoWithCursor
+import com.whatever.caramel.core.domain.params.content.memo.MemoEditParameter
+import com.whatever.caramel.core.domain.params.content.memo.MemoParameter
+import com.whatever.caramel.core.domain.vo.content.memo.MemoWithCursor
 
 interface MemoRepository {
-    suspend fun createMemo(parameter: MemoParameter): MemoMetadata
 
-    suspend fun getMemos(
+    suspend fun createMemo(parameter: MemoParameter)
+
+    suspend fun getMemoList(
         size: Int?,
         cursor: String?,
         sortType: String?,
@@ -24,4 +24,5 @@ interface MemoRepository {
     suspend fun deleteMemo(memoId: Long)
 
     suspend fun getMemo(memoId: Long): Memo
+
 }
