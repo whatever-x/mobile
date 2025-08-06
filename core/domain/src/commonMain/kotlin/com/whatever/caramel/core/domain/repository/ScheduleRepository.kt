@@ -18,7 +18,6 @@ interface ScheduleRepository {
     suspend fun getScheduleList(
         startDate: String,
         endDate: String,
-        userTimezone: String?,
     ): List<Schedule>
 
     suspend fun deleteSchedule(scheduleId: Long)

@@ -1,17 +1,17 @@
 package com.whatever.caramel.core.data.interceptor
 
-import com.whatever.caramel.core.datastore.datasource.TokenDataSource
+import com.whatever.caramel.core.datastore.datasource.LocalTokenDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSource
 import com.whatever.caramel.core.remote.dto.auth.ServiceTokenDto
 import com.whatever.caramel.core.remote.network.interceptor.TokenInterceptor
 
 class TokenInterceptorImpl(
-    private val tokenDataSource: TokenDataSource,
-    private val authDataSource: RemoteAuthDataSource,
+    private val localTokenDataSource: LocalTokenDataSource,
+    private val remoteAuthDataSource: RemoteAuthDataSource,
 ) : TokenInterceptor {
-    override suspend fun getAccessToken(): String = tokenDataSource.fetchAccessToken()
+    override suspend fun getAccessToken(): String = localTokenDataSource.fetchAccessToken()
 
-    override suspend fun getRefreshToken(): String = tokenDataSource.fetchRefreshToken()
+    override suspend fun getRefreshToken(): String = localTokenDataSource.fetchRefreshToken()
 
     /**
      * 401 에러 발생시 데이터스토어에 저장된 리프레쉬 토큰을 가져와 refresh API를 호출합니다.
@@ -22,12 +22,12 @@ class TokenInterceptorImpl(
      */
     override suspend fun refresh(): Boolean {
         try {
-            val accessToken = tokenDataSource.fetchAccessToken()
-            val refreshToken = tokenDataSource.fetchRefreshToken()
+            val accessToken = localTokenDataSource.fetchAccessToken()
+            val refreshToken = localTokenDataSource.fetchRefreshToken()
 
             if (accessToken.isNotEmpty() && refreshToken.isNotEmpty()) {
                 val response =
-                    authDataSource.refresh(
+                    remoteAuthDataSource.refresh(
                         request =
                             ServiceTokenDto(
                                 accessToken = accessToken,
@@ -35,7 +35,7 @@ class TokenInterceptorImpl(
                             ),
                     )
 
-                tokenDataSource.createToken(
+                localTokenDataSource.saveToken(
                     accessToken = response.accessToken,
                     refreshToken = response.refreshToken,
                 )

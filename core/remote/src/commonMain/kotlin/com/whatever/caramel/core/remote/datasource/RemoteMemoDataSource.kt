@@ -16,9 +16,9 @@ interface RemoteMemoDataSource {
 
     suspend fun deleteMemo(memoId: Long)
 
-    suspend fun getMemo(memoId: Long): MemoResponse
+    suspend fun fetchMemo(memoId: Long): MemoResponse
 
-    suspend fun getMemos(
+    suspend fun fetchMemoList(
         size: Int?,
         cursor: String?,
         sortType: String?,

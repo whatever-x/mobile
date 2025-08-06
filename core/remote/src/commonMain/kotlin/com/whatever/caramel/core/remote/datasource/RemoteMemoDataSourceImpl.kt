@@ -37,9 +37,9 @@ internal class RemoteMemoDataSourceImpl(
         authClient.delete("$MEMO_BASE_URL/$memoId")
     }
 
-    override suspend fun getMemo(memoId: Long): MemoResponse = authClient.get("$MEMO_BASE_URL/$memoId").getBody()
+    override suspend fun fetchMemo(memoId: Long): MemoResponse = authClient.get("$MEMO_BASE_URL/$memoId").getBody()
 
-    override suspend fun getMemos(
+    override suspend fun fetchMemoList(
         size: Int?,
         cursor: String?,
         sortType: String?,
