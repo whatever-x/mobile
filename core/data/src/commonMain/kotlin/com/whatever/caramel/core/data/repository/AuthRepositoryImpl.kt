@@ -42,7 +42,7 @@ internal class AuthRepositoryImpl(
             response.toAuthToken()
         }
 
-    override suspend fun saveAuthToken(authToken: AuthToken) {
+    override suspend fun setAuthToken(authToken: AuthToken) {
         safeCall {
             tokenDataSource.createToken(
                 accessToken = authToken.accessToken,
@@ -51,7 +51,7 @@ internal class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun getAuthToken(): AuthToken =
+    override suspend fun readAuthToken(): AuthToken =
         safeCall {
             AuthToken(
                 accessToken = tokenDataSource.fetchAccessToken(),
@@ -59,7 +59,7 @@ internal class AuthRepositoryImpl(
             )
         }
 
-    override suspend fun deleteAuthToken() {
+    override suspend fun removeAuthToken() {
         safeCall {
             tokenDataSource.deleteToken()
         }

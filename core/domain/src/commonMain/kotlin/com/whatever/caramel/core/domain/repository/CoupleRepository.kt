@@ -11,7 +11,7 @@ interface CoupleRepository {
 
     suspend fun setCoupleId(coupleId: Long)
 
-    suspend fun getCoupleId(): Long
+    suspend fun readCoupleId(): Long
 
     suspend fun getCoupleRelationshipInfo(coupleId: Long): CoupleRelationship
 
@@ -27,5 +27,5 @@ interface CoupleRepository {
 
     suspend fun getCoupleInfo(): Couple
 
-    suspend fun deleteCoupleId()
+    suspend fun removeCoupleId()
 }

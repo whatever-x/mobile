@@ -38,7 +38,7 @@ class CoupleRepositoryImpl(
         }
     }
 
-    override suspend fun getCoupleId(): Long =
+    override suspend fun readCoupleId(): Long =
         safeCall {
             localCoupleDataSource.fetchCoupleId()
         }
@@ -78,7 +78,7 @@ class CoupleRepositoryImpl(
                 ).toCouple()
         }
 
-    override suspend fun deleteCoupleId() {
+    override suspend fun removeCoupleId() {
         safeCall { localCoupleDataSource.deleteCoupleId() }
     }
 

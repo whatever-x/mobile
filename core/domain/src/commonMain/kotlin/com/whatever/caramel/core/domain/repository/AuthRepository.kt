@@ -12,11 +12,11 @@ interface AuthRepository {
 
     suspend fun refreshAuthToken(oldToken: AuthToken): AuthToken
 
-    suspend fun saveAuthToken(authToken: AuthToken)
+    suspend fun setAuthToken(authToken: AuthToken)
 
-    suspend fun getAuthToken(): AuthToken
+    suspend fun readAuthToken(): AuthToken
 
-    suspend fun deleteAuthToken()
+    suspend fun removeAuthToken()
 
     suspend fun signOut()
 

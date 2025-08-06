@@ -5,7 +5,7 @@ import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 
 interface UserRepository {
-    suspend fun getUserStatus(): UserStatus
+    suspend fun readUserStatus(): UserStatus
 
     suspend fun setUserStatus(status: UserStatus)
 
@@ -24,7 +24,7 @@ interface UserRepository {
 
     suspend fun getUserInfo(): User
 
-    suspend fun deleteUserStatus()
+    suspend fun removeUserStatus()
 
     suspend fun updateUserSetting(notificationEnabled: Boolean): Boolean
 

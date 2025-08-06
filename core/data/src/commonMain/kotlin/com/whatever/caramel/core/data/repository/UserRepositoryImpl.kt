@@ -16,7 +16,7 @@ class UserRepositoryImpl(
     private val userRemoteDataSource: RemoteUserDataSource,
     private val userDataSource: UserDataSource,
 ) : UserRepository {
-    override suspend fun getUserStatus(): UserStatus =
+    override suspend fun readUserStatus(): UserStatus =
         safeCall {
             val userStatus = userDataSource.getUserStatus()
             UserStatus.valueOf(value = userStatus)
@@ -65,7 +65,7 @@ class UserRepositoryImpl(
             userRemoteDataSource.fetchMyInfo().toUser()
         }
 
-    override suspend fun deleteUserStatus() {
+    override suspend fun removeUserStatus() {
         safeCall { userDataSource.deleteUserStatus() }
     }
 
