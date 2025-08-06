@@ -3,7 +3,7 @@ package com.whatever.caramel.core.data.repository
 import com.whatever.caramel.core.data.mapper.toAuthToken
 import com.whatever.caramel.core.data.mapper.toAuthResult
 import com.whatever.caramel.core.data.util.safeCall
-import com.whatever.caramel.core.datastore.datasource.TokenDataSource
+import com.whatever.caramel.core.datastore.datasource.LocalTokenDataSource
 import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.vo.auth.AuthResult
 import com.whatever.caramel.core.domain.vo.auth.AuthToken
@@ -15,7 +15,7 @@ import com.whatever.caramel.core.remote.dto.auth.request.SignInRequest
 
 internal class AuthRepositoryImpl(
     private val remoteAuthDataSource: RemoteAuthDataSource,
-    private val localTokenDataSource: TokenDataSource,
+    private val localTokenDataSource: LocalTokenDataSource,
 ) : AuthRepository {
     override suspend fun loginWithSocialPlatform(
         idToken: String,

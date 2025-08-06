@@ -2,7 +2,7 @@ package com.whatever.caramel.core.data.repository
 
 import com.whatever.caramel.core.data.mapper.toUser
 import com.whatever.caramel.core.data.util.safeCall
-import com.whatever.caramel.core.datastore.datasource.UserDataSource
+import com.whatever.caramel.core.datastore.datasource.LocalUserDataSource
 import com.whatever.caramel.core.domain.entity.User
 import com.whatever.caramel.core.domain.repository.UserRepository
 import com.whatever.caramel.core.domain.vo.user.Gender
@@ -14,7 +14,7 @@ import com.whatever.caramel.core.remote.dto.user.request.UserSettingRequest
 
 class UserRepositoryImpl(
     private val remoteUserDataSource: RemoteUserDataSource,
-    private val localUserDataSource: UserDataSource,
+    private val localUserDataSource: LocalUserDataSource,
 ) : UserRepository {
     override suspend fun readUserStatus(): UserStatus =
         safeCall {

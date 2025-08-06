@@ -6,9 +6,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
 
-class TokenDataSourceImpl(
+class LocalTokenDataSourceImpl(
     private val dataStore: DataStore<Preferences>,
-) : TokenDataSource {
+) : LocalTokenDataSource {
     override suspend fun createToken(
         accessToken: String,
         refreshToken: String,

@@ -24,7 +24,7 @@ val networkInterceptorModule =
     module {
         single<TokenInterceptor> {
             TokenInterceptorImpl(
-                tokenDataSource = get(),
+                localTokenDataSource = get(),
                 authDataSource = get(),
             )
         }

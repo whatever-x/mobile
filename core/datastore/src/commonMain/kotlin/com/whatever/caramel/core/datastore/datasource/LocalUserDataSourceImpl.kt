@@ -6,9 +6,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
 
-class UserDataSourceImpl(
+class LocalUserDataSourceImpl(
     private val dataStore: DataStore<Preferences>,
-) : UserDataSource {
+) : LocalUserDataSource {
     override suspend fun getUserStatus(): String =
         dataStore.data.first().let { preferences ->
             preferences[userStatusKey] ?: ""

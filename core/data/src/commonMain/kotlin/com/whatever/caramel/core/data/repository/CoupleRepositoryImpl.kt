@@ -4,7 +4,7 @@ import com.whatever.caramel.core.data.mapper.toCouple
 import com.whatever.caramel.core.data.mapper.toCoupleInvitationCode
 import com.whatever.caramel.core.data.mapper.toCoupleRelationship
 import com.whatever.caramel.core.data.util.safeCall
-import com.whatever.caramel.core.datastore.datasource.CoupleDataSource
+import com.whatever.caramel.core.datastore.datasource.LocalCoupleDataSource
 import com.whatever.caramel.core.domain.entity.Couple
 import com.whatever.caramel.core.domain.repository.CoupleRepository
 import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
@@ -15,7 +15,7 @@ import com.whatever.caramel.core.remote.dto.couple.request.CoupleSharedMessageRe
 import com.whatever.caramel.core.remote.dto.couple.request.CoupleStartDateUpdateRequest
 
 class CoupleRepositoryImpl(
-    private val localCoupleDataSource: CoupleDataSource,
+    private val localCoupleDataSource: LocalCoupleDataSource,
     private val remoteCoupleDataSource: RemoteCoupleDataSource,
 ) : CoupleRepository {
     override suspend fun getCoupleInvitationCode(): CoupleInvitationCode =
