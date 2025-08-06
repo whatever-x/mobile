@@ -13,18 +13,18 @@ import com.whatever.caramel.core.remote.dto.user.request.UserProfileRequest
 import com.whatever.caramel.core.remote.dto.user.request.UserSettingRequest
 
 class UserRepositoryImpl(
-    private val userRemoteDataSource: RemoteUserDataSource,
-    private val userDataSource: UserDataSource,
+    private val remoteUserDataSource: RemoteUserDataSource,
+    private val localUserDataSource: UserDataSource,
 ) : UserRepository {
     override suspend fun readUserStatus(): UserStatus =
         safeCall {
-            val userStatus = userDataSource.getUserStatus()
+            val userStatus = localUserDataSource.getUserStatus()
             UserStatus.valueOf(value = userStatus)
         }
 
     override suspend fun setUserStatus(status: UserStatus) {
         safeCall {
-            userDataSource.setUserStatus(status.name)
+            localUserDataSource.setUserStatus(status.name)
         }
     }
 
@@ -44,7 +44,7 @@ class UserRepositoryImpl(
                     agreementServiceTerms = agreementServiceTerms,
                     agreementPrivatePolicy = agreementPrivacyPolicy,
                 )
-            userRemoteDataSource.createUserProfile(request).toUser()
+            remoteUserDataSource.createUserProfile(request).toUser()
         }
 
     override suspend fun updateUserProfile(
@@ -57,22 +57,22 @@ class UserRepositoryImpl(
                     nickname = nickname,
                     birthday = birthday,
                 )
-            userRemoteDataSource.updateUserProfile(request).toUser()
+            remoteUserDataSource.updateUserProfile(request).toUser()
         }
 
     override suspend fun getUserInfo(): User =
         safeCall {
-            userRemoteDataSource.fetchMyInfo().toUser()
+            remoteUserDataSource.fetchMyInfo().toUser()
         }
 
     override suspend fun removeUserStatus() {
-        safeCall { userDataSource.deleteUserStatus() }
+        safeCall { localUserDataSource.deleteUserStatus() }
     }
 
     override suspend fun updateUserSetting(notificationEnabled: Boolean): Boolean {
         val request = UserSettingRequest(notificationEnabled = notificationEnabled)
-        return safeCall { userRemoteDataSource.updateUserSetting(request).notificationEnabled }
+        return safeCall { remoteUserDataSource.updateUserSetting(request).notificationEnabled }
     }
 
-    override suspend fun getUserSetting(): Boolean = safeCall { userRemoteDataSource.fetchUserSetting().notificationEnabled }
+    override suspend fun getUserSetting(): Boolean = safeCall { remoteUserDataSource.fetchUserSetting().notificationEnabled }
 }

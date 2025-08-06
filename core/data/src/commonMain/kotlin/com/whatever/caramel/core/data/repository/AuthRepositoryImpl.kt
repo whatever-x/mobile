@@ -15,7 +15,7 @@ import com.whatever.caramel.core.remote.dto.auth.request.SignInRequest
 
 internal class AuthRepositoryImpl(
     private val remoteAuthDataSource: RemoteAuthDataSource,
-    private val tokenDataSource: TokenDataSource,
+    private val localTokenDataSource: TokenDataSource,
 ) : AuthRepository {
     override suspend fun loginWithSocialPlatform(
         idToken: String,
@@ -44,7 +44,7 @@ internal class AuthRepositoryImpl(
 
     override suspend fun setAuthToken(authToken: AuthToken) {
         safeCall {
-            tokenDataSource.createToken(
+            localTokenDataSource.createToken(
                 accessToken = authToken.accessToken,
                 refreshToken = authToken.refreshToken,
             )
@@ -54,14 +54,14 @@ internal class AuthRepositoryImpl(
     override suspend fun readAuthToken(): AuthToken =
         safeCall {
             AuthToken(
-                accessToken = tokenDataSource.fetchAccessToken(),
-                refreshToken = tokenDataSource.fetchRefreshToken(),
+                accessToken = localTokenDataSource.fetchAccessToken(),
+                refreshToken = localTokenDataSource.fetchRefreshToken(),
             )
         }
 
     override suspend fun removeAuthToken() {
         safeCall {
-            tokenDataSource.deleteToken()
+            localTokenDataSource.deleteToken()
         }
     }
 
