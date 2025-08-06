@@ -45,7 +45,7 @@ class MemoRepositoryImpl(
                     DateTimeInfoRequest(
                         startDateTime = startDateTime.toString(),
                         startTimezone = startTimezone,
-                        endDateTime = endDateTime.toString(),
+                        endDateTime = endDateTime?.toString(),
                         endTimezone = endTimezone,
                     )
                 },
