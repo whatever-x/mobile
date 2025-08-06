@@ -33,30 +33,3 @@ internal fun CursoredContentResponse.toMemosWithCursor(): MemoWithCursor =
         nextCursor = this.cursor.next,
         memos = this.list.map { it.toMemo() },
     )
-
-internal fun MemoParameter.toCreateMemoRequest(): CreateMemoRequest =
-    CreateMemoRequest(
-        title = title,
-        description = description,
-        isCompleted = isCompleted,
-        tags = tags?.map { tagId -> TagRequest(id = tagId) },
-        contentAssignee = ContentAssigneeDto.valueOf(value = contentAssignee.name),
-    )
-
-internal fun MemoEditParameter.toUpdateMemoRequest(): UpdateMemoRequest =
-    UpdateMemoRequest(
-        title = title,
-        description = description,
-        isCompleted = isCompleted,
-        tagList = tagIds?.map { TagRequest(it) },
-        dateTimeInfo =
-            dateTimeInfo?.run {
-                DateTimeInfoRequest(
-                    startDateTime = startDateTime.toString(),
-                    startTimezone = startTimezone,
-                    endDateTime = endDateTime.toString(),
-                    endTimezone = endTimezone,
-                )
-            },
-        contentAssignee = ContentAssigneeDto.valueOf(value = contentAssignee.name),
-    )

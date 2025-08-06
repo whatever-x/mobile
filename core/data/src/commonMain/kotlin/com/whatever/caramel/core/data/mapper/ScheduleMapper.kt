@@ -52,30 +52,3 @@ internal fun GetScheduleResponse.toSchedule(): Schedule =
             tagList = TODO() // @ham2174 TODO : ScheduleApiResult 내부 필드에 TagList 포함 요청
         )
     }
-
-internal fun ScheduleParameter.toCreateScheduleRequest(): CreateScheduleRequest =
-    CreateScheduleRequest(
-        title = title,
-        description = description,
-        isCompleted = isCompleted,
-        startDateTime = startDateTime,
-        startTimeZone = startTimeZone,
-        endDateTime = endDateTime,
-        endTimeZone = endTimeZone,
-        tagIds = tagIds,
-        contentAssignee = ContentAssigneeDto.valueOf(value = contentAssignee.name),
-    )
-
-internal fun ScheduleEditParameter.toEditScheduleRequest(): UpdateScheduleRequest =
-    UpdateScheduleRequest(
-        selectedDate = selectedDate,
-        title = title,
-        description = description,
-        isCompleted = isCompleted,
-        startDateTime = dateTimeInfo?.startDateTime.toString(),
-        startTimeZone = dateTimeInfo?.startTimezone,
-        endDateTime = dateTimeInfo?.endDateTime.toString(),
-        endTimeZone = dateTimeInfo?.endTimezone,
-        tagIds = tagIds,
-        contentAssignee = ContentAssigneeDto.valueOf(value = contentAssignee.name),
-    )
