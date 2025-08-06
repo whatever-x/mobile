@@ -1,16 +1,11 @@
 package com.whatever.caramel.core.data.mapper
 
 import com.whatever.caramel.core.domain.entity.Schedule
-import com.whatever.caramel.core.domain.params.content.schdule.ScheduleEditParameter
-import com.whatever.caramel.core.domain.params.content.schdule.ScheduleParameter
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentData
 import com.whatever.caramel.core.domain.vo.content.schedule.DateTimeInfo
 import com.whatever.caramel.core.remote.dto.calendar.CalendarDetailResponse
-import com.whatever.caramel.core.remote.dto.calendar.request.CreateScheduleRequest
-import com.whatever.caramel.core.remote.dto.calendar.request.UpdateScheduleRequest
 import com.whatever.caramel.core.remote.dto.calendar.response.GetScheduleResponse
-import com.whatever.caramel.core.remote.dto.memo.ContentAssigneeDto
 import kotlinx.datetime.LocalDateTime
 
 internal fun CalendarDetailResponse.toScheduleList(): List<Schedule> =
@@ -29,7 +24,7 @@ internal fun CalendarDetailResponse.toScheduleList(): List<Schedule> =
                 endDateTime = LocalDateTime.parse(it.endDateTime),
                 endTimezone = it.endDateTimezone,
             ),
-            tagList = TODO() // @ham2174 TODO : ScheduleApiResult 내부 필드에 TagList 포함 요청
+            tagList = emptyList()
         )
     }
 
@@ -49,6 +44,6 @@ internal fun GetScheduleResponse.toSchedule(): Schedule =
                 endDateTime = LocalDateTime.parse(endDateTime),
                 endTimezone = endDateTimezone,
             ),
-            tagList = TODO() // @ham2174 TODO : ScheduleApiResult 내부 필드에 TagList 포함 요청
+            tagList = this@toSchedule.tags.toTagList()
         )
     }
