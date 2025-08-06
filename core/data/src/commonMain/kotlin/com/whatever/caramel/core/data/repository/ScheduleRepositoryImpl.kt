@@ -66,14 +66,12 @@ class ScheduleRepositoryImpl(
     override suspend fun getScheduleList(
         startDate: String,
         endDate: String,
-        userTimezone: String?
     ): List<Schedule> =
         safeCall {
             remoteScheduleDataSource
                 .fetchScheduleList(
                     startDate = startDate,
                     endDate = endDate,
-                    userTimeZone = userTimezone,
                 ).toScheduleList()
         }
 

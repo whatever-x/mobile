@@ -27,13 +27,11 @@ class RemoteScheduleDataSourceImpl(
     override suspend fun fetchScheduleList(
         startDate: String,
         endDate: String,
-        userTimeZone: String?,
     ): CalendarDetailResponse =
         authClient
             .get(SCHEDULE_BASE_URL) {
                 parameter("startDate", startDate)
                 parameter("endDate", endDate)
-                parameter("userTimeZone", userTimeZone)
             }.getBody()
 
 

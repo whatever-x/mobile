@@ -12,7 +12,6 @@ interface RemoteScheduleDataSource {
     suspend fun fetchScheduleList(
         startDate: String,
         endDate: String,
-        userTimeZone: String?,
     ): CalendarDetailResponse
 
     suspend fun fetchSchedule(scheduleId: Long): GetScheduleResponse
