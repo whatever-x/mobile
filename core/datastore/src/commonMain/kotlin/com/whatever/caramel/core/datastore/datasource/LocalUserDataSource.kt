@@ -1,9 +1,9 @@
 package com.whatever.caramel.core.datastore.datasource
 
 interface LocalUserDataSource {
-    suspend fun getUserStatus(): String
+    suspend fun fetchUserStatus(): String
 
-    suspend fun setUserStatus(state: String)
+    suspend fun saveUserStatus(state: String)
 
     suspend fun deleteUserStatus()
 }

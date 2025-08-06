@@ -44,7 +44,7 @@ internal class AuthRepositoryImpl(
 
     override suspend fun setAuthToken(authToken: AuthToken) {
         safeCall {
-            localTokenDataSource.createToken(
+            localTokenDataSource.saveToken(
                 accessToken = authToken.accessToken,
                 refreshToken = authToken.refreshToken,
             )

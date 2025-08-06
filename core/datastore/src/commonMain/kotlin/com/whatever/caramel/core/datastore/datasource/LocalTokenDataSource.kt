@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.datastore.datasource
 
 interface LocalTokenDataSource {
-    suspend fun createToken(
+    suspend fun saveToken(
         accessToken: String,
         refreshToken: String,
     )

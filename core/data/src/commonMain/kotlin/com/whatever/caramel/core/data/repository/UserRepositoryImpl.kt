@@ -18,13 +18,13 @@ class UserRepositoryImpl(
 ) : UserRepository {
     override suspend fun readUserStatus(): UserStatus =
         safeCall {
-            val userStatus = localUserDataSource.getUserStatus()
+            val userStatus = localUserDataSource.fetchUserStatus()
             UserStatus.valueOf(value = userStatus)
         }
 
     override suspend fun setUserStatus(status: UserStatus) {
         safeCall {
-            localUserDataSource.setUserStatus(status.name)
+            localUserDataSource.saveUserStatus(status.name)
         }
     }
 

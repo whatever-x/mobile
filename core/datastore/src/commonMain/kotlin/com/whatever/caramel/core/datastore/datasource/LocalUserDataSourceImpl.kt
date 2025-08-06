@@ -9,12 +9,12 @@ import kotlinx.coroutines.flow.first
 class LocalUserDataSourceImpl(
     private val dataStore: DataStore<Preferences>,
 ) : LocalUserDataSource {
-    override suspend fun getUserStatus(): String =
+    override suspend fun fetchUserStatus(): String =
         dataStore.data.first().let { preferences ->
             preferences[userStatusKey] ?: ""
         }
 
-    override suspend fun setUserStatus(state: String) {
+    override suspend fun saveUserStatus(state: String) {
         dataStore.edit { prefs ->
             prefs[userStatusKey] = state
         }

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.first
 class LocalTokenDataSourceImpl(
     private val dataStore: DataStore<Preferences>,
 ) : LocalTokenDataSource {
-    override suspend fun createToken(
+    override suspend fun saveToken(
         accessToken: String,
         refreshToken: String,
     ) {

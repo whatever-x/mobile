@@ -35,7 +35,7 @@ class TokenInterceptorImpl(
                             ),
                     )
 
-                localTokenDataSource.createToken(
+                localTokenDataSource.saveToken(
                     accessToken = response.accessToken,
                     refreshToken = response.refreshToken,
                 )
