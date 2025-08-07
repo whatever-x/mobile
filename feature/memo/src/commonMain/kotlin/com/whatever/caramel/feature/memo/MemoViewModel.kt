@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
-import com.whatever.caramel.core.domain.usecase.content.GetMemosUseCase
-import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
+import com.whatever.caramel.core.domain.usecase.memo.GetMemosUseCase
+import com.whatever.caramel.core.domain.usecase.content.GetTagUseCase
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.memo.model.TagUiModel

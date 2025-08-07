@@ -7,9 +7,9 @@ import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
 import com.whatever.caramel.core.domain.exception.code.ScheduleErrorCode
-import com.whatever.caramel.core.domain.usecase.calendar.DeleteScheduleUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.GetScheduleUseCase
-import com.whatever.caramel.core.domain.usecase.common.GetLinkPreviewsForContentUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.DeleteScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.content.GetLinkPreviewsForContentUseCase
 import com.whatever.caramel.core.domain.usecase.memo.DeleteMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.GetMemoUseCase
 import com.whatever.caramel.core.domain.vo.content.ContentType

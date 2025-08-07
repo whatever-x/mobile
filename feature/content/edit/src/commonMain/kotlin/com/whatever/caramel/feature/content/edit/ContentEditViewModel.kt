@@ -8,13 +8,13 @@ import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
 import com.whatever.caramel.core.domain.exception.code.ScheduleErrorCode
-import com.whatever.caramel.core.domain.usecase.calendar.DeleteScheduleUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.GetScheduleUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.UpdateScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.DeleteScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.UpdateScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.memo.DeleteMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.GetMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.UpdateMemoUseCase
-import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
+import com.whatever.caramel.core.domain.usecase.content.GetTagUseCase
 import com.whatever.caramel.core.domain.validator.ContentValidator
 import com.whatever.caramel.core.domain.vo.calendar.ScheduleEditParameter
 import com.whatever.caramel.core.domain.vo.common.DateTimeInfo

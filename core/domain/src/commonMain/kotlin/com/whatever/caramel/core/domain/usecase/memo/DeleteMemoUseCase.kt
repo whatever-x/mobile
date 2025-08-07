@@ -5,7 +5,5 @@ import com.whatever.caramel.core.domain.repository.MemoRepository
 class DeleteMemoUseCase(
     private val memoRepository: MemoRepository,
 ) {
-    suspend operator fun invoke(memoId: Long) {
-        memoRepository.deleteMemo(memoId)
-    }
+    suspend operator fun invoke(memoId: Long) = memoRepository.deleteMemo(memoId)
 }

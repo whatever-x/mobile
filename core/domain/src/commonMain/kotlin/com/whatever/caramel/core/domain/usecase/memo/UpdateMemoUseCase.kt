@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.domain.usecase.memo
 
+import com.whatever.caramel.core.domain.params.content.memo.MemoEditParameter
 import com.whatever.caramel.core.domain.repository.MemoRepository
-import com.whatever.caramel.core.domain.vo.memo.MemoEditParameter
 
 class UpdateMemoUseCase(
     private val memoRepository: MemoRepository,

@@ -7,7 +7,7 @@ import com.whatever.caramel.core.remote.dto.auth.response.SignInResponse
 interface RemoteAuthDataSource {
     suspend fun signIn(request: SignInRequest): SignInResponse
 
-    suspend fun signOut()
+    suspend fun logOut()
 
     suspend fun refresh(request: ServiceTokenDto): ServiceTokenDto
 

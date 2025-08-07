@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelPullToRefreshIndicator
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.domain.vo.calendar.Calendar
 import com.whatever.caramel.feature.calendar.component.CalendarDatePicker
 import com.whatever.caramel.feature.calendar.component.CurrentDateMenu
 import com.whatever.caramel.feature.calendar.component.bottomSheet.BottomSheetTodoItem

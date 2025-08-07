@@ -4,12 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
-import com.whatever.caramel.core.domain.usecase.calendar.GetHolidaysUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.GetTodosGroupByStartDateUseCase
-import com.whatever.caramel.core.domain.usecase.couple.GetAnniversariesUseCase
+import com.whatever.caramel.core.domain.usecase.calendar.GetHolidayListUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.GetTodosGroupByStartDateUseCase
+import com.whatever.caramel.core.domain.usecase.calendar.GetAnniversaryListUseCase
 import com.whatever.caramel.core.domain.vo.calendar.AnniversariesOnDate
-import com.whatever.caramel.core.domain.vo.calendar.Calendar
-import com.whatever.caramel.core.domain.vo.calendar.HolidaysOnDate
+import com.whatever.caramel.core.domain.vo.calendar.HolidayOnDate
 import com.whatever.caramel.core.domain.vo.calendar.TodosOnDate
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.util.DateFormatter
@@ -30,8 +29,8 @@ import kotlinx.datetime.number
 
 class CalendarViewModel(
     private val getTodosGroupByStartDateUseCase: GetTodosGroupByStartDateUseCase,
-    private val getHolidaysUseCase: GetHolidaysUseCase,
-    private val getAnniversariesUseCase: GetAnniversariesUseCase,
+    private val getHolidayListUseCase: GetHolidayListUseCase,
+    private val getAnniversaryListUseCase: GetAnniversaryListUseCase,
     crashlytics: CaramelCrashlytics,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(
@@ -283,12 +282,12 @@ class CalendarViewModel(
                 }
             val anniversariesDeferred =
                 async {
-                    getAnniversariesUseCase(
+                    getAnniversaryListUseCase(
                         startDate = firstDayOfMonth,
                         endDate = lastDayOfMonth,
                     )
                 }
-            val holidaysDeferred = async { getHolidaysUseCase(year) }
+            val holidaysDeferred = async { getHolidayListUseCase(year) }
 
             val todos = todosDeferred.await()
             val anniversaries = anniversariesDeferred.await()
@@ -297,7 +296,7 @@ class CalendarViewModel(
             var yearSchedule =
                 createYearSchedules(
                     todosOnDate = todos,
-                    holidaysOnDate = holidays,
+                    holidayOnDate = holidays,
                     anniversariesOnDate = anniversaries,
                 )
 
@@ -376,7 +375,7 @@ class CalendarViewModel(
 
     private fun createYearSchedules(
         todosOnDate: List<TodosOnDate>,
-        holidaysOnDate: List<HolidaysOnDate>,
+        holidayOnDate: List<HolidayOnDate>,
         anniversariesOnDate: List<AnniversariesOnDate>,
     ): List<DaySchedule> {
         val scheduleMap = mutableMapOf<LocalDate, DaySchedule>()
@@ -396,12 +395,12 @@ class CalendarViewModel(
                     existingSchedule.copy(anniversaries = existingSchedule.anniversaries + anniversary.anniversaries)
             }
 
-        holidaysOnDate
+        holidayOnDate
             .forEach { holiday ->
                 val date = holiday.date
                 val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
                 scheduleMap[date] =
-                    existingSchedule.copy(holidays = existingSchedule.holidays + holiday.holidays)
+                    existingSchedule.copy(holidays = existingSchedule.holidays + holiday.holidayList)
             }
 
         return scheduleMap.values.sortedBy { it.date }
