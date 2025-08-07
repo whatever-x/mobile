@@ -14,7 +14,7 @@ data class HomeState(
     val partnerGender: Gender = Gender.IDLE,
     val daysTogether: Int = 0,
     val shareMessage: String = "",
-    val todoList: ImmutableList<TodoItem> = persistentListOf(),
+    val todoList: ImmutableList<ScheduleItem> = persistentListOf(),
     val bottomSheetShareMessage: String = "",
     val isShowBottomSheet: Boolean = false,
     val isLoading: Boolean = false,
@@ -41,7 +41,7 @@ data class HomeState(
     }
 }
 
-data class TodoItem(
+data class ScheduleItem(
     val id: Long,
     val title: String,
     val contentAssignee: ContentAssignee,

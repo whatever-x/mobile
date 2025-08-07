@@ -14,10 +14,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.domain.entity.Holiday
-import com.whatever.caramel.core.domain.entity.Todo
+import com.whatever.caramel.core.domain.entity.Schedule
+import com.whatever.caramel.core.domain.vo.calendar.Anniversary
+import com.whatever.caramel.core.domain.vo.calendar.Holiday
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
-import com.whatever.caramel.core.domain.vo.couple.Anniversary
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 
 @Composable
@@ -45,7 +45,7 @@ fun CalendarScheduleList(
         var visibleItemCount = 0
         val totalListSize = schedule.totalScheduleCount
 
-        schedule.holidays.forEachIndexed { index, holiday ->
+        schedule.holidayList.forEachIndexed { index, holiday ->
             val placeable =
                 subcompose("holiday_$index") {
                     CalendarHolidayItem(holiday = holiday)
@@ -61,7 +61,7 @@ fun CalendarScheduleList(
             }
         }
 
-        schedule.anniversaries.forEachIndexed { index, anniversary ->
+        schedule.anniversaryList.forEachIndexed { index, anniversary ->
             val placeable =
                 subcompose("anniversary_$index") {
                     CalendarAnniversaryItem(anniversary = anniversary)
@@ -77,10 +77,10 @@ fun CalendarScheduleList(
             }
         }
 
-        schedule.todos.forEachIndexed { index, todo ->
+        schedule.scheduleList.forEachIndexed { index, todo ->
             val placeable =
                 subcompose("todo_$index") {
-                    CalendarTodoItem(todo = todo, onClickTodo = onClickTodo)
+                    CalendarScheduleItem(schedule = todo, onClickTodo = onClickTodo)
                 }.first().measure(constraints)
 
             val newHeight = totalHeight + placeable.height + spacingBetweenItems
@@ -175,13 +175,13 @@ private fun CalendarHolidayItem(
 }
 
 @Composable
-private fun CalendarTodoItem(
+private fun CalendarScheduleItem(
     modifier: Modifier = Modifier,
-    todo: Todo,
+    schedule: Schedule,
     onClickTodo: (Long) -> Unit,
 ) {
     val (textColor, backgroundColor) =
-        when (todo.contentAssignee) {
+        when (schedule.contentData.contentAssignee) {
             ContentAssignee.ME -> CaramelTheme.color.text.labelAccent4 to CaramelTheme.color.fill.labelAccent3
             ContentAssignee.PARTNER -> CaramelTheme.color.text.labelAccent3 to CaramelTheme.color.fill.labelAccent4
             ContentAssignee.US -> CaramelTheme.color.text.labelBrand to CaramelTheme.color.fill.labelBrand
@@ -189,9 +189,9 @@ private fun CalendarTodoItem(
 
     ScheduleItem(
         modifier = modifier,
-        content = todo.title.ifEmpty { todo.description },
+        content = schedule.contentData.title.ifEmpty { schedule.contentData.description },
         backgroundColor = backgroundColor,
         textColor = textColor,
-        onClick = { onClickTodo(todo.id) },
+        onClick = { onClickTodo(schedule.id) },
     )
 }

@@ -3,7 +3,7 @@ package com.whatever.caramel.core.domain.usecase.schedule
 import com.whatever.caramel.core.domain.repository.ScheduleRepository
 import com.whatever.caramel.core.domain.vo.schedule.ScheduleOnDate
 
-class GetTodosGroupByStartDateUseCase(
+class GetScheduleInPeriodUseCase(
     private val scheduleRepository: ScheduleRepository
 ) {
     suspend operator fun invoke(

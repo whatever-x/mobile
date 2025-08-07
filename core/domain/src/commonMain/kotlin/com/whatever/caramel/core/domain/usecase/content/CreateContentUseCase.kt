@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.domain.usecase.memo
+package com.whatever.caramel.core.domain.usecase.content
 
 import com.whatever.caramel.core.domain.params.content.ContentParameterType
 import com.whatever.caramel.core.domain.repository.MemoRepository

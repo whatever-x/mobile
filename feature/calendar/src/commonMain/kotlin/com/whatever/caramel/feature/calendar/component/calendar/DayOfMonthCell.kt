@@ -45,7 +45,7 @@ internal fun CalendarDayOfMonthCell(
                 dayOfWeek = date.dayOfWeek,
                 dayOfMonth = date.dayOfMonth,
                 isFocus = isFocus,
-                isHoliday = schedule?.holidays?.isNotEmpty() ?: false,
+                isHoliday = schedule?.holidayList?.isNotEmpty() ?: false,
             )
             if (schedule != null) {
                 CalendarScheduleList(

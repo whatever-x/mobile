@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.domain.entity.Holiday
-import com.whatever.caramel.core.domain.vo.couple.Anniversary
+import com.whatever.caramel.core.domain.vo.calendar.Anniversary
+import com.whatever.caramel.core.domain.vo.calendar.Holiday
 import com.whatever.caramel.feature.calendar.util.toUiText
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.number

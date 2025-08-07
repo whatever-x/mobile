@@ -1,8 +1,8 @@
 package com.whatever.caramel.feature.calendar.mvi
 
-import com.whatever.caramel.core.domain.entity.Holiday
-import com.whatever.caramel.core.domain.entity.Todo
-import com.whatever.caramel.core.domain.vo.couple.Anniversary
+import com.whatever.caramel.core.domain.entity.Schedule
+import com.whatever.caramel.core.domain.vo.calendar.Anniversary
+import com.whatever.caramel.core.domain.vo.calendar.Holiday
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.UiState
@@ -19,13 +19,13 @@ data class CalendarState(
     val pickerDate: DateUiState = DateUiState.currentDate(),
     val isShowDatePicker: Boolean = false,
     val bottomSheetState: BottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
-    val yearSchedule: List<DaySchedule> = emptyList(),
-    val cachedYearSchedules: Map<Int, List<DaySchedule>> = emptyMap(),
+    val yearScheduleList: List<DaySchedule> = emptyList(),
+    val cachedYearScheduleList: Map<Int, List<DaySchedule>> = emptyMap(),
     val isRefreshing: Boolean = false,
     val isBottomSheetDragging: Boolean = false,
 ) : UiState {
-    val monthSchedule: List<DaySchedule>
-        get() = yearSchedule.filter { it.date.month == month }
+    val monthScheduleList: List<DaySchedule>
+        get() = yearScheduleList.filter { it.date.month == month }
 
     val isBottomSheetTopDescVisible
         get() = !isBottomSheetDragging && bottomSheetState == BottomSheetState.PARTIALLY_EXPANDED
@@ -39,10 +39,10 @@ enum class BottomSheetState {
 
 data class DaySchedule(
     val date: LocalDate,
-    val todos: List<Todo> = emptyList(),
-    val holidays: List<Holiday> = emptyList(),
-    val anniversaries: List<Anniversary> = emptyList(),
+    val scheduleList: List<Schedule> = emptyList(),
+    val holidayList: List<Holiday> = emptyList(),
+    val anniversaryList: List<Anniversary> = emptyList(),
 ) {
     val totalScheduleCount: Int
-        get() = todos.size + holidays.size + anniversaries.size
+        get() = scheduleList.size + holidayList.size + anniversaryList.size
 }

@@ -6,25 +6,25 @@ import com.whatever.caramel.core.domain.usecase.auth.SignOutUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameChoiceUseCase
 import com.whatever.caramel.core.domain.usecase.schedule.DeleteScheduleUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.GetHolidayListUseCase
+import com.whatever.caramel.core.domain.usecase.calendar.GetHolidayOfYearUseCase
 import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.schedule.GetTodayScheduleUseCase
-import com.whatever.caramel.core.domain.usecase.schedule.GetTodosGroupByStartDateUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleInPeriodUseCase
 import com.whatever.caramel.core.domain.usecase.schedule.UpdateScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.content.GetLinkPreviewsForContentUseCase
-import com.whatever.caramel.core.domain.usecase.memo.GetMemosUseCase
+import com.whatever.caramel.core.domain.usecase.memo.GetMemoListUseCase
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
 import com.whatever.caramel.core.domain.usecase.couple.EditCoupleStartDateUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.GetAnniversaryListUseCase
+import com.whatever.caramel.core.domain.usecase.calendar.AnniversariesInPeriodUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInvitationCodeUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
-import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
+import com.whatever.caramel.core.domain.usecase.content.CreateContentUseCase
 import com.whatever.caramel.core.domain.usecase.memo.DeleteMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.GetMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.UpdateMemoUseCase
-import com.whatever.caramel.core.domain.usecase.content.GetTagUseCase
+import com.whatever.caramel.core.domain.usecase.content.GetAllTagsUseCase
 import com.whatever.caramel.core.domain.usecase.user.CreateUserProfileUseCase
 import com.whatever.caramel.core.domain.usecase.user.EditProfileUseCase
 import com.whatever.caramel.core.domain.usecase.user.GetUserSettingUseCase
@@ -55,24 +55,24 @@ val useCaseModule =
         factory { EditCoupleStartDateUseCase(get()) }
         factory { UpdateShareMessageUseCase(get()) }
         factory { GetCoupleInfoUseCase(get()) }
-        factory { GetAnniversaryListUseCase(get()) }
+        factory { AnniversariesInPeriodUseCase(get(), get()) }
 
         // Calender
-        factory { GetTodosGroupByStartDateUseCase(get()) }
-        factory { GetHolidayListUseCase(get()) }
+        factory { GetScheduleInPeriodUseCase(get()) }
+        factory { GetHolidayOfYearUseCase(get()) }
         factory { GetTodayScheduleUseCase(get()) }
         factory { UpdateScheduleUseCase(get()) }
         factory { DeleteScheduleUseCase(get()) }
         factory { GetScheduleUseCase(get()) }
 
         // Tag
-        factory { GetTagUseCase(get()) }
+        factory { GetAllTagsUseCase(get()) }
 
         // Content
         factory { CreateContentUseCase(get(), get()) }
         factory { UpdateMemoUseCase(get()) }
         factory { DeleteMemoUseCase(get()) }
-        factory { GetMemosUseCase(get()) }
+        factory { GetMemoListUseCase(get()) }
         factory { GetMemoUseCase(get()) }
 
         // BalanceGame

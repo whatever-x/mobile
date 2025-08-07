@@ -21,7 +21,7 @@ import com.whatever.caramel.feature.home.mvi.HomeSideEffect
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect.NavigateToContentDetail
 import com.whatever.caramel.feature.home.mvi.HomeState
 import com.whatever.caramel.feature.home.mvi.HomeState.Companion.MAX_SHARE_MESSAGE_LENGTH
-import com.whatever.caramel.feature.home.mvi.TodoItem
+import com.whatever.caramel.feature.home.mvi.ScheduleItem
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.joinAll
@@ -215,10 +215,10 @@ class HomeViewModel(
 
         reduce {
             copy(
-                myNickname = coupleRelationShip.myInfo.userProfile?.nickName ?: "",
-                partnerNickname = coupleRelationShip.partnerInfo.userProfile?.nickName ?: "",
-                myGender = coupleRelationShip.myInfo.userProfile?.gender ?: Gender.IDLE,
-                partnerGender = coupleRelationShip.partnerInfo.userProfile?.gender ?: Gender.IDLE,
+                myNickname = coupleRelationShip.myInfo.userProfile.nickName,
+                partnerNickname = coupleRelationShip.partnerInfo?.userProfile?.nickName ?: "",
+                myGender = coupleRelationShip.myInfo.userProfile.gender,
+                partnerGender = coupleRelationShip.partnerInfo?.userProfile?.gender ?: Gender.IDLE,
                 daysTogether = coupleRelationShip.info.daysTogether,
                 shareMessage = coupleRelationShip.info.sharedMessage,
                 coupleState = HomeState.CoupleState.CONNECT,
@@ -234,11 +234,11 @@ class HomeViewModel(
                 todoList =
                     if (schedules.isNotEmpty()) {
                         schedules
-                            .map { todo ->
-                                TodoItem(
-                                    id = todo.id,
-                                    title = todo.title.ifEmpty { todo.description },
-                                    contentAssignee = todo.contentAssignee,
+                            .map { schedule ->
+                                ScheduleItem(
+                                    id = schedule.id,
+                                    title = schedule.contentData.title.ifEmpty { schedule.contentData.description },
+                                    contentAssignee = schedule.contentData.contentAssignee,
                                 )
                             }.toImmutableList()
                     } else {

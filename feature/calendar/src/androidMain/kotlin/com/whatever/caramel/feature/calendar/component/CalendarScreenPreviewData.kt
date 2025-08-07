@@ -1,11 +1,14 @@
 package com.whatever.caramel.feature.calendar.component
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.whatever.caramel.core.domain.entity.Holiday
-import com.whatever.caramel.core.domain.entity.Todo
+import com.whatever.caramel.core.domain.entity.Schedule
+import com.whatever.caramel.core.domain.policy.CalendarPolicy
+import com.whatever.caramel.core.domain.vo.calendar.Anniversary
+import com.whatever.caramel.core.domain.vo.calendar.AnniversaryType
+import com.whatever.caramel.core.domain.vo.calendar.Holiday
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
-import com.whatever.caramel.core.domain.vo.couple.Anniversary
-import com.whatever.caramel.core.domain.vo.couple.AnniversaryType
+import com.whatever.caramel.core.domain.vo.content.ContentData
+import com.whatever.caramel.core.domain.vo.content.schedule.DateTimeInfo
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
@@ -29,7 +32,7 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
                     pageIndex(),
                     isShowDatePicker = false,
                     bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
-                    yearSchedule = yearSchedule(),
+                    yearScheduleList = yearSchedule(),
                 ),
                 CalendarState(
                     year,
@@ -38,7 +41,7 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
                     pageIndex(),
                     isShowDatePicker = true,
                     bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
-                    yearSchedule = yearSchedule(),
+                    yearScheduleList = yearSchedule(),
                 ),
                 CalendarState(
                     year,
@@ -47,7 +50,7 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
                     pageIndex(),
                     isShowDatePicker = false,
                     bottomSheetState = BottomSheetState.EXPANDED,
-                    yearSchedule = yearSchedule(),
+                    yearScheduleList = yearSchedule(),
                 ),
             )
 
@@ -55,7 +58,10 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
         (1..DateUtil.getLastDayOfMonth(year, month.number))
             .map { LocalDate(year, month, it) }
 
-    private fun pageIndex(): Int = Calendar.YEAR_RANGE.indexOf(year) * 12 + (month.number - 1)
+    private fun pageIndex(): Int {
+        val yearRange = CalendarPolicy.MIN_YEAR..CalendarPolicy.MAX_YEAR
+        return yearRange.indexOf(year) * 12 + (month.number - 1)
+    }
 
     private fun date(day: Int) = LocalDate(year, month, day)
 
@@ -72,35 +78,42 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
             day: Int,
             title: String,
             contentAssignee: ContentAssignee,
-        ) = Todo(
+        ) = Schedule(
             id = id++,
-            title = title,
-            startDate = dateTime(day),
-            endDate = dateTime(day, 23, 59),
-            description = "$title 내용",
-            contentAssignee = contentAssignee,
+            contentData = ContentData(
+                title = title,
+                description = "$title 내용",
+                isCompleted = false,
+                contentAssignee = contentAssignee,
+            ),
+            dateTimeInfo = DateTimeInfo(
+                startDateTime = dateTime(day),
+                startTimezone = "",
+                endDateTime = dateTime(day, 23, 59),
+                endTimezone = ""
+            ),
+            tagList = emptyList()
         )
 
         return listOf(
-            DaySchedule(date = date(1), todos = listOf(todo(1, "내 일정", ContentAssignee.ME))),
-            DaySchedule(date = date(2), todos = listOf(todo(2, "커플 일정", ContentAssignee.US))),
-            DaySchedule(date = date(3), todos = listOf(todo(3, "상대 일정", ContentAssignee.PARTNER))),
+            DaySchedule(date = date(1), scheduleList = listOf(todo(1, "내 일정", ContentAssignee.ME))),
+            DaySchedule(date = date(2), scheduleList = listOf(todo(2, "커플 일정", ContentAssignee.US))),
+            DaySchedule(date = date(3), scheduleList = listOf(todo(3, "상대 일정", ContentAssignee.PARTNER))),
             DaySchedule(
                 date = date(4),
-                holidays =
+                holidayList =
                     listOf(
-                        Holiday(id = id++, date = date(4), name = "휴일", isHoliday = true),
+                        Holiday(date = date(4), name = "휴일", isHoliday = true),
                     ),
             ),
             DaySchedule(
                 date = date(5),
-                anniversaries =
+                anniversaryList =
                     listOf(
                         Anniversary(
                             type = AnniversaryType.BIRTHDAY,
                             date = date(5),
                             label = "생일",
-                            isAdjustedForNonLeapYear = false,
                         ),
                     ),
             ),

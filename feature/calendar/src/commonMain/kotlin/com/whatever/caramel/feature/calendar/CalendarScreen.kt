@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.CaramelPullToRefreshIndicator
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.domain.policy.CalendarPolicy
 import com.whatever.caramel.feature.calendar.component.CalendarDatePicker
 import com.whatever.caramel.feature.calendar.component.CurrentDateMenu
 import com.whatever.caramel.feature.calendar.component.bottomSheet.BottomSheetTodoItem
@@ -60,7 +61,7 @@ internal fun CalendarScreen(
     onIntent: (CalendarIntent) -> Unit,
 ) {
     val pagerState =
-        rememberPagerState(initialPage = state.pageIndex) { Calendar.yearSize * Month.entries.size }
+        rememberPagerState(initialPage = state.pageIndex) { CalendarPolicy.YEAR_SIZE * Month.entries.size }
     val bottomSheetState = rememberStandardBottomSheetState()
     val bottomSheetScaffoldState =
         rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
@@ -80,11 +81,11 @@ internal fun CalendarScreen(
 
     LaunchedEffect(state.selectedDate) {
         if (state.bottomSheetState == BottomSheetState.EXPANDED) {
-            val scheduleIndex = state.yearSchedule.indexOfFirst { it.date == state.selectedDate }
+            val scheduleIndex = state.yearScheduleList.indexOfFirst { it.date == state.selectedDate }
             if (scheduleIndex >= 0) {
                 val itemPosition =
                     scheduleIndex +
-                        state.yearSchedule.take(scheduleIndex).sumOf { it.todos.size }
+                        state.yearScheduleList.take(scheduleIndex).sumOf { it.scheduleList.size }
                 lazyListState.scrollToItem(index = itemPosition)
             }
         }
@@ -200,37 +201,37 @@ internal fun CalendarScreen(
                                 ).height(availableHeight),
                         state = lazyListState,
                     ) {
-                        state.monthSchedule.forEachIndexed { index, schedule ->
-                            val hasNextSchedule = index != state.monthSchedule.lastIndex
+                        state.monthScheduleList.forEachIndexed { index, monthSchedule ->
+                            val hasNextSchedule = index != state.monthScheduleList.lastIndex
                             item {
                                 BottomSheetTodoListHeader(
-                                    date = schedule.date,
+                                    date = monthSchedule.date,
                                     onClickAddSchedule = {
-                                        onIntent(CalendarIntent.ClickAddScheduleButton(schedule.date))
+                                        onIntent(CalendarIntent.ClickAddScheduleButton(monthSchedule.date))
                                     },
-                                    isToday = schedule.date == state.today,
-                                    isEmpty = schedule.todos.isEmpty(),
-                                    holidays = schedule.holidays,
-                                    anniversaries = schedule.anniversaries,
+                                    isToday = monthSchedule.date == state.today,
+                                    isEmpty = monthSchedule.scheduleList.isEmpty(),
+                                    holidays = monthSchedule.holidayList,
+                                    anniversaries = monthSchedule.anniversaryList,
                                 )
                                 Spacer(modifier = Modifier.height(CaramelTheme.spacing.s))
                             }
                             itemsIndexed(
-                                items = schedule.todos,
-                                key = { _, todo ->
-                                    todo.id
+                                items = monthSchedule.scheduleList,
+                                key = { _, schedule ->
+                                    schedule.id
                                 },
-                            ) { index, todo ->
-                                val isLastTodo = index == schedule.todos.lastIndex
+                            ) { index, schedule ->
+                                val isLastTodo = index == monthSchedule.scheduleList.lastIndex
                                 val spacerHeight =
                                     if (isLastTodo) CaramelTheme.spacing.l else CaramelTheme.spacing.s
 
                                 BottomSheetTodoItem(
-                                    id = todo.id,
-                                    title = todo.title,
-                                    description = todo.description,
-                                    url = todo.url,
-                                    contentAssignee = todo.contentAssignee,
+                                    id = schedule.id,
+                                    title = schedule.contentData.title,
+                                    description = schedule.contentData.description,
+                                    url = schedule.url,
+                                    contentAssignee = schedule.contentData.contentAssignee,
                                     onClickUrl = { onIntent(CalendarIntent.ClickTodoUrl(it)) },
                                     onClickTodo = {
                                         onIntent(
@@ -287,7 +288,7 @@ internal fun CalendarScreen(
                                 modifier =
                                     Modifier.background(color = CaramelTheme.color.background.primary),
                                 pageIndex = pageIndex,
-                                schedules = state.yearSchedule.toImmutableList(),
+                                schedules = state.yearScheduleList.toImmutableList(),
                                 selectedDate = state.selectedDate,
                                 onClickTodo = { onIntent(CalendarIntent.ClickTodoItemInCalendar(it)) },
                                 onClickCell = { onIntent(CalendarIntent.ClickCalendarCell(it)) },

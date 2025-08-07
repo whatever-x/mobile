@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.style.TextAlign
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.domain.policy.UserPolicy
 import com.whatever.caramel.core.domain.validator.UserValidator
 import org.jetbrains.compose.resources.painterResource
 
@@ -51,7 +52,7 @@ internal fun EditNickname(
             )
             Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.s))
             Text(
-                text = "최대 ${UserValidator.NICKNAME_MAX_LENGTH}글자",
+                text = "최대 ${UserPolicy.NICKNAME_MAX_LENGTH}글자",
                 style = CaramelTheme.typography.body3.regular,
                 color = CaramelTheme.color.text.secondary,
             )
