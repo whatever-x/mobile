@@ -18,7 +18,7 @@ import kotlinx.collections.immutable.toImmutableList
 
 class MemoViewModel(
     private val getMemoListUseCase: GetMemoListUseCase,
-    private val getTagUseCase: GetAllTagsUseCase,
+    private val getAllTagsUseCase: GetAllTagsUseCase,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle, crashlytics) {
@@ -92,7 +92,7 @@ class MemoViewModel(
     private fun getTags() {
         reduce { copy(isTagLoading = true) }
         launch {
-            val tags = getTagUseCase().map { TagUiModel.toUiModel(it) }
+            val tags = getAllTagsUseCase().map { TagUiModel.toUiModel(it) }
             val combinedTags = listOf(TagUiModel()) + tags
             reduce {
                 copy(

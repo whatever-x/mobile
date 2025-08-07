@@ -10,13 +10,13 @@ import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
 import com.whatever.caramel.core.domain.exception.code.ScheduleErrorCode
 import com.whatever.caramel.core.domain.params.content.memo.MemoEditParameter
 import com.whatever.caramel.core.domain.params.content.schdule.ScheduleEditParameter
-import com.whatever.caramel.core.domain.usecase.schedule.DeleteScheduleUseCase
-import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleUseCase
-import com.whatever.caramel.core.domain.usecase.schedule.UpdateScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.content.GetAllTagsUseCase
 import com.whatever.caramel.core.domain.usecase.memo.DeleteMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.GetMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.UpdateMemoUseCase
-import com.whatever.caramel.core.domain.usecase.content.GetAllTagsUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.DeleteScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.UpdateScheduleUseCase
 import com.whatever.caramel.core.domain.validator.ContentValidator
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentType
@@ -34,7 +34,6 @@ import com.whatever.caramel.feature.content.edit.mvi.ContentEditState
 import com.whatever.caramel.feature.content.edit.navigation.ContentEditScreenRoute
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
@@ -42,7 +41,7 @@ import kotlinx.datetime.atTime
 class ContentEditViewModel(
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
-    private val getTagUseCase: GetAllTagsUseCase,
+    private val getAllTagsUseCase: GetAllTagsUseCase,
     private val getMemoUseCase: GetMemoUseCase,
     private val updateMemoUseCase: UpdateMemoUseCase,
     private val deleteMemoUseCase: DeleteMemoUseCase,
@@ -381,7 +380,7 @@ class ContentEditViewModel(
 
     private fun loadTags() {
         launch {
-            val tags = getTagUseCase()
+            val tags = getAllTagsUseCase()
             reduce { copy(tags = tags.toImmutableList()) }
         }
     }

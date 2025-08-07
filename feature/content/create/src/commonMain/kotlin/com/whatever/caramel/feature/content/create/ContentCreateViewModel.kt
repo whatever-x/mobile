@@ -36,12 +36,12 @@ import kotlinx.datetime.atTime
 class ContentCreateViewModel(
     crashlytics: CaramelCrashlytics,
     savedStateHandle: SavedStateHandle,
-    private val getTagUseCase: GetAllTagsUseCase,
+    private val getAllTagsUseCase: GetAllTagsUseCase,
     private val createContentUseCase: CreateContentUseCase,
 ) : BaseViewModel<ContentCreateState, ContentCreateSideEffect, ContentCreateIntent>(savedStateHandle, crashlytics) {
     init {
         launch {
-            val tags = getTagUseCase()
+            val tags = getAllTagsUseCase()
             reduce {
                 copy(tags = tags.toImmutableList())
             }
