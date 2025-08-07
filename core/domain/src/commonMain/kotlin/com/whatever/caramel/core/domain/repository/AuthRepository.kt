@@ -20,5 +20,5 @@ interface AuthRepository {
 
     suspend fun signOut()
 
-    // @ham2174 TODO : logOut 함수 정의
+    suspend fun logOut()
 }

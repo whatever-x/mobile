@@ -70,4 +70,10 @@ internal class AuthRepositoryImpl(
             remoteAuthDataSource.deleteAccount()
         }
     }
+
+    override suspend fun logOut() {
+        safeCall {
+            remoteAuthDataSource.logOut()
+        }
+    }
 }

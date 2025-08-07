@@ -10,8 +10,9 @@ class LogoutUseCase(
     private val coupleRepository: CoupleRepository,
 ) {
     suspend operator fun invoke() {
-        authRepository.deleteToken()
-        userRepository.deleteUserStatus()
-        coupleRepository.deleteCoupleId()
+        authRepository.logOut()
+        authRepository.removeAuthToken()
+        userRepository.removeUserStatus()
+        coupleRepository.removeCoupleId()
     }
 }
