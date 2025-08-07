@@ -20,7 +20,7 @@ class RemoteScheduleDataSourceImpl(
 ) : RemoteScheduleDataSource {
     override suspend fun createSchedule(request: CreateScheduleRequest): CreateScheduleResponse =
         authClient
-            .post("$SCHEDULE_BASE_URL/schedules") {
+            .post(SCHEDULE_BASE_URL) {
                 setBody(body = request)
             }.getBody()
 
@@ -39,17 +39,17 @@ class RemoteScheduleDataSourceImpl(
         scheduleId: Long,
         updateScheduleRequest: UpdateScheduleRequest,
     ) {
-        authClient.put("$SCHEDULE_BASE_URL/schedules/$scheduleId") {
+        authClient.put("$SCHEDULE_BASE_URL/$scheduleId") {
             setBody(updateScheduleRequest)
         }
     }
 
     override suspend fun deleteSchedule(scheduleId: Long) {
-        authClient.delete("$SCHEDULE_BASE_URL/schedules/$scheduleId")
+        authClient.delete("$SCHEDULE_BASE_URL/$scheduleId")
     }
 
     override suspend fun fetchSchedule(scheduleId: Long): GetScheduleResponse =
-        authClient.get("$SCHEDULE_BASE_URL/schedules/$scheduleId").getBody()
+        authClient.get("$SCHEDULE_BASE_URL/$scheduleId").getBody()
 
     companion object {
         private const val SCHEDULE_BASE_URL = "/v1/calendar/schedules"
