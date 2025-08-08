@@ -2,8 +2,7 @@ package com.whatever.caramel.core.domain.vo.calendar
 
 import kotlinx.datetime.LocalDate
 
-data class Anniversary(
-    val type: AnniversaryType,
+data class AnniversaryOnDate(
     val date: LocalDate,
-    val label: String,
+    val anniversaryList: List<Anniversary>,
 )

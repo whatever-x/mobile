@@ -1,6 +1,5 @@
 package com.whatever.caramel.core.domain.entity
 
-import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentData
 import kotlinx.datetime.LocalDate
 

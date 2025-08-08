@@ -3,7 +3,7 @@ package com.whatever.caramel.feature.home
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.feature.home.mvi.HomeState
-import com.whatever.caramel.feature.home.mvi.TodoItem
+import com.whatever.caramel.feature.home.mvi.ScheduleItem
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
@@ -44,7 +44,7 @@ internal class HomeScreenPreviewData : PreviewParameterProvider<HomeState> {
                 shareMessage = "내일 여기서 만나",
                 todoList =
                     listOf(
-                        TodoItem(
+                        ScheduleItem(
                             id = 1,
                             title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?",
                             contentAssignee = ContentAssignee.ME,
@@ -59,7 +59,7 @@ internal class HomeScreenPreviewData : PreviewParameterProvider<HomeState> {
                 todoList =
                     (0..7)
                         .map {
-                            TodoItem(
+                            ScheduleItem(
                                 id = it.toLong(),
                                 title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?",
                                 contentAssignee = ContentAssignee.US,
@@ -74,7 +74,7 @@ internal class HomeScreenPreviewData : PreviewParameterProvider<HomeState> {
                 todoList =
                     (0..7)
                         .map {
-                            TodoItem(
+                            ScheduleItem(
                                 id = it.toLong(),
                                 title = "오늘 캘린더에 첫 번째로 적혀있는 것이 표시됩니다. 글자수가 넘어가면 어떻게 되나요?",
                                 contentAssignee = ContentAssignee.PARTNER,

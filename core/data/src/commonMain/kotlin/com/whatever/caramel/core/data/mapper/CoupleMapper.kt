@@ -2,8 +2,6 @@ package com.whatever.caramel.core.data.mapper
 
 import com.whatever.caramel.core.domain.entity.Couple
 import com.whatever.caramel.core.domain.entity.User
-import com.whatever.caramel.core.domain.vo.calendar.Anniversary
-import com.whatever.caramel.core.domain.vo.calendar.AnniversaryType
 import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
 import com.whatever.caramel.core.domain.vo.couple.CoupleRelationship
 import com.whatever.caramel.core.domain.vo.couple.CoupleStatus
@@ -11,11 +9,9 @@ import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.domain.vo.user.UserProfile
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.remote.dto.couple.CoupleUserInfoDto
-import com.whatever.caramel.core.remote.dto.couple.response.CoupleAnniversaryResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleBasicResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleDetailResponse
 import com.whatever.caramel.core.remote.dto.couple.response.CoupleInvitationCodeResponse
-import kotlinx.datetime.LocalDate
 
 internal fun CoupleInvitationCodeResponse.toCoupleInvitationCode() =
     CoupleInvitationCode(

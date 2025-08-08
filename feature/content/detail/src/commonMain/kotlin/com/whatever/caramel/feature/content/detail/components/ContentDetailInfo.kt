@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.components.shimmer
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.domain.vo.common.LinkMetaData
+import com.whatever.caramel.core.domain.vo.content.LinkMetaData
 import org.jetbrains.compose.resources.painterResource
 
 @Composable

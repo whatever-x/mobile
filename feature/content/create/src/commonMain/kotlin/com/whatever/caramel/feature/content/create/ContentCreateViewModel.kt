@@ -6,14 +6,14 @@ import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.AppErrorCode
-import com.whatever.caramel.core.domain.usecase.memo.CreateContentUseCase
-import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
+import com.whatever.caramel.core.domain.params.content.ContentParameterType
+import com.whatever.caramel.core.domain.params.content.memo.MemoParameter
+import com.whatever.caramel.core.domain.params.content.schdule.ScheduleParameter
+import com.whatever.caramel.core.domain.usecase.content.CreateContentUseCase
+import com.whatever.caramel.core.domain.usecase.content.GetAllTagsUseCase
 import com.whatever.caramel.core.domain.validator.ContentValidator
-import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
-import com.whatever.caramel.core.domain.vo.content.ContentParameterType
 import com.whatever.caramel.core.domain.vo.content.ContentType
-import com.whatever.caramel.core.domain.vo.memo.MemoParameter
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.ui.picker.model.TimeUiState
@@ -36,12 +36,12 @@ import kotlinx.datetime.atTime
 class ContentCreateViewModel(
     crashlytics: CaramelCrashlytics,
     savedStateHandle: SavedStateHandle,
-    private val getTagUseCase: GetTagUseCase,
+    private val getAllTagsUseCase: GetAllTagsUseCase,
     private val createContentUseCase: CreateContentUseCase,
 ) : BaseViewModel<ContentCreateState, ContentCreateSideEffect, ContentCreateIntent>(savedStateHandle, crashlytics) {
     init {
         launch {
-            val tags = getTagUseCase()
+            val tags = getAllTagsUseCase()
             reduce {
                 copy(tags = tags.toImmutableList())
             }
@@ -178,10 +178,12 @@ class ContentCreateViewModel(
     }
 
     private fun inputTitle(intent: ContentCreateIntent.InputTitle) {
-        val validatedTitle = ContentValidator.checkInputTitleValidate(
-            input = intent.text,
-            inputLength = intent.text.codePointCount()
-        ).getOrThrow()
+        val validatedTitle =
+            ContentValidator
+                .checkInputTitleValidate(
+                    input = intent.text,
+                    inputLength = intent.text.codePointCount(),
+                ).getOrThrow()
 
         reduce {
             copy(title = validatedTitle)
@@ -189,10 +191,12 @@ class ContentCreateViewModel(
     }
 
     private fun inputContent(intent: ContentCreateIntent.InputContent) {
-        val validatedBody = ContentValidator.checkInputBodyValidate(
-            input = intent.text,
-            inputLength = intent.text.codePointCount()
-        ).getOrThrow()
+        val validatedBody =
+            ContentValidator
+                .checkInputBodyValidate(
+                    input = intent.text,
+                    inputLength = intent.text.codePointCount(),
+                ).getOrThrow()
 
         reduce {
             copy(content = validatedBody)

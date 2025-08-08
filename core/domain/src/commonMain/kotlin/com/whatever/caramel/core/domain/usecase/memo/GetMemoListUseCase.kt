@@ -1,9 +1,9 @@
-package com.whatever.caramel.core.domain.usecase.content
+package com.whatever.caramel.core.domain.usecase.memo
 
 import com.whatever.caramel.core.domain.repository.MemoRepository
-import com.whatever.caramel.core.domain.vo.memo.MemoWithCursor
+import com.whatever.caramel.core.domain.vo.content.memo.MemoWithCursor
 
-class GetMemosUseCase(
+class GetMemoListUseCase(
     private val memoRepository: MemoRepository,
 ) {
     suspend operator fun invoke(
@@ -12,7 +12,7 @@ class GetMemosUseCase(
         sortType: String? = null,
         tagId: Long? = null,
     ): MemoWithCursor =
-        memoRepository.getMemos(
+        memoRepository.getMemoList(
             size = size,
             cursor = cursor,
             sortType = sortType,

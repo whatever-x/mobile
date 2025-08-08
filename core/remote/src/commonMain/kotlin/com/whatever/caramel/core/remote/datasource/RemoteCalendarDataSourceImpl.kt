@@ -10,12 +10,12 @@ import org.koin.core.annotation.Named
 internal class RemoteCalendarDataSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteCalendarDataSource {
-
     override suspend fun fetchHolidayListByYear(year: String): HolidayDetailListResponse =
         authClient
             .get("$CALENDAR_BASE_URL/holidays/year") {
                 parameter("year", year)
             }.getBody()
+
     companion object {
         private const val CALENDAR_BASE_URL = "/v1/calendar"
     }

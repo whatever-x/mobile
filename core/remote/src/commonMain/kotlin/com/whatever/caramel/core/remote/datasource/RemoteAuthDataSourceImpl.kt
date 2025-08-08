@@ -20,7 +20,7 @@ internal class RemoteAuthDataSourceImpl(
                 setBody(body = request)
             }.getBody()
 
-    override suspend fun signOut() {
+    override suspend fun logOut() {
         authClient.post("$BASE_AUTH_URL/sign-out")
     }
 

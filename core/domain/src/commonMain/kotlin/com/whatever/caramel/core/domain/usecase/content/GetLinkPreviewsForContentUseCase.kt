@@ -1,7 +1,8 @@
-package com.whatever.caramel.core.domain.usecase.common
+package com.whatever.caramel.core.domain.usecase.content
 
-import com.whatever.caramel.core.domain.repository.LinkMetadataRepository
-import com.whatever.caramel.core.domain.vo.common.LinkMetaData
+import com.whatever.caramel.core.domain.policy.ContentPolicy
+import com.whatever.caramel.core.domain.repository.ContentRepository
+import com.whatever.caramel.core.domain.vo.content.LinkMetaData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
@@ -12,17 +13,15 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 
 class GetLinkPreviewsForContentUseCase(
-    private val linkMetadataRepository: LinkMetadataRepository,
+    private val contentRepository: ContentRepository,
 ) {
-    private val urlRegex = Regex("""(https?://\S+)""")
-
     @OptIn(ExperimentalCoroutinesApi::class)
     operator fun invoke(content: String?): Flow<List<LinkMetaData>> {
         val distinctUrls =
             content
                 .takeIf { !it.isNullOrBlank() }
                 ?.let { nonEmptyContent ->
-                    urlRegex
+                    ContentPolicy.URL_PATTERN
                         .findAll(nonEmptyContent)
                         .map { it.value }
                         .toList()
@@ -38,7 +37,7 @@ class GetLinkPreviewsForContentUseCase(
                     distinctUrls
                         .asFlow()
                         .flatMapMerge { url ->
-                            flow { emit(linkMetadataRepository.getLinkMetadata(url)) }
+                            flow { emit(contentRepository.getLinkMetadata(url)) }
                         }.filterNotNull()
                         .toList()
                 emit(linkPreviews)

@@ -18,11 +18,11 @@ sealed interface CalendarIntent : UiIntent {
         val date: LocalDate,
     ) : CalendarIntent
 
-    data class ClickTodoItemInBottomSheet(
-        val todoId: Long,
+    data class ClickScheduleItemInBottomSheet(
+        val scheduleId: Long,
     ) : CalendarIntent
 
-    data class ClickTodoUrl(
+    data class ClickScheduleUrl(
         val url: String?,
     ) : CalendarIntent
 
@@ -30,8 +30,8 @@ sealed interface CalendarIntent : UiIntent {
         val selectedDate: LocalDate,
     ) : CalendarIntent
 
-    data class ClickTodoItemInCalendar(
-        val todoId: Long,
+    data class ClickScheduleItemInCalendar(
+        val schedule: Long,
     ) : CalendarIntent
 
     data class UpdatePageIndex(

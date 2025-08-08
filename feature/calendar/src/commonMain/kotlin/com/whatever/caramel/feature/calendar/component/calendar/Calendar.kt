@@ -35,7 +35,7 @@ fun CaramelCalendar(
     pageIndex: Int,
     selectedDate: LocalDate,
     schedules: ImmutableList<DaySchedule>,
-    onClickTodo: (Long) -> Unit,
+    onClickSchedule: (Long) -> Unit,
     onClickCell: (LocalDate) -> Unit,
 ) {
     val scheduleMap =
@@ -71,7 +71,7 @@ fun CaramelCalendar(
                             date = date,
                             isFocus = selectedDate == date,
                             onClickCell = { onClickCell(it) },
-                            onClickTodo = { onClickTodo(it) },
+                            onClickSchedule = { onClickSchedule(it) },
                         )
                     } else {
                         Spacer(modifier = boxModifier)

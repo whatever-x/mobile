@@ -14,19 +14,20 @@ import com.whatever.caramel.core.remote.dto.memo.ContentAssigneeDto
 
 class ScheduleRepositoryImpl(
     private val remoteScheduleDataSource: RemoteScheduleDataSource,
-): ScheduleRepository {
+) : ScheduleRepository {
     override suspend fun createSchedule(parameter: ScheduleParameter) {
-        val request = CreateScheduleRequest(
-            title = parameter.title,
-            description = parameter.description,
-            isCompleted = parameter.isCompleted,
-            startDateTime = parameter.startDateTime,
-            startTimeZone = parameter.startTimeZone,
-            endDateTime = parameter.endDateTime,
-            endTimeZone = parameter.endTimeZone,
-            tagIds = parameter.tagIds,
-            contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
-        )
+        val request =
+            CreateScheduleRequest(
+                title = parameter.title,
+                description = parameter.description,
+                isCompleted = parameter.isCompleted,
+                startDateTime = parameter.startDateTime,
+                startTimeZone = parameter.startTimeZone,
+                endDateTime = parameter.endDateTime,
+                endTimeZone = parameter.endTimeZone,
+                tagIds = parameter.tagIds,
+                contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
+            )
         return safeCall {
             remoteScheduleDataSource.createSchedule(request = request)
         }
@@ -36,23 +37,24 @@ class ScheduleRepositoryImpl(
         scheduleId: Long,
         parameter: ScheduleEditParameter,
     ) {
-        val request = UpdateScheduleRequest(
-            selectedDate = parameter.selectedDate,
-            title = parameter.title,
-            description = parameter.description,
-            isCompleted = parameter.isCompleted,
-            startDateTime = parameter.dateTimeInfo?.startDateTime.toString(),
-            startTimeZone = parameter.dateTimeInfo?.startTimezone,
-            endDateTime = parameter.dateTimeInfo?.endDateTime?.toString(),
-            endTimeZone = parameter.dateTimeInfo?.endTimezone,
-            tagIds = parameter.tagIds,
-            contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
-        )
+        val request =
+            UpdateScheduleRequest(
+                selectedDate = parameter.selectedDate,
+                title = parameter.title,
+                description = parameter.description,
+                isCompleted = parameter.isCompleted,
+                startDateTime = parameter.dateTimeInfo?.startDateTime.toString(),
+                startTimeZone = parameter.dateTimeInfo?.startTimezone,
+                endDateTime = parameter.dateTimeInfo?.endDateTime?.toString(),
+                endTimeZone = parameter.dateTimeInfo?.endTimezone,
+                tagIds = parameter.tagIds,
+                contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
+            )
 
         safeCall {
             remoteScheduleDataSource.updateSchedule(
                 scheduleId = scheduleId,
-                updateScheduleRequest = request
+                updateScheduleRequest = request,
             )
         }
     }

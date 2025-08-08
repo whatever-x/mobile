@@ -6,7 +6,7 @@ class UpdateShareMessageUseCase(
     private val coupleRepository: CoupleRepository,
 ) {
     suspend operator fun invoke(shareMessage: String): String {
-        val coupleId = coupleRepository.getCoupleId()
+        val coupleId = coupleRepository.readCoupleId()
 
         val coupleInfo =
             coupleRepository.updateShareMessage(

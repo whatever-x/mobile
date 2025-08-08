@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.domain.params.content.schdule
 
-import com.whatever.caramel.core.domain.vo.content.schedule.DateTimeInfo
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
+import com.whatever.caramel.core.domain.vo.content.schedule.DateTimeInfo
 
 data class ScheduleEditParameter(
     val selectedDate: String,

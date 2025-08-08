@@ -13,6 +13,9 @@ data class Schedule(
     val url: String?
         get() {
             val allContent = "${contentData.title} ${contentData.description}"
-            return ContentPolicy.URL_PATTERN.findAll(allContent).map { it.value }.firstOrNull()
+            return ContentPolicy.URL_PATTERN
+                .findAll(allContent)
+                .map { it.value }
+                .firstOrNull()
         }
 }

@@ -1,15 +1,15 @@
-package com.whatever.caramel.core.domain.usecase.calendar
+package com.whatever.caramel.core.domain.usecase.schedule
 
-import com.whatever.caramel.core.domain.entity.Todo
-import com.whatever.caramel.core.domain.repository.CalendarRepository
+import com.whatever.caramel.core.domain.entity.Schedule
+import com.whatever.caramel.core.domain.repository.ScheduleRepository
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
 class GetTodayScheduleUseCase(
-    private val calendarRepository: CalendarRepository,
+    private val scheduleRepository: ScheduleRepository,
 ) {
-    suspend operator fun invoke(): List<Todo> {
+    suspend operator fun invoke(): List<Schedule> {
         val today =
             Clock.System
                 .now()
@@ -17,10 +17,9 @@ class GetTodayScheduleUseCase(
                 .date
                 .toString()
 
-        return calendarRepository.getTodos(
+        return scheduleRepository.getScheduleList(
             startDate = today,
             endDate = today,
-            userTimezone = null,
         )
     }
 }

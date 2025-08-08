@@ -30,36 +30,36 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Stable
-internal interface CaramelBottomTodoScope {
+internal interface CaramelBottomSheetScheduleScope {
     val id: Long
     val title: String
     val description: String
     val url: String?
     val contentAssignee: ContentAssignee
     val onClickUrl: (String?) -> Unit
-    val onClickTodo: (Long) -> Unit
+    val onClickSchedule: (Long) -> Unit
 }
 
-internal class CaramelDefaultBottomTodoScope(
+internal class CaramelDefaultBottomSheetScheduleScope(
     override val id: Long,
     override val title: String,
     override val description: String,
     override val url: String?,
     override val contentAssignee: ContentAssignee,
     override val onClickUrl: (String?) -> Unit,
-    override val onClickTodo: (Long) -> Unit,
-) : CaramelBottomTodoScope
+    override val onClickSchedule: (Long) -> Unit,
+) : CaramelBottomSheetScheduleScope
 
 @Composable
-internal fun BottomSheetTodoItem(
+internal fun BottomSheetScheduleItem(
     id: Long,
     title: String,
     description: String,
     url: String? = null,
     contentAssignee: ContentAssignee,
-    onClickTodo: (Long) -> Unit = {},
+    onClickSchedule: (Long) -> Unit = {},
     onClickUrl: (String?) -> Unit = {},
-    content: @Composable CaramelBottomTodoScope.() -> Unit,
+    content: @Composable CaramelBottomSheetScheduleScope.() -> Unit,
 ) {
     val scope =
         remember(
@@ -67,15 +67,15 @@ internal fun BottomSheetTodoItem(
             title,
             description,
             url,
-            onClickTodo,
+            onClickSchedule,
             onClickUrl,
         ) {
-            CaramelDefaultBottomTodoScope(
+            CaramelDefaultBottomSheetScheduleScope(
                 id = id,
                 title = title,
                 description = description,
                 url = url,
-                onClickTodo = onClickTodo,
+                onClickSchedule = onClickSchedule,
                 onClickUrl = onClickUrl,
                 contentAssignee = contentAssignee,
             )
@@ -84,7 +84,7 @@ internal fun BottomSheetTodoItem(
 }
 
 @Composable
-internal fun CaramelBottomTodoScope.DefaultBottomSheetTodoItem(modifier: Modifier = Modifier) {
+internal fun CaramelBottomSheetScheduleScope.DefaultBottomSheetScheduleItem(modifier: Modifier = Modifier) {
     val hasAll = this.title.isNotEmpty() && this.description.isNotEmpty()
     val hasUrl = !this.url.isNullOrEmpty()
 
@@ -97,21 +97,21 @@ internal fun CaramelBottomTodoScope.DefaultBottomSheetTodoItem(modifier: Modifie
                     shape = CaramelTheme.shape.m,
                 ).padding(all = CaramelTheme.spacing.l),
     ) {
-        TodoAssignee()
+        ScheduleAssignee()
         Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.s))
-        TodoTitle()
+        ScheduleTitle()
         if (hasAll) {
             Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.xxs))
-            TodoDescription()
+            ScheduleDescription()
         }
         if (hasUrl) {
-            TodoUrl()
+            ScheduleUrl()
         }
     }
 }
 
 @Composable
-internal fun CaramelBottomTodoScope.TodoAssignee(modifier: Modifier = Modifier) {
+internal fun CaramelBottomSheetScheduleScope.ScheduleAssignee(modifier: Modifier = Modifier) {
     val (assigneeTextRes, assigneeTextColor) =
         when (this.contentAssignee) {
             ContentAssignee.ME -> Res.string.my_schedule to CaramelTheme.color.text.labelAccent4
@@ -126,7 +126,7 @@ internal fun CaramelBottomTodoScope.TodoAssignee(modifier: Modifier = Modifier) 
                 .clickable(
                     indication = null,
                     interactionSource = null,
-                    onClick = { onClickTodo(id) },
+                    onClick = { onClickSchedule(id) },
                 ),
         text = stringResource(assigneeTextRes),
         style = CaramelTheme.typography.body3.bold,
@@ -135,7 +135,7 @@ internal fun CaramelBottomTodoScope.TodoAssignee(modifier: Modifier = Modifier) 
 }
 
 @Composable
-internal fun CaramelBottomTodoScope.TodoTitle(modifier: Modifier = Modifier) {
+internal fun CaramelBottomSheetScheduleScope.ScheduleTitle(modifier: Modifier = Modifier) {
     val mainText = this.title.ifEmpty { description }
     Text(
         modifier =
@@ -144,7 +144,7 @@ internal fun CaramelBottomTodoScope.TodoTitle(modifier: Modifier = Modifier) {
                 .clickable(
                     indication = null,
                     interactionSource = null,
-                    onClick = { onClickTodo(id) },
+                    onClick = { onClickSchedule(id) },
                 ),
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
@@ -155,7 +155,7 @@ internal fun CaramelBottomTodoScope.TodoTitle(modifier: Modifier = Modifier) {
 }
 
 @Composable
-internal fun CaramelBottomTodoScope.TodoDescription(modifier: Modifier = Modifier) {
+internal fun CaramelBottomSheetScheduleScope.ScheduleDescription(modifier: Modifier = Modifier) {
     val descriptionText = this.description.ifEmpty { return }
     Text(
         modifier =
@@ -164,7 +164,7 @@ internal fun CaramelBottomTodoScope.TodoDescription(modifier: Modifier = Modifie
                 .clickable(
                     indication = null,
                     interactionSource = null,
-                    onClick = { onClickTodo(id) },
+                    onClick = { onClickSchedule(id) },
                 ),
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
@@ -175,7 +175,7 @@ internal fun CaramelBottomTodoScope.TodoDescription(modifier: Modifier = Modifie
 }
 
 @Composable
-internal fun CaramelBottomTodoScope.TodoUrl(modifier: Modifier = Modifier) {
+internal fun CaramelBottomSheetScheduleScope.ScheduleUrl(modifier: Modifier = Modifier) {
     val urlText = this.url ?: return
 
     Column(

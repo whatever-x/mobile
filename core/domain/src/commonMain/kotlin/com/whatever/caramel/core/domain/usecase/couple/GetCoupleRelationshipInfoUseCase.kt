@@ -8,12 +8,12 @@ class GetCoupleRelationshipInfoUseCase(
 ) {
     suspend operator fun invoke(): CoupleRelationship {
         val coupleId =
-            if (coupleRepository.getCoupleId() == 0L) { // @ham2174 TODO : 커플 아이디 인메모리 저장 형식으로 변경
+            if (coupleRepository.readCoupleId() == 0L) { // @ham2174 TODO : 커플 아이디 인메모리 저장 형식으로 변경
                 val coupleInfo = coupleRepository.getCoupleInfo() // 커플 정보 획득
                 coupleRepository.setCoupleId(coupleId = coupleInfo.id) // 커플 아이디 저장
                 coupleInfo.id
             } else {
-                coupleRepository.getCoupleId()
+                coupleRepository.readCoupleId()
             }
 
         return coupleRepository.getCoupleRelationshipInfo(coupleId = coupleId)
