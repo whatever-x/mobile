@@ -15,7 +15,7 @@ import com.whatever.caramel.core.domain.usecase.content.GetLinkPreviewsForConten
 import com.whatever.caramel.core.domain.usecase.memo.GetMemoListUseCase
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
 import com.whatever.caramel.core.domain.usecase.couple.EditCoupleStartDateUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.AnniversariesInPeriodUseCase
+import com.whatever.caramel.core.domain.usecase.calendar.GetAnniversariesInPeriodUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInvitationCodeUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
@@ -55,7 +55,7 @@ val useCaseModule =
         factory { EditCoupleStartDateUseCase(get()) }
         factory { UpdateShareMessageUseCase(get()) }
         factory { GetCoupleInfoUseCase(get()) }
-        factory { AnniversariesInPeriodUseCase(get(), get()) }
+        factory { GetAnniversariesInPeriodUseCase(get(), get()) }
 
         // Calender
         factory { GetScheduleInPeriodUseCase(get()) }

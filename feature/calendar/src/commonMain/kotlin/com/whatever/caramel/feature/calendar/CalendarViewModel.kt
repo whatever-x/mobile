@@ -7,7 +7,7 @@ import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.policy.CalendarPolicy
 import com.whatever.caramel.core.domain.usecase.calendar.GetHolidayOfYearUseCase
 import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleInPeriodUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.AnniversariesInPeriodUseCase
+import com.whatever.caramel.core.domain.usecase.calendar.GetAnniversariesInPeriodUseCase
 import com.whatever.caramel.core.domain.vo.calendar.AnniversaryOnDate
 import com.whatever.caramel.core.domain.vo.calendar.HolidayOnDate
 import com.whatever.caramel.core.domain.vo.content.ContentType
@@ -31,7 +31,7 @@ import kotlinx.datetime.number
 class CalendarViewModel(
     private val getScheduleInPeriodUseCase: GetScheduleInPeriodUseCase,
     private val getHolidayOfYearUseCase: GetHolidayOfYearUseCase,
-    private val anniversariesInPeriodUseCase: AnniversariesInPeriodUseCase,
+    private val getAnniversariesInPeriodUseCase: GetAnniversariesInPeriodUseCase,
     crashlytics: CaramelCrashlytics,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(
@@ -283,7 +283,7 @@ class CalendarViewModel(
                 }
             val anniversariesDeferred =
                 async {
-                    anniversariesInPeriodUseCase(
+                    getAnniversariesInPeriodUseCase(
                         startDate = firstDayOfMonth,
                         endDate = lastDayOfMonth,
                     )

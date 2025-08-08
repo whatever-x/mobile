@@ -4,7 +4,7 @@ import com.whatever.caramel.core.domain.repository.CalendarRepository
 import com.whatever.caramel.core.domain.repository.CoupleRepository
 import com.whatever.caramel.core.domain.vo.calendar.AnniversaryOnDate
 
-class AnniversariesInPeriodUseCase(
+class GetAnniversariesInPeriodUseCase(
     private val coupleRepository: CoupleRepository,
     private val calendarRepository: CalendarRepository
 ) {
