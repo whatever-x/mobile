@@ -15,5 +15,5 @@ class GetScheduleInPeriodUseCase(
                 startDate = startDate,
                 endDate = endDate,
             ).groupBy { it.dateTimeInfo.startDateTime }
-            .map { (date, todos) -> ScheduleOnDate(date.date, todos) }
+            .map { (date, scheduleList) -> ScheduleOnDate(date.date, scheduleList) }
 }

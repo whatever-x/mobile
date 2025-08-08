@@ -14,7 +14,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 internal fun MemoRoute(
     viewModel: MemoViewModel = koinViewModel(),
-    navigateToTodoDetail: (Long, ContentType) -> Unit,
+    navigateToMemoDetail: (Long, ContentType) -> Unit,
     showErrorToast: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
 ) {
@@ -23,7 +23,7 @@ internal fun MemoRoute(
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is MemoSideEffect.NavigateToTodoDetail -> navigateToTodoDetail(sideEffect.todoId, sideEffect.contentType)
+                is MemoSideEffect.NavigateToMemoDetail -> navigateToMemoDetail(sideEffect.id, sideEffect.contentType)
                 is MemoSideEffect.ShowErrorDialog -> showErrorDialog(sideEffect.message, sideEffect.description)
                 is MemoSideEffect.ShowErrorToast -> showErrorToast(sideEffect.message)
             }

@@ -105,7 +105,7 @@ class MemoViewModel(
     }
 
     private fun clickMemo(intent: MemoIntent.ClickMemo) {
-        postSideEffect(MemoSideEffect.NavigateToTodoDetail(intent.memoId, ContentType.MEMO))
+        postSideEffect(MemoSideEffect.NavigateToMemoDetail(intent.memoId, ContentType.MEMO))
     }
 
     private fun loadPagingData() {

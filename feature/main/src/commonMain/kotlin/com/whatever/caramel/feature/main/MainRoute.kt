@@ -38,8 +38,8 @@ internal fun MainRoute(
     viewModel: MainViewModel = koinViewModel(),
     navigateToSetting: () -> Unit,
     navigateToStaredCoupleDay: () -> Unit,
-    navigateToTodoDetail: (Long, ContentType) -> Unit,
-    navigateToCreateTodo: (ContentType) -> Unit,
+    navigateToScheduleDetail: (Long, ContentType) -> Unit,
+    navigateToCreateMemo: (ContentType) -> Unit,
     navigateToCreateSchedule: (ContentType, String) -> Unit,
     showErrorToast: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
@@ -100,7 +100,7 @@ internal fun MainRoute(
                     },
                     trailingButton = {
                         CaramelNavItemCreateButton(
-                            onClickButton = { navigateToCreateTodo(ContentType.MEMO) },
+                            onClickButton = { navigateToCreateMemo(ContentType.MEMO) },
                         )
                     },
                 )
@@ -121,19 +121,19 @@ internal fun MainRoute(
             homeContent(
                 navigateToSetting = navigateToSetting,
                 navigateToStaredCoupleDay = navigateToStaredCoupleDay,
-                navigateToTodoDetail = navigateToTodoDetail,
-                navigateToCreateTodo = navigateToCreateTodo,
+                navigateToTodoDetail = navigateToScheduleDetail,
+                navigateToCreateTodo = navigateToCreateMemo,
                 showErrorDialog = showErrorDialog,
                 showErrorToast = showErrorToast,
             )
             calendarContent(
                 navigateToCreateSchedule = navigateToCreateSchedule,
-                navigateToScheduleDetail = navigateToTodoDetail,
+                navigateToScheduleDetail = navigateToScheduleDetail,
                 showErrorDialog = showErrorDialog,
                 showErrorToast = showErrorToast,
             )
             memoContent(
-                navigateToTodoDetail = navigateToTodoDetail,
+                navigateToMemoDetail = navigateToScheduleDetail,
                 showErrorToast = showErrorToast,
                 showErrorDialog = showErrorDialog,
             )
