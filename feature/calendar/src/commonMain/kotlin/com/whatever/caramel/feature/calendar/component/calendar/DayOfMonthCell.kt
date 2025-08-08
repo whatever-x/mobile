@@ -26,7 +26,7 @@ internal fun CalendarDayOfMonthCell(
     date: LocalDate,
     isFocus: Boolean,
     onClickCell: (LocalDate) -> Unit = {},
-    onClickTodo: (Long) -> Unit = {},
+    onClickSchedule: (Long) -> Unit = {},
 ) {
     Box(modifier = modifier) {
         Column(
@@ -50,7 +50,7 @@ internal fun CalendarDayOfMonthCell(
             if (schedule != null) {
                 CalendarScheduleList(
                     schedule = schedule,
-                    onClickTodo = { onClickTodo(it) },
+                    onClickSchedule = { onClickSchedule(it) },
                 )
             }
         }

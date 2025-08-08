@@ -7,11 +7,11 @@ import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
 import com.whatever.caramel.core.domain.exception.code.ScheduleErrorCode
-import com.whatever.caramel.core.domain.usecase.schedule.DeleteScheduleUseCase
-import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.content.GetLinkPreviewsForContentUseCase
 import com.whatever.caramel.core.domain.usecase.memo.DeleteMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.GetMemoUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.DeleteScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleUseCase
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.detail.mvi.ContentDetailIntent
@@ -31,9 +31,9 @@ class ContentDetailViewModel(
     private val deleteScheduleUseCase: DeleteScheduleUseCase,
     private val getLinkPreviewsForContentUseCase: GetLinkPreviewsForContentUseCase,
 ) : BaseViewModel<ContentDetailState, ContentDetailSideEffect, ContentDetailIntent>(
-    savedStateHandle,
-    crashlytics
-) {
+        savedStateHandle,
+        crashlytics,
+    ) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): ContentDetailState {
         val arguments = savedStateHandle.toRoute<ContentDetailRoute>()
         return ContentDetailState(

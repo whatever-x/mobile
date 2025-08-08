@@ -128,7 +128,7 @@ internal fun MainRoute(
             )
             calendarContent(
                 navigateToCreateSchedule = navigateToCreateSchedule,
-                navigateToTodoDetail = navigateToTodoDetail,
+                navigateToScheduleDetail = navigateToTodoDetail,
                 showErrorDialog = showErrorDialog,
                 showErrorToast = showErrorToast,
             )

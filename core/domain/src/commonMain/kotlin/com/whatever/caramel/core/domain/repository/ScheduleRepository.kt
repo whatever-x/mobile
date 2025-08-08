@@ -5,7 +5,6 @@ import com.whatever.caramel.core.domain.params.content.schdule.ScheduleEditParam
 import com.whatever.caramel.core.domain.params.content.schdule.ScheduleParameter
 
 interface ScheduleRepository {
-
     suspend fun createSchedule(parameter: ScheduleParameter)
 
     suspend fun getSchedule(scheduleId: Long): Schedule
@@ -21,5 +20,4 @@ interface ScheduleRepository {
     ): List<Schedule>
 
     suspend fun deleteSchedule(scheduleId: Long)
-
 }

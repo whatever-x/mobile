@@ -9,8 +9,9 @@ class SubmitBalanceGameChoiceUseCase(
     suspend operator fun invoke(
         gameId: Long,
         optionId: Long,
-    ): BalanceGameResult = balanceGameRepository.submitOption(
-        gameId = gameId,
-        optionId = optionId,
-    )
+    ): BalanceGameResult =
+        balanceGameRepository.submitOption(
+            gameId = gameId,
+            optionId = optionId,
+        )
 }

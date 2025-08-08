@@ -7,8 +7,9 @@ class GetHolidayOfYearUseCase(
     private val calendarRepository: CalendarRepository,
 ) {
     suspend operator fun invoke(year: Int): List<HolidayOnDate> =
-        calendarRepository.getHolidayList(
-            year = year,
-        ).groupBy { it.date }
+        calendarRepository
+            .getHolidayList(
+                year = year,
+            ).groupBy { it.date }
             .map { (date, holidayList) -> HolidayOnDate(date, holidayList) }
 }

@@ -18,43 +18,45 @@ import com.whatever.caramel.core.remote.dto.tag.TagRequest
 class MemoRepositoryImpl(
     private val remoteMemoDataSource: RemoteMemoDataSource,
 ) : MemoRepository {
-    override suspend fun createMemo(parameter: MemoParameter) {
-        return safeCall {
-            val request = CreateMemoRequest(
-                title = parameter.title,
-                description = parameter.description,
-                isCompleted = parameter.isCompleted,
-                tags = parameter.tags?.map { tagId -> TagRequest(id = tagId) },
-                contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
-            )
+    override suspend fun createMemo(parameter: MemoParameter) =
+        safeCall {
+            val request =
+                CreateMemoRequest(
+                    title = parameter.title,
+                    description = parameter.description,
+                    isCompleted = parameter.isCompleted,
+                    tags = parameter.tags?.map { tagId -> TagRequest(id = tagId) },
+                    contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
+                )
             remoteMemoDataSource.createMemo(request = request)
         }
-    }
 
     override suspend fun updateMemo(
         memoId: Long,
         parameter: MemoEditParameter,
     ) {
-        val request = UpdateMemoRequest(
-            title = parameter.title,
-            description = parameter.description,
-            isCompleted = parameter.isCompleted,
-            tagList = parameter.tagIds?.map { TagRequest(it) },
-            dateTimeInfo =
-                parameter.dateTimeInfo?.run {
-                    DateTimeInfoRequest(
-                        startDateTime = startDateTime.toString(),
-                        startTimezone = startTimezone,
-                        endDateTime = endDateTime?.toString(),
-                        endTimezone = endTimezone,
-                    )
-                },
-            contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
-        )
+        val request =
+            UpdateMemoRequest(
+                title = parameter.title,
+                description = parameter.description,
+                isCompleted = parameter.isCompleted,
+                tagList = parameter.tagIds?.map { TagRequest(it) },
+                dateTimeInfo =
+                    parameter.dateTimeInfo?.run {
+                        DateTimeInfoRequest(
+                            startDateTime = startDateTime.toString(),
+                            startTimezone = startTimezone,
+                            endDateTime = endDateTime?.toString(),
+                            endTimezone = endTimezone,
+                        )
+                    },
+                contentAssignee = ContentAssigneeDto.valueOf(value = parameter.contentAssignee.name),
+            )
         safeCall {
             remoteMemoDataSource.updateMemo(
                 memoId = memoId,
-                updateMemoRequest = request)
+                updateMemoRequest = request,
+            )
         }
     }
 

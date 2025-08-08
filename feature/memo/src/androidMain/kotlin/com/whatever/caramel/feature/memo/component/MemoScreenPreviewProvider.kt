@@ -53,16 +53,16 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
             list.add(
                 Memo(
                     id = index.toLong(),
-                    contentData = ContentData(
-                        title = if (emptyTitle) "" else "title$index",
-                        description = "description$index",
-                        isCompleted = false,
-                        contentAssignee = contentAssignee,
-                    ),
+                    contentData =
+                        ContentData(
+                            title = if (emptyTitle) "" else "title$index",
+                            description = "description$index",
+                            isCompleted = false,
+                            contentAssignee = contentAssignee,
+                        ),
                     tagList = createTempTagList(index),
                     createdAt = DateUtil.today(),
-
-                    ),
+                ),
             )
         }
         return list.map { it.toUiModel() }.toImmutableList()

@@ -24,7 +24,7 @@ import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 fun CalendarScheduleList(
     modifier: Modifier = Modifier,
     schedule: DaySchedule,
-    onClickTodo: (Long) -> Unit,
+    onClickSchedule: (Long) -> Unit,
 ) {
     val density = LocalDensity.current
     val spacingBetweenItems =
@@ -77,10 +77,10 @@ fun CalendarScheduleList(
             }
         }
 
-        schedule.scheduleList.forEachIndexed { index, todo ->
+        schedule.scheduleList.forEachIndexed { index, schedule ->
             val placeable =
-                subcompose("todo_$index") {
-                    CalendarScheduleItem(schedule = todo, onClickTodo = onClickTodo)
+                subcompose("schedule_$index") {
+                    CalendarScheduleItem(schedule = schedule, onClickSchedule = onClickSchedule)
                 }.first().measure(constraints)
 
             val newHeight = totalHeight + placeable.height + spacingBetweenItems
@@ -178,7 +178,7 @@ private fun CalendarHolidayItem(
 private fun CalendarScheduleItem(
     modifier: Modifier = Modifier,
     schedule: Schedule,
-    onClickTodo: (Long) -> Unit,
+    onClickSchedule: (Long) -> Unit,
 ) {
     val (textColor, backgroundColor) =
         when (schedule.contentData.contentAssignee) {
@@ -192,6 +192,6 @@ private fun CalendarScheduleItem(
         content = schedule.contentData.title.ifEmpty { schedule.contentData.description },
         backgroundColor = backgroundColor,
         textColor = textColor,
-        onClick = { onClickTodo(schedule.id) },
+        onClick = { onClickSchedule(schedule.id) },
     )
 }

@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
-import com.whatever.caramel.core.domain.repository.CoupleRepository
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleInvitationCodeUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.copule.invite.mvi.CoupleInviteIntent
@@ -12,7 +11,7 @@ import com.whatever.caramel.feature.copule.invite.mvi.CoupleInviteSideEffect
 import com.whatever.caramel.feature.copule.invite.mvi.CoupleInviteState
 
 class CoupleInviteViewModel(
-    private val getCoupleInvitationCodeUseCase : GetCoupleInvitationCodeUseCase,
+    private val getCoupleInvitationCodeUseCase: GetCoupleInvitationCodeUseCase,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<CoupleInviteState, CoupleInviteSideEffect, CoupleInviteIntent>(savedStateHandle, crashlytics) {

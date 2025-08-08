@@ -7,12 +7,12 @@ import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
 import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameChoiceUseCase
-import com.whatever.caramel.core.domain.usecase.schedule.GetTodayScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
 import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
-import com.whatever.caramel.core.util.codePointCount
+import com.whatever.caramel.core.domain.usecase.schedule.GetTodayScheduleUseCase
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.user.Gender
+import com.whatever.caramel.core.util.codePointCount
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.home.mvi.BalanceGameCard
 import com.whatever.caramel.feature.home.mvi.BalanceGameOptionItem

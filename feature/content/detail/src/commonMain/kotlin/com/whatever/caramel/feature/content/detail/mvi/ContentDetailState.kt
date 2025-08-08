@@ -10,7 +10,6 @@ import com.whatever.caramel.core.viewmodel.UiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.datetime.LocalDateTime
 
 data class ContentDetailState(
     val contentId: Long = -1L,
@@ -34,7 +33,9 @@ data class ContentDetailState(
         get() =
             when (contentType) {
                 ContentType.MEMO -> memoDetail?.contentData?.description?.takeIf { memoDetail.contentData.title.isNotEmpty() } ?: ""
-                ContentType.CALENDAR -> scheduleDetail?.contentData?.description?.takeIf { scheduleDetail.contentData.title.isNotEmpty() } ?: ""
+                ContentType.CALENDAR ->
+                    scheduleDetail?.contentData?.description?.takeIf { scheduleDetail.contentData.title.isNotEmpty() }
+                        ?: ""
             }
 
     val tags: ImmutableList<Tag>

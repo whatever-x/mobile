@@ -6,7 +6,6 @@ import com.whatever.caramel.core.domain.params.content.memo.MemoParameter
 import com.whatever.caramel.core.domain.vo.content.memo.MemoWithCursor
 
 interface MemoRepository {
-
     suspend fun createMemo(parameter: MemoParameter)
 
     suspend fun getMemoList(
@@ -24,5 +23,4 @@ interface MemoRepository {
     suspend fun deleteMemo(memoId: Long)
 
     suspend fun getMemo(memoId: Long): Memo
-
 }

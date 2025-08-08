@@ -22,14 +22,16 @@ data class CoupleUser(
     val gender: Gender = Gender.IDLE,
 ) {
     companion object {
-        fun toCoupleInfo(user: User?): CoupleUser {
-            return if (user == null) CoupleUser()
-            else CoupleUser(
-                id = user.id,
-                birthday = user.userProfile.birthday,
-                nickname = user.userProfile.nickName,
-                gender = user.userProfile.gender,
-            )
-        }
+        fun toCoupleInfo(user: User?): CoupleUser =
+            if (user == null) {
+                CoupleUser()
+            } else {
+                CoupleUser(
+                    id = user.id,
+                    birthday = user.userProfile.birthday,
+                    nickname = user.userProfile.nickName,
+                    gender = user.userProfile.gender,
+                )
+            }
     }
 }

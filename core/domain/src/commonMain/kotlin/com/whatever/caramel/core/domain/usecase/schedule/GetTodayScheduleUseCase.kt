@@ -19,7 +19,7 @@ class GetTodayScheduleUseCase(
 
         return scheduleRepository.getScheduleList(
             startDate = today,
-            endDate = today
+            endDate = today,
         )
     }
 }

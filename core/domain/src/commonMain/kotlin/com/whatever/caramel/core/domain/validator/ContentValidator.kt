@@ -7,7 +7,10 @@ import com.whatever.caramel.core.domain.policy.ContentPolicy.MAX_BODY_LENGTH
 import com.whatever.caramel.core.domain.policy.ContentPolicy.MAX_TITLE_LENGTH
 
 object ContentValidator {
-    fun checkInputTitleValidate(input: String, inputLength: Int): Result<String> =
+    fun checkInputTitleValidate(
+        input: String,
+        inputLength: Int,
+    ): Result<String> =
         when {
             inputLength > MAX_TITLE_LENGTH ->
                 Result.failure(
@@ -33,7 +36,10 @@ object ContentValidator {
             else -> Result.success(value = input)
         }
 
-    fun checkInputBodyValidate(input: String, inputLength: Int): Result<String> =
+    fun checkInputBodyValidate(
+        input: String,
+        inputLength: Int,
+    ): Result<String> =
         when {
             inputLength > MAX_BODY_LENGTH ->
                 Result.failure(
@@ -47,5 +53,4 @@ object ContentValidator {
                 )
             else -> Result.success(input)
         }
-
 }

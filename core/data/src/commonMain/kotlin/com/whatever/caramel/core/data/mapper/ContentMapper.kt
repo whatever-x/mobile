@@ -17,5 +17,5 @@ internal fun OgTagDto.toLinkMetaData(): LinkMetaData =
     LinkMetaData(
         url = this.url,
         title = this.title,
-        imageUrl = this.image
+        imageUrl = this.image,
     )

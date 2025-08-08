@@ -61,8 +61,7 @@ class RemoteCoupleDatsSourceImpl(
                 parameter("endDate", endDate)
             }.getBody()
 
-    override suspend fun fetchMyCoupleInfo(): CoupleBasicResponse =
-        authClient.get("$COUPLE_BASE_URL/me").getBody()
+    override suspend fun fetchMyCoupleInfo(): CoupleBasicResponse = authClient.get("$COUPLE_BASE_URL/me").getBody()
 
     companion object {
         private const val COUPLE_BASE_URL = "/v1/couples"

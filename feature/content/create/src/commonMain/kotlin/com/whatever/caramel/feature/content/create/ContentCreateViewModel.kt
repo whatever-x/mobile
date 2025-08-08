@@ -178,10 +178,12 @@ class ContentCreateViewModel(
     }
 
     private fun inputTitle(intent: ContentCreateIntent.InputTitle) {
-        val validatedTitle = ContentValidator.checkInputTitleValidate(
-            input = intent.text,
-            inputLength = intent.text.codePointCount()
-        ).getOrThrow()
+        val validatedTitle =
+            ContentValidator
+                .checkInputTitleValidate(
+                    input = intent.text,
+                    inputLength = intent.text.codePointCount(),
+                ).getOrThrow()
 
         reduce {
             copy(title = validatedTitle)
@@ -189,10 +191,12 @@ class ContentCreateViewModel(
     }
 
     private fun inputContent(intent: ContentCreateIntent.InputContent) {
-        val validatedBody = ContentValidator.checkInputBodyValidate(
-            input = intent.text,
-            inputLength = intent.text.codePointCount()
-        ).getOrThrow()
+        val validatedBody =
+            ContentValidator
+                .checkInputBodyValidate(
+                    input = intent.text,
+                    inputLength = intent.text.codePointCount(),
+                ).getOrThrow()
 
         reduce {
             copy(content = validatedBody)

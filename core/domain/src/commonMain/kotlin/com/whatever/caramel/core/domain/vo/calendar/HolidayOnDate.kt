@@ -4,5 +4,5 @@ import kotlinx.datetime.LocalDate
 
 data class HolidayOnDate(
     val date: LocalDate,
-    val holidayList: List<Holiday>
+    val holidayList: List<Holiday>,
 )

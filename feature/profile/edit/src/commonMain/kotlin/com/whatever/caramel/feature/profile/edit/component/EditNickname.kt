@@ -19,7 +19,6 @@ import androidx.compose.ui.text.style.TextAlign
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.policy.UserPolicy
-import com.whatever.caramel.core.domain.validator.UserValidator
 import org.jetbrains.compose.resources.painterResource
 
 @Composable

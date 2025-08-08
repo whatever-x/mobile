@@ -34,7 +34,6 @@ class RemoteScheduleDataSourceImpl(
                 parameter("endDate", endDate)
             }.getBody()
 
-
     override suspend fun updateSchedule(
         scheduleId: Long,
         updateScheduleRequest: UpdateScheduleRequest,
@@ -48,8 +47,7 @@ class RemoteScheduleDataSourceImpl(
         authClient.delete("$SCHEDULE_BASE_URL/$scheduleId")
     }
 
-    override suspend fun fetchSchedule(scheduleId: Long): GetScheduleResponse =
-        authClient.get("$SCHEDULE_BASE_URL/$scheduleId").getBody()
+    override suspend fun fetchSchedule(scheduleId: Long): GetScheduleResponse = authClient.get("$SCHEDULE_BASE_URL/$scheduleId").getBody()
 
     companion object {
         private const val SCHEDULE_BASE_URL = "/v1/calendar/schedules"

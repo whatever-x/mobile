@@ -5,9 +5,9 @@ import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.policy.CalendarPolicy
+import com.whatever.caramel.core.domain.usecase.calendar.GetAnniversariesInPeriodUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetHolidayOfYearUseCase
 import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleInPeriodUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.GetAnniversariesInPeriodUseCase
 import com.whatever.caramel.core.domain.vo.calendar.AnniversaryOnDate
 import com.whatever.caramel.core.domain.vo.calendar.HolidayOnDate
 import com.whatever.caramel.core.domain.vo.content.ContentType
@@ -24,7 +24,6 @@ import com.whatever.caramel.feature.calendar.util.getYearAndMonthFromPageIndex
 import kotlinx.coroutines.async
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
 import kotlinx.datetime.number
 
@@ -87,20 +86,20 @@ class CalendarViewModel(
             is CalendarIntent.ClickDatePicker -> showCalendarDatePicker()
             is CalendarIntent.UpdateCalendarBottomSheet -> updateCalendarBottomSheet(intent.sheetState)
             is CalendarIntent.ClickAddScheduleButton -> navigateToAddSchedule(intent.date)
-            is CalendarIntent.ClickTodoItemInBottomSheet ->
+            is CalendarIntent.ClickScheduleItemInBottomSheet ->
                 postSideEffect(
-                    CalendarSideEffect.NavigateToTodoDetail(
-                        id = intent.todoId,
+                    CalendarSideEffect.NavigateToScheduleDetail(
+                        id = intent.scheduleId,
                         contentType = ContentType.CALENDAR,
                     ),
                 )
 
-            is CalendarIntent.ClickTodoUrl -> clickTodoUrl(intent.url)
+            is CalendarIntent.ClickScheduleUrl -> clickScheduleUrl(intent.url)
             is CalendarIntent.ClickCalendarCell -> clickCalendarCell(intent.selectedDate)
-            is CalendarIntent.ClickTodoItemInCalendar ->
+            is CalendarIntent.ClickScheduleItemInCalendar ->
                 postSideEffect(
-                    CalendarSideEffect.NavigateToTodoDetail(
-                        id = intent.todoId,
+                    CalendarSideEffect.NavigateToScheduleDetail(
+                        id = intent.schedule,
                         contentType = ContentType.CALENDAR,
                     ),
                 )
@@ -201,7 +200,7 @@ class CalendarViewModel(
         }
     }
 
-    private fun clickTodoUrl(url: String?) {
+    private fun clickScheduleUrl(url: String?) {
         if (url == null) return
         postSideEffect(CalendarSideEffect.OpenWebView(url))
     }
@@ -273,11 +272,11 @@ class CalendarViewModel(
                     month = 12,
                     day = lastDay,
                 )
-            val todosDeferred =
+            val scheduleListDeferred =
                 async {
                     getScheduleInPeriodUseCase(
                         startDate = firstDayOfMonth,
-                        endDate = lastDayOfMonth
+                        endDate = lastDayOfMonth,
                     )
                 }
             val anniversariesDeferred =
@@ -289,14 +288,14 @@ class CalendarViewModel(
                 }
             val holidaysDeferred = async { getHolidayOfYearUseCase(year) }
 
-            val todos = todosDeferred.await()
+            val scheduleList = scheduleListDeferred.await()
             val anniversaries = anniversariesDeferred.await()
-            val holidays = holidaysDeferred.await()
+            val holidayList = holidaysDeferred.await()
 
             var yearSchedule =
                 createYearSchedules(
-                    scheduleOnDates = todos,
-                    holidayOnDate = holidays,
+                    scheduleOnDates = scheduleList,
+                    holidayOnDate = holidayList,
                     anniversariesOnDate = anniversaries,
                 )
 

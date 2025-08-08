@@ -39,10 +39,10 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.policy.CalendarPolicy
 import com.whatever.caramel.feature.calendar.component.CalendarDatePicker
 import com.whatever.caramel.feature.calendar.component.CurrentDateMenu
-import com.whatever.caramel.feature.calendar.component.bottomSheet.BottomSheetTodoItem
-import com.whatever.caramel.feature.calendar.component.bottomSheet.BottomSheetTodoListHeader
+import com.whatever.caramel.feature.calendar.component.bottomSheet.BottomSheetScheduleItem
+import com.whatever.caramel.feature.calendar.component.bottomSheet.BottomSheetScheduleListHeader
 import com.whatever.caramel.feature.calendar.component.bottomSheet.CaramelBottomSheetHandle
-import com.whatever.caramel.feature.calendar.component.bottomSheet.DefaultBottomSheetTodoItem
+import com.whatever.caramel.feature.calendar.component.bottomSheet.DefaultBottomSheetScheduleItem
 import com.whatever.caramel.feature.calendar.component.calendar.CalendarDayOfWeek
 import com.whatever.caramel.feature.calendar.component.calendar.CaramelCalendar
 import com.whatever.caramel.feature.calendar.dimension.CalendarDimension
@@ -204,7 +204,7 @@ internal fun CalendarScreen(
                         state.monthScheduleList.forEachIndexed { index, monthSchedule ->
                             val hasNextSchedule = index != state.monthScheduleList.lastIndex
                             item {
-                                BottomSheetTodoListHeader(
+                                BottomSheetScheduleListHeader(
                                     date = monthSchedule.date,
                                     onClickAddSchedule = {
                                         onIntent(CalendarIntent.ClickAddScheduleButton(monthSchedule.date))
@@ -222,29 +222,29 @@ internal fun CalendarScreen(
                                     schedule.id
                                 },
                             ) { index, schedule ->
-                                val isLastTodo = index == monthSchedule.scheduleList.lastIndex
+                                val isLastSchedule = index == monthSchedule.scheduleList.lastIndex
                                 val spacerHeight =
-                                    if (isLastTodo) CaramelTheme.spacing.l else CaramelTheme.spacing.s
+                                    if (isLastSchedule) CaramelTheme.spacing.l else CaramelTheme.spacing.s
 
-                                BottomSheetTodoItem(
+                                BottomSheetScheduleItem(
                                     id = schedule.id,
                                     title = schedule.contentData.title,
                                     description = schedule.contentData.description,
                                     url = schedule.url,
                                     contentAssignee = schedule.contentData.contentAssignee,
-                                    onClickUrl = { onIntent(CalendarIntent.ClickTodoUrl(it)) },
-                                    onClickTodo = {
+                                    onClickUrl = { onIntent(CalendarIntent.ClickScheduleUrl(it)) },
+                                    onClickSchedule = {
                                         onIntent(
-                                            CalendarIntent.ClickTodoItemInBottomSheet(
+                                            CalendarIntent.ClickScheduleItemInBottomSheet(
                                                 it,
                                             ),
                                         )
                                     },
                                 ) {
-                                    DefaultBottomSheetTodoItem()
+                                    DefaultBottomSheetScheduleItem()
                                 }
                                 Spacer(modifier = Modifier.height(height = spacerHeight))
-                                if (isLastTodo && hasNextSchedule) {
+                                if (isLastSchedule && hasNextSchedule) {
                                     Spacer(modifier = Modifier.height(height = CaramelTheme.spacing.xl))
                                 }
                             }
@@ -290,7 +290,7 @@ internal fun CalendarScreen(
                                 pageIndex = pageIndex,
                                 schedules = state.yearScheduleList.toImmutableList(),
                                 selectedDate = state.selectedDate,
-                                onClickTodo = { onIntent(CalendarIntent.ClickTodoItemInCalendar(it)) },
+                                onClickSchedule = { onIntent(CalendarIntent.ClickScheduleItemInCalendar(it)) },
                                 onClickCell = { onIntent(CalendarIntent.ClickCalendarCell(it)) },
                             )
                         }

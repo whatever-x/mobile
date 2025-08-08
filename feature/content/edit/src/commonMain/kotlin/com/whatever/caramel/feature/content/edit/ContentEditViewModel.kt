@@ -49,9 +49,9 @@ class ContentEditViewModel(
     private val updateScheduleUseCase: UpdateScheduleUseCase,
     private val deleteScheduleUseCase: DeleteScheduleUseCase,
 ) : BaseViewModel<ContentEditState, ContentEditSideEffect, ContentEditIntent>(
-    savedStateHandle = savedStateHandle,
-    caramelCrashlytics = crashlytics,
-) {
+        savedStateHandle = savedStateHandle,
+        caramelCrashlytics = crashlytics,
+    ) {
     init {
         loadContent()
         loadTags()
@@ -176,10 +176,12 @@ class ContentEditViewModel(
     }
 
     private fun handleOnTitleChanged(intent: ContentEditIntent.OnTitleChanged) {
-        val validatedTitle = ContentValidator.checkInputTitleValidate(
-            input = intent.title,
-            inputLength = intent.title.codePointCount()
-        ).getOrThrow()
+        val validatedTitle =
+            ContentValidator
+                .checkInputTitleValidate(
+                    input = intent.title,
+                    inputLength = intent.title.codePointCount(),
+                ).getOrThrow()
 
         reduce {
             copy(title = validatedTitle)
@@ -187,10 +189,12 @@ class ContentEditViewModel(
     }
 
     private fun handleOnContentChanged(intent: ContentEditIntent.OnContentChanged) {
-        val validatedBody = ContentValidator.checkInputBodyValidate(
-            input = intent.content,
-            inputLength = intent.content.codePointCount()
-        ).getOrThrow()
+        val validatedBody =
+            ContentValidator
+                .checkInputBodyValidate(
+                    input = intent.content,
+                    inputLength = intent.content.codePointCount(),
+                ).getOrThrow()
 
         reduce {
             copy(content = validatedBody)

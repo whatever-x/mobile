@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.data.repository
 
-import com.whatever.caramel.core.data.mapper.toAuthToken
 import com.whatever.caramel.core.data.mapper.toAuthResult
+import com.whatever.caramel.core.data.mapper.toAuthToken
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datastore.datasource.LocalTokenDataSource
 import com.whatever.caramel.core.domain.repository.AuthRepository

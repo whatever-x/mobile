@@ -80,19 +80,21 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
             contentAssignee: ContentAssignee,
         ) = Schedule(
             id = id++,
-            contentData = ContentData(
-                title = title,
-                description = "$title 내용",
-                isCompleted = false,
-                contentAssignee = contentAssignee,
-            ),
-            dateTimeInfo = DateTimeInfo(
-                startDateTime = dateTime(day),
-                startTimezone = "",
-                endDateTime = dateTime(day, 23, 59),
-                endTimezone = ""
-            ),
-            tagList = emptyList()
+            contentData =
+                ContentData(
+                    title = title,
+                    description = "$title 내용",
+                    isCompleted = false,
+                    contentAssignee = contentAssignee,
+                ),
+            dateTimeInfo =
+                DateTimeInfo(
+                    startDateTime = dateTime(day),
+                    startTimezone = "",
+                    endDateTime = dateTime(day, 23, 59),
+                    endTimezone = "",
+                ),
+            tagList = emptyList(),
         )
 
         return listOf(

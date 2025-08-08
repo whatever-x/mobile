@@ -31,7 +31,7 @@ import kotlinx.datetime.number
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-internal fun BottomSheetTodoListHeader(
+internal fun BottomSheetScheduleListHeader(
     modifier: Modifier = Modifier,
     date: LocalDate,
     onClickAddSchedule: (LocalDate) -> Unit,

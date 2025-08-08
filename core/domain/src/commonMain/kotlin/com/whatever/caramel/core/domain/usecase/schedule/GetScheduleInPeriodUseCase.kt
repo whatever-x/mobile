@@ -4,7 +4,7 @@ import com.whatever.caramel.core.domain.repository.ScheduleRepository
 import com.whatever.caramel.core.domain.vo.schedule.ScheduleOnDate
 
 class GetScheduleInPeriodUseCase(
-    private val scheduleRepository: ScheduleRepository
+    private val scheduleRepository: ScheduleRepository,
 ) {
     suspend operator fun invoke(
         startDate: String,
