@@ -23,13 +23,13 @@ import caramel.feature.home.generated.resources.start_couple_date_guid
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
-import com.whatever.caramel.feature.home.mvi.TodoItem
+import com.whatever.caramel.feature.home.mvi.ScheduleItem
 import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 internal fun LazyListScope.todo(
-    todoList: ImmutableList<TodoItem>,
+    todoList: ImmutableList<ScheduleItem>,
     isSetAnniversary: Boolean,
     onClickAnniversaryNudgeCard: () -> Unit,
     onClickTodoItem: (todoContentId: Long) -> Unit,
@@ -80,7 +80,7 @@ internal fun LazyListScope.todo(
 @Composable
 private fun TodoList(
     modifier: Modifier = Modifier,
-    todoList: ImmutableList<TodoItem>,
+    todoList: ImmutableList<ScheduleItem>,
     onClickTodoItem: (todoContentId: Long) -> Unit,
     onClickEmptyTodo: () -> Unit,
 ) {

@@ -13,7 +13,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.domain.vo.common.LinkMetaData
+import com.whatever.caramel.core.domain.vo.content.LinkMetaData
 
 @Composable
 fun TextWithUrlPreview(

@@ -1,8 +1,8 @@
 package com.whatever.caramel.feature.home.mvi
 
-import com.whatever.caramel.core.domain.validator.util.codePointCount
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.user.Gender
+import com.whatever.caramel.core.util.codePointCount
 import com.whatever.caramel.core.viewmodel.UiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -14,7 +14,7 @@ data class HomeState(
     val partnerGender: Gender = Gender.IDLE,
     val daysTogether: Int = 0,
     val shareMessage: String = "",
-    val todoList: ImmutableList<TodoItem> = persistentListOf(),
+    val todoList: ImmutableList<ScheduleItem> = persistentListOf(),
     val bottomSheetShareMessage: String = "",
     val isShowBottomSheet: Boolean = false,
     val isLoading: Boolean = false,
@@ -41,7 +41,7 @@ data class HomeState(
     }
 }
 
-data class TodoItem(
+data class ScheduleItem(
     val id: Long,
     val title: String,
     val contentAssignee: ContentAssignee,

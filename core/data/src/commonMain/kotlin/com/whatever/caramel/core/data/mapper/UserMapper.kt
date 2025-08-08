@@ -9,7 +9,7 @@ import com.whatever.caramel.core.remote.dto.user.response.EditUserProfileRespons
 import com.whatever.caramel.core.remote.dto.user.response.UserInfoResponse
 import com.whatever.caramel.core.remote.dto.user.response.UserProfileResponse
 
-fun UserProfileResponse.toUser() =
+internal fun UserProfileResponse.toUser() =
     User(
         id = this.id,
         userStatus = UserStatus.valueOf(this.userStatus.name),
@@ -21,7 +21,7 @@ fun UserProfileResponse.toUser() =
             ),
     )
 
-fun EditUserProfileResponse.toUser() =
+internal fun EditUserProfileResponse.toUser() =
     User(
         id = this.id,
         userStatus = UserStatus.NONE,
@@ -33,7 +33,7 @@ fun EditUserProfileResponse.toUser() =
             ),
     )
 
-fun UserInfoResponse.toUser() =
+internal fun UserInfoResponse.toUser() =
     User(
         id = this.id,
         userStatus = UserStatus.valueOf(this.userStatus.name),
@@ -48,5 +48,4 @@ fun UserInfoResponse.toUser() =
                     },
                 birthday = this.birthDate ?: "",
             ),
-        userMetaData = null,
     )

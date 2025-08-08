@@ -21,27 +21,27 @@ class RemoteUserDataSourceImpl(
 ) : RemoteUserDataSource {
     override suspend fun createUserProfile(request: UserProfileRequest): UserProfileResponse =
         authClient
-            .post(USER_BASE_URL + "profile") {
+            .post("$USER_BASE_URL/profile") {
                 setBody(request)
             }.getBody()
 
-    override suspend fun editUserProfile(request: EditUserProfileRequest): EditUserProfileResponse =
+    override suspend fun updateUserProfile(request: EditUserProfileRequest): EditUserProfileResponse =
         authClient
-            .put(USER_BASE_URL + "profile") {
+            .put("$USER_BASE_URL/profile") {
                 setBody(request)
             }.getBody()
 
-    override suspend fun getUserInfo(): UserInfoResponse = authClient.get(USER_BASE_URL + "me").getBody()
+    override suspend fun fetchMyInfo(): UserInfoResponse = authClient.get("$USER_BASE_URL/me").getBody()
 
-    override suspend fun patchUserSetting(request: UserSettingRequest): UserSettingResponse =
+    override suspend fun updateUserSetting(request: UserSettingRequest): UserSettingResponse =
         authClient
-            .patch(USER_BASE_URL + "settings") {
+            .patch("$USER_BASE_URL/settings") {
                 setBody(request)
             }.getBody()
 
-    override suspend fun getUserSetting(): UserSettingResponse = authClient.get(USER_BASE_URL + "settings").getBody()
+    override suspend fun fetchUserSetting(): UserSettingResponse = authClient.get("$USER_BASE_URL/settings").getBody()
 
     companion object {
-        private const val USER_BASE_URL = "/v1/user/"
+        private const val USER_BASE_URL = "/v1/user"
     }
 }

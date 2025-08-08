@@ -16,21 +16,25 @@ internal class RemoteAuthDataSourceImpl(
 ) : RemoteAuthDataSource {
     override suspend fun signIn(request: SignInRequest): SignInResponse =
         defaultClient
-            .post(BASE_AUTH_URL + "sign-in") {
+            .post("$BASE_AUTH_URL/sign-in") {
                 setBody(body = request)
             }.getBody()
+
+    override suspend fun logOut() {
+        authClient.post("$BASE_AUTH_URL/sign-out")
+    }
 
     override suspend fun refresh(request: ServiceTokenDto): ServiceTokenDto =
         defaultClient
-            .post(BASE_AUTH_URL + "refresh") {
+            .post("$BASE_AUTH_URL/refresh") {
                 setBody(body = request)
             }.getBody()
 
-    override suspend fun signOut() {
-        authClient.delete(BASE_AUTH_URL + "account")
+    override suspend fun deleteAccount() {
+        authClient.delete("$BASE_AUTH_URL/account")
     }
 
     companion object {
-        private const val BASE_AUTH_URL = "/v1/auth/"
+        private const val BASE_AUTH_URL = "/v1/auth"
     }
 }

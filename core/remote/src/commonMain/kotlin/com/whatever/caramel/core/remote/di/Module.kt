@@ -14,6 +14,8 @@ import com.whatever.caramel.core.remote.datasource.RemoteFirebaseControllerDataS
 import com.whatever.caramel.core.remote.datasource.RemoteFirebaseControllerDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteMemoDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteMemoDataSourceImpl
+import com.whatever.caramel.core.remote.datasource.RemoteScheduleDataSource
+import com.whatever.caramel.core.remote.datasource.RemoteScheduleDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteTagDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteTagDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteUserDataSource
@@ -114,6 +116,12 @@ val remoteDataSourceModule =
 
         single<RemoteMemoDataSource> {
             RemoteMemoDataSourceImpl(
+                authClient = get(AuthClient),
+            )
+        }
+
+        single<RemoteScheduleDataSource> {
+            RemoteScheduleDataSourceImpl(
                 authClient = get(AuthClient),
             )
         }
