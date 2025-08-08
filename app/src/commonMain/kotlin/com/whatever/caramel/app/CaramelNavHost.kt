@@ -161,10 +161,10 @@ internal fun CaramelNavHost(
                         editType = ProfileEditType.START_DATE,
                     )
                 },
-                navigateToTodoDetail = { contentId, contentType ->
+                navigateToScheduleDetail = { contentId, contentType ->
                     navigateToContentDetail(contentId = contentId, type = contentType)
                 },
-                navigateToCreateTodo = { navigateToContentCreate(contentType = it) },
+                navigateToCreateMemo = { navigateToContentCreate(contentType = it) },
                 navigateToCreateSchedule = { contentType, dateTimeString ->
                     navigateToContentCreate(
                         contentType = contentType,

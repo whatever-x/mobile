@@ -15,8 +15,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 internal fun CalendarRoute(
     viewModel: CalendarViewModel = koinViewModel(),
-    navigateToCreateTodo: (ContentType, String) -> Unit,
-    navigateToTodoDetail: (Long, ContentType) -> Unit,
+    navigateToCreateSchedule: (ContentType, String) -> Unit,
+    navigateToScheduleDetail: (Long, ContentType) -> Unit,
     showErrorToast: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
 ) {
@@ -25,8 +25,8 @@ internal fun CalendarRoute(
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
-                is CalendarSideEffect.NavigateToTodoDetail -> navigateToTodoDetail(sideEffect.id, sideEffect.contentType)
-                is CalendarSideEffect.NavigateToAddSchedule -> navigateToCreateTodo(ContentType.CALENDAR, sideEffect.dateTimeString)
+                is CalendarSideEffect.NavigateToScheduleDetail -> navigateToScheduleDetail(sideEffect.id, sideEffect.contentType)
+                is CalendarSideEffect.NavigateToAddSchedule -> navigateToCreateSchedule(ContentType.CALENDAR, sideEffect.dateTimeString)
                 is CalendarSideEffect.OpenWebView -> uriHandler.openUri(sideEffect.url)
                 is CalendarSideEffect.ShowErrorDialog -> showErrorDialog(sideEffect.message, sideEffect.description)
                 is CalendarSideEffect.ShowErrorToast -> showErrorToast(sideEffect.message)

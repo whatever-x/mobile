@@ -1,33 +1,21 @@
 package com.whatever.caramel.core.data.mapper
 
-import com.whatever.caramel.core.domain.entity.Memo
-import com.whatever.caramel.core.domain.vo.content.ContentAssignee
-import com.whatever.caramel.core.domain.vo.memo.MemoMetadata
-import com.whatever.caramel.core.domain.vo.memo.MemoWithCursor
-import com.whatever.caramel.core.remote.dto.memo.response.CreateMemoResponse
-import com.whatever.caramel.core.remote.dto.memo.response.CursoredContentResponse
-import com.whatever.caramel.core.remote.dto.memo.response.MemoResponse
-import kotlinx.datetime.LocalDate
+import com.whatever.caramel.core.domain.entity.Tag
+import com.whatever.caramel.core.domain.vo.content.LinkMetaData
+import com.whatever.caramel.core.remote.dto.common.OgTagDto
+import com.whatever.caramel.core.remote.dto.tag.TagDetailResponse
 
-internal fun CreateMemoResponse.toMemoMetaData(): MemoMetadata =
-    MemoMetadata(
-        contentId = contentId,
-        contentType = contentType,
+internal fun TagDetailResponse.toTag(): Tag =
+    Tag(
+        id = id,
+        label = label,
     )
 
-internal fun MemoResponse.toMemo(): Memo =
-    Memo(
-        id = this.id,
-        title = this.title ?: "",
-        description = this.description ?: "",
-        isCompleted = this.isCompleted,
-        tagList = this.tagList.toTags(),
-        createdAt = LocalDate.parse(this.createdAt),
-        contentAssignee = ContentAssignee.valueOf(this.contentAssignee.name),
-    )
+internal fun List<TagDetailResponse>.toTagList(): List<Tag> = map { it.toTag() }
 
-internal fun CursoredContentResponse.toMemosWithCursor(): MemoWithCursor =
-    MemoWithCursor(
-        nextCursor = this.cursor.next,
-        memos = this.list.map { it.toMemo() },
+internal fun OgTagDto.toLinkMetaData(): LinkMetaData =
+    LinkMetaData(
+        url = this.url,
+        title = this.title,
+        imageUrl = this.image,
     )

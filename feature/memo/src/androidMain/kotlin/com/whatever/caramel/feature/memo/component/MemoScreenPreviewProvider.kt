@@ -4,6 +4,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.whatever.caramel.core.domain.entity.Memo
 import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
+import com.whatever.caramel.core.domain.vo.content.ContentData
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.feature.memo.model.MemoUiModel
 import com.whatever.caramel.feature.memo.model.TagUiModel
@@ -52,12 +53,15 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
             list.add(
                 Memo(
                     id = index.toLong(),
-                    title = if (emptyTitle) "" else "title$index",
-                    description = "description$index",
-                    isCompleted = false,
+                    contentData =
+                        ContentData(
+                            title = if (emptyTitle) "" else "title$index",
+                            description = "description$index",
+                            isCompleted = false,
+                            contentAssignee = contentAssignee,
+                        ),
                     tagList = createTempTagList(index),
                     createdAt = DateUtil.today(),
-                    contentAssignee = contentAssignee,
                 ),
             )
         }

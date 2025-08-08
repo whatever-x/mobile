@@ -4,7 +4,7 @@ import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.viewmodel.UiSideEffect
 
 sealed interface CalendarSideEffect : UiSideEffect {
-    data class NavigateToTodoDetail(
+    data class NavigateToScheduleDetail(
         val id: Long,
         val contentType: ContentType,
     ) : CalendarSideEffect

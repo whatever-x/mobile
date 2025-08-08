@@ -3,12 +3,16 @@ package com.whatever.caramel.core.domain.validator
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
-import com.whatever.caramel.core.domain.validator.util.codePointCount
+import com.whatever.caramel.core.domain.policy.ContentPolicy.MAX_BODY_LENGTH
+import com.whatever.caramel.core.domain.policy.ContentPolicy.MAX_TITLE_LENGTH
 
 object ContentValidator {
-    fun checkInputTitleValidate(input: String): Result<String> =
+    fun checkInputTitleValidate(
+        input: String,
+        inputLength: Int,
+    ): Result<String> =
         when {
-            input.codePointCount() > MAX_TITLE_LENGTH ->
+            inputLength > MAX_TITLE_LENGTH ->
                 Result.failure(
                     exception =
                         CaramelException(
@@ -32,9 +36,12 @@ object ContentValidator {
             else -> Result.success(value = input)
         }
 
-    fun checkInputBodyValidate(input: String): Result<String> =
+    fun checkInputBodyValidate(
+        input: String,
+        inputLength: Int,
+    ): Result<String> =
         when {
-            input.codePointCount() > MAX_BODY_LENGTH ->
+            inputLength > MAX_BODY_LENGTH ->
                 Result.failure(
                     exception =
                         CaramelException(
@@ -46,7 +53,4 @@ object ContentValidator {
                 )
             else -> Result.success(input)
         }
-
-    const val MAX_TITLE_LENGTH = 30
-    const val MAX_BODY_LENGTH = 5000
 }

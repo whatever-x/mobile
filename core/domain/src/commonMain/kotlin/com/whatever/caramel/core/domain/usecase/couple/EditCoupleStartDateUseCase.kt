@@ -6,7 +6,7 @@ class EditCoupleStartDateUseCase(
     private val coupleRepository: CoupleRepository,
 ) {
     suspend operator fun invoke(startDate: String) {
-        val coupleId = coupleRepository.getCoupleId()
-        coupleRepository.editCoupleStartDate(coupleId, startDate)
+        val coupleId = coupleRepository.readCoupleId()
+        coupleRepository.updateCoupleStartDate(coupleId, startDate)
     }
 }

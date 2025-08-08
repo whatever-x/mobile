@@ -9,13 +9,9 @@ class SubmitBalanceGameChoiceUseCase(
     suspend operator fun invoke(
         gameId: Long,
         optionId: Long,
-    ): BalanceGameResult {
-        val result =
-            balanceGameRepository.submitOption(
-                gameId = gameId,
-                optionId = optionId,
-            )
-
-        return result
-    }
+    ): BalanceGameResult =
+        balanceGameRepository.submitOption(
+            gameId = gameId,
+            optionId = optionId,
+        )
 }

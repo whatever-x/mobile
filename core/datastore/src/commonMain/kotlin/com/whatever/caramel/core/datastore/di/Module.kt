@@ -1,11 +1,11 @@
 package com.whatever.caramel.core.datastore.di
 
-import com.whatever.caramel.core.datastore.datasource.CoupleDataSource
-import com.whatever.caramel.core.datastore.datasource.CoupleDataSourceImpl
-import com.whatever.caramel.core.datastore.datasource.TokenDataSource
-import com.whatever.caramel.core.datastore.datasource.TokenDataSourceImpl
-import com.whatever.caramel.core.datastore.datasource.UserDataSource
-import com.whatever.caramel.core.datastore.datasource.UserDataSourceImpl
+import com.whatever.caramel.core.datastore.datasource.LocalCoupleDataSource
+import com.whatever.caramel.core.datastore.datasource.LocalCoupleDataSourceImpl
+import com.whatever.caramel.core.datastore.datasource.LocalTokenDataSource
+import com.whatever.caramel.core.datastore.datasource.LocalTokenDataSourceImpl
+import com.whatever.caramel.core.datastore.datasource.LocalUserDataSource
+import com.whatever.caramel.core.datastore.datasource.LocalUserDataSourceImpl
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -13,7 +13,7 @@ expect val platformDataStoreModule: Module
 
 val dataStoreModule =
     module {
-        single<TokenDataSource> { TokenDataSourceImpl(dataStore = get()) }
-        single<UserDataSource> { UserDataSourceImpl(dataStore = get()) }
-        single<CoupleDataSource> { CoupleDataSourceImpl(dataStore = get()) }
+        single<LocalTokenDataSource> { LocalTokenDataSourceImpl(dataStore = get()) }
+        single<LocalUserDataSource> { LocalUserDataSourceImpl(dataStore = get()) }
+        single<LocalCoupleDataSource> { LocalCoupleDataSourceImpl(dataStore = get()) }
     }

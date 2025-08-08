@@ -7,11 +7,11 @@ import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
 import com.whatever.caramel.core.domain.exception.code.ScheduleErrorCode
-import com.whatever.caramel.core.domain.usecase.calendar.DeleteScheduleUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.GetScheduleUseCase
-import com.whatever.caramel.core.domain.usecase.common.GetLinkPreviewsForContentUseCase
+import com.whatever.caramel.core.domain.usecase.content.GetLinkPreviewsForContentUseCase
 import com.whatever.caramel.core.domain.usecase.memo.DeleteMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.GetMemoUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.DeleteScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleUseCase
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.detail.mvi.ContentDetailIntent
@@ -30,7 +30,10 @@ class ContentDetailViewModel(
     private val deleteMemoUseCase: DeleteMemoUseCase,
     private val deleteScheduleUseCase: DeleteScheduleUseCase,
     private val getLinkPreviewsForContentUseCase: GetLinkPreviewsForContentUseCase,
-) : BaseViewModel<ContentDetailState, ContentDetailSideEffect, ContentDetailIntent>(savedStateHandle, crashlytics) {
+) : BaseViewModel<ContentDetailState, ContentDetailSideEffect, ContentDetailIntent>(
+        savedStateHandle,
+        crashlytics,
+    ) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): ContentDetailState {
         val arguments = savedStateHandle.toRoute<ContentDetailRoute>()
         return ContentDetailState(
@@ -63,6 +66,7 @@ class ContentDetailViewModel(
                 ContentErrorCode.CONTENT_NOT_FOUND, ScheduleErrorCode.SCHEDULE_NOT_FOUND -> {
                     reduce { copy(showDeletedContentDialog = true) }
                 }
+
                 else -> {
                     when (throwable.errorUiType) {
                         ErrorUiType.TOAST ->
@@ -71,6 +75,7 @@ class ContentDetailViewModel(
                                     message = throwable.message,
                                 ),
                             )
+
                         ErrorUiType.DIALOG ->
                             postSideEffect(
                                 ContentDetailSideEffect.ShowErrorDialog(
@@ -157,13 +162,13 @@ class ContentDetailViewModel(
                     val memo = getMemoUseCase(currentState.contentId)
                     reduce { copy(memoDetail = memo, isLoading = false) }
 
-                    fetchLinkPreviews(memo.description)
+                    fetchLinkPreviews(memo.contentData.description)
                 }
 
                 ContentType.CALENDAR -> {
                     val schedule = getScheduleUseCase(currentState.contentId)
                     reduce { copy(scheduleDetail = schedule, isLoading = false) }
-                    schedule.description?.also {
+                    schedule.contentData.description.also {
                         fetchLinkPreviews(it)
                     }
                 }

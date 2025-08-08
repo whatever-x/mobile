@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
-import com.whatever.caramel.core.domain.usecase.content.GetMemosUseCase
-import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
+import com.whatever.caramel.core.domain.usecase.content.GetAllTagsUseCase
+import com.whatever.caramel.core.domain.usecase.memo.GetMemoListUseCase
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.memo.model.TagUiModel
@@ -17,8 +17,8 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 class MemoViewModel(
-    private val getMemosUseCase: GetMemosUseCase,
-    private val getTagUseCase: GetTagUseCase,
+    private val getMemoListUseCase: GetMemoListUseCase,
+    private val getAllTagsUseCase: GetAllTagsUseCase,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle, crashlytics) {
@@ -92,7 +92,7 @@ class MemoViewModel(
     private fun getTags() {
         reduce { copy(isTagLoading = true) }
         launch {
-            val tags = getTagUseCase().map { TagUiModel.toUiModel(it) }
+            val tags = getAllTagsUseCase().map { TagUiModel.toUiModel(it) }
             val combinedTags = listOf(TagUiModel()) + tags
             reduce {
                 copy(
@@ -105,7 +105,7 @@ class MemoViewModel(
     }
 
     private fun clickMemo(intent: MemoIntent.ClickMemo) {
-        postSideEffect(MemoSideEffect.NavigateToTodoDetail(intent.memoId, ContentType.MEMO))
+        postSideEffect(MemoSideEffect.NavigateToMemoDetail(intent.memoId, ContentType.MEMO))
     }
 
     private fun loadPagingData() {
@@ -144,7 +144,7 @@ class MemoViewModel(
     private fun getMemos() {
         launch {
             val newMemos =
-                getMemosUseCase(
+                getMemoListUseCase(
                     size = 10,
                     cursor = currentState.cursor,
                     tagId = currentState.selectedTag?.id,

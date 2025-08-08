@@ -8,24 +8,25 @@ import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
 import com.whatever.caramel.core.domain.exception.code.ScheduleErrorCode
-import com.whatever.caramel.core.domain.usecase.calendar.DeleteScheduleUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.GetScheduleUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.UpdateScheduleUseCase
+import com.whatever.caramel.core.domain.params.content.memo.MemoEditParameter
+import com.whatever.caramel.core.domain.params.content.schdule.ScheduleEditParameter
+import com.whatever.caramel.core.domain.usecase.content.GetAllTagsUseCase
 import com.whatever.caramel.core.domain.usecase.memo.DeleteMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.GetMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.UpdateMemoUseCase
-import com.whatever.caramel.core.domain.usecase.tag.GetTagUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.DeleteScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleUseCase
+import com.whatever.caramel.core.domain.usecase.schedule.UpdateScheduleUseCase
 import com.whatever.caramel.core.domain.validator.ContentValidator
-import com.whatever.caramel.core.domain.vo.calendar.ScheduleEditParameter
-import com.whatever.caramel.core.domain.vo.common.DateTimeInfo
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentType
-import com.whatever.caramel.core.domain.vo.memo.MemoEditParameter
+import com.whatever.caramel.core.domain.vo.content.schedule.DateTimeInfo
 import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.ui.picker.model.TimeUiState
 import com.whatever.caramel.core.ui.picker.model.toLocalDate
+import com.whatever.caramel.core.util.codePointCount
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditIntent
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditSideEffect
@@ -33,7 +34,6 @@ import com.whatever.caramel.feature.content.edit.mvi.ContentEditState
 import com.whatever.caramel.feature.content.edit.navigation.ContentEditScreenRoute
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
@@ -41,7 +41,7 @@ import kotlinx.datetime.atTime
 class ContentEditViewModel(
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
-    private val getTagUseCase: GetTagUseCase,
+    private val getAllTagsUseCase: GetAllTagsUseCase,
     private val getMemoUseCase: GetMemoUseCase,
     private val updateMemoUseCase: UpdateMemoUseCase,
     private val deleteMemoUseCase: DeleteMemoUseCase,
@@ -176,7 +176,12 @@ class ContentEditViewModel(
     }
 
     private fun handleOnTitleChanged(intent: ContentEditIntent.OnTitleChanged) {
-        val validatedTitle = ContentValidator.checkInputTitleValidate(input = intent.title).getOrThrow()
+        val validatedTitle =
+            ContentValidator
+                .checkInputTitleValidate(
+                    input = intent.title,
+                    inputLength = intent.title.codePointCount(),
+                ).getOrThrow()
 
         reduce {
             copy(title = validatedTitle)
@@ -184,7 +189,12 @@ class ContentEditViewModel(
     }
 
     private fun handleOnContentChanged(intent: ContentEditIntent.OnContentChanged) {
-        val validatedBody = ContentValidator.checkInputBodyValidate(input = intent.content).getOrThrow()
+        val validatedBody =
+            ContentValidator
+                .checkInputBodyValidate(
+                    input = intent.content,
+                    inputLength = intent.content.codePointCount(),
+                ).getOrThrow()
 
         reduce {
             copy(content = validatedBody)
@@ -220,7 +230,7 @@ class ContentEditViewModel(
                                 dateTimeInfo =
                                     if (state.createMode == CreateMode.CALENDAR) {
                                         DateTimeInfo(
-                                            startDateTime = state.dateTime.toString(),
+                                            startDateTime = state.dateTime,
                                             startTimezone = TimeZone.currentSystemDefault().id,
                                             endDateTime = null,
                                             endTimezone = null,
@@ -245,9 +255,9 @@ class ContentEditViewModel(
                                 dateTimeInfo =
                                     if (state.createMode == CreateMode.CALENDAR) {
                                         DateTimeInfo(
-                                            startDateTime = state.dateTime.toString(),
+                                            startDateTime = state.dateTime,
                                             startTimezone = TimeZone.currentSystemDefault().id,
-                                            endDateTime = state.dateTime.toString(),
+                                            endDateTime = state.dateTime,
                                             endTimezone = TimeZone.currentSystemDefault().id,
                                         )
                                     } else {
@@ -343,27 +353,27 @@ class ContentEditViewModel(
                     reduce {
                         copy(
                             isLoading = false,
-                            title = memo.title,
-                            content = memo.description,
+                            title = memo.contentData.title,
+                            content = memo.contentData.description,
                             selectedTags = memo.tagList.toImmutableSet(),
-                            selectedAssignee = ContentAssigneeUiModel.valueOf(value = memo.contentAssignee.name),
+                            selectedAssignee = ContentAssigneeUiModel.valueOf(value = memo.contentData.contentAssignee.name),
                         )
                     }
                 }
 
                 ContentType.CALENDAR -> {
                     val schedule = getScheduleUseCase(currentState.contentId)
-                    val scheduleDateTime = schedule.startDateTime.let { LocalDateTime.parse(it) }
+                    val scheduleDateTime = schedule.dateTimeInfo.startDateTime
                     reduce {
                         copy(
                             isLoading = false,
-                            title = schedule.title ?: "",
-                            content = schedule.description ?: "",
-                            selectedTags = schedule.tags.toImmutableSet(),
+                            title = schedule.contentData.title,
+                            content = schedule.contentData.description,
+                            selectedTags = schedule.tagList.toImmutableSet(),
                             dateTime = scheduleDateTime,
                             dateUiState = DateUiState.from(dateTime = scheduleDateTime),
                             timeUiState = TimeUiState.from(dateTime = scheduleDateTime),
-                            selectedAssignee = ContentAssigneeUiModel.valueOf(value = schedule.contentAssignee.name),
+                            selectedAssignee = ContentAssigneeUiModel.valueOf(value = schedule.contentData.contentAssignee.name),
                         )
                     }
                 }
@@ -374,7 +384,7 @@ class ContentEditViewModel(
 
     private fun loadTags() {
         launch {
-            val tags = getTagUseCase()
+            val tags = getAllTagsUseCase()
             reduce { copy(tags = tags.toImmutableList()) }
         }
     }

@@ -9,9 +9,9 @@ class RefreshUserSessionUseCase(
     private val userRepository: UserRepository,
 ) {
     suspend operator fun invoke(): UserStatus {
-        val localSavedToken = authRepository.getAuthToken()
+        val localSavedToken = authRepository.readAuthToken()
         val newToken = authRepository.refreshAuthToken(localSavedToken)
-        authRepository.saveTokens(newToken)
+        authRepository.setAuthToken(newToken)
 
         val userInfo = userRepository.getUserInfo()
         val userStatus = userInfo.userStatus

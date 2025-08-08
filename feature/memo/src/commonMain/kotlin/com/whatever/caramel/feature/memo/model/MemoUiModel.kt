@@ -20,12 +20,12 @@ data class MemoUiModel(
 fun Memo.toUiModel() =
     MemoUiModel(
         id = this.id,
-        title = this.title,
-        description = this.description,
-        isCompleted = this.isCompleted,
+        title = this.contentData.title,
+        description = this.contentData.description,
+        isCompleted = this.contentData.isCompleted,
         tagListText = this.tagList.joinToString(separator = ",") { it.label },
         createdAt = this.createdAt.formatWithSeparator(separator = "."),
-        contentAssignee = this.contentAssignee,
+        contentAssignee = this.contentData.contentAssignee,
     )
 
 @Immutable

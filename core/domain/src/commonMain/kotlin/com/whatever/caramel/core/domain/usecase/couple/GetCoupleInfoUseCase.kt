@@ -6,9 +6,5 @@ import com.whatever.caramel.core.domain.repository.CoupleRepository
 class GetCoupleInfoUseCase(
     private val coupleRepository: CoupleRepository,
 ) {
-    suspend operator fun invoke(): Couple {
-        val coupleInfo = coupleRepository.getCoupleInfo()
-
-        return coupleInfo
-    }
+    suspend operator fun invoke(): Couple = coupleRepository.getCoupleInfo()
 }

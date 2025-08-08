@@ -11,11 +11,11 @@ import com.whatever.caramel.core.remote.dto.user.response.UserSettingResponse
 interface RemoteUserDataSource {
     suspend fun createUserProfile(request: UserProfileRequest): UserProfileResponse
 
-    suspend fun editUserProfile(request: EditUserProfileRequest): EditUserProfileResponse
+    suspend fun updateUserProfile(request: EditUserProfileRequest): EditUserProfileResponse
 
-    suspend fun getUserInfo(): UserInfoResponse
+    suspend fun fetchMyInfo(): UserInfoResponse
 
-    suspend fun patchUserSetting(request: UserSettingRequest): UserSettingResponse
+    suspend fun updateUserSetting(request: UserSettingRequest): UserSettingResponse
 
-    suspend fun getUserSetting(): UserSettingResponse
+    suspend fun fetchUserSetting(): UserSettingResponse
 }
