@@ -9,7 +9,6 @@ class GetScheduleInPeriodUseCase(
     suspend operator fun invoke(
         startDate: String,
         endDate: String,
-        userTimezone: String? = null,
     ): List<ScheduleOnDate> =
         scheduleRepository
             .getScheduleList(

@@ -277,8 +277,7 @@ class CalendarViewModel(
                 async {
                     getScheduleInPeriodUseCase(
                         startDate = firstDayOfMonth,
-                        endDate = lastDayOfMonth,
-                        userTimezone = TimeZone.currentSystemDefault().toString(),
+                        endDate = lastDayOfMonth
                     )
                 }
             val anniversariesDeferred =
