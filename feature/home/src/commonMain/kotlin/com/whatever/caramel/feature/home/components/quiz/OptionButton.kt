@@ -66,8 +66,7 @@ internal fun RowScope.OptionButton(
                 .clickable(
                     enabled = !isSelected,
                     onClick = onClickOption,
-                )
-                .padding(all = CaramelTheme.spacing.m),
+                ).padding(all = CaramelTheme.spacing.m),
         contentAlignment = Alignment.Center,
     ) {
         if (isSelected) {
