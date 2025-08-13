@@ -54,7 +54,7 @@ class HomeViewModel(
             is HomeIntent.ShowShareMessageEditBottomSheet -> showBottomSheet()
             is HomeIntent.HideShareMessageEditBottomSheet -> hideBottomSheet()
             is HomeIntent.PullToRefresh -> refreshHomeData()
-            is HomeIntent.ClickBalanceGameOptionButton -> clickBalanceGameOption(balanceGameOptionState = intent.option)
+            is HomeIntent.ClickBalanceGameOptionButton -> clickBalanceGameOption(balanceGameOption = intent.option)
             is HomeIntent.LoadDataOnStart -> loadDataOnStart()
             is HomeIntent.HideDialog -> hideDialog()
             is HomeIntent.ClearShareMessage -> clearShareMessage()
@@ -153,46 +153,40 @@ class HomeViewModel(
     }
 
     private suspend fun loadDataOnStart() {
-        launch {
-            val initCoupleInfoJob = launch { initCoupleInfo() }
-            val initSchedulesJob = launch { initSchedules() }
-            val initBalanceGameJob = launch { initBalanceGame() }
+        val initCoupleInfoJob = launch { initCoupleInfo() }
+        val initSchedulesJob = launch { initSchedules() }
+        val initBalanceGameJob = launch { initBalanceGame() }
 
-            joinAll(initCoupleInfoJob, initSchedulesJob, initBalanceGameJob)
-        }
+        joinAll(initCoupleInfoJob, initSchedulesJob, initBalanceGameJob)
     }
 
     private suspend fun saveShareMessage() {
-        launch {
-            updateShareMessageUseCase(shareMessage = currentState.bottomSheetShareMessage)
-            postSideEffect(HomeSideEffect.HideKeyboard)
+        updateShareMessageUseCase(shareMessage = currentState.bottomSheetShareMessage)
+        postSideEffect(HomeSideEffect.HideKeyboard)
 
-            reduce {
-                copy(
-                    shareMessage = currentState.bottomSheetShareMessage,
-                    isShowBottomSheet = false,
-                )
-            }
+        reduce {
+            copy(
+                shareMessage = currentState.bottomSheetShareMessage,
+                isShowBottomSheet = false,
+            )
         }
     }
 
     private suspend fun refreshHomeData() {
-        launch {
-            reduce {
-                copy(
-                    isLoading = true,
-                    coupleState = HomeState.CoupleState.IDLE,
-                )
-            }
-
-            val initCoupleInfoJob = launch { initCoupleInfo() }
-            val initSchedulesJob = launch { initSchedules() }
-            val initBalanceGameJob = launch { initBalanceGame() }
-
-            joinAll(initCoupleInfoJob, initSchedulesJob, initBalanceGameJob)
-
-            reduce { copy(isLoading = false) }
+        reduce {
+            copy(
+                isLoading = true,
+                coupleState = HomeState.CoupleState.IDLE,
+            )
         }
+
+        val initCoupleInfoJob = launch { initCoupleInfo() }
+        val initSchedulesJob = launch { initSchedules() }
+        val initBalanceGameJob = launch { initBalanceGame() }
+
+        joinAll(initCoupleInfoJob, initSchedulesJob, initBalanceGameJob)
+
+        reduce { copy(isLoading = false) }
     }
 
     private fun showBottomSheet() {
@@ -249,72 +243,68 @@ class HomeViewModel(
     }
 
     private suspend fun initBalanceGame() {
-        launch {
-            val todayBalanceGame = getTodayBalanceGameUseCase()
+        val todayBalanceGame = getTodayBalanceGameUseCase()
 
-            reduce {
-                copy(
-                    balanceGameCard =
-                        BalanceGameCard(
-                            id = todayBalanceGame.gameInfo.id,
-                            question = todayBalanceGame.gameInfo.question,
-                            options =
-                                todayBalanceGame.gameInfo.options
-                                    .map {
-                                        BalanceGameOptionItem(
-                                            id = it.optionId,
-                                            name = it.text,
-                                        )
-                                    }.toImmutableList(),
-                            myOption =
-                                todayBalanceGame.myChoice?.let {
+        reduce {
+            copy(
+                balanceGameCard =
+                    BalanceGameCard(
+                        id = todayBalanceGame.gameInfo.id,
+                        question = todayBalanceGame.gameInfo.question,
+                        options =
+                            todayBalanceGame.gameInfo.options
+                                .map {
                                     BalanceGameOptionItem(
                                         id = it.optionId,
                                         name = it.text,
                                     )
-                                },
-                            partnerOption =
-                                todayBalanceGame.partnerChoice?.let {
-                                    BalanceGameOptionItem(
-                                        id = it.optionId,
-                                        name = it.text,
-                                    )
-                                },
-                        ),
-                )
-            }
+                                }.toImmutableList(),
+                        myOption =
+                            todayBalanceGame.myChoice?.let {
+                                BalanceGameOptionItem(
+                                    id = it.optionId,
+                                    name = it.text,
+                                )
+                            },
+                        partnerOption =
+                            todayBalanceGame.partnerChoice?.let {
+                                BalanceGameOptionItem(
+                                    id = it.optionId,
+                                    name = it.text,
+                                )
+                            },
+                    ),
+            )
         }
     }
 
-    private fun clickBalanceGameOption(balanceGameOptionState: BalanceGameOptionItem) {
-        launch {
-            val result =
-                submitBalanceGameChoiceUseCase(
-                    gameId = currentState.balanceGameCard.id,
-                    optionId = balanceGameOptionState.id,
-                )
+    private suspend fun clickBalanceGameOption(balanceGameOption: BalanceGameOptionItem) {
+        val result =
+            submitBalanceGameChoiceUseCase(
+                gameId = currentState.balanceGameCard.id,
+                optionId = balanceGameOption.id,
+            )
 
-            reduce {
-                copy(
-                    balanceGameCard =
-                        currentState.balanceGameCard.copy(
-                            myOption =
-                                result.myChoice?.let {
-                                    BalanceGameOptionItem(
-                                        id = it.optionId,
-                                        name = it.text,
-                                    )
-                                },
-                            partnerOption =
-                                result.partnerChoice?.let {
-                                    BalanceGameOptionItem(
-                                        id = it.optionId,
-                                        name = it.text,
-                                    )
-                                },
-                        ),
-                )
-            }
+        reduce {
+            copy(
+                balanceGameCard =
+                    currentState.balanceGameCard.copy(
+                        myOption =
+                            result.myChoice?.let {
+                                BalanceGameOptionItem(
+                                    id = it.optionId,
+                                    name = it.text,
+                                )
+                            },
+                        partnerOption =
+                            result.partnerChoice?.let {
+                                BalanceGameOptionItem(
+                                    id = it.optionId,
+                                    name = it.text,
+                                )
+                            },
+                    ),
+            )
         }
     }
 }

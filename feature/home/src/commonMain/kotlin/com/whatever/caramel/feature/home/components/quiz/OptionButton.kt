@@ -39,7 +39,7 @@ internal fun RowScope.OptionButton(
             if (isSelected) {
                 CaramelTheme.color.fill.brand
             } else {
-                CaramelTheme.color.fill.disabledPrimary
+                CaramelTheme.color.fill.quinary
             }
         }
 
@@ -50,7 +50,7 @@ internal fun RowScope.OptionButton(
             if (isSelected) {
                 CaramelTheme.color.text.inverse
             } else {
-                CaramelTheme.color.text.disabledPrimary
+                CaramelTheme.color.text.brand
             }
         }
 
@@ -64,7 +64,7 @@ internal fun RowScope.OptionButton(
                     shape = CaramelTheme.shape.m,
                 ).clip(shape = CaramelTheme.shape.m)
                 .clickable(
-                    enabled = gameResult != BalanceGameCard.GameResult.WAITING,
+                    enabled = !isSelected,
                     onClick = onClickOption,
                 ).padding(all = CaramelTheme.spacing.m),
         contentAlignment = Alignment.Center,
