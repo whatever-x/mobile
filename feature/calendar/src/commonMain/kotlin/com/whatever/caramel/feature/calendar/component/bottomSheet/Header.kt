@@ -25,7 +25,7 @@ import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.calendar.Anniversary
 import com.whatever.caramel.core.domain.vo.calendar.Holiday
-import com.whatever.caramel.feature.calendar.util.toUiText
+import com.whatever.caramel.core.ui.util.toUiText
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.number
 import org.jetbrains.compose.resources.painterResource
