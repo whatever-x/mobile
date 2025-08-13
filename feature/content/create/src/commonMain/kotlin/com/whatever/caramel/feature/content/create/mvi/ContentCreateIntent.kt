@@ -30,9 +30,13 @@ sealed interface ContentCreateIntent : UiIntent {
         val createMode: CreateMode,
     ) : ContentCreateIntent
 
-    data object ClickDate : ContentCreateIntent
+    data class ClickDate(
+        val type: ScheduleDateTimeType,
+    ) : ContentCreateIntent
 
-    data object ClickTime : ContentCreateIntent
+    data class ClickTime(
+        val type: ScheduleDateTimeType,
+    ) : ContentCreateIntent
 
     data object HideDateTimeDialog : ContentCreateIntent
 
