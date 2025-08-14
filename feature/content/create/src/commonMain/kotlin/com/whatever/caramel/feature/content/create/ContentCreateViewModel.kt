@@ -61,17 +61,22 @@ class ContentCreateViewModel(
     override fun createInitialState(savedStateHandle: SavedStateHandle): ContentCreateState {
         val arguments = savedStateHandle.toRoute<ContentCreateRoute>()
         val defaultTimeZone = TimeZone.currentSystemDefault()
+        val isDateTimeEmpty = arguments.dateTimeString.isEmpty()
         val initInstant: Instant =
-            if (arguments.dateTimeString.isEmpty()) {
-                val now = DateUtil.todayLocalDateTime()
-                roundToNearest5Minutes(dateTime = now)
+            if (isDateTimeEmpty) {
+                DateUtil.todayLocalDateTime().copy(minute = 0)
             } else {
-                LocalDateTime.parse(
-                    arguments.dateTimeString,
-                )
+                LocalDateTime.parse(arguments.dateTimeString).copy()
             }.toInstant(defaultTimeZone)
-        val startDateTime = initInstant.toLocalDateTime(defaultTimeZone)
-        val endDateTime = initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone)
+
+        val (startDateTime, endDateTime) =
+            if (isDateTimeEmpty) {
+                initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone) to
+                        initInstant.plus(2.hours).toLocalDateTime(defaultTimeZone)
+            } else {
+                initInstant.toLocalDateTime(defaultTimeZone) to
+                        initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone)
+            }
         return ContentCreateState(
             createMode =
                 when (ContentType.valueOf(arguments.contentType)) {
