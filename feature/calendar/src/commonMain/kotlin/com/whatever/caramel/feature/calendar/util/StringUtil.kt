@@ -1,14 +1,14 @@
-package com.whatever.caramel.core.ui.util
+package com.whatever.caramel.feature.calendar.util
 
 import androidx.compose.runtime.Composable
-import caramel.core.ui.generated.resources.Res
-import caramel.core.ui.generated.resources.friday
-import caramel.core.ui.generated.resources.monday
-import caramel.core.ui.generated.resources.saturday
-import caramel.core.ui.generated.resources.sunday
-import caramel.core.ui.generated.resources.thursday
-import caramel.core.ui.generated.resources.tuesday
-import caramel.core.ui.generated.resources.wednesday
+import caramel.feature.calendar.generated.resources.Res
+import caramel.feature.calendar.generated.resources.friday
+import caramel.feature.calendar.generated.resources.monday
+import caramel.feature.calendar.generated.resources.saturday
+import caramel.feature.calendar.generated.resources.sunday
+import caramel.feature.calendar.generated.resources.thursday
+import caramel.feature.calendar.generated.resources.tuesday
+import caramel.feature.calendar.generated.resources.wednesday
 import kotlinx.datetime.DayOfWeek
 import org.jetbrains.compose.resources.stringResource
 

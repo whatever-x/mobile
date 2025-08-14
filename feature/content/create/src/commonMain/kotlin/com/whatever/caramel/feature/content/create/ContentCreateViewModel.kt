@@ -21,6 +21,7 @@ import com.whatever.caramel.core.ui.picker.model.toLocalDate
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.util.TimeUtil.roundToNearest5Minutes
 import com.whatever.caramel.core.util.codePointCount
+import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateSideEffect
