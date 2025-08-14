@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.ui.util.toUiText
+import com.whatever.caramel.feature.content.create.util.toUiText
 import kotlinx.datetime.LocalDateTime
 
 @Composable
