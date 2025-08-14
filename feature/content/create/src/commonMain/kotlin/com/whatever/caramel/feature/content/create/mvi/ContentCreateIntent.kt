@@ -10,6 +10,8 @@ sealed interface ContentCreateIntent : UiIntent {
 
     data object ClickSaveButton : ContentCreateIntent
 
+    data object ClickAllDayButton : ContentCreateIntent
+
     data class InputTitle(
         val text: String,
     ) : ContentCreateIntent
