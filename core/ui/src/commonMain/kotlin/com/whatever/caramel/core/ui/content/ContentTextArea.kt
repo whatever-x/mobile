@@ -45,7 +45,7 @@ fun ContentTextArea(
         }
 
     BasicTextField(
-        modifier = Modifier.focusRequester(focusRequester),
+        modifier = modifier.focusRequester(focusRequester),
         value = value,
         onValueChange = onValueChange,
         textStyle =

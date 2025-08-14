@@ -129,14 +129,51 @@ internal fun ContentScreen(
             }
         },
         bottomBar = {
+            CaramelButton(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .navigationBarsPadding()
+                        .imePadding()
+                        .padding(horizontal = CaramelTheme.spacing.xl)
+                        .padding(bottom = CaramelTheme.spacing.l),
+                buttonType =
+                    if (state.isSaveButtonEnable) {
+                        CaramelButtonType.Enabled1
+                    } else {
+                        CaramelButtonType.Disabled
+                    },
+                buttonSize = CaramelButtonSize.Large,
+                text = "저장",
+                onClick = {
+                    onIntent(ContentCreateIntent.ClickSaveButton)
+                },
+            )
+        },
+    ) { contentPadding ->
+        Column(
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(contentPadding)
+                    .padding(horizontal = CaramelTheme.spacing.xl),
+        ) {
+
+            ContentTextArea(
+                modifier = Modifier.weight(1f),
+                value = state.content,
+                onValueChange = {
+                    onIntent(ContentCreateIntent.InputContent(it))
+                },
+                focusRequester = contentFocusRequester,
+                placeholder = "함께 하고 싶거나 기억하면 좋은 것들을\n자유롭게 입력해 주세요.",
+            )
+
             Column(
                 modifier =
                     Modifier
                         .heightIn(max = 215.dp)
                         .fillMaxWidth()
-                        .padding(vertical = CaramelTheme.spacing.xl)
-                        .navigationBarsPadding()
-                        .imePadding()
                         .verticalScroll(contentSettingScrollState),
             ) {
                 AnimatedVisibility(
@@ -144,14 +181,9 @@ internal fun ContentScreen(
                     enter = fadeIn(),
                     exit = ExitTransition.None,
                 ) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
+                    Column(modifier = Modifier.fillMaxWidth(),) {
                         Row(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = CaramelTheme.spacing.xl),
+                            modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement =
                                 Arrangement.spacedBy(
                                     space = CaramelTheme.spacing.l,
@@ -172,19 +204,11 @@ internal fun ContentScreen(
                             )
                         }
                         HorizontalDivider(
-                            modifier =
-                                Modifier.padding(
-                                    horizontal = CaramelTheme.spacing.xl,
-                                    vertical = CaramelTheme.spacing.m,
-                                ),
+                            modifier = Modifier.padding(vertical = CaramelTheme.spacing.m),
                             color = CaramelTheme.color.divider.primary,
                         )
-
                         Row(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = CaramelTheme.spacing.xl),
+                            modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
@@ -237,9 +261,8 @@ internal fun ContentScreen(
                                                 .clickable(
                                                     indication = null,
                                                     interactionSource = null,
-                                                    onClick = { onIntent(ContentCreateIntent.ClickAllDayButton) }
-                                                )
-                                                .border(
+                                                    onClick = { onIntent(ContentCreateIntent.ClickAllDayButton) },
+                                                ).border(
                                                     width = 1.dp,
                                                     color = borderColor,
                                                     shape = CaramelTheme.shape.s,
@@ -271,7 +294,6 @@ internal fun ContentScreen(
                                 modifier =
                                     Modifier
                                         .fillMaxWidth()
-                                        .padding(horizontal = CaramelTheme.spacing.xl)
                                         .padding(top = CaramelTheme.spacing.m),
                                 verticalArrangement =
                                     Arrangement.spacedBy(
@@ -301,17 +323,13 @@ internal fun ContentScreen(
                         HorizontalDivider(
                             modifier =
                                 Modifier.padding(
-                                    horizontal = CaramelTheme.spacing.xl,
                                     vertical = CaramelTheme.spacing.m,
                                 ),
                             color = CaramelTheme.color.divider.primary,
                         )
 
                         Row(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = CaramelTheme.spacing.xl),
+                            modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement =
                                 Arrangement.spacedBy(
                                     space = CaramelTheme.spacing.l,
@@ -342,42 +360,7 @@ internal fun ContentScreen(
                         Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.xl))
                     }
                 }
-                CaramelButton(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = CaramelTheme.spacing.xl),
-                    buttonType =
-                        if (state.isSaveButtonEnable) {
-                            CaramelButtonType.Enabled1
-                        } else {
-                            CaramelButtonType.Disabled
-                        },
-                    buttonSize = CaramelButtonSize.Large,
-                    text = "저장",
-                    onClick = {
-                        onIntent(ContentCreateIntent.ClickSaveButton)
-                    },
-                )
             }
-        },
-    ) { contentPadding ->
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(contentPadding)
-                    .padding(horizontal = CaramelTheme.spacing.xl),
-        ) {
-            ContentTextArea(
-                modifier = Modifier.weight(1f),
-                value = state.content,
-                onValueChange = {
-                    onIntent(ContentCreateIntent.InputContent(it))
-                },
-                focusRequester = contentFocusRequester,
-                placeholder = "함께 하고 싶거나 기억하면 좋은 것들을\n자유롭게 입력해 주세요.",
-            )
         }
     }
     if (state.showDateDialog || state.showTimeDialog) {
@@ -425,18 +408,6 @@ internal fun ContentScreen(
                     }
                 }
                 Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.l))
-                CaramelButton(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(all = CaramelTheme.spacing.xl),
-                    buttonType = CaramelButtonType.Enabled1,
-                    buttonSize = CaramelButtonSize.Large,
-                    text = "완료",
-                    onClick = {
-                        onIntent(ContentCreateIntent.ClickCompleteButton)
-                    },
-                )
             },
         )
     }

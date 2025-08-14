@@ -38,7 +38,6 @@ fun SelectableTagChipRow(
     LazyRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.s),
-        contentPadding = PaddingValues(end = CaramelTheme.spacing.xl),
     ) {
         items(tagChips) { tag ->
             SelectableTagChip(
