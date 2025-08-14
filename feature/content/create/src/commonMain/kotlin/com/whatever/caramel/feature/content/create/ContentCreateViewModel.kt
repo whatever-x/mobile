@@ -19,7 +19,6 @@ import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.ui.picker.model.TimeUiState
 import com.whatever.caramel.core.ui.picker.model.toLocalDate
 import com.whatever.caramel.core.util.DateUtil
-import com.whatever.caramel.core.util.TimeUtil.roundToNearest5Minutes
 import com.whatever.caramel.core.util.codePointCount
 import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
@@ -46,9 +45,9 @@ class ContentCreateViewModel(
     private val getAllTagsUseCase: GetAllTagsUseCase,
     private val createContentUseCase: CreateContentUseCase,
 ) : BaseViewModel<ContentCreateState, ContentCreateSideEffect, ContentCreateIntent>(
-    savedStateHandle,
-    crashlytics,
-) {
+        savedStateHandle,
+        crashlytics,
+    ) {
     init {
         launch {
             val tags = getAllTagsUseCase()
@@ -72,10 +71,10 @@ class ContentCreateViewModel(
         val (startDateTime, endDateTime) =
             if (isDateTimeEmpty) {
                 initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone) to
-                        initInstant.plus(2.hours).toLocalDateTime(defaultTimeZone)
+                    initInstant.plus(2.hours).toLocalDateTime(defaultTimeZone)
             } else {
                 initInstant.toLocalDateTime(defaultTimeZone) to
-                        initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone)
+                    initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone)
             }
         return ContentCreateState(
             createMode =
@@ -432,9 +431,10 @@ class ContentCreateViewModel(
         }
     }
 
-    private fun LocalDateTime.withAllDayTime(isStart: Boolean) = if (currentState.isAllDay) {
-        copy(hour = if (isStart) 0 else 23, minute = if (isStart) 0 else 59)
-    } else {
-        this
-    }
+    private fun LocalDateTime.withAllDayTime(isStart: Boolean) =
+        if (currentState.isAllDay) {
+            copy(hour = if (isStart) 0 else 23, minute = if (isStart) 0 else 59)
+        } else {
+            this
+        }
 }
