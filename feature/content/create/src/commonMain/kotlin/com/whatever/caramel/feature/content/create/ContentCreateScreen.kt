@@ -234,6 +234,11 @@ internal fun ContentScreen(
                                     Row(
                                         modifier =
                                             Modifier
+                                                .clickable(
+                                                    indication = null,
+                                                    interactionSource = null,
+                                                    onClick = { onIntent(ContentCreateIntent.ClickAllDayButton) }
+                                                )
                                                 .border(
                                                     width = 1.dp,
                                                     color = borderColor,
