@@ -13,7 +13,7 @@ import kotlinx.datetime.DayOfWeek
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun DayOfWeek.toUiText(): String =
+internal fun DayOfWeek.toUiText(): String =
     stringResource(
         when (this) {
             DayOfWeek.MONDAY -> Res.string.monday
