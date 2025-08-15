@@ -135,8 +135,7 @@ internal fun ContentScreen(
                         .fillMaxWidth()
                         .navigationBarsPadding()
                         .imePadding()
-                        .padding(horizontal = CaramelTheme.spacing.xl)
-                        .padding(bottom = CaramelTheme.spacing.l),
+                        .padding(all = CaramelTheme.spacing.xl),
                 buttonType =
                     if (state.isSaveButtonEnable) {
                         CaramelButtonType.Enabled1
