@@ -45,9 +45,9 @@ class ContentCreateViewModel(
     private val getAllTagsUseCase: GetAllTagsUseCase,
     private val createContentUseCase: CreateContentUseCase,
 ) : BaseViewModel<ContentCreateState, ContentCreateSideEffect, ContentCreateIntent>(
-        savedStateHandle,
-        crashlytics,
-    ) {
+    savedStateHandle,
+    crashlytics,
+) {
     init {
         launch {
             val tags = getAllTagsUseCase()
@@ -71,10 +71,10 @@ class ContentCreateViewModel(
         val (startDateTime, endDateTime) =
             if (isDateTimeEmpty) {
                 initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone) to
-                    initInstant.plus(2.hours).toLocalDateTime(defaultTimeZone)
+                        initInstant.plus(2.hours).toLocalDateTime(defaultTimeZone)
             } else {
                 initInstant.toLocalDateTime(defaultTimeZone) to
-                    initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone)
+                        initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone)
             }
         return ContentCreateState(
             createMode =
@@ -261,13 +261,12 @@ class ContentCreateViewModel(
     }
 
     private fun handleDateClick(intent: ContentCreateIntent.ClickDate) {
+        reduce { copy(scheduleDateType = intent.type) }
         val updatedDateTimeInfo =
             currentState.recentDateTimeInfo.copy(
                 dateUiState = DateUiState.from(dateTime = currentState.recentDateTimeInfo.dateTime),
             )
-        reduce {
-            copy(scheduleDateType = intent.type, showDateDialog = true)
-        }
+        reduce { copy(showDateDialog = true) }
         reduce {
             when (currentState.scheduleDateType) {
                 ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
@@ -278,18 +277,18 @@ class ContentCreateViewModel(
     }
 
     private fun handleTimeClick(intent: ContentCreateIntent.ClickTime) {
+        reduce { copy(scheduleDateType = intent.type) }
         val updatedDateTimeInfo =
             currentState.recentDateTimeInfo.copy(
                 timeUiState = TimeUiState.from(dateTime = currentState.recentDateTimeInfo.dateTime),
             )
+        reduce { copy(showTimeDialog = true) }
         reduce {
-            copy(scheduleDateType = intent.type)
             when (currentState.scheduleDateType) {
                 ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
                 ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
                 ScheduleDateTimeType.NONE -> this
             }
-            copy(showTimeDialog = true)
         }
     }
 
