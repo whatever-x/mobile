@@ -155,10 +155,9 @@ internal fun ContentScreen(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(contentPadding)
+                    .padding(top = contentPadding.calculateTopPadding())
                     .padding(horizontal = CaramelTheme.spacing.xl),
         ) {
-
             ContentTextArea(
                 modifier = Modifier.weight(1f),
                 value = state.content,
@@ -174,6 +173,7 @@ internal fun ContentScreen(
                     Modifier
                         .heightIn(max = 215.dp)
                         .fillMaxWidth()
+                        .padding(bottom = contentPadding.calculateBottomPadding())
                         .verticalScroll(contentSettingScrollState),
             ) {
                 AnimatedVisibility(
@@ -181,7 +181,7 @@ internal fun ContentScreen(
                     enter = fadeIn(),
                     exit = ExitTransition.None,
                 ) {
-                    Column(modifier = Modifier.fillMaxWidth(),) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement =
@@ -408,6 +408,17 @@ internal fun ContentScreen(
                     }
                 }
                 Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.l))
+                CaramelButton(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = CaramelTheme.spacing.xl)
+                            .padding(bottom = CaramelTheme.spacing.xl),
+                    buttonType = CaramelButtonType.Enabled1,
+                    buttonSize = CaramelButtonSize.Large,
+                    text = "완료",
+                    onClick = { onIntent(ContentCreateIntent.ClickCompleteButton) },
+                )
             },
         )
     }
