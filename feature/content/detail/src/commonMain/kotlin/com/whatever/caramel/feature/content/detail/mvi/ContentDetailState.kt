@@ -45,27 +45,12 @@ data class ContentDetailState(
                 ContentType.CALENDAR -> scheduleDetail?.tagList?.toImmutableList() ?: persistentListOf()
             }
 
-    val date: String
-        get() {
-            val dateTime = scheduleDetail?.dateTimeInfo?.startDateTime ?: return ""
-            return "${dateTime.year}년 ${dateTime.monthNumber}월 ${dateTime.dayOfMonth}일"
-        }
-
     val contentAssignee: ContentAssignee
         get() =
             when (contentType) {
                 ContentType.MEMO -> memoDetail?.contentData?.contentAssignee ?: ContentAssignee.US
                 ContentType.CALENDAR -> scheduleDetail?.contentData?.contentAssignee ?: ContentAssignee.US
             }
-
-    val time: String
-        get() {
-            val dateTime = scheduleDetail?.dateTimeInfo?.startDateTime ?: return ""
-            val hour = dateTime.hour.toString().padStart(2, '0')
-            val minute = dateTime.minute.toString().padStart(2, '0')
-
-            return "$hour:$minute"
-        }
 
     val tagString: String
         get() = tags.joinToString(", ") { it.label }
