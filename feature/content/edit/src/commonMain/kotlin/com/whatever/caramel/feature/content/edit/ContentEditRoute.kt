@@ -34,7 +34,7 @@ fun ContentEditRoute(
                     showSnackbarMessage(
                         snackbarHostState = snackbarHostState,
                         coroutineScope = this,
-                        message = sideEffect.message ?: "",
+                        message = sideEffect.message,
                     )
                 }
 

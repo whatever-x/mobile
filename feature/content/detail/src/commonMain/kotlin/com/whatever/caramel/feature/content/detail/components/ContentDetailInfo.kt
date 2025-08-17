@@ -18,7 +18,7 @@ import com.whatever.caramel.core.designsystem.components.shimmer
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.content.LinkMetaData
-import com.whatever.caramel.feature.content.util.toDisplayText
+import com.whatever.caramel.core.ui.util.toDisplayText
 import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.painterResource
 
