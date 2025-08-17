@@ -54,4 +54,12 @@ data class ContentDetailState(
 
     val tagString: String
         get() = tags.joinToString(", ") { it.label }
+
+    val isAllDay: Boolean
+        get() =
+            scheduleDetail?.let {
+                it.dateTimeInfo.run {
+                    startDateTime.hour == 0 && startDateTime.minute == 0 && endDateTime.hour == 23 && endDateTime.minute == 59
+                }
+            } ?: false
 }

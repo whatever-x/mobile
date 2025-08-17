@@ -4,11 +4,10 @@ import kotlinx.datetime.LocalDateTime
 
 private fun LocalDateTime.toDateText() = "${year}년 ${monthNumber}월 ${dayOfMonth}일"
 
-private fun LocalDateTime.toTimeText() = "${hour}:${minute}"
-
-fun isAllDay(startDateTime : LocalDateTime, endDateTime : LocalDateTime) : Boolean {
-    return startDateTime.hour == 0 && startDateTime.minute == 0 && endDateTime.hour == 23 && endDateTime.minute == 59
+private fun LocalDateTime.toTimeText(): String {
+    val hourText = hour.toString().padStart(2, '0')
+    val minuteText = minute.toString().padStart(2, '0')
+    return "$hourText:$minuteText"
 }
 
-fun LocalDateTime.toDisplayText(isAllDay: Boolean): String =
-    if (isAllDay) toDateText() else "${toDateText()}\n${toTimeText()}"
+fun LocalDateTime.toDisplayText(isAllDay: Boolean): String = if (isAllDay) toDateText() else "${toDateText()}\n${toTimeText()}"

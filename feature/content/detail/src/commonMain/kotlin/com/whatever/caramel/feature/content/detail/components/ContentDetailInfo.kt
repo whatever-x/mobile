@@ -18,7 +18,6 @@ import com.whatever.caramel.core.designsystem.components.shimmer
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.content.LinkMetaData
-import com.whatever.caramel.feature.content.util.isAllDay
 import com.whatever.caramel.feature.content.util.toDisplayText
 import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.painterResource
@@ -90,7 +89,8 @@ internal fun ContentDetailTag(
 internal fun ContentDetailDate(
     modifier: Modifier = Modifier,
     startDateTime: LocalDateTime,
-    endDateTime: LocalDateTime
+    endDateTime: LocalDateTime,
+    isAllDay: Boolean,
 ) {
     Column(
         modifier = modifier,
@@ -115,7 +115,8 @@ internal fun ContentDetailDate(
                 tint = CaramelTheme.color.icon.primary,
                 contentDescription = null,
             )
-            val isAllDay = isAllDay(startDateTime, endDateTime)
+
+            val showEndDate = startDateTime.date != endDateTime.date || !isAllDay
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -130,11 +131,11 @@ internal fun ContentDetailDate(
                     style = CaramelTheme.typography.body2.regular,
                     color = CaramelTheme.color.text.primary,
                 )
-                if (startDateTime.date != endDateTime.date) {
+                if (showEndDate) {
                     Icon(
                         painter = painterResource(resource = Resources.Icon.ic_arrow_right_16),
                         tint = CaramelTheme.color.icon.tertiary,
-                        contentDescription = null
+                        contentDescription = null,
                     )
                     Text(
                         text = endDateTime.toDisplayText(isAllDay),
