@@ -26,8 +26,8 @@ data class ContentCreateState(
     val showEditConfirmDialog: Boolean = false,
     val isAllDay: Boolean = false,
     val scheduleDateType: ScheduleDateTimeType = ScheduleDateTimeType.NONE,
-    val startDateTimeInfo: DateTimeInfo = DateTimeInfo(),
-    val endDateTimeInfo: DateTimeInfo = DateTimeInfo(),
+    val startDateTime: DateTimeUiState = DateTimeUiState(),
+    val endDateTime: DateTimeUiState = DateTimeUiState(),
 ) : UiState {
     val isSaveButtonEnable: Boolean
         get() = title.isNotBlank() || content.isNotBlank()
@@ -35,8 +35,8 @@ data class ContentCreateState(
     val recentDateTimeInfo
         get() =
             when (scheduleDateType) {
-                ScheduleDateTimeType.START, ScheduleDateTimeType.NONE -> startDateTimeInfo
-                ScheduleDateTimeType.END -> endDateTimeInfo
+                ScheduleDateTimeType.START, ScheduleDateTimeType.NONE -> startDateTime
+                ScheduleDateTimeType.END -> endDateTime
             }
 }
 
@@ -46,8 +46,16 @@ enum class ScheduleDateTimeType {
     NONE,
 }
 
-data class DateTimeInfo(
+data class DateTimeUiState(
     val dateTime: LocalDateTime = DateUtil.todayLocalDateTime(),
     val dateUiState: DateUiState = DateUiState.currentDate(),
     val timeUiState: TimeUiState = TimeUiState.currentTime(),
-)
+) {
+    companion object {
+        fun from(localDateTime : LocalDateTime) = DateTimeUiState(
+            dateTime = localDateTime,
+            dateUiState = DateUiState.from(localDateTime),
+            timeUiState = TimeUiState.from(localDateTime),
+        )
+    }
+}
