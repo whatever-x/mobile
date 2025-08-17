@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.content.create.component
+package com.whatever.caramel.core.ui.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,11 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.feature.content.create.util.toUiText
+import com.whatever.caramel.core.ui.util.toUiText
 import kotlinx.datetime.LocalDateTime
 
 @Composable
-internal fun ContentScheduleInfo(
+fun ContentScheduleInfo(
     modifier: Modifier = Modifier,
     leadingText: String,
     dateTimeInfo: LocalDateTime,
