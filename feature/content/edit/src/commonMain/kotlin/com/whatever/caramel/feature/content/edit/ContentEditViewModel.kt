@@ -53,9 +53,9 @@ class ContentEditViewModel(
     private val updateScheduleUseCase: UpdateScheduleUseCase,
     private val deleteScheduleUseCase: DeleteScheduleUseCase,
 ) : BaseViewModel<ContentEditState, ContentEditSideEffect, ContentEditIntent>(
-    savedStateHandle = savedStateHandle,
-    caramelCrashlytics = crashlytics,
-) {
+        savedStateHandle = savedStateHandle,
+        caramelCrashlytics = crashlytics,
+    ) {
     init {
         loadContent()
         loadTags()
@@ -278,13 +278,15 @@ class ContentEditViewModel(
                                 dateTimeInfo =
                                     if (state.createMode == CreateMode.CALENDAR) {
                                         DateTimeInfo(
-                                            startDateTime = state.startDateTime.dateTime.withAllDayTime(
-                                                isStart = true
-                                            ),
+                                            startDateTime =
+                                                state.startDateTime.dateTime.withAllDayTime(
+                                                    isStart = true,
+                                                ),
                                             startTimezone = defaultTimeZone,
-                                            endDateTime = state.endDateTime.dateTime.withAllDayTime(
-                                                isStart = false
-                                            ),
+                                            endDateTime =
+                                                state.endDateTime.dateTime.withAllDayTime(
+                                                    isStart = false,
+                                                ),
                                             endTimezone = defaultTimeZone,
                                         )
                                     } else {
@@ -307,13 +309,15 @@ class ContentEditViewModel(
                                 dateTimeInfo =
                                     if (state.createMode == CreateMode.CALENDAR) {
                                         DateTimeInfo(
-                                            startDateTime = state.startDateTime.dateTime.withAllDayTime(
-                                                isStart = true
-                                            ),
+                                            startDateTime =
+                                                state.startDateTime.dateTime.withAllDayTime(
+                                                    isStart = true,
+                                                ),
                                             startTimezone = defaultTimeZone,
-                                            endDateTime = state.endDateTime.dateTime.withAllDayTime(
-                                                isStart = false
-                                            ),
+                                            endDateTime =
+                                                state.endDateTime.dateTime.withAllDayTime(
+                                                    isStart = false,
+                                                ),
                                             endTimezone = defaultTimeZone,
                                         )
                                     } else {
@@ -482,10 +486,11 @@ class ContentEditViewModel(
                             isLoading = false,
                             title = schedule.contentData.title,
                             content = schedule.contentData.description,
-                            isAllDay = checkAllDay(
-                                schedule.dateTimeInfo.startDateTime,
-                                schedule.dateTimeInfo.endDateTime
-                            ),
+                            isAllDay =
+                                checkAllDay(
+                                    schedule.dateTimeInfo.startDateTime,
+                                    schedule.dateTimeInfo.endDateTime,
+                                ),
                             selectedTags = schedule.tagList.toImmutableSet(),
                             startDateTime = DateTimeUiState.from(schedule.dateTimeInfo.startDateTime),
                             endDateTime = DateTimeUiState.from(schedule.dateTimeInfo.endDateTime),
@@ -512,7 +517,8 @@ class ContentEditViewModel(
             this
         }
 
-    private fun checkAllDay(startDateTime: LocalDateTime, endDateTime: LocalDateTime): Boolean {
-        return startDateTime.hour == 0 && startDateTime.minute == 0 && endDateTime.hour == 23 && endDateTime.minute == 59
-    }
+    private fun checkAllDay(
+        startDateTime: LocalDateTime,
+        endDateTime: LocalDateTime,
+    ): Boolean = startDateTime.hour == 0 && startDateTime.minute == 0 && endDateTime.hour == 23 && endDateTime.minute == 59
 }

@@ -123,12 +123,13 @@ internal fun ContentEditScreen(
         },
         bottomBar = {
             CaramelButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = CaramelTheme.color.background.primary)
-                    .navigationBarsPadding()
-                    .imePadding()
-                    .padding(all = CaramelTheme.spacing.xl),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .background(color = CaramelTheme.color.background.primary)
+                        .navigationBarsPadding()
+                        .imePadding()
+                        .padding(all = CaramelTheme.spacing.xl),
                 onClick = { onIntent(ContentEditIntent.OnSaveClicked) },
                 text = "저장",
                 buttonType = if (state.isSaveButtonEnable) CaramelButtonType.Enabled1 else CaramelButtonType.Disabled,

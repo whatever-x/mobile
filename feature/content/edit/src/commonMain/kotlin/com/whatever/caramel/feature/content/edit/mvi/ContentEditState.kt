@@ -13,12 +13,10 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
-import kotlin.math.min
 import kotlin.time.Duration.Companion.hours
 
 data class ContentEditState(
@@ -71,10 +69,11 @@ data class DateTimeUiState(
             return from(nowPlusHours.toLocalDateTime(timeZone))
         }
 
-        fun from(localDateTime: LocalDateTime) = DateTimeUiState(
-            dateTime = localDateTime,
-            dateUiState = DateUiState.from(localDateTime),
-            timeUiState = TimeUiState.from(localDateTime),
-        )
+        fun from(localDateTime: LocalDateTime) =
+            DateTimeUiState(
+                dateTime = localDateTime,
+                dateUiState = DateUiState.from(localDateTime),
+                timeUiState = TimeUiState.from(localDateTime),
+            )
     }
 }

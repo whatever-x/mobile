@@ -52,10 +52,11 @@ data class DateTimeUiState(
     val timeUiState: TimeUiState = TimeUiState.currentTime(),
 ) {
     companion object {
-        fun from(localDateTime : LocalDateTime) = DateTimeUiState(
-            dateTime = localDateTime,
-            dateUiState = DateUiState.from(localDateTime),
-            timeUiState = TimeUiState.from(localDateTime),
-        )
+        fun from(localDateTime: LocalDateTime) =
+            DateTimeUiState(
+                dateTime = localDateTime,
+                dateUiState = DateUiState.from(localDateTime),
+                timeUiState = TimeUiState.from(localDateTime),
+            )
     }
 }
