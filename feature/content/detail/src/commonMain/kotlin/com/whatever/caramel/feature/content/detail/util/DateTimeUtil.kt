@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.content.util
+package com.whatever.caramel.feature.content.detail.util
 
 import kotlinx.datetime.LocalDateTime
 
