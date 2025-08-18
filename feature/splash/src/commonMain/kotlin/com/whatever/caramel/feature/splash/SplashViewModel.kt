@@ -21,16 +21,23 @@ class SplashViewModel(
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<SplashState, SplashSideEffect, SplashIntent>(savedStateHandle, crashlytics) {
+
     init {
         launch {
             deepLinkHandler.runningApp()
             delay(1000L)
 
             val getUserStatus = async(start = CoroutineStart.LAZY) { refreshUserSessionUseCase() }
+            val checkResult = checkForceUpdateUseCase()
 
-            val isForceUpdate = checkForceUpdateUseCase()
-            if (isForceUpdate) {
-                reduce { copy(isForceUpdate = true) }
+            if (checkResult.isForceUpdate) {
+                reduce {
+                    copy(
+                        isForceUpdate = true,
+                        storeUri = checkResult.storeUri ?: ""
+                    )
+                }
+                getUserStatus.cancel()
                 return@launch
             }
 
@@ -51,7 +58,7 @@ class SplashViewModel(
 
     override suspend fun handleIntent(intent: SplashIntent) {
         when (intent) {
-            is SplashIntent.ClickUpdate -> postSideEffect(SplashSideEffect.GoToStore)
+            is SplashIntent.ClickUpdate -> postSideEffect(SplashSideEffect.GoToStore(storeUri = currentState.storeUri))
         }
     }
 }
