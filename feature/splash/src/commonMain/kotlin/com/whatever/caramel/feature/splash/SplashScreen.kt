@@ -10,18 +10,37 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import caramel.feature.splash.generated.resources.Res
+import caramel.feature.splash.generated.resources.force_update_button
+import caramel.feature.splash.generated.resources.force_update_message
+import caramel.feature.splash.generated.resources.force_update_title
+import com.whatever.caramel.core.designsystem.components.CaramelDialog
+import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLayout
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.splash.mvi.SplashIntent
 import com.whatever.caramel.feature.splash.mvi.SplashState
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun SplashScreen(
     state: SplashState,
     onIntent: (SplashIntent) -> Unit,
 ) {
+    if (state.isForceUpdate) {
+        CaramelDialog(
+            show = state.isForceUpdate,
+            title = stringResource(resource = Res.string.force_update_title),
+            message = stringResource(resource = Res.string.force_update_message),
+            mainButtonText = stringResource(resource = Res.string.force_update_button),
+            onDismissRequest = { },
+            onMainButtonClick = { onIntent(SplashIntent.ClickUpdate) },
+        ) {
+            DefaultCaramelDialogLayout()
+        }
+    }
+
     Column(
         modifier =
             Modifier
@@ -45,7 +64,7 @@ internal fun SplashScreen(
         Icon(
             painter = painterResource(resource = Resources.Image.img_type_logo),
             contentDescription = null,
-            tint = Color.Unspecified,
+            tint = CaramelTheme.color.fill.primary,
         )
     }
 }

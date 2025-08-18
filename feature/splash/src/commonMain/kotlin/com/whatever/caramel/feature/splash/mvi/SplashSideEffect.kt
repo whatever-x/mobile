@@ -9,4 +9,6 @@ sealed interface SplashSideEffect : UiSideEffect {
     ) : SplashSideEffect
 
     data object NavigateToLogin : SplashSideEffect
+
+    data object GoToStore : SplashSideEffect
 }
