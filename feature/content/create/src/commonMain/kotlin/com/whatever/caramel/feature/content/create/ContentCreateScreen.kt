@@ -29,6 +29,7 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -86,6 +87,11 @@ internal fun ContentScreen(
     val contentScrollState = rememberScrollState()
     val contentTextScrollState = rememberScrollState()
     var contentHeight by remember { mutableStateOf(0.dp) }
+    LaunchedEffect(state.createMode) {
+        if (state.createMode == CreateMode.MEMO) {
+            contentHeight = 0.dp
+        }
+    }
     val density = LocalDensity.current
 
     Scaffold(
@@ -172,7 +178,9 @@ internal fun ContentScreen(
                     Modifier
                         .fillMaxWidth()
                         .heightIn(min = 300.dp)
-                        .then(
+                        .onGloballyPositioned { coordinates ->
+                            contentHeight = with(density) { coordinates.size.height.toDp() }
+                        }.then(
                             if (contentHeight == 0.dp) {
                                 Modifier.weight(1f)
                             } else {
@@ -180,11 +188,7 @@ internal fun ContentScreen(
                                     contentHeight,
                                 )
                             },
-                        ).onGloballyPositioned { coordinates ->
-                            if (contentHeight == 0.dp) {
-                                contentHeight = with(density) { coordinates.size.height.toDp() }
-                            }
-                        }.verticalScroll(contentTextScrollState),
+                        ).verticalScroll(contentTextScrollState),
             ) {
                 ContentTextArea(
                     modifier =
