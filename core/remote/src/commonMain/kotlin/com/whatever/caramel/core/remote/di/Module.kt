@@ -93,7 +93,7 @@ val remoteDataSourceModule =
     module {
         single<RemoteAppDataSource> {
             RemoteAppDataSourceImpl(
-                defaultClient = get(DefaultClient)
+                defaultClient = get(DefaultClient),
             )
         }
 

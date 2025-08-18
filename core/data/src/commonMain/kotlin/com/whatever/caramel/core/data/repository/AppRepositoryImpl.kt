@@ -9,16 +9,17 @@ import com.whatever.caramel.core.remote.datasource.RemoteAppDataSource
 import com.whatever.caramel.core.remote.dto.app.PlatformDTO
 
 class AppRepositoryImpl(
-    private val remoteAppDataSource: RemoteAppDataSource
+    private val remoteAppDataSource: RemoteAppDataSource,
 ) : AppRepository {
     override suspend fun getUpdateRequirement(
         appPlatform: Platform.AppPlatform,
-        versionCode: Int
+        versionCode: Int,
     ): CheckForceUpdateResult =
         safeCall {
-            remoteAppDataSource.fetchRequirementUpdate(
-                platform = PlatformDTO.valueOf(appPlatform.name),
-                versionCode = versionCode
-            ).toCheckForceUpdateResult()
+            remoteAppDataSource
+                .fetchRequirementUpdate(
+                    platform = PlatformDTO.valueOf(appPlatform.name),
+                    versionCode = versionCode,
+                ).toCheckForceUpdateResult()
         }
 }

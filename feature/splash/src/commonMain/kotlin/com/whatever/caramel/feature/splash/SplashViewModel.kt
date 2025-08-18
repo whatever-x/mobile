@@ -21,7 +21,6 @@ class SplashViewModel(
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<SplashState, SplashSideEffect, SplashIntent>(savedStateHandle, crashlytics) {
-
     init {
         launch {
             deepLinkHandler.runningApp()
@@ -34,7 +33,7 @@ class SplashViewModel(
                 reduce {
                     copy(
                         isForceUpdate = true,
-                        storeUri = checkResult.storeUri ?: ""
+                        storeUri = checkResult.storeUri ?: "",
                     )
                 }
                 getUserStatus.cancel()

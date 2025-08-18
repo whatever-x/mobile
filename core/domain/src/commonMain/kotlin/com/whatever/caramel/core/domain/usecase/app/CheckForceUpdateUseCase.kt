@@ -11,6 +11,6 @@ class CheckForceUpdateUseCase(
     suspend operator fun invoke(): CheckForceUpdateResult =
         appRepository.getUpdateRequirement(
             appPlatform = platform.appPlatform,
-            versionCode = platform.versionCode
+            versionCode = platform.versionCode,
         )
 }

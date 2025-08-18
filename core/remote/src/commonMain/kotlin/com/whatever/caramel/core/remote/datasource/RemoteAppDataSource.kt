@@ -4,10 +4,8 @@ import com.whatever.caramel.core.remote.dto.app.PlatformDTO
 import com.whatever.caramel.core.remote.dto.app.response.GetUpdatePolicyResponse
 
 interface RemoteAppDataSource {
-
     suspend fun fetchRequirementUpdate(
         platform: PlatformDTO,
-        versionCode: Int
+        versionCode: Int,
     ): GetUpdatePolicyResponse
-
 }

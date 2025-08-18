@@ -5,5 +5,5 @@ import com.whatever.caramel.core.viewmodel.UiState
 data class SplashState(
     val text: String = "",
     val isForceUpdate: Boolean = true,
-    val storeUri: String = ""
+    val storeUri: String = "",
 ) : UiState

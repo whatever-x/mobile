@@ -12,15 +12,15 @@ import org.koin.core.annotation.Named
 class RemoteAppDataSourceImpl(
     @Named("DefaultClient") private val defaultClient: HttpClient,
 ) : RemoteAppDataSource {
-
     override suspend fun fetchRequirementUpdate(
         platform: PlatformDTO,
-        versionCode: Int
+        versionCode: Int,
     ): GetUpdatePolicyResponse =
-        defaultClient.get("$BASE_APP_URL/update-policy") {
-            header(key = "Os-Type", value = platform)
-            parameter(key = "currentVersionCode", value = versionCode)
-        }.getBody()
+        defaultClient
+            .get("$BASE_APP_URL/update-policy") {
+                header(key = "Os-Type", value = platform)
+                parameter(key = "currentVersionCode", value = versionCode)
+            }.getBody()
 
     companion object {
         private const val BASE_APP_URL = "/v1/client-versions"
