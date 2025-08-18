@@ -40,7 +40,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import caramel.core.designsystem.generated.resources.Res
 import caramel.core.designsystem.generated.resources.ic_check_14
@@ -64,12 +63,10 @@ import com.whatever.caramel.core.ui.content.TagChip
 import com.whatever.caramel.core.ui.content.TitleTextField
 import com.whatever.caramel.core.ui.picker.CaramelDatePicker
 import com.whatever.caramel.core.ui.picker.CaramelTimePicker
-import com.whatever.caramel.core.ui.util.rememberKeyboardVisibleState
 import com.whatever.caramel.feature.content.create.component.ContentScheduleInfo
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
 import com.whatever.caramel.feature.content.create.mvi.ScheduleDateTimeType
-import io.github.aakira.napier.Napier
 import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -176,20 +173,23 @@ internal fun ContentScreen(
                         .fillMaxWidth()
                         .heightIn(min = 300.dp)
                         .then(
-                            if (contentHeight == 0.dp) Modifier.weight(1f) else Modifier.height(
-                                contentHeight
-                            ),
+                            if (contentHeight == 0.dp) {
+                                Modifier.weight(1f)
+                            } else {
+                                Modifier.height(
+                                    contentHeight,
+                                )
+                            },
                         ).onGloballyPositioned { coordinates ->
-                            if(contentHeight == 0.dp) {
+                            if (contentHeight == 0.dp) {
                                 contentHeight = with(density) { coordinates.size.height.toDp() }
-                                contentHeight = contentHeight - 20.dp
                             }
-                        }.verticalScroll(contentTextScrollState)
-                        ,
+                        }.verticalScroll(contentTextScrollState),
             ) {
                 ContentTextArea(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth(),
                     value = state.content,
                     onValueChange = {
                         onIntent(ContentCreateIntent.InputContent(it))
@@ -389,7 +389,10 @@ internal fun ContentScreen(
                         contentDescription = null,
                     )
                     SelectableTagChipRow(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .height(height = 36.dp),
                         tagChips =
                             state.tags
                                 .map { TagChip(it.id, it.label) }
