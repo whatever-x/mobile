@@ -2,6 +2,8 @@ package com.whatever.caramel.core.remote.di
 
 import com.whatever.caramel.core.remote.datasource.LinkMetadataRemoteDataSource
 import com.whatever.caramel.core.remote.datasource.LinkMetadataRemoteDataSourceImpl
+import com.whatever.caramel.core.remote.datasource.RemoteAppDataSource
+import com.whatever.caramel.core.remote.datasource.RemoteAppDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSourceImpl
 import com.whatever.caramel.core.remote.datasource.RemoteBalanceGameDataSource
@@ -89,6 +91,12 @@ val networkModule =
 
 val remoteDataSourceModule =
     module {
+        single<RemoteAppDataSource> {
+            RemoteAppDataSourceImpl(
+                defaultClient = get(DefaultClient)
+            )
+        }
+
         single<RemoteAuthDataSource> {
             RemoteAuthDataSourceImpl(
                 defaultClient = get(DefaultClient),
