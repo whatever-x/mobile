@@ -174,7 +174,7 @@ internal fun ContentEditScreen(
                         .fillMaxWidth()
                         .heightIn(min = 300.dp)
                         .onGloballyPositioned { coordinates ->
-                            contentHeight = maxOf(with(density) { coordinates.size.height.toDp() }, contentHeight)
+                            contentHeight = with(density) { coordinates.size.height.toDp() }
                         }.then(
                             if (contentHeight == 0.dp) {
                                 Modifier.weight(1f)
