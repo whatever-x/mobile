@@ -45,9 +45,9 @@ class ContentCreateViewModel(
     private val getAllTagsUseCase: GetAllTagsUseCase,
     private val createContentUseCase: CreateContentUseCase,
 ) : BaseViewModel<ContentCreateState, ContentCreateSideEffect, ContentCreateIntent>(
-    savedStateHandle,
-    crashlytics,
-) {
+        savedStateHandle,
+        crashlytics,
+    ) {
     init {
         launch {
             val tags = getAllTagsUseCase()
@@ -71,10 +71,10 @@ class ContentCreateViewModel(
         val (startDateTime, endDateTime) =
             if (isDateTimeEmpty) {
                 initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone) to
-                        initInstant.plus(2.hours).toLocalDateTime(defaultTimeZone)
+                    initInstant.plus(2.hours).toLocalDateTime(defaultTimeZone)
             } else {
                 initInstant.toLocalDateTime(defaultTimeZone) to
-                        initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone)
+                    initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone)
             }
         return ContentCreateState(
             createMode =
@@ -179,11 +179,12 @@ class ContentCreateViewModel(
         val updatedDateTimeInfo = currentState.recentDateTimeInfo.copy(dateTime = localDateTime)
 
         reduce {
-            val updated = when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.NONE -> this
-            }
+            val updated =
+                when (currentState.scheduleDateType) {
+                    ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
+                    ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
+                    ScheduleDateTimeType.NONE -> this
+                }
             updated.copy(
                 showDateDialog = false,
                 showTimeDialog = false,
@@ -265,11 +266,12 @@ class ContentCreateViewModel(
                 dateUiState = DateUiState.from(dateTime = currentState.recentDateTimeInfo.dateTime),
             )
         reduce {
-            val updated = when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.NONE -> this
-            }
+            val updated =
+                when (currentState.scheduleDateType) {
+                    ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
+                    ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
+                    ScheduleDateTimeType.NONE -> this
+                }
             updated.copy(showDateDialog = true)
         }
     }
@@ -281,11 +283,12 @@ class ContentCreateViewModel(
                 timeUiState = TimeUiState.from(dateTime = currentState.recentDateTimeInfo.dateTime),
             )
         reduce {
-            val updated = when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.NONE -> this
-            }
+            val updated =
+                when (currentState.scheduleDateType) {
+                    ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
+                    ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
+                    ScheduleDateTimeType.NONE -> this
+                }
             updated.copy(showTimeDialog = true)
         }
     }
