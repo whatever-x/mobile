@@ -141,6 +141,7 @@ internal fun ContentDetailScreen(
                             startDateTime = state.scheduleDetail.dateTimeInfo.startDateTime,
                             endDateTime = state.scheduleDetail.dateTimeInfo.endDateTime,
                             isAllDay = state.isAllDay,
+                            isMultiDay = state.isMultiDay,
                         )
                     }
                     if (state.tags.isNotEmpty()) {
