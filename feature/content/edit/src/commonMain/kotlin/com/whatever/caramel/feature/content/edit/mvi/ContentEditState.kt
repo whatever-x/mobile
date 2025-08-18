@@ -36,8 +36,8 @@ data class ContentEditState(
     val showDeletedContentDialog: Boolean = false,
     val isAllDay: Boolean = false,
     val scheduleDateType: ScheduleDateTimeType = ScheduleDateTimeType.NONE,
-    val startDateTime: DateTimeUiState = DateTimeUiState.fromNow(),
-    val endDateTime: DateTimeUiState = DateTimeUiState.fromNow(plusHours = 1),
+    val startDateTimeInfo: DateTimeUiState = DateTimeUiState.fromNow(),
+    val endDateTimeInfo: DateTimeUiState = DateTimeUiState.fromNow(plusHours = 1),
 ) : UiState {
     val isSaveButtonEnable: Boolean
         get() = title.isNotBlank() || content.isNotBlank()
@@ -45,8 +45,8 @@ data class ContentEditState(
     val recentDateTimeInfo
         get() =
             when (scheduleDateType) {
-                ScheduleDateTimeType.START, ScheduleDateTimeType.NONE -> startDateTime
-                ScheduleDateTimeType.END -> endDateTime
+                ScheduleDateTimeType.START, ScheduleDateTimeType.NONE -> startDateTimeInfo
+                ScheduleDateTimeType.END -> endDateTimeInfo
             }
 }
 

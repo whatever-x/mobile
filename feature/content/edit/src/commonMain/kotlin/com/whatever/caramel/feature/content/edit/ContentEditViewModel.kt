@@ -144,33 +144,73 @@ class ContentEditViewModel(
     }
 
     private fun handleTimeClick(intent: ContentEditIntent.ClickTime) {
-        reduce { copy(scheduleDateType = intent.type) }
+        val targetDateTimeInfo =
+            when (intent.type) {
+                ScheduleDateTimeType.START -> currentState.startDateTimeInfo
+                ScheduleDateTimeType.END -> currentState.endDateTimeInfo
+                ScheduleDateTimeType.NONE -> return
+            }
         val updatedDateTimeInfo =
-            currentState.recentDateTimeInfo.copy(
-                timeUiState = TimeUiState.from(dateTime = currentState.recentDateTimeInfo.dateTime),
+            targetDateTimeInfo.copy(
+                timeUiState = TimeUiState.from(dateTime = targetDateTimeInfo.dateTime),
             )
-        reduce { copy(showTimeDialog = true) }
         reduce {
-            when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTime = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTime = updatedDateTimeInfo)
-                ScheduleDateTimeType.NONE -> this
+            when (intent.type) {
+                ScheduleDateTimeType.START ->
+                    copy(
+                        startDateTimeInfo = updatedDateTimeInfo,
+                        showTimeDialog = true,
+                        scheduleDateType = intent.type,
+                    )
+
+                ScheduleDateTimeType.END ->
+                    copy(
+                        endDateTimeInfo = updatedDateTimeInfo,
+                        showTimeDialog = true,
+                        scheduleDateType = intent.type,
+                    )
+
+                ScheduleDateTimeType.NONE ->
+                    copy(
+                        showTimeDialog = true,
+                        scheduleDateType = intent.type,
+                    )
             }
         }
     }
 
     private fun handleDateClick(intent: ContentEditIntent.ClickDate) {
-        reduce { copy(scheduleDateType = intent.type) }
+        val targetDateTimeInfo =
+            when (intent.type) {
+                ScheduleDateTimeType.START -> currentState.startDateTimeInfo
+                ScheduleDateTimeType.END -> currentState.endDateTimeInfo
+                ScheduleDateTimeType.NONE -> return
+            }
         val updatedDateTimeInfo =
-            currentState.recentDateTimeInfo.copy(
-                dateUiState = DateUiState.from(dateTime = currentState.recentDateTimeInfo.dateTime),
+            targetDateTimeInfo.copy(
+                dateUiState = DateUiState.from(dateTime = targetDateTimeInfo.dateTime),
             )
-        reduce { copy(showDateDialog = true) }
         reduce {
-            when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTime = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTime = updatedDateTimeInfo)
-                ScheduleDateTimeType.NONE -> this
+            when (intent.type) {
+                ScheduleDateTimeType.START ->
+                    copy(
+                        startDateTimeInfo = updatedDateTimeInfo,
+                        showDateDialog = true,
+                        scheduleDateType = intent.type,
+                    )
+
+                ScheduleDateTimeType.END ->
+                    copy(
+                        endDateTimeInfo = updatedDateTimeInfo,
+                        showDateDialog = true,
+                        scheduleDateType = intent.type,
+                    )
+
+                ScheduleDateTimeType.NONE ->
+                    copy(
+                        showDateDialog = true,
+                        scheduleDateType = intent.type,
+                    )
             }
         }
     }
@@ -202,16 +242,26 @@ class ContentEditViewModel(
         val updatedDateTimeInfo = currentState.recentDateTimeInfo.copy(dateTime = localDateTime)
 
         reduce {
-            copy(
-                showDateDialog = false,
-                showTimeDialog = false,
-            )
-        }
-        reduce {
             when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTime = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTime = updatedDateTimeInfo)
-                ScheduleDateTimeType.NONE -> this
+                ScheduleDateTimeType.START ->
+                    copy(
+                        startDateTimeInfo = updatedDateTimeInfo,
+                        showDateDialog = false,
+                        showTimeDialog = false,
+                    )
+
+                ScheduleDateTimeType.END ->
+                    copy(
+                        endDateTimeInfo = updatedDateTimeInfo,
+                        showDateDialog = false,
+                        showTimeDialog = false,
+                    )
+
+                ScheduleDateTimeType.NONE ->
+                    copy(
+                        showDateDialog = false,
+                        showTimeDialog = false,
+                    )
             }
         }
     }
@@ -279,12 +329,12 @@ class ContentEditViewModel(
                                     if (state.createMode == CreateMode.CALENDAR) {
                                         DateTimeInfo(
                                             startDateTime =
-                                                state.startDateTime.dateTime.withAllDayTime(
+                                                state.startDateTimeInfo.dateTime.withAllDayTime(
                                                     isStart = true,
                                                 ),
                                             startTimezone = defaultTimeZone,
                                             endDateTime =
-                                                state.endDateTime.dateTime.withAllDayTime(
+                                                state.endDateTimeInfo.dateTime.withAllDayTime(
                                                     isStart = false,
                                                 ),
                                             endTimezone = defaultTimeZone,
@@ -302,7 +352,7 @@ class ContentEditViewModel(
                         scheduleId = state.contentId,
                         parameter =
                             ScheduleEditParameter(
-                                selectedDate = state.startDateTime.dateTime.toString(),
+                                selectedDate = state.startDateTimeInfo.dateTime.toString(),
                                 title = state.title.ifBlank { null },
                                 description = state.content.ifBlank { null },
                                 isCompleted = false,
@@ -310,12 +360,12 @@ class ContentEditViewModel(
                                     if (state.createMode == CreateMode.CALENDAR) {
                                         DateTimeInfo(
                                             startDateTime =
-                                                state.startDateTime.dateTime.withAllDayTime(
+                                                state.startDateTimeInfo.dateTime.withAllDayTime(
                                                     isStart = true,
                                                 ),
                                             startTimezone = defaultTimeZone,
                                             endDateTime =
-                                                state.endDateTime.dateTime.withAllDayTime(
+                                                state.endDateTimeInfo.dateTime.withAllDayTime(
                                                     isStart = false,
                                                 ),
                                             endTimezone = defaultTimeZone,
@@ -385,8 +435,8 @@ class ContentEditViewModel(
             )
         reduce {
             when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTime = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTime = updatedDateTimeInfo)
+                ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
+                ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
                 ScheduleDateTimeType.NONE -> this
             }
         }
@@ -399,8 +449,8 @@ class ContentEditViewModel(
             )
         reduce {
             when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTime = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTime = updatedDateTimeInfo)
+                ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
+                ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
                 ScheduleDateTimeType.NONE -> this
             }
         }
@@ -413,8 +463,8 @@ class ContentEditViewModel(
             )
         reduce {
             when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTime = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTime = updatedDateTimeInfo)
+                ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
+                ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
                 ScheduleDateTimeType.NONE -> this
             }
         }
@@ -427,8 +477,8 @@ class ContentEditViewModel(
             )
         reduce {
             when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTime = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTime = updatedDateTimeInfo)
+                ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
+                ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
                 ScheduleDateTimeType.NONE -> this
             }
         }
@@ -441,8 +491,8 @@ class ContentEditViewModel(
             )
         reduce {
             when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTime = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTime = updatedDateTimeInfo)
+                ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
+                ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
                 ScheduleDateTimeType.NONE -> this
             }
         }
@@ -455,8 +505,8 @@ class ContentEditViewModel(
             )
         reduce {
             when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTime = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTime = updatedDateTimeInfo)
+                ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
+                ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
                 ScheduleDateTimeType.NONE -> this
             }
         }
@@ -492,14 +542,13 @@ class ContentEditViewModel(
                                     schedule.dateTimeInfo.endDateTime,
                                 ),
                             selectedTags = schedule.tagList.toImmutableSet(),
-                            startDateTime = DateTimeUiState.from(schedule.dateTimeInfo.startDateTime),
-                            endDateTime = DateTimeUiState.from(schedule.dateTimeInfo.endDateTime),
+                            startDateTimeInfo = DateTimeUiState.from(schedule.dateTimeInfo.startDateTime),
+                            endDateTimeInfo = DateTimeUiState.from(schedule.dateTimeInfo.endDateTime),
                             selectedAssignee = ContentAssigneeUiModel.valueOf(value = schedule.contentData.contentAssignee.name),
                         )
                     }
                 }
             }
-            reduce { copy(isLoading = false) }
         }
     }
 
