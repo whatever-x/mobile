@@ -8,5 +8,8 @@ class CheckForceUpdateUseCase(
     private val platform: Platform,
 ) {
     suspend operator fun invoke(): Boolean =
-        appRepository.getUpdateRequirement(appPlatform = platform.appPlatform)
+        appRepository.getUpdateRequirement(
+            appPlatform = platform.appPlatform,
+            versionCode = platform.versionCode
+        )
 }
