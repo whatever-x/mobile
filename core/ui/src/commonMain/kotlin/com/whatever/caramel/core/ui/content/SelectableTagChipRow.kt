@@ -67,7 +67,7 @@ private fun SelectableTagChip(
     Box(
         modifier =
             modifier
-                .height(34.dp)
+                .height(36.dp)
                 .clip(RoundedCornerShape(24.dp))
                 .background(backgroundColor)
                 .border(

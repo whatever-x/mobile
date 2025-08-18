@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -34,11 +36,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
@@ -79,8 +83,6 @@ internal fun ContentEditScreen(
 ) {
     val contentFocusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
-    val isKeyboardVisible by rememberKeyboardVisibilityState()
-
     val sheetState =
         rememberStandardBottomSheetState(
             initialValue = SheetValue.Hidden,
@@ -93,33 +95,40 @@ internal fun ContentEditScreen(
             sheetState.hide()
         }
     }
+    var contentHeight by remember { mutableStateOf(0.dp) }
+    LaunchedEffect(state.createMode) {
+        if (state.createMode == CreateMode.MEMO) {
+            contentHeight = 0.dp
+        }
+    }
     val contentScrollState = rememberScrollState()
     val contentTextScrollState = rememberScrollState()
+    val density = LocalDensity.current
 
     Scaffold(
         modifier =
             Modifier
                 .fillMaxSize()
+                .statusBarsPadding()
+                .navigationBarsPadding()
                 .pointerInput(Unit) {
                     detectTapGestures { keyboardController?.hide() }
                 },
         containerColor = CaramelTheme.color.background.primary,
         topBar = {
-            Column(modifier = Modifier.statusBarsPadding()) {
-                CaramelTopBar(
-                    trailingIcon = {
-                        Icon(
-                            modifier =
-                                Modifier.clickable {
-                                    onIntent(ContentEditIntent.OnBackClicked)
-                                },
-                            painter = painterResource(resource = Resources.Icon.ic_cancel_24),
-                            tint = CaramelTheme.color.icon.primary,
-                            contentDescription = "Close",
-                        )
-                    },
-                )
-            }
+            CaramelTopBar(
+                trailingIcon = {
+                    Icon(
+                        modifier =
+                            Modifier.clickable {
+                                onIntent(ContentEditIntent.OnBackClicked)
+                            },
+                        painter = painterResource(resource = Resources.Icon.ic_cancel_24),
+                        tint = CaramelTheme.color.icon.primary,
+                        contentDescription = "Close",
+                    )
+                },
+            )
         },
         bottomBar = {
             CaramelButton(
@@ -127,7 +136,6 @@ internal fun ContentEditScreen(
                     Modifier
                         .fillMaxWidth()
                         .background(color = CaramelTheme.color.background.primary)
-                        .navigationBarsPadding()
                         .imePadding()
                         .padding(all = CaramelTheme.spacing.xl),
                 onClick = { onIntent(ContentEditIntent.OnSaveClicked) },
@@ -164,8 +172,18 @@ internal fun ContentEditScreen(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .weight(1f)
-                        .verticalScroll(contentTextScrollState),
+                        .heightIn(min = 300.dp)
+                        .onGloballyPositioned { coordinates ->
+                            contentHeight = maxOf(with(density) { coordinates.size.height.toDp() }, contentHeight)
+                        }.then(
+                            if (contentHeight == 0.dp) {
+                                Modifier.weight(1f)
+                            } else {
+                                Modifier.height(
+                                    contentHeight,
+                                )
+                            },
+                        ).verticalScroll(contentTextScrollState),
             ) {
                 ContentTextArea(
                     modifier = Modifier.fillMaxWidth(),
@@ -175,223 +193,221 @@ internal fun ContentEditScreen(
                     placeholder = "함께 하고 싶거나 기억하면 좋은 것들을 자유롭게 입력해 주세요.",
                 )
             }
-
-            if (!isKeyboardVisible) {
-                if (!isKeyboardVisible) {
-                    Column(
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                HorizontalDivider(
+                    modifier = Modifier.padding(bottom = CaramelTheme.spacing.l),
+                    color = CaramelTheme.color.divider.primary,
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement =
+                        Arrangement.spacedBy(
+                            space = CaramelTheme.spacing.l,
+                            alignment = Alignment.CenterHorizontally,
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_profile_18),
+                        contentDescription = null,
+                    )
+                    ContentAssigneeChipRow(
                         modifier = Modifier.fillMaxWidth(),
+                        selectedAssigneeChip = state.selectedAssignee,
+                        onAssigneeChipClick = { assignee ->
+                            onIntent(ContentEditIntent.ClickAssignee(assignee = assignee))
+                        },
+                    )
+                }
+
+                HorizontalDivider(
+                    modifier = Modifier.padding(vertical = CaramelTheme.spacing.m),
+                    color = CaramelTheme.color.divider.primary,
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement =
+                            Arrangement.spacedBy(
+                                space = CaramelTheme.spacing.l,
+                                alignment = Alignment.Start,
+                            ),
                     ) {
-                        HorizontalDivider(
-                            modifier = Modifier.padding(bottom = CaramelTheme.spacing.l),
-                            color = CaramelTheme.color.divider.primary,
+                        Icon(
+                            painter = painterResource(Res.drawable.ic_check_18),
+                            contentDescription = null,
                         )
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement =
-                                Arrangement.spacedBy(
-                                    space = CaramelTheme.spacing.l,
-                                    alignment = Alignment.CenterHorizontally,
-                                ),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Icon(
-                                painter = painterResource(Res.drawable.ic_profile_18),
-                                contentDescription = null,
-                            )
-                            ContentAssigneeChipRow(
-                                modifier = Modifier.fillMaxWidth(),
-                                selectedAssigneeChip = state.selectedAssignee,
-                                onAssigneeChipClick = { assignee ->
-                                    onIntent(ContentEditIntent.ClickAssignee(assignee = assignee))
-                                },
+                        CreateModeSwitch(
+                            createMode = state.createMode,
+                            onCreateModeSelect = {
+                                onIntent(ContentEditIntent.OnCreateModeSelected(it))
+                            },
+                        )
+                    }
+                    when (state.createMode) {
+                        CreateMode.MEMO -> {
+                            Text(
+                                text = "메모로 저장할게요",
+                                style = CaramelTheme.typography.body2.regular,
+                                color = CaramelTheme.color.text.disabledPrimary,
                             )
                         }
 
-                        HorizontalDivider(
-                            modifier = Modifier.padding(vertical = CaramelTheme.spacing.m),
-                            color = CaramelTheme.color.divider.primary,
-                        )
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement =
-                                    Arrangement.spacedBy(
-                                        space = CaramelTheme.spacing.l,
-                                        alignment = Alignment.Start,
-                                    ),
-                            ) {
-                                Icon(
-                                    painter = painterResource(Res.drawable.ic_check_18),
-                                    contentDescription = null,
-                                )
-                                CreateModeSwitch(
-                                    createMode = state.createMode,
-                                    onCreateModeSelect = {
-                                        onIntent(ContentEditIntent.OnCreateModeSelected(it))
-                                    },
-                                )
-                            }
-                            when (state.createMode) {
-                                CreateMode.MEMO -> {
-                                    Text(
-                                        text = "메모로 저장할게요",
-                                        style = CaramelTheme.typography.body2.regular,
-                                        color = CaramelTheme.color.text.disabledPrimary,
+                        CreateMode.CALENDAR -> {
+                            val (checkColor, textColor, borderColor) =
+                                if (state.isAllDay) {
+                                    Triple(
+                                        CaramelTheme.color.icon.primary,
+                                        CaramelTheme.color.text.primary,
+                                        CaramelTheme.color.fill.primary,
+                                    )
+                                } else {
+                                    Triple(
+                                        CaramelTheme.color.fill.disabledPrimary,
+                                        CaramelTheme.color.text.disabledPrimary,
+                                        CaramelTheme.color.fill.disabledPrimary,
                                     )
                                 }
-
-                                CreateMode.CALENDAR -> {
-                                    val (checkColor, textColor, borderColor) =
-                                        if (state.isAllDay) {
-                                            Triple(
-                                                CaramelTheme.color.icon.primary,
-                                                CaramelTheme.color.text.primary,
-                                                CaramelTheme.color.fill.primary,
-                                            )
-                                        } else {
-                                            Triple(
-                                                CaramelTheme.color.fill.disabledPrimary,
-                                                CaramelTheme.color.text.disabledPrimary,
-                                                CaramelTheme.color.fill.disabledPrimary,
-                                            )
-                                        }
-                                    Row(
-                                        modifier =
-                                            Modifier
-                                                .clickable(
-                                                    indication = null,
-                                                    interactionSource = null,
-                                                    onClick = { onIntent(ContentEditIntent.ClickAllDayButton) },
-                                                ).border(
-                                                    width = 1.dp,
-                                                    color = borderColor,
-                                                    shape = CaramelTheme.shape.s,
-                                                ).padding(
-                                                    horizontal = CaramelTheme.spacing.m,
-                                                    vertical = CaramelTheme.spacing.xs,
-                                                ),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.Center,
-                                    ) {
-                                        Icon(
-                                            painter = painterResource(resource = Res.drawable.ic_check_14),
-                                            tint = checkColor,
-                                            contentDescription = null,
-                                        )
-                                        Spacer(modifier = Modifier.size(size = CaramelTheme.spacing.xxs))
-                                        Text(
-                                            text = "하루종일",
-                                            style = CaramelTheme.typography.body4.regular,
-                                            color = textColor,
-                                        )
-                                    }
-                                }
-                            }
-                        }
-
-                        if (state.createMode == CreateMode.CALENDAR) {
-                            Column(
+                            Row(
                                 modifier =
                                     Modifier
-                                        .fillMaxWidth()
-                                        .padding(top = CaramelTheme.spacing.m),
-                                verticalArrangement =
-                                    Arrangement.spacedBy(
-                                        space = CaramelTheme.spacing.s,
-                                    ),
+                                        .clickable(
+                                            indication = null,
+                                            interactionSource = null,
+                                            onClick = { onIntent(ContentEditIntent.ClickAllDayButton) },
+                                        ).border(
+                                            width = 1.dp,
+                                            color = borderColor,
+                                            shape = CaramelTheme.shape.s,
+                                        ).padding(
+                                            horizontal = CaramelTheme.spacing.m,
+                                            vertical = CaramelTheme.spacing.xs,
+                                        ),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center,
                             ) {
-                                ContentScheduleInfo(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    leadingText = "시작",
-                                    dateTimeInfo = state.startDateTime.dateTime,
-                                    onClickDate = {
-                                        onIntent(
-                                            ContentEditIntent.ClickDate(
-                                                type = ScheduleDateTimeType.START,
-                                            ),
-                                        )
-                                    },
-                                    onClickTime = {
-                                        onIntent(
-                                            ContentEditIntent.ClickTime(
-                                                type = ScheduleDateTimeType.START,
-                                            ),
-                                        )
-                                    },
-                                    isAllDay = state.isAllDay,
+                                Icon(
+                                    painter = painterResource(resource = Res.drawable.ic_check_14),
+                                    tint = checkColor,
+                                    contentDescription = null,
                                 )
-
-                                ContentScheduleInfo(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    leadingText = "종료",
-                                    dateTimeInfo = state.endDateTime.dateTime,
-                                    onClickDate = {
-                                        onIntent(
-                                            ContentEditIntent.ClickDate(
-                                                type = ScheduleDateTimeType.END,
-                                            ),
-                                        )
-                                    },
-                                    onClickTime = {
-                                        onIntent(
-                                            ContentEditIntent.ClickTime(
-                                                type = ScheduleDateTimeType.END,
-                                            ),
-                                        )
-                                    },
-                                    isAllDay = state.isAllDay,
+                                Spacer(modifier = Modifier.size(size = CaramelTheme.spacing.xxs))
+                                Text(
+                                    text = "하루종일",
+                                    style = CaramelTheme.typography.body4.regular,
+                                    color = textColor,
                                 )
                             }
                         }
+                    }
+                }
 
-                        HorizontalDivider(
-                            modifier =
-                                Modifier.padding(
-                                    vertical = CaramelTheme.spacing.m,
-                                ),
-                            color = CaramelTheme.color.divider.primary,
+                if (state.createMode == CreateMode.CALENDAR) {
+                    Column(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(top = CaramelTheme.spacing.m),
+                        verticalArrangement =
+                            Arrangement.spacedBy(
+                                space = CaramelTheme.spacing.s,
+                            ),
+                    ) {
+                        ContentScheduleInfo(
+                            modifier = Modifier.fillMaxWidth(),
+                            leadingText = "시작",
+                            dateTimeInfo = state.startDateTimeInfo.dateTime,
+                            onClickDate = {
+                                onIntent(
+                                    ContentEditIntent.ClickDate(
+                                        type = ScheduleDateTimeType.START,
+                                    ),
+                                )
+                            },
+                            onClickTime = {
+                                onIntent(
+                                    ContentEditIntent.ClickTime(
+                                        type = ScheduleDateTimeType.START,
+                                    ),
+                                )
+                            },
+                            isAllDay = state.isAllDay,
                         )
 
-                        Row(
+                        ContentScheduleInfo(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement =
-                                Arrangement.spacedBy(
-                                    space = CaramelTheme.spacing.l,
-                                    alignment = Alignment.CenterHorizontally,
-                                ),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Icon(
-                                painter = painterResource(Res.drawable.ic_tag_18),
-                                contentDescription = null,
-                            )
-                            SelectableTagChipRow(
-                                modifier = Modifier.fillMaxWidth(),
-                                tagChips =
-                                    state.tags
-                                        .map { TagChip(it.id, it.label) }
-                                        .toImmutableList(),
-                                selectedTagChips =
-                                    state.selectedTags
-                                        .map { TagChip(it.id, it.label) }
-                                        .toImmutableList(),
-                                onTagChipClick = {
-                                    onIntent(
-                                        ContentEditIntent.ClickTag(
-                                            Tag(
-                                                it.id,
-                                                it.label,
-                                            ),
-                                        ),
-                                    )
-                                },
-                            )
-                        }
+                            leadingText = "종료",
+                            dateTimeInfo = state.endDateTimeInfo.dateTime,
+                            onClickDate = {
+                                onIntent(
+                                    ContentEditIntent.ClickDate(
+                                        type = ScheduleDateTimeType.END,
+                                    ),
+                                )
+                            },
+                            onClickTime = {
+                                onIntent(
+                                    ContentEditIntent.ClickTime(
+                                        type = ScheduleDateTimeType.END,
+                                    ),
+                                )
+                            },
+                            isAllDay = state.isAllDay,
+                        )
                     }
+                }
+
+                HorizontalDivider(
+                    modifier =
+                        Modifier.padding(
+                            vertical = CaramelTheme.spacing.m,
+                        ),
+                    color = CaramelTheme.color.divider.primary,
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement =
+                        Arrangement.spacedBy(
+                            space = CaramelTheme.spacing.l,
+                            alignment = Alignment.CenterHorizontally,
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_tag_18),
+                        contentDescription = null,
+                    )
+                    SelectableTagChipRow(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .height(height = 36.dp),
+                        tagChips =
+                            state.tags
+                                .map { TagChip(it.id, it.label) }
+                                .toImmutableList(),
+                        selectedTagChips =
+                            state.selectedTags
+                                .map { TagChip(it.id, it.label) }
+                                .toImmutableList(),
+                        onTagChipClick = {
+                            onIntent(
+                                ContentEditIntent.ClickTag(
+                                    Tag(
+                                        it.id,
+                                        it.label,
+                                    ),
+                                ),
+                            )
+                        },
+                    )
                 }
             }
         }
