@@ -2,7 +2,7 @@ package com.whatever.caramel.core.domain.usecase.calendar
 
 import com.whatever.caramel.core.domain.repository.CalendarRepository
 import com.whatever.caramel.core.domain.repository.CoupleRepository
-import com.whatever.caramel.core.domain.vo.calendar.AnniversaryOnDate
+import com.whatever.caramel.core.domain.vo.calendar.Anniversary
 
 class GetAnniversariesInPeriodUseCase(
     private val coupleRepository: CoupleRepository,
@@ -11,14 +11,13 @@ class GetAnniversariesInPeriodUseCase(
     suspend operator fun invoke(
         startDate: String,
         endDate: String,
-    ): List<AnniversaryOnDate> {
+    ): List<Anniversary> {
         val coupleId = coupleRepository.readCoupleId()
         return calendarRepository
             .getAnniversaryList(
                 coupleId = coupleId,
                 startDate = startDate,
                 endDate = endDate,
-            ).groupBy { it.date }
-            .map { (date, anniversaries) -> AnniversaryOnDate(date, anniversaries) }
+            )
     }
 }

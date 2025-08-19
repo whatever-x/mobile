@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.domain.usecase.schedule
 
+import com.whatever.caramel.core.domain.entity.Schedule
 import com.whatever.caramel.core.domain.repository.ScheduleRepository
-import com.whatever.caramel.core.domain.vo.schedule.ScheduleOnDate
 
 class GetScheduleInPeriodUseCase(
     private val scheduleRepository: ScheduleRepository,
@@ -9,11 +9,10 @@ class GetScheduleInPeriodUseCase(
     suspend operator fun invoke(
         startDate: String,
         endDate: String,
-    ): List<ScheduleOnDate> =
+    ): List<Schedule> =
         scheduleRepository
             .getScheduleList(
                 startDate = startDate,
                 endDate = endDate,
-            ).groupBy { it.dateTimeInfo.startDateTime }
-            .map { (date, scheduleList) -> ScheduleOnDate(date.date, scheduleList) }
+            )
 }
