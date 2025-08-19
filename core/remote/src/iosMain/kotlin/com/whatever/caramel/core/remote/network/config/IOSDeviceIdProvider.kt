@@ -7,7 +7,6 @@ import kotlinx.cinterop.ExperimentalForeignApi
 class IOSDeviceIdProvider(
     private val keychainHelperBridge: KeychainHelperBridge,
 ) : DeviceIdProvider {
-
     override val deviceId: String
         get() {
             keychainHelperBridge.getWithKey(key = KEY)?.let { value ->

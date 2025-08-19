@@ -21,7 +21,7 @@ actual val deviceIdModule: Module
         module {
             single<DeviceIdProvider> {
                 IOSDeviceIdProvider(
-                    keychainHelperBridge = KeychainHelperBridge()
+                    keychainHelperBridge = KeychainHelperBridge(),
                 )
             }
         }

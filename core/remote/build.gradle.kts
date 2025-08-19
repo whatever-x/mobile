@@ -88,7 +88,6 @@ dependencies {
     add("kspIosSimulatorArm64", libs.koin.ksp.compiler)
 }
 
-
 swiftPackageConfig {
     create("keychainHelperBridge") {
         customPackageSourcePath = "../../app-ios"
