@@ -232,8 +232,8 @@ class ContentEditViewModel(
                                         DateTimeInfo(
                                             startDateTime = state.dateTime,
                                             startTimezone = TimeZone.currentSystemDefault().id,
-                                            endDateTime = null,
-                                            endTimezone = null,
+                                            endDateTime = state.dateTime, // FIXME : 다른 PR과 덮어씌워지면 안됨
+                                            endTimezone = TimeZone.currentSystemDefault().id,
                                         )
                                     } else {
                                         null

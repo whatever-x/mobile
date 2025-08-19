@@ -49,7 +49,7 @@ internal fun CalendarDayOfMonthCell(
             )
             if (schedule != null) {
                 CalendarScheduleList(
-                    schedule = schedule,
+                    daySchedule = schedule,
                     onClickSchedule = { onClickSchedule(it) },
                 )
             }

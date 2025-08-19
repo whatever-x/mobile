@@ -2,16 +2,16 @@ package com.whatever.caramel.feature.calendar
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
+import com.whatever.caramel.core.domain.entity.Schedule
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.policy.CalendarPolicy
 import com.whatever.caramel.core.domain.usecase.calendar.GetAnniversariesInPeriodUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetHolidayOfYearUseCase
 import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleInPeriodUseCase
-import com.whatever.caramel.core.domain.vo.calendar.AnniversaryOnDate
-import com.whatever.caramel.core.domain.vo.calendar.HolidayOnDate
+import com.whatever.caramel.core.domain.vo.calendar.Anniversary
+import com.whatever.caramel.core.domain.vo.calendar.Holiday
 import com.whatever.caramel.core.domain.vo.content.ContentType
-import com.whatever.caramel.core.domain.vo.schedule.ScheduleOnDate
 import com.whatever.caramel.core.util.DateFormatter
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.BaseViewModel
@@ -24,8 +24,12 @@ import com.whatever.caramel.feature.calendar.util.getYearAndMonthFromPageIndex
 import kotlinx.coroutines.async
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
 import kotlinx.datetime.number
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Duration.Companion.days
 
 class CalendarViewModel(
     private val getScheduleInPeriodUseCase: GetScheduleInPeriodUseCase,
@@ -209,10 +213,9 @@ class CalendarViewModel(
         reduce {
             val newSchedule = currentState.yearScheduleList.toMutableList()
             newSchedule.find { it.date == currentState.selectedDate }?.let {
-                if (it.holidayList.isEmpty() && it.scheduleList.isEmpty() && it.anniversaryList.isEmpty()) {
-                    newSchedule.remove(it)
-                }
+                if(it.holidayList.isEmpty() && it.anniversaryList.isEmpty() && it.scheduleList.isEmpty()) newSchedule.remove(it)
             }
+
             if (!newSchedule.any { it.date == newSelectedDate }) {
                 newSchedule.add(DaySchedule(date = newSelectedDate))
             }
@@ -231,8 +234,9 @@ class CalendarViewModel(
                     currentState.cachedYearScheduleList[updateSelectedDate.year]
                         ?: emptyList()
                 ).toMutableList()
-            if (filteredCachedSchedule.find { daySchedule -> daySchedule.date == updateSelectedDate } == null) {
-                filteredCachedSchedule.add(0, DaySchedule(date = updateSelectedDate))
+
+            if (filteredCachedSchedule.find { it.date == currentState.selectedDate } == null) {
+                filteredCachedSchedule.add(DaySchedule(date = currentState.selectedDate))
             }
             reduce {
                 copy(
@@ -294,12 +298,11 @@ class CalendarViewModel(
 
             var yearSchedule =
                 createYearSchedules(
-                    scheduleOnDates = scheduleList,
-                    holidayOnDate = holidayList,
-                    anniversariesOnDate = anniversaries,
+                    scheduleList = scheduleList,
+                    holidayList = holidayList,
+                    anniversaryList = anniversaries,
                 )
-
-            if (updateSelectedDate !in yearSchedule.map { it.date }) {
+            if (yearSchedule.find { it.date == updateSelectedDate } == null) {
                 yearSchedule = (yearSchedule + DaySchedule(date = updateSelectedDate)).sortedBy { it.date }
             }
             val updatedCache =
@@ -373,36 +376,49 @@ class CalendarViewModel(
     }
 
     private fun createYearSchedules(
-        scheduleOnDates: List<ScheduleOnDate>,
-        holidayOnDate: List<HolidayOnDate>,
-        anniversariesOnDate: List<AnniversaryOnDate>,
+        scheduleList: List<Schedule>,
+        holidayList: List<Holiday>,
+        anniversaryList: List<Anniversary>,
     ): List<DaySchedule> {
-        val scheduleMap = mutableMapOf<LocalDate, DaySchedule>()
-        scheduleOnDates
-            .forEach { schedule ->
-                val date = schedule.date
-                val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] =
-                    existingSchedule.copy(scheduleList = existingSchedule.scheduleList + schedule.scheduleList)
-            }
+        val totalSchedule = mutableMapOf<LocalDate, DaySchedule>()
+        val timeZone = TimeZone.currentSystemDefault()
 
-        anniversariesOnDate
-            .forEach { anniversary ->
-                val date = anniversary.date
-                val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] =
-                    existingSchedule.copy(anniversaryList = existingSchedule.anniversaryList + anniversary.anniversaryList)
+        scheduleList.forEach { schedule ->
+            with(schedule.dateTimeInfo) {
+                val startDateInstant = startDateTime.toInstant(TimeZone.of(startTimezone))
+                val endDateInstant = endDateTime.toInstant(TimeZone.of(endTimezone))
+                var current = startDateInstant
+                while (current in startDateInstant..endDateInstant) {
+                    val date = current.toLocalDateTime(timeZone).date
+                    val existSchedule = totalSchedule[date] ?: DaySchedule(date = date)
+                    totalSchedule[date] =
+                        existSchedule.copy(
+                            date = date,
+                            scheduleList = existSchedule.scheduleList + schedule,
+                        )
+                    current = current.plus(1.days)
+                }
             }
-
-        holidayOnDate
-            .forEach { holiday ->
-                val date = holiday.date
-                val existingSchedule = scheduleMap[date] ?: DaySchedule(date = date)
-                scheduleMap[date] =
-                    existingSchedule.copy(holidayList = existingSchedule.holidayList + holiday.holidayList)
-            }
-
-        return scheduleMap.values.sortedBy { it.date }
+        }
+        holidayList.forEach { holiday ->
+            val date = holiday.date
+            val existSchedule = totalSchedule[date] ?: DaySchedule(date = date)
+            totalSchedule[date] =
+                existSchedule.copy(
+                    date = date,
+                    holidayList = existSchedule.holidayList + holiday,
+                )
+        }
+        anniversaryList.forEach { anniversary ->
+            val date = anniversary.date
+            val existSchedule = totalSchedule[date] ?: DaySchedule(date = date)
+            totalSchedule[date] =
+                existSchedule.copy(
+                    date = date,
+                    anniversaryList = existSchedule.anniversaryList + anniversary,
+                )
+        }
+        return totalSchedule.values.sortedBy { it.date }
     }
 
     private fun calcPageIndex(
