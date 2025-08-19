@@ -6,6 +6,7 @@ plugins {
     id("caramel.kmp.ios")
     id("caramel.kotlin.serialization")
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kmp.spm)
 }
 
 android.namespace = "com.whatever.caramel.core.remote"
@@ -47,6 +48,18 @@ kotlin {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64(),
+    ).forEach { iosTarget ->
+        iosTarget.compilations {
+            val main by getting {
+                cinterops.create("keychainHelperBridge")
+            }
+        }
+    }
+
     sourceSets {
         androidMain.dependencies {
             implementation(libs.ktor.client.okhttp)
@@ -73,4 +86,12 @@ dependencies {
     add("kspIosX64", libs.koin.ksp.compiler)
     add("kspIosArm64", libs.koin.ksp.compiler)
     add("kspIosSimulatorArm64", libs.koin.ksp.compiler)
+}
+
+
+swiftPackageConfig {
+    create("keychainHelperBridge") {
+        customPackageSourcePath = "../../app-ios"
+        minIos = "15.0"
+    }
 }
