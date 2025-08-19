@@ -213,7 +213,7 @@ class CalendarViewModel(
         reduce {
             val newSchedule = currentState.yearScheduleList.toMutableList()
             newSchedule.find { it.date == currentState.selectedDate }?.let {
-                if(it.holidayList.isEmpty() && it.anniversaryList.isEmpty() && it.scheduleList.isEmpty()) newSchedule.remove(it)
+                if (it.holidayList.isEmpty() && it.anniversaryList.isEmpty() && it.scheduleList.isEmpty()) newSchedule.remove(it)
             }
 
             if (!newSchedule.any { it.date == newSelectedDate }) {
