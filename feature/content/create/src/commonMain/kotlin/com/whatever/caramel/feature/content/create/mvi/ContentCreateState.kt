@@ -26,8 +26,8 @@ data class ContentCreateState(
     val showEditConfirmDialog: Boolean = false,
     val isAllDay: Boolean = false,
     val scheduleDateType: ScheduleDateTimeType = ScheduleDateTimeType.NONE,
-    val startDateTimeInfo: DateTimeInfo = DateTimeInfo(),
-    val endDateTimeInfo: DateTimeInfo = DateTimeInfo(),
+    val startDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState(),
+    val endDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState(),
 ) : UiState {
     val isSaveButtonEnable: Boolean
         get() = title.isNotBlank() || content.isNotBlank()
@@ -46,7 +46,7 @@ enum class ScheduleDateTimeType {
     NONE,
 }
 
-data class DateTimeInfo(
+data class ScheduleDateTimeState (
     val dateTime: LocalDateTime = DateUtil.todayLocalDateTime(),
     val dateUiState: DateUiState = DateUiState.currentDate(),
     val timeUiState: TimeUiState = TimeUiState.currentTime(),

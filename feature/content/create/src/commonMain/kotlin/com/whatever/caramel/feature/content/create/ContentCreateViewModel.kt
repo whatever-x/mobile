@@ -25,7 +25,7 @@ import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateSideEffect
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
-import com.whatever.caramel.feature.content.create.mvi.DateTimeInfo
+import com.whatever.caramel.feature.content.create.mvi.ScheduleDateTimeState
 import com.whatever.caramel.feature.content.create.mvi.ScheduleDateTimeType
 import com.whatever.caramel.feature.content.create.navigation.ContentCreateRoute
 import kotlinx.collections.immutable.toImmutableList
@@ -83,13 +83,13 @@ class ContentCreateViewModel(
                     ContentType.CALENDAR -> CreateMode.CALENDAR
                 },
             startDateTimeInfo =
-                DateTimeInfo(
+                ScheduleDateTimeState(
                     dateTime = startDateTime,
                     dateUiState = DateUiState.from(dateTime = startDateTime),
                     timeUiState = TimeUiState.from(dateTime = startDateTime),
                 ),
             endDateTimeInfo =
-                DateTimeInfo(
+                ScheduleDateTimeState(
                     dateTime = endDateTime,
                     dateUiState = DateUiState.from(dateTime = endDateTime),
                     timeUiState = TimeUiState.from(dateTime = endDateTime),
@@ -271,7 +271,7 @@ class ContentCreateViewModel(
 
     private fun handleDateClick(intent: ContentCreateIntent.ClickDate) {
         reduce {
-            val transform: (DateTimeInfo) -> DateTimeInfo = { info ->
+            val transform: (ScheduleDateTimeState) -> ScheduleDateTimeState = { info ->
                 info.copy(dateUiState = DateUiState.from(info.dateTime))
             }
             when (intent.type) {
@@ -300,7 +300,7 @@ class ContentCreateViewModel(
 
     private fun handleTimeClick(intent: ContentCreateIntent.ClickTime) {
         reduce {
-            val transform: (DateTimeInfo) -> DateTimeInfo = { info ->
+            val transform: (ScheduleDateTimeState) -> ScheduleDateTimeState = { info ->
                 info.copy(timeUiState = TimeUiState.from(info.dateTime))
             }
             when (intent.type) {
@@ -412,7 +412,7 @@ class ContentCreateViewModel(
             this
         }
 
-    private inline fun updateDateTimeInfo(crossinline transform: DateTimeInfo.() -> DateTimeInfo) {
+    private inline fun updateDateTimeInfo(crossinline transform: ScheduleDateTimeState.() -> ScheduleDateTimeState) {
         reduce {
             when (currentState.scheduleDateType) {
                 ScheduleDateTimeType.START -> copy(startDateTimeInfo = startDateTimeInfo.transform())
