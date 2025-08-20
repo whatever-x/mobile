@@ -32,7 +32,7 @@ import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditIntent
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditSideEffect
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditState
-import com.whatever.caramel.feature.content.edit.mvi.DateTimeUiState
+import com.whatever.caramel.feature.content.edit.mvi.ScheduleDateTimeState
 import com.whatever.caramel.feature.content.edit.mvi.ScheduleDateTimeType
 import com.whatever.caramel.feature.content.edit.navigation.ContentEditScreenRoute
 import kotlinx.collections.immutable.toImmutableList
@@ -144,28 +144,21 @@ class ContentEditViewModel(
     }
 
     private fun handleTimeClick(intent: ContentEditIntent.ClickTime) {
-        val targetDateTimeInfo =
-            when (intent.type) {
-                ScheduleDateTimeType.START -> currentState.startDateTimeInfo
-                ScheduleDateTimeType.END -> currentState.endDateTimeInfo
-                ScheduleDateTimeType.NONE -> return
-            }
-        val updatedDateTimeInfo =
-            targetDateTimeInfo.copy(
-                timeUiState = TimeUiState.from(dateTime = targetDateTimeInfo.dateTime),
-            )
         reduce {
+            val transform: (ScheduleDateTimeState) -> ScheduleDateTimeState = { info ->
+                info.copy(timeUiState = TimeUiState.from(info.dateTime))
+            }
             when (intent.type) {
                 ScheduleDateTimeType.START ->
                     copy(
-                        startDateTimeInfo = updatedDateTimeInfo,
+                        startDateTimeInfo = transform(startDateTimeInfo),
                         showTimeDialog = true,
                         scheduleDateType = intent.type,
                     )
 
                 ScheduleDateTimeType.END ->
                     copy(
-                        endDateTimeInfo = updatedDateTimeInfo,
+                        endDateTimeInfo = transform(endDateTimeInfo),
                         showTimeDialog = true,
                         scheduleDateType = intent.type,
                     )
@@ -180,28 +173,21 @@ class ContentEditViewModel(
     }
 
     private fun handleDateClick(intent: ContentEditIntent.ClickDate) {
-        val targetDateTimeInfo =
-            when (intent.type) {
-                ScheduleDateTimeType.START -> currentState.startDateTimeInfo
-                ScheduleDateTimeType.END -> currentState.endDateTimeInfo
-                ScheduleDateTimeType.NONE -> return
-            }
-        val updatedDateTimeInfo =
-            targetDateTimeInfo.copy(
-                dateUiState = DateUiState.from(dateTime = targetDateTimeInfo.dateTime),
-            )
         reduce {
+            val transform: (ScheduleDateTimeState) -> ScheduleDateTimeState = { info ->
+                info.copy(dateUiState = DateUiState.from(info.dateTime))
+            }
             when (intent.type) {
                 ScheduleDateTimeType.START ->
                     copy(
-                        startDateTimeInfo = updatedDateTimeInfo,
+                        startDateTimeInfo = transform(startDateTimeInfo),
                         showDateDialog = true,
                         scheduleDateType = intent.type,
                     )
 
                 ScheduleDateTimeType.END ->
                     copy(
-                        endDateTimeInfo = updatedDateTimeInfo,
+                        endDateTimeInfo = transform(endDateTimeInfo),
                         showDateDialog = true,
                         scheduleDateType = intent.type,
                     )
@@ -220,9 +206,9 @@ class ContentEditViewModel(
     }
 
     private fun clickComplete(intent: ContentEditIntent.ClickCompleteButton) {
-        val localDate = currentState.recentDateTimeInfo.dateUiState.toLocalDate()
+        val localDate = currentState.pickerDateTimeInfo.dateUiState.toLocalDate()
         val localTime =
-            with(currentState.recentDateTimeInfo.timeUiState) {
+            with(currentState.pickerDateTimeInfo.timeUiState) {
                 val hour = this.hour.toInt()
                 val minute = this.minute.toInt()
                 val convertedHour =
@@ -239,7 +225,7 @@ class ContentEditViewModel(
                 LocalTime(hour = convertedHour, minute = minute)
             }
         val localDateTime = localDate.atTime(time = localTime)
-        val updatedDateTimeInfo = currentState.recentDateTimeInfo.copy(dateTime = localDateTime)
+        val updatedDateTimeInfo = currentState.pickerDateTimeInfo.copy(dateTime = localDateTime)
 
         reduce {
             when (currentState.scheduleDateType) {
@@ -429,87 +415,27 @@ class ContentEditViewModel(
     }
 
     private fun updateYear(intent: ContentEditIntent.OnYearChanged) {
-        val updatedDateTimeInfo =
-            currentState.recentDateTimeInfo.copy(
-                dateUiState = currentState.recentDateTimeInfo.dateUiState.copy(year = intent.year),
-            )
-        reduce {
-            when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.NONE -> this
-            }
-        }
+        updateDateTimeInfo { copy(dateUiState = dateUiState.copy(year = intent.year)) }
     }
 
     private fun updateMonth(intent: ContentEditIntent.OnMonthChanged) {
-        val updatedDateTimeInfo =
-            currentState.recentDateTimeInfo.copy(
-                dateUiState = currentState.recentDateTimeInfo.dateUiState.copy(month = intent.month),
-            )
-        reduce {
-            when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.NONE -> this
-            }
-        }
+        updateDateTimeInfo { copy(dateUiState = dateUiState.copy(month = intent.month)) }
     }
 
     private fun updateDay(intent: ContentEditIntent.OnDayChanged) {
-        val updatedDateTimeInfo =
-            currentState.recentDateTimeInfo.copy(
-                dateUiState = currentState.recentDateTimeInfo.dateUiState.copy(day = intent.day),
-            )
-        reduce {
-            when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.NONE -> this
-            }
-        }
+        updateDateTimeInfo { copy(dateUiState = dateUiState.copy(day = intent.day)) }
     }
 
     private fun updateMinute(intent: ContentEditIntent.OnMinuteChanged) {
-        val updatedDateTimeInfo =
-            currentState.recentDateTimeInfo.copy(
-                timeUiState = currentState.recentDateTimeInfo.timeUiState.copy(minute = intent.minute),
-            )
-        reduce {
-            when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.NONE -> this
-            }
-        }
+        updateDateTimeInfo { copy(timeUiState = timeUiState.copy(minute = intent.minute)) }
     }
 
     private fun updateHour(intent: ContentEditIntent.OnHourChanged) {
-        val updatedDateTimeInfo =
-            currentState.recentDateTimeInfo.copy(
-                timeUiState = currentState.recentDateTimeInfo.timeUiState.copy(hour = intent.hour),
-            )
-        reduce {
-            when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.NONE -> this
-            }
-        }
+        updateDateTimeInfo { copy(timeUiState = timeUiState.copy(hour = intent.hour)) }
     }
 
     private fun updatePeriod(intent: ContentEditIntent.OnPeriodChanged) {
-        val updatedDateTimeInfo =
-            currentState.recentDateTimeInfo.copy(
-                timeUiState = currentState.recentDateTimeInfo.timeUiState.copy(period = intent.period),
-            )
-        reduce {
-            when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START -> copy(startDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.END -> copy(endDateTimeInfo = updatedDateTimeInfo)
-                ScheduleDateTimeType.NONE -> this
-            }
-        }
+        updateDateTimeInfo { copy(timeUiState = timeUiState.copy(period = intent.period)) }
     }
 
     private fun loadContent() {
@@ -542,8 +468,8 @@ class ContentEditViewModel(
                                     schedule.dateTimeInfo.endDateTime,
                                 ),
                             selectedTags = schedule.tagList.toImmutableSet(),
-                            startDateTimeInfo = DateTimeUiState.from(schedule.dateTimeInfo.startDateTime),
-                            endDateTimeInfo = DateTimeUiState.from(schedule.dateTimeInfo.endDateTime),
+                            startDateTimeInfo = ScheduleDateTimeState.from(schedule.dateTimeInfo.startDateTime),
+                            endDateTimeInfo = ScheduleDateTimeState.from(schedule.dateTimeInfo.endDateTime),
                             selectedAssignee = ContentAssigneeUiModel.valueOf(value = schedule.contentData.contentAssignee.name),
                         )
                     }
@@ -570,4 +496,14 @@ class ContentEditViewModel(
         startDateTime: LocalDateTime,
         endDateTime: LocalDateTime,
     ): Boolean = startDateTime.hour == 0 && startDateTime.minute == 0 && endDateTime.hour == 23 && endDateTime.minute == 59
+
+    private inline fun updateDateTimeInfo(crossinline transform: ScheduleDateTimeState.() -> ScheduleDateTimeState) {
+        reduce {
+            when (currentState.scheduleDateType) {
+                ScheduleDateTimeType.START -> copy(startDateTimeInfo = startDateTimeInfo.transform())
+                ScheduleDateTimeType.END -> copy(endDateTimeInfo = endDateTimeInfo.transform())
+                ScheduleDateTimeType.NONE -> this
+            }
+        }
+    }
 }

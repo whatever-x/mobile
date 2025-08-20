@@ -425,7 +425,7 @@ internal fun ContentEditScreen(
                                 Modifier
                                     .padding(top = CaramelTheme.spacing.xxl)
                                     .align(Alignment.CenterHorizontally),
-                            dateUiState = state.recentDateTimeInfo.dateUiState,
+                            dateUiState = state.pickerDateTimeInfo.dateUiState,
                             onYearChanged = { year ->
                                 onIntent(ContentEditIntent.OnYearChanged(year))
                             },
@@ -444,7 +444,7 @@ internal fun ContentEditScreen(
                                 Modifier
                                     .padding(top = CaramelTheme.spacing.xxl)
                                     .align(Alignment.CenterHorizontally),
-                            timeUiState = state.recentDateTimeInfo.timeUiState,
+                            timeUiState = state.pickerDateTimeInfo.timeUiState,
                             onPeriodChanged = { period ->
                                 onIntent(
                                     ContentEditIntent.OnPeriodChanged(
