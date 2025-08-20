@@ -36,8 +36,8 @@ data class ContentEditState(
     val showDeletedContentDialog: Boolean = false,
     val isAllDay: Boolean = false,
     val scheduleDateType: ScheduleDateTimeType = ScheduleDateTimeType.NONE,
-    val startDateTimeInfo: DateTimeUiState = DateTimeUiState.fromNow(),
-    val endDateTimeInfo: DateTimeUiState = DateTimeUiState.fromNow(plusHours = 1),
+    val startDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState.fromNow(),
+    val endDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState.fromNow(plusHours = 1),
 ) : UiState {
     val isSaveButtonEnable: Boolean
         get() = title.isNotBlank() || content.isNotBlank()
@@ -56,13 +56,13 @@ enum class ScheduleDateTimeType {
     NONE,
 }
 
-data class DateTimeUiState(
+data class ScheduleDateTimeState(
     val dateTime: LocalDateTime,
     val dateUiState: DateUiState,
     val timeUiState: TimeUiState,
 ) {
     companion object {
-        fun fromNow(plusHours: Int = 0): DateTimeUiState {
+        fun fromNow(plusHours: Int = 0): ScheduleDateTimeState {
             val timeZone = TimeZone.currentSystemDefault()
             val now = DateUtil.todayLocalDateTime().copy(minute = 0).toInstant(timeZone)
             val nowPlusHours = now.plus(plusHours.hours)
@@ -70,7 +70,7 @@ data class DateTimeUiState(
         }
 
         fun from(localDateTime: LocalDateTime) =
-            DateTimeUiState(
+            ScheduleDateTimeState(
                 dateTime = localDateTime,
                 dateUiState = DateUiState.from(localDateTime),
                 timeUiState = TimeUiState.from(localDateTime),
