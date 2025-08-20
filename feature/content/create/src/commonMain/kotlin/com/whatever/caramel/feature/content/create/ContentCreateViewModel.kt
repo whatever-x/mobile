@@ -157,9 +157,9 @@ class ContentCreateViewModel(
     }
 
     private fun clickComplete(intent: ContentCreateIntent.ClickCompleteButton) {
-        val localDate = currentState.recentDateTimeInfo.dateUiState.toLocalDate()
+        val localDate = currentState.pickerDateTimeInfo.dateUiState.toLocalDate()
         val localTime =
-            with(currentState.recentDateTimeInfo.timeUiState) {
+            with(currentState.pickerDateTimeInfo.timeUiState) {
                 val hour = this.hour.toInt()
                 val minute = this.minute.toInt()
                 val convertedHour =
@@ -176,7 +176,7 @@ class ContentCreateViewModel(
                 LocalTime(hour = convertedHour, minute = minute)
             }
         val localDateTime = localDate.atTime(time = localTime)
-        val updatedDateTimeInfo = currentState.recentDateTimeInfo.copy(dateTime = localDateTime)
+        val updatedDateTimeInfo = currentState.pickerDateTimeInfo.copy(dateTime = localDateTime)
         reduce {
             when (currentState.scheduleDateType) {
                 ScheduleDateTimeType.START ->

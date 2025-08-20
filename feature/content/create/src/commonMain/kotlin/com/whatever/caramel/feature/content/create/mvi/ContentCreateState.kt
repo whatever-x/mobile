@@ -32,7 +32,7 @@ data class ContentCreateState(
     val isSaveButtonEnable: Boolean
         get() = title.isNotBlank() || content.isNotBlank()
 
-    val recentDateTimeInfo
+    val pickerDateTimeInfo
         get() =
             when (scheduleDateType) {
                 ScheduleDateTimeType.START, ScheduleDateTimeType.NONE -> startDateTimeInfo
