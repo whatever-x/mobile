@@ -46,7 +46,7 @@ enum class ScheduleDateTimeType {
     NONE,
 }
 
-data class ScheduleDateTimeState (
+data class ScheduleDateTimeState(
     val dateTime: LocalDateTime = DateUtil.todayLocalDateTime(),
     val dateUiState: DateUiState = DateUiState.currentDate(),
     val timeUiState: TimeUiState = TimeUiState.currentTime(),
