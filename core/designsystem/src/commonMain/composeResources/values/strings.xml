@@ -8,4 +8,13 @@
 	<string name="us">우리</string>
 	<string name="partner">연인</string>
 
+	<string-array name="day_of_week">
+		<item>일</item>
+		<item>월</item>
+		<item>화</item>
+		<item>수</item>
+		<item>목</item>
+		<item>금</item>
+		<item>토</item>
+	</string-array>
 </resources>

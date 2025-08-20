@@ -23,19 +23,31 @@ data class ContentCreateState(
     val createMode: CreateMode = CreateMode.MEMO,
     val showDateDialog: Boolean = false,
     val showTimeDialog: Boolean = false,
-    val dateTime: LocalDateTime = DateUtil.todayLocalDateTime(),
-    val dateUiState: DateUiState = DateUiState.currentDate(),
-    val timeUiState: TimeUiState = TimeUiState.currentTime(),
     val showEditConfirmDialog: Boolean = false,
+    val isAllDay: Boolean = false,
+    val scheduleDateType: ScheduleDateTimeType = ScheduleDateTimeType.NONE,
+    val startDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState(),
+    val endDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState(),
 ) : UiState {
     val isSaveButtonEnable: Boolean
         get() = title.isNotBlank() || content.isNotBlank()
 
-    val date: String
-        get() = "${dateTime.year}년 ${dateTime.monthNumber}월 ${dateTime.dayOfMonth}일"
-
-    val time: String
-        get() = "${dateTime.hour.toString().padStart(2, '0')}:${
-            dateTime.minute.toString().padStart(2, '0')
-        }"
+    val pickerDateTimeInfo
+        get() =
+            when (scheduleDateType) {
+                ScheduleDateTimeType.START, ScheduleDateTimeType.NONE -> startDateTimeInfo
+                ScheduleDateTimeType.END -> endDateTimeInfo
+            }
 }
+
+enum class ScheduleDateTimeType {
+    START,
+    END,
+    NONE,
+}
+
+data class ScheduleDateTimeState(
+    val dateTime: LocalDateTime = DateUtil.todayLocalDateTime(),
+    val dateUiState: DateUiState = DateUiState.currentDate(),
+    val timeUiState: TimeUiState = TimeUiState.currentTime(),
+)
