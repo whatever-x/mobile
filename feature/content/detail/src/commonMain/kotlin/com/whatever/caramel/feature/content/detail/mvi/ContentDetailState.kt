@@ -25,14 +25,22 @@ data class ContentDetailState(
     val title: String
         get() =
             when (contentType) {
-                ContentType.MEMO -> memoDetail?.contentData?.title?.ifEmpty { memoDetail.contentData.description } ?: ""
-                ContentType.CALENDAR -> scheduleDetail?.contentData?.title?.ifEmpty { scheduleDetail.contentData.description } ?: ""
+                ContentType.MEMO ->
+                    memoDetail?.contentData?.title?.ifEmpty { memoDetail.contentData.description }
+                        ?: ""
+
+                ContentType.CALENDAR ->
+                    scheduleDetail?.contentData?.title?.ifEmpty { scheduleDetail.contentData.description }
+                        ?: ""
             }
 
     val description: String
         get() =
             when (contentType) {
-                ContentType.MEMO -> memoDetail?.contentData?.description?.takeIf { memoDetail.contentData.title.isNotEmpty() } ?: ""
+                ContentType.MEMO ->
+                    memoDetail?.contentData?.description?.takeIf { memoDetail.contentData.title.isNotEmpty() }
+                        ?: ""
+
                 ContentType.CALENDAR ->
                     scheduleDetail?.contentData?.description?.takeIf { scheduleDetail.contentData.title.isNotEmpty() }
                         ?: ""
@@ -42,31 +50,33 @@ data class ContentDetailState(
         get() =
             when (contentType) {
                 ContentType.MEMO -> memoDetail?.tagList?.toImmutableList() ?: persistentListOf()
-                ContentType.CALENDAR -> scheduleDetail?.tagList?.toImmutableList() ?: persistentListOf()
+                ContentType.CALENDAR ->
+                    scheduleDetail?.tagList?.toImmutableList()
+                        ?: persistentListOf()
             }
-
-    val date: String
-        get() {
-            val dateTime = scheduleDetail?.dateTimeInfo?.startDateTime ?: return ""
-            return "${dateTime.year}년 ${dateTime.monthNumber}월 ${dateTime.dayOfMonth}일"
-        }
 
     val contentAssignee: ContentAssignee
         get() =
             when (contentType) {
                 ContentType.MEMO -> memoDetail?.contentData?.contentAssignee ?: ContentAssignee.US
-                ContentType.CALENDAR -> scheduleDetail?.contentData?.contentAssignee ?: ContentAssignee.US
+                ContentType.CALENDAR ->
+                    scheduleDetail?.contentData?.contentAssignee
+                        ?: ContentAssignee.US
             }
-
-    val time: String
-        get() {
-            val dateTime = scheduleDetail?.dateTimeInfo?.startDateTime ?: return ""
-            val hour = dateTime.hour.toString().padStart(2, '0')
-            val minute = dateTime.minute.toString().padStart(2, '0')
-
-            return "$hour:$minute"
-        }
 
     val tagString: String
         get() = tags.joinToString(", ") { it.label }
+
+    val isAllDay: Boolean
+        get() =
+            scheduleDetail?.let {
+                it.dateTimeInfo.run {
+                    startDateTime.hour == 0 && startDateTime.minute == 0 && endDateTime.hour == 23 && endDateTime.minute == 59
+                }
+            } ?: false
+
+    val isMultiDay: Boolean
+        get() =
+            scheduleDetail?.let { (it.dateTimeInfo.startDateTime.dayOfMonth != it.dateTimeInfo.endDateTime.dayOfMonth) || !isAllDay }
+                ?: false
 }

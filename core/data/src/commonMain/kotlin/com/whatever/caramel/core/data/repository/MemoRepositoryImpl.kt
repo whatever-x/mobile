@@ -18,7 +18,7 @@ import com.whatever.caramel.core.remote.dto.tag.TagRequest
 class MemoRepositoryImpl(
     private val remoteMemoDataSource: RemoteMemoDataSource,
 ) : MemoRepository {
-    override suspend fun createMemo(parameter: MemoParameter) =
+    override suspend fun createMemo(parameter: MemoParameter) {
         safeCall {
             val request =
                 CreateMemoRequest(
@@ -30,6 +30,7 @@ class MemoRepositoryImpl(
                 )
             remoteMemoDataSource.createMemo(request = request)
         }
+    }
 
     override suspend fun updateMemo(
         memoId: Long,

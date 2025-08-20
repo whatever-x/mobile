@@ -232,8 +232,8 @@ class ContentEditViewModel(
                                         DateTimeInfo(
                                             startDateTime = state.dateTime,
                                             startTimezone = TimeZone.currentSystemDefault().id,
-                                            endDateTime = null,
-                                            endTimezone = null,
+                                            endDateTime = state.dateTime, // @RyuSw-cs 2025.08.17 FIXME : endDateTime을 설정할 수 있으므로 UI 변경 때 수정
+                                            endTimezone = TimeZone.currentSystemDefault().id,
                                         )
                                     } else {
                                         null
