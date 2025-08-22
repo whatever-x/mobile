@@ -10,6 +10,6 @@ actual class PlatformManager : Platform {
         get() = Platform.AppPlatform.IOS
 
     actual override val versionCode: Int
-        get() = NSBundle.mainBundle.infoDictionary?.get("CFBundleVersion") as? Int ?: 0
+        get() = (NSBundle.mainBundle.infoDictionary?.get("CFBundleVersion") as? String)?.toIntOrNull() ?: 0
 
 }
