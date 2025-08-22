@@ -5,6 +5,6 @@ import com.whatever.caramel.core.remote.dto.app.response.GetUpdatePolicyResponse
 
 fun GetUpdatePolicyResponse.toCheckForceUpdateResult(): CheckForceUpdateResult =
     CheckForceUpdateResult(
-        isForceUpdate = this.forceUpdate,
+        requireUpdate = this.forceUpdate,
         storeUri = this.updateUri,
     )

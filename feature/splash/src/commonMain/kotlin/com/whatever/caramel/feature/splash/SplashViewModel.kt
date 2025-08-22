@@ -29,7 +29,7 @@ class SplashViewModel(
             val getUserStatus = async(start = CoroutineStart.LAZY) { refreshUserSessionUseCase() }
             val checkResult = checkForceUpdateUseCase()
 
-            if (checkResult.isForceUpdate) {
+            if (checkResult.requireUpdate) {
                 reduce {
                     copy(
                         isForceUpdate = true,
