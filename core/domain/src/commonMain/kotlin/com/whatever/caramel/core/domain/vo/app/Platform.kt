@@ -9,5 +9,4 @@ interface Platform {
     val appPlatform: AppPlatform
 
     val versionCode: Int
-
 }
