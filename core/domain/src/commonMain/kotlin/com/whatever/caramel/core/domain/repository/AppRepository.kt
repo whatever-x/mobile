@@ -4,7 +4,7 @@ import com.whatever.caramel.core.domain.vo.app.CheckForceUpdateResult
 import com.whatever.caramel.core.domain.vo.app.Platform
 
 interface AppRepository {
-    suspend fun getUpdateRequirement(
+    suspend fun getMinVersion(
         appPlatform: Platform.AppPlatform,
         versionCode: Int,
     ): CheckForceUpdateResult

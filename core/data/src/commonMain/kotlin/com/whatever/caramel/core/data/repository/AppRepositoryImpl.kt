@@ -11,7 +11,7 @@ import com.whatever.caramel.core.remote.dto.app.PlatformDTO
 class AppRepositoryImpl(
     private val remoteAppDataSource: RemoteAppDataSource,
 ) : AppRepository {
-    override suspend fun getUpdateRequirement(
+    override suspend fun getMinVersion(
         appPlatform: Platform.AppPlatform,
         versionCode: Int,
     ): CheckForceUpdateResult =

@@ -9,7 +9,7 @@ class CheckForceUpdateUseCase(
     private val platform: Platform,
 ) {
     suspend operator fun invoke(): CheckForceUpdateResult =
-        appRepository.getUpdateRequirement(
+        appRepository.getMinVersion(
             appPlatform = platform.appPlatform,
             versionCode = platform.versionCode,
         )
