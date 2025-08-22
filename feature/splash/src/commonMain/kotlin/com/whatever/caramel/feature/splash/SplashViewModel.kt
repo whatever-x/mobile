@@ -10,8 +10,6 @@ import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.splash.mvi.SplashIntent
 import com.whatever.caramel.feature.splash.mvi.SplashSideEffect
 import com.whatever.caramel.feature.splash.mvi.SplashState
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 
 class SplashViewModel(
@@ -26,7 +24,6 @@ class SplashViewModel(
             deepLinkHandler.runningApp()
             delay(1000L)
 
-            val getUserStatus = async(start = CoroutineStart.LAZY) { refreshUserSessionUseCase() }
             val checkResult = checkForceUpdateUseCase()
 
             if (checkResult.requireUpdate) {
@@ -36,12 +33,10 @@ class SplashViewModel(
                         storeUri = checkResult.storeUri ?: "",
                     )
                 }
-                getUserStatus.cancel()
-                return@launch
+            } else {
+                val userStatus = refreshUserSessionUseCase()
+                postSideEffect(SplashSideEffect.NavigateToStartDestination(userStatus = userStatus))
             }
-
-            val userStatus = getUserStatus.await()
-            postSideEffect(SplashSideEffect.NavigateToStartDestination(userStatus))
         }
     }
 
