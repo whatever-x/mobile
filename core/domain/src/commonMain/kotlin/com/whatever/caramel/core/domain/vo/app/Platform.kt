@@ -10,5 +10,4 @@ interface Platform {
 
     val versionCode: Int
 
-    val storeUri: String
 }
