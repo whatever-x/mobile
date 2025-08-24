@@ -9,4 +9,8 @@ sealed interface SplashSideEffect : UiSideEffect {
     ) : SplashSideEffect
 
     data object NavigateToLogin : SplashSideEffect
+
+    data class GoToStore(
+        val storeUri: String,
+    ) : SplashSideEffect
 }

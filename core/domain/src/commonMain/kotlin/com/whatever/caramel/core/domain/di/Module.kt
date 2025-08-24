@@ -1,5 +1,6 @@
 package com.whatever.caramel.core.domain.di
 
+import com.whatever.caramel.core.domain.usecase.app.CheckForceUpdateUseCase
 import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignOutUseCase
@@ -35,6 +36,9 @@ import org.koin.dsl.module
 
 val useCaseModule =
     module {
+        // App
+        factory { CheckForceUpdateUseCase(get(), get()) }
+
         // Auth
         factory { SignInWithSocialPlatformUseCase(get(), get(), get()) }
         factory { RefreshUserSessionUseCase(get(), get()) }
