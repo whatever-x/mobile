@@ -2,11 +2,13 @@ package com.whatever.caramel.di
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.app.CaramelViewModel
+import com.whatever.caramel.app.util.PlatformManager
+import com.whatever.caramel.core.domain.vo.app.Platform
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-actual val appViewModelModule: Module
+actual val appModule: Module
     get() =
         module {
             viewModel {
@@ -21,4 +23,5 @@ actual val appViewModelModule: Module
                  */
                 )
             }
+            single<Platform> { PlatformManager() }
         }
