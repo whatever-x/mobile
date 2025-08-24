@@ -28,17 +28,15 @@ internal fun SplashScreen(
     state: SplashState,
     onIntent: (SplashIntent) -> Unit,
 ) {
-    if (state.isForceUpdate) {
-        CaramelDialog(
-            show = state.isForceUpdate,
-            title = stringResource(resource = Res.string.force_update_title),
-            message = stringResource(resource = Res.string.force_update_message),
-            mainButtonText = stringResource(resource = Res.string.force_update_button),
-            onDismissRequest = { },
-            onMainButtonClick = { onIntent(SplashIntent.ClickUpdate) },
-        ) {
-            DefaultCaramelDialogLayout()
-        }
+    CaramelDialog(
+        show = state.isForceUpdate,
+        title = stringResource(resource = Res.string.force_update_title),
+        message = stringResource(resource = Res.string.force_update_message),
+        mainButtonText = stringResource(resource = Res.string.force_update_button),
+        onDismissRequest = { },
+        onMainButtonClick = { onIntent(SplashIntent.ClickUpdate) },
+    ) {
+        DefaultCaramelDialogLayout()
     }
 
     Column(
