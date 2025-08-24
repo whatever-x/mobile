@@ -6,7 +6,7 @@ import com.whatever.caramel.core.domain.repository.AppRepository
 import com.whatever.caramel.core.domain.vo.app.CheckForceUpdateResult
 import com.whatever.caramel.core.domain.vo.app.Platform
 import com.whatever.caramel.core.remote.datasource.RemoteAppDataSource
-import com.whatever.caramel.core.remote.dto.app.PlatformDTO
+import com.whatever.caramel.core.remote.dto.app.PlatformDto
 
 class AppRepositoryImpl(
     private val remoteAppDataSource: RemoteAppDataSource,
@@ -18,7 +18,7 @@ class AppRepositoryImpl(
         safeCall {
             remoteAppDataSource
                 .fetchRequirementUpdate(
-                    platform = PlatformDTO.valueOf(appPlatform.name),
+                    platform = PlatformDto.valueOf(appPlatform.name),
                     versionCode = versionCode,
                 ).toCheckForceUpdateResult()
         }

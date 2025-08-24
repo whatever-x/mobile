@@ -1,6 +1,6 @@
 package com.whatever.caramel.core.remote.datasource
 
-import com.whatever.caramel.core.remote.dto.app.PlatformDTO
+import com.whatever.caramel.core.remote.dto.app.PlatformDto
 import com.whatever.caramel.core.remote.dto.app.response.GetUpdatePolicyResponse
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
@@ -13,7 +13,7 @@ class RemoteAppDataSourceImpl(
     @Named("DefaultClient") private val defaultClient: HttpClient,
 ) : RemoteAppDataSource {
     override suspend fun fetchRequirementUpdate(
-        platform: PlatformDTO,
+        platform: PlatformDto,
         versionCode: Int,
     ): GetUpdatePolicyResponse =
         defaultClient
