@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
 	<string name="caramel">카라멜</string>
+	<string name="force_update_title">새로운 버전이 업데이트되었어요!</string>
+	<string name="force_update_message">지금 업데이트하고 더 나은 카라멜을 즐겨보세요.</string>
+	<string name="force_update_button">업데이트하기</string>
 
 </resources>
