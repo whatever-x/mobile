@@ -28,33 +28,13 @@ internal fun CalendarDayOfMonthCell(
     onClickCell: (LocalDate) -> Unit = {},
     onClickSchedule: (Long) -> Unit = {},
 ) {
-    Box(modifier = modifier) {
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .clickable(
-                        indication = null,
-                        interactionSource = null,
-                        onClick = { onClickCell(date) },
-                    ),
-            verticalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xxs),
-        ) {
-            CalendarDayOfMonthText(
-                modifier = Modifier.fillMaxWidth(),
-                dayOfWeek = date.dayOfWeek,
-                dayOfMonth = date.dayOfMonth,
-                isFocus = isFocus,
-                isHoliday = schedule?.holidayList?.isNotEmpty() ?: false,
-            )
-            if (schedule != null) {
-                CalendarScheduleList(
-                    daySchedule = schedule,
-                    onClickSchedule = { onClickSchedule(it) },
-                )
-            }
-        }
-    }
+    CalendarDayOfMonthText(
+        modifier = modifier,
+        dayOfWeek = date.dayOfWeek,
+        dayOfMonth = date.dayOfMonth,
+        isFocus = isFocus,
+        isHoliday = schedule?.holidayList?.isNotEmpty() ?: false,
+    )
 }
 
 @Composable

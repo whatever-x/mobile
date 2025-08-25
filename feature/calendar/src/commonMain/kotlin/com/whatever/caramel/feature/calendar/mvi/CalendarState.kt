@@ -3,6 +3,8 @@ package com.whatever.caramel.feature.calendar.mvi
 import com.whatever.caramel.core.domain.entity.Schedule
 import com.whatever.caramel.core.domain.vo.calendar.Anniversary
 import com.whatever.caramel.core.domain.vo.calendar.Holiday
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
+import com.whatever.caramel.core.domain.vo.content.schedule.DateTimeInfo
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.UiState
@@ -46,3 +48,11 @@ data class DaySchedule(
     val totalScheduleCount: Int
         get() = scheduleList.size + holidayList.size + anniversaryList.size
 }
+
+data class ScheduleUiModel(
+    val id : Long? = null,
+    val mainText : String,
+    val description : String? = null,
+    val dateTimeInfo : DateTimeInfo,
+    val contentAssignee: ContentAssignee? = null,
+)
