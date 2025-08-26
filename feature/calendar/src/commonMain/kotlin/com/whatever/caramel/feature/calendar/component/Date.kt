@@ -31,102 +31,102 @@ import kotlinx.datetime.Month
 import kotlinx.datetime.number
 import org.jetbrains.compose.resources.painterResource
 
-@Composable
-internal fun CurrentDateMenu(
-    modifier: Modifier = Modifier,
-    year: Int,
-    month: Month,
-    isShowDropMenu: Boolean,
-    onClickDatePicker: () -> Unit,
-) {
-    Box(modifier = modifier.fillMaxWidth()) {
-        Row(
-            modifier =
-                modifier
-                    .clickable(
-                        interactionSource = null,
-                        indication = null,
-                        onClick = onClickDatePicker,
-                    ),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "$year.${month.number}",
-                style = CaramelTheme.typography.heading1,
-                color = CaramelTheme.color.text.primary,
-            )
-            Spacer(modifier = Modifier.size(size = CaramelTheme.spacing.xs))
-            Icon(
-                painter =
-                    if (isShowDropMenu) {
-                        painterResource(Resources.Icon.ic_arrow_up_16)
-                    } else {
-                        painterResource(Resources.Icon.ic_arrow_down_16)
-                    },
-                contentDescription = null,
-                tint = CaramelTheme.color.icon.primary,
-            )
-        }
-    }
-}
-
-@Composable
-internal fun CalendarDatePicker(
-    modifier: Modifier = Modifier,
-    year: Int,
-    month: Month,
-    isShowDropMenu: Boolean,
-    onYearChanged: (Int) -> Unit,
-    onMonthChanged: (Int) -> Unit,
-    onDismiss: () -> Unit,
-) {
-    Box(modifier = modifier.fillMaxSize()) {
-        AnimatedVisibility(
-            visible = isShowDropMenu,
-            enter = fadeIn(animationSpec = tween(durationMillis = 150)),
-            exit = fadeOut(animationSpec = tween(durationMillis = 150)),
-        ) {
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .background(CaramelTheme.color.alpha.primary)
-                        .padding(top = CalendarDimension.datePickerHeight)
-                        .clickable(
-                            indication = null,
-                            interactionSource = null,
-                            onClick = onDismiss,
-                        ),
-            )
-        }
-
-        AnimatedVisibility(
-            modifier = modifier,
-            visible = isShowDropMenu,
-            enter = slideInVertically(initialOffsetY = { -it }),
-            exit = slideOutVertically(targetOffsetY = { -it }),
-        ) {
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .background(
-                            color = CaramelTheme.color.background.primary,
-                            shape = RoundedCornerShape(bottomEnd = 24.dp, bottomStart = 24.dp),
-                        ).padding(top = CaramelTheme.spacing.s, bottom = CaramelTheme.spacing.l),
-            ) {
-                CaramelDateMonthPicker(
-                    modifier = Modifier.align(Alignment.TopCenter),
-                    dateUiState =
-                        DateUiState(
-                            year = year,
-                            month = month.number,
-                            day = 1,
-                        ),
-                    onYearChanged = { onYearChanged(it) },
-                    onMonthChanged = { onMonthChanged(it) },
-                )
-            }
-        }
-    }
-}
+//@Composable
+//internal fun CurrentDateMenu(
+//    modifier: Modifier = Modifier,
+//    year: Int,
+//    month: Month,
+//    isShowDropMenu: Boolean,
+//    onClickDatePicker: () -> Unit,
+//) {
+//    Box(modifier = modifier.fillMaxWidth()) {
+//        Row(
+//            modifier =
+//                modifier
+//                    .clickable(
+//                        interactionSource = null,
+//                        indication = null,
+//                        onClick = onClickDatePicker,
+//                    ),
+//            verticalAlignment = Alignment.CenterVertically,
+//        ) {
+//            Text(
+//                text = "$year.${month.number}",
+//                style = CaramelTheme.typography.heading1,
+//                color = CaramelTheme.color.text.primary,
+//            )
+//            Spacer(modifier = Modifier.size(size = CaramelTheme.spacing.xs))
+//            Icon(
+//                painter =
+//                    if (isShowDropMenu) {
+//                        painterResource(Resources.Icon.ic_arrow_up_16)
+//                    } else {
+//                        painterResource(Resources.Icon.ic_arrow_down_16)
+//                    },
+//                contentDescription = null,
+//                tint = CaramelTheme.color.icon.primary,
+//            )
+//        }
+//    }
+//}
+//
+//@Composable
+//internal fun CalendarDatePicker(
+//    modifier: Modifier = Modifier,
+//    year: Int,
+//    month: Month,
+//    isShowDropMenu: Boolean,
+//    onYearChanged: (Int) -> Unit,
+//    onMonthChanged: (Int) -> Unit,
+//    onDismiss: () -> Unit,
+//) {
+//    Box(modifier = modifier.fillMaxSize()) {
+//        AnimatedVisibility(
+//            visible = isShowDropMenu,
+//            enter = fadeIn(animationSpec = tween(durationMillis = 150)),
+//            exit = fadeOut(animationSpec = tween(durationMillis = 150)),
+//        ) {
+//            Box(
+//                modifier =
+//                    Modifier
+//                        .fillMaxSize()
+//                        .background(CaramelTheme.color.alpha.primary)
+//                        .padding(top = CalendarDimension.datePickerHeight)
+//                        .clickable(
+//                            indication = null,
+//                            interactionSource = null,
+//                            onClick = onDismiss,
+//                        ),
+//            )
+//        }
+//
+//        AnimatedVisibility(
+//            modifier = modifier,
+//            visible = isShowDropMenu,
+//            enter = slideInVertically(initialOffsetY = { -it }),
+//            exit = slideOutVertically(targetOffsetY = { -it }),
+//        ) {
+//            Box(
+//                modifier =
+//                    Modifier
+//                        .fillMaxWidth()
+//                        .background(
+//                            color = CaramelTheme.color.background.primary,
+//                            shape = RoundedCornerShape(bottomEnd = 24.dp, bottomStart = 24.dp),
+//                        ).padding(top = CaramelTheme.spacing.s, bottom = CaramelTheme.spacing.l),
+//            ) {
+//                CaramelDateMonthPicker(
+//                    modifier = Modifier.align(Alignment.TopCenter),
+//                    dateUiState =
+//                        DateUiState(
+//                            year = year,
+//                            month = month.number,
+//                            day = 1,
+//                        ),
+//                    onYearChanged = { onYearChanged(it) },
+//                    onMonthChanged = { onMonthChanged(it) },
+//                )
+//            }
+//        }
+//    }
+//}
