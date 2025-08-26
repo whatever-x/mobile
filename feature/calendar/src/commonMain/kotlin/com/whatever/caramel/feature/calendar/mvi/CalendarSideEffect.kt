@@ -25,4 +25,8 @@ sealed interface CalendarSideEffect : UiSideEffect {
     data class ShowErrorToast(
         val message: String,
     ) : CalendarSideEffect
+
+    data class ScrollToPage(
+        val page: Int
+    ) : CalendarSideEffect
 }
