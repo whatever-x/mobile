@@ -35,6 +35,13 @@ data class DateUiState(
                 month = dateTime.monthNumber,
                 day = dateTime.dayOfMonth,
             )
+
+        fun fromLocalDate(localDate: LocalDate): DateUiState =
+            DateUiState(
+                year = localDate.year,
+                month = localDate.monthNumber,
+                day = localDate.dayOfMonth,
+            )
     }
 }
 
