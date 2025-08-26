@@ -1,14 +1,15 @@
 package com.whatever.caramel.feature.calendar
 
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.whatever.caramel.core.domain.policy.CalendarPolicy.TOTAL_MONTH_SIZE
+import com.whatever.caramel.core.domain.policy.CalendarPolicy.TOTAL_YEAR_SIZE
 import com.whatever.caramel.core.domain.vo.content.ContentType
-import com.whatever.caramel.core.ui.util.ObserveLifecycleEvent
-import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -22,6 +23,10 @@ internal fun CalendarRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val uriHandler = LocalUriHandler.current
+    val horizontalPagerState: PagerState =
+        rememberPagerState(initialPage = state.page) { TOTAL_YEAR_SIZE * TOTAL_MONTH_SIZE }
+
+
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
@@ -30,18 +35,20 @@ internal fun CalendarRoute(
                 is CalendarSideEffect.OpenWebView -> uriHandler.openUri(sideEffect.url)
                 is CalendarSideEffect.ShowErrorDialog -> showErrorDialog(sideEffect.message, sideEffect.description)
                 is CalendarSideEffect.ShowErrorToast -> showErrorToast(sideEffect.message)
+                is CalendarSideEffect.ScrollToPage -> horizontalPagerState.scrollToPage(page = state.page)
             }
         }
     }
 
-    ObserveLifecycleEvent { event ->
-        if (event == Lifecycle.Event.ON_RESUME) {
-            viewModel.intent(CalendarIntent.Initialize)
-        }
-    }
+//    ObserveLifecycleEvent { event ->
+//        if (event == Lifecycle.Event.ON_RESUME) {
+//            viewModel.intent(CalendarIntent.Initialize)
+//        }
+//    }
 
     CalendarScreen(
         state = state,
+        horizontalPagerState = horizontalPagerState,
         onIntent = { intent -> viewModel.intent(intent) },
     )
 }
