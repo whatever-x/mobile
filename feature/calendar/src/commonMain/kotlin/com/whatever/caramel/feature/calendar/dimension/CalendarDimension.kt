@@ -12,7 +12,7 @@ internal data object CalendarDimension {
     val sheetHandleHeight = 4.dp
 
     // Date Picker
-    val datePickerHeight = 52.dp
+    val topBarHeight = 52.dp
 
     // calendar
     val dayOfWeekHeight = 37.dp
