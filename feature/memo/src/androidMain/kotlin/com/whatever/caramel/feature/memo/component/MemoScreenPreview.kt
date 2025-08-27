@@ -7,7 +7,8 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.memo.MemoScreen
 import com.whatever.caramel.feature.memo.mvi.MemoState
 
-@Preview
+@Preview(device = "spec:width=720px,height=1280px,dpi=320")
+@Preview(device = "id:pixel_9_pro")
 @Composable
 private fun MemoScreenPreview(
     @PreviewParameter(MemoScreenPreviewProvider::class) data: MemoState,
