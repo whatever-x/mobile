@@ -17,6 +17,7 @@ internal fun MemoRoute(
     navigateToMemoDetail: (Long, ContentType) -> Unit,
     showErrorToast: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
+    navigateToCreateMemoWithTitle: (title: String, ContentType) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -26,6 +27,7 @@ internal fun MemoRoute(
                 is MemoSideEffect.NavigateToMemoDetail -> navigateToMemoDetail(sideEffect.id, sideEffect.contentType)
                 is MemoSideEffect.ShowErrorDialog -> showErrorDialog(sideEffect.message, sideEffect.description)
                 is MemoSideEffect.ShowErrorToast -> showErrorToast(sideEffect.message)
+                is MemoSideEffect.NavigateToCreateMemoWithTitle -> navigateToCreateMemoWithTitle(sideEffect.title, sideEffect.contentType)
             }
         }
     }
