@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.memo.component
+package com.whatever.caramel.feature.memo.component.tag
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,18 +7,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import caramel.feature.memo.generated.resources.Res
-import caramel.feature.memo.generated.resources.tag_all
+import caramel.core.designsystem.generated.resources.Res
+import caramel.core.designsystem.generated.resources.tag_all
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.feature.memo.model.TagUiModel
+import com.whatever.caramel.core.domain.entity.Tag
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun TagChip(
     modifier: Modifier = Modifier,
-    tag: TagUiModel,
+    tag: Tag,
     isSelected: Boolean,
-    onClickChip: (TagUiModel) -> Unit,
+    onClickChip: (Tag) -> Unit,
 ) {
     Box(
         modifier =
