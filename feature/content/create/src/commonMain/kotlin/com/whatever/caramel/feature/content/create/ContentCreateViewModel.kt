@@ -60,6 +60,7 @@ class ContentCreateViewModel(
                 )
             }
         return ContentCreateState(
+            title = arguments.title,
             createMode =
                 when (ContentType.valueOf(arguments.contentType)) {
                     ContentType.MEMO -> CreateMode.MEMO

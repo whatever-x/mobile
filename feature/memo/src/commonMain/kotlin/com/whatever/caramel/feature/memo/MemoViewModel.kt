@@ -30,6 +30,7 @@ class MemoViewModel(
             is MemoIntent.PullToRefresh -> initialize()
             is MemoIntent.ReachedEndOfList -> loadPagingData()
             is MemoIntent.Initialize -> initialize()
+            is MemoIntent.ClickRecommendMemo -> clickRecommendMemo(intent)
         }
     }
 
@@ -66,6 +67,15 @@ class MemoViewModel(
                 ),
             )
         }
+    }
+
+    private fun clickRecommendMemo(intent: MemoIntent.ClickRecommendMemo) {
+        postSideEffect(
+            MemoSideEffect.NavigateToCreateMemoWithTitle(
+                title = intent.title,
+                contentType = ContentType.MEMO
+            ),
+        )
     }
 
     private fun initialize() {
