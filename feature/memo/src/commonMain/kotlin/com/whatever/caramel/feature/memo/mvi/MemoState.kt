@@ -1,21 +1,28 @@
 package com.whatever.caramel.feature.memo.mvi
 
+import com.whatever.caramel.core.domain.entity.Memo
+import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.viewmodel.UiState
-import com.whatever.caramel.feature.memo.model.MemoUiModel
-import com.whatever.caramel.feature.memo.model.TagUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 data class MemoState(
-    val isMemoLoading: Boolean = true,
     val isTagLoading: Boolean = true,
     val isRefreshing: Boolean = false,
-    val memos: ImmutableList<MemoUiModel> = persistentListOf(),
-    val tags: ImmutableList<TagUiModel> = persistentListOf(),
-    val selectedTag: TagUiModel? = null,
-    val selectedChipIndex: Int = 0,
+    val memoContent: MemoContentState = MemoContentState.Loading,
+    val tagList: ImmutableList<Tag> = persistentListOf(),
+    val selectedTag: Tag? = null,
     val cursor: String? = null,
-) : UiState {
-    val isEmpty: Boolean
-        get() = !isMemoLoading && memos.isEmpty()
+) : UiState
+
+sealed interface MemoContentState {
+
+    data object Loading : MemoContentState
+
+    data object Empty : MemoContentState
+
+    data class Content(
+        val memoList: ImmutableList<Memo>
+    ) : MemoContentState
+
 }

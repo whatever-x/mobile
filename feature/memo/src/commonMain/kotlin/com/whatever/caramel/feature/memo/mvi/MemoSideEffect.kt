@@ -17,4 +17,9 @@ sealed interface MemoSideEffect : UiSideEffect {
     data class ShowErrorToast(
         val message: String,
     ) : MemoSideEffect
+
+    data class NavigateToCreateMemoWithTitle(
+        val title: String,
+        val contentType: ContentType
+    ) : MemoSideEffect
 }
