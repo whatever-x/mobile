@@ -23,19 +23,40 @@ data class ContentCreateState(
     val createMode: CreateMode = CreateMode.MEMO,
     val showDateDialog: Boolean = false,
     val showTimeDialog: Boolean = false,
-    val dateTime: LocalDateTime = DateUtil.todayLocalDateTime(),
-    val dateUiState: DateUiState = DateUiState.currentDate(),
-    val timeUiState: TimeUiState = TimeUiState.currentTime(),
     val showEditConfirmDialog: Boolean = false,
+    val isAllDay: Boolean = false,
+    val scheduleDateType: ScheduleDateTimeType = ScheduleDateTimeType.NONE,
+    val startDateTime: DateTimeUiState = DateTimeUiState(),
+    val endDateTime: DateTimeUiState = DateTimeUiState(),
 ) : UiState {
     val isSaveButtonEnable: Boolean
         get() = title.isNotBlank() || content.isNotBlank()
 
-    val date: String
-        get() = "${dateTime.year}년 ${dateTime.monthNumber}월 ${dateTime.dayOfMonth}일"
+    val recentDateTimeInfo
+        get() =
+            when (scheduleDateType) {
+                ScheduleDateTimeType.START, ScheduleDateTimeType.NONE -> startDateTime
+                ScheduleDateTimeType.END -> endDateTime
+            }
+}
 
-    val time: String
-        get() = "${dateTime.hour.toString().padStart(2, '0')}:${
-            dateTime.minute.toString().padStart(2, '0')
-        }"
+enum class ScheduleDateTimeType {
+    START,
+    END,
+    NONE,
+}
+
+data class DateTimeUiState(
+    val dateTime: LocalDateTime = DateUtil.todayLocalDateTime(),
+    val dateUiState: DateUiState = DateUiState.currentDate(),
+    val timeUiState: TimeUiState = TimeUiState.currentTime(),
+) {
+    companion object {
+        fun from(localDateTime: LocalDateTime) =
+            DateTimeUiState(
+                dateTime = localDateTime,
+                dateUiState = DateUiState.from(localDateTime),
+                timeUiState = TimeUiState.from(localDateTime),
+            )
+    }
 }

@@ -18,6 +18,8 @@ import com.whatever.caramel.core.designsystem.components.shimmer
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.content.LinkMetaData
+import com.whatever.caramel.core.ui.util.toDisplayText
+import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -86,8 +88,9 @@ internal fun ContentDetailTag(
 @Composable
 internal fun ContentDetailDate(
     modifier: Modifier = Modifier,
-    dateText: String,
-    timeText: String,
+    startDateTime: LocalDateTime,
+    endDateTime: LocalDateTime,
+    isAllDay: Boolean,
 ) {
     Column(
         modifier = modifier,
@@ -103,7 +106,7 @@ internal fun ContentDetailDate(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement =
                 Arrangement.spacedBy(
-                    space = CaramelTheme.spacing.s,
+                    space = CaramelTheme.spacing.m,
                     alignment = Alignment.Start,
                 ),
         ) {
@@ -112,16 +115,35 @@ internal fun ContentDetailDate(
                 tint = CaramelTheme.color.icon.primary,
                 contentDescription = null,
             )
-            Text(
-                text = dateText,
-                style = CaramelTheme.typography.body2.regular,
-                color = CaramelTheme.color.text.primary,
-            )
-            Text(
-                text = timeText,
-                style = CaramelTheme.typography.body2.regular,
-                color = CaramelTheme.color.text.primary,
-            )
+
+            val showEndDate = startDateTime.date != endDateTime.date || !isAllDay
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement =
+                    Arrangement.spacedBy(
+                        space = CaramelTheme.spacing.m,
+                        alignment = Alignment.Start,
+                    ),
+            ) {
+                Text(
+                    text = startDateTime.toDisplayText(isAllDay),
+                    style = CaramelTheme.typography.body2.regular,
+                    color = CaramelTheme.color.text.primary,
+                )
+                if (showEndDate) {
+                    Icon(
+                        painter = painterResource(resource = Resources.Icon.ic_arrow_right_16),
+                        tint = CaramelTheme.color.icon.tertiary,
+                        contentDescription = null,
+                    )
+                    Text(
+                        text = endDateTime.toDisplayText(isAllDay),
+                        style = CaramelTheme.typography.body2.regular,
+                        color = CaramelTheme.color.text.primary,
+                    )
+                }
+            }
         }
     }
 }
