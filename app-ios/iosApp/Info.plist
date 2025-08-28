@@ -42,7 +42,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>10000603</string>
+	<string>10000604</string>
 	<key>CaramelBaseUrl</key>
 	<string>$(CARAMEL_BASE_URL)</string>
 	<key>CaramelSampleUrl</key>
