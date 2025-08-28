@@ -219,7 +219,7 @@ internal fun CalendarScreen(
                             itemsIndexed(
                                 items = monthSchedule.scheduleList,
                                 key = { _, schedule ->
-                                    schedule.id
+                                    "${schedule.id}_$index"
                                 },
                             ) { index, schedule ->
                                 val isLastSchedule = index == monthSchedule.scheduleList.lastIndex

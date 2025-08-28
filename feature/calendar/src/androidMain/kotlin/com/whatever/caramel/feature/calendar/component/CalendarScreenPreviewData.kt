@@ -3,16 +3,12 @@ package com.whatever.caramel.feature.calendar.component
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.whatever.caramel.core.domain.entity.Schedule
 import com.whatever.caramel.core.domain.policy.CalendarPolicy
-import com.whatever.caramel.core.domain.vo.calendar.Anniversary
-import com.whatever.caramel.core.domain.vo.calendar.AnniversaryType
-import com.whatever.caramel.core.domain.vo.calendar.Holiday
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentData
 import com.whatever.caramel.core.domain.vo.content.schedule.DateTimeInfo
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
-import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.Month
@@ -32,7 +28,7 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
                     pageIndex(),
                     isShowDatePicker = false,
                     bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
-                    yearScheduleList = yearSchedule(),
+                    yearScheduleList = emptyList(),
                 ),
                 CalendarState(
                     year,
@@ -41,7 +37,7 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
                     pageIndex(),
                     isShowDatePicker = true,
                     bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
-                    yearScheduleList = yearSchedule(),
+                    yearScheduleList = emptyList(),
                 ),
                 CalendarState(
                     year,
@@ -50,7 +46,7 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
                     pageIndex(),
                     isShowDatePicker = false,
                     bottomSheetState = BottomSheetState.EXPANDED,
-                    yearScheduleList = yearSchedule(),
+                    yearScheduleList = emptyList(),
                 ),
             )
 
@@ -71,7 +67,7 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
         minute: Int = 0,
     ) = LocalDateTime(year, month, day, hour, minute)
 
-    private fun yearSchedule(): List<DaySchedule> {
+    private fun yearSchedule(): List<Schedule> {
         var id = 1L
 
         fun todo(
@@ -97,28 +93,6 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
             tagList = emptyList(),
         )
 
-        return listOf(
-            DaySchedule(date = date(1), scheduleList = listOf(todo(1, "내 일정", ContentAssignee.ME))),
-            DaySchedule(date = date(2), scheduleList = listOf(todo(2, "커플 일정", ContentAssignee.US))),
-            DaySchedule(date = date(3), scheduleList = listOf(todo(3, "상대 일정", ContentAssignee.PARTNER))),
-            DaySchedule(
-                date = date(4),
-                holidayList =
-                    listOf(
-                        Holiday(date = date(4), name = "휴일", isHoliday = true),
-                    ),
-            ),
-            DaySchedule(
-                date = date(5),
-                anniversaryList =
-                    listOf(
-                        Anniversary(
-                            type = AnniversaryType.BIRTHDAY,
-                            date = date(5),
-                            label = "생일",
-                        ),
-                    ),
-            ),
-        )
+        return emptyList()
     }
 }

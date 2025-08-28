@@ -5,6 +5,6 @@ import kotlinx.datetime.LocalDateTime
 data class DateTimeInfo(
     val startDateTime: LocalDateTime,
     val startTimezone: String,
-    val endDateTime: LocalDateTime?,
-    val endTimezone: String?,
+    val endDateTime: LocalDateTime,
+    val endTimezone: String,
 )
