@@ -21,7 +21,7 @@ import dev.icerock.moko.permissions.notifications.REMOTE_NOTIFICATION
 class ProfileCreateViewModel(
     private val createUserProfileUseCase: CreateUserProfileUseCase,
     private val updateUserSettingUseCase: UpdateUserSettingUseCase,
-    private val permissionsController: PermissionsController,
+    val permissionsController: PermissionsController,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<ProfileCreateState, ProfileCreateSideEffect, ProfileCreateIntent>(

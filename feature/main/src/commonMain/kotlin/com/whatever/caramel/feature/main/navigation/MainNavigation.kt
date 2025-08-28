@@ -23,8 +23,8 @@ fun NavController.navigateToMain(builder: NavOptionsBuilder.() -> Unit = {}) {
 fun NavGraphBuilder.mainGraph(
     navigateToSetting: () -> Unit,
     navigateToStaredCoupleDay: () -> Unit,
-    navigateToTodoDetail: (Long, ContentType) -> Unit,
-    navigateToCreateTodo: (ContentType) -> Unit,
+    navigateToScheduleDetail: (Long, ContentType) -> Unit,
+    navigateToCreateMemo: (ContentType) -> Unit,
     navigateToCreateSchedule: (ContentType, String) -> Unit,
     showErrorToast: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
@@ -37,8 +37,8 @@ fun NavGraphBuilder.mainGraph(
         MainRoute(
             navigateToSetting = navigateToSetting,
             navigateToStaredCoupleDay = navigateToStaredCoupleDay,
-            navigateToTodoDetail = navigateToTodoDetail,
-            navigateToCreateTodo = navigateToCreateTodo,
+            navigateToScheduleDetail = navigateToScheduleDetail,
+            navigateToCreateMemo = navigateToCreateMemo,
             navigateToCreateSchedule = navigateToCreateSchedule,
             showErrorToast = showErrorToast,
             showErrorDialog = showErrorDialog,

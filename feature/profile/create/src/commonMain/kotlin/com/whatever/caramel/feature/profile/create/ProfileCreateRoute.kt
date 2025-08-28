@@ -13,6 +13,7 @@ import com.whatever.caramel.core.designsystem.util.HapticStyle
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateIntent
 import com.whatever.caramel.feature.profile.create.mvi.ProfileCreateSideEffect
+import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.PermissionsControllerFactory
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import org.jetbrains.compose.resources.stringResource
@@ -42,6 +43,8 @@ internal fun ProfileCreateRoute(
     BackHandler {
         viewModel.intent(ProfileCreateIntent.ClickSystemNavigationBackButton)
     }
+
+    BindEffect(permissionsController = viewModel.permissionsController)
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->

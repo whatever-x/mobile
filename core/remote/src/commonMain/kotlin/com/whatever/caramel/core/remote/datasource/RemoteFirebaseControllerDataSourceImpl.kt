@@ -10,12 +10,12 @@ class RemoteFirebaseControllerDataSourceImpl(
     @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteFirebaseControllerDataSource {
     override suspend fun postFcmToken(token: String) {
-        authClient.post(FIREBASE_CONTROLLER_BASE_URL + "fcm") {
+        authClient.post("$FIREBASE_CONTROLLER_BASE_URL/fcm") {
             setBody(body = FcmTokenRequest(token = token))
         }
     }
 
     companion object {
-        private const val FIREBASE_CONTROLLER_BASE_URL = "/v1/firebase/"
+        private const val FIREBASE_CONTROLLER_BASE_URL = "/v1/firebase"
     }
 }

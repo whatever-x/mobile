@@ -1,29 +1,14 @@
 package com.whatever.caramel.core.domain.repository
 
-import com.whatever.caramel.core.domain.entity.Holiday
-import com.whatever.caramel.core.domain.entity.Todo
-import com.whatever.caramel.core.domain.vo.calendar.ScheduleDetail
-import com.whatever.caramel.core.domain.vo.calendar.ScheduleEditParameter
-import com.whatever.caramel.core.domain.vo.calendar.ScheduleMetadata
-import com.whatever.caramel.core.domain.vo.calendar.ScheduleParameter
+import com.whatever.caramel.core.domain.vo.calendar.Anniversary
+import com.whatever.caramel.core.domain.vo.calendar.Holiday
 
 interface CalendarRepository {
-    suspend fun createSchedule(parameter: ScheduleParameter): ScheduleMetadata
+    suspend fun getHolidayList(year: Int): List<Holiday>
 
-    suspend fun updateSchedule(
-        scheduleId: Long,
-        parameter: ScheduleEditParameter,
-    )
-
-    suspend fun getTodos(
+    suspend fun getAnniversaryList(
+        coupleId: Long,
         startDate: String,
         endDate: String,
-        userTimezone: String?,
-    ): List<Todo>
-
-    suspend fun deleteSchedule(scheduleId: Long)
-
-    suspend fun getHolidays(year: Int): List<Holiday>
-
-    suspend fun getSchedule(scheduleId: Long): ScheduleDetail
+    ): List<Anniversary>
 }

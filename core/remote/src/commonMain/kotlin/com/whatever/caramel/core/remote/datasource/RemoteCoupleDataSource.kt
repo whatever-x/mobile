@@ -11,11 +11,11 @@ import com.whatever.caramel.core.remote.dto.couple.response.CoupleInvitationCode
 interface RemoteCoupleDataSource {
     suspend fun generateCoupleInvitationCode(): CoupleInvitationCodeResponse
 
-    suspend fun connectCouple(request: CoupleConnectRequest): CoupleDetailResponse
+    suspend fun sendInvitationCode(request: CoupleConnectRequest): CoupleDetailResponse
 
     suspend fun fetchCoupleRelationshipInfo(coupleId: Long): CoupleDetailResponse
 
-    suspend fun patchShareMessage(
+    suspend fun updateShareMessage(
         coupleId: Long,
         request: CoupleSharedMessageRequest,
     ): CoupleBasicResponse
@@ -25,11 +25,13 @@ interface RemoteCoupleDataSource {
         request: CoupleStartDateUpdateRequest,
     ): CoupleBasicResponse
 
-    suspend fun getCoupleInfo(): CoupleBasicResponse
+    suspend fun fetchMyCoupleInfo(): CoupleBasicResponse
 
-    suspend fun getAnniversaries(
+    suspend fun fetchAnniversaryList(
         coupleId: Long,
         startDate: String,
         endDate: String,
     ): CoupleAnniversaryResponse
+
+    // @ham2174 TODO : DELETE /v1/couples/{couple-id}/members/me 커플 나가기 API 연결
 }

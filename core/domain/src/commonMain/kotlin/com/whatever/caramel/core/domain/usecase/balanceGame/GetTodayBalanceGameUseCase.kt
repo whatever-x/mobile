@@ -6,9 +6,5 @@ import com.whatever.caramel.core.domain.vo.balanceGame.BalanceGameResult
 class GetTodayBalanceGameUseCase(
     private val balanceGameRepository: BalanceGameRepository,
 ) {
-    suspend operator fun invoke(): BalanceGameResult {
-        val balanceGame = balanceGameRepository.getTodayBalanceGame()
-
-        return balanceGame
-    }
+    suspend operator fun invoke(): BalanceGameResult = balanceGameRepository.getTodayBalanceGame()
 }

@@ -12,7 +12,7 @@ class BalanceGameRepositoryImpl(
 ) : BalanceGameRepository {
     override suspend fun getTodayBalanceGame(): BalanceGameResult =
         safeCall {
-            remoteBalanceGameDataSource.fetchTodayBalanceGame().toBalanceGameResult()
+            remoteBalanceGameDataSource.fetchBalanceGameOfToday().toBalanceGameResult()
         }
 
     override suspend fun submitOption(
@@ -21,7 +21,7 @@ class BalanceGameRepositoryImpl(
     ): BalanceGameResult =
         safeCall {
             remoteBalanceGameDataSource
-                .postChoiceOption(
+                .sendChooseOption(
                     gameId = gameId,
                     request =
                         ChooseBalanceGameRequest(
