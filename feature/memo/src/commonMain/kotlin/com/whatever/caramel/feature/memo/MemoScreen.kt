@@ -2,9 +2,11 @@ package com.whatever.caramel.feature.memo
 
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -107,57 +109,67 @@ internal fun MemoScreen(
                 )
             },
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .graphicsLayer { translationY = memoScreenOffset.toFloat() },
-                state = lazyListState,
-            ) {
-                stickyHeader {
-                    TagList(
-                        modifier = Modifier.background(color = CaramelTheme.color.background.primary),
-                        isTagLoading = state.isTagLoading,
-                        lazyRowState = lazyRowState,
-                        tagList = state.tagList,
-                        selectedTag = state.selectedTag,
-                        onClickChip = { tag -> onIntent(MemoIntent.ClickTagChip(tag = tag)) },
-                    )
-                }
+            BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+                val maxHeight = maxHeight
+                val stickyHeaderHeight = 52.dp
+                val maxContentHeight = maxHeight - stickyHeaderHeight
 
-                when (state.memoContent) {
-                    is MemoContentState.Loading -> item { LoadingMemoList() }
-                    is MemoContentState.Empty -> {
-                        item {
-                            EmptyMemoList(
-                                modifier = Modifier.fillMaxWidth(),
-                                onClickRecommendMemo = { title ->
-                                    onIntent(MemoIntent.ClickRecommendMemo(title = title))
-                                }
-                            )
-                        }
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .graphicsLayer { translationY = memoScreenOffset.toFloat() },
+                    state = lazyListState,
+                ) {
+                    stickyHeader {
+                        TagList(
+                            modifier = Modifier
+                                .height(height = stickyHeaderHeight)
+                                .background(color = CaramelTheme.color.background.primary),
+                            isTagLoading = state.isTagLoading,
+                            lazyRowState = lazyRowState,
+                            tagList = state.tagList,
+                            selectedTag = state.selectedTag,
+                            onClickChip = { tag -> onIntent(MemoIntent.ClickTagChip(tag = tag)) },
+                        )
                     }
-                    is MemoContentState.Content -> {
-                        itemsIndexed(
-                            items = state.memoContent.memoList,
-                            key = { index, memo -> memo.id }
-                        ) { index, memo ->
-                            MemoItem(
-                                id = memo.id,
-                                title = memo.contentData.title,
-                                description = memo.contentData.description,
-                                categoriesText = memo.tagList.joinToString(separator = ",") { it.label },
-                                createdDateText = memo.createdAt.formatWithSeparator(separator = "."),
-                                contentAssignee = memo.contentData.contentAssignee,
-                                onClickMemoItem = { memoId ->
-                                    onIntent(MemoIntent.ClickMemo(memoId = memoId)) },
-                            )
 
-                            if (index < state.memoContent.memoList.lastIndex) {
-                                HorizontalDivider(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    thickness = 1.dp,
-                                    color = CaramelTheme.color.divider.primary,
+                    when (state.memoContent) {
+                        is MemoContentState.Loading -> item { LoadingMemoList() }
+                        is MemoContentState.Empty -> {
+                            item {
+                                EmptyMemoList(
+                                    maxContentHeight = maxContentHeight,
+                                    onClickRecommendMemo = { title ->
+                                        onIntent(MemoIntent.ClickRecommendMemo(title = title))
+                                    }
                                 )
+                            }
+                        }
+
+                        is MemoContentState.Content -> {
+                            itemsIndexed(
+                                items = state.memoContent.memoList,
+                                key = { index, memo -> memo.id }
+                            ) { index, memo ->
+                                MemoItem(
+                                    id = memo.id,
+                                    title = memo.contentData.title,
+                                    description = memo.contentData.description,
+                                    categoriesText = memo.tagList.joinToString(separator = ",") { it.label },
+                                    createdDateText = memo.createdAt.formatWithSeparator(separator = "."),
+                                    contentAssignee = memo.contentData.contentAssignee,
+                                    onClickMemoItem = { memoId ->
+                                        onIntent(MemoIntent.ClickMemo(memoId = memoId))
+                                    },
+                                )
+
+                                if (index < state.memoContent.memoList.lastIndex) {
+                                    HorizontalDivider(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        thickness = 1.dp,
+                                        color = CaramelTheme.color.divider.primary,
+                                    )
+                                }
                             }
                         }
                     }
