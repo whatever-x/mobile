@@ -124,32 +124,34 @@ class MemoViewModel(
         postSideEffect(MemoSideEffect.NavigateToMemoDetail(intent.memoId, ContentType.MEMO))
     }
 
-    private fun loadPagingData() {
+    private suspend fun loadPagingData() {
         val currentMemoContentState = currentState.memoContent
 
         when(currentMemoContentState) {
             is MemoContentState.Empty,
             is MemoContentState.Loading -> return
-            is MemoContentState.Content -> {
-                launch {
-                    val newPagingData = getMemoListUseCase(
-                        size = 10,
-                        cursor = currentState.cursor,
-                        tagId = currentState.selectedTag?.id,
-                    )
 
-                    if (newPagingData.memos.isNotEmpty()) {
-                        reduce {
-                            copy(
-                                cursor = newPagingData.nextCursor,
-                                memoContent = currentMemoContentState.copy(
-                                    memoList = (currentMemoContentState.memoList.toSet() + newPagingData.memos).toImmutableList()
-                                )
+            is MemoContentState.Content -> {
+                val newPagingData = getMemoListUseCase(
+                    size = 10,
+                    cursor = currentState.cursor,
+                    tagId = currentState.selectedTag?.id,
+                )
+
+                if (newPagingData.memos.isNotEmpty()) {
+                    val combinedMemoList =
+                        (currentMemoContentState.memoList + newPagingData.memos).toSet()
+
+                    reduce {
+                        copy(
+                            cursor = newPagingData.nextCursor,
+                            memoContent = currentMemoContentState.copy(
+                                memoList = combinedMemoList.toImmutableList()
                             )
-                        }
-                    } else {
-                        reduce { copy(cursor = newPagingData.nextCursor) }
+                        )
                     }
+                } else {
+                    reduce { copy(cursor = newPagingData.nextCursor) }
                 }
             }
         }
