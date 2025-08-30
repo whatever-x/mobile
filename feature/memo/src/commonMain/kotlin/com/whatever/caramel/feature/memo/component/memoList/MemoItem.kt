@@ -1,4 +1,4 @@
-package com.whatever.caramel.feature.memo.component
+package com.whatever.caramel.feature.memo.component.memoList
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,31 +7,24 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import caramel.feature.memo.generated.resources.Res
-import caramel.feature.memo.generated.resources.both_memo
-import caramel.feature.memo.generated.resources.empty_memo
-import caramel.feature.memo.generated.resources.my_memo
-import caramel.feature.memo.generated.resources.partner_memo
-import com.whatever.caramel.core.designsystem.foundations.Resources
+import caramel.core.designsystem.generated.resources.Res
+import caramel.core.designsystem.generated.resources.both_memo
+import caramel.core.designsystem.generated.resources.my_memo
+import caramel.core.designsystem.generated.resources.partner_memo
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 private val lineBreakRegex = Regex("\\r?\\n")
@@ -140,30 +133,6 @@ internal fun TabMetaData(
                 style = CaramelTheme.typography.label1.regular,
                 color = CaramelTheme.color.text.secondary,
                 overflow = TextOverflow.Ellipsis,
-            )
-        }
-    }
-}
-
-@Composable
-internal fun EmptyMemo(modifier: Modifier = Modifier) {
-    Box(modifier = modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.align(Alignment.Center),
-        ) {
-            Icon(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                painter = painterResource(Resources.Image.img_blank_memo),
-                tint = Color.Unspecified,
-                contentDescription = null,
-            )
-            Spacer(modifier = Modifier.size(CaramelTheme.spacing.l))
-            Text(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = stringResource(Res.string.empty_memo),
-                style = CaramelTheme.typography.body3.regular,
-                color = CaramelTheme.color.text.primary,
-                textAlign = TextAlign.Center,
             )
         }
     }

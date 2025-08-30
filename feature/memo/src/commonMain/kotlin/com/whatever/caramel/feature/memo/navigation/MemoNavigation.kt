@@ -22,12 +22,14 @@ fun NavGraphBuilder.memoContent(
     navigateToMemoDetail: (Long, ContentType) -> Unit,
     showErrorToast: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
+    navigateToCreateMemoWithTitle: (String, ContentType) -> Unit,
 ) {
     composable<MemoRoute> {
         MemoRoute(
             navigateToMemoDetail = navigateToMemoDetail,
             showErrorToast = showErrorToast,
             showErrorDialog = showErrorDialog,
+            navigateToCreateMemoWithTitle = navigateToCreateMemoWithTitle,
         )
     }
 }

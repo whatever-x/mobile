@@ -16,6 +16,6 @@ class GetMemoListUseCase(
             size = size,
             cursor = cursor,
             sortType = sortType,
-            tagId = tagId,
+            tagId = if (tagId == 0L) null else tagId,
         )
 }
