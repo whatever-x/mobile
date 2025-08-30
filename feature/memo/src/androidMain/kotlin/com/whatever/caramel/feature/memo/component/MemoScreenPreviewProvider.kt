@@ -97,8 +97,8 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
     }
 
     private fun createTempTagList(size: Int): ImmutableList<Tag> {
-        val list = mutableListOf<Tag>()
-        for (index in 0 until size) {
+        val list = mutableListOf<Tag>(Tag(id = 0L, label = ""))
+        for (index in 1 until size) {
             list.add(
                 Tag(
                     id = index.toLong(),
