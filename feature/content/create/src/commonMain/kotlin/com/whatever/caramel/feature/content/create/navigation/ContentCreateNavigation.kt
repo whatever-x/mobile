@@ -6,6 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.feature.content.create.ContentCreateRoute
 import kotlinx.serialization.Serializable
@@ -15,6 +16,7 @@ data class ContentCreateRoute(
     val title: String = "",
     val contentType: String,
     val dateTimeString: String,
+    val contentAssignee: ContentAssignee = ContentAssignee.ME,
 )
 
 fun NavHostController.navigateToContentCreate(
@@ -36,6 +38,7 @@ fun NavHostController.navigateToContentCreate(
     navOptions: NavOptions? = null,
     title: String,
     contentType: ContentType,
+    contentAssignee: ContentAssignee = ContentAssignee.US,
     dateTimeString: String = "",
 ) {
     navigate(
@@ -44,6 +47,7 @@ fun NavHostController.navigateToContentCreate(
                 title = title,
                 contentType = contentType.name,
                 dateTimeString = dateTimeString,
+                contentAssignee = contentAssignee,
             ),
         navOptions = navOptions,
     )
