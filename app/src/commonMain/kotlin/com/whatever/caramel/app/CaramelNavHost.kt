@@ -182,7 +182,7 @@ internal fun CaramelNavHost(
                         contentType = contentType,
                         title = title,
                     )
-                }
+                },
             )
             contentEditScreen(
                 popBackStack = { popBackStack() },

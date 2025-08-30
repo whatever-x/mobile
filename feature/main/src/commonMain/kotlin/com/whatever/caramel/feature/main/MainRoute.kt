@@ -137,7 +137,7 @@ internal fun MainRoute(
                 navigateToMemoDetail = navigateToScheduleDetail,
                 showErrorToast = showErrorToast,
                 showErrorDialog = showErrorDialog,
-                navigateToCreateMemoWithTitle = navigateToCreateMemoWithTitle
+                navigateToCreateMemoWithTitle = navigateToCreateMemoWithTitle,
             )
         }
     }

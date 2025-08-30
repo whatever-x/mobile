@@ -83,10 +83,11 @@ internal fun MemoScreen(
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = CaramelTheme.color.background.primary)
-            .statusBarsPadding(),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(color = CaramelTheme.color.background.primary)
+                .statusBarsPadding(),
     ) {
         Text(
             modifier =
@@ -115,16 +116,18 @@ internal fun MemoScreen(
                 val maxContentHeight = maxHeight - stickyHeaderHeight
 
                 LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .graphicsLayer { translationY = memoScreenOffset.toFloat() },
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .graphicsLayer { translationY = memoScreenOffset.toFloat() },
                     state = lazyListState,
                 ) {
                     stickyHeader {
                         TagList(
-                            modifier = Modifier
-                                .height(height = stickyHeaderHeight)
-                                .background(color = CaramelTheme.color.background.primary),
+                            modifier =
+                                Modifier
+                                    .height(height = stickyHeaderHeight)
+                                    .background(color = CaramelTheme.color.background.primary),
                             isTagLoading = state.isTagLoading,
                             lazyRowState = lazyRowState,
                             tagList = state.tagList,
@@ -141,7 +144,7 @@ internal fun MemoScreen(
                                     maxContentHeight = maxContentHeight,
                                     onClickRecommendMemo = { title ->
                                         onIntent(MemoIntent.ClickRecommendMemo(title = title))
-                                    }
+                                    },
                                 )
                             }
                         }
@@ -149,7 +152,7 @@ internal fun MemoScreen(
                         is MemoContentState.Content -> {
                             itemsIndexed(
                                 items = state.memoContent.memoList,
-                                key = { index, memo -> memo.id }
+                                key = { index, memo -> memo.id },
                             ) { index, memo ->
                                 MemoItem(
                                     id = memo.id,
@@ -193,11 +196,11 @@ internal fun LazyListState.onLastReached(
                 val lastVisibleItemIndex =
                     (layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
                 totalItemsCount > 0 &&
-                        lastVisibleItemIndex >=
-                        max(
-                            a = (totalItemsCount - numberOfItemsBeforeEnd),
-                            b = 0,
-                        )
+                    lastVisibleItemIndex >=
+                    max(
+                        a = (totalItemsCount - numberOfItemsBeforeEnd),
+                        b = 0,
+                    )
             }
         }
 

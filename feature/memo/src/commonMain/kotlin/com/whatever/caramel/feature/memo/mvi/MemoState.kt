@@ -16,13 +16,11 @@ data class MemoState(
 ) : UiState
 
 sealed interface MemoContentState {
-
     data object Loading : MemoContentState
 
     data object Empty : MemoContentState
 
     data class Content(
-        val memoList: ImmutableList<Memo>
+        val memoList: ImmutableList<Memo>,
     ) : MemoContentState
-
 }

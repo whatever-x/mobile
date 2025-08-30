@@ -20,6 +20,6 @@ sealed interface MemoSideEffect : UiSideEffect {
 
     data class NavigateToCreateMemoWithTitle(
         val title: String,
-        val contentType: ContentType
+        val contentType: ContentType,
     ) : MemoSideEffect
 }

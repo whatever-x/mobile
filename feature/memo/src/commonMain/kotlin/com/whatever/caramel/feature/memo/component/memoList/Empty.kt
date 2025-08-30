@@ -39,13 +39,14 @@ internal fun EmptyMemoList(
     SubcomposeLayout { constraints ->
         val minEmptyImageHeight = 380.dp
         val maxContentHeightPx = maxContentHeight.roundToPx()
-        
-        val recommendPlaceables = subcompose("recommendContainer") {
-            RecommendMemoList(
-                modifier = Modifier.fillMaxWidth(),
-                onClickRecommendMemo = onClickRecommendMemo
-            )
-        }.map { it.measure(constraints) }
+
+        val recommendPlaceables =
+            subcompose("recommendContainer") {
+                RecommendMemoList(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClickRecommendMemo = onClickRecommendMemo,
+                )
+            }.map { it.measure(constraints) }
 
         val recommendHeight = recommendPlaceables.maxOfOrNull { it.height } ?: 0
 
@@ -53,17 +54,18 @@ internal fun EmptyMemoList(
             if (recommendHeight + minEmptyImageHeight.roundToPx() < maxContentHeightPx) {
                 constraints.copy(
                     minHeight = maxContentHeightPx - recommendHeight,
-                    maxHeight = maxContentHeightPx - recommendHeight
+                    maxHeight = maxContentHeightPx - recommendHeight,
                 )
             } else {
                 constraints.copy(minHeight = minEmptyImageHeight.roundToPx())
             }
 
-        val emptyPlaceables = subcompose("emptyContainer") {
-            EmptyImage(
-                modifier = Modifier.fillMaxWidth()
-            )
-        }.map { it.measure(emptyConstraints) }
+        val emptyPlaceables =
+            subcompose("emptyContainer") {
+                EmptyImage(
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }.map { it.measure(emptyConstraints) }
 
         val totalHeight = recommendHeight + emptyPlaceables.maxOf { it.height }
 
@@ -82,15 +84,12 @@ internal fun EmptyMemoList(
     }
 }
 
-
 @Composable
-private fun EmptyImage(
-    modifier: Modifier = Modifier
-) {
+private fun EmptyImage(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
             painter = painterResource(Resources.Image.img_blank_memo),
@@ -113,20 +112,21 @@ private fun RecommendMemoList(
     onClickRecommendMemo: (String) -> Unit,
 ) {
     Box(
-        modifier = modifier
-            .padding(horizontal = CaramelTheme.spacing.xl)
-            .padding(bottom = CaramelTheme.spacing.xl)
+        modifier =
+            modifier
+                .padding(horizontal = CaramelTheme.spacing.xl)
+                .padding(bottom = CaramelTheme.spacing.xl),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = CaramelTheme.color.background.tertiary,
-                    shape = CaramelTheme.shape.m
-                )
-                .fillMaxWidth()
-                .padding(all = CaramelTheme.spacing.xl),
-            verticalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.l)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = CaramelTheme.color.background.tertiary,
+                        shape = CaramelTheme.shape.m,
+                    ).fillMaxWidth()
+                    .padding(all = CaramelTheme.spacing.xl),
+            verticalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.l),
         ) {
             Text(
                 text = stringResource(resource = Res.string.how_about_memo_topic),
@@ -136,12 +136,12 @@ private fun RecommendMemoList(
 
             Column(
                 modifier = Modifier,
-                verticalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xs)
+                verticalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xs),
             ) {
                 stringArrayResource(resource = Res.array.recommend_memo_list).forEach { item ->
                     RecommendMemo(
                         text = item,
-                        onClickRecommendMemo = onClickRecommendMemo
+                        onClickRecommendMemo = onClickRecommendMemo,
                     )
                 }
             }
@@ -156,28 +156,27 @@ private fun RecommendMemo(
     onClickRecommendMemo: (String) -> Unit,
 ) {
     Box(
-        modifier = modifier
-            .background(
-                color = CaramelTheme.color.fill.inverse,
-                shape = CaramelTheme.shape.s
-            )
-            .border(
-                width = 1.dp,
-                color = CaramelTheme.color.fill.quaternary,
-                shape = CaramelTheme.shape.s
-            )
-            .clip(shape = CaramelTheme.shape.s)
-            .clickable(
-                onClick = { onClickRecommendMemo(text) }
-            )
-            .padding(horizontal = CaramelTheme.spacing.l)
-            .padding(vertical = CaramelTheme.spacing.m),
+        modifier =
+            modifier
+                .background(
+                    color = CaramelTheme.color.fill.inverse,
+                    shape = CaramelTheme.shape.s,
+                ).border(
+                    width = 1.dp,
+                    color = CaramelTheme.color.fill.quaternary,
+                    shape = CaramelTheme.shape.s,
+                ).clip(shape = CaramelTheme.shape.s)
+                .clickable(
+                    onClick = { onClickRecommendMemo(text) },
+                ).padding(horizontal = CaramelTheme.spacing.l)
+                .padding(vertical = CaramelTheme.spacing.m),
     ) {
         Row(
             modifier = modifier,
-            horizontalArrangement = Arrangement.spacedBy(
-                space = CaramelTheme.spacing.m
-            ),
+            horizontalArrangement =
+                Arrangement.spacedBy(
+                    space = CaramelTheme.spacing.m,
+                ),
         ) {
             Text(
                 text = text,

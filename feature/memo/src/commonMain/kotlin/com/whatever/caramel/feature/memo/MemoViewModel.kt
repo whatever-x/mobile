@@ -23,7 +23,6 @@ class MemoViewModel(
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle, crashlytics) {
-
     override fun createInitialState(savedStateHandle: SavedStateHandle): MemoState = MemoState()
 
     override suspend fun handleIntent(intent: MemoIntent) {
@@ -98,7 +97,7 @@ class MemoViewModel(
         postSideEffect(
             MemoSideEffect.NavigateToCreateMemoWithTitle(
                 title = intent.title,
-                contentType = ContentType.MEMO
+                contentType = ContentType.MEMO,
             ),
         )
     }
@@ -115,7 +114,7 @@ class MemoViewModel(
         reduce {
             copy(
                 isTagLoading = false,
-                tagList = combinedTags.toImmutableList()
+                tagList = combinedTags.toImmutableList(),
             )
         }
     }
@@ -127,16 +126,18 @@ class MemoViewModel(
     private suspend fun loadPagingData() {
         val currentMemoContentState = currentState.memoContent
 
-        when(currentMemoContentState) {
+        when (currentMemoContentState) {
             is MemoContentState.Empty,
-            is MemoContentState.Loading -> return
+            is MemoContentState.Loading,
+            -> return
 
             is MemoContentState.Content -> {
-                val newPagingData = getMemoListUseCase(
-                    size = 10,
-                    cursor = currentState.cursor,
-                    tagId = currentState.selectedTag?.id,
-                )
+                val newPagingData =
+                    getMemoListUseCase(
+                        size = 10,
+                        cursor = currentState.cursor,
+                        tagId = currentState.selectedTag?.id,
+                    )
 
                 if (newPagingData.memos.isNotEmpty()) {
                     val combinedMemoList =
@@ -145,9 +146,10 @@ class MemoViewModel(
                     reduce {
                         copy(
                             cursor = newPagingData.nextCursor,
-                            memoContent = currentMemoContentState.copy(
-                                memoList = combinedMemoList.toImmutableList()
-                            )
+                            memoContent =
+                                currentMemoContentState.copy(
+                                    memoList = combinedMemoList.toImmutableList(),
+                                ),
                         )
                     }
                 } else {
@@ -189,7 +191,7 @@ class MemoViewModel(
         reduce {
             copy(
                 cursor = memoWIthCursor.nextCursor,
-                memoContent = memoContentState
+                memoContent = memoContentState,
             )
         }
     }

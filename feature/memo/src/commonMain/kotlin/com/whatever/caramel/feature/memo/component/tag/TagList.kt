@@ -36,7 +36,7 @@ internal fun TagList(
         ) {
             itemsIndexed(
                 items = tagList,
-                key = { index, tag -> "$index-${tag.id}" }
+                key = { index, tag -> "$index-${tag.id}" },
             ) { index, tag ->
                 TagChip(
                     modifier =
@@ -47,7 +47,7 @@ internal fun TagList(
                         },
                     tag = tag,
                     isSelected = selectedTag == tag,
-                    onClickChip = onClickChip
+                    onClickChip = onClickChip,
                 )
             }
         }

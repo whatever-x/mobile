@@ -62,7 +62,7 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
                     tagList = tagList,
                     selectedTag = tagList[0],
                     cursor = "1",
-                )
+                ),
             )
         }
 
@@ -108,5 +108,4 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
         }
         return list.toImmutableList()
     }
-
 }

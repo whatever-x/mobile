@@ -29,7 +29,7 @@ fun NavGraphBuilder.memoContent(
             navigateToMemoDetail = navigateToMemoDetail,
             showErrorToast = showErrorToast,
             showErrorDialog = showErrorDialog,
-            navigateToCreateMemoWithTitle = navigateToCreateMemoWithTitle
+            navigateToCreateMemoWithTitle = navigateToCreateMemoWithTitle,
         )
     }
 }

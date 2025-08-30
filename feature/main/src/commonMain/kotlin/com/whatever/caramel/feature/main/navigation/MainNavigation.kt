@@ -43,7 +43,7 @@ fun NavGraphBuilder.mainGraph(
             navigateToCreateSchedule = navigateToCreateSchedule,
             showErrorToast = showErrorToast,
             showErrorDialog = showErrorDialog,
-            navigateToCreateMemoWithTitle = navigateToCreateMemoWithTitle
+            navigateToCreateMemoWithTitle = navigateToCreateMemoWithTitle,
         )
     }
 }
