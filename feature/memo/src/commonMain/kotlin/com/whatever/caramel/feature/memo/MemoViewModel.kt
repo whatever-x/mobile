@@ -157,7 +157,7 @@ class MemoViewModel(
         }
     }
 
-    private fun clickTagChip(intent: MemoIntent.ClickTagChip) {
+    private suspend fun clickTagChip(intent: MemoIntent.ClickTagChip) {
         if (currentState.selectedTag == intent.tag) return
 
         reduce {
