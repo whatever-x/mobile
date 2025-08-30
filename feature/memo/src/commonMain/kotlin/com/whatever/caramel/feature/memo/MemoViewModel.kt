@@ -78,35 +78,20 @@ class MemoViewModel(
         )
     }
 
-    private fun initialize() {
-        launch {
-            reduce {
-                copy(
-                    isTagLoading = true,
-                    isRefreshing = false,
-                    memoContent = MemoContentState.Loading,
-                    tagList = persistentListOf(),
-                    selectedTag = null,
-                    cursor = null,
-                )
-            }
-            initMemoList()
-            initTagList()
-        }
+    private suspend fun initialize() {
+        initMemoList()
+        initTagList()
     }
 
-    private fun initTagList() {
-        launch {
-            val tags = getAllTagsUseCase()
-            val combinedTags = currentState.tagList.toSet() + tags
+    private suspend fun initTagList() {
+        val tags = getAllTagsUseCase()
+        val combinedTags = currentState.tagList + tags
 
-            reduce {
-                copy(
-                    isTagLoading = false,
-                    tagList = combinedTags.toImmutableList(),
-                    selectedTag = combinedTags.first(),
-                )
-            }
+        reduce {
+            copy(
+                isTagLoading = false,
+                tagList = combinedTags.toImmutableList()
+            )
         }
     }
 
@@ -159,28 +144,26 @@ class MemoViewModel(
         initMemoList()
     }
 
-    private fun initMemoList() {
-        launch {
-            val memoWIthCursor =
-                getMemoListUseCase(
-                    size = 10,
-                    cursor = currentState.cursor,
-                    tagId = currentState.selectedTag?.id,
-                )
+    private suspend fun initMemoList() {
+        val memoWIthCursor =
+            getMemoListUseCase(
+                size = 10,
+                cursor = currentState.cursor,
+                tagId = currentState.selectedTag?.id,
+            )
 
-            val memoContentState =
-                if (memoWIthCursor.memos.isEmpty()) {
-                    MemoContentState.Empty
-                } else {
-                    MemoContentState.Content(memoList = memoWIthCursor.memos.toImmutableList())
-                }
-
-            reduce {
-                copy(
-                    cursor = memoWIthCursor.nextCursor,
-                    memoContent = memoContentState
-                )
+        val memoContentState =
+            if (memoWIthCursor.memos.isEmpty()) {
+                MemoContentState.Empty
+            } else {
+                MemoContentState.Content(memoList = memoWIthCursor.memos.toImmutableList())
             }
+
+        reduce {
+            copy(
+                cursor = memoWIthCursor.nextCursor,
+                memoContent = memoContentState
+            )
         }
     }
 }
