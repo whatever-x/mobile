@@ -10,8 +10,8 @@ data class MemoState(
     val isTagLoading: Boolean = true,
     val isRefreshing: Boolean = false,
     val memoContent: MemoContentState = MemoContentState.Loading,
-    val tagList: ImmutableList<Tag> = persistentListOf(),
-    val selectedTag: Tag? = null,
+    val tagList: ImmutableList<Tag> = persistentListOf(Tag(id = 0L, label = "")),
+    val selectedTag: Tag? = tagList[0],
     val cursor: String? = null,
 ) : UiState
 
