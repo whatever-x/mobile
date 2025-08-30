@@ -2,6 +2,7 @@ package com.whatever.caramel.feature.memo
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
+import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.content.GetAllTagsUseCase
@@ -14,6 +15,7 @@ import com.whatever.caramel.feature.memo.mvi.MemoSideEffect
 import com.whatever.caramel.feature.memo.mvi.MemoState
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.joinAll
 
 class MemoViewModel(
     private val getMemoListUseCase: GetMemoListUseCase,
@@ -21,13 +23,14 @@ class MemoViewModel(
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle, crashlytics) {
+
     override fun createInitialState(savedStateHandle: SavedStateHandle): MemoState = MemoState()
 
     override suspend fun handleIntent(intent: MemoIntent) {
         when (intent) {
             is MemoIntent.ClickMemo -> clickMemo(intent)
             is MemoIntent.ClickTagChip -> clickTagChip(intent)
-            is MemoIntent.PullToRefresh -> initialize()
+            is MemoIntent.PullToRefresh -> refresh()
             is MemoIntent.ReachedEndOfList -> loadPagingData()
             is MemoIntent.Initialize -> initialize()
             is MemoIntent.ClickRecommendMemo -> clickRecommendMemo(intent)
@@ -67,6 +70,28 @@ class MemoViewModel(
                 ),
             )
         }
+    }
+
+    private suspend fun refresh() {
+        val initTagList = persistentListOf(Tag(id = 0L, label = ""))
+
+        reduce {
+            copy(
+                isRefreshing = true,
+                isTagLoading = true,
+                memoContent = MemoContentState.Loading,
+                tagList = initTagList,
+                selectedTag = initTagList[0],
+                cursor = null,
+            )
+        }
+
+        val initTagListJob = launch { initTagList() }
+        val initMemoListJob = launch { initMemoList() }
+
+        joinAll(initTagListJob, initMemoListJob)
+
+        reduce { copy(isRefreshing = false) }
     }
 
     private fun clickRecommendMemo(intent: MemoIntent.ClickRecommendMemo) {
