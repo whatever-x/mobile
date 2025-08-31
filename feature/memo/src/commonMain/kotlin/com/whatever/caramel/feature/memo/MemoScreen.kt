@@ -93,7 +93,10 @@ internal fun MemoScreen(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 10.dp, horizontal = CaramelTheme.spacing.xl),
+                    .padding(
+                        vertical = CaramelTheme.spacing.s,
+                        horizontal = CaramelTheme.spacing.xl,
+                    ),
             text = stringResource(Res.string.memo),
             style = CaramelTheme.typography.heading1,
             color = CaramelTheme.color.text.primary,

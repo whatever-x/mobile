@@ -88,7 +88,10 @@ internal fun EmptyMemoList(
 private fun EmptyImage(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.spacedBy(
+            space = CaramelTheme.spacing.l,
+            alignment = Alignment.CenterVertically,
+        ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
@@ -177,6 +180,7 @@ private fun RecommendMemo(
                 Arrangement.spacedBy(
                     space = CaramelTheme.spacing.m,
                 ),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = text,
