@@ -119,8 +119,8 @@ class MemoViewModel(
     }
 
     private suspend fun initTagList() {
-        val tags = getAllTagsUseCase()
-        val combinedTags = currentState.tagList + tags
+        val newTagList = getAllTagsUseCase()
+        val combinedTags = currentState.tagList + newTagList
 
         reduce {
             copy(
