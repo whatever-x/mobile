@@ -45,6 +45,8 @@ import org.jetbrains.compose.resources.stringResource
 import kotlin.math.max
 import kotlin.math.roundToInt
 
+private const val numberOfItemsBeforeEnd = 3
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MemoScreen(
@@ -53,13 +55,7 @@ internal fun MemoScreen(
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
     val lazyRowState = rememberLazyListState()
-    val lazyListState =
-        rememberLazyListState().apply {
-            onLastReached(
-                numberOfItemsBeforeEnd = 3,
-                onReachedNumberOfItemsBeforeEnd = { onIntent(MemoIntent.ReachedEndOfList) },
-            )
-        }
+    val lazyListState = rememberLazyListState()
     val memoScreenOffset by animateIntAsState(
         targetValue =
             when {
@@ -69,6 +65,26 @@ internal fun MemoScreen(
                 else -> 0
             },
     )
+    val lastItemVisible by remember {
+        derivedStateOf {
+            val totalItemsCount = lazyListState.layoutInfo.totalItemsCount
+            val lastVisibleItemIndex =
+                (lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
+
+            totalItemsCount > 2 &&
+                    lastVisibleItemIndex >=
+                    max(
+                        a = (totalItemsCount - numberOfItemsBeforeEnd),
+                        b = 0,
+                    )
+        }
+    }
+
+    LaunchedEffect(lastItemVisible) {
+        if (lastItemVisible) {
+            onIntent(MemoIntent.Pagination)
+        }
+    }
 
     LaunchedEffect(state.memoContent) {
         if (state.memoContent == MemoContentState.Loading) {
@@ -179,36 +195,5 @@ internal fun MemoScreen(
                 }
             }
         }
-    }
-}
-
-@Composable
-internal fun LazyListState.onLastReached(
-    numberOfItemsBeforeEnd: Int = 1,
-    onReachedNumberOfItemsBeforeEnd: () -> Unit,
-) {
-    require(numberOfItemsBeforeEnd >= 0) { "Number of items before end must be greater than or equal to 0" }
-
-    val lastItemVisible =
-        remember {
-            derivedStateOf {
-                val totalItemsCount = layoutInfo.totalItemsCount
-                val lastVisibleItemIndex =
-                    (layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
-                totalItemsCount > 0 &&
-                    lastVisibleItemIndex >=
-                    max(
-                        a = (totalItemsCount - numberOfItemsBeforeEnd),
-                        b = 0,
-                    )
-            }
-        }
-
-    LaunchedEffect(lastItemVisible) {
-        snapshotFlow { lastItemVisible.value }
-            .filter { it }
-            .collect {
-                onReachedNumberOfItemsBeforeEnd()
-            }
     }
 }

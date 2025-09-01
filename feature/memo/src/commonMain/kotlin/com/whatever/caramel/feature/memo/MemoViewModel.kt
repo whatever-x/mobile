@@ -31,7 +31,7 @@ class MemoViewModel(
             is MemoIntent.ClickMemo -> clickMemo(intent)
             is MemoIntent.ClickTagChip -> clickTagChip(intent)
             is MemoIntent.PullToRefresh -> refresh()
-            is MemoIntent.ReachedEndOfList -> loadPagingData()
+            is MemoIntent.Pagination -> loadPagingData()
             is MemoIntent.ClickRecommendMemo -> clickRecommendMemo(intent)
             is MemoIntent.Initialize -> initialize()
         }
@@ -143,6 +143,8 @@ class MemoViewModel(
             -> return
 
             is MemoContentState.Content -> {
+                if (currentState.cursor == null) return
+
                 val newPagingData =
                     getMemoListUseCase(
                         size = 10,
@@ -151,8 +153,7 @@ class MemoViewModel(
                     )
 
                 if (newPagingData.memos.isNotEmpty()) {
-                    val combinedMemoList =
-                        (currentMemoContentState.memoList + newPagingData.memos).toSet()
+                    val combinedMemoList = currentMemoContentState.memoList + newPagingData.memos
 
                     reduce {
                         copy(

@@ -17,7 +17,7 @@ sealed interface MemoIntent : UiIntent {
         val tag: Tag,
     ) : MemoIntent
 
-    data object ReachedEndOfList : MemoIntent
+    data object Pagination : MemoIntent
 
     data class ClickRecommendMemo(
         val title: String,
