@@ -4,6 +4,9 @@ import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.viewmodel.UiIntent
 
 sealed interface MemoIntent : UiIntent {
+
+    data object Initialize : MemoIntent
+
     data class ClickMemo(
         val memoId: Long,
     ) : MemoIntent

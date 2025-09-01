@@ -23,12 +23,6 @@ class MemoViewModel(
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle, crashlytics) {
-    init {
-        launch {
-            initMemoList()
-            initTagList()
-        }
-    }
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): MemoState = MemoState()
 
@@ -39,6 +33,7 @@ class MemoViewModel(
             is MemoIntent.PullToRefresh -> refresh()
             is MemoIntent.ReachedEndOfList -> loadPagingData()
             is MemoIntent.ClickRecommendMemo -> clickRecommendMemo(intent)
+            is MemoIntent.Initialize -> initialize()
         }
     }
 
@@ -75,6 +70,21 @@ class MemoViewModel(
                 ),
             )
         }
+    }
+
+    private suspend fun initialize() {
+        reduce {
+            copy(
+                isTagLoading = true,
+                memoContent = MemoContentState.Loading,
+                cursor = null,
+                tagList = persistentListOf(Tag(id = 0L, label = "")),
+                selectedTag = tagList[0]
+            )
+        }
+
+        initMemoList()
+        initTagList()
     }
 
     private suspend fun refresh() {
