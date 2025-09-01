@@ -16,7 +16,7 @@ data class ContentCreateRoute(
     val title: String = "",
     val contentType: String,
     val dateTimeString: String,
-    val contentAssignee: ContentAssignee = ContentAssignee.ME,
+    val contentAssignee: String = ContentAssignee.ME.name,
 )
 
 fun NavHostController.navigateToContentCreate(
@@ -47,7 +47,7 @@ fun NavHostController.navigateToContentCreate(
                 title = title,
                 contentType = contentType.name,
                 dateTimeString = dateTimeString,
-                contentAssignee = contentAssignee,
+                contentAssignee = contentAssignee.name,
             ),
         navOptions = navOptions,
     )
