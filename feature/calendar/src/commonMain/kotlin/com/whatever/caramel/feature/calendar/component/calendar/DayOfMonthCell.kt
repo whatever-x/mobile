@@ -25,8 +25,6 @@ internal fun CalendarDayOfMonthCell(
     schedule: DaySchedule?,
     date: LocalDate,
     isFocus: Boolean,
-    onClickCell: (LocalDate) -> Unit = {},
-    onClickSchedule: (Long) -> Unit = {},
 ) {
     CalendarDayOfMonthText(
         modifier = modifier,

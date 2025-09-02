@@ -292,6 +292,7 @@ internal fun CalendarScreen(
                                 selectedDate = state.selectedDate,
                                 onClickSchedule = { onIntent(CalendarIntent.ClickScheduleItemInCalendar(it)) },
                                 onClickCell = { onIntent(CalendarIntent.ClickCalendarCell(it)) },
+                                temp = state.testUiModelList.toImmutableList()
                             )
                         }
                     }

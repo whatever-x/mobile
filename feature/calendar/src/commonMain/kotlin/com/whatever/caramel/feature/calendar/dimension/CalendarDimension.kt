@@ -16,4 +16,7 @@ internal data object CalendarDimension {
 
     // calendar
     val dayOfWeekHeight = 37.dp
+
+    // Schedule
+    val scheduleCellHeight = 17.dp
 }
