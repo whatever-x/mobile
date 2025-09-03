@@ -38,6 +38,7 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
 import kotlin.collections.set
+import kotlin.math.min
 import kotlin.time.Duration.Companion.days
 
 class CalendarViewModel(
@@ -422,11 +423,19 @@ class CalendarViewModel(
                     val existScheduleUiModel = existScheduleUiList.find { it.id == schedule.id }
                     val existScheduleUiIndex = existScheduleUiList.indexOf(existScheduleUiModel)
                     // startDate와 주가 다르게 변하는 경우는 0으로 유지한다.
+                    // month가 달라지는 경우 startRowIndex를 다시 계산해야한다.
+                    val rowStartIndex = when {
+                        (startDateTime.month != currentLocalDateTime.month) && currentLocalDateTime.weekOfMonth() == 0 -> {
+                            (currentLocalDateTime.dayOfWeek.ordinal + 1) % 7
+                        }
+                        startDateTime.weekOfMonth() != currentLocalDateTime.weekOfMonth() -> 0
+                        else -> (startDateTime.dayOfWeek.ordinal + 1) % 7
+                    }
                     val addInfo = existScheduleUiModel?.copy(
-                        rowStartIndex = if(startDateTime.weekOfMonth() != currentLocalDateTime.weekOfMonth()) 0 else (startDateTime.dayOfWeek.ordinal + 1) % 7,
+                        rowStartIndex = min(rowStartIndex, existScheduleUiModel.rowStartIndex),
                         rowEndIndex = (currentLocalDateTime.dayOfWeek.ordinal + 1) % 7
                     ) ?: schedule.toScheduleUiModel().copy(
-                        rowStartIndex = if(startDateTime.weekOfMonth() != currentLocalDateTime.weekOfMonth()) 0 else (startDateTime.dayOfWeek.ordinal + 1) % 7,
+                        rowStartIndex = rowStartIndex,
                         rowEndIndex = (currentLocalDateTime.dayOfWeek.ordinal + 1) % 7
                     )
                     // addInfo가 이미 존재하는 경우 replace를 해준다.

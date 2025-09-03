@@ -141,6 +141,7 @@ private fun ScheduleCell(
             color = textColor,
             style = CaramelTheme.typography.label3.bold,
             textAlign = TextAlign.Start,
+            maxLines = 1,
         )
     }
 }
