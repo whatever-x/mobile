@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,7 +22,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
@@ -40,12 +38,9 @@ import com.whatever.caramel.feature.memo.component.tag.TagList
 import com.whatever.caramel.feature.memo.mvi.MemoContentState
 import com.whatever.caramel.feature.memo.mvi.MemoIntent
 import com.whatever.caramel.feature.memo.mvi.MemoState
-import kotlinx.coroutines.flow.filter
 import org.jetbrains.compose.resources.stringResource
 import kotlin.math.max
 import kotlin.math.roundToInt
-
-private const val numberOfItemsBeforeEnd = 3
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,14 +64,18 @@ internal fun MemoScreen(
         derivedStateOf {
             val totalItemsCount = lazyListState.layoutInfo.totalItemsCount
             val lastVisibleItemIndex =
-                (lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
+                (
+                    lazyListState.layoutInfo.visibleItemsInfo
+                        .lastOrNull()
+                        ?.index ?: 0
+                ) + 1
 
             totalItemsCount > 2 &&
-                    lastVisibleItemIndex >=
-                    max(
-                        a = (totalItemsCount - numberOfItemsBeforeEnd),
-                        b = 0,
-                    )
+                lastVisibleItemIndex >=
+                max(
+                    a = (totalItemsCount - MemoState.NUMBER_OF_BEFORE_END_ITEM),
+                    b = 0,
+                )
         }
     }
 

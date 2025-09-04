@@ -88,10 +88,11 @@ internal fun EmptyMemoList(
 private fun EmptyImage(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(
-            space = CaramelTheme.spacing.l,
-            alignment = Alignment.CenterVertically,
-        ),
+        verticalArrangement =
+            Arrangement.spacedBy(
+                space = CaramelTheme.spacing.l,
+                alignment = Alignment.CenterVertically,
+            ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(

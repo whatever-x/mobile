@@ -13,7 +13,11 @@ data class MemoState(
     val tagList: ImmutableList<Tag> = persistentListOf(Tag(id = 0L, label = "")),
     val selectedTag: Tag? = tagList[0],
     val cursor: String? = null,
-) : UiState
+) : UiState {
+    companion object {
+        const val NUMBER_OF_BEFORE_END_ITEM = 3
+    }
+}
 
 sealed interface MemoContentState {
     data object Loading : MemoContentState

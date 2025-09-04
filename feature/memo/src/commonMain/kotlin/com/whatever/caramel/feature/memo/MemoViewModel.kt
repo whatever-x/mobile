@@ -23,7 +23,6 @@ class MemoViewModel(
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle, crashlytics) {
-
     override fun createInitialState(savedStateHandle: SavedStateHandle): MemoState = MemoState()
 
     override suspend fun handleIntent(intent: MemoIntent) {
@@ -79,7 +78,7 @@ class MemoViewModel(
                 memoContent = MemoContentState.Loading,
                 cursor = null,
                 tagList = persistentListOf(Tag(id = 0L, label = "")),
-                selectedTag = tagList[0]
+                selectedTag = tagList[0],
             )
         }
 
