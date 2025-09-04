@@ -62,7 +62,7 @@ class ContentCreateViewModel(
             }
         return ContentCreateState(
             title = arguments.title,
-            selectedAssignee = ContentAssigneeUiModel.valueOf(arguments.contentAssignee.name),
+            selectedAssignee = ContentAssigneeUiModel.valueOf(arguments.contentAssignee),
             createMode =
                 when (ContentType.valueOf(arguments.contentType)) {
                     ContentType.MEMO -> CreateMode.MEMO

@@ -23,12 +23,6 @@ class MemoViewModel(
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle, crashlytics) {
-    init {
-        launch {
-            initMemoList()
-            initTagList()
-        }
-    }
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): MemoState = MemoState()
 
@@ -37,8 +31,9 @@ class MemoViewModel(
             is MemoIntent.ClickMemo -> clickMemo(intent)
             is MemoIntent.ClickTagChip -> clickTagChip(intent)
             is MemoIntent.PullToRefresh -> refresh()
-            is MemoIntent.ReachedEndOfList -> loadPagingData()
+            is MemoIntent.Pagination -> loadPagingData()
             is MemoIntent.ClickRecommendMemo -> clickRecommendMemo(intent)
+            is MemoIntent.Initialize -> initialize()
         }
     }
 
@@ -77,6 +72,21 @@ class MemoViewModel(
         }
     }
 
+    private suspend fun initialize() {
+        reduce {
+            copy(
+                isTagLoading = true,
+                memoContent = MemoContentState.Loading,
+                cursor = null,
+                tagList = persistentListOf(Tag(id = 0L, label = "")),
+                selectedTag = tagList[0]
+            )
+        }
+
+        initMemoList()
+        initTagList()
+    }
+
     private suspend fun refresh() {
         val initTagList = persistentListOf(Tag(id = 0L, label = ""))
 
@@ -109,8 +119,8 @@ class MemoViewModel(
     }
 
     private suspend fun initTagList() {
-        val tags = getAllTagsUseCase()
-        val combinedTags = currentState.tagList + tags
+        val newTagList = getAllTagsUseCase()
+        val combinedTags = currentState.tagList + newTagList
 
         reduce {
             copy(
@@ -133,6 +143,8 @@ class MemoViewModel(
             -> return
 
             is MemoContentState.Content -> {
+                if (currentState.cursor == null) return
+
                 val newPagingData =
                     getMemoListUseCase(
                         size = 10,
@@ -141,8 +153,7 @@ class MemoViewModel(
                     )
 
                 if (newPagingData.memos.isNotEmpty()) {
-                    val combinedMemoList =
-                        (currentMemoContentState.memoList + newPagingData.memos).toSet()
+                    val combinedMemoList = currentMemoContentState.memoList + newPagingData.memos
 
                     reduce {
                         copy(
