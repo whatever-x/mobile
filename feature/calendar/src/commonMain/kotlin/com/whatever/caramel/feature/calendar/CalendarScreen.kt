@@ -81,11 +81,11 @@ internal fun CalendarScreen(
 
     LaunchedEffect(state.selectedDate) {
         if (state.bottomSheetState == BottomSheetState.EXPANDED) {
-            val scheduleIndex = state.yearScheduleList.indexOfFirst { it.date == state.selectedDate }
+            val scheduleIndex = state.scheduleBottomSheetList.indexOfFirst { it.date == state.selectedDate }
             if (scheduleIndex >= 0) {
                 val itemPosition =
                     scheduleIndex +
-                        state.yearScheduleList.take(scheduleIndex).sumOf { it.scheduleList.size }
+                        state.scheduleBottomSheetList.take(scheduleIndex).sumOf { it.scheduleList.size }
                 lazyListState.scrollToItem(index = itemPosition)
             }
         }
@@ -201,8 +201,8 @@ internal fun CalendarScreen(
                                 ).height(availableHeight),
                         state = lazyListState,
                     ) {
-                        state.monthScheduleList.forEachIndexed { index, monthSchedule ->
-                            val hasNextSchedule = index != state.monthScheduleList.lastIndex
+                        state.monthBottomSheetList.forEachIndexed { index, monthSchedule ->
+                            val hasNextSchedule = index != state.monthBottomSheetList.lastIndex
                             item {
                                 BottomSheetScheduleListHeader(
                                     date = monthSchedule.date,
@@ -288,11 +288,11 @@ internal fun CalendarScreen(
                                 modifier =
                                     Modifier.background(color = CaramelTheme.color.background.primary),
                                 pageIndex = pageIndex,
-                                schedules = state.yearScheduleList.toImmutableList(),
+                                schedules = state.scheduleBottomSheetList.toImmutableList(),
                                 selectedDate = state.selectedDate,
                                 onClickSchedule = { onIntent(CalendarIntent.ClickScheduleItemInCalendar(it)) },
                                 onClickCell = { onIntent(CalendarIntent.ClickCalendarCell(it)) },
-                                temp = state.testUiModelList.toImmutableList()
+                                temp = state.scheduleCellList.toImmutableList()
                             )
                         }
                     }

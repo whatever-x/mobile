@@ -20,13 +20,11 @@ import caramel.feature.calendar.generated.resources.Res
 import caramel.feature.calendar.generated.resources.day_of_week
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.util.DateUtil
-import com.whatever.caramel.feature.calendar.mvi.CalendarSchedule
+import com.whatever.caramel.feature.calendar.mvi.ScheduleCell
 import com.whatever.caramel.feature.calendar.mvi.DaySchedule
 import com.whatever.caramel.feature.calendar.util.getFirstDayOffset
 import com.whatever.caramel.feature.calendar.util.getYearAndMonthFromPageIndex
-import io.github.aakira.napier.Napier
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.number
 import org.jetbrains.compose.resources.stringArrayResource
@@ -39,7 +37,7 @@ fun CaramelCalendar(
     pageIndex: Int,
     selectedDate: LocalDate,
     schedules: ImmutableList<DaySchedule>,
-    temp: List<CalendarSchedule>,
+    temp: List<ScheduleCell>,
     onClickSchedule: (Long) -> Unit,
     onClickCell: (LocalDate) -> Unit,
 ) {
@@ -89,7 +87,7 @@ fun CaramelCalendar(
                         .fillMaxWidth()
                         .height(height = cellHeight - 24.dp)
                         .background(color = CaramelTheme.color.background.primary),
-                    uiModelList = temp.firstOrNull { it.year == year && it.month == month && it.weekendIndex == weekendIndex }?.uiModelList
+                    uiModelList = temp.firstOrNull { it.year == year && it.month == month && it.weekendIndex == weekendIndex }?.scheduleList
                         ?: emptyList(),
                     onClickSchedule = onClickSchedule
                 )
