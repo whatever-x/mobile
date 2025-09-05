@@ -28,7 +28,7 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
                     pageIndex(),
                     isShowDatePicker = false,
                     bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
-                    scheduleBottomSheetList = emptyList(),
+                    calendarBottomSheetList = emptyList(),
                 ),
                 CalendarState(
                     year,
@@ -37,7 +37,7 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
                     pageIndex(),
                     isShowDatePicker = true,
                     bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
-                    scheduleBottomSheetList = emptyList(),
+                    calendarBottomSheetList = emptyList(),
                 ),
                 CalendarState(
                     year,
@@ -46,7 +46,7 @@ internal class CalendarScreenPreviewData : PreviewParameterProvider<CalendarStat
                     pageIndex(),
                     isShowDatePicker = false,
                     bottomSheetState = BottomSheetState.EXPANDED,
-                    scheduleBottomSheetList = emptyList(),
+                    calendarBottomSheetList = emptyList(),
                 ),
             )
 

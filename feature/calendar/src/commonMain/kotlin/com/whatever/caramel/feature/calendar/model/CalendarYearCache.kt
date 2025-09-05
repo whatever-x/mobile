@@ -4,7 +4,7 @@ import com.whatever.caramel.core.domain.entity.Schedule
 import com.whatever.caramel.core.domain.vo.calendar.Anniversary
 import com.whatever.caramel.core.domain.vo.calendar.Holiday
 
-data class ScheduleYearCache(
+data class CalendarYearCache(
     val year: Int,
     val totalList: List<CacheModel> = emptyList(),
 ) {

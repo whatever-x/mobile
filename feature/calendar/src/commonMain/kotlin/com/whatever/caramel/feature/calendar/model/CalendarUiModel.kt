@@ -2,7 +2,7 @@ package com.whatever.caramel.feature.calendar.model
 
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 
-data class ScheduleUiModel(
+data class CalendarUiModel(
     val id: Long? = null,
     val mainText: String = "",
     val type: ScheduleType = ScheduleType.SINGLE_SCHEDULE,
