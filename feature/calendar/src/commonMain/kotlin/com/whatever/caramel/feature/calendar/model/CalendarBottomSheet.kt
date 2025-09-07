@@ -2,7 +2,7 @@ package com.whatever.caramel.feature.calendar.model
 
 import kotlinx.datetime.LocalDate
 
-internal data class CalendarBottomSheet(
+data class CalendarBottomSheet(
     val date: LocalDate,
     val totalList: List<CalendarUiModel> = emptyList(),
 ) {
