@@ -11,17 +11,20 @@ import com.whatever.caramel.core.domain.usecase.calendar.GetHolidayOfYearUseCase
 import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleInPeriodUseCase
 import com.whatever.caramel.core.domain.vo.calendar.Anniversary
 import com.whatever.caramel.core.domain.vo.calendar.Holiday
+import com.whatever.caramel.core.domain.vo.content.ContentAssignee
+import com.whatever.caramel.core.domain.vo.content.ContentData
 import com.whatever.caramel.core.domain.vo.content.ContentType
+import com.whatever.caramel.core.domain.vo.content.schedule.DateTimeInfo
 import com.whatever.caramel.core.util.DateFormatter
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.calendar.mapper.toScheduleCell
 import com.whatever.caramel.feature.calendar.mapper.toScheduleUiModel
 import com.whatever.caramel.feature.calendar.model.CalendarBottomSheet
+import com.whatever.caramel.feature.calendar.model.CalendarBottomSheetState
 import com.whatever.caramel.feature.calendar.model.CalendarCell
 import com.whatever.caramel.feature.calendar.model.CalendarUiModel
-import com.whatever.caramel.feature.calendar.model.CalendarUiResult
-import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
+import com.whatever.caramel.feature.calendar.model.CalendarYearCache
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarSideEffect
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
@@ -31,6 +34,7 @@ import com.whatever.caramel.feature.calendar.util.weekOfMonth
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.async
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
@@ -156,7 +160,7 @@ class CalendarViewModel(
     }
 
     private fun navigateToAddSchedule(date: LocalDate) {
-        reduce { copy(bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED) }
+        reduce { copy(bottomSheetState = CalendarBottomSheetState.PARTIALLY_EXPANDED) }
         postSideEffect(
             CalendarSideEffect.NavigateToAddSchedule(
                 date.atTime(hour = 0, minute = 0).toString(),
@@ -177,7 +181,7 @@ class CalendarViewModel(
     private fun clickOutSideBottomSheet() {
         reduce {
             val newBottomSheetState =
-                if (currentState.isBottomSheetDragging) currentState.bottomSheetState else BottomSheetState.PARTIALLY_EXPANDED
+                if (currentState.isBottomSheetDragging) currentState.bottomSheetState else CalendarBottomSheetState.PARTIALLY_EXPANDED
             copy(
                 bottomSheetState = newBottomSheetState,
             )
@@ -222,50 +226,33 @@ class CalendarViewModel(
     private fun clickCalendarCell(newSelectedDate: LocalDate) {
         reduce {
             val bottomSheetList = currentState.calendarBottomSheetList.toMutableList()
-            // 선택된 날짜 가져오기
-            bottomSheetList.find { it.date == currentState.selectedDate }?.let { bottomSheetInfo ->
-                // TODO : mainText가 빈값일때 해당 일정 삭제 로직 구현 필요
-                bottomSheetInfo.scheduleList
+            // 선택된 날짜와 같은 인덱스를 찾는다
+            val idx = bottomSheetList.indexOfFirst { it.date == currentState.selectedDate }
+            if (idx != -1) {
+                // 기존 선택된 날짜의 스케쥴 정보를 가져온다.
+                val bottomSheetInfo = bottomSheetList[idx]
+                // mainText가 비어있는 것을 찾아서 없애버린다.
+                val newScheduleList =
+                    bottomSheetInfo.scheduleList.filter { it.mainText.isNotEmpty() }
+                bottomSheetList[idx] = bottomSheetInfo.copy(scheduleList = newScheduleList)
             }
-
-
+            // 만약 새로 선택된 날짜의 일정이 하나도 없다면
             if (!bottomSheetList.any { it.date == newSelectedDate }) {
+                // 빈 일정 한개를 추가한다.
                 bottomSheetList.add(
                     CalendarBottomSheet(
                         date = newSelectedDate,
-                        scheduleList = CalendarUiModel()
+                        scheduleList = listOf(CalendarUiModel())
                     )
                 )
             }
+            // 정렬을 진행
             copy(
-                bottomSheetState = BottomSheetState.EXPANDED,
+                bottomSheetState = CalendarBottomSheetState.EXPANDED,
                 selectedDate = newSelectedDate,
                 calendarBottomSheetList = bottomSheetList.sortedBy { it.date },
             )
         }
-    }
-
-    private fun applyCachedSchedulesIfExists(updateSelectedDate: LocalDate): Boolean {
-        if (currentState.cachedYearScheduleList.contains(updateSelectedDate.year)) {
-            val filteredCachedSchedule =
-                (
-                        currentState.cachedYearScheduleList[updateSelectedDate.year]
-                            ?: emptyList()
-                        ).toMutableList()
-
-            if (filteredCachedSchedule.find { it.date == currentState.selectedDate } == null) {
-                filteredCachedSchedule.add(DaySchedule(date = currentState.selectedDate))
-            }
-            reduce {
-                copy(
-                    isRefreshing = false,
-                    selectedDate = updateSelectedDate,
-                    calendarBottomSheetList = filteredCachedSchedule,
-                )
-            }
-            return true
-        }
-        return false
     }
 
     private fun getYearSchedules(
@@ -279,77 +266,107 @@ class CalendarViewModel(
                     isRefresh -> currentState.selectedDate
                     else -> LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
                 }
-            if (applyCachedSchedulesIfExists(updateSelectedDate)) return@launch
-            val firstDayOfMonth =
-                DateFormatter.createDateString(
-                    year = year,
-                    month = 1,
-                    day = 1,
-                )
-            val lastDay = DateUtil.getLastDayOfMonth(year = year, month = 12)
-            val lastDayOfMonth =
-                DateFormatter.createDateString(
-                    year = year,
-                    month = 12,
-                    day = lastDay,
-                )
-            val scheduleListDeferred =
-                async {
+
+            // 캐싱데이터인지, 서버통신해서 가져와야하는 데이터인지.
+            // updateSelectedDate에 일정이 하나도 없어서 빈 일정을 넣어줘야하는 경우는 mapper 단계에서 진행
+            // 캐싱은 서버에서 받은 로직만 가져가야함
+            var yearSchedule = currentState.yearCacheList.find { it.year == year }
+            if (yearSchedule == null) {
+                val firstDayOfMonth =
+                    DateFormatter.createDateString(
+                        year = year,
+                        month = 1,
+                        day = 1,
+                    )
+                val lastDay = DateUtil.getLastDayOfMonth(year = year, month = 12)
+                val lastDayOfMonth =
+                    DateFormatter.createDateString(
+                        year = year,
+                        month = 12,
+                        day = lastDay,
+                    )
+
+                val scheduleListDeferred = async {
                     getScheduleInPeriodUseCase(
                         startDate = firstDayOfMonth,
                         endDate = lastDayOfMonth,
                     )
                 }
-            val anniversariesDeferred =
-                async {
+                val anniversariesDeferred = async {
                     getAnniversariesInPeriodUseCase(
                         startDate = firstDayOfMonth,
                         endDate = lastDayOfMonth,
                     )
                 }
-            val holidaysDeferred = async { getHolidayOfYearUseCase(year) }
-            val scheduleList = scheduleListDeferred.await()
-            val anniversaries = anniversariesDeferred.await()
-            val holidayList = holidaysDeferred.await()
+                val holidaysDeferred = async { getHolidayOfYearUseCase(year) }
 
-            val test = createScheduleUiModel(
-                scheduleList = scheduleList,
-                holidayList = holidayList,
-                anniversaryList = anniversaries,
-            )
-
-            var yearSchedule =
-                createYearSchedules(
-                    scheduleList = scheduleList,
-                    holidayList = holidayList,
-                    anniversaryList = anniversaries,
+                val scheduleList = scheduleListDeferred.await()
+                val anniversaries = anniversariesDeferred.await()
+                val holidayList = holidaysDeferred.await()
+                yearSchedule = CalendarYearCache(
+                    year = year,
+                    totalSchedule = CalendarYearCache.CacheModel(
+                        scheduleList = scheduleList,
+                        anniversaryList = anniversaries,
+                        holidayList = holidayList,
+                    ),
                 )
-            if (yearSchedule.find { it.date == updateSelectedDate } == null) {
-                yearSchedule =
-                    (yearSchedule + DaySchedule(date = updateSelectedDate)).sortedBy { it.date }
             }
-            val updatedCache =
-                currentState.cachedYearScheduleList
-                    .toMutableMap()
-                    .apply {
-                        if (size >= 3) remove(keys.first())
-                        put(year, yearSchedule)
-                    }
-
+            val updatedCache = currentState.yearCacheList
+                .toMutableList()
+                .apply {
+                    if (size >= 3) removeAt(index = 0)
+                    add(yearSchedule)
+                }
+            val calendarCellList = createCellUiModel(
+                scheduleList = yearSchedule.totalSchedule.scheduleList,
+                holidayList = yearSchedule.totalSchedule.holidayList,
+                anniversaryList = yearSchedule.totalSchedule.anniversaryList,
+            )
+            if (yearSchedule.totalSchedule.find(date = updateSelectedDate).isEmpty) {
+                yearSchedule = yearSchedule.copy(
+                    totalSchedule = CalendarYearCache.CacheModel(
+                        scheduleList = listOf(
+                            Schedule(
+                                id = 0L,
+                                tagList = emptyList(),
+                                contentData = ContentData(
+                                    title = "",
+                                    description = "",
+                                    isCompleted = true,
+                                    contentAssignee = ContentAssignee.US
+                                ),
+                                dateTimeInfo = DateTimeInfo(
+                                    startDateTime = updateSelectedDate.atTime(hour = 0, minute = 0),
+                                    startTimezone = TimeZone.currentSystemDefault().id,
+                                    endDateTime = updateSelectedDate.atTime(hour = 23, minute = 59),
+                                    endTimezone = TimeZone.currentSystemDefault().id,
+                                )
+                            )
+                        )
+                    )
+                )
+            }
+            val calendarBottomSheetList = createBottomSheetUiModel(
+                updateSelectedDate = updateSelectedDate,
+                scheduleList = yearSchedule.totalSchedule.scheduleList,
+                holidayList = yearSchedule.totalSchedule.holidayList,
+                anniversaryList = yearSchedule.totalSchedule.anniversaryList,
+            )
             reduce {
                 copy(
                     isInitialized = false,
                     isRefreshing = false,
                     selectedDate = updateSelectedDate,
-                    calendarBottomSheetList = yearSchedule,
-                    cachedYearScheduleList = updatedCache,
-                    calendarCellList = test,
+                    calendarBottomSheetList = calendarBottomSheetList,
+                    yearCacheList = updatedCache,
+                    calendarCellList = calendarCellList,
                 )
             }
         }
     }
 
-    private fun updateCalendarBottomSheet(bottomSheetState: BottomSheetState) {
+    private fun updateCalendarBottomSheet(bottomSheetState: CalendarBottomSheetState) {
         reduce { copy(bottomSheetState = bottomSheetState, isBottomSheetDragging = false) }
     }
 
@@ -357,7 +374,7 @@ class CalendarViewModel(
         reduce {
             copy(
                 isShowDatePicker = true,
-                bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
+                bottomSheetState = CalendarBottomSheetState.PARTIALLY_EXPANDED,
                 pickerDate = pickerDate.copy(year = year, month = month.number),
             )
         }
@@ -383,7 +400,7 @@ class CalendarViewModel(
                         month = pickerMonth,
                     ),
                 isShowDatePicker = false,
-                bottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
+                bottomSheetState = CalendarBottomSheetState.PARTIALLY_EXPANDED,
             )
         }
     }
@@ -400,14 +417,12 @@ class CalendarViewModel(
         return dateList.toList()
     }
 
-    private fun createScheduleUiModel(
+    private fun createCellUiModel(
         scheduleList: List<Schedule>,
         holidayList: List<Holiday>,
         anniversaryList: List<Anniversary>,
-    ): CalendarUiResult {
+    ): List<CalendarCell> {
         val calendarCellMap = mutableMapOf<CalendarCell, List<CalendarCell.CellUiModel>>()
-        val calendarBottomSheetMap = mutableMapOf<LocalDate, CalendarBottomSheet>()
-
         scheduleList.forEach { schedule ->
             with(schedule.dateTimeInfo) {
                 val startDateInstant = startDateTime.toInstant(TimeZone.of(startTimezone))
@@ -417,13 +432,6 @@ class CalendarViewModel(
                     .forEach { current ->
                         val currentLocalDateTime =
                             current.toLocalDateTime(TimeZone.of(startTimezone))
-                        // 바텀시트
-                        val bottomSheetKey = currentLocalDateTime.date
-                        val existBottomSheetList = calendarBottomSheetMap[bottomSheetKey]
-                            ?: CalendarBottomSheet(date = bottomSheetKey)
-                        calendarBottomSheetMap[bottomSheetKey] =
-                            existBottomSheetList.copy(scheduleList = existBottomSheetList.scheduleList + schedule.toScheduleUiModel())
-                        // 캘린더 셀
                         val key = CalendarCell(
                             year = currentLocalDateTime.year,
                             month = currentLocalDateTime.month,
@@ -457,12 +465,6 @@ class CalendarViewModel(
         }
         holidayList.forEach { holiday ->
             val date = holiday.date
-            // 바텀시트
-            val existBottomSheet = calendarBottomSheetMap[date] ?: CalendarBottomSheet(date = date)
-            calendarBottomSheetMap[date] = existBottomSheet.copy(
-                scheduleList = existBottomSheet.scheduleList + holiday.toScheduleUiModel()
-            )
-            // 스케쥴 셀
             val keyValue = CalendarCell(date.year, date.month, date.weekOfMonth())
             val existScheduleUiList = calendarCellMap[keyValue] ?: emptyList()
             if (existScheduleUiList.isEmpty()) {
@@ -473,12 +475,6 @@ class CalendarViewModel(
         }
         anniversaryList.forEach { anniversary ->
             val date = anniversary.date
-            // 바텀시트
-            val existBottomSheet = calendarBottomSheetMap[date] ?: CalendarBottomSheet(date = date)
-            calendarBottomSheetMap[date] = existBottomSheet.copy(
-                scheduleList = existBottomSheet.scheduleList + anniversary.toScheduleUiModel()
-            )
-            // 스케쥴 셀
             val keyValue = CalendarCell(date.year, date.month, date.weekOfMonth())
             val existScheduleUiList = calendarCellMap[keyValue] ?: emptyList()
             if (existScheduleUiList.isEmpty()) {
@@ -491,10 +487,50 @@ class CalendarViewModel(
         calendarCellMap.forEach { (key, value) ->
             returnList.add(key.copy(scheduleList = assignColumnIndex(value)))
         }
-        return CalendarUiResult(
-            cellList = returnList,
-            bottomSheetList = calendarBottomSheetMap.values.sortedBy { it.date }
-        )
+        return returnList
+    }
+
+    private fun createBottomSheetUiModel(
+        updateSelectedDate: LocalDate,
+        scheduleList: List<Schedule>,
+        holidayList: List<Holiday>,
+        anniversaryList: List<Anniversary>,
+    ): List<CalendarBottomSheet> {
+        val calendarBottomSheetMap = mutableMapOf<LocalDate, CalendarBottomSheet>()
+        scheduleList.forEach { schedule ->
+            with(schedule.dateTimeInfo) {
+                val startDateInstant = startDateTime.toInstant(TimeZone.of(startTimezone))
+                val endDateInstant = endDateTime.toInstant(TimeZone.of(endTimezone))
+                generateSequence(startDateInstant) { it.plus(1.days) }
+                    .takeWhile { it <= endDateInstant }
+                    .forEach { current ->
+                        val currentLocalDateTime =
+                            current.toLocalDateTime(TimeZone.of(startTimezone))
+                        val bottomSheetKey = currentLocalDateTime.date
+                        val existBottomSheetList = calendarBottomSheetMap[bottomSheetKey]
+                            ?: CalendarBottomSheet(date = bottomSheetKey)
+                        calendarBottomSheetMap[bottomSheetKey] =
+                            existBottomSheetList.copy(scheduleList = existBottomSheetList.scheduleList + schedule.toScheduleUiModel())
+                    }
+            }
+            holidayList.forEach { holiday ->
+                val date = holiday.date
+                val existBottomSheet =
+                    calendarBottomSheetMap[date] ?: CalendarBottomSheet(date = date)
+                calendarBottomSheetMap[date] = existBottomSheet.copy(
+                    scheduleList = existBottomSheet.scheduleList + holiday.toScheduleUiModel()
+                )
+            }
+            anniversaryList.forEach { anniversary ->
+                val date = anniversary.date
+                val existBottomSheet =
+                    calendarBottomSheetMap[date] ?: CalendarBottomSheet(date = date)
+                calendarBottomSheetMap[date] = existBottomSheet.copy(
+                    scheduleList = existBottomSheet.scheduleList + anniversary.toScheduleUiModel()
+                )
+            }
+        }
+        return calendarBottomSheetMap.values.sortedBy { it.date }
     }
 
     fun assignColumnIndex(scheduleList: List<CalendarCell.CellUiModel>): List<CalendarCell.CellUiModel> {

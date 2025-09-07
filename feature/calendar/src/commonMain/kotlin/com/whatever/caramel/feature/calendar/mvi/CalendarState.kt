@@ -4,6 +4,7 @@ import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.UiState
 import com.whatever.caramel.feature.calendar.model.CalendarBottomSheet
+import com.whatever.caramel.feature.calendar.model.CalendarBottomSheetState
 import com.whatever.caramel.feature.calendar.model.CalendarCell
 import com.whatever.caramel.feature.calendar.model.CalendarYearCache
 import kotlinx.collections.immutable.ImmutableList
@@ -20,7 +21,7 @@ data class CalendarState(
     val selectedDate: LocalDate = DateUtil.today(),
     val pickerDate: DateUiState = DateUiState.currentDate(),
     val isShowDatePicker: Boolean = false,
-    val bottomSheetState: BottomSheetState = BottomSheetState.PARTIALLY_EXPANDED,
+    val bottomSheetState: CalendarBottomSheetState = CalendarBottomSheetState.PARTIALLY_EXPANDED,
     val isRefreshing: Boolean = false,
     val isBottomSheetDragging: Boolean = false,
     val calendarCellList: List<CalendarCell> = emptyList(),
@@ -36,5 +37,5 @@ data class CalendarState(
         get() = calendarCellList.filter { it.year == year && it.month == month }.toImmutableList()
 
     val isBottomSheetTopDescVisible
-        get() = !isBottomSheetDragging && bottomSheetState == BottomSheetState.PARTIALLY_EXPANDED
+        get() = !isBottomSheetDragging && bottomSheetState == CalendarBottomSheetState.PARTIALLY_EXPANDED
 }
