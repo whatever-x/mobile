@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,20 +17,18 @@ import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.feature.calendar.dimension.CalendarDimension
-import com.whatever.caramel.feature.calendar.mvi.CalendarScheduleType
-import com.whatever.caramel.feature.calendar.mvi.ScheduleUiModel
-import io.github.aakira.napier.Napier
+import com.whatever.caramel.feature.calendar.model.CalendarCell
+import com.whatever.caramel.feature.calendar.model.CalendarUiModel
 
 @Composable
 fun CalendarScheduleList(
     modifier: Modifier = Modifier,
-    uiModelList: List<ScheduleUiModel>,
-    onClickSchedule: (Long) -> Unit,
+    cellUiList: List<CalendarCell.CellUiModel>,
+    onClickCell: (Long) -> Unit,
 ) {
     // 모든 데이터의 기준은 픽셀로 설정한다.
     val density = LocalDensity.current
@@ -48,13 +44,17 @@ fun CalendarScheduleList(
         val maxVisibleItemCount = (parentHeight / totalCellHeight) - 1   // 배치 가능 아이템, 1개는 +N개용
 
         // 해당 주차의 일정을 작성해준다
-        uiModelList.forEachIndexed { index, uiModel ->
+        cellUiList.forEachIndexed { index, uiModel ->
             // 일정을 그려준다.
             val schedulePlaceable = subcompose("Schedule_$index") {
                 // 셀의 가로 길이를 제공해준다
                 ScheduleCell(
                     modifier = Modifier.fillMaxWidth(),
-                    uiModel = uiModel
+                    id = uiModel.base.id,
+                    type = uiModel.base.type,
+                    contentAssignee = uiModel.base.contentAssignee,
+                    content = uiModel.base.mainText,
+                    onClickCell = onClickCell
                 )
             }.first().measure(
                 constraints.copy(
@@ -111,21 +111,33 @@ fun CalendarScheduleList(
 @Composable
 private fun ScheduleCell(
     modifier: Modifier = Modifier,
-    uiModel: ScheduleUiModel,
+    id: Long,
+    type: CalendarUiModel.ScheduleType,
+    contentAssignee: ContentAssignee,
+    content: String,
+    onClickCell: (Long) -> Unit,
 ) {
     val (backgroundColor, textColor) = with(CaramelTheme.color) {
-        when (uiModel.type) {
-            CalendarScheduleType.MULTI_SCHEDULE, CalendarScheduleType.SINGLE_SCHEDULE -> when (uiModel.contentAssignee) {
+        when (type) {
+            CalendarUiModel.ScheduleType.MULTI_SCHEDULE, CalendarUiModel.ScheduleType.SINGLE_SCHEDULE -> when (contentAssignee) {
                 ContentAssignee.ME -> fill.labelAccent3 to text.labelAccent4
                 ContentAssignee.PARTNER -> fill.labelAccent4 to text.labelAccent3
-                ContentAssignee.US, null -> fill.labelBrand to text.labelBrand
+                ContentAssignee.US -> fill.labelBrand to text.labelBrand
             }
 
-            CalendarScheduleType.HOLIDAY -> fill.brand to text.inverse
-            CalendarScheduleType.ANNIVERSARY -> fill.labelAccent1 to text.inverse
+            CalendarUiModel.ScheduleType.HOLIDAY -> fill.brand to text.inverse
+            CalendarUiModel.ScheduleType.ANNIVERSARY -> fill.labelAccent1 to text.inverse
         }
     }
-    Box(modifier = Modifier.padding(horizontal = 2.dp)) {
+    Box(
+        modifier = Modifier
+            .padding(horizontal = 2.dp)
+            .clickable(
+                indication = null,
+                interactionSource = null,
+                onClick = { onClickCell(id) }
+            )
+    ) {
         Text(
             modifier = modifier
                 .height(height = CalendarDimension.scheduleCellHeight)
@@ -137,7 +149,7 @@ private fun ScheduleCell(
                     onClick = {}
                 )
                 .align(Alignment.Center),
-            text = uiModel.mainText,
+            text = content,
             color = textColor,
             style = CaramelTheme.typography.label3.bold,
             textAlign = TextAlign.Start,

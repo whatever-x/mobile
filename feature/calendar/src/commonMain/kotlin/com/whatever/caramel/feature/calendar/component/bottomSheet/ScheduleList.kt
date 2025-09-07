@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
@@ -195,7 +196,10 @@ internal fun CaramelBottomSheetScheduleScope.ScheduleUrl(modifier: Modifier = Mo
                         indication = null,
                         onClick = { onClickUrl(urlText) },
                     ),
-            horizontalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xs),
+            horizontalArrangement = Arrangement.spacedBy(
+                CaramelTheme.spacing.xs,
+            ),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 painter = painterResource(Resources.Icon.ic_link_16),
@@ -208,7 +212,7 @@ internal fun CaramelBottomSheetScheduleScope.ScheduleUrl(modifier: Modifier = Mo
                         .weight(1f),
                 text = urlText,
                 style = CaramelTheme.typography.body4.regular,
-                color = CaramelTheme.color.text.secondary,
+                color = CaramelTheme.color.text.secondary
             )
             Icon(
                 painter = painterResource(Resources.Icon.ic_arrow_right_14),
