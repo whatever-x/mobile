@@ -44,17 +44,13 @@ fun CaramelCalendar(
     val firstDayOfWeek = getFirstDayOffset(firstDay)
     val lastDay = DateUtil.getLastDayOfMonth(year, month.number)
     val totalCells = firstDayOfWeek + lastDay
-    val weekendCount = (totalCells + 6) / 7 // 주 단위 row 개수
+    val weekendCount = (totalCells + 6) / 7
 
     BoxWithConstraints(modifier = modifier.fillMaxSize()) {
         val cellHeight = maxHeight / weekendCount
-        // 주차를 그린다
         Column(modifier = Modifier.fillMaxSize()) {
-            // 주차별 repeat
             repeat(weekendCount) { weekendIndex ->
-                // 해당주차의 요일을 그린다
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    // 요일 반복
                     repeat(7) { colIndex ->
                         val index = weekendIndex * 7 + colIndex
                         val dayOfMonth = index - firstDayOfWeek + 1
@@ -84,7 +80,7 @@ fun CaramelCalendar(
                                     },
                             )
                         } else {
-                            Spacer(modifier = boxModifier) // 빈 칸
+                            Spacer(modifier = boxModifier)
                         }
                     }
                 }
