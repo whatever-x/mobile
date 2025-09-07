@@ -4,7 +4,7 @@ import com.whatever.caramel.core.domain.policy.ContentPolicy
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 
 data class CalendarUiModel(
-    val id: Long = NONE,
+    val id: Long = -1L,
     val mainText: String = "",
     val type: ScheduleType = ScheduleType.SINGLE_SCHEDULE,
     val description: String = "",
@@ -27,9 +27,5 @@ data class CalendarUiModel(
         HOLIDAY(2),
         ANNIVERSARY(3),
         SINGLE_SCHEDULE(4),
-    }
-
-    companion object {
-        const val NONE = -1L
     }
 }

@@ -142,7 +142,14 @@ private fun ScheduleCell(
                     .clickable(
                         indication = null,
                         interactionSource = null,
-                        onClick = { onClickCell(id) },
+                        onClick = {
+                            when (type) {
+                                CalendarUiModel.ScheduleType.MULTI_SCHEDULE,
+                                CalendarUiModel.ScheduleType.SINGLE_SCHEDULE -> onClickCell(id)
+
+                                else -> Unit
+                            }
+                        },
                     ).align(Alignment.Center),
             text = content,
             color = textColor,
