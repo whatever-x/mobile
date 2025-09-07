@@ -3,7 +3,6 @@ package com.whatever.caramel.core.domain.entity
 import com.whatever.caramel.core.domain.policy.ContentPolicy
 import com.whatever.caramel.core.domain.vo.content.ContentData
 import com.whatever.caramel.core.domain.vo.content.schedule.DateTimeInfo
-import kotlin.collections.get
 
 data class Schedule(
     val id: Long,

@@ -30,7 +30,6 @@ fun CalendarScheduleList(
     cellUiList: List<CalendarCell.CellUiModel>,
     onClickCell: (Long) -> Unit,
 ) {
-    // 모든 데이터의 기준은 픽셀로 설정한다.
     val density = LocalDensity.current
     val spacingBetweenItemsPx = with(density) { CaramelTheme.spacing.xxs.roundToPx() }
     val scheduleCellHeightPx = with(density) { CalendarDimension.scheduleCellHeight.roundToPx() }
@@ -38,17 +37,14 @@ fun CalendarScheduleList(
     SubcomposeLayout(modifier = modifier) { constraints ->
         val parentHeight = constraints.maxHeight
         val schedulePerWidth =
-            (constraints.maxWidth / 7) // 한칸에 들어갈 수 있는 width의 크기
-        val itemsToPlace = mutableListOf<Triple<Placeable, Int, Int>>() // subCompose + X좌표 + Y좌표
+            (constraints.maxWidth / 7)
+        val itemsToPlace = mutableListOf<Triple<Placeable, Int, Int>>()
         val outRangeArray = IntArray(7)
-        val maxVisibleItemCount = (parentHeight / totalCellHeight) - 1 // 배치 가능 아이템, 1개는 +N개용
+        val maxVisibleItemCount = (parentHeight / totalCellHeight) - 1
 
-        // 해당 주차의 일정을 작성해준다
         cellUiList.forEachIndexed { index, uiModel ->
-            // 일정을 그려준다.
             val schedulePlaceable =
                 subcompose("Schedule_$index") {
-                    // 셀의 가로 길이를 제공해준다
                     ScheduleCell(
                         modifier = Modifier.fillMaxWidth(),
                         id = uiModel.base.id,
@@ -65,7 +61,7 @@ fun CalendarScheduleList(
                         maxWidth = schedulePerWidth * (uiModel.rowEndIndex - uiModel.rowStartIndex + 1),
                     ),
                 )
-            if (uiModel.columnIndex <= maxVisibleItemCount) { // 스케쥴로 배치가 가능
+            if (uiModel.columnIndex <= maxVisibleItemCount) {
                 itemsToPlace.add(
                     Triple(
                         schedulePlaceable,
@@ -73,14 +69,13 @@ fun CalendarScheduleList(
                         uiModel.columnIndex * totalCellHeight,
                     ),
                 )
-            } else { // 배치 불가능, +N개가 배치되어야하는 UI 제공
+            } else {
                 for (index in uiModel.rowStartIndex..uiModel.rowEndIndex) {
                     outRangeArray[index] += 1
                 }
             }
         }
 
-        // 실제 배치
         layout(constraints.maxWidth, constraints.maxHeight) {
             itemsToPlace.forEach { (placeable, x, y) ->
                 placeable.place(x, y)

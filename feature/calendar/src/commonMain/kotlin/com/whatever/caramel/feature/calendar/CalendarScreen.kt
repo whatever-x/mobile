@@ -53,7 +53,6 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.datetime.Month
 import kotlin.math.roundToInt
 
-// @RyuSw-cs 2025.05.24 TODO : Column + ModalBottomSheet 조합으로 변경
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CalendarScreen(
