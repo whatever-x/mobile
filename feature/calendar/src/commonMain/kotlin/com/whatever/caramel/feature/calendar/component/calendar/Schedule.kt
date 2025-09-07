@@ -131,12 +131,7 @@ private fun ScheduleCell(
     Box(
         modifier =
             Modifier
-                .padding(horizontal = 2.dp)
-                .clickable(
-                    indication = null,
-                    interactionSource = null,
-                    onClick = { onClickCell(id) },
-                ),
+                .padding(horizontal = 2.dp),
     ) {
         Text(
             modifier =
@@ -147,7 +142,7 @@ private fun ScheduleCell(
                     .clickable(
                         indication = null,
                         interactionSource = null,
-                        onClick = {},
+                        onClick = { onClickCell(id) },
                     ).align(Alignment.Center),
             text = content,
             color = textColor,
