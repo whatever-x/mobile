@@ -48,9 +48,9 @@ class CalendarViewModel(
     crashlytics: CaramelCrashlytics,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(
-        savedStateHandle,
-        crashlytics,
-    ) {
+    savedStateHandle,
+    crashlytics,
+) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): CalendarState {
         val currentDate = DateUtil.today()
         return CalendarState(
@@ -405,7 +405,8 @@ class CalendarViewModel(
                         val rowStartIndex =
                             when {
                                 startDateTime.month == currentLocalDateTime.month &&
-                                    startDateTime.weekOfMonth() != currentLocalDateTime.weekOfMonth() -> 0
+                                        startDateTime.weekOfMonth() != currentLocalDateTime.weekOfMonth() -> 0
+
                                 startDateTime.month == currentLocalDateTime.month -> startDateTime.dayOfWeek.appOrdianl
                                 else -> currentLocalDateTime.dayOfWeek.appOrdianl
                             }
@@ -518,24 +519,24 @@ class CalendarViewModel(
                             existBottomSheetList.copy(totalList = existBottomSheetList.totalList + newItem)
                     }
             }
-            holidayList.forEach { holiday ->
-                val date = holiday.date
-                val existBottomSheet =
-                    calendarBottomSheetMap[date] ?: CalendarBottomSheet(date = date)
-                calendarBottomSheetMap[date] =
-                    existBottomSheet.copy(
-                        totalList = existBottomSheet.totalList + holiday.toScheduleUiModel(),
-                    )
-            }
-            anniversaryList.forEach { anniversary ->
-                val date = anniversary.date
-                val existBottomSheet =
-                    calendarBottomSheetMap[date] ?: CalendarBottomSheet(date = date)
-                calendarBottomSheetMap[date] =
-                    existBottomSheet.copy(
-                        totalList = existBottomSheet.totalList + anniversary.toScheduleUiModel(),
-                    )
-            }
+        }
+        holidayList.forEach { holiday ->
+            val date = holiday.date
+            val existBottomSheet =
+                calendarBottomSheetMap[date] ?: CalendarBottomSheet(date = date)
+            calendarBottomSheetMap[date] =
+                existBottomSheet.copy(
+                    totalList = existBottomSheet.totalList + holiday.toScheduleUiModel(),
+                )
+        }
+        anniversaryList.forEach { anniversary ->
+            val date = anniversary.date
+            val existBottomSheet =
+                calendarBottomSheetMap[date] ?: CalendarBottomSheet(date = date)
+            calendarBottomSheetMap[date] =
+                existBottomSheet.copy(
+                    totalList = existBottomSheet.totalList + anniversary.toScheduleUiModel(),
+                )
         }
         if (calendarBottomSheetMap[updateSelectedDate] == null) {
             calendarBottomSheetMap[updateSelectedDate] =
