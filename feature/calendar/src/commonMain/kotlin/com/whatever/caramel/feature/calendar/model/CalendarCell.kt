@@ -12,6 +12,6 @@ data class CalendarCell(
         val base: CalendarUiModel,
         val rowStartIndex: Int = 0,
         val rowEndIndex: Int = 0,
-        val columnIndex: Int= 0,
+        val columnIndex: Int = 0,
     )
 }

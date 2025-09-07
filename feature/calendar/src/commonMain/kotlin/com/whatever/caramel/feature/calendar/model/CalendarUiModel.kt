@@ -19,12 +19,13 @@ data class CalendarUiModel(
                 .firstOrNull()
         }
 
-    enum class ScheduleType(val priority: Int) {
+    enum class ScheduleType(
+        val priority: Int,
+    ) {
         MULTI_SCHEDULE(1),
         HOLIDAY(2),
         ANNIVERSARY(3),
         SINGLE_SCHEDULE(4),
-        ;
     }
 
     companion object {

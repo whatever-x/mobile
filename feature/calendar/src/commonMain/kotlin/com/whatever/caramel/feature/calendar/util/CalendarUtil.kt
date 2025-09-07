@@ -15,9 +15,7 @@ internal fun getYearAndMonthFromPageIndex(index: Int): Pair<Int, Month> {
     return year to month
 }
 
-internal fun getFirstDayOffset(firstDay: LocalDate): Int =
-    if (firstDay.dayOfWeek == DayOfWeek.SUNDAY) 0 else firstDay.dayOfWeek.ordinal + 1
-
+internal fun getFirstDayOffset(firstDay: LocalDate): Int = if (firstDay.dayOfWeek == DayOfWeek.SUNDAY) 0 else firstDay.dayOfWeek.ordinal + 1
 
 internal fun LocalDate.weekOfMonth(firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY): Int {
     val firstDayOfMonth = LocalDate(this.year, this.monthNumber, 1)
@@ -28,5 +26,4 @@ internal fun LocalDate.weekOfMonth(firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY)
     return (dayIndex / 7)
 }
 
-internal fun LocalDateTime.weekOfMonth(firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY) =
-    this.date.weekOfMonth(firstDayOfWeek)
+internal fun LocalDateTime.weekOfMonth(firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY) = this.date.weekOfMonth(firstDayOfWeek)

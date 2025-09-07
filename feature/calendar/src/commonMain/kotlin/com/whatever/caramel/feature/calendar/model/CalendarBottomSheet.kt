@@ -8,7 +8,7 @@ data class CalendarBottomSheet(
 ) {
     data class BottomSheetUiModel(
         val scheduleSize: Long,
-        val base: CalendarUiModel
+        val base: CalendarUiModel,
     )
 
     val holidayList: List<BottomSheetUiModel>
@@ -18,5 +18,9 @@ data class CalendarBottomSheet(
         get() = totalList.filter { it.base.type == CalendarUiModel.ScheduleType.ANNIVERSARY }
 
     val scheduleList: List<BottomSheetUiModel>
-        get() = totalList.filter { it.base.type == CalendarUiModel.ScheduleType.MULTI_SCHEDULE || it.base.type == CalendarUiModel.ScheduleType.SINGLE_SCHEDULE }
+        get() =
+            totalList.filter {
+                it.base.type == CalendarUiModel.ScheduleType.MULTI_SCHEDULE ||
+                    it.base.type == CalendarUiModel.ScheduleType.SINGLE_SCHEDULE
+            }
 }

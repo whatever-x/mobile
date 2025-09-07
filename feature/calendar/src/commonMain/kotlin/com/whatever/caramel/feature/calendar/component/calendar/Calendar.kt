@@ -66,20 +66,22 @@ fun CaramelCalendar(
                         if (dayOfMonth in 1..lastDay) {
                             val date = LocalDate(year, month, dayOfMonth)
                             CalendarDayOfMonthText(
-                                modifier = boxModifier.clickable(
-                                    indication = null,
-                                    interactionSource = null,
-                                    onClick = { onClickCell(date) }
-                                ),
+                                modifier =
+                                    boxModifier.clickable(
+                                        indication = null,
+                                        interactionSource = null,
+                                        onClick = { onClickCell(date) },
+                                    ),
                                 dayOfMonth = date.dayOfMonth,
                                 dayOfWeek = date.dayOfWeek,
                                 isFocus = selectedDate == date,
-                                isHoliday = monthCellInfoList.any { cell ->
-                                    cell.weekendIndex == date.weekOfMonth()
-                                            && cell.scheduleList.any {
-                                        it.base.type == CalendarUiModel.ScheduleType.HOLIDAY
-                                    }
-                                }
+                                isHoliday =
+                                    monthCellInfoList.any { cell ->
+                                        cell.weekendIndex == date.weekOfMonth() &&
+                                            cell.scheduleList.any {
+                                                it.base.type == CalendarUiModel.ScheduleType.HOLIDAY
+                                            }
+                                    },
                             )
                         } else {
                             Spacer(modifier = boxModifier) // 빈 칸
@@ -87,19 +89,20 @@ fun CaramelCalendar(
                     }
                 }
                 CalendarScheduleList(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(height = cellHeight - 24.dp)
-                        .background(color = CaramelTheme.color.background.primary),
-                    cellUiList = monthCellInfoList.firstOrNull { it.weekendIndex == weekendIndex }?.scheduleList
-                        ?: emptyList(),
-                    onClickCell = onClickSchedule
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(height = cellHeight - 24.dp)
+                            .background(color = CaramelTheme.color.background.primary),
+                    cellUiList =
+                        monthCellInfoList.firstOrNull { it.weekendIndex == weekendIndex }?.scheduleList
+                            ?: emptyList(),
+                    onClickCell = onClickSchedule,
                 )
             }
         }
     }
 }
-
 
 @Composable
 fun CalendarDayOfWeek(modifier: Modifier = Modifier) {

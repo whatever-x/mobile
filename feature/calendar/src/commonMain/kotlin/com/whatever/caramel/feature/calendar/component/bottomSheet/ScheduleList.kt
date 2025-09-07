@@ -196,9 +196,10 @@ internal fun CaramelBottomSheetScheduleScope.ScheduleUrl(modifier: Modifier = Mo
                         indication = null,
                         onClick = { onClickUrl(urlText) },
                     ),
-            horizontalArrangement = Arrangement.spacedBy(
-                CaramelTheme.spacing.xs,
-            ),
+            horizontalArrangement =
+                Arrangement.spacedBy(
+                    CaramelTheme.spacing.xs,
+                ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
@@ -212,7 +213,7 @@ internal fun CaramelBottomSheetScheduleScope.ScheduleUrl(modifier: Modifier = Mo
                         .weight(1f),
                 text = urlText,
                 style = CaramelTheme.typography.body4.regular,
-                color = CaramelTheme.color.text.secondary
+                color = CaramelTheme.color.text.secondary,
             )
             Icon(
                 painter = painterResource(Resources.Icon.ic_arrow_right_14),

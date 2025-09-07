@@ -38,41 +38,42 @@ fun CalendarScheduleList(
     SubcomposeLayout(modifier = modifier) { constraints ->
         val parentHeight = constraints.maxHeight
         val schedulePerWidth =
-            (constraints.maxWidth / 7)  // 한칸에 들어갈 수 있는 width의 크기
+            (constraints.maxWidth / 7) // 한칸에 들어갈 수 있는 width의 크기
         val itemsToPlace = mutableListOf<Triple<Placeable, Int, Int>>() // subCompose + X좌표 + Y좌표
         val outRangeArray = IntArray(7)
-        val maxVisibleItemCount = (parentHeight / totalCellHeight) - 1   // 배치 가능 아이템, 1개는 +N개용
+        val maxVisibleItemCount = (parentHeight / totalCellHeight) - 1 // 배치 가능 아이템, 1개는 +N개용
 
         // 해당 주차의 일정을 작성해준다
         cellUiList.forEachIndexed { index, uiModel ->
             // 일정을 그려준다.
-            val schedulePlaceable = subcompose("Schedule_$index") {
-                // 셀의 가로 길이를 제공해준다
-                ScheduleCell(
-                    modifier = Modifier.fillMaxWidth(),
-                    id = uiModel.base.id,
-                    type = uiModel.base.type,
-                    contentAssignee = uiModel.base.contentAssignee,
-                    content = uiModel.base.mainText,
-                    onClickCell = onClickCell
+            val schedulePlaceable =
+                subcompose("Schedule_$index") {
+                    // 셀의 가로 길이를 제공해준다
+                    ScheduleCell(
+                        modifier = Modifier.fillMaxWidth(),
+                        id = uiModel.base.id,
+                        type = uiModel.base.type,
+                        contentAssignee = uiModel.base.contentAssignee,
+                        content = uiModel.base.mainText,
+                        onClickCell = onClickCell,
+                    )
+                }.first().measure(
+                    constraints.copy(
+                        minHeight = 0,
+                        maxHeight = totalCellHeight,
+                        minWidth = 0,
+                        maxWidth = schedulePerWidth * (uiModel.rowEndIndex - uiModel.rowStartIndex + 1),
+                    ),
                 )
-            }.first().measure(
-                constraints.copy(
-                    minHeight = 0,
-                    maxHeight = totalCellHeight,
-                    minWidth = 0,
-                    maxWidth = schedulePerWidth * (uiModel.rowEndIndex - uiModel.rowStartIndex + 1)
-                )
-            )
             if (uiModel.columnIndex <= maxVisibleItemCount) { // 스케쥴로 배치가 가능
                 itemsToPlace.add(
                     Triple(
                         schedulePlaceable,
                         uiModel.rowStartIndex * schedulePerWidth,
-                        uiModel.columnIndex * totalCellHeight
-                    )
+                        uiModel.columnIndex * totalCellHeight,
+                    ),
                 )
-            } else {    // 배치 불가능, +N개가 배치되어야하는 UI 제공
+            } else { // 배치 불가능, +N개가 배치되어야하는 UI 제공
                 for (index in uiModel.rowStartIndex..uiModel.rowEndIndex) {
                     outRangeArray[index] += 1
                 }
@@ -84,24 +85,25 @@ fun CalendarScheduleList(
             itemsToPlace.forEach { (placeable, x, y) ->
                 placeable.place(x, y)
             }
-            val outRangePlaceable = subcompose("OutRange") {
-                ScheduleOutRangeCell(
-                    modifier = Modifier,
-                    outRange = outRangeArray
+            val outRangePlaceable =
+                subcompose("OutRange") {
+                    ScheduleOutRangeCell(
+                        modifier = Modifier,
+                        outRange = outRangeArray,
+                    )
+                }.first().measure(
+                    constraints.copy(
+                        minHeight = 0,
+                        maxHeight = totalCellHeight,
+                        minWidth = 0,
+                        maxWidth = constraints.maxWidth,
+                    ),
                 )
-            }.first().measure(
-                constraints.copy(
-                    minHeight = 0,
-                    maxHeight = totalCellHeight,
-                    minWidth = 0,
-                    maxWidth = constraints.maxWidth
-                )
-            )
             val startIndex = outRangeArray.indexOfFirst { it > 0 }
             if (startIndex != -1) {
                 outRangePlaceable.place(
                     startIndex,
-                    (maxVisibleItemCount + 1) * (totalCellHeight)
+                    (maxVisibleItemCount + 1) * (totalCellHeight),
                 )
             }
         }
@@ -117,38 +119,41 @@ private fun ScheduleCell(
     content: String,
     onClickCell: (Long) -> Unit,
 ) {
-    val (backgroundColor, textColor) = with(CaramelTheme.color) {
-        when (type) {
-            CalendarUiModel.ScheduleType.MULTI_SCHEDULE, CalendarUiModel.ScheduleType.SINGLE_SCHEDULE -> when (contentAssignee) {
-                ContentAssignee.ME -> fill.labelAccent3 to text.labelAccent4
-                ContentAssignee.PARTNER -> fill.labelAccent4 to text.labelAccent3
-                ContentAssignee.US -> fill.labelBrand to text.labelBrand
-            }
+    val (backgroundColor, textColor) =
+        with(CaramelTheme.color) {
+            when (type) {
+                CalendarUiModel.ScheduleType.MULTI_SCHEDULE, CalendarUiModel.ScheduleType.SINGLE_SCHEDULE ->
+                    when (contentAssignee) {
+                        ContentAssignee.ME -> fill.labelAccent3 to text.labelAccent4
+                        ContentAssignee.PARTNER -> fill.labelAccent4 to text.labelAccent3
+                        ContentAssignee.US -> fill.labelBrand to text.labelBrand
+                    }
 
-            CalendarUiModel.ScheduleType.HOLIDAY -> fill.brand to text.inverse
-            CalendarUiModel.ScheduleType.ANNIVERSARY -> fill.labelAccent1 to text.inverse
+                CalendarUiModel.ScheduleType.HOLIDAY -> fill.brand to text.inverse
+                CalendarUiModel.ScheduleType.ANNIVERSARY -> fill.labelAccent1 to text.inverse
+            }
         }
-    }
     Box(
-        modifier = Modifier
-            .padding(horizontal = 2.dp)
-            .clickable(
-                indication = null,
-                interactionSource = null,
-                onClick = { onClickCell(id) }
-            )
-    ) {
-        Text(
-            modifier = modifier
-                .height(height = CalendarDimension.scheduleCellHeight)
-                .background(color = backgroundColor, shape = CaramelTheme.shape.xxs)
-                .padding(vertical = 1.dp, horizontal = 2.dp)
+        modifier =
+            Modifier
+                .padding(horizontal = 2.dp)
                 .clickable(
                     indication = null,
                     interactionSource = null,
-                    onClick = {}
-                )
-                .align(Alignment.Center),
+                    onClick = { onClickCell(id) },
+                ),
+    ) {
+        Text(
+            modifier =
+                modifier
+                    .height(height = CalendarDimension.scheduleCellHeight)
+                    .background(color = backgroundColor, shape = CaramelTheme.shape.xxs)
+                    .padding(vertical = 1.dp, horizontal = 2.dp)
+                    .clickable(
+                        indication = null,
+                        interactionSource = null,
+                        onClick = {},
+                    ).align(Alignment.Center),
             text = content,
             color = textColor,
             style = CaramelTheme.typography.label3.bold,
@@ -161,14 +166,15 @@ private fun ScheduleCell(
 @Composable
 private fun ScheduleOutRangeCell(
     modifier: Modifier = Modifier,
-    outRange: IntArray
+    outRange: IntArray,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(height = CalendarDimension.scheduleCellHeight),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(height = CalendarDimension.scheduleCellHeight),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         repeat(outRange.size) { index ->
             if (outRange[index] >= 1) {
@@ -177,7 +183,7 @@ private fun ScheduleOutRangeCell(
                     text = "+${outRange[index]}개",
                     style = CaramelTheme.typography.label3.regular,
                     color = CaramelTheme.color.text.secondary,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
             } else {
                 Spacer(modifier = Modifier.weight(1f))

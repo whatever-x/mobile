@@ -92,9 +92,9 @@ internal fun CalendarScreen(
     }
     LaunchedEffect(state.bottomSheetState) {
         when (state.bottomSheetState) {
-           CalendarBottomSheetState.HIDDEN -> bottomSheetState.hide()
-           CalendarBottomSheetState.EXPANDED -> bottomSheetState.expand()
-           CalendarBottomSheetState.PARTIALLY_EXPANDED -> {
+            CalendarBottomSheetState.HIDDEN -> bottomSheetState.hide()
+            CalendarBottomSheetState.EXPANDED -> bottomSheetState.expand()
+            CalendarBottomSheetState.PARTIALLY_EXPANDED -> {
                 lazyListState.scrollToItem(0)
                 bottomSheetState.partialExpand()
             }
@@ -289,7 +289,7 @@ internal fun CalendarScreen(
                                 selectedDate = state.selectedDate,
                                 onClickSchedule = { onIntent(CalendarIntent.ClickScheduleItemInCalendar(it)) },
                                 onClickCell = { onIntent(CalendarIntent.ClickCalendarCell(it)) },
-                                monthCellInfoList = state.monthCellList.toImmutableList()
+                                monthCellInfoList = state.monthCellList.toImmutableList(),
                             )
                         }
                     }

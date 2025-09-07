@@ -5,4 +5,3 @@ enum class CalendarBottomSheetState {
     EXPANDED,
     PARTIALLY_EXPANDED,
 }
-

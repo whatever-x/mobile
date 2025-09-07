@@ -9,10 +9,12 @@ import com.whatever.caramel.feature.calendar.model.CalendarUiModel
 import com.whatever.caramel.feature.calendar.util.appOrdianl
 
 internal fun Schedule.toScheduleUiModel(): CalendarUiModel {
-    val type = if (dateTimeInfo.startDateTime.date != dateTimeInfo.endDateTime.date)
-        CalendarUiModel.ScheduleType.MULTI_SCHEDULE
-    else
-        CalendarUiModel.ScheduleType.SINGLE_SCHEDULE
+    val type =
+        if (dateTimeInfo.startDateTime.date != dateTimeInfo.endDateTime.date) {
+            CalendarUiModel.ScheduleType.MULTI_SCHEDULE
+        } else {
+            CalendarUiModel.ScheduleType.SINGLE_SCHEDULE
+        }
     return CalendarUiModel(
         id = this.id,
         mainText = this.contentData.title.ifEmpty { this.contentData.description },
@@ -22,59 +24,51 @@ internal fun Schedule.toScheduleUiModel(): CalendarUiModel {
     )
 }
 
-internal fun Schedule.toScheduleCell(): CalendarCell.CellUiModel {
-    return CalendarCell.CellUiModel(
-        base = this.toScheduleUiModel()
-    )
-}
-
-internal fun Schedule.toBottomSheet(existSize : Long): CalendarBottomSheet.BottomSheetUiModel {
-    return CalendarBottomSheet.BottomSheetUiModel(
+internal fun Schedule.toScheduleCell(): CalendarCell.CellUiModel =
+    CalendarCell.CellUiModel(
         base = this.toScheduleUiModel(),
-        scheduleSize = existSize
     )
-}
 
-internal fun Holiday.toScheduleUiModel(): CalendarUiModel {
-    return CalendarUiModel(
+internal fun Schedule.toBottomSheet(existSize: Long): CalendarBottomSheet.BottomSheetUiModel =
+    CalendarBottomSheet.BottomSheetUiModel(
+        base = this.toScheduleUiModel(),
+        scheduleSize = existSize,
+    )
+
+internal fun Holiday.toScheduleUiModel(): CalendarUiModel =
+    CalendarUiModel(
         mainText = this.name,
         type = CalendarUiModel.ScheduleType.HOLIDAY,
     )
-}
 
-internal fun Holiday.toScheduleCell(): CalendarCell.CellUiModel {
-    return CalendarCell.CellUiModel(
+internal fun Holiday.toScheduleCell(): CalendarCell.CellUiModel =
+    CalendarCell.CellUiModel(
         base = this.toScheduleUiModel(),
         rowStartIndex = this.date.dayOfWeek.appOrdianl,
         rowEndIndex = this.date.dayOfWeek.appOrdianl,
     )
-}
 
-internal fun Holiday.toBottomSheet(): CalendarBottomSheet.BottomSheetUiModel {
-    return CalendarBottomSheet.BottomSheetUiModel(
+internal fun Holiday.toBottomSheet(): CalendarBottomSheet.BottomSheetUiModel =
+    CalendarBottomSheet.BottomSheetUiModel(
         base = this.toScheduleUiModel(),
-        scheduleSize = 1
+        scheduleSize = 1,
     )
-}
 
-internal fun Anniversary.toScheduleUiModel(): CalendarUiModel {
-    return CalendarUiModel(
+internal fun Anniversary.toScheduleUiModel(): CalendarUiModel =
+    CalendarUiModel(
         mainText = this.label,
         type = CalendarUiModel.ScheduleType.ANNIVERSARY,
     )
-}
 
-internal fun Anniversary.toScheduleCell(): CalendarCell.CellUiModel {
-    return CalendarCell.CellUiModel(
+internal fun Anniversary.toScheduleCell(): CalendarCell.CellUiModel =
+    CalendarCell.CellUiModel(
         base = this.toScheduleUiModel(),
         rowStartIndex = this.date.dayOfWeek.appOrdianl,
         rowEndIndex = this.date.dayOfWeek.appOrdianl,
     )
-}
 
-internal fun Anniversary.toBottomSheet(): CalendarBottomSheet.BottomSheetUiModel {
-    return CalendarBottomSheet.BottomSheetUiModel(
+internal fun Anniversary.toBottomSheet(): CalendarBottomSheet.BottomSheetUiModel =
+    CalendarBottomSheet.BottomSheetUiModel(
         base = this.toScheduleUiModel(),
-        scheduleSize = 1
+        scheduleSize = 1,
     )
-}

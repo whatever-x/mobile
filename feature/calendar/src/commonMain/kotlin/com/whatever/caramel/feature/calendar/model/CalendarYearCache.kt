@@ -7,7 +7,7 @@ import kotlinx.datetime.LocalDate
 
 data class CalendarYearCache(
     val year: Int,
-    val totalSchedule: CacheModel
+    val totalSchedule: CacheModel,
 ) {
     data class CacheModel(
         val scheduleList: List<Schedule> = emptyList(),
@@ -17,7 +17,7 @@ data class CalendarYearCache(
         val isEmpty: Boolean
             get() = scheduleList.isEmpty() && anniversaryList.isEmpty() && holidayList.isEmpty()
 
-        fun find(date : LocalDate) : CacheModel {
+        fun find(date: LocalDate): CacheModel {
             val filterSchedule = scheduleList.filter { date in it.dateTimeInfo.startDateTime.date..it.dateTimeInfo.endDateTime.date }
             val filterAnniversary = anniversaryList.filter { it.date == date }
             val filterHoliday = holidayList.filter { it.date == date }
