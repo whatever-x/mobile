@@ -3,6 +3,7 @@ package com.whatever.caramel.feature.calendar.mapper
 import com.whatever.caramel.core.domain.entity.Schedule
 import com.whatever.caramel.core.domain.vo.calendar.Anniversary
 import com.whatever.caramel.core.domain.vo.calendar.Holiday
+import com.whatever.caramel.feature.calendar.model.CalendarBottomSheet
 import com.whatever.caramel.feature.calendar.model.CalendarCell
 import com.whatever.caramel.feature.calendar.model.CalendarUiModel
 import com.whatever.caramel.feature.calendar.util.appOrdianl
@@ -27,6 +28,13 @@ internal fun Schedule.toScheduleCell(): CalendarCell.CellUiModel {
     )
 }
 
+internal fun Schedule.toBottomSheet(existSize : Long): CalendarBottomSheet.BottomSheetUiModel {
+    return CalendarBottomSheet.BottomSheetUiModel(
+        base = this.toScheduleUiModel(),
+        scheduleSize = existSize
+    )
+}
+
 internal fun Holiday.toScheduleUiModel(): CalendarUiModel {
     return CalendarUiModel(
         mainText = this.name,
@@ -42,6 +50,13 @@ internal fun Holiday.toScheduleCell(): CalendarCell.CellUiModel {
     )
 }
 
+internal fun Holiday.toBottomSheet(): CalendarBottomSheet.BottomSheetUiModel {
+    return CalendarBottomSheet.BottomSheetUiModel(
+        base = this.toScheduleUiModel(),
+        scheduleSize = 1
+    )
+}
+
 internal fun Anniversary.toScheduleUiModel(): CalendarUiModel {
     return CalendarUiModel(
         mainText = this.label,
@@ -54,5 +69,12 @@ internal fun Anniversary.toScheduleCell(): CalendarCell.CellUiModel {
         base = this.toScheduleUiModel(),
         rowStartIndex = this.date.dayOfWeek.appOrdianl,
         rowEndIndex = this.date.dayOfWeek.appOrdianl,
+    )
+}
+
+internal fun Anniversary.toBottomSheet(): CalendarBottomSheet.BottomSheetUiModel {
+    return CalendarBottomSheet.BottomSheetUiModel(
+        base = this.toScheduleUiModel(),
+        scheduleSize = 1
     )
 }

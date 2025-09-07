@@ -18,6 +18,7 @@ import com.whatever.caramel.core.domain.vo.content.schedule.DateTimeInfo
 import com.whatever.caramel.core.util.DateFormatter
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.BaseViewModel
+import com.whatever.caramel.feature.calendar.mapper.toBottomSheet
 import com.whatever.caramel.feature.calendar.mapper.toScheduleCell
 import com.whatever.caramel.feature.calendar.mapper.toScheduleUiModel
 import com.whatever.caramel.feature.calendar.model.CalendarBottomSheet
@@ -310,6 +311,7 @@ class CalendarViewModel(
                 holidayList = yearSchedule.totalSchedule.holidayList,
                 anniversaryList = yearSchedule.totalSchedule.anniversaryList,
             )
+            Napier.d { "calendarBottomSheetList updated: $calendarBottomSheetList" }
             reduce {
                 copy(
                     isInitialized = false,
@@ -489,6 +491,7 @@ class CalendarViewModel(
             with(schedule.dateTimeInfo) {
                 val startDateInstant = startDateTime.toInstant(TimeZone.of(startTimezone))
                 val endDateInstant = endDateTime.toInstant(TimeZone.of(endTimezone))
+                val scheduleSize = (endDateInstant - startDateInstant).inWholeDays + 1
                 generateSequence(startDateInstant) { it.plus(1.days) }
                     .takeWhile { it <= endDateInstant }
                     .forEach { current ->
@@ -497,8 +500,9 @@ class CalendarViewModel(
                         val bottomSheetKey = currentLocalDateTime.date
                         val existBottomSheetList = calendarBottomSheetMap[bottomSheetKey]
                             ?: CalendarBottomSheet(date = bottomSheetKey)
+                        val newItem = schedule.toBottomSheet(scheduleSize)
                         calendarBottomSheetMap[bottomSheetKey] =
-                            existBottomSheetList.copy(totalList = existBottomSheetList.totalList + schedule.toScheduleUiModel())
+                            existBottomSheetList.copy(totalList = existBottomSheetList.totalList + newItem)
                     }
             }
             holidayList.forEach { holiday ->
@@ -506,7 +510,7 @@ class CalendarViewModel(
                 val existBottomSheet =
                     calendarBottomSheetMap[date] ?: CalendarBottomSheet(date = date)
                 calendarBottomSheetMap[date] = existBottomSheet.copy(
-                    totalList = existBottomSheet.totalList + holiday.toScheduleUiModel()
+                    totalList = existBottomSheet.totalList + holiday.toBottomSheet()
                 )
             }
             anniversaryList.forEach { anniversary ->
@@ -514,7 +518,7 @@ class CalendarViewModel(
                 val existBottomSheet =
                     calendarBottomSheetMap[date] ?: CalendarBottomSheet(date = date)
                 calendarBottomSheetMap[date] = existBottomSheet.copy(
-                    totalList = existBottomSheet.totalList + anniversary.toScheduleUiModel()
+                    totalList = existBottomSheet.totalList + anniversary.toBottomSheet()
                 )
             }
         }
@@ -522,7 +526,11 @@ class CalendarViewModel(
             calendarBottomSheetMap[updateSelectedDate] =
                 CalendarBottomSheet(date = updateSelectedDate)
         }
-        return calendarBottomSheetMap.values.sortedBy { it.date }
+        return calendarBottomSheetMap.values.map { bottomSheet ->
+            bottomSheet.copy(
+                totalList = bottomSheet.totalList.sortedByDescending { it.scheduleSize }
+            )
+        }.sortedBy { it.date }
     }
 
     private fun calcPageIndex(

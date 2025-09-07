@@ -3,15 +3,20 @@ package com.whatever.caramel.feature.calendar.model
 import kotlinx.datetime.LocalDate
 
 data class CalendarBottomSheet(
-    val date : LocalDate,
-    val totalList: List<CalendarUiModel> = emptyList(),
+    val date: LocalDate,
+    val totalList: List<BottomSheetUiModel> = emptyList(),
 ) {
-    val holidayList : List<CalendarUiModel>
-        get() = totalList.filter { it.type == CalendarUiModel.ScheduleType.HOLIDAY }
+    data class BottomSheetUiModel(
+        val scheduleSize: Long,
+        val base: CalendarUiModel
+    )
 
-    val anniversaryList : List<CalendarUiModel>
-        get() = totalList.filter { it.type == CalendarUiModel.ScheduleType.ANNIVERSARY }
+    val holidayList: List<BottomSheetUiModel>
+        get() = totalList.filter { it.base.type == CalendarUiModel.ScheduleType.HOLIDAY }
 
-    val scheduleList : List<CalendarUiModel>
-        get() = totalList.filter { it.type == CalendarUiModel.ScheduleType.MULTI_SCHEDULE || it.type == CalendarUiModel.ScheduleType.SINGLE_SCHEDULE}
+    val anniversaryList: List<BottomSheetUiModel>
+        get() = totalList.filter { it.base.type == CalendarUiModel.ScheduleType.ANNIVERSARY }
+
+    val scheduleList: List<BottomSheetUiModel>
+        get() = totalList.filter { it.base.type == CalendarUiModel.ScheduleType.MULTI_SCHEDULE || it.base.type == CalendarUiModel.ScheduleType.SINGLE_SCHEDULE }
 }

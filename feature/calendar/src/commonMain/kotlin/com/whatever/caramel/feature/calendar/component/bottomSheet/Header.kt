@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.feature.calendar.model.CalendarBottomSheet
 import com.whatever.caramel.feature.calendar.model.CalendarUiModel
 import com.whatever.caramel.feature.calendar.util.toUiText
 import kotlinx.datetime.LocalDate
@@ -36,8 +37,8 @@ internal fun BottomSheetScheduleListHeader(
     onClickAddSchedule: (LocalDate) -> Unit,
     isToday: Boolean,
     isEmpty: Boolean,
-    holidays: List<CalendarUiModel>,
-    anniversaries: List<CalendarUiModel>,
+    holidays: List<CalendarBottomSheet.BottomSheetUiModel>,
+    anniversaries: List<CalendarBottomSheet.BottomSheetUiModel>,
 ) {
     Column(
         modifier =
@@ -101,7 +102,7 @@ internal fun BottomSheetScheduleListHeader(
                                             vertical = CaramelTheme.spacing.xxs,
                                         ),
                                 textAlign = TextAlign.Center,
-                                text = holiday.mainText,
+                                text = holiday.base.mainText,
                                 style = CaramelTheme.typography.label3.bold,
                                 color = CaramelTheme.color.text.inverse,
                             )
@@ -152,7 +153,7 @@ internal fun BottomSheetScheduleListHeader(
                                     .align(Alignment.CenterVertically),
                             style = CaramelTheme.typography.body2.bold,
                             color = CaramelTheme.color.text.brand,
-                            text = "${anniversary.mainText}을 축하해!",
+                            text = "${anniversary.base.mainText}을 축하해!",
                             textAlign = TextAlign.Start,
                         )
                     }
