@@ -404,12 +404,10 @@ class CalendarViewModel(
                         val existModel = existList.find { it.base.id == schedule.id }
                         val rowStartIndex =
                             when {
-                                (startDateTime.month != currentLocalDateTime.month) &&
-                                    currentLocalDateTime.weekOfMonth() == 0 -> {
-                                    currentLocalDateTime.dayOfWeek.appOrdianl
-                                }
-                                startDateTime.weekOfMonth() != currentLocalDateTime.weekOfMonth() -> 0
-                                else -> startDateTime.dayOfWeek.appOrdianl
+                                startDateTime.month == currentLocalDateTime.month &&
+                                    startDateTime.weekOfMonth() != currentLocalDateTime.weekOfMonth() -> 0
+                                startDateTime.month == currentLocalDateTime.month -> startDateTime.dayOfWeek.appOrdianl
+                                else -> currentLocalDateTime.dayOfWeek.appOrdianl
                             }
                         val updated =
                             existModel?.copy(
