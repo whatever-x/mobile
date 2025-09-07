@@ -8,6 +8,7 @@ data class CalendarUiModel(
     val mainText: String = "",
     val type: ScheduleType = ScheduleType.SINGLE_SCHEDULE,
     val description: String = "",
+    val originalScheduleSize: Long = 1L,
     val contentAssignee: ContentAssignee = ContentAssignee.US,
 ) {
     val url: String?

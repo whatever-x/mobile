@@ -15,8 +15,8 @@ import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.util.DateFormatter
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.BaseViewModel
-import com.whatever.caramel.feature.calendar.mapper.toBottomSheet
 import com.whatever.caramel.feature.calendar.mapper.toScheduleCell
+import com.whatever.caramel.feature.calendar.mapper.toScheduleUiModel
 import com.whatever.caramel.feature.calendar.model.CalendarBottomSheet
 import com.whatever.caramel.feature.calendar.model.CalendarBottomSheetState
 import com.whatever.caramel.feature.calendar.model.CalendarCell
@@ -314,7 +314,6 @@ class CalendarViewModel(
                     holidayList = yearSchedule.totalSchedule.holidayList,
                     anniversaryList = yearSchedule.totalSchedule.anniversaryList,
                 )
-            Napier.d { "calendarBottomSheetList updated: $calendarBottomSheetList" }
             reduce {
                 copy(
                     isInitialized = false,
@@ -389,6 +388,7 @@ class CalendarViewModel(
             with(schedule.dateTimeInfo) {
                 val startDateInstant = startDateTime.toInstant(TimeZone.of(startTimezone))
                 val endDateInstant = endDateTime.toInstant(TimeZone.of(endTimezone))
+                val originalSize = (endDateInstant - startDateInstant).inWholeDays + 1
                 generateSequence(startDateInstant) { it.plus(1.days) }
                     .takeWhile { it <= endDateInstant }
                     .forEach { current ->
@@ -408,7 +408,6 @@ class CalendarViewModel(
                                     currentLocalDateTime.weekOfMonth() == 0 -> {
                                     currentLocalDateTime.dayOfWeek.appOrdianl
                                 }
-
                                 startDateTime.weekOfMonth() != currentLocalDateTime.weekOfMonth() -> 0
                                 else -> startDateTime.dayOfWeek.appOrdianl
                             }
@@ -416,7 +415,7 @@ class CalendarViewModel(
                             existModel?.copy(
                                 rowStartIndex = min(rowStartIndex, existModel.rowStartIndex),
                                 rowEndIndex = currentLocalDateTime.dayOfWeek.appOrdianl,
-                            ) ?: schedule.toScheduleCell().copy(
+                            ) ?: schedule.toScheduleCell(originalSize).copy(
                                 rowStartIndex = rowStartIndex,
                                 rowEndIndex = currentLocalDateTime.dayOfWeek.appOrdianl,
                             )
@@ -463,6 +462,8 @@ class CalendarViewModel(
                     .thenBy { schedule ->
                         if (schedule.base.type == CalendarUiModel.ScheduleType.MULTI_SCHEDULE) schedule.rowStartIndex else 0
                     }.thenByDescending { schedule ->
+                        schedule.base.originalScheduleSize
+                    }.thenByDescending { schedule ->
                         if (schedule.base.type ==
                             CalendarUiModel.ScheduleType.MULTI_SCHEDULE
                         ) {
@@ -504,7 +505,7 @@ class CalendarViewModel(
             with(schedule.dateTimeInfo) {
                 val startDateInstant = startDateTime.toInstant(TimeZone.of(startTimezone))
                 val endDateInstant = endDateTime.toInstant(TimeZone.of(endTimezone))
-                val scheduleSize = (endDateInstant - startDateInstant).inWholeDays + 1
+                val originalScheduleSize = (endDateInstant - startDateInstant).inWholeDays + 1
                 generateSequence(startDateInstant) { it.plus(1.days) }
                     .takeWhile { it <= endDateInstant }
                     .forEach { current ->
@@ -514,7 +515,7 @@ class CalendarViewModel(
                         val existBottomSheetList =
                             calendarBottomSheetMap[bottomSheetKey]
                                 ?: CalendarBottomSheet(date = bottomSheetKey)
-                        val newItem = schedule.toBottomSheet(scheduleSize)
+                        val newItem = schedule.toScheduleUiModel(originalScheduleSize)
                         calendarBottomSheetMap[bottomSheetKey] =
                             existBottomSheetList.copy(totalList = existBottomSheetList.totalList + newItem)
                     }
@@ -525,7 +526,7 @@ class CalendarViewModel(
                     calendarBottomSheetMap[date] ?: CalendarBottomSheet(date = date)
                 calendarBottomSheetMap[date] =
                     existBottomSheet.copy(
-                        totalList = existBottomSheet.totalList + holiday.toBottomSheet(),
+                        totalList = existBottomSheet.totalList + holiday.toScheduleUiModel(),
                     )
             }
             anniversaryList.forEach { anniversary ->
@@ -534,7 +535,7 @@ class CalendarViewModel(
                     calendarBottomSheetMap[date] ?: CalendarBottomSheet(date = date)
                 calendarBottomSheetMap[date] =
                     existBottomSheet.copy(
-                        totalList = existBottomSheet.totalList + anniversary.toBottomSheet(),
+                        totalList = existBottomSheet.totalList + anniversary.toScheduleUiModel(),
                     )
             }
         }
@@ -545,7 +546,7 @@ class CalendarViewModel(
         return calendarBottomSheetMap.values
             .map { bottomSheet ->
                 bottomSheet.copy(
-                    totalList = bottomSheet.totalList.sortedByDescending { it.scheduleSize },
+                    totalList = bottomSheet.totalList.sortedByDescending { it.originalScheduleSize },
                 )
             }.sortedBy { it.date }
     }

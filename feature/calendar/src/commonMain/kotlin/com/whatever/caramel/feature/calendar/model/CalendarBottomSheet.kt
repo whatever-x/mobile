@@ -4,23 +4,18 @@ import kotlinx.datetime.LocalDate
 
 data class CalendarBottomSheet(
     val date: LocalDate,
-    val totalList: List<BottomSheetUiModel> = emptyList(),
+    val totalList: List<CalendarUiModel> = emptyList(),
 ) {
-    data class BottomSheetUiModel(
-        val scheduleSize: Long,
-        val base: CalendarUiModel,
-    )
+    val holidayList: List<CalendarUiModel>
+        get() = totalList.filter { it.type == CalendarUiModel.ScheduleType.HOLIDAY }
 
-    val holidayList: List<BottomSheetUiModel>
-        get() = totalList.filter { it.base.type == CalendarUiModel.ScheduleType.HOLIDAY }
+    val anniversaryList: List<CalendarUiModel>
+        get() = totalList.filter { it.type == CalendarUiModel.ScheduleType.ANNIVERSARY }
 
-    val anniversaryList: List<BottomSheetUiModel>
-        get() = totalList.filter { it.base.type == CalendarUiModel.ScheduleType.ANNIVERSARY }
-
-    val scheduleList: List<BottomSheetUiModel>
+    val scheduleList: List<CalendarUiModel>
         get() =
             totalList.filter {
-                it.base.type == CalendarUiModel.ScheduleType.MULTI_SCHEDULE ||
-                    it.base.type == CalendarUiModel.ScheduleType.SINGLE_SCHEDULE
+                it.type == CalendarUiModel.ScheduleType.MULTI_SCHEDULE ||
+                    it.type == CalendarUiModel.ScheduleType.SINGLE_SCHEDULE
             }
 }

@@ -217,18 +217,18 @@ internal fun CalendarScreen(
                             itemsIndexed(
                                 items = monthSchedule.scheduleList,
                                 key = { _, schedule ->
-                                    "${schedule.base.id}_$index"
+                                    "${schedule.id}_$index"
                                 },
                             ) { index, schedule ->
                                 val isLastSchedule = index == monthSchedule.totalList.lastIndex
                                 val spacerHeight =
                                     if (isLastSchedule) CaramelTheme.spacing.l else CaramelTheme.spacing.s
                                 BottomSheetScheduleItem(
-                                    id = schedule.base.id,
-                                    title = schedule.base.mainText,
-                                    description = schedule.base.description,
-                                    url = schedule.base.url,
-                                    contentAssignee = schedule.base.contentAssignee,
+                                    id = schedule.id,
+                                    title = schedule.mainText,
+                                    description = schedule.description,
+                                    url = schedule.url,
+                                    contentAssignee = schedule.contentAssignee,
                                     onClickUrl = { onIntent(CalendarIntent.ClickScheduleUrl(it)) },
                                     onClickSchedule = {
                                         onIntent(
