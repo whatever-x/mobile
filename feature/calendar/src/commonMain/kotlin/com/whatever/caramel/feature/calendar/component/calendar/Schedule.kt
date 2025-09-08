@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.domain.policy.CalendarPolicy
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.feature.calendar.dimension.CalendarDimension
 import com.whatever.caramel.feature.calendar.model.CalendarCellUiModel
@@ -36,10 +37,9 @@ internal fun CalendarScheduleList(
     val totalCellHeight = scheduleCellHeightPx + spacingBetweenItemsPx
     SubcomposeLayout(modifier = modifier) { constraints ->
         val parentHeight = constraints.maxHeight
-        val schedulePerWidth =
-            (constraints.maxWidth / 7)
+        val schedulePerWidth = (constraints.maxWidth / CalendarPolicy.DAY_OF_WEEK)
         val itemsToPlace = mutableListOf<Triple<Placeable, Int, Int>>()
-        val outRangeArray = IntArray(7)
+        val outRangeArray = IntArray(CalendarPolicy.DAY_OF_WEEK)
         val maxVisibleItemCount = (parentHeight / totalCellHeight) - 1
 
         cellUiList.forEachIndexed { index, uiModel ->
