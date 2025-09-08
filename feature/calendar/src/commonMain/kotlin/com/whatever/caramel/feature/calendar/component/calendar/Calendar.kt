@@ -23,7 +23,6 @@ import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.feature.calendar.model.CalendarCell
 import com.whatever.caramel.feature.calendar.model.CalendarUiModel
 import com.whatever.caramel.feature.calendar.util.appOrdianl
-import com.whatever.caramel.feature.calendar.util.getFirstDayOffset
 import com.whatever.caramel.feature.calendar.util.getYearAndMonthFromPageIndex
 import com.whatever.caramel.feature.calendar.util.weekOfMonth
 import kotlinx.collections.immutable.ImmutableList
@@ -33,7 +32,7 @@ import org.jetbrains.compose.resources.stringArrayResource
 import kotlin.math.ceil
 
 @Composable
-fun CaramelCalendar(
+internal fun CaramelCalendar(
     modifier: Modifier = Modifier,
     pageIndex: Int,
     selectedDate: LocalDate,
@@ -103,7 +102,7 @@ fun CaramelCalendar(
 }
 
 @Composable
-fun CalendarDayOfWeek(modifier: Modifier = Modifier) {
+internal fun CalendarDayOfWeek(modifier: Modifier = Modifier) {
     Row(
         modifier =
             modifier

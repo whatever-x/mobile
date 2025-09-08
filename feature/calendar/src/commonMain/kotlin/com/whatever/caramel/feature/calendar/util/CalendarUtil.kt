@@ -6,7 +6,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.Month
 import kotlinx.datetime.isoDayNumber
 
-val DayOfWeek.appOrdianl: Int
+internal val DayOfWeek.appOrdianl: Int
     get() = (this.ordinal + 1) % 7
 
 internal fun getYearAndMonthFromPageIndex(index: Int): Pair<Int, Month> {
@@ -14,8 +14,6 @@ internal fun getYearAndMonthFromPageIndex(index: Int): Pair<Int, Month> {
     val month = Month.entries[index % 12]
     return year to month
 }
-
-internal fun getFirstDayOffset(firstDay: LocalDate): Int = if (firstDay.dayOfWeek == DayOfWeek.SUNDAY) 0 else firstDay.dayOfWeek.ordinal + 1
 
 internal fun LocalDate.weekOfMonth(firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY): Int {
     val firstDayOfMonth = LocalDate(this.year, this.monthNumber, 1)

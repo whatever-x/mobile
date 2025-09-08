@@ -25,7 +25,7 @@ import com.whatever.caramel.feature.calendar.model.CalendarCell
 import com.whatever.caramel.feature.calendar.model.CalendarUiModel
 
 @Composable
-fun CalendarScheduleList(
+internal fun CalendarScheduleList(
     modifier: Modifier = Modifier,
     cellUiList: List<CalendarCell.CellUiModel>,
     onClickCell: (Long) -> Unit,
@@ -132,7 +132,7 @@ private fun ScheduleCell(
         modifier =
             Modifier
                 .padding(horizontal = 2.dp),
-        contentAlignment = Alignment.CenterStart
+        contentAlignment = Alignment.CenterStart,
     ) {
         Text(
             modifier =
@@ -146,7 +146,8 @@ private fun ScheduleCell(
                         onClick = {
                             when (type) {
                                 CalendarUiModel.ScheduleType.MULTI_SCHEDULE,
-                                CalendarUiModel.ScheduleType.SINGLE_SCHEDULE -> onClickCell(id)
+                                CalendarUiModel.ScheduleType.SINGLE_SCHEDULE,
+                                -> onClickCell(id)
                                 else -> Unit
                             }
                         },
@@ -165,7 +166,7 @@ private fun ScheduleOutRangeCell(
     modifier: Modifier = Modifier,
     outRange: List<Int>,
 ) {
-    if(outRange.all { it == 0 }) return
+    if (outRange.all { it == 0 }) return
     Row(
         modifier =
             modifier

@@ -8,8 +8,9 @@ data class CalendarBottomSheet(
 ) {
     val holidayList = totalList.filter { it.type == CalendarUiModel.ScheduleType.HOLIDAY }
     val anniversaryList = totalList.filter { it.type == CalendarUiModel.ScheduleType.ANNIVERSARY }
-    val scheduleList = totalList.filter {
-        it.type == CalendarUiModel.ScheduleType.MULTI_SCHEDULE ||
+    val scheduleList =
+        totalList.filter {
+            it.type == CalendarUiModel.ScheduleType.MULTI_SCHEDULE ||
                 it.type == CalendarUiModel.ScheduleType.SINGLE_SCHEDULE
-    }
+        }
 }
