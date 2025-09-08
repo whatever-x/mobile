@@ -22,6 +22,7 @@ import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.feature.calendar.model.CalendarCell
 import com.whatever.caramel.feature.calendar.model.CalendarUiModel
+import com.whatever.caramel.feature.calendar.util.appOrdianl
 import com.whatever.caramel.feature.calendar.util.getFirstDayOffset
 import com.whatever.caramel.feature.calendar.util.getYearAndMonthFromPageIndex
 import com.whatever.caramel.feature.calendar.util.weekOfMonth
@@ -29,6 +30,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.number
 import org.jetbrains.compose.resources.stringArrayResource
+import kotlin.math.ceil
 
 @Composable
 fun CaramelCalendar(
@@ -41,10 +43,10 @@ fun CaramelCalendar(
 ) {
     val (year, month) = getYearAndMonthFromPageIndex(index = pageIndex)
     val firstDay = LocalDate(year = year, month = month, dayOfMonth = 1)
-    val firstDayOfWeek = getFirstDayOffset(firstDay)
+    val firstDayOfWeek = firstDay.dayOfWeek.appOrdianl
     val lastDay = DateUtil.getLastDayOfMonth(year, month.number)
     val totalCells = firstDayOfWeek + lastDay
-    val weekendCount = (totalCells + 6) / 7
+    val weekendCount = ceil(totalCells.toFloat() / 7).toInt()
 
     BoxWithConstraints(modifier = modifier.fillMaxSize()) {
         val cellHeight = maxHeight / weekendCount
