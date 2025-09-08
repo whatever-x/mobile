@@ -84,9 +84,9 @@ fun CalendarScheduleList(
                 subcompose("OutRange") {
                     ScheduleOutRangeCell(
                         modifier = Modifier,
-                        outRange = outRangeArray,
+                        outRange = outRangeArray.toList(),
                     )
-                }.first().measure(
+                }.firstOrNull()?.measure(
                     constraints.copy(
                         minHeight = 0,
                         maxHeight = totalCellHeight,
@@ -95,7 +95,7 @@ fun CalendarScheduleList(
                     ),
                 )
             val startIndex = outRangeArray.indexOfFirst { it > 0 }
-            if (startIndex != -1) {
+            if (outRangePlaceable != null && startIndex != -1) {
                 outRangePlaceable.place(
                     startIndex,
                     (maxVisibleItemCount + 1) * (totalCellHeight),
@@ -132,6 +132,7 @@ private fun ScheduleCell(
         modifier =
             Modifier
                 .padding(horizontal = 2.dp),
+        contentAlignment = Alignment.CenterStart
     ) {
         Text(
             modifier =
@@ -146,11 +147,10 @@ private fun ScheduleCell(
                             when (type) {
                                 CalendarUiModel.ScheduleType.MULTI_SCHEDULE,
                                 CalendarUiModel.ScheduleType.SINGLE_SCHEDULE -> onClickCell(id)
-
                                 else -> Unit
                             }
                         },
-                    ).align(Alignment.Center),
+                    ),
             text = content,
             color = textColor,
             style = CaramelTheme.typography.label3.bold,
@@ -163,8 +163,9 @@ private fun ScheduleCell(
 @Composable
 private fun ScheduleOutRangeCell(
     modifier: Modifier = Modifier,
-    outRange: IntArray,
+    outRange: List<Int>,
 ) {
+    if(outRange.all { it == 0 }) return
     Row(
         modifier =
             modifier
