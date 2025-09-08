@@ -21,11 +21,11 @@ import caramel.feature.calendar.generated.resources.day_of_week
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.feature.calendar.model.CalendarCell
-import com.whatever.caramel.feature.calendar.model.CalendarUiModel
+import com.whatever.caramel.feature.calendar.model.CalendarCellUiModel
 import com.whatever.caramel.feature.calendar.util.appOrdianl
 import com.whatever.caramel.feature.calendar.util.getYearAndMonthFromPageIndex
-import com.whatever.caramel.feature.calendar.util.weekOfMonth
-import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.number
 import org.jetbrains.compose.resources.stringArrayResource
@@ -36,7 +36,8 @@ internal fun CaramelCalendar(
     modifier: Modifier = Modifier,
     pageIndex: Int,
     selectedDate: LocalDate,
-    monthCellInfoList: ImmutableList<CalendarCell>,
+    monthCellMap: ImmutableMap<CalendarCell, List<CalendarCellUiModel>>,
+    yearHolidaySet: ImmutableSet<LocalDate>,
     onClickSchedule: (Long) -> Unit,
     onClickCell: (LocalDate) -> Unit,
 ) {
@@ -72,13 +73,7 @@ internal fun CaramelCalendar(
                                 dayOfMonth = date.dayOfMonth,
                                 dayOfWeek = date.dayOfWeek,
                                 isFocus = selectedDate == date,
-                                isHoliday =
-                                    monthCellInfoList.any { cell ->
-                                        cell.weekendIndex == date.weekOfMonth() &&
-                                            cell.scheduleList.any {
-                                                it.base.type == CalendarUiModel.ScheduleType.HOLIDAY
-                                            }
-                                    },
+                                isHoliday = date in yearHolidaySet,
                             )
                         } else {
                             Spacer(modifier = boxModifier)
@@ -92,8 +87,13 @@ internal fun CaramelCalendar(
                             .height(height = cellHeight - 24.dp)
                             .background(color = CaramelTheme.color.background.primary),
                     cellUiList =
-                        monthCellInfoList.firstOrNull { it.weekendIndex == weekendIndex }?.scheduleList
-                            ?: emptyList(),
+                        monthCellMap.get(
+                            key =
+                                CalendarCell(
+                                    pageIndex = pageIndex,
+                                    weekendIndex = weekendIndex,
+                                ),
+                        ) ?: emptyList(),
                     onClickCell = onClickSchedule,
                 )
             }

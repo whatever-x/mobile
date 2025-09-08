@@ -3,7 +3,7 @@ package com.whatever.caramel.feature.calendar.mapper
 import com.whatever.caramel.core.domain.entity.Schedule
 import com.whatever.caramel.core.domain.vo.calendar.Anniversary
 import com.whatever.caramel.core.domain.vo.calendar.Holiday
-import com.whatever.caramel.feature.calendar.model.CalendarCell
+import com.whatever.caramel.feature.calendar.model.CalendarCellUiModel
 import com.whatever.caramel.feature.calendar.model.CalendarUiModel
 import com.whatever.caramel.feature.calendar.util.appOrdianl
 
@@ -24,8 +24,8 @@ internal fun Schedule.toScheduleUiModel(originalScheduleSize: Long): CalendarUiM
     )
 }
 
-internal fun Schedule.toScheduleCell(originalScheduleSize: Long): CalendarCell.CellUiModel =
-    CalendarCell.CellUiModel(
+internal fun Schedule.toScheduleCell(originalScheduleSize: Long): CalendarCellUiModel =
+    CalendarCellUiModel(
         base = this.toScheduleUiModel(originalScheduleSize),
     )
 
@@ -36,8 +36,8 @@ internal fun Holiday.toScheduleUiModel(): CalendarUiModel =
         originalScheduleSize = 1,
     )
 
-internal fun Holiday.toScheduleCell(): CalendarCell.CellUiModel =
-    CalendarCell.CellUiModel(
+internal fun Holiday.toScheduleCell(): CalendarCellUiModel =
+    CalendarCellUiModel(
         base = this.toScheduleUiModel(),
         rowStartIndex = this.date.dayOfWeek.appOrdianl,
         rowEndIndex = this.date.dayOfWeek.appOrdianl,
@@ -50,8 +50,8 @@ internal fun Anniversary.toScheduleUiModel(): CalendarUiModel =
         originalScheduleSize = 1,
     )
 
-internal fun Anniversary.toScheduleCell(): CalendarCell.CellUiModel =
-    CalendarCell.CellUiModel(
+internal fun Anniversary.toScheduleCell(): CalendarCellUiModel =
+    CalendarCellUiModel(
         base = this.toScheduleUiModel(),
         rowStartIndex = this.date.dayOfWeek.appOrdianl,
         rowEndIndex = this.date.dayOfWeek.appOrdianl,

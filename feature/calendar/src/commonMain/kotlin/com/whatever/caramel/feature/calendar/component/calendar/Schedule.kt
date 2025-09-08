@@ -21,13 +21,13 @@ import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.feature.calendar.dimension.CalendarDimension
-import com.whatever.caramel.feature.calendar.model.CalendarCell
+import com.whatever.caramel.feature.calendar.model.CalendarCellUiModel
 import com.whatever.caramel.feature.calendar.model.CalendarUiModel
 
 @Composable
 internal fun CalendarScheduleList(
     modifier: Modifier = Modifier,
-    cellUiList: List<CalendarCell.CellUiModel>,
+    cellUiList: List<CalendarCellUiModel>,
     onClickCell: (Long) -> Unit,
 ) {
     val density = LocalDensity.current
