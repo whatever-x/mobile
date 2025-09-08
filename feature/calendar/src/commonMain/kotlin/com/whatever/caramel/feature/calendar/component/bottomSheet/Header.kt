@@ -37,7 +37,7 @@ internal fun BottomSheetScheduleListHeader(
     isToday: Boolean,
     isEmpty: Boolean,
     holidays: List<CalendarUiModel>,
-    anniversaries: List<CalendarUiModel>,
+    anniversaryList: List<CalendarUiModel>,
 ) {
     Column(
         modifier =
@@ -125,7 +125,7 @@ internal fun BottomSheetScheduleListHeader(
             )
         }
 
-        if (anniversaries.isNotEmpty()) {
+        if (anniversaryList.isNotEmpty()) {
             Column(
                 modifier =
                     Modifier
@@ -133,7 +133,7 @@ internal fun BottomSheetScheduleListHeader(
                         .padding(top = CaramelTheme.spacing.s),
                 verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xs),
             ) {
-                anniversaries.fastForEach { anniversary ->
+                anniversaryList.fastForEach { anniversary ->
                     Row(
                         modifier =
                             Modifier

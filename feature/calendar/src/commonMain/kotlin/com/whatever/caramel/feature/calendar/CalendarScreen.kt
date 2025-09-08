@@ -47,7 +47,6 @@ import com.whatever.caramel.feature.calendar.component.calendar.CalendarDayOfWee
 import com.whatever.caramel.feature.calendar.component.calendar.CaramelCalendar
 import com.whatever.caramel.feature.calendar.dimension.CalendarDimension
 import com.whatever.caramel.feature.calendar.model.CalendarBottomSheetState
-import com.whatever.caramel.feature.calendar.model.CalendarUiModel
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
 import kotlinx.collections.immutable.toImmutableMap
@@ -194,7 +193,7 @@ internal fun CalendarScreen(
                                 ).height(availableHeight),
                         state = lazyListState,
                     ) {
-                        state.monthBottomSheetMap.forEach { (date, uiModelList) ->
+                        state.monthBottomSheetMap.forEach { (date, bottomSheetInfo) ->
                             val hasNextSchedule = state.monthBottomSheetMap.keys.last() != date
                             item {
                                 BottomSheetScheduleListHeader(
@@ -203,19 +202,19 @@ internal fun CalendarScreen(
                                         onIntent(CalendarIntent.ClickAddScheduleButton(date))
                                     },
                                     isToday = date == state.today,
-                                    isEmpty = uiModelList.isEmpty(),
-                                    holidays = uiModelList.filter { it.type == CalendarUiModel.ScheduleType.HOLIDAY },
-                                    anniversaries = uiModelList.filter { it.type == CalendarUiModel.ScheduleType.ANNIVERSARY },
+                                    isEmpty = bottomSheetInfo.totalList.isEmpty(),
+                                    holidays = bottomSheetInfo.holidayList,
+                                    anniversaryList = bottomSheetInfo.anniversaryList,
                                 )
                                 Spacer(modifier = Modifier.height(CaramelTheme.spacing.s))
                             }
                             itemsIndexed(
-                                items = uiModelList,
+                                items = bottomSheetInfo.scheduleList,
                                 key = { _, schedule ->
                                     "${schedule.id}_$date"
                                 },
                             ) { index, schedule ->
-                                val isLastSchedule = index == uiModelList.lastIndex
+                                val isLastSchedule = index == bottomSheetInfo.scheduleList.lastIndex
                                 val spacerHeight =
                                     if (isLastSchedule) CaramelTheme.spacing.l else CaramelTheme.spacing.s
                                 BottomSheetScheduleItem(

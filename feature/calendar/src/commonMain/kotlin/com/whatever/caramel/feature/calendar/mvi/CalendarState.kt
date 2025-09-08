@@ -3,11 +3,11 @@ package com.whatever.caramel.feature.calendar.mvi
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.UiState
+import com.whatever.caramel.feature.calendar.model.CalendarBottomSheet
 import com.whatever.caramel.feature.calendar.model.CalendarBottomSheetState
 import com.whatever.caramel.feature.calendar.model.CalendarCacheModel
 import com.whatever.caramel.feature.calendar.model.CalendarCell
 import com.whatever.caramel.feature.calendar.model.CalendarCellUiModel
-import com.whatever.caramel.feature.calendar.model.CalendarUiModel
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentMapOf
@@ -29,12 +29,12 @@ data class CalendarState(
     val isRefreshing: Boolean = false,
     val isBottomSheetDragging: Boolean = false,
     val calendarCellMap: ImmutableMap<CalendarCell, List<CalendarCellUiModel>> = persistentMapOf(),
-    val calendarBottomSheetMap: ImmutableMap<LocalDate, List<CalendarUiModel>> = persistentMapOf(),
+    val calendarBottomSheetMap: ImmutableMap<LocalDate, CalendarBottomSheet> = persistentMapOf(),
     val yearCacheMap: LinkedHashMap<Int, CalendarCacheModel> = linkedMapOf(),
 ) : UiState {
     val today: LocalDate = DateUtil.today()
 
-    val monthBottomSheetMap: ImmutableMap<LocalDate, List<CalendarUiModel>>
+    val monthBottomSheetMap: ImmutableMap<LocalDate, CalendarBottomSheet>
         get() = (calendarBottomSheetMap.filter { it.key.year == year && it.key.month == month }).toImmutableMap()
 
     val isBottomSheetTopDescVisible
@@ -44,7 +44,8 @@ data class CalendarState(
         get() = (yearCacheMap[year]?.holidayList ?: emptyList()).map { it.date }.toImmutableSet()
 
     val bottomSheetScrollPosition: Int
-        get() = monthBottomSheetMap.entries
-            .takeWhile { it.key != selectedDate }
-            .sumOf { maxOf(1, it.value.size) + 1 }
+        get() =
+            monthBottomSheetMap.entries
+                .takeWhile { it.key != selectedDate }
+                .sumOf { maxOf(1, it.value.totalList.size) + 1 }
 }
