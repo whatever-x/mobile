@@ -51,9 +51,9 @@ class CalendarViewModel(
     crashlytics: CaramelCrashlytics,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(
-        savedStateHandle,
-        crashlytics,
-    ) {
+    savedStateHandle,
+    crashlytics,
+) {
     override fun createInitialState(savedStateHandle: SavedStateHandle): CalendarState {
         val currentDate = DateUtil.today()
         return CalendarState(
@@ -226,7 +226,9 @@ class CalendarViewModel(
         reduce {
             val bottomSheetMap = currentState.calendarBottomSheetMap.toMutableMap()
             bottomSheetMap[currentState.selectedDate]?.let {
-                bottomSheetMap.remove(currentState.selectedDate)
+                if (it.isEmpty()) {
+                    bottomSheetMap.remove(currentState.selectedDate)
+                }
             }
             if (bottomSheetMap[newSelectedDate].isNullOrEmpty()) {
                 bottomSheetMap[newSelectedDate] = emptyList()
@@ -412,7 +414,7 @@ class CalendarViewModel(
                         val rowStartIndex =
                             when {
                                 startDateTime.month == currentLocalDateTime.month &&
-                                    startDateTime.weekOfMonth() != currentLocalDateTime.weekOfMonth() -> 0
+                                        startDateTime.weekOfMonth() != currentLocalDateTime.weekOfMonth() -> 0
 
                                 startDateTime.month == currentLocalDateTime.month -> startDateTime.dayOfWeek.appOrdianl
                                 else -> currentLocalDateTime.dayOfWeek.appOrdianl
