@@ -47,5 +47,5 @@ data class CalendarState(
         get() =
             monthBottomSheetMap.entries
                 .takeWhile { it.key != selectedDate }
-                .sumOf { maxOf(1, it.value.totalList.size) + 1 }
+                .sumOf { maxOf(1, it.value.scheduleList.size) + 1 }
 }
