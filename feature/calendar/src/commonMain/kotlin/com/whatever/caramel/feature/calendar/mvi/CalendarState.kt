@@ -44,18 +44,7 @@ data class CalendarState(
         get() = (yearCacheMap[year]?.holidayList ?: emptyList()).map { it.date }.toImmutableSet()
 
     val bottomSheetScrollPosition: Int
-        get() {
-            var position = 0
-            calendarBottomSheetMap.forEach { (key, value) ->
-                if (key != selectedDate) {
-                    position +=
-                        if (value.isEmpty()) {
-                            1
-                        } else {
-                            value.size
-                        }
-                }
-            }
-            return position
-        }
+        get() = monthBottomSheetMap.entries
+            .takeWhile { it.key != selectedDate }
+            .sumOf { maxOf(1, it.value.size) + 1 }
 }
