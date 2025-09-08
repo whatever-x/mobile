@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import caramel.feature.calendar.generated.resources.Res
 import caramel.feature.calendar.generated.resources.day_of_week
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.domain.policy.CalendarPolicy
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.feature.calendar.model.CalendarCell
 import com.whatever.caramel.feature.calendar.model.CalendarCellUiModel
@@ -46,15 +47,15 @@ internal fun CaramelCalendar(
     val firstDayOfWeek = firstDay.dayOfWeek.appOrdianl
     val lastDay = DateUtil.getLastDayOfMonth(year, month.number)
     val totalCells = firstDayOfWeek + lastDay
-    val weekendCount = ceil(totalCells.toFloat() / 7).toInt()
+    val weekendCount = ceil(totalCells.toFloat() / CalendarPolicy.DAY_OF_WEEK).toInt()
 
     BoxWithConstraints(modifier = modifier.fillMaxSize()) {
         val cellHeight = maxHeight / weekendCount
         Column(modifier = Modifier.fillMaxSize()) {
             repeat(weekendCount) { weekendIndex ->
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    repeat(7) { colIndex ->
-                        val index = weekendIndex * 7 + colIndex
+                    repeat(CalendarPolicy.DAY_OF_WEEK) { colIndex ->
+                        val index = weekendIndex * CalendarPolicy.DAY_OF_WEEK + colIndex
                         val dayOfMonth = index - firstDayOfWeek + 1
                         val boxModifier =
                             Modifier
