@@ -32,7 +32,6 @@ data class CalendarState(
     val calendarBottomSheetMap: ImmutableMap<LocalDate, CalendarBottomSheet> = persistentMapOf(),
     val yearCacheMap: LinkedHashMap<Int, CalendarCacheModel> = linkedMapOf(),
 ) : UiState {
-    val today: LocalDate = DateUtil.today()
 
     val monthBottomSheetMap: ImmutableMap<LocalDate, CalendarBottomSheet>
         get() = (calendarBottomSheetMap.filter { it.key.year == year && it.key.month == month }).toImmutableMap()

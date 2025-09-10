@@ -37,6 +37,7 @@ import com.whatever.caramel.core.designsystem.components.CaramelPullToRefreshInd
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.policy.CalendarPolicy
+import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.feature.calendar.component.CalendarDatePicker
 import com.whatever.caramel.feature.calendar.component.CurrentDateMenu
 import com.whatever.caramel.feature.calendar.component.bottomSheet.BottomSheetScheduleItem
@@ -201,7 +202,7 @@ internal fun CalendarScreen(
                                     onClickAddSchedule = {
                                         onIntent(CalendarIntent.ClickAddScheduleButton(date))
                                     },
-                                    isToday = date == state.today,
+                                    isToday = date == DateUtil.today(),
                                     isEmpty = bottomSheetInfo.totalList.isEmpty(),
                                     holidays = bottomSheetInfo.holidayList,
                                     anniversaryList = bottomSheetInfo.anniversaryList,

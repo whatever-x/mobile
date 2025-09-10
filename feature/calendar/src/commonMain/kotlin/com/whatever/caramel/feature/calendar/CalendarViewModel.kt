@@ -253,7 +253,7 @@ class CalendarViewModel(
         launch {
             val updateSelectedDate =
                 when {
-                    currentState.isInitialized -> currentState.today
+                    currentState.isInitialized -> DateUtil.today()
                     isRefresh -> currentState.selectedDate
                     else -> LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
                 }
@@ -356,7 +356,6 @@ class CalendarViewModel(
             year = pickerYear,
             isRefresh = isSame,
         )
-
         reduce {
             copy(
                 year = pickerYear,
