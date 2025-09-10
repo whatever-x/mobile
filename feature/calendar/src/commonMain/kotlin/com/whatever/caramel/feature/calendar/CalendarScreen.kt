@@ -203,7 +203,7 @@ internal fun CalendarScreen(
                                         onIntent(CalendarIntent.ClickAddScheduleButton(date))
                                     },
                                     isToday = date == DateUtil.today(),
-                                    isEmpty = bottomSheetInfo.totalList.isEmpty(),
+                                    isEmpty = bottomSheetInfo.scheduleList.isEmpty(),
                                     holidays = bottomSheetInfo.holidayList,
                                     anniversaryList = bottomSheetInfo.anniversaryList,
                                 )

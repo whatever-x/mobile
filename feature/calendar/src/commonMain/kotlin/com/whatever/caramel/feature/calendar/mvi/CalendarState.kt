@@ -5,14 +5,13 @@ import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.UiState
 import com.whatever.caramel.feature.calendar.model.CalendarBottomSheet
 import com.whatever.caramel.feature.calendar.model.CalendarBottomSheetState
-import com.whatever.caramel.feature.calendar.model.CalendarCacheModel
 import com.whatever.caramel.feature.calendar.model.CalendarCell
 import com.whatever.caramel.feature.calendar.model.CalendarCellUiModel
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableMap
-import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 
@@ -30,17 +29,13 @@ data class CalendarState(
     val isBottomSheetDragging: Boolean = false,
     val calendarCellMap: ImmutableMap<CalendarCell, List<CalendarCellUiModel>> = persistentMapOf(),
     val calendarBottomSheetMap: ImmutableMap<LocalDate, CalendarBottomSheet> = persistentMapOf(),
-    val yearCacheMap: LinkedHashMap<Int, CalendarCacheModel> = linkedMapOf(),
+    val yearHolidayDateSet: ImmutableSet<LocalDate> = persistentSetOf(),
 ) : UiState {
-
     val monthBottomSheetMap: ImmutableMap<LocalDate, CalendarBottomSheet>
         get() = (calendarBottomSheetMap.filter { it.key.year == year && it.key.month == month }).toImmutableMap()
 
     val isBottomSheetTopDescVisible
         get() = !isBottomSheetDragging && bottomSheetState == CalendarBottomSheetState.PARTIALLY_EXPANDED
-
-    val yearHolidayDateSet: ImmutableSet<LocalDate>
-        get() = (yearCacheMap[year]?.holidayList ?: emptyList()).map { it.date }.toImmutableSet()
 
     val bottomSheetScrollPosition: Int
         get() =

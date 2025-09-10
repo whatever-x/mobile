@@ -5,8 +5,7 @@ import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUse
 import com.whatever.caramel.core.domain.usecase.auth.SignOutUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameChoiceUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.GetAnniversariesInPeriodUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.GetHolidayOfYearUseCase
+import com.whatever.caramel.core.domain.usecase.calendar.GetCalendarOfYearUseCase
 import com.whatever.caramel.core.domain.usecase.content.CreateContentUseCase
 import com.whatever.caramel.core.domain.usecase.content.GetAllTagsUseCase
 import com.whatever.caramel.core.domain.usecase.content.GetLinkPreviewsForContentUseCase
@@ -21,7 +20,6 @@ import com.whatever.caramel.core.domain.usecase.memo.GetMemoListUseCase
 import com.whatever.caramel.core.domain.usecase.memo.GetMemoUseCase
 import com.whatever.caramel.core.domain.usecase.memo.UpdateMemoUseCase
 import com.whatever.caramel.core.domain.usecase.schedule.DeleteScheduleUseCase
-import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleInPeriodUseCase
 import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.schedule.GetTodayScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.schedule.UpdateScheduleUseCase
@@ -55,15 +53,15 @@ val useCaseModule =
         factory { EditCoupleStartDateUseCase(get()) }
         factory { UpdateShareMessageUseCase(get()) }
         factory { GetCoupleInfoUseCase(get()) }
-        factory { GetAnniversariesInPeriodUseCase(get(), get()) }
 
-        // Calender
-        factory { GetScheduleInPeriodUseCase(get()) }
-        factory { GetHolidayOfYearUseCase(get()) }
+        // Schedule
         factory { GetTodayScheduleUseCase(get()) }
         factory { UpdateScheduleUseCase(get()) }
         factory { DeleteScheduleUseCase(get()) }
         factory { GetScheduleUseCase(get()) }
+
+        // Calendar
+        factory { GetCalendarOfYearUseCase(get(), get(), get()) }
 
         // Tag
         factory { GetAllTagsUseCase(get()) }

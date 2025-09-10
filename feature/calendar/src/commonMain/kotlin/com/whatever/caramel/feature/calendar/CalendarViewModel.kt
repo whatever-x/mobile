@@ -6,20 +6,16 @@ import com.whatever.caramel.core.domain.entity.Schedule
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.policy.CalendarPolicy
-import com.whatever.caramel.core.domain.usecase.calendar.GetAnniversariesInPeriodUseCase
-import com.whatever.caramel.core.domain.usecase.calendar.GetHolidayOfYearUseCase
-import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleInPeriodUseCase
+import com.whatever.caramel.core.domain.usecase.calendar.GetCalendarOfYearUseCase
 import com.whatever.caramel.core.domain.vo.calendar.Anniversary
 import com.whatever.caramel.core.domain.vo.calendar.Holiday
 import com.whatever.caramel.core.domain.vo.content.ContentType
-import com.whatever.caramel.core.util.DateFormatter
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.calendar.mapper.toScheduleCell
 import com.whatever.caramel.feature.calendar.mapper.toScheduleUiModel
 import com.whatever.caramel.feature.calendar.model.CalendarBottomSheet
 import com.whatever.caramel.feature.calendar.model.CalendarBottomSheetState
-import com.whatever.caramel.feature.calendar.model.CalendarCacheModel
 import com.whatever.caramel.feature.calendar.model.CalendarCell
 import com.whatever.caramel.feature.calendar.model.CalendarCellUiModel
 import com.whatever.caramel.feature.calendar.model.CalendarUiModel
@@ -32,7 +28,6 @@ import com.whatever.caramel.feature.calendar.util.weekOfMonth
 import io.github.aakira.napier.Napier
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
-import kotlinx.coroutines.async
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
@@ -40,15 +35,11 @@ import kotlinx.datetime.atTime
 import kotlinx.datetime.number
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
-import kotlin.collections.orEmpty
-import kotlin.collections.set
 import kotlin.math.min
 import kotlin.time.Duration.Companion.days
 
 class CalendarViewModel(
-    private val getScheduleInPeriodUseCase: GetScheduleInPeriodUseCase,
-    private val getHolidayOfYearUseCase: GetHolidayOfYearUseCase,
-    private val getAnniversariesInPeriodUseCase: GetAnniversariesInPeriodUseCase,
+    private val getCalendarOfYearUseCase: GetCalendarOfYearUseCase,
     crashlytics: CaramelCrashlytics,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<CalendarState, CalendarSideEffect, CalendarIntent>(
@@ -144,7 +135,6 @@ class CalendarViewModel(
     }
 
     private fun initialize() {
-        reduce { copy(yearCacheMap = linkedMapOf()) }
         getYearSchedules(
             year = currentState.year,
             isRefresh = true,
@@ -169,9 +159,6 @@ class CalendarViewModel(
     }
 
     private fun refreshCalendar() {
-        reduce {
-            copy(isRefreshing = true, yearCacheMap = linkedMapOf())
-        }
         getYearSchedules(
             year = currentState.year,
             isRefresh = true,
@@ -257,69 +244,19 @@ class CalendarViewModel(
                     isRefresh -> currentState.selectedDate
                     else -> LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
                 }
-            var yearSchedule = currentState.yearCacheMap[year]
-            if (yearSchedule == null) {
-                val firstDayOfMonth =
-                    DateFormatter.createDateString(
-                        year = year,
-                        month = 1,
-                        day = 1,
-                    )
-                val lastDay = DateUtil.getLastDayOfMonth(year = year, month = 12)
-                val lastDayOfMonth =
-                    DateFormatter.createDateString(
-                        year = year,
-                        month = 12,
-                        day = lastDay,
-                    )
-
-                val scheduleListDeferred =
-                    async {
-                        getScheduleInPeriodUseCase(
-                            startDate = firstDayOfMonth,
-                            endDate = lastDayOfMonth,
-                        )
-                    }
-                val anniversariesDeferred =
-                    async {
-                        getAnniversariesInPeriodUseCase(
-                            startDate = firstDayOfMonth,
-                            endDate = lastDayOfMonth,
-                        )
-                    }
-                val holidaysDeferred = async { getHolidayOfYearUseCase(year) }
-
-                val scheduleList = scheduleListDeferred.await()
-                val anniversaries = anniversariesDeferred.await()
-                val holidayList = holidaysDeferred.await()
-                yearSchedule =
-                    CalendarCacheModel(
-                        scheduleList = scheduleList,
-                        anniversaryList = anniversaries,
-                        holidayList = holidayList,
-                    )
-            }
-            val updatedCache =
-                currentState.yearCacheMap
-                    .apply {
-                        if (size >= 3) {
-                            val firstKey = currentState.yearCacheMap.keys.first()
-                            remove(firstKey)
-                        }
-                        put(key = year, value = yearSchedule)
-                    }
+            val yearCalendar = getCalendarOfYearUseCase(forceUpdate = isRefresh, year = year)
             val calendarCellList =
                 createCellUiModel(
-                    scheduleList = yearSchedule.scheduleList,
-                    holidayList = yearSchedule.holidayList,
-                    anniversaryList = yearSchedule.anniversaryList,
+                    scheduleList = yearCalendar.scheduleList,
+                    holidayList = yearCalendar.holidayList,
+                    anniversaryList = yearCalendar.anniversaryList,
                 )
             val calendarBottomSheetList =
                 createBottomSheetUiModel(
                     updateSelectedDate = updateSelectedDate,
-                    scheduleList = yearSchedule.scheduleList,
-                    holidayList = yearSchedule.holidayList,
-                    anniversaryList = yearSchedule.anniversaryList,
+                    scheduleList = yearCalendar.scheduleList,
+                    holidayList = yearCalendar.holidayList,
+                    anniversaryList = yearCalendar.anniversaryList,
                 )
             reduce {
                 copy(
@@ -327,7 +264,6 @@ class CalendarViewModel(
                     isRefreshing = false,
                     selectedDate = updateSelectedDate,
                     calendarBottomSheetMap = calendarBottomSheetList,
-                    yearCacheMap = updatedCache,
                     calendarCellMap = calendarCellList,
                 )
             }
