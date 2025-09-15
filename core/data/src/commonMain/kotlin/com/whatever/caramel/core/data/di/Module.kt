@@ -1,6 +1,7 @@
 package com.whatever.caramel.core.data.di
 
 import com.whatever.caramel.core.data.interceptor.TokenInterceptorImpl
+import com.whatever.caramel.core.data.repository.AppRepositoryImpl
 import com.whatever.caramel.core.data.repository.AuthRepositoryImpl
 import com.whatever.caramel.core.data.repository.BalanceGameRepositoryImpl
 import com.whatever.caramel.core.data.repository.CalendarRepositoryImpl
@@ -9,6 +10,7 @@ import com.whatever.caramel.core.data.repository.CoupleRepositoryImpl
 import com.whatever.caramel.core.data.repository.MemoRepositoryImpl
 import com.whatever.caramel.core.data.repository.ScheduleRepositoryImpl
 import com.whatever.caramel.core.data.repository.UserRepositoryImpl
+import com.whatever.caramel.core.domain.repository.AppRepository
 import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.repository.BalanceGameRepository
 import com.whatever.caramel.core.domain.repository.CalendarRepository
@@ -32,6 +34,12 @@ val networkInterceptorModule =
 
 val repositoryModule =
     module {
+        single<AppRepository> {
+            AppRepositoryImpl(
+                remoteAppDataSource = get(),
+            )
+        }
+
         single<AuthRepository> {
             AuthRepositoryImpl(
                 remoteAuthDataSource = get(),

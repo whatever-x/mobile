@@ -25,14 +25,22 @@ data class ContentDetailState(
     val title: String
         get() =
             when (contentType) {
-                ContentType.MEMO -> memoDetail?.contentData?.title?.ifEmpty { memoDetail.contentData.description } ?: ""
-                ContentType.CALENDAR -> scheduleDetail?.contentData?.title?.ifEmpty { scheduleDetail.contentData.description } ?: ""
+                ContentType.MEMO ->
+                    memoDetail?.contentData?.title?.ifEmpty { memoDetail.contentData.description }
+                        ?: ""
+
+                ContentType.CALENDAR ->
+                    scheduleDetail?.contentData?.title?.ifEmpty { scheduleDetail.contentData.description }
+                        ?: ""
             }
 
     val description: String
         get() =
             when (contentType) {
-                ContentType.MEMO -> memoDetail?.contentData?.description?.takeIf { memoDetail.contentData.title.isNotEmpty() } ?: ""
+                ContentType.MEMO ->
+                    memoDetail?.contentData?.description?.takeIf { memoDetail.contentData.title.isNotEmpty() }
+                        ?: ""
+
                 ContentType.CALENDAR ->
                     scheduleDetail?.contentData?.description?.takeIf { scheduleDetail.contentData.title.isNotEmpty() }
                         ?: ""
@@ -42,14 +50,18 @@ data class ContentDetailState(
         get() =
             when (contentType) {
                 ContentType.MEMO -> memoDetail?.tagList?.toImmutableList() ?: persistentListOf()
-                ContentType.CALENDAR -> scheduleDetail?.tagList?.toImmutableList() ?: persistentListOf()
+                ContentType.CALENDAR ->
+                    scheduleDetail?.tagList?.toImmutableList()
+                        ?: persistentListOf()
             }
 
     val contentAssignee: ContentAssignee
         get() =
             when (contentType) {
                 ContentType.MEMO -> memoDetail?.contentData?.contentAssignee ?: ContentAssignee.US
-                ContentType.CALENDAR -> scheduleDetail?.contentData?.contentAssignee ?: ContentAssignee.US
+                ContentType.CALENDAR ->
+                    scheduleDetail?.contentData?.contentAssignee
+                        ?: ContentAssignee.US
             }
 
     val tagString: String
@@ -62,4 +74,9 @@ data class ContentDetailState(
                     startDateTime.hour == 0 && startDateTime.minute == 0 && endDateTime.hour == 23 && endDateTime.minute == 59
                 }
             } ?: false
+
+    val isMultiDay: Boolean
+        get() =
+            scheduleDetail?.let { (it.dateTimeInfo.startDateTime.dayOfMonth != it.dateTimeInfo.endDateTime.dayOfMonth) || !isAllDay }
+                ?: false
 }

@@ -177,6 +177,12 @@ internal fun CaramelNavHost(
                 showErrorToast = { message ->
                     onIntent(AppIntent.ShowToast(message))
                 },
+                navigateToCreateMemoWithTitle = { title, contentType ->
+                    navigateToContentCreate(
+                        contentType = contentType,
+                        title = title,
+                    )
+                },
             )
             contentEditScreen(
                 popBackStack = { popBackStack() },

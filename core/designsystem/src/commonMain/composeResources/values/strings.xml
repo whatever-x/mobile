@@ -8,6 +8,20 @@
 	<string name="us">우리</string>
 	<string name="partner">연인</string>
 
+	<!-- Memo -->
+	<string name="empty_memo">남긴 메모가 없어요.\n함께하고 싶은 활동이나\n기억하고 싶은 것들을 남겨보세요.</string>
+	<string name="memo">메모</string>
+	<string name="tag_all">전체</string>
+	<string name="my_memo">나의 메모</string>
+	<string name="partner_memo">연인의 메모</string>
+	<string name="both_memo">우리의 메모</string>
+	<string-array name="recommend_memo_list">
+		<item>버킷 리스트</item>
+		<item>함께 가고 싶은 여행지</item>
+		<item>맛집 리스트</item>
+	</string-array>
+	<string name="how_about_memo_topic">이런 주제의 메모는 어때?</string>
+
 	<string-array name="day_of_week">
 		<item>일</item>
 		<item>월</item>
