@@ -16,8 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import caramel.feature.calendar.generated.resources.Res
-import caramel.feature.calendar.generated.resources.day_of_week
+import caramel.core.designsystem.generated.resources.Res
+import caramel.core.designsystem.generated.resources.day_of_week
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.policy.CalendarPolicy
 import com.whatever.caramel.core.util.DateUtil

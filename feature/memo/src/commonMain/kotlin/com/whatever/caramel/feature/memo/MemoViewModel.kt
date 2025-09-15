@@ -2,19 +2,20 @@ package com.whatever.caramel.feature.memo
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
+import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.content.GetAllTagsUseCase
 import com.whatever.caramel.core.domain.usecase.memo.GetMemoListUseCase
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.viewmodel.BaseViewModel
-import com.whatever.caramel.feature.memo.model.TagUiModel
-import com.whatever.caramel.feature.memo.model.toUiModel
+import com.whatever.caramel.feature.memo.mvi.MemoContentState
 import com.whatever.caramel.feature.memo.mvi.MemoIntent
 import com.whatever.caramel.feature.memo.mvi.MemoSideEffect
 import com.whatever.caramel.feature.memo.mvi.MemoState
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.joinAll
 
 class MemoViewModel(
     private val getMemoListUseCase: GetMemoListUseCase,
@@ -28,9 +29,10 @@ class MemoViewModel(
         when (intent) {
             is MemoIntent.ClickMemo -> clickMemo(intent)
             is MemoIntent.ClickTagChip -> clickTagChip(intent)
-            MemoIntent.PullToRefresh -> refreshMemos()
-            MemoIntent.ReachedEndOfList -> loadPagingData()
-            MemoIntent.Initialize -> initialize()
+            is MemoIntent.PullToRefresh -> refresh()
+            is MemoIntent.Pagination -> loadPagingData()
+            is MemoIntent.ClickRecommendMemo -> clickRecommendMemo(intent)
+            is MemoIntent.Initialize -> initialize()
         }
     }
 
@@ -38,7 +40,6 @@ class MemoViewModel(
         super.handleClientException(throwable)
         reduce {
             copy(
-                isMemoLoading = false,
                 isRefreshing = false,
                 isTagLoading = false,
             )
@@ -70,37 +71,61 @@ class MemoViewModel(
         }
     }
 
-    private fun initialize() {
-        launch {
-            reduce {
-                copy(
-                    isMemoLoading = true,
-                    isTagLoading = true,
-                    isRefreshing = false,
-                    memos = persistentListOf(),
-                    tags = persistentListOf(),
-                    selectedTag = null,
-                    selectedChipIndex = 0,
-                    cursor = null,
-                )
-            }
-            getMemos()
-            getTags()
+    private suspend fun initialize() {
+        reduce {
+            copy(
+                isTagLoading = true,
+                memoContent = MemoContentState.Loading,
+                cursor = null,
+                tagList = persistentListOf(Tag(id = 0L, label = "")),
+                selectedTag = tagList[0],
+            )
         }
+
+        initMemoList()
+        initTagList()
     }
 
-    private fun getTags() {
-        reduce { copy(isTagLoading = true) }
-        launch {
-            val tags = getAllTagsUseCase().map { TagUiModel.toUiModel(it) }
-            val combinedTags = listOf(TagUiModel()) + tags
-            reduce {
-                copy(
-                    isTagLoading = false,
-                    tags = combinedTags.toImmutableList(),
-                    selectedTag = combinedTags.first(),
-                )
-            }
+    private suspend fun refresh() {
+        val initTagList = persistentListOf(Tag(id = 0L, label = ""))
+
+        reduce {
+            copy(
+                isRefreshing = true,
+                isTagLoading = true,
+                memoContent = MemoContentState.Loading,
+                tagList = initTagList,
+                selectedTag = initTagList[0],
+                cursor = null,
+            )
+        }
+
+        val initTagListJob = launch { initTagList() }
+        val initMemoListJob = launch { initMemoList() }
+
+        joinAll(initTagListJob, initMemoListJob)
+
+        reduce { copy(isRefreshing = false) }
+    }
+
+    private fun clickRecommendMemo(intent: MemoIntent.ClickRecommendMemo) {
+        postSideEffect(
+            MemoSideEffect.NavigateToCreateMemoWithTitle(
+                title = intent.title,
+                contentType = ContentType.MEMO,
+            ),
+        )
+    }
+
+    private suspend fun initTagList() {
+        val newTagList = getAllTagsUseCase()
+        val combinedTags = currentState.tagList + newTagList
+
+        reduce {
+            copy(
+                isTagLoading = false,
+                tagList = combinedTags.toImmutableList(),
+            )
         }
     }
 
@@ -108,61 +133,77 @@ class MemoViewModel(
         postSideEffect(MemoSideEffect.NavigateToMemoDetail(intent.memoId, ContentType.MEMO))
     }
 
-    private fun loadPagingData() {
-        if (currentState.isMemoLoading) return
-        if (currentState.cursor == null && currentState.memos.isNotEmpty()) return
-        getMemos()
+    private suspend fun loadPagingData() {
+        val currentMemoContentState = currentState.memoContent
+
+        when (currentMemoContentState) {
+            is MemoContentState.Empty,
+            is MemoContentState.Loading,
+            -> return
+
+            is MemoContentState.Content -> {
+                if (currentState.cursor == null) return
+
+                val newPagingData =
+                    getMemoListUseCase(
+                        size = 10,
+                        cursor = currentState.cursor,
+                        tagId = currentState.selectedTag?.id,
+                    )
+
+                if (newPagingData.memos.isNotEmpty()) {
+                    val combinedMemoList = currentMemoContentState.memoList + newPagingData.memos
+
+                    reduce {
+                        copy(
+                            cursor = newPagingData.nextCursor,
+                            memoContent =
+                                currentMemoContentState.copy(
+                                    memoList = combinedMemoList.toImmutableList(),
+                                ),
+                        )
+                    }
+                } else {
+                    reduce { copy(cursor = newPagingData.nextCursor) }
+                }
+            }
+        }
     }
 
-    private fun clickTagChip(intent: MemoIntent.ClickTagChip) {
+    private suspend fun clickTagChip(intent: MemoIntent.ClickTagChip) {
         if (currentState.selectedTag == intent.tag) return
 
         reduce {
             copy(
-                isMemoLoading = true,
                 selectedTag = intent.tag,
                 cursor = null,
-                memos = persistentListOf(),
-                selectedChipIndex = intent.index,
+                memoContent = MemoContentState.Loading,
             )
         }
-        getMemos()
+
+        initMemoList()
     }
 
-    private fun refreshMemos() {
+    private suspend fun initMemoList() {
+        val memoWIthCursor =
+            getMemoListUseCase(
+                size = 10,
+                cursor = currentState.cursor,
+                tagId = currentState.selectedTag?.id,
+            )
+
+        val memoContentState =
+            if (memoWIthCursor.memos.isEmpty()) {
+                MemoContentState.Empty
+            } else {
+                MemoContentState.Content(memoList = memoWIthCursor.memos.toImmutableList())
+            }
+
         reduce {
             copy(
-                isRefreshing = true,
-                isMemoLoading = true,
-                cursor = null,
-                memos = persistentListOf(),
+                cursor = memoWIthCursor.nextCursor,
+                memoContent = memoContentState,
             )
-        }
-        getMemos()
-    }
-
-    private fun getMemos() {
-        launch {
-            val newMemos =
-                getMemoListUseCase(
-                    size = 10,
-                    cursor = currentState.cursor,
-                    tagId = currentState.selectedTag?.id,
-                )
-            val updatedMemos =
-                if (newMemos.memos.isEmpty()) {
-                    currentState.memos
-                } else {
-                    currentState.memos + newMemos.memos.map { it.toUiModel() }
-                }
-            reduce {
-                copy(
-                    isMemoLoading = false,
-                    isRefreshing = false,
-                    cursor = newMemos.nextCursor,
-                    memos = updatedMemos.toImmutableList(),
-                )
-            }
         }
     }
 }
