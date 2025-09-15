@@ -6,9 +6,7 @@ import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentData
 import com.whatever.caramel.core.util.DateUtil
-import com.whatever.caramel.feature.memo.model.MemoUiModel
-import com.whatever.caramel.feature.memo.model.TagUiModel
-import com.whatever.caramel.feature.memo.model.toUiModel
+import com.whatever.caramel.feature.memo.mvi.MemoContentState
 import com.whatever.caramel.feature.memo.mvi.MemoState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -16,32 +14,62 @@ import kotlinx.collections.immutable.toImmutableList
 
 internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
     override val values: Sequence<MemoState>
-        get() =
-            sequenceOf(
+        get() {
+            val tagList = createTempTagList(size = 100)
+            val memoList = createTempMemoList(size = 10, emptyTitle = false)
+
+            return sequenceOf(
                 MemoState(
-                    isMemoLoading = true,
-                    memos = persistentListOf(),
-                    tags = persistentListOf(),
+                    // 전체 로딩 상태
+                    isTagLoading = true,
+                    isRefreshing = false,
+                    memoContent = MemoContentState.Loading,
+                    tagList = persistentListOf(),
                     selectedTag = null,
+                    cursor = null,
                 ),
                 MemoState(
-                    isMemoLoading = false,
-                    memos = createTempMemoList(size = 100, emptyTitle = true),
-                    tags = createTempTagUiList(size = 100),
-                    selectedTag = TagUiModel(1, "label1"),
+                    // 메모 로딩 상태
+                    isTagLoading = false,
+                    isRefreshing = false,
+                    memoContent = MemoContentState.Loading,
+                    tagList = tagList,
+                    selectedTag = tagList[0],
+                    cursor = null,
+                ),
+                MemoState( // 태그 로딩 상태
+                    isTagLoading = true,
+                    isRefreshing = false,
+                    memoContent = MemoContentState.Content(memoList = memoList),
+                    tagList = persistentListOf(),
+                    selectedTag = null,
+                    cursor = null,
                 ),
                 MemoState(
-                    isMemoLoading = false,
-                    memos = createTempMemoList(size = 5, emptyTitle = false),
-                    tags = createTempTagUiList(size = 5),
-                    selectedTag = TagUiModel(1, "label1"),
+                    // 전체 나온 상태
+                    isTagLoading = false,
+                    isRefreshing = false,
+                    memoContent = MemoContentState.Content(memoList = memoList),
+                    tagList = tagList,
+                    selectedTag = tagList[0],
+                    cursor = "1",
+                ),
+                MemoState(
+                    // 메모가 없을 때
+                    isTagLoading = false,
+                    isRefreshing = false,
+                    memoContent = MemoContentState.Empty,
+                    tagList = tagList,
+                    selectedTag = tagList[0],
+                    cursor = "1",
                 ),
             )
+        }
 
     private fun createTempMemoList(
         size: Int,
         emptyTitle: Boolean = false,
-    ): ImmutableList<MemoUiModel> {
+    ): ImmutableList<Memo> {
         val list = mutableListOf<Memo>()
         for (index in 0 until size) {
             val contentAssignee =
@@ -65,12 +93,12 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
                 ),
             )
         }
-        return list.map { it.toUiModel() }.toImmutableList()
+        return list.toImmutableList()
     }
 
     private fun createTempTagList(size: Int): ImmutableList<Tag> {
-        val list = mutableListOf<Tag>()
-        for (index in 0 until size) {
+        val list = mutableListOf<Tag>(Tag(id = 0L, label = ""))
+        for (index in 1 until size) {
             list.add(
                 Tag(
                     id = index.toLong(),
@@ -79,18 +107,5 @@ internal class MemoScreenPreviewProvider : PreviewParameterProvider<MemoState> {
             )
         }
         return list.toImmutableList()
-    }
-
-    private fun createTempTagUiList(size: Int): ImmutableList<TagUiModel> {
-        val list = mutableListOf<Tag>()
-        for (index in 0 until size) {
-            list.add(
-                Tag(
-                    id = index.toLong(),
-                    label = "label$index",
-                ),
-            )
-        }
-        return list.map { TagUiModel.toUiModel(it) }.toImmutableList()
     }
 }

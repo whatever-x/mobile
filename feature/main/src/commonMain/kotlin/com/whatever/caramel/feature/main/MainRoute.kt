@@ -40,6 +40,7 @@ internal fun MainRoute(
     navigateToStaredCoupleDay: () -> Unit,
     navigateToScheduleDetail: (Long, ContentType) -> Unit,
     navigateToCreateMemo: (ContentType) -> Unit,
+    navigateToCreateMemoWithTitle: (String, ContentType) -> Unit,
     navigateToCreateSchedule: (ContentType, String) -> Unit,
     showErrorToast: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
@@ -136,6 +137,7 @@ internal fun MainRoute(
                 navigateToMemoDetail = navigateToScheduleDetail,
                 showErrorToast = showErrorToast,
                 showErrorDialog = showErrorDialog,
+                navigateToCreateMemoWithTitle = navigateToCreateMemoWithTitle,
             )
         }
     }

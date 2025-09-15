@@ -14,6 +14,7 @@ import com.whatever.caramel.core.domain.usecase.content.GetAllTagsUseCase
 import com.whatever.caramel.core.domain.validator.ContentValidator
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentType
+import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.ui.picker.model.TimeUiState
@@ -77,6 +78,8 @@ class ContentCreateViewModel(
                     initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone)
             }
         return ContentCreateState(
+            title = arguments.title,
+            selectedAssignee = ContentAssigneeUiModel.valueOf(arguments.contentAssignee),
             createMode =
                 when (ContentType.valueOf(arguments.contentType)) {
                     ContentType.MEMO -> CreateMode.MEMO
