@@ -2,196 +2,191 @@ package com.whatever.caramel.feature.calendar.component.calendar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.domain.entity.Schedule
-import com.whatever.caramel.core.domain.vo.calendar.Anniversary
-import com.whatever.caramel.core.domain.vo.calendar.Holiday
+import com.whatever.caramel.core.domain.policy.CalendarPolicy
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
-import com.whatever.caramel.feature.calendar.mvi.DaySchedule
+import com.whatever.caramel.feature.calendar.dimension.CalendarDimension
+import com.whatever.caramel.feature.calendar.model.CalendarCellUiModel
+import com.whatever.caramel.feature.calendar.model.CalendarUiModel
 
 @Composable
-fun CalendarScheduleList(
+internal fun CalendarScheduleList(
     modifier: Modifier = Modifier,
-    schedule: DaySchedule,
-    onClickSchedule: (Long) -> Unit,
+    cellUiList: List<CalendarCellUiModel>,
+    onClickCell: (Long) -> Unit,
 ) {
     val density = LocalDensity.current
-    val spacingBetweenItems =
-        density.run {
-            CaramelTheme.spacing.xxs.roundToPx()
-        }
-
-    SubcomposeLayout(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .padding(horizontal = CaramelTheme.spacing.xxs)
-                .background(color = CaramelTheme.color.background.primary),
-    ) { constraints ->
+    val spacingBetweenItemsPx = with(density) { CaramelTheme.spacing.xxs.roundToPx() }
+    val scheduleCellHeightPx = with(density) { CalendarDimension.scheduleCellHeight.roundToPx() }
+    val totalCellHeight = scheduleCellHeightPx + spacingBetweenItemsPx
+    SubcomposeLayout(modifier = modifier) { constraints ->
         val parentHeight = constraints.maxHeight
-        var totalHeight = 0
-        val itemsToPlace = mutableListOf<Pair<Placeable, Int>>()
-        var visibleItemCount = 0
-        val totalListSize = schedule.totalScheduleCount
+        val schedulePerWidth = (constraints.maxWidth / CalendarPolicy.DAY_OF_WEEK)
+        val itemsToPlace = mutableListOf<Triple<Placeable, Int, Int>>()
+        val outRangeArray = IntArray(CalendarPolicy.DAY_OF_WEEK)
+        val maxVisibleItemCount = (parentHeight / totalCellHeight) - 1
 
-        schedule.holidayList.forEachIndexed { index, holiday ->
-            val placeable =
-                subcompose("holiday_$index") {
-                    CalendarHolidayItem(holiday = holiday)
-                }.first().measure(constraints)
-
-            val newHeight = totalHeight + placeable.height + spacingBetweenItems
-            if (newHeight + placeable.height <= parentHeight) {
-                visibleItemCount++
-                itemsToPlace.add(placeable to totalHeight)
-                totalHeight = newHeight
-            } else {
-                return@forEachIndexed
-            }
-        }
-
-        schedule.anniversaryList.forEachIndexed { index, anniversary ->
-            val placeable =
-                subcompose("anniversary_$index") {
-                    CalendarAnniversaryItem(anniversary = anniversary)
-                }.first().measure(constraints)
-
-            val newHeight = totalHeight + placeable.height + spacingBetweenItems
-            if (newHeight + placeable.height <= parentHeight) {
-                itemsToPlace.add(placeable to totalHeight)
-                totalHeight = newHeight
-                visibleItemCount++
-            } else {
-                return@forEachIndexed
-            }
-        }
-
-        schedule.scheduleList.forEachIndexed { index, schedule ->
-            val placeable =
-                subcompose("schedule_$index") {
-                    CalendarScheduleItem(schedule = schedule, onClickSchedule = onClickSchedule)
-                }.first().measure(constraints)
-
-            val newHeight = totalHeight + placeable.height + spacingBetweenItems
-            if (newHeight + placeable.height <= parentHeight) {
-                itemsToPlace.add(placeable to totalHeight)
-                totalHeight = newHeight
-                visibleItemCount++
-            } else {
-                return@forEachIndexed
-            }
-        }
-
-        val hasMoreItems = totalListSize > visibleItemCount
-        if (hasMoreItems) {
-            val morePlaceable =
-                subcompose("more") {
-                    Text(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = CaramelTheme.spacing.xs),
-                        textAlign = TextAlign.Center,
-                        style = CaramelTheme.typography.label3.regular,
-                        color = CaramelTheme.color.text.secondary,
-                        text = "+${totalListSize - visibleItemCount}개",
+        cellUiList.forEachIndexed { index, uiModel ->
+            val schedulePlaceable =
+                subcompose("Schedule_$index") {
+                    ScheduleCell(
+                        modifier = Modifier.fillMaxWidth(),
+                        id = uiModel.base.id,
+                        type = uiModel.base.type,
+                        contentAssignee = uiModel.base.contentAssignee,
+                        content = uiModel.base.mainText,
+                        onClickCell = onClickCell,
                     )
-                }.first().measure(constraints)
-            itemsToPlace.add(morePlaceable to totalHeight + spacingBetweenItems)
+                }.first().measure(
+                    constraints.copy(
+                        minHeight = 0,
+                        maxHeight = totalCellHeight,
+                        minWidth = 0,
+                        maxWidth = schedulePerWidth * (uiModel.rowEndIndex - uiModel.rowStartIndex + 1),
+                    ),
+                )
+            if (uiModel.columnIndex <= maxVisibleItemCount) {
+                itemsToPlace.add(
+                    Triple(
+                        schedulePlaceable,
+                        uiModel.rowStartIndex * schedulePerWidth,
+                        uiModel.columnIndex * totalCellHeight,
+                    ),
+                )
+            } else {
+                for (index in uiModel.rowStartIndex..uiModel.rowEndIndex) {
+                    outRangeArray[index] += 1
+                }
+            }
         }
 
-        layout(constraints.maxWidth, totalHeight) {
-            itemsToPlace.forEach { (placeable, y) ->
-                placeable.place(x = 0, y = y)
+        layout(constraints.maxWidth, constraints.maxHeight) {
+            itemsToPlace.forEach { (placeable, x, y) ->
+                placeable.place(x, y)
+            }
+            val outRangePlaceable =
+                subcompose("OutRange") {
+                    ScheduleOutRangeCell(
+                        modifier = Modifier,
+                        outRange = outRangeArray.toList(),
+                    )
+                }.firstOrNull()?.measure(
+                    constraints.copy(
+                        minHeight = 0,
+                        maxHeight = totalCellHeight,
+                        minWidth = 0,
+                        maxWidth = constraints.maxWidth,
+                    ),
+                )
+            val startIndex = outRangeArray.indexOfFirst { it > 0 }
+            if (outRangePlaceable != null && startIndex != -1) {
+                outRangePlaceable.place(
+                    startIndex,
+                    (maxVisibleItemCount + 1) * (totalCellHeight),
+                )
             }
         }
     }
 }
 
 @Composable
-private fun ScheduleItem(
+private fun ScheduleCell(
     modifier: Modifier = Modifier,
+    id: Long,
+    type: CalendarUiModel.ScheduleType,
+    contentAssignee: ContentAssignee,
     content: String,
-    backgroundColor: Color,
-    textColor: Color,
-    onClick: () -> Unit = {},
+    onClickCell: (Long) -> Unit,
 ) {
-    Text(
+    val (backgroundColor, textColor) =
+        with(CaramelTheme.color) {
+            when (type) {
+                CalendarUiModel.ScheduleType.MULTI_SCHEDULE, CalendarUiModel.ScheduleType.SINGLE_SCHEDULE ->
+                    when (contentAssignee) {
+                        ContentAssignee.ME -> fill.labelAccent3 to text.labelAccent4
+                        ContentAssignee.PARTNER -> fill.labelAccent4 to text.labelAccent3
+                        ContentAssignee.US -> fill.labelBrand to text.labelBrand
+                    }
+
+                CalendarUiModel.ScheduleType.HOLIDAY -> fill.brand to text.inverse
+                CalendarUiModel.ScheduleType.ANNIVERSARY -> fill.labelAccent1 to text.inverse
+            }
+        }
+    Box(
+        modifier =
+            Modifier
+                .padding(horizontal = 2.dp),
+        contentAlignment = Alignment.CenterStart,
+    ) {
+        Text(
+            modifier =
+                modifier
+                    .height(height = CalendarDimension.scheduleCellHeight)
+                    .background(color = backgroundColor, shape = CaramelTheme.shape.xxs)
+                    .padding(vertical = 1.dp, horizontal = 2.dp)
+                    .clickable(
+                        indication = null,
+                        interactionSource = null,
+                        onClick = {
+                            when (type) {
+                                CalendarUiModel.ScheduleType.MULTI_SCHEDULE,
+                                CalendarUiModel.ScheduleType.SINGLE_SCHEDULE,
+                                -> onClickCell(id)
+                                else -> Unit
+                            }
+                        },
+                    ),
+            text = content,
+            color = textColor,
+            style = CaramelTheme.typography.label3.bold,
+            textAlign = TextAlign.Start,
+            maxLines = 1,
+        )
+    }
+}
+
+@Composable
+private fun ScheduleOutRangeCell(
+    modifier: Modifier = Modifier,
+    outRange: List<Int>,
+) {
+    if (outRange.all { it == 0 }) return
+    Row(
         modifier =
             modifier
                 .fillMaxWidth()
-                .background(
-                    color = backgroundColor,
-                    shape = CaramelTheme.shape.xxs,
-                ).padding(horizontal = CaramelTheme.spacing.xxs)
-                .clickable(
-                    indication = null,
-                    interactionSource = null,
-                    onClick = onClick,
-                ),
-        maxLines = 1,
-        overflow = TextOverflow.Clip,
-        text = content,
-        style = CaramelTheme.typography.label3.bold,
-        color = textColor,
-    )
-}
-
-@Composable
-private fun CalendarAnniversaryItem(
-    modifier: Modifier = Modifier,
-    anniversary: Anniversary,
-) {
-    ScheduleItem(
-        modifier = modifier,
-        content = anniversary.label,
-        backgroundColor = CaramelTheme.color.fill.brand,
-        textColor = CaramelTheme.color.text.inverse,
-    )
-}
-
-@Composable
-private fun CalendarHolidayItem(
-    modifier: Modifier = Modifier,
-    holiday: Holiday,
-) {
-    ScheduleItem(
-        modifier = modifier,
-        content = holiday.name,
-        backgroundColor = CaramelTheme.color.fill.labelAccent1,
-        textColor = CaramelTheme.color.text.inverse,
-    )
-}
-
-@Composable
-private fun CalendarScheduleItem(
-    modifier: Modifier = Modifier,
-    schedule: Schedule,
-    onClickSchedule: (Long) -> Unit,
-) {
-    val (textColor, backgroundColor) =
-        when (schedule.contentData.contentAssignee) {
-            ContentAssignee.ME -> CaramelTheme.color.text.labelAccent4 to CaramelTheme.color.fill.labelAccent3
-            ContentAssignee.PARTNER -> CaramelTheme.color.text.labelAccent3 to CaramelTheme.color.fill.labelAccent4
-            ContentAssignee.US -> CaramelTheme.color.text.labelBrand to CaramelTheme.color.fill.labelBrand
+                .height(height = CalendarDimension.scheduleCellHeight),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        repeat(outRange.size) { index ->
+            if (outRange[index] >= 1) {
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = "+${outRange[index]}개",
+                    style = CaramelTheme.typography.label3.regular,
+                    color = CaramelTheme.color.text.secondary,
+                    textAlign = TextAlign.Center,
+                )
+            } else {
+                Spacer(modifier = Modifier.weight(1f))
+            }
         }
-
-    ScheduleItem(
-        modifier = modifier,
-        content = schedule.contentData.title.ifEmpty { schedule.contentData.description },
-        backgroundColor = backgroundColor,
-        textColor = textColor,
-        onClick = { onClickSchedule(schedule.id) },
-    )
+    }
 }

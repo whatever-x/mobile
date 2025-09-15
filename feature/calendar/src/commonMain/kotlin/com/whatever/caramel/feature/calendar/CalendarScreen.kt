@@ -37,6 +37,7 @@ import com.whatever.caramel.core.designsystem.components.CaramelPullToRefreshInd
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.policy.CalendarPolicy
+import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.feature.calendar.component.CalendarDatePicker
 import com.whatever.caramel.feature.calendar.component.CurrentDateMenu
 import com.whatever.caramel.feature.calendar.component.bottomSheet.BottomSheetScheduleItem
@@ -46,14 +47,13 @@ import com.whatever.caramel.feature.calendar.component.bottomSheet.DefaultBottom
 import com.whatever.caramel.feature.calendar.component.calendar.CalendarDayOfWeek
 import com.whatever.caramel.feature.calendar.component.calendar.CaramelCalendar
 import com.whatever.caramel.feature.calendar.dimension.CalendarDimension
-import com.whatever.caramel.feature.calendar.mvi.BottomSheetState
+import com.whatever.caramel.feature.calendar.model.CalendarBottomSheetState
 import com.whatever.caramel.feature.calendar.mvi.CalendarIntent
 import com.whatever.caramel.feature.calendar.mvi.CalendarState
-import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.datetime.Month
 import kotlin.math.roundToInt
 
-// @RyuSw-cs 2025.05.24 TODO : Column + ModalBottomSheet 조합으로 변경
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CalendarScreen(
@@ -72,7 +72,7 @@ internal fun CalendarScreen(
         targetValue =
             when {
                 state.isRefreshing -> 250
-                state.bottomSheetState == BottomSheetState.EXPANDED -> 0
+                state.bottomSheetState == CalendarBottomSheetState.EXPANDED -> 0
                 pullToRefreshState.distanceFraction in 0f..1f -> (250 * pullToRefreshState.distanceFraction).roundToInt()
                 pullToRefreshState.distanceFraction > 1f -> (250 + ((pullToRefreshState.distanceFraction - 1f) * 1f) * 100).roundToInt()
                 else -> 0
@@ -80,21 +80,15 @@ internal fun CalendarScreen(
     )
 
     LaunchedEffect(state.selectedDate) {
-        if (state.bottomSheetState == BottomSheetState.EXPANDED) {
-            val scheduleIndex = state.yearScheduleList.indexOfFirst { it.date == state.selectedDate }
-            if (scheduleIndex >= 0) {
-                val itemPosition =
-                    scheduleIndex +
-                        state.yearScheduleList.take(scheduleIndex).sumOf { it.scheduleList.size }
-                lazyListState.scrollToItem(index = itemPosition)
-            }
+        if (state.bottomSheetState == CalendarBottomSheetState.EXPANDED) {
+            lazyListState.scrollToItem(index = state.bottomSheetScrollPosition)
         }
     }
     LaunchedEffect(state.bottomSheetState) {
         when (state.bottomSheetState) {
-            BottomSheetState.HIDDEN -> bottomSheetState.hide()
-            BottomSheetState.EXPANDED -> bottomSheetState.expand()
-            BottomSheetState.PARTIALLY_EXPANDED -> {
+            CalendarBottomSheetState.HIDDEN -> bottomSheetState.hide()
+            CalendarBottomSheetState.EXPANDED -> bottomSheetState.expand()
+            CalendarBottomSheetState.PARTIALLY_EXPANDED -> {
                 lazyListState.scrollToItem(0)
                 bottomSheetState.partialExpand()
             }
@@ -103,9 +97,9 @@ internal fun CalendarScreen(
     LaunchedEffect(bottomSheetState.currentValue) {
         val updateStateValue =
             when (bottomSheetState.currentValue) {
-                SheetValue.Hidden -> BottomSheetState.HIDDEN
-                SheetValue.Expanded -> BottomSheetState.EXPANDED
-                SheetValue.PartiallyExpanded -> BottomSheetState.PARTIALLY_EXPANDED
+                SheetValue.Hidden -> CalendarBottomSheetState.HIDDEN
+                SheetValue.Expanded -> CalendarBottomSheetState.EXPANDED
+                SheetValue.PartiallyExpanded -> CalendarBottomSheetState.PARTIALLY_EXPANDED
             }
         onIntent(CalendarIntent.DraggingCalendarBottomSheet(false))
         onIntent(CalendarIntent.UpdateCalendarBottomSheet(updateStateValue))
@@ -186,8 +180,7 @@ internal fun CalendarScreen(
                 },
                 sheetContent = {
                     val availableHeight =
-                        totalHeight - CalendarDimension.datePickerHeight - CalendarDimension.dayOfWeekHeight +
-                            CalendarDimension.sheetPartiallyExpandedTextHeight
+                        totalHeight - CalendarDimension.datePickerHeight - CalendarDimension.dayOfWeekHeight
                     LazyColumn(
                         modifier =
                             Modifier
@@ -201,37 +194,36 @@ internal fun CalendarScreen(
                                 ).height(availableHeight),
                         state = lazyListState,
                     ) {
-                        state.monthScheduleList.forEachIndexed { index, monthSchedule ->
-                            val hasNextSchedule = index != state.monthScheduleList.lastIndex
+                        state.monthBottomSheetMap.forEach { (date, bottomSheetInfo) ->
+                            val hasNextSchedule = state.monthBottomSheetMap.keys.last() != date
                             item {
                                 BottomSheetScheduleListHeader(
-                                    date = monthSchedule.date,
+                                    date = date,
                                     onClickAddSchedule = {
-                                        onIntent(CalendarIntent.ClickAddScheduleButton(monthSchedule.date))
+                                        onIntent(CalendarIntent.ClickAddScheduleButton(date))
                                     },
-                                    isToday = monthSchedule.date == state.today,
-                                    isEmpty = monthSchedule.scheduleList.isEmpty(),
-                                    holidays = monthSchedule.holidayList,
-                                    anniversaries = monthSchedule.anniversaryList,
+                                    isToday = date == DateUtil.today(),
+                                    isEmpty = bottomSheetInfo.scheduleList.isEmpty(),
+                                    holidays = bottomSheetInfo.holidayList,
+                                    anniversaryList = bottomSheetInfo.anniversaryList,
                                 )
                                 Spacer(modifier = Modifier.height(CaramelTheme.spacing.s))
                             }
                             itemsIndexed(
-                                items = monthSchedule.scheduleList,
+                                items = bottomSheetInfo.scheduleList,
                                 key = { _, schedule ->
-                                    schedule.id
+                                    "${schedule.id}_$date"
                                 },
                             ) { index, schedule ->
-                                val isLastSchedule = index == monthSchedule.scheduleList.lastIndex
+                                val isLastSchedule = index == bottomSheetInfo.scheduleList.lastIndex
                                 val spacerHeight =
                                     if (isLastSchedule) CaramelTheme.spacing.l else CaramelTheme.spacing.s
-
                                 BottomSheetScheduleItem(
                                     id = schedule.id,
-                                    title = schedule.contentData.title,
-                                    description = schedule.contentData.description,
+                                    title = schedule.mainText,
+                                    description = schedule.description,
                                     url = schedule.url,
-                                    contentAssignee = schedule.contentData.contentAssignee,
+                                    contentAssignee = schedule.contentAssignee,
                                     onClickUrl = { onIntent(CalendarIntent.ClickScheduleUrl(it)) },
                                     onClickSchedule = {
                                         onIntent(
@@ -288,10 +280,20 @@ internal fun CalendarScreen(
                                 modifier =
                                     Modifier.background(color = CaramelTheme.color.background.primary),
                                 pageIndex = pageIndex,
-                                schedules = state.yearScheduleList.toImmutableList(),
                                 selectedDate = state.selectedDate,
-                                onClickSchedule = { onIntent(CalendarIntent.ClickScheduleItemInCalendar(it)) },
+                                onClickSchedule = {
+                                    onIntent(
+                                        CalendarIntent.ClickScheduleItemInCalendar(
+                                            it,
+                                        ),
+                                    )
+                                },
                                 onClickCell = { onIntent(CalendarIntent.ClickCalendarCell(it)) },
+                                monthCellMap =
+                                    state.calendarCellMap
+                                        .filterKeys { it.pageIndex == pageIndex }
+                                        .toImmutableMap(),
+                                yearHolidaySet = state.yearHolidayDateSet,
                             )
                         }
                     }

@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.calendar.mvi
 
 import com.whatever.caramel.core.viewmodel.UiIntent
+import com.whatever.caramel.feature.calendar.model.CalendarBottomSheetState
 import kotlinx.datetime.LocalDate
 
 sealed interface CalendarIntent : UiIntent {
@@ -47,7 +48,7 @@ sealed interface CalendarIntent : UiIntent {
     ) : CalendarIntent
 
     data class UpdateCalendarBottomSheet(
-        val sheetState: BottomSheetState,
+        val sheetState: CalendarBottomSheetState,
     ) : CalendarIntent
 
     data class DraggingCalendarBottomSheet(

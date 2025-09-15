@@ -15,7 +15,6 @@ class GetTodayScheduleUseCase(
                 .now()
                 .toLocalDateTime(TimeZone.currentSystemDefault())
                 .date
-                .toString()
 
         return scheduleRepository.getScheduleList(
             startDate = today,
