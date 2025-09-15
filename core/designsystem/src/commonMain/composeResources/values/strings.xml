@@ -22,4 +22,13 @@
 	</string-array>
 	<string name="how_about_memo_topic">이런 주제의 메모는 어때?</string>
 
+	<string-array name="day_of_week">
+		<item>일</item>
+		<item>월</item>
+		<item>화</item>
+		<item>수</item>
+		<item>목</item>
+		<item>금</item>
+		<item>토</item>
+	</string-array>
 </resources>
