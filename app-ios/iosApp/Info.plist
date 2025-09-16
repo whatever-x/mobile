@@ -4,8 +4,6 @@
 <dict>
 	<key>AppsFlyerKey</key>
 	<string>$(APPS_FLYER_KEY)</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -21,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.6</string>
+	<string>1.1.0</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -42,11 +40,13 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>10000604</string>
+	<string>10010001</string>
 	<key>CaramelBaseUrl</key>
 	<string>$(CARAMEL_BASE_URL)</string>
 	<key>CaramelSampleUrl</key>
 	<string>$(CARAMEL_SAMPLE_URL)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>KakaoNativeAppKey</key>
 	<string>$(KAKAO_NATIVE_APP_KEY)</string>
 	<key>LSApplicationQueriesSchemes</key>
