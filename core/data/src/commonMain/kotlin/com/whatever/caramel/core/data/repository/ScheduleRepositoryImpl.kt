@@ -44,7 +44,7 @@ class ScheduleRepositoryImpl(
                 title = parameter.title,
                 description = parameter.description,
                 isCompleted = parameter.isCompleted,
-                startDateTime = parameter.dateTimeInfo?.startDateTime.toString(),
+                startDateTime = parameter.dateTimeInfo?.startDateTime?.toString(),
                 startTimeZone = parameter.dateTimeInfo?.startTimezone,
                 endDateTime = parameter.dateTimeInfo?.endDateTime?.toString(),
                 endTimeZone = parameter.dateTimeInfo?.endTimezone,
