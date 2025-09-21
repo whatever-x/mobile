@@ -148,7 +148,6 @@ class ContentEditViewModel(
             when (intent.type) {
                 ScheduleDateTimeType.START -> currentState.startDateTimeInfo
                 ScheduleDateTimeType.END -> currentState.endDateTimeInfo
-                ScheduleDateTimeType.NONE -> return
             }
         val updatedDateTimeInfo =
             targetDateTimeInfo.copy(
@@ -169,12 +168,6 @@ class ContentEditViewModel(
                         showTimeDialog = true,
                         scheduleDateType = intent.type,
                     )
-
-                ScheduleDateTimeType.NONE ->
-                    copy(
-                        showTimeDialog = true,
-                        scheduleDateType = intent.type,
-                    )
             }
         }
     }
@@ -184,7 +177,6 @@ class ContentEditViewModel(
             when (intent.type) {
                 ScheduleDateTimeType.START -> currentState.startDateTimeInfo
                 ScheduleDateTimeType.END -> currentState.endDateTimeInfo
-                ScheduleDateTimeType.NONE -> return
             }
         val updatedDateTimeInfo =
             targetDateTimeInfo.copy(
@@ -202,12 +194,6 @@ class ContentEditViewModel(
                 ScheduleDateTimeType.END ->
                     copy(
                         endDateTimeInfo = updatedDateTimeInfo,
-                        showDateDialog = true,
-                        scheduleDateType = intent.type,
-                    )
-
-                ScheduleDateTimeType.NONE ->
-                    copy(
                         showDateDialog = true,
                         scheduleDateType = intent.type,
                     )
@@ -253,12 +239,6 @@ class ContentEditViewModel(
                 ScheduleDateTimeType.END ->
                     copy(
                         endDateTimeInfo = updatedDateTimeInfo,
-                        showDateDialog = false,
-                        showTimeDialog = false,
-                    )
-
-                ScheduleDateTimeType.NONE ->
-                    copy(
                         showDateDialog = false,
                         showTimeDialog = false,
                     )
@@ -516,7 +496,6 @@ class ContentEditViewModel(
             when (currentState.scheduleDateType) {
                 ScheduleDateTimeType.START -> copy(startDateTimeInfo = startDateTimeInfo.transform())
                 ScheduleDateTimeType.END -> copy(endDateTimeInfo = endDateTimeInfo.transform())
-                ScheduleDateTimeType.NONE -> this
             }
         }
     }

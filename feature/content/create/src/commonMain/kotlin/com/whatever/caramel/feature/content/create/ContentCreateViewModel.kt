@@ -46,9 +46,9 @@ class ContentCreateViewModel(
     private val getAllTagsUseCase: GetAllTagsUseCase,
     private val createContentUseCase: CreateContentUseCase,
 ) : BaseViewModel<ContentCreateState, ContentCreateSideEffect, ContentCreateIntent>(
-        savedStateHandle,
-        crashlytics,
-    ) {
+    savedStateHandle,
+    crashlytics,
+) {
     init {
         launch {
             val tags = getAllTagsUseCase()
@@ -72,10 +72,10 @@ class ContentCreateViewModel(
         val (startDateTime, endDateTime) =
             if (isDateTimeEmpty) {
                 initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone) to
-                    initInstant.plus(2.hours).toLocalDateTime(defaultTimeZone)
+                        initInstant.plus(2.hours).toLocalDateTime(defaultTimeZone)
             } else {
                 initInstant.toLocalDateTime(defaultTimeZone) to
-                    initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone)
+                        initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone)
             }
         return ContentCreateState(
             title = arguments.title,
@@ -195,12 +195,6 @@ class ContentCreateViewModel(
                         showDateDialog = false,
                         showTimeDialog = false,
                     )
-
-                ScheduleDateTimeType.NONE ->
-                    copy(
-                        showDateDialog = false,
-                        showTimeDialog = false,
-                    )
             }
         }
     }
@@ -291,12 +285,6 @@ class ContentCreateViewModel(
                         showDateDialog = true,
                         scheduleDateType = intent.type,
                     )
-
-                ScheduleDateTimeType.NONE ->
-                    copy(
-                        showDateDialog = true,
-                        scheduleDateType = intent.type,
-                    )
             }
         }
     }
@@ -317,12 +305,6 @@ class ContentCreateViewModel(
                 ScheduleDateTimeType.END ->
                     copy(
                         endDateTimeInfo = transform(endDateTimeInfo),
-                        showTimeDialog = true,
-                        scheduleDateType = intent.type,
-                    )
-
-                ScheduleDateTimeType.NONE ->
-                    copy(
                         showTimeDialog = true,
                         scheduleDateType = intent.type,
                     )
@@ -420,7 +402,6 @@ class ContentCreateViewModel(
             when (currentState.scheduleDateType) {
                 ScheduleDateTimeType.START -> copy(startDateTimeInfo = startDateTimeInfo.transform())
                 ScheduleDateTimeType.END -> copy(endDateTimeInfo = endDateTimeInfo.transform())
-                ScheduleDateTimeType.NONE -> this
             }
         }
     }

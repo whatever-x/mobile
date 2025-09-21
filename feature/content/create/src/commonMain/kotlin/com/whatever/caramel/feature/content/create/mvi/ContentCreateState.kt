@@ -25,7 +25,7 @@ data class ContentCreateState(
     val showTimeDialog: Boolean = false,
     val showEditConfirmDialog: Boolean = false,
     val isAllDay: Boolean = false,
-    val scheduleDateType: ScheduleDateTimeType = ScheduleDateTimeType.NONE,
+    val scheduleDateType: ScheduleDateTimeType = ScheduleDateTimeType.START,
     val startDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState(),
     val endDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState(),
 ) : UiState {
@@ -35,7 +35,7 @@ data class ContentCreateState(
     val pickerDateTimeInfo
         get() =
             when (scheduleDateType) {
-                ScheduleDateTimeType.START, ScheduleDateTimeType.NONE -> startDateTimeInfo
+                ScheduleDateTimeType.START -> startDateTimeInfo
                 ScheduleDateTimeType.END -> endDateTimeInfo
             }
 }
@@ -43,7 +43,6 @@ data class ContentCreateState(
 enum class ScheduleDateTimeType {
     START,
     END,
-    NONE,
 }
 
 data class ScheduleDateTimeState(
