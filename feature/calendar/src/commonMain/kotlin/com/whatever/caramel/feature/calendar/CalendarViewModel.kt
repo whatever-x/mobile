@@ -159,6 +159,7 @@ class CalendarViewModel(
     }
 
     private fun refreshCalendar() {
+        reduce { copy(isRefreshing = true) }
         getYearSchedules(
             year = currentState.year,
             isRefresh = true,
