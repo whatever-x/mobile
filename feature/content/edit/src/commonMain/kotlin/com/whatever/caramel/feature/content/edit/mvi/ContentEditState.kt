@@ -6,6 +6,8 @@ import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.ui.picker.model.TimeUiState
+import com.whatever.caramel.core.ui.picker.model.toLocalDate
+import com.whatever.caramel.core.ui.picker.model.toLocalTime
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.UiState
@@ -56,10 +58,16 @@ enum class ScheduleDateTimeType {
 }
 
 data class ScheduleDateTimeState(
-    val dateTime: LocalDateTime,
     val dateUiState: DateUiState,
     val timeUiState: TimeUiState,
 ) {
+    val dateTime: LocalDateTime
+        get() {
+            val date = dateUiState.toLocalDate()
+            val time = timeUiState.toLocalTime()
+            return LocalDateTime(date = date, time = time)
+        }
+
     companion object {
         fun fromNow(plusHours: Int = 0): ScheduleDateTimeState {
             val timeZone = TimeZone.currentSystemDefault()
@@ -70,7 +78,6 @@ data class ScheduleDateTimeState(
 
         fun from(localDateTime: LocalDateTime) =
             ScheduleDateTimeState(
-                dateTime = localDateTime,
                 dateUiState = DateUiState.from(localDateTime),
                 timeUiState = TimeUiState.from(localDateTime),
             )

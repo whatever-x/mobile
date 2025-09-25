@@ -87,13 +87,11 @@ class ContentCreateViewModel(
                 },
             startDateTimeInfo =
                 ScheduleDateTimeState(
-                    dateTime = startDateTime,
                     dateUiState = DateUiState.from(dateTime = startDateTime),
                     timeUiState = TimeUiState.from(dateTime = startDateTime),
                 ),
             endDateTimeInfo =
                 ScheduleDateTimeState(
-                    dateTime = endDateTime,
                     dateUiState = DateUiState.from(dateTime = endDateTime),
                     timeUiState = TimeUiState.from(dateTime = endDateTime),
                 ),
@@ -179,22 +177,31 @@ class ContentCreateViewModel(
                 LocalTime(hour = convertedHour, minute = minute)
             }
         val localDateTime = localDate.atTime(time = localTime)
-        val updatedDateTimeInfo = currentState.pickerDateTimeInfo.copy(dateTime = localDateTime)
-        reduce {
-            when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START ->
-                    copy(
-                        startDateTimeInfo = updatedDateTimeInfo,
-                        showDateDialog = false,
-                        showTimeDialog = false,
-                    )
 
-                ScheduleDateTimeType.END ->
-                    copy(
-                        endDateTimeInfo = updatedDateTimeInfo,
-                        showDateDialog = false,
-                        showTimeDialog = false,
-                    )
+        when (currentState.scheduleDateType) {
+            ScheduleDateTimeType.START -> {
+                if (currentState.endDateTimeInfo.dateTime < localDateTime)
+                    postSideEffect(ContentCreateSideEffect.ShowToast("쓰흡 안돼"))
+                else
+                    reduce {
+                        copy(
+                            startDateTimeInfo = ScheduleDateTimeState.from(localDateTime),
+                            showDateDialog = false,
+                            showTimeDialog = false,
+                        )
+                    }
+            }
+            ScheduleDateTimeType.END -> {
+                if (currentState.startDateTimeInfo.dateTime > localDateTime)
+                    postSideEffect(ContentCreateSideEffect.ShowToast("어허 안돼"))
+                else
+                    reduce {
+                        copy(
+                            endDateTimeInfo = ScheduleDateTimeState.from(localDateTime),
+                            showDateDialog = false,
+                            showTimeDialog = false,
+                        )
+                    }
             }
         }
     }

@@ -51,6 +51,7 @@ import com.whatever.caramel.core.designsystem.components.CaramelButton
 import com.whatever.caramel.core.designsystem.components.CaramelButtonSize
 import com.whatever.caramel.core.designsystem.components.CaramelButtonType
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
+import com.whatever.caramel.core.designsystem.components.LocalSnackbarHostState
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.entity.Tag
@@ -103,6 +104,7 @@ internal fun ContentScreen(
                 .pointerInput(Unit) {
                     detectTapGestures { keyboardController?.hide() }
                 },
+        snackbarHost = { LocalSnackbarHostState.current },
         containerColor = CaramelTheme.color.background.primary,
         topBar = {
             Column {
@@ -419,65 +421,66 @@ internal fun ContentScreen(
                 }
             }
         }
-    }
-    if (state.showDateDialog || state.showTimeDialog) {
-        DateBottomSheet(
-            sheetState = sheetState,
-            onDismiss = { onIntent(ContentCreateIntent.HideDateTimeDialog) },
-            content = {
-                when {
-                    state.showDateDialog -> {
-                        CaramelDatePicker(
-                            modifier =
-                                Modifier
-                                    .padding(top = CaramelTheme.spacing.xxl)
-                                    .align(Alignment.CenterHorizontally),
-                            dateUiState = state.pickerDateTimeInfo.dateUiState,
-                            onYearChanged = { year ->
-                                onIntent(ContentCreateIntent.OnYearChanged(year))
-                            },
-                            onDayChanged = { day ->
-                                onIntent(ContentCreateIntent.OnDayChanged(day))
-                            },
-                            onMonthChanged = { month ->
-                                onIntent(ContentCreateIntent.OnMonthChanged(month))
-                            },
-                        )
-                    }
 
-                    state.showTimeDialog -> {
-                        CaramelTimePicker(
-                            modifier =
-                                Modifier
-                                    .padding(top = CaramelTheme.spacing.xxl)
-                                    .align(Alignment.CenterHorizontally),
-                            timeUiState = state.pickerDateTimeInfo.timeUiState,
-                            onPeriodChanged = { period ->
-                                onIntent(ContentCreateIntent.OnPeriodChanged(period))
-                            },
-                            onHourChanged = { hour ->
-                                onIntent(ContentCreateIntent.OnHourChanged(hour))
-                            },
-                            onMinuteChanged = { minute ->
-                                onIntent(ContentCreateIntent.OnMinuteChanged(minute))
-                            },
-                        )
+        if (state.showDateDialog || state.showTimeDialog) {
+            DateBottomSheet(
+                sheetState = sheetState,
+                onDismiss = { onIntent(ContentCreateIntent.HideDateTimeDialog) },
+                content = {
+                    when {
+                        state.showDateDialog -> {
+                            CaramelDatePicker(
+                                modifier =
+                                    Modifier
+                                        .padding(top = CaramelTheme.spacing.xxl)
+                                        .align(Alignment.CenterHorizontally),
+                                dateUiState = state.pickerDateTimeInfo.dateUiState,
+                                onYearChanged = { year ->
+                                    onIntent(ContentCreateIntent.OnYearChanged(year))
+                                },
+                                onDayChanged = { day ->
+                                    onIntent(ContentCreateIntent.OnDayChanged(day))
+                                },
+                                onMonthChanged = { month ->
+                                    onIntent(ContentCreateIntent.OnMonthChanged(month))
+                                },
+                            )
+                        }
+
+                        state.showTimeDialog -> {
+                            CaramelTimePicker(
+                                modifier =
+                                    Modifier
+                                        .padding(top = CaramelTheme.spacing.xxl)
+                                        .align(Alignment.CenterHorizontally),
+                                timeUiState = state.pickerDateTimeInfo.timeUiState,
+                                onPeriodChanged = { period ->
+                                    onIntent(ContentCreateIntent.OnPeriodChanged(period))
+                                },
+                                onHourChanged = { hour ->
+                                    onIntent(ContentCreateIntent.OnHourChanged(hour))
+                                },
+                                onMinuteChanged = { minute ->
+                                    onIntent(ContentCreateIntent.OnMinuteChanged(minute))
+                                },
+                            )
+                        }
                     }
-                }
-                Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.l))
-                CaramelButton(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = CaramelTheme.spacing.xl)
-                            .padding(bottom = CaramelTheme.spacing.xl),
-                    buttonType = CaramelButtonType.Enabled1,
-                    buttonSize = CaramelButtonSize.Large,
-                    text = "완료",
-                    onClick = { onIntent(ContentCreateIntent.ClickCompleteButton) },
-                )
-            },
-        )
+                    Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.l))
+                    CaramelButton(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = CaramelTheme.spacing.xl)
+                                .padding(bottom = CaramelTheme.spacing.xl),
+                        buttonType = CaramelButtonType.Enabled1,
+                        buttonSize = CaramelButtonSize.Large,
+                        text = "완료",
+                        onClick = { onIntent(ContentCreateIntent.ClickCompleteButton) },
+                    )
+                },
+            )
+        }
     }
 }
 

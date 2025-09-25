@@ -5,6 +5,8 @@ import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.ui.picker.model.TimeUiState
+import com.whatever.caramel.core.ui.picker.model.toLocalDate
+import com.whatever.caramel.core.ui.picker.model.toLocalTime
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.UiState
 import kotlinx.collections.immutable.ImmutableList
@@ -46,7 +48,20 @@ enum class ScheduleDateTimeType {
 }
 
 data class ScheduleDateTimeState(
-    val dateTime: LocalDateTime = DateUtil.todayLocalDateTime(),
     val dateUiState: DateUiState = DateUiState.currentDate(),
     val timeUiState: TimeUiState = TimeUiState.currentTime(),
-)
+) {
+    val dateTime: LocalDateTime
+        get() {
+            val date = dateUiState.toLocalDate()
+            val time = timeUiState.toLocalTime()
+            return LocalDateTime(date = date, time = time)
+        }
+
+    companion object {
+        fun from(dateTime: LocalDateTime) = ScheduleDateTimeState(
+            dateUiState = DateUiState.from(dateTime),
+            timeUiState = TimeUiState.from(dateTime)
+        )
+    }
+}

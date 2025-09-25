@@ -225,23 +225,30 @@ class ContentEditViewModel(
                 LocalTime(hour = convertedHour, minute = minute)
             }
         val localDateTime = localDate.atTime(time = localTime)
-        val updatedDateTimeInfo = currentState.pickerDateTimeInfo.copy(dateTime = localDateTime)
-
-        reduce {
-            when (currentState.scheduleDateType) {
-                ScheduleDateTimeType.START ->
-                    copy(
-                        startDateTimeInfo = updatedDateTimeInfo,
-                        showDateDialog = false,
-                        showTimeDialog = false,
-                    )
-
-                ScheduleDateTimeType.END ->
-                    copy(
-                        endDateTimeInfo = updatedDateTimeInfo,
-                        showDateDialog = false,
-                        showTimeDialog = false,
-                    )
+        when (currentState.scheduleDateType) {
+            ScheduleDateTimeType.START -> {
+                if (currentState.endDateTimeInfo.dateTime < localDateTime)
+                    postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("쓰흡 안돼"))
+                else
+                    reduce {
+                        copy(
+                            startDateTimeInfo = ScheduleDateTimeState.from(localDateTime),
+                            showDateDialog = false,
+                            showTimeDialog = false,
+                        )
+                    }
+            }
+            ScheduleDateTimeType.END -> {
+                if (currentState.startDateTimeInfo.dateTime > localDateTime)
+                    postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("어허 안돼"))
+                else
+                    reduce {
+                        copy(
+                            endDateTimeInfo = ScheduleDateTimeState.from(localDateTime),
+                            showDateDialog = false,
+                            showTimeDialog = false,
+                        )
+                    }
             }
         }
     }
