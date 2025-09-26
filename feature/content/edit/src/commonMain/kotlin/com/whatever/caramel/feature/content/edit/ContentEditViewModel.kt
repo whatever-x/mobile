@@ -228,7 +228,7 @@ class ContentEditViewModel(
         when (currentState.scheduleDateType) {
             ScheduleDateTimeType.START -> {
                 if (currentState.endDateTimeInfo.dateTime < localDateTime)
-                    postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("쓰흡 안돼"))
+                    postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("시작이 종료보다 늦을 수 없어요"))
                 else
                     reduce {
                         copy(
@@ -240,7 +240,7 @@ class ContentEditViewModel(
             }
             ScheduleDateTimeType.END -> {
                 if (currentState.startDateTimeInfo.dateTime > localDateTime)
-                    postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("어허 안돼"))
+                    postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("종료는 시작보다 빠를 수 없어요"))
                 else
                     reduce {
                         copy(

@@ -181,7 +181,7 @@ class ContentCreateViewModel(
         when (currentState.scheduleDateType) {
             ScheduleDateTimeType.START -> {
                 if (currentState.endDateTimeInfo.dateTime < localDateTime)
-                    postSideEffect(ContentCreateSideEffect.ShowToast("쓰흡 안돼"))
+                    postSideEffect(ContentCreateSideEffect.ShowToast("시작이 종료보다 늦을 수 없어요"))
                 else
                     reduce {
                         copy(
@@ -193,7 +193,7 @@ class ContentCreateViewModel(
             }
             ScheduleDateTimeType.END -> {
                 if (currentState.startDateTimeInfo.dateTime > localDateTime)
-                    postSideEffect(ContentCreateSideEffect.ShowToast("어허 안돼"))
+                    postSideEffect(ContentCreateSideEffect.ShowToast("종료는 시작보다 빠를 수 없어요"))
                 else
                     reduce {
                         copy(
