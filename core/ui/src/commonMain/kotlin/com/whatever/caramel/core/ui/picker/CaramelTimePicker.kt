@@ -24,7 +24,7 @@ import com.whatever.caramel.core.ui.picker.model.TimeUiState
 fun CaramelTimePicker(
     modifier: Modifier = Modifier,
     timeUiState: TimeUiState,
-    hour: List<String> = (1..12).toList().map { it.toString() },
+    hour: List<String> = (0..11).toList().map { it.toString() },
     minute: List<String> = (0..59 step 5).map { it.toString().padStart(2, '0') },
     onPeriodChanged: (String) -> Unit,
     onHourChanged: (String) -> Unit,
