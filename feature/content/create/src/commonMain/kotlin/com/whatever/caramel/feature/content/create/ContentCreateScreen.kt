@@ -56,6 +56,7 @@ import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.ui.content.ContentAssigneeChipRow
+import com.whatever.caramel.core.ui.content.ContentScheduleInfo
 import com.whatever.caramel.core.ui.content.ContentTextArea
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.ui.content.CreateModeSwitch
@@ -65,7 +66,6 @@ import com.whatever.caramel.core.ui.content.TagChip
 import com.whatever.caramel.core.ui.content.TitleTextField
 import com.whatever.caramel.core.ui.picker.CaramelDatePicker
 import com.whatever.caramel.core.ui.picker.CaramelTimePicker
-import com.whatever.caramel.feature.content.create.component.ContentScheduleInfo
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
 import com.whatever.caramel.feature.content.create.mvi.ScheduleDateTimeType

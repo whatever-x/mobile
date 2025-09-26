@@ -42,6 +42,11 @@ enum class Period(
 
 fun TimeUiState.toLocalTime(): LocalTime =
     LocalTime(
-        hour = if(period == Period.AM.value) hour.toInt() else hour.toInt() + 12,
+        hour = when {
+            period == Period.AM.value && hour == "12" -> 0
+            period == Period.PM.value && hour == "12" -> 12
+            period == Period.PM.value -> hour.toInt() + 12
+            else -> hour.toInt()
+        },
         minute = minute.toInt(),
     )
