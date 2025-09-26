@@ -18,7 +18,7 @@ actual fun DisableDialogDim() {
         listOf(
             view.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor()),
             view.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor()),
-            view.bottomAnchor.constraintEqualToAnchor(view.safeAreaLayoutGuide.bottomAnchor())
-        )
+            view.bottomAnchor.constraintEqualToAnchor(view.safeAreaLayoutGuide.bottomAnchor()),
+        ),
     )
 }

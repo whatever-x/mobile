@@ -227,9 +227,9 @@ class ContentEditViewModel(
         val localDateTime = localDate.atTime(time = localTime)
         when (currentState.scheduleDateType) {
             ScheduleDateTimeType.START -> {
-                if (currentState.endDateTimeInfo.dateTime < localDateTime)
+                if (currentState.endDateTimeInfo.dateTime < localDateTime) {
                     postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("시작이 종료보다 늦을 수 없어요"))
-                else
+                } else {
                     reduce {
                         copy(
                             startDateTimeInfo = ScheduleDateTimeState.from(localDateTime),
@@ -237,11 +237,12 @@ class ContentEditViewModel(
                             showTimeDialog = false,
                         )
                     }
+                }
             }
             ScheduleDateTimeType.END -> {
-                if (currentState.startDateTimeInfo.dateTime > localDateTime)
+                if (currentState.startDateTimeInfo.dateTime > localDateTime) {
                     postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("종료는 시작보다 빠를 수 없어요"))
-                else
+                } else {
                     reduce {
                         copy(
                             endDateTimeInfo = ScheduleDateTimeState.from(localDateTime),
@@ -249,6 +250,7 @@ class ContentEditViewModel(
                             showTimeDialog = false,
                         )
                     }
+                }
             }
         }
     }

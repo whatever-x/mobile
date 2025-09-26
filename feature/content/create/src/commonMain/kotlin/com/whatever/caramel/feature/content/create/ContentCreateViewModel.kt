@@ -46,9 +46,9 @@ class ContentCreateViewModel(
     private val getAllTagsUseCase: GetAllTagsUseCase,
     private val createContentUseCase: CreateContentUseCase,
 ) : BaseViewModel<ContentCreateState, ContentCreateSideEffect, ContentCreateIntent>(
-    savedStateHandle,
-    crashlytics,
-) {
+        savedStateHandle,
+        crashlytics,
+    ) {
     init {
         launch {
             val tags = getAllTagsUseCase()
@@ -72,10 +72,10 @@ class ContentCreateViewModel(
         val (startDateTime, endDateTime) =
             if (isDateTimeEmpty) {
                 initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone) to
-                        initInstant.plus(2.hours).toLocalDateTime(defaultTimeZone)
+                    initInstant.plus(2.hours).toLocalDateTime(defaultTimeZone)
             } else {
                 initInstant.toLocalDateTime(defaultTimeZone) to
-                        initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone)
+                    initInstant.plus(1.hours).toLocalDateTime(defaultTimeZone)
             }
         return ContentCreateState(
             title = arguments.title,
@@ -180,9 +180,9 @@ class ContentCreateViewModel(
 
         when (currentState.scheduleDateType) {
             ScheduleDateTimeType.START -> {
-                if (currentState.endDateTimeInfo.dateTime < localDateTime)
+                if (currentState.endDateTimeInfo.dateTime < localDateTime) {
                     postSideEffect(ContentCreateSideEffect.ShowToast("시작이 종료보다 늦을 수 없어요"))
-                else
+                } else {
                     reduce {
                         copy(
                             startDateTimeInfo = ScheduleDateTimeState.from(localDateTime),
@@ -190,11 +190,12 @@ class ContentCreateViewModel(
                             showTimeDialog = false,
                         )
                     }
+                }
             }
             ScheduleDateTimeType.END -> {
-                if (currentState.startDateTimeInfo.dateTime > localDateTime)
+                if (currentState.startDateTimeInfo.dateTime > localDateTime) {
                     postSideEffect(ContentCreateSideEffect.ShowToast("종료는 시작보다 빠를 수 없어요"))
-                else
+                } else {
                     reduce {
                         copy(
                             endDateTimeInfo = ScheduleDateTimeState.from(localDateTime),
@@ -202,6 +203,7 @@ class ContentCreateViewModel(
                             showTimeDialog = false,
                         )
                     }
+                }
             }
         }
     }
