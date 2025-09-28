@@ -44,9 +44,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import caramel.core.designsystem.generated.resources.Res
 import caramel.core.designsystem.generated.resources.ic_check_14
-import caramel.core.designsystem.generated.resources.ic_check_18
-import caramel.core.designsystem.generated.resources.ic_profile_18
-import caramel.core.designsystem.generated.resources.ic_tag_18
 import com.whatever.caramel.core.designsystem.components.CaramelButton
 import com.whatever.caramel.core.designsystem.components.CaramelButtonSize
 import com.whatever.caramel.core.designsystem.components.CaramelButtonType
@@ -209,27 +206,13 @@ internal fun ContentScreen(
                     modifier = Modifier.padding(bottom = CaramelTheme.spacing.l),
                     color = CaramelTheme.color.divider.primary,
                 )
-                Row(
+                ContentAssigneeChipRow(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement =
-                        Arrangement.spacedBy(
-                            space = CaramelTheme.spacing.l,
-                            alignment = Alignment.CenterHorizontally,
-                        ),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        painter = painterResource(Res.drawable.ic_profile_18),
-                        contentDescription = null,
-                    )
-                    ContentAssigneeChipRow(
-                        modifier = Modifier.fillMaxWidth(),
-                        selectedAssigneeChip = state.selectedAssignee,
-                        onAssigneeChipClick = { assignee ->
-                            onIntent(ContentCreateIntent.ClickAssignee(assignee = assignee))
-                        },
-                    )
-                }
+                    selectedAssigneeChip = state.selectedAssignee,
+                    onAssigneeChipClick = { assignee ->
+                        onIntent(ContentCreateIntent.ClickAssignee(assignee = assignee))
+                    },
+                )
                 HorizontalDivider(
                     modifier = Modifier.padding(vertical = CaramelTheme.spacing.m),
                     color = CaramelTheme.color.divider.primary,
@@ -239,25 +222,12 @@ internal fun ContentScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement =
-                            Arrangement.spacedBy(
-                                space = CaramelTheme.spacing.l,
-                                alignment = Alignment.Start,
-                            ),
-                    ) {
-                        Icon(
-                            painter = painterResource(Res.drawable.ic_check_18),
-                            contentDescription = null,
-                        )
-                        CreateModeSwitch(
-                            createMode = state.createMode,
-                            onCreateModeSelect = {
-                                onIntent(ContentCreateIntent.SelectCreateMode(it))
-                            },
-                        )
-                    }
+                    CreateModeSwitch(
+                        createMode = state.createMode,
+                        onCreateModeSelect = {
+                            onIntent(ContentCreateIntent.SelectCreateMode(it))
+                        },
+                    )
                     when (state.createMode) {
                         CreateMode.MEMO -> {
                             Text(
@@ -378,45 +348,30 @@ internal fun ContentScreen(
                         ),
                     color = CaramelTheme.color.divider.primary,
                 )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement =
-                        Arrangement.spacedBy(
-                            space = CaramelTheme.spacing.l,
-                            alignment = Alignment.CenterHorizontally,
-                        ),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        painter = painterResource(Res.drawable.ic_tag_18),
-                        contentDescription = null,
-                    )
-                    SelectableTagChipRow(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .height(height = 36.dp),
-                        tagChips =
-                            state.tags
-                                .map { TagChip(it.id, it.label) }
-                                .toImmutableList(),
-                        selectedTagChips =
-                            state.selectedTags
-                                .map { TagChip(it.id, it.label) }
-                                .toImmutableList(),
-                        onTagChipClick = {
-                            onIntent(
-                                ContentCreateIntent.ClickTag(
-                                    Tag(
-                                        it.id,
-                                        it.label,
-                                    ),
+                SelectableTagChipRow(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(height = 36.dp),
+                    tagChips =
+                        state.tags
+                            .map { TagChip(it.id, it.label) }
+                            .toImmutableList(),
+                    selectedTagChips =
+                        state.selectedTags
+                            .map { TagChip(it.id, it.label) }
+                            .toImmutableList(),
+                    onTagChipClick = {
+                        onIntent(
+                            ContentCreateIntent.ClickTag(
+                                Tag(
+                                    it.id,
+                                    it.label,
                                 ),
-                            )
-                        },
-                    )
-                }
+                            ),
+                        )
+                    },
+                )
             }
         }
     }
