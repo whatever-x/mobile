@@ -104,7 +104,6 @@ internal fun ContentScreen(
                 .pointerInput(Unit) {
                     detectTapGestures { keyboardController?.hide() }
                 },
-        snackbarHost = { LocalSnackbarHostState.current },
         containerColor = CaramelTheme.color.background.primary,
         topBar = {
             Column {

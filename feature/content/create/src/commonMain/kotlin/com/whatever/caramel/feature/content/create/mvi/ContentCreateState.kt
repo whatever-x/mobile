@@ -29,16 +29,10 @@ data class ContentCreateState(
     val scheduleDateType: ScheduleDateTimeType = ScheduleDateTimeType.START,
     val startDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState(),
     val endDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState(),
+    val pickerDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState(),
 ) : UiState {
     val isSaveButtonEnable: Boolean
         get() = title.isNotBlank() || content.isNotBlank()
-
-    val pickerDateTimeInfo
-        get() =
-            when (scheduleDateType) {
-                ScheduleDateTimeType.START -> startDateTimeInfo
-                ScheduleDateTimeType.END -> endDateTimeInfo
-            }
 }
 
 enum class ScheduleDateTimeType {
