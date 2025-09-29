@@ -13,11 +13,9 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.window.Dialog
 import com.whatever.caramel.core.designsystem.animation.SlideInSlideOutSnackbarHost
 import com.whatever.caramel.core.designsystem.foundations.Neutral800
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.designsystem.util.DisableDialogDim
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -69,27 +67,24 @@ fun CaramelSnackbar(
     modifier: Modifier = Modifier,
     snackbarData: SnackbarData,
 ) {
-    Dialog(onDismissRequest = {}) {
-        DisableDialogDim()
-        Box(
-            modifier =
-                modifier
-                    .background(
-                        color = Neutral800,
-                        shape = CaramelTheme.shape.xl,
-                    ).padding(
-                        horizontal = CaramelTheme.spacing.xl,
-                        vertical = CaramelTheme.spacing.m,
-                    ),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(
-                text = snackbarData.visuals.message,
-                color = CaramelTheme.color.text.inverse,
-                style = CaramelTheme.typography.body3.regular,
-                textAlign = TextAlign.Center,
-            )
-        }
+    Box(
+        modifier =
+            modifier
+                .background(
+                    color = Neutral800,
+                    shape = CaramelTheme.shape.xl,
+                ).padding(
+                    horizontal = CaramelTheme.spacing.xl,
+                    vertical = CaramelTheme.spacing.m,
+                ),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = snackbarData.visuals.message,
+            color = CaramelTheme.color.text.inverse,
+            style = CaramelTheme.typography.body3.regular,
+            textAlign = TextAlign.Center,
+        )
     }
 }
 
