@@ -198,29 +198,40 @@ class ContentEditViewModel(
         val localDateTime = localDate.atTime(time = localTime)
         when (currentState.scheduleDateType) {
             ScheduleDateTimeType.START -> {
-                if (currentState.endDateTimeInfo.dateTime < localDateTime) {
-                    postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("시작이 종료보다 늦을 수 없어요"))
-                } else {
-                    reduce {
-                        copy(
-                            startDateTimeInfo = ScheduleDateTimeState.from(localDateTime),
-                            showDateDialog = false,
-                            showTimeDialog = false,
-                        )
-                    }
+                val isInvalid = localDateTime > currentState.endDateTimeInfo.dateTime
+                if (isInvalid) postSideEffect(ContentEditSideEffect.ShowInValidDateSnackBar(type = InvalidDateType.START_DATE))
+                reduce {
+                    copy(
+                        startDateTimeInfo =
+                            if (isInvalid) {
+                                startDateTimeInfo
+                            } else {
+                                ScheduleDateTimeState.from(
+                                    localDateTime,
+                                )
+                            },
+                        showDateDialog = false,
+                        showTimeDialog = false,
+                    )
                 }
             }
+
             ScheduleDateTimeType.END -> {
-                if (currentState.startDateTimeInfo.dateTime > localDateTime) {
-                    postSideEffect(ContentEditSideEffect.ShowErrorSnackBar("종료는 시작보다 빠를 수 없어요"))
-                } else {
-                    reduce {
-                        copy(
-                            endDateTimeInfo = ScheduleDateTimeState.from(localDateTime),
-                            showDateDialog = false,
-                            showTimeDialog = false,
-                        )
-                    }
+                val isInvalid = localDateTime < currentState.startDateTimeInfo.dateTime
+                if (isInvalid) postSideEffect(ContentEditSideEffect.ShowInValidDateSnackBar(type = InvalidDateType.END_DATE))
+                reduce {
+                    copy(
+                        endDateTimeInfo =
+                            if (isInvalid) {
+                                endDateTimeInfo
+                            } else {
+                                ScheduleDateTimeState.from(
+                                    localDateTime,
+                                )
+                            },
+                        showDateDialog = false,
+                        showTimeDialog = false,
+                    )
                 }
             }
         }

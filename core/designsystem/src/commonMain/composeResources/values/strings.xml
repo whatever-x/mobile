@@ -7,6 +7,8 @@
 	<string name="me">나</string>
 	<string name="us">우리</string>
 	<string name="partner">연인</string>
+	<string name="invalid_start_date">시작이 종료보다 늦을 수 없어요.</string>
+	<string name="invalid_end_date">종료는 시작보다 빠를 수 없어요.</string>
 
 	<!-- Memo -->
 	<string name="empty_memo">남긴 메모가 없어요.\n함께하고 싶은 활동이나\n기억하고 싶은 것들을 남겨보세요.</string>
