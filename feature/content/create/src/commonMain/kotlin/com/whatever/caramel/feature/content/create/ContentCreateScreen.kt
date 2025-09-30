@@ -48,7 +48,6 @@ import com.whatever.caramel.core.designsystem.components.CaramelButton
 import com.whatever.caramel.core.designsystem.components.CaramelButtonSize
 import com.whatever.caramel.core.designsystem.components.CaramelButtonType
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
-import com.whatever.caramel.core.designsystem.components.LocalSnackbarHostState
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.entity.Tag
