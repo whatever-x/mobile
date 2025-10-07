@@ -11,6 +11,7 @@ import com.whatever.caramel.core.remote.datasource.RemoteScheduleDataSource
 import com.whatever.caramel.core.remote.dto.calendar.request.CreateScheduleRequest
 import com.whatever.caramel.core.remote.dto.calendar.request.UpdateScheduleRequest
 import com.whatever.caramel.core.remote.dto.memo.ContentAssigneeDto
+import kotlinx.datetime.LocalDate
 
 class ScheduleRepositoryImpl(
     private val remoteScheduleDataSource: RemoteScheduleDataSource,
@@ -43,7 +44,7 @@ class ScheduleRepositoryImpl(
                 title = parameter.title,
                 description = parameter.description,
                 isCompleted = parameter.isCompleted,
-                startDateTime = parameter.dateTimeInfo?.startDateTime.toString(),
+                startDateTime = parameter.dateTimeInfo?.startDateTime?.toString(),
                 startTimeZone = parameter.dateTimeInfo?.startTimezone,
                 endDateTime = parameter.dateTimeInfo?.endDateTime?.toString(),
                 endTimeZone = parameter.dateTimeInfo?.endTimezone,
@@ -66,16 +67,20 @@ class ScheduleRepositoryImpl(
     }
 
     override suspend fun getScheduleList(
-        startDate: String,
-        endDate: String,
-    ): List<Schedule> =
-        safeCall {
+        startDate: LocalDate,
+        endDate: LocalDate,
+    ): List<Schedule> {
+        val startDateString = startDate.toString()
+        val endDateString = endDate.toString()
+
+        return safeCall {
             remoteScheduleDataSource
                 .fetchScheduleList(
-                    startDate = startDate,
-                    endDate = endDate,
+                    startDate = startDateString,
+                    endDate = endDateString,
                 ).toScheduleList()
         }
+    }
 
     override suspend fun getSchedule(scheduleId: Long): Schedule =
         safeCall {

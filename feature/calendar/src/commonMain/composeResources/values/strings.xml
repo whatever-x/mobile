@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
+	<string name="partner_schedule">연인의 일정</string>
+	<string name="my_schedule">나의 일정</string>
+	<string name="both_schedule">우리 일정</string>
+
 	<string name="monday">월요일</string>
 	<string name="tuesday">화요일</string>
 	<string name="wednesday">수요일</string>
@@ -8,17 +12,4 @@
 	<string name="saturday">토요일</string>
 	<string name="sunday">일요일</string>
 
-	<string name="partner_schedule">연인의 일정</string>
-	<string name="my_schedule">나의 일정</string>
-	<string name="both_schedule">우리 일정</string>
-
-	<string-array name="day_of_week">
-		<item>일</item>
-		<item>월</item>
-		<item>화</item>
-		<item>수</item>
-		<item>목</item>
-		<item>금</item>
-		<item>토</item>
-	</string-array>
 </resources>

@@ -5,7 +5,8 @@ import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.ui.picker.model.TimeUiState
-import com.whatever.caramel.core.util.DateUtil
+import com.whatever.caramel.core.ui.picker.model.toLocalDate
+import com.whatever.caramel.core.ui.picker.model.toLocalTime
 import com.whatever.caramel.core.viewmodel.UiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
@@ -23,19 +24,38 @@ data class ContentCreateState(
     val createMode: CreateMode = CreateMode.MEMO,
     val showDateDialog: Boolean = false,
     val showTimeDialog: Boolean = false,
-    val dateTime: LocalDateTime = DateUtil.todayLocalDateTime(),
-    val dateUiState: DateUiState = DateUiState.currentDate(),
-    val timeUiState: TimeUiState = TimeUiState.currentTime(),
     val showEditConfirmDialog: Boolean = false,
+    val isAllDay: Boolean = false,
+    val scheduleDateType: ScheduleDateTimeType = ScheduleDateTimeType.START,
+    val startDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState(),
+    val endDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState(),
+    val pickerDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState(),
 ) : UiState {
     val isSaveButtonEnable: Boolean
         get() = title.isNotBlank() || content.isNotBlank()
+}
 
-    val date: String
-        get() = "${dateTime.year}년 ${dateTime.monthNumber}월 ${dateTime.dayOfMonth}일"
+enum class ScheduleDateTimeType {
+    START,
+    END,
+}
 
-    val time: String
-        get() = "${dateTime.hour.toString().padStart(2, '0')}:${
-            dateTime.minute.toString().padStart(2, '0')
-        }"
+data class ScheduleDateTimeState(
+    val dateUiState: DateUiState = DateUiState.currentDate(),
+    val timeUiState: TimeUiState = TimeUiState.currentTime(),
+) {
+    val dateTime: LocalDateTime
+        get() {
+            val date = dateUiState.toLocalDate()
+            val time = timeUiState.toLocalTime()
+            return LocalDateTime(date = date, time = time)
+        }
+
+    companion object {
+        fun from(dateTime: LocalDateTime) =
+            ScheduleDateTimeState(
+                dateUiState = DateUiState.from(dateTime),
+                timeUiState = TimeUiState.from(dateTime),
+            )
+    }
 }

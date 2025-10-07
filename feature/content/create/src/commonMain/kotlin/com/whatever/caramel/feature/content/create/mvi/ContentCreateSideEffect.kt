@@ -10,12 +10,17 @@ sealed interface ContentCreateSideEffect : UiSideEffect {
         val message: String? = null,
     ) : ContentCreateSideEffect
 
-    data class ShowToast(
-        val message: String,
+    data class ShowInValidDateSnackBar(
+        val type: InvalidDateType,
     ) : ContentCreateSideEffect
 
     data class ShowErrorDialog(
         val message: String,
         val description: String?,
     ) : ContentCreateSideEffect
+}
+
+enum class InvalidDateType {
+    START_DATE,
+    END_DATE,
 }

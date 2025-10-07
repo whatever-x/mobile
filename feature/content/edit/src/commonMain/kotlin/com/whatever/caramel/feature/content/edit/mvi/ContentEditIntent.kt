@@ -32,6 +32,8 @@ sealed interface ContentEditIntent : UiIntent {
 
     data object ClickCompleteButton : ContentEditIntent
 
+    data object ClickAllDayButton : ContentEditIntent
+
     data class ClickAssignee(
         val assignee: ContentAssigneeUiModel,
     ) : ContentEditIntent
@@ -40,9 +42,13 @@ sealed interface ContentEditIntent : UiIntent {
         val tag: Tag,
     ) : ContentEditIntent
 
-    data object ClickDate : ContentEditIntent
+    data class ClickDate(
+        val type: ScheduleDateTimeType,
+    ) : ContentEditIntent
 
-    data object ClickTime : ContentEditIntent
+    data class ClickTime(
+        val type: ScheduleDateTimeType,
+    ) : ContentEditIntent
 
     data object HideDateTimeDialog : ContentEditIntent
 

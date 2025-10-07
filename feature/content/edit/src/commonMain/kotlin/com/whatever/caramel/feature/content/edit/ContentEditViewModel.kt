@@ -23,17 +23,20 @@ import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.content.schedule.DateTimeInfo
 import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
-import com.whatever.caramel.core.ui.picker.model.DateUiState
-import com.whatever.caramel.core.ui.picker.model.TimeUiState
 import com.whatever.caramel.core.ui.picker.model.toLocalDate
 import com.whatever.caramel.core.util.codePointCount
+import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditIntent
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditSideEffect
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditState
+import com.whatever.caramel.feature.content.edit.mvi.InvalidDateType
+import com.whatever.caramel.feature.content.edit.mvi.ScheduleDateTimeState
+import com.whatever.caramel.feature.content.edit.mvi.ScheduleDateTimeType
 import com.whatever.caramel.feature.content.edit.navigation.ContentEditScreenRoute
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
@@ -108,8 +111,8 @@ class ContentEditViewModel(
             is ContentEditIntent.OnTitleChanged -> handleOnTitleChanged(intent)
             is ContentEditIntent.OnContentChanged -> handleOnContentChanged(intent)
             is ContentEditIntent.ClickTag -> toggleTagSelection(intent)
-            is ContentEditIntent.ClickDate -> reduce { copy(showDateDialog = true) }
-            is ContentEditIntent.ClickTime -> reduce { copy(showTimeDialog = true) }
+            is ContentEditIntent.ClickDate -> handleDateClick(intent)
+            is ContentEditIntent.ClickTime -> handleTimeClick(intent)
             ContentEditIntent.HideDateTimeDialog ->
                 reduce {
                     copy(
@@ -135,13 +138,48 @@ class ContentEditViewModel(
             is ContentEditIntent.OnCreateModeSelected -> handleOnCreateModeSelected(intent)
             is ContentEditIntent.ClickAssignee -> clickAssignee(intent)
             is ContentEditIntent.ClickCompleteButton -> clickComplete(intent)
+            ContentEditIntent.ClickAllDayButton -> clickAllDayButton()
         }
     }
 
+    private fun handleTimeClick(intent: ContentEditIntent.ClickTime) {
+        val pickerDateTimeInfo =
+            when (intent.type) {
+                ScheduleDateTimeType.START -> currentState.startDateTimeInfo
+                ScheduleDateTimeType.END -> currentState.endDateTimeInfo
+            }
+        reduce {
+            copy(
+                pickerDateTimeInfo = pickerDateTimeInfo,
+                showTimeDialog = true,
+                scheduleDateType = intent.type,
+            )
+        }
+    }
+
+    private fun handleDateClick(intent: ContentEditIntent.ClickDate) {
+        val pickerDateTimeInfo =
+            when (intent.type) {
+                ScheduleDateTimeType.START -> currentState.startDateTimeInfo
+                ScheduleDateTimeType.END -> currentState.endDateTimeInfo
+            }
+        reduce {
+            copy(
+                pickerDateTimeInfo = pickerDateTimeInfo,
+                showDateDialog = true,
+                scheduleDateType = intent.type,
+            )
+        }
+    }
+
+    private fun clickAllDayButton() {
+        reduce { copy(isAllDay = !isAllDay) }
+    }
+
     private fun clickComplete(intent: ContentEditIntent.ClickCompleteButton) {
-        val localDate = currentState.dateUiState.toLocalDate()
+        val localDate = currentState.pickerDateTimeInfo.dateUiState.toLocalDate()
         val localTime =
-            with(currentState.timeUiState) {
+            with(currentState.pickerDateTimeInfo.timeUiState) {
                 val hour = this.hour.toInt()
                 val minute = this.minute.toInt()
                 val convertedHour =
@@ -155,17 +193,47 @@ class ContentEditViewModel(
                             errorUiType = ErrorUiType.TOAST,
                         )
                     }
-
                 LocalTime(hour = convertedHour, minute = minute)
             }
         val localDateTime = localDate.atTime(time = localTime)
+        when (currentState.scheduleDateType) {
+            ScheduleDateTimeType.START -> {
+                val isInvalid = localDateTime > currentState.endDateTimeInfo.dateTime
+                if (isInvalid) postSideEffect(ContentEditSideEffect.ShowInValidDateSnackBar(type = InvalidDateType.START_DATE))
+                reduce {
+                    copy(
+                        startDateTimeInfo =
+                            if (isInvalid) {
+                                startDateTimeInfo
+                            } else {
+                                ScheduleDateTimeState.from(
+                                    localDateTime,
+                                )
+                            },
+                        showDateDialog = false,
+                        showTimeDialog = false,
+                    )
+                }
+            }
 
-        reduce {
-            copy(
-                showDateDialog = false,
-                showTimeDialog = false,
-                dateTime = localDateTime,
-            )
+            ScheduleDateTimeType.END -> {
+                val isInvalid = localDateTime < currentState.startDateTimeInfo.dateTime
+                if (isInvalid) postSideEffect(ContentEditSideEffect.ShowInValidDateSnackBar(type = InvalidDateType.END_DATE))
+                reduce {
+                    copy(
+                        endDateTimeInfo =
+                            if (isInvalid) {
+                                endDateTimeInfo
+                            } else {
+                                ScheduleDateTimeState.from(
+                                    localDateTime,
+                                )
+                            },
+                        showDateDialog = false,
+                        showTimeDialog = false,
+                    )
+                }
+            }
         }
     }
 
@@ -216,6 +284,7 @@ class ContentEditViewModel(
 
     private suspend fun handleOnSaveClicked() {
         val state = currentState
+        val defaultTimeZone = TimeZone.currentSystemDefault().id
         launch {
             when (state.type) {
                 ContentType.MEMO -> {
@@ -230,10 +299,16 @@ class ContentEditViewModel(
                                 dateTimeInfo =
                                     if (state.createMode == CreateMode.CALENDAR) {
                                         DateTimeInfo(
-                                            startDateTime = state.dateTime,
-                                            startTimezone = TimeZone.currentSystemDefault().id,
-                                            endDateTime = null,
-                                            endTimezone = null,
+                                            startDateTime =
+                                                state.startDateTimeInfo.dateTime.withAllDayTime(
+                                                    isStart = true,
+                                                ),
+                                            startTimezone = defaultTimeZone,
+                                            endDateTime =
+                                                state.endDateTimeInfo.dateTime.withAllDayTime(
+                                                    isStart = false,
+                                                ),
+                                            endTimezone = defaultTimeZone,
                                         )
                                     } else {
                                         null
@@ -248,17 +323,23 @@ class ContentEditViewModel(
                         scheduleId = state.contentId,
                         parameter =
                             ScheduleEditParameter(
-                                selectedDate = state.dateTime.date.toString(),
+                                selectedDate = state.startDateTimeInfo.dateTime.toString(),
                                 title = state.title.ifBlank { null },
                                 description = state.content.ifBlank { null },
                                 isCompleted = false,
                                 dateTimeInfo =
                                     if (state.createMode == CreateMode.CALENDAR) {
                                         DateTimeInfo(
-                                            startDateTime = state.dateTime,
-                                            startTimezone = TimeZone.currentSystemDefault().id,
-                                            endDateTime = state.dateTime,
-                                            endTimezone = TimeZone.currentSystemDefault().id,
+                                            startDateTime =
+                                                state.startDateTimeInfo.dateTime.withAllDayTime(
+                                                    isStart = true,
+                                                ),
+                                            startTimezone = defaultTimeZone,
+                                            endDateTime =
+                                                state.endDateTimeInfo.dateTime.withAllDayTime(
+                                                    isStart = false,
+                                                ),
+                                            endTimezone = defaultTimeZone,
                                         )
                                     } else {
                                         null
@@ -315,33 +396,73 @@ class ContentEditViewModel(
     }
 
     private fun handleOnCreateModeSelected(intent: ContentEditIntent.OnCreateModeSelected) {
-        reduce {
-            copy(createMode = intent.mode)
-        }
+        reduce { copy(createMode = intent.mode) }
     }
 
     private fun updateYear(intent: ContentEditIntent.OnYearChanged) {
-        reduce { copy(dateUiState = dateUiState.copy(year = intent.year)) }
+        reduce {
+            copy(
+                pickerDateTimeInfo =
+                    pickerDateTimeInfo.copy(
+                        dateUiState = pickerDateTimeInfo.dateUiState.copy(year = intent.year),
+                    ),
+            )
+        }
     }
 
     private fun updateMonth(intent: ContentEditIntent.OnMonthChanged) {
-        reduce { copy(dateUiState = dateUiState.copy(month = intent.month)) }
+        reduce {
+            copy(
+                pickerDateTimeInfo =
+                    pickerDateTimeInfo.copy(
+                        dateUiState = pickerDateTimeInfo.dateUiState.copy(month = intent.month),
+                    ),
+            )
+        }
     }
 
     private fun updateDay(intent: ContentEditIntent.OnDayChanged) {
-        reduce { copy(dateUiState = dateUiState.copy(day = intent.day)) }
+        reduce {
+            copy(
+                pickerDateTimeInfo =
+                    pickerDateTimeInfo.copy(
+                        dateUiState = pickerDateTimeInfo.dateUiState.copy(day = intent.day),
+                    ),
+            )
+        }
     }
 
     private fun updateMinute(intent: ContentEditIntent.OnMinuteChanged) {
-        reduce { copy(timeUiState = timeUiState.copy(minute = intent.minute)) }
+        reduce {
+            copy(
+                pickerDateTimeInfo =
+                    pickerDateTimeInfo.copy(
+                        timeUiState = pickerDateTimeInfo.timeUiState.copy(minute = intent.minute),
+                    ),
+            )
+        }
     }
 
     private fun updateHour(intent: ContentEditIntent.OnHourChanged) {
-        reduce { copy(timeUiState = timeUiState.copy(hour = intent.hour)) }
+        reduce {
+            copy(
+                pickerDateTimeInfo =
+                    pickerDateTimeInfo.copy(
+                        timeUiState = pickerDateTimeInfo.timeUiState.copy(hour = intent.hour),
+                    ),
+            )
+        }
     }
 
     private fun updatePeriod(intent: ContentEditIntent.OnPeriodChanged) {
-        reduce { copy(timeUiState = timeUiState.copy(period = intent.period)) }
+        reduce {
+            copy(
+                pickerDateTimeInfo =
+                    pickerDateTimeInfo.copy(
+                        timeUiState = pickerDateTimeInfo.timeUiState.copy(period = intent.period),
+                    ),
+            )
+        }
     }
 
     private fun loadContent() {
@@ -363,22 +484,24 @@ class ContentEditViewModel(
 
                 ContentType.CALENDAR -> {
                     val schedule = getScheduleUseCase(currentState.contentId)
-                    val scheduleDateTime = schedule.dateTimeInfo.startDateTime
                     reduce {
                         copy(
                             isLoading = false,
                             title = schedule.contentData.title,
                             content = schedule.contentData.description,
+                            isAllDay =
+                                checkAllDay(
+                                    schedule.dateTimeInfo.startDateTime,
+                                    schedule.dateTimeInfo.endDateTime,
+                                ),
                             selectedTags = schedule.tagList.toImmutableSet(),
-                            dateTime = scheduleDateTime,
-                            dateUiState = DateUiState.from(dateTime = scheduleDateTime),
-                            timeUiState = TimeUiState.from(dateTime = scheduleDateTime),
+                            startDateTimeInfo = ScheduleDateTimeState.from(schedule.dateTimeInfo.startDateTime),
+                            endDateTimeInfo = ScheduleDateTimeState.from(schedule.dateTimeInfo.endDateTime),
                             selectedAssignee = ContentAssigneeUiModel.valueOf(value = schedule.contentData.contentAssignee.name),
                         )
                     }
                 }
             }
-            reduce { copy(isLoading = false) }
         }
     }
 
@@ -388,4 +511,16 @@ class ContentEditViewModel(
             reduce { copy(tags = tags.toImmutableList()) }
         }
     }
+
+    private fun LocalDateTime.withAllDayTime(isStart: Boolean) =
+        if (currentState.isAllDay) {
+            copy(hour = if (isStart) 0 else 23, minute = if (isStart) 0 else 59)
+        } else {
+            this
+        }
+
+    private fun checkAllDay(
+        startDateTime: LocalDateTime,
+        endDateTime: LocalDateTime,
+    ): Boolean = startDateTime.hour == 0 && startDateTime.minute == 0 && endDateTime.hour == 23 && endDateTime.minute == 59
 }

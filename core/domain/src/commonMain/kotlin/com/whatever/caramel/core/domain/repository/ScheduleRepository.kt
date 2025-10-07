@@ -3,6 +3,7 @@ package com.whatever.caramel.core.domain.repository
 import com.whatever.caramel.core.domain.entity.Schedule
 import com.whatever.caramel.core.domain.params.content.schdule.ScheduleEditParameter
 import com.whatever.caramel.core.domain.params.content.schdule.ScheduleParameter
+import kotlinx.datetime.LocalDate
 
 interface ScheduleRepository {
     suspend fun createSchedule(parameter: ScheduleParameter)
@@ -15,8 +16,8 @@ interface ScheduleRepository {
     )
 
     suspend fun getScheduleList(
-        startDate: String,
-        endDate: String,
+        startDate: LocalDate,
+        endDate: LocalDate,
     ): List<Schedule>
 
     suspend fun deleteSchedule(scheduleId: Long)

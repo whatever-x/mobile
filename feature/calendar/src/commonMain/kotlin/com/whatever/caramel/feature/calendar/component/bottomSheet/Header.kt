@@ -23,8 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.domain.vo.calendar.Anniversary
-import com.whatever.caramel.core.domain.vo.calendar.Holiday
+import com.whatever.caramel.feature.calendar.model.CalendarUiModel
 import com.whatever.caramel.feature.calendar.util.toUiText
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.number
@@ -37,8 +36,8 @@ internal fun BottomSheetScheduleListHeader(
     onClickAddSchedule: (LocalDate) -> Unit,
     isToday: Boolean,
     isEmpty: Boolean,
-    holidays: List<Holiday>? = null,
-    anniversaries: List<Anniversary>? = null,
+    holidays: List<CalendarUiModel>,
+    anniversaryList: List<CalendarUiModel>,
 ) {
     Column(
         modifier =
@@ -84,12 +83,13 @@ internal fun BottomSheetScheduleListHeader(
                         color = CaramelTheme.color.text.inverse,
                     )
                 }
-                holidays?.let {
+
+                if (holidays.isNotEmpty()) {
                     Spacer(modifier = Modifier.size(size = if (isToday) CaramelTheme.spacing.xxs else CaramelTheme.spacing.xs))
                     LazyRow(
                         horizontalArrangement = Arrangement.spacedBy(space = CaramelTheme.spacing.xxs),
                     ) {
-                        items(items = it) { holiday ->
+                        items(items = holidays) { holiday ->
                             Text(
                                 modifier =
                                     Modifier
@@ -101,7 +101,7 @@ internal fun BottomSheetScheduleListHeader(
                                             vertical = CaramelTheme.spacing.xxs,
                                         ),
                                 textAlign = TextAlign.Center,
-                                text = holiday.name,
+                                text = holiday.mainText,
                                 style = CaramelTheme.typography.label3.bold,
                                 color = CaramelTheme.color.text.inverse,
                             )
@@ -125,7 +125,7 @@ internal fun BottomSheetScheduleListHeader(
             )
         }
 
-        if (!anniversaries.isNullOrEmpty()) {
+        if (anniversaryList.isNotEmpty()) {
             Column(
                 modifier =
                     Modifier
@@ -133,7 +133,7 @@ internal fun BottomSheetScheduleListHeader(
                         .padding(top = CaramelTheme.spacing.s),
                 verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.xs),
             ) {
-                anniversaries.fastForEach { anniversary ->
+                anniversaryList.fastForEach { anniversary ->
                     Row(
                         modifier =
                             Modifier
@@ -152,7 +152,7 @@ internal fun BottomSheetScheduleListHeader(
                                     .align(Alignment.CenterVertically),
                             style = CaramelTheme.typography.body2.bold,
                             color = CaramelTheme.color.text.brand,
-                            text = "${anniversary.label}을 축하해!",
+                            text = "${anniversary.mainText}을 축하해!",
                             textAlign = TextAlign.Start,
                         )
                     }
@@ -165,12 +165,7 @@ internal fun BottomSheetScheduleListHeader(
                 modifier =
                     Modifier
                         .padding(top = CaramelTheme.spacing.s, bottom = CaramelTheme.spacing.l),
-                text =
-                    if (isToday) {
-                        "오늘의 할 일이 아직 없어요"
-                    } else {
-                        "할 일이 아직 없어요"
-                    },
+                text = "등록한 일정이 없어요",
                 style = CaramelTheme.typography.body3.regular,
                 color = CaramelTheme.color.text.tertiary,
             )
