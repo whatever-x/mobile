@@ -124,8 +124,8 @@ private fun ScheduleCell(
                         ContentAssignee.US -> fill.labelBrand to text.labelBrand
                     }
 
-                CalendarUiModel.ScheduleType.HOLIDAY -> fill.brand to text.inverse
-                CalendarUiModel.ScheduleType.ANNIVERSARY -> fill.labelAccent1 to text.inverse
+                CalendarUiModel.ScheduleType.ANNIVERSARY -> fill.brand to text.inverse
+                CalendarUiModel.ScheduleType.HOLIDAY -> fill.labelAccent1 to text.inverse
             }
         }
     Box(

@@ -24,8 +24,8 @@ data class CalendarUiModel(
         val priority: Int,
     ) {
         MULTI_SCHEDULE(1),
-        HOLIDAY(2),
-        ANNIVERSARY(3),
+        ANNIVERSARY(2),
+        HOLIDAY(3),
         SINGLE_SCHEDULE(4),
     }
 }

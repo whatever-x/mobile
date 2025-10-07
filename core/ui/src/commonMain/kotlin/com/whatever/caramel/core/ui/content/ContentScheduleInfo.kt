@@ -74,7 +74,14 @@ private fun ScheduleDateTimeText(
             }
 
             ScheduleDateTimeType.TIME -> {
-                val hourText = dateTime.hour.toString().padStart(2, '0')
+                val hourText =
+                    when (dateTime.hour) {
+                        0, 12 -> "12"
+                        else -> {
+                            val hourIn12 = dateTime.hour % 12
+                            hourIn12.toString().padStart(2, '0')
+                        }
+                    }
                 val minuteText = dateTime.minute.toString().padStart(2, '0')
                 val meridiem = if (dateTime.hour < 12) "오전" else "오후"
                 "$meridiem $hourText:$minuteText"

@@ -44,9 +44,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import caramel.core.designsystem.generated.resources.Res
 import caramel.core.designsystem.generated.resources.ic_check_14
-import caramel.core.designsystem.generated.resources.ic_check_18
-import caramel.core.designsystem.generated.resources.ic_profile_18
-import caramel.core.designsystem.generated.resources.ic_tag_18
 import com.whatever.caramel.core.designsystem.components.CaramelButton
 import com.whatever.caramel.core.designsystem.components.CaramelButtonSize
 import com.whatever.caramel.core.designsystem.components.CaramelButtonType
@@ -55,6 +52,7 @@ import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.ui.content.ContentAssigneeChipRow
+import com.whatever.caramel.core.ui.content.ContentScheduleInfo
 import com.whatever.caramel.core.ui.content.ContentTextArea
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.ui.content.CreateModeSwitch
@@ -64,7 +62,6 @@ import com.whatever.caramel.core.ui.content.TagChip
 import com.whatever.caramel.core.ui.content.TitleTextField
 import com.whatever.caramel.core.ui.picker.CaramelDatePicker
 import com.whatever.caramel.core.ui.picker.CaramelTimePicker
-import com.whatever.caramel.feature.content.create.component.ContentScheduleInfo
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
 import com.whatever.caramel.feature.content.create.mvi.ScheduleDateTimeType
@@ -209,27 +206,13 @@ internal fun ContentScreen(
                     modifier = Modifier.padding(bottom = CaramelTheme.spacing.l),
                     color = CaramelTheme.color.divider.primary,
                 )
-                Row(
+                ContentAssigneeChipRow(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement =
-                        Arrangement.spacedBy(
-                            space = CaramelTheme.spacing.l,
-                            alignment = Alignment.CenterHorizontally,
-                        ),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        painter = painterResource(Res.drawable.ic_profile_18),
-                        contentDescription = null,
-                    )
-                    ContentAssigneeChipRow(
-                        modifier = Modifier.fillMaxWidth(),
-                        selectedAssigneeChip = state.selectedAssignee,
-                        onAssigneeChipClick = { assignee ->
-                            onIntent(ContentCreateIntent.ClickAssignee(assignee = assignee))
-                        },
-                    )
-                }
+                    selectedAssigneeChip = state.selectedAssignee,
+                    onAssigneeChipClick = { assignee ->
+                        onIntent(ContentCreateIntent.ClickAssignee(assignee = assignee))
+                    },
+                )
                 HorizontalDivider(
                     modifier = Modifier.padding(vertical = CaramelTheme.spacing.m),
                     color = CaramelTheme.color.divider.primary,
@@ -239,25 +222,12 @@ internal fun ContentScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement =
-                            Arrangement.spacedBy(
-                                space = CaramelTheme.spacing.l,
-                                alignment = Alignment.Start,
-                            ),
-                    ) {
-                        Icon(
-                            painter = painterResource(Res.drawable.ic_check_18),
-                            contentDescription = null,
-                        )
-                        CreateModeSwitch(
-                            createMode = state.createMode,
-                            onCreateModeSelect = {
-                                onIntent(ContentCreateIntent.SelectCreateMode(it))
-                            },
-                        )
-                    }
+                    CreateModeSwitch(
+                        createMode = state.createMode,
+                        onCreateModeSelect = {
+                            onIntent(ContentCreateIntent.SelectCreateMode(it))
+                        },
+                    )
                     when (state.createMode) {
                         CreateMode.MEMO -> {
                             Text(
@@ -378,106 +348,92 @@ internal fun ContentScreen(
                         ),
                     color = CaramelTheme.color.divider.primary,
                 )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement =
-                        Arrangement.spacedBy(
-                            space = CaramelTheme.spacing.l,
-                            alignment = Alignment.CenterHorizontally,
-                        ),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        painter = painterResource(Res.drawable.ic_tag_18),
-                        contentDescription = null,
-                    )
-                    SelectableTagChipRow(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .height(height = 36.dp),
-                        tagChips =
-                            state.tags
-                                .map { TagChip(it.id, it.label) }
-                                .toImmutableList(),
-                        selectedTagChips =
-                            state.selectedTags
-                                .map { TagChip(it.id, it.label) }
-                                .toImmutableList(),
-                        onTagChipClick = {
-                            onIntent(
-                                ContentCreateIntent.ClickTag(
-                                    Tag(
-                                        it.id,
-                                        it.label,
-                                    ),
-                                ),
-                            )
-                        },
-                    )
-                }
-            }
-        }
-    }
-    if (state.showDateDialog || state.showTimeDialog) {
-        DateBottomSheet(
-            sheetState = sheetState,
-            onDismiss = { onIntent(ContentCreateIntent.HideDateTimeDialog) },
-            content = {
-                when {
-                    state.showDateDialog -> {
-                        CaramelDatePicker(
-                            modifier =
-                                Modifier
-                                    .padding(top = CaramelTheme.spacing.xxl)
-                                    .align(Alignment.CenterHorizontally),
-                            dateUiState = state.pickerDateTimeInfo.dateUiState,
-                            onYearChanged = { year ->
-                                onIntent(ContentCreateIntent.OnYearChanged(year))
-                            },
-                            onDayChanged = { day ->
-                                onIntent(ContentCreateIntent.OnDayChanged(day))
-                            },
-                            onMonthChanged = { month ->
-                                onIntent(ContentCreateIntent.OnMonthChanged(month))
-                            },
-                        )
-                    }
-
-                    state.showTimeDialog -> {
-                        CaramelTimePicker(
-                            modifier =
-                                Modifier
-                                    .padding(top = CaramelTheme.spacing.xxl)
-                                    .align(Alignment.CenterHorizontally),
-                            timeUiState = state.pickerDateTimeInfo.timeUiState,
-                            onPeriodChanged = { period ->
-                                onIntent(ContentCreateIntent.OnPeriodChanged(period))
-                            },
-                            onHourChanged = { hour ->
-                                onIntent(ContentCreateIntent.OnHourChanged(hour))
-                            },
-                            onMinuteChanged = { minute ->
-                                onIntent(ContentCreateIntent.OnMinuteChanged(minute))
-                            },
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.l))
-                CaramelButton(
+                SelectableTagChipRow(
                     modifier =
                         Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = CaramelTheme.spacing.xl)
-                            .padding(bottom = CaramelTheme.spacing.xl),
-                    buttonType = CaramelButtonType.Enabled1,
-                    buttonSize = CaramelButtonSize.Large,
-                    text = "완료",
-                    onClick = { onIntent(ContentCreateIntent.ClickCompleteButton) },
+                            .height(height = 36.dp),
+                    tagChips =
+                        state.tags
+                            .map { TagChip(it.id, it.label) }
+                            .toImmutableList(),
+                    selectedTagChips =
+                        state.selectedTags
+                            .map { TagChip(it.id, it.label) }
+                            .toImmutableList(),
+                    onTagChipClick = {
+                        onIntent(
+                            ContentCreateIntent.ClickTag(
+                                Tag(
+                                    it.id,
+                                    it.label,
+                                ),
+                            ),
+                        )
+                    },
                 )
-            },
-        )
+            }
+        }
+
+        if (state.showDateDialog || state.showTimeDialog) {
+            DateBottomSheet(
+                sheetState = sheetState,
+                onDismiss = { onIntent(ContentCreateIntent.HideDateTimeDialog) },
+                content = {
+                    when {
+                        state.showDateDialog -> {
+                            CaramelDatePicker(
+                                modifier =
+                                    Modifier
+                                        .padding(top = CaramelTheme.spacing.xxl)
+                                        .align(Alignment.CenterHorizontally),
+                                dateUiState = state.pickerDateTimeInfo.dateUiState,
+                                onYearChanged = { year ->
+                                    onIntent(ContentCreateIntent.OnYearChanged(year))
+                                },
+                                onDayChanged = { day ->
+                                    onIntent(ContentCreateIntent.OnDayChanged(day))
+                                },
+                                onMonthChanged = { month ->
+                                    onIntent(ContentCreateIntent.OnMonthChanged(month))
+                                },
+                            )
+                        }
+
+                        state.showTimeDialog -> {
+                            CaramelTimePicker(
+                                modifier =
+                                    Modifier
+                                        .padding(top = CaramelTheme.spacing.xxl)
+                                        .align(Alignment.CenterHorizontally),
+                                timeUiState = state.pickerDateTimeInfo.timeUiState,
+                                onPeriodChanged = { period ->
+                                    onIntent(ContentCreateIntent.OnPeriodChanged(period))
+                                },
+                                onHourChanged = { hour ->
+                                    onIntent(ContentCreateIntent.OnHourChanged(hour))
+                                },
+                                onMinuteChanged = { minute ->
+                                    onIntent(ContentCreateIntent.OnMinuteChanged(minute))
+                                },
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.padding(top = CaramelTheme.spacing.l))
+                    CaramelButton(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = CaramelTheme.spacing.xl)
+                                .padding(bottom = CaramelTheme.spacing.xl),
+                        buttonType = CaramelButtonType.Enabled1,
+                        buttonSize = CaramelButtonSize.Large,
+                        text = "완료",
+                        onClick = { onIntent(ContentCreateIntent.ClickCompleteButton) },
+                    )
+                },
+            )
+        }
     }
 }
 

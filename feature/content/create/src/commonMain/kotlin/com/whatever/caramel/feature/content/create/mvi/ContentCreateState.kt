@@ -5,7 +5,8 @@ import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.ui.picker.model.TimeUiState
-import com.whatever.caramel.core.util.DateUtil
+import com.whatever.caramel.core.ui.picker.model.toLocalDate
+import com.whatever.caramel.core.ui.picker.model.toLocalTime
 import com.whatever.caramel.core.viewmodel.UiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
@@ -25,29 +26,36 @@ data class ContentCreateState(
     val showTimeDialog: Boolean = false,
     val showEditConfirmDialog: Boolean = false,
     val isAllDay: Boolean = false,
-    val scheduleDateType: ScheduleDateTimeType = ScheduleDateTimeType.NONE,
+    val scheduleDateType: ScheduleDateTimeType = ScheduleDateTimeType.START,
     val startDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState(),
     val endDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState(),
+    val pickerDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState(),
 ) : UiState {
     val isSaveButtonEnable: Boolean
         get() = title.isNotBlank() || content.isNotBlank()
-
-    val pickerDateTimeInfo
-        get() =
-            when (scheduleDateType) {
-                ScheduleDateTimeType.START, ScheduleDateTimeType.NONE -> startDateTimeInfo
-                ScheduleDateTimeType.END -> endDateTimeInfo
-            }
 }
 
 enum class ScheduleDateTimeType {
     START,
     END,
-    NONE,
 }
 
 data class ScheduleDateTimeState(
-    val dateTime: LocalDateTime = DateUtil.todayLocalDateTime(),
     val dateUiState: DateUiState = DateUiState.currentDate(),
     val timeUiState: TimeUiState = TimeUiState.currentTime(),
-)
+) {
+    val dateTime: LocalDateTime
+        get() {
+            val date = dateUiState.toLocalDate()
+            val time = timeUiState.toLocalTime()
+            return LocalDateTime(date = date, time = time)
+        }
+
+    companion object {
+        fun from(dateTime: LocalDateTime) =
+            ScheduleDateTimeState(
+                dateUiState = DateUiState.from(dateTime),
+                timeUiState = TimeUiState.from(dateTime),
+            )
+    }
+}

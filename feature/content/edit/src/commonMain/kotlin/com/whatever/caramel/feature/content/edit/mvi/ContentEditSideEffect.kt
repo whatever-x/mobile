@@ -11,8 +11,17 @@ sealed interface ContentEditSideEffect : UiSideEffect {
         val message: String,
     ) : ContentEditSideEffect
 
+    data class ShowInValidDateSnackBar(
+        val type: InvalidDateType,
+    ) : ContentEditSideEffect
+
     data class ShowErrorDialog(
         val message: String,
         val description: String?,
     ) : ContentEditSideEffect
+}
+
+enum class InvalidDateType {
+    START_DATE,
+    END_DATE,
 }

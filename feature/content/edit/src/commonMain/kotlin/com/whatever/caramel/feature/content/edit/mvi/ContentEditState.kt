@@ -6,6 +6,8 @@ import com.whatever.caramel.core.ui.content.ContentAssigneeUiModel
 import com.whatever.caramel.core.ui.content.CreateMode
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.ui.picker.model.TimeUiState
+import com.whatever.caramel.core.ui.picker.model.toLocalDate
+import com.whatever.caramel.core.ui.picker.model.toLocalTime
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.UiState
@@ -35,32 +37,31 @@ data class ContentEditState(
     val showDeleteConfirmDialog: Boolean = false,
     val showDeletedContentDialog: Boolean = false,
     val isAllDay: Boolean = false,
-    val scheduleDateType: ScheduleDateTimeType = ScheduleDateTimeType.NONE,
+    val scheduleDateType: ScheduleDateTimeType = ScheduleDateTimeType.START,
     val startDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState.fromNow(),
     val endDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState.fromNow(plusHours = 1),
+    val pickerDateTimeInfo: ScheduleDateTimeState = ScheduleDateTimeState.fromNow(),
 ) : UiState {
     val isSaveButtonEnable: Boolean
         get() = title.isNotBlank() || content.isNotBlank()
-
-    val pickerDateTimeInfo
-        get() =
-            when (scheduleDateType) {
-                ScheduleDateTimeType.START, ScheduleDateTimeType.NONE -> startDateTimeInfo
-                ScheduleDateTimeType.END -> endDateTimeInfo
-            }
 }
 
 enum class ScheduleDateTimeType {
     START,
     END,
-    NONE,
 }
 
 data class ScheduleDateTimeState(
-    val dateTime: LocalDateTime,
     val dateUiState: DateUiState,
     val timeUiState: TimeUiState,
 ) {
+    val dateTime: LocalDateTime
+        get() {
+            val date = dateUiState.toLocalDate()
+            val time = timeUiState.toLocalTime()
+            return LocalDateTime(date = date, time = time)
+        }
+
     companion object {
         fun fromNow(plusHours: Int = 0): ScheduleDateTimeState {
             val timeZone = TimeZone.currentSystemDefault()
@@ -71,7 +72,6 @@ data class ScheduleDateTimeState(
 
         fun from(localDateTime: LocalDateTime) =
             ScheduleDateTimeState(
-                dateTime = localDateTime,
                 dateUiState = DateUiState.from(localDateTime),
                 timeUiState = TimeUiState.from(localDateTime),
             )
