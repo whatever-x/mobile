@@ -1,5 +1,6 @@
 package com.whatever.caramel.di
 
+import com.whatever.caramel.core.analytics.di.analyticsModule
 import com.whatever.caramel.core.crashlytics.di.crashlyticsModule
 import com.whatever.caramel.core.data.di.networkInterceptorModule
 import com.whatever.caramel.core.data.di.repositoryModule
@@ -60,6 +61,8 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             firebaseMessagingModule,
             // Crashlytics Module
             crashlyticsModule,
+            // Analytics Module
+            analyticsModule,
             // ==== Domain Layer ====
             useCaseModule,
             // ==== Presentation Layer ====
