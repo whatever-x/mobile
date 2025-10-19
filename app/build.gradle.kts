@@ -43,6 +43,7 @@ kotlin {
             implementation(projects.core.datastore)
             implementation(projects.core.database)
             implementation(projects.core.remote)
+            implementation(projects.core.inappReview)
             api(projects.core.analytics)
             api(projects.core.crashlytics)
             implementation(projects.core.viewmodel)
