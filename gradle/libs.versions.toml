@@ -43,6 +43,8 @@ kotlinx-collections-immutable = "0.4.0"
 apps-flyer = "6.17.0"
 ktlint-cli = "1.6.0"
 spotless = "7.0.4"
+play-review = "2.0.2"
+
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -61,7 +63,7 @@ androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose-plugin" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
-kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines"}
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 
 jetbrains-compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
@@ -119,7 +121,9 @@ compose-ui-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backha
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 mokkery = { group = "dev.mokkery", name = "mokkery-gradle", version.ref = "mokkery" }
 
-apps-flyer = { group = "com.appsflyer", name = "af-android-sdk", version.ref = "apps-flyer"}
+apps-flyer = { group = "com.appsflyer", name = "af-android-sdk", version.ref = "apps-flyer" }
+
+play-review = { group = "com.google.android.play", name = "review-ktx", version.ref = "play-review" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -135,7 +139,7 @@ googleServices = { id = "com.google.gms.google-services", version.ref = "gms" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crahslytics" }
 jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
-spotless = { id = "com.diffplug.gradle.spotless", version.ref = "spotless"}
+spotless = { id = "com.diffplug.gradle.spotless", version.ref = "spotless" }
 
 [bundles]
 ktor = [
