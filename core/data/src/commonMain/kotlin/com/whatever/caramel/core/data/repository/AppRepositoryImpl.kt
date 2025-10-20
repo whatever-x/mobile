@@ -26,26 +26,6 @@ class AppRepositoryImpl(
                 ).toCheckForceUpdateResult()
         }
 
-    override suspend fun getReviewRequestDate(): LocalDateTime {
-        val dateString = localAppDataSource.fetchReviewRequestDate()
-        return runCatching {
-            LocalDateTime.parse(dateString)
-        }.getOrElse {
-            LocalDateTime(
-                year = 1970,
-                monthNumber = 1,
-                dayOfMonth = 1,
-                hour = 0,
-                minute = 0,
-                second = 0
-            )
-        }
-    }
-
-    override suspend fun setReviewRequestDate(date: LocalDateTime) {
-        localAppDataSource.saveReviewRequestDate(date.toString())
-    }
-
     override suspend fun getAppLaunchCount(): Int {
         return localAppDataSource.fetchAppLaunchCount()
     }

@@ -14,7 +14,6 @@ import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
 import com.whatever.caramel.core.domain.usecase.schedule.GetTodayScheduleUseCase
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.user.Gender
-import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.util.codePointCount
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.home.mvi.BalanceGameCard
@@ -318,7 +317,7 @@ class HomeViewModel(
                     ),
             )
         }
-        if (checkReviewRequestAvailableUseCase(DateUtil.todayLocalDateTime())) {
+        if (checkReviewRequestAvailableUseCase()) {
             postSideEffect(HomeSideEffect.RequestReview)
         }
     }

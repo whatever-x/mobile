@@ -10,8 +10,6 @@ interface AppRepository {
         versionCode: Int,
     ): CheckForceUpdateResult
 
-    suspend fun getReviewRequestDate(): LocalDateTime
-    suspend fun setReviewRequestDate(date: LocalDateTime)
     suspend fun getAppLaunchCount(): Int
     suspend fun setAppLaunchCount(count : Int)
 }
