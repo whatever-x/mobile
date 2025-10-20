@@ -2,13 +2,16 @@ package com.whatever.caramel.core.data.repository
 
 import com.whatever.caramel.core.data.mapper.toCheckForceUpdateResult
 import com.whatever.caramel.core.data.util.safeCall
+import com.whatever.caramel.core.datastore.datasource.LocalAppDataSource
 import com.whatever.caramel.core.domain.repository.AppRepository
 import com.whatever.caramel.core.domain.vo.app.CheckForceUpdateResult
 import com.whatever.caramel.core.domain.vo.app.Platform
 import com.whatever.caramel.core.remote.datasource.RemoteAppDataSource
 import com.whatever.caramel.core.remote.dto.app.PlatformDto
+import kotlinx.datetime.LocalDateTime
 
 class AppRepositoryImpl(
+    private val localAppDataSource: LocalAppDataSource,
     private val remoteAppDataSource: RemoteAppDataSource,
 ) : AppRepository {
     override suspend fun getMinVersion(
@@ -22,4 +25,21 @@ class AppRepositoryImpl(
                     versionCode = versionCode,
                 ).toCheckForceUpdateResult()
         }
+
+    override suspend fun getReviewRequestDate(): LocalDateTime {
+        val dateString = localAppDataSource.fetchReviewRequestDate()
+        return LocalDateTime.parse(dateString)
+    }
+
+    override suspend fun setReviewRequestDate(date: LocalDateTime) {
+        localAppDataSource.saveReviewRequestDate(date.toString())
+    }
+
+    override suspend fun getAppLaunchCount(): Int {
+        return localAppDataSource.fetchAppLaunchCount()
+    }
+
+    override suspend fun setAppLaunchCount(count: Int) {
+        localAppDataSource.saveAppLaunchCount(count)
+    }
 }

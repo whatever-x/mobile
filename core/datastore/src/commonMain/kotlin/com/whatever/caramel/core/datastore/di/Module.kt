@@ -1,5 +1,7 @@
 package com.whatever.caramel.core.datastore.di
 
+import com.whatever.caramel.core.datastore.datasource.LocalAppDataSource
+import com.whatever.caramel.core.datastore.datasource.LocalAppDataSourceImpl
 import com.whatever.caramel.core.datastore.datasource.LocalCoupleDataSource
 import com.whatever.caramel.core.datastore.datasource.LocalCoupleDataSourceImpl
 import com.whatever.caramel.core.datastore.datasource.LocalTokenDataSource
@@ -16,4 +18,5 @@ val dataStoreModule =
         single<LocalTokenDataSource> { LocalTokenDataSourceImpl(dataStore = get()) }
         single<LocalUserDataSource> { LocalUserDataSourceImpl(dataStore = get()) }
         single<LocalCoupleDataSource> { LocalCoupleDataSourceImpl(dataStore = get()) }
+        single<LocalAppDataSource> { LocalAppDataSourceImpl(dataStore = get()) }
     }
