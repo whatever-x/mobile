@@ -13,8 +13,12 @@ import com.appsflyer.deeplink.DeepLinkResult
 import com.whatever.caramel.app.CaramelComposeApp
 import com.whatever.caramel.core.deeplink.DeepLinkHandler
 import com.whatever.caramel.core.deeplink.model.AppsFlyerDeepLinkParameter
+import com.whatever.caramel.core.inAppReview.CaramelInAppReview
+import com.whatever.caramel.core.inAppReview.CaramelInAppReviewImpl
 import io.github.aakira.napier.Napier
 import org.koin.android.ext.android.inject
+import org.koin.core.context.loadKoinModules
+import org.koin.dsl.module
 
 class MainActivity : ComponentActivity() {
     private val deepLinkHandler: DeepLinkHandler by inject()
@@ -27,6 +31,9 @@ class MainActivity : ComponentActivity() {
 
         initAppsFlyer()
 
+        loadKoinModules(module {
+            single<CaramelInAppReview> { CaramelInAppReviewImpl(activityProvider = { this@MainActivity }) }
+        })
         setContent {
             val navHostController = rememberNavController()
 
