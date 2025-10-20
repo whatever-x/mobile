@@ -15,13 +15,13 @@ class LocalAppDataSourceImpl(
         }
     }
 
-    override suspend fun fetchAppLaunchCount(): Int = dataStore.data.first().let { prefs ->
-        prefs[appLaunchCountKey] ?: 1
-    }
+    override suspend fun fetchAppLaunchCount(): Int =
+        dataStore.data.first().let { prefs ->
+            prefs[appLaunchCountKey] ?: 1
+        }
 
     companion object {
         private const val PREFS_KEY_APP_LAUNCH_COUNT = "prefs_key_app_launch_count"
         private val appLaunchCountKey by lazy { intPreferencesKey(PREFS_KEY_APP_LAUNCH_COUNT) }
     }
-
 }

@@ -31,9 +31,11 @@ class MainActivity : ComponentActivity() {
 
         initAppsFlyer()
 
-        loadKoinModules(module {
-            single<CaramelInAppReview> { CaramelInAppReviewImpl(activityProvider = { this@MainActivity }) }
-        })
+        loadKoinModules(
+            module {
+                single<CaramelInAppReview> { CaramelInAppReviewImpl(activityProvider = { this@MainActivity }) }
+            },
+        )
         setContent {
             val navHostController = rememberNavController()
 

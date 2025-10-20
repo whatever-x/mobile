@@ -44,7 +44,7 @@ internal fun MainRoute(
     navigateToCreateSchedule: (ContentType, String) -> Unit,
     showErrorToast: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
-    requestReview : () -> Unit,
+    requestReview: () -> Unit,
 ) {
     val hapticFeedback = LocalHapticFeedback.current
     val mainNavHostController = rememberNavController()

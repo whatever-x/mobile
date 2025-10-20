@@ -21,7 +21,7 @@ internal fun HomeRoute(
     navigateToCreateTodo: (ContentType) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
     showErrorToast: (String) -> Unit,
-    requestReview : () -> Unit,
+    requestReview: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val keyboardController = LocalSoftwareKeyboardController.current

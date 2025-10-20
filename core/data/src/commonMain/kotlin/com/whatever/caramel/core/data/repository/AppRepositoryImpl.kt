@@ -8,7 +8,6 @@ import com.whatever.caramel.core.domain.vo.app.CheckForceUpdateResult
 import com.whatever.caramel.core.domain.vo.app.Platform
 import com.whatever.caramel.core.remote.datasource.RemoteAppDataSource
 import com.whatever.caramel.core.remote.dto.app.PlatformDto
-import kotlinx.datetime.LocalDateTime
 
 class AppRepositoryImpl(
     private val localAppDataSource: LocalAppDataSource,
@@ -26,9 +25,7 @@ class AppRepositoryImpl(
                 ).toCheckForceUpdateResult()
         }
 
-    override suspend fun getAppLaunchCount(): Int {
-        return localAppDataSource.fetchAppLaunchCount()
-    }
+    override suspend fun getAppLaunchCount(): Int = localAppDataSource.fetchAppLaunchCount()
 
     override suspend fun setAppLaunchCount(count: Int) {
         localAppDataSource.saveAppLaunchCount(count)

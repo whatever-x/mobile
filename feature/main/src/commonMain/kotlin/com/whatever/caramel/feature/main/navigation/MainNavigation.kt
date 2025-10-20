@@ -29,7 +29,7 @@ fun NavGraphBuilder.mainGraph(
     showErrorToast: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
     navigateToCreateMemoWithTitle: (String, ContentType) -> Unit,
-    requestReview : () -> Unit,
+    requestReview: () -> Unit,
 ) {
     composable<MainRoute>(
         exitTransition = { ExitTransition.None },
@@ -45,7 +45,7 @@ fun NavGraphBuilder.mainGraph(
             showErrorToast = showErrorToast,
             showErrorDialog = showErrorDialog,
             navigateToCreateMemoWithTitle = navigateToCreateMemoWithTitle,
-            requestReview = requestReview
+            requestReview = requestReview,
         )
     }
 }

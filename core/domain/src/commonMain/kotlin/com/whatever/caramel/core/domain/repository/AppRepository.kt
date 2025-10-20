@@ -2,7 +2,6 @@ package com.whatever.caramel.core.domain.repository
 
 import com.whatever.caramel.core.domain.vo.app.CheckForceUpdateResult
 import com.whatever.caramel.core.domain.vo.app.Platform
-import kotlinx.datetime.LocalDateTime
 
 interface AppRepository {
     suspend fun getMinVersion(
@@ -11,5 +10,6 @@ interface AppRepository {
     ): CheckForceUpdateResult
 
     suspend fun getAppLaunchCount(): Int
-    suspend fun setAppLaunchCount(count : Int)
+
+    suspend fun setAppLaunchCount(count: Int)
 }

@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 class CaramelViewModel(
     private val connectCoupleUseCase: ConnectCoupleUseCase,
     private val deepLinkHandler: DeepLinkHandler,
-    private val inAppReview : CaramelInAppReview,
+    private val inAppReview: CaramelInAppReview,
     private val addAppLaunchCountUseCase: AddAppLaunchCountUseCase,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
