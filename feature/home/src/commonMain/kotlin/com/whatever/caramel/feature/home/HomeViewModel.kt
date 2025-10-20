@@ -6,6 +6,7 @@ import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.BalanceGameErrorCode
 import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
+import com.whatever.caramel.core.domain.usecase.app.CheckReviewRequestAvailableUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameChoiceUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
@@ -13,6 +14,7 @@ import com.whatever.caramel.core.domain.usecase.couple.UpdateShareMessageUseCase
 import com.whatever.caramel.core.domain.usecase.schedule.GetTodayScheduleUseCase
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.user.Gender
+import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.util.codePointCount
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.home.mvi.BalanceGameCard
@@ -33,6 +35,7 @@ class HomeViewModel(
     private val getTodayScheduleUseCase: GetTodayScheduleUseCase,
     private val getTodayBalanceGameUseCase: GetTodayBalanceGameUseCase,
     private val submitBalanceGameChoiceUseCase: SubmitBalanceGameChoiceUseCase,
+    private val checkReviewRequestAvailableUseCase: CheckReviewRequestAvailableUseCase,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle, crashlytics) {
@@ -50,6 +53,7 @@ class HomeViewModel(
                     ),
                 )
             }
+
             is HomeIntent.CreateTodoContent -> postSideEffect(HomeSideEffect.NavigateToCreateContent)
             is HomeIntent.SaveShareMessage -> saveShareMessage()
             is HomeIntent.ShowShareMessageEditBottomSheet -> showBottomSheet()
@@ -97,6 +101,7 @@ class HomeViewModel(
                 BalanceGameErrorCode.CAN_NOT_CHANGE_OPTION -> {
                     launch { initBalanceGame() }
                 }
+
                 CoupleErrorCode.CAN_NOT_LOAD_DATA -> {
                     reduce {
                         copy(
@@ -107,6 +112,7 @@ class HomeViewModel(
                         )
                     }
                 }
+
                 CoupleErrorCode.MEMBER_NOT_FOUND -> {
                     if (currentState.coupleState != HomeState.CoupleState.DISCONNECT) {
                         reduce {
@@ -118,6 +124,7 @@ class HomeViewModel(
                         }
                     }
                 }
+
                 else -> {
                     when (throwable.errorUiType) {
                         ErrorUiType.TOAST ->
@@ -126,6 +133,7 @@ class HomeViewModel(
                                     message = throwable.message,
                                 ),
                             )
+
                         ErrorUiType.DIALOG ->
                             postSideEffect(
                                 HomeSideEffect.ShowErrorDialog(
@@ -310,7 +318,8 @@ class HomeViewModel(
                     ),
             )
         }
-
-        postSideEffect(HomeSideEffect.RequestReview)
+        if (checkReviewRequestAvailableUseCase(DateUtil.todayLocalDateTime())) {
+            postSideEffect(HomeSideEffect.RequestReview)
+        }
     }
 }

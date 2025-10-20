@@ -36,6 +36,7 @@ val repositoryModule =
     module {
         single<AppRepository> {
             AppRepositoryImpl(
+                localAppDataSource = get(),
                 remoteAppDataSource = get(),
             )
         }

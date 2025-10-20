@@ -6,7 +6,7 @@ class AddAppLaunchCountUseCase(
     private val appRepository: AppRepository,
 ) {
     suspend operator fun invoke() {
-        val savedValue = appRepository.getAppLaunchCount()
-        appRepository.setAppLaunchCount(savedValue + 1)
+        val launchCount = appRepository.getAppLaunchCount()
+        appRepository.setAppLaunchCount(launchCount + 1)
     }
 }

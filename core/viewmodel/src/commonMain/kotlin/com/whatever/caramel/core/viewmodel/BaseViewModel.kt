@@ -67,6 +67,6 @@ abstract class BaseViewModel<S : UiState, SE : UiSideEffect, I : UiIntent>(
         }
 
     open fun handleClientException(throwable: Throwable) {
-        Napier.d { throwable.message.toString() }
+        Napier.e { "handleClientException = ${throwable.message.toString()}" }
     }
 }

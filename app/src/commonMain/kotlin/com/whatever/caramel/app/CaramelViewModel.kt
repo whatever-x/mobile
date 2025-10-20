@@ -8,6 +8,7 @@ import com.whatever.caramel.core.deeplink.model.AppsFlyerDeepLinkValue
 import com.whatever.caramel.core.deeplink.model.CaramelDeepLink
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
+import com.whatever.caramel.core.domain.usecase.app.AddAppLaunchCountUseCase
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.inAppReview.CaramelInAppReview
@@ -21,11 +22,13 @@ class CaramelViewModel(
     private val connectCoupleUseCase: ConnectCoupleUseCase,
     private val deepLinkHandler: DeepLinkHandler,
     private val inAppReview : CaramelInAppReview,
+    private val addAppLaunchCountUseCase: AddAppLaunchCountUseCase,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<AppState, AppSideEffect, AppIntent>(savedStateHandle, crashlytics) {
     init {
         viewModelScope.launch {
+            addAppLaunchCountUseCase()
             deepLinkHandler.deepLinkFlow.collect { deepLink ->
                 when (deepLink) {
                     is CaramelDeepLink.Invite -> {
