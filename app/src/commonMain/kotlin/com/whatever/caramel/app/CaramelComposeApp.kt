@@ -127,7 +127,6 @@ fun CaramelComposeApp(
                         }
                     }
                 }
-
                 CaramelNavHost(
                     modifier = Modifier,
                     navHostController = navHostController,

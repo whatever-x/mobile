@@ -10,6 +10,7 @@ import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
 import com.whatever.caramel.core.domain.vo.user.UserStatus
+import com.whatever.caramel.core.inAppReview.CaramelInAppReview
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.mvi.AppIntent
 import com.whatever.caramel.mvi.AppSideEffect
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 class CaramelViewModel(
     private val connectCoupleUseCase: ConnectCoupleUseCase,
     private val deepLinkHandler: DeepLinkHandler,
+    private val inAppReview : CaramelInAppReview,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<AppState, AppSideEffect, AppIntent>(savedStateHandle, crashlytics) {
@@ -67,6 +69,7 @@ class CaramelViewModel(
             is AppIntent.CloseErrorDialog -> reduce { copy(isShowErrorDialog = false) }
             is AppIntent.ShowErrorDialog -> showErrorDialog(message = intent.message, description = intent.description)
             is AppIntent.ShowToast -> postSideEffect(AppSideEffect.ShowToast(intent.message))
+            AppIntent.RequestInReview -> inAppReview.requestReview()
         }
     }
 

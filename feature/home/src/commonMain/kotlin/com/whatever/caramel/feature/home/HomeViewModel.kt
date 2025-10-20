@@ -310,5 +310,7 @@ class HomeViewModel(
                     ),
             )
         }
+
+        postSideEffect(HomeSideEffect.RequestReview)
     }
 }

@@ -25,6 +25,7 @@ fun NavGraphBuilder.homeContent(
     navigateToCreateTodo: (ContentType) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
     showErrorToast: (String) -> Unit,
+    requestReview : () -> Unit,
 ) {
     composable<HomeRoute> {
         HomeRoute(
@@ -34,6 +35,7 @@ fun NavGraphBuilder.homeContent(
             navigateToCreateTodo = navigateToCreateTodo,
             showErrorDialog = showErrorDialog,
             showErrorToast = showErrorToast,
+            requestReview = requestReview
         )
     }
 }
