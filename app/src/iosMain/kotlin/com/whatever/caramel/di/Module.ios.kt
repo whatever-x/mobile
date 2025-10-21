@@ -18,7 +18,6 @@ actual val appModule: Module
                     connectCoupleUseCase = get(),
                     deepLinkHandler = get(),
                     savedStateHandle = SavedStateHandle(),
-                    inAppReview = get(),
                     crashlytics = get(),
                 /*
                  @ham2174 FIXME : SavedStateHandle Ios에서 사용 불가능.

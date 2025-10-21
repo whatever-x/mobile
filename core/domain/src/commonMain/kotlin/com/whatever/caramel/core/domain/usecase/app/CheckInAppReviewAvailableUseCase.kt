@@ -19,11 +19,10 @@ class CheckInAppReviewAvailableUseCase(
         val appLaunchCount = appRepository.getAppLaunchCount()
 
         return appActivityFlow.map {
-            val (balanceGameParticipationCount, memoCreateCount, scheduleCreateCount) = it
+            val (balanceGameParticipationCount, contentCreateCount) = it
             val appActivityAvailable =
                 balanceGameParticipationCount >= AppPolicy.APP_ACTIVITY_MIN_COUNT_FOR_REVIEW ||
-                        memoCreateCount >= AppPolicy.APP_ACTIVITY_MIN_COUNT_FOR_REVIEW ||
-                        scheduleCreateCount >= AppPolicy.APP_ACTIVITY_MIN_COUNT_FOR_REVIEW
+                        contentCreateCount >= AppPolicy.APP_ACTIVITY_MIN_COUNT_FOR_REVIEW
 
             val appLaunchCountAvailable =
                 appLaunchCount >= AppPolicy.APP_LAUNCH_MIN_COUNT_FOR_REVIEW

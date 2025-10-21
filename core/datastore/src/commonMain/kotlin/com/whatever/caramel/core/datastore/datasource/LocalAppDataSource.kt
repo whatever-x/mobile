@@ -9,11 +9,8 @@ interface LocalAppDataSource {
     suspend fun saveBalanceGameParticipationCount(count: Int)
     suspend fun fetchBalanceGameParticipationCount(): Flow<Int>
 
-    suspend fun saveMemoCreateCount(count : Int)
-    suspend fun fetchMemoCreateCount(): Flow<Int>
-
-    suspend fun saveScheduleCreateCount(count: Int)
-    suspend fun fetchScheduleCreateCount(): Flow<Int>
+    suspend fun saveContentCreateCount(count: Int)
+    suspend fun fetchContentCreateCount(): Flow<Int>
 
     suspend fun saveInAppReviewRequestDate(dateTime : String)
     suspend fun fetchInAppReviewRequestDate() : String

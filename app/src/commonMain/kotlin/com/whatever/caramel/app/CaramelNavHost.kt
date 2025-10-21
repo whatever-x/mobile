@@ -183,9 +183,6 @@ internal fun CaramelNavHost(
                         title = title,
                     )
                 },
-                requestReview = {
-                    onIntent(AppIntent.RequestInReview)
-                },
             )
             contentEditScreen(
                 popBackStack = { popBackStack() },

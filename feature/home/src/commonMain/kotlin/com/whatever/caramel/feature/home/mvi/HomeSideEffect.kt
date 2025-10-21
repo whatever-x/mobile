@@ -26,5 +26,5 @@ sealed interface HomeSideEffect : UiSideEffect {
 
     data object HideKeyboard : HomeSideEffect
 
-    data object RequestReview : HomeSideEffect
+    data object RequestInAppReview : HomeSideEffect
 }

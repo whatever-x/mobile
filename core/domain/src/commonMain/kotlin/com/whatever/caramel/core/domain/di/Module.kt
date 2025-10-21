@@ -2,11 +2,9 @@ package com.whatever.caramel.core.domain.di
 
 import com.whatever.caramel.core.domain.usecase.app.AddAppLaunchCountUseCase
 import com.whatever.caramel.core.domain.usecase.app.AddBalanceGameParticipationCountUseCase
-import com.whatever.caramel.core.domain.usecase.app.AddMemoCreateCountUseCase
-import com.whatever.caramel.core.domain.usecase.app.AddScheduleCreateCountUseCase
+import com.whatever.caramel.core.domain.usecase.app.AddContentCreateCountUseCase
 import com.whatever.caramel.core.domain.usecase.app.CheckForceUpdateUseCase
 import com.whatever.caramel.core.domain.usecase.app.CheckInAppReviewAvailableUseCase
-import com.whatever.caramel.core.domain.usecase.app.CheckReviewRequestAvailableUseCase
 import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignOutUseCase
@@ -42,11 +40,9 @@ val useCaseModule =
     module {
         // App
         factory { CheckForceUpdateUseCase(get(), get()) }
-        factory { CheckReviewRequestAvailableUseCase(get()) }
         factory { AddAppLaunchCountUseCase(get()) }
         factory { AddBalanceGameParticipationCountUseCase(get()) }
-        factory { AddMemoCreateCountUseCase(get()) }
-        factory { AddScheduleCreateCountUseCase(get()) }
+        factory { AddContentCreateCountUseCase(get()) }
         factory { CheckInAppReviewAvailableUseCase(get()) }
 
         // Auth

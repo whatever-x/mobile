@@ -15,12 +15,10 @@ interface AppRepository {
     suspend fun setAppLaunchCount(count: Int)
 
     suspend fun setBalanceGameParticipationCount(count: Int)
-    suspend fun setMemoCreateCount(count: Int)
-    suspend fun setScheduleCreateCount(count: Int)
+    suspend fun setContentCreateCount(count: Int)
     suspend fun getBalanceGameParticipationCount(): Int
-    suspend fun getMemoCreateCount(): Int
-    suspend fun getScheduleCreateCount(): Int
+    suspend fun getContentCreateCount(): Int
     suspend fun setInAppReviewRequestDate(dateTime : LocalDateTime)
     suspend fun getInAppReviewRequestDate() : LocalDateTime
-    suspend fun getAppActivityFlow(): Flow<Triple<Int, Int, Int>>
+    suspend fun getAppActivityFlow(): Flow<Pair<Int, Int>>
 }

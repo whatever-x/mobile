@@ -10,6 +10,7 @@ import com.whatever.caramel.core.remote.datasource.RemoteAppDataSource
 import com.whatever.caramel.core.remote.dto.app.PlatformDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.LocalDateTime
 
@@ -39,24 +40,16 @@ class AppRepositoryImpl(
         localAppDataSource.saveBalanceGameParticipationCount(count)
     }
 
-    override suspend fun setMemoCreateCount(count: Int) {
-        localAppDataSource.saveMemoCreateCount(count)
-    }
-
-    override suspend fun setScheduleCreateCount(count: Int) {
-        localAppDataSource.saveScheduleCreateCount(count)
+    override suspend fun setContentCreateCount(count: Int) {
+        localAppDataSource.saveContentCreateCount(count)
     }
 
     override suspend fun getBalanceGameParticipationCount(): Int {
         return localAppDataSource.fetchBalanceGameParticipationCount().first()
     }
 
-    override suspend fun getMemoCreateCount(): Int {
-        return localAppDataSource.fetchMemoCreateCount().first()
-    }
-
-    override suspend fun getScheduleCreateCount(): Int {
-        return localAppDataSource.fetchScheduleCreateCount().first()
+    override suspend fun getContentCreateCount(): Int {
+        return localAppDataSource.fetchContentCreateCount().first()
     }
 
     override suspend fun setInAppReviewRequestDate(dateTime: LocalDateTime) {
@@ -70,17 +63,15 @@ class AppRepositoryImpl(
         }.getOrElse { LocalDateTime(1970, 1, 1, 0, 0) }
     }
 
-    override suspend fun getAppActivityFlow(): Flow<Triple<Int, Int, Int>> {
+    override suspend fun getAppActivityFlow(): Flow<Pair<Int, Int>> {
         val balanceGameParticipationCountFlow =
             localAppDataSource.fetchBalanceGameParticipationCount()
-        val memoCreateCountFlow = localAppDataSource.fetchMemoCreateCount()
-        val scheduleCreateCountFlow = localAppDataSource.fetchScheduleCreateCount()
+        val contentCreateCountFlow = localAppDataSource.fetchContentCreateCount()
         return combine(
             balanceGameParticipationCountFlow,
-            memoCreateCountFlow,
-            scheduleCreateCountFlow
-        ) { balanceGameParticipationCount, memoCreateCount, scheduleCreateCount ->
-            Triple(balanceGameParticipationCount, memoCreateCount, scheduleCreateCount)
-        }
+            contentCreateCountFlow
+        ) { balanceGameParticipationCount, contentCreateCount ->
+            Pair(balanceGameParticipationCount, contentCreateCount)
+        }.distinctUntilChanged()
     }
 }

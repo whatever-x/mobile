@@ -2,11 +2,11 @@ package com.whatever.caramel.core.domain.usecase.app
 
 import com.whatever.caramel.core.domain.repository.AppRepository
 
-class AddScheduleCreateCountUseCase(
+class AddContentCreateCountUseCase(
     private val appRepository: AppRepository,
 ) {
     suspend operator fun invoke() {
-        val savedValue = appRepository.getScheduleCreateCount()
-        appRepository.setScheduleCreateCount(savedValue + 1)
+        val savedValue = appRepository.getContentCreateCount()
+        appRepository.setContentCreateCount(savedValue + 1)
     }
 }

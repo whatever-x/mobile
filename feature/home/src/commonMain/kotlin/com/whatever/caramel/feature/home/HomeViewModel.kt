@@ -1,12 +1,15 @@
 package com.whatever.caramel.feature.home
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.BalanceGameErrorCode
 import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
-import com.whatever.caramel.core.domain.usecase.app.CheckReviewRequestAvailableUseCase
+import com.whatever.caramel.core.domain.usecase.app.AddAppLaunchCountUseCase
+import com.whatever.caramel.core.domain.usecase.app.AddBalanceGameParticipationCountUseCase
+import com.whatever.caramel.core.domain.usecase.app.CheckInAppReviewAvailableUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameChoiceUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
@@ -27,6 +30,7 @@ import com.whatever.caramel.feature.home.mvi.ScheduleItem
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val updateShareMessageUseCase: UpdateShareMessageUseCase,
@@ -34,10 +38,22 @@ class HomeViewModel(
     private val getTodayScheduleUseCase: GetTodayScheduleUseCase,
     private val getTodayBalanceGameUseCase: GetTodayBalanceGameUseCase,
     private val submitBalanceGameChoiceUseCase: SubmitBalanceGameChoiceUseCase,
-    private val checkReviewRequestAvailableUseCase: CheckReviewRequestAvailableUseCase,
+    private val addBalanceGameParticipationCountUseCase: AddBalanceGameParticipationCountUseCase,
+    private val addAppLaunchCountUseCase: AddAppLaunchCountUseCase,
+    private val checkInAppReviewAvailableUseCase: CheckInAppReviewAvailableUseCase,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle, crashlytics) {
+
+    init {
+        viewModelScope.launch {
+            addAppLaunchCountUseCase()
+            checkInAppReviewAvailableUseCase().collect { isAvailable ->
+                if(isAvailable) postSideEffect(HomeSideEffect.RequestInAppReview)
+            }
+        }
+    }
+
     override fun createInitialState(savedStateHandle: SavedStateHandle): HomeState = HomeState()
 
     override suspend fun handleIntent(intent: HomeIntent) {
@@ -67,7 +83,8 @@ class HomeViewModel(
         }
     }
 
-    private fun rotate() {
+    private suspend fun rotate() {
+        addBalanceGameParticipationCountUseCase()
         reduce {
             copy(isBalanceGameCardRotated = true)
         }
@@ -316,9 +333,6 @@ class HomeViewModel(
                             },
                     ),
             )
-        }
-        if (checkReviewRequestAvailableUseCase()) {
-            postSideEffect(HomeSideEffect.RequestReview)
         }
     }
 }

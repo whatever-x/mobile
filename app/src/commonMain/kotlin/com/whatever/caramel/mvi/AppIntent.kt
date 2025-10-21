@@ -18,6 +18,4 @@ sealed interface AppIntent : UiIntent {
     data class ShowToast(
         val message: String,
     ) : AppIntent
-
-    data object RequestInReview : AppIntent
 }

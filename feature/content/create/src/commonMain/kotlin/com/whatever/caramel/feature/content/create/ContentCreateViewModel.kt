@@ -9,6 +9,7 @@ import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.params.content.ContentParameterType
 import com.whatever.caramel.core.domain.params.content.memo.MemoParameter
 import com.whatever.caramel.core.domain.params.content.schdule.ScheduleParameter
+import com.whatever.caramel.core.domain.usecase.app.AddContentCreateCountUseCase
 import com.whatever.caramel.core.domain.usecase.content.CreateContentUseCase
 import com.whatever.caramel.core.domain.usecase.content.GetAllTagsUseCase
 import com.whatever.caramel.core.domain.validator.ContentValidator
@@ -47,6 +48,7 @@ class ContentCreateViewModel(
     savedStateHandle: SavedStateHandle,
     private val getAllTagsUseCase: GetAllTagsUseCase,
     private val createContentUseCase: CreateContentUseCase,
+    private val addContentCreateCountUseCase: AddContentCreateCountUseCase,
 ) : BaseViewModel<ContentCreateState, ContentCreateSideEffect, ContentCreateIntent>(
         savedStateHandle,
         crashlytics,
@@ -434,6 +436,7 @@ class ContentCreateViewModel(
                     }
                 }
             createContentUseCase(parameter)
+            addContentCreateCountUseCase()
             postSideEffect(ContentCreateSideEffect.NavigateToBackStack)
         }
     }
