@@ -44,34 +44,24 @@ class AppRepositoryImpl(
         localAppDataSource.saveContentCreateCount(count)
     }
 
-    override suspend fun getBalanceGameParticipationCount(): Int {
-        return localAppDataSource.fetchBalanceGameParticipationCount().first()
-    }
+    override suspend fun getBalanceGameParticipationCount(): Int = localAppDataSource.balanceGameParticipationCountFlow.first()
 
-    override suspend fun getContentCreateCount(): Int {
-        return localAppDataSource.fetchContentCreateCount().first()
-    }
+    override suspend fun getContentCreateCount(): Int = localAppDataSource.contentCreateCountFlow.first()
 
-    override suspend fun setInAppReviewRequestDate(dateTime: LocalDateTime) {
-        return localAppDataSource.saveInAppReviewRequestDate(dateTime = dateTime.toString())
-    }
+    override suspend fun setInAppReviewRequestDate(dateTime: LocalDateTime) =
+        localAppDataSource.saveInAppReviewRequestDate(dateTime = dateTime.toString())
 
-    override suspend fun getInAppReviewRequestDate(): LocalDateTime {
-        return runCatching {
+    override suspend fun getInAppReviewRequestDate(): LocalDateTime =
+        runCatching {
             val dateString = localAppDataSource.fetchInAppReviewRequestDate()
             LocalDateTime.parse(dateString)
         }.getOrElse { LocalDateTime(1970, 1, 1, 0, 0) }
-    }
 
-    override suspend fun getAppActivityFlow(): Flow<Pair<Int, Int>> {
-        val balanceGameParticipationCountFlow =
-            localAppDataSource.fetchBalanceGameParticipationCount()
-        val contentCreateCountFlow = localAppDataSource.fetchContentCreateCount()
-        return combine(
-            balanceGameParticipationCountFlow,
-            contentCreateCountFlow
+    override suspend fun getAppActivityFlow(): Flow<Pair<Int, Int>> =
+        combine(
+            localAppDataSource.balanceGameParticipationCountFlow,
+            localAppDataSource.contentCreateCountFlow,
         ) { balanceGameParticipationCount, contentCreateCount ->
             Pair(balanceGameParticipationCount, contentCreateCount)
         }.distinctUntilChanged()
-    }
 }

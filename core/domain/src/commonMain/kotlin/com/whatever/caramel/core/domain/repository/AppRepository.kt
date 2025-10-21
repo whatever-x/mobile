@@ -12,13 +12,20 @@ interface AppRepository {
     ): CheckForceUpdateResult
 
     suspend fun getAppLaunchCount(): Int
+
     suspend fun setAppLaunchCount(count: Int)
 
     suspend fun setBalanceGameParticipationCount(count: Int)
+
     suspend fun setContentCreateCount(count: Int)
+
     suspend fun getBalanceGameParticipationCount(): Int
+
     suspend fun getContentCreateCount(): Int
-    suspend fun setInAppReviewRequestDate(dateTime : LocalDateTime)
-    suspend fun getInAppReviewRequestDate() : LocalDateTime
+
+    suspend fun setInAppReviewRequestDate(dateTime: LocalDateTime)
+
+    suspend fun getInAppReviewRequestDate(): LocalDateTime
+
     suspend fun getAppActivityFlow(): Flow<Pair<Int, Int>>
 }

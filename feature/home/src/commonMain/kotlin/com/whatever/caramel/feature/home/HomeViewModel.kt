@@ -44,12 +44,11 @@ class HomeViewModel(
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle, crashlytics) {
-
     init {
         viewModelScope.launch {
             addAppLaunchCountUseCase()
             checkInAppReviewAvailableUseCase().collect { isAvailable ->
-                if(isAvailable) postSideEffect(HomeSideEffect.RequestInAppReview)
+                if (isAvailable) postSideEffect(HomeSideEffect.RequestInAppReview)
             }
         }
     }

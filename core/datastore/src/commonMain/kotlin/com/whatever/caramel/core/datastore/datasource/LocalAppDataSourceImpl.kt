@@ -12,14 +12,19 @@ import kotlinx.coroutines.flow.map
 class LocalAppDataSourceImpl(
     private val dataStore: DataStore<Preferences>,
 ) : LocalAppDataSource {
+    private val _balanceGameParticipationCountFlow: Flow<Int> =
+        dataStore.data.map { prefs ->
+            prefs[balanceGameParticipationCountKey] ?: 0
+        }
+    override val balanceGameParticipationCountFlow: Flow<Int>
+        get() = _balanceGameParticipationCountFlow
 
-    private val _balanceGameParticipationCountFlow: Flow<Int> = dataStore.data.map { prefs ->
-        prefs[balanceGameParticipationCountKey] ?: 0
-    }
-
-    private val _contentCreateCountFlow: Flow<Int> = dataStore.data.map { prefs ->
-        prefs[contentCreateCountKey] ?: 0
-    }
+    private val _contentCreateCountFlow: Flow<Int> =
+        dataStore.data.map { prefs ->
+            prefs[contentCreateCountKey] ?: 0
+        }
+    override val contentCreateCountFlow: Flow<Int>
+        get() = _contentCreateCountFlow
 
     override suspend fun saveAppLaunchCount(count: Int) {
         dataStore.edit { prefs ->
@@ -38,15 +43,11 @@ class LocalAppDataSourceImpl(
         }
     }
 
-    override suspend fun fetchBalanceGameParticipationCount() = _balanceGameParticipationCountFlow
-
     override suspend fun saveContentCreateCount(count: Int) {
         dataStore.edit { prefs ->
             prefs[contentCreateCountKey] = count
         }
     }
-
-    override suspend fun fetchContentCreateCount() = _contentCreateCountFlow
 
     override suspend fun saveInAppReviewRequestDate(dateTime: String) {
         dataStore.edit { prefs ->
@@ -54,9 +55,10 @@ class LocalAppDataSourceImpl(
         }
     }
 
-    override suspend fun fetchInAppReviewRequestDate() = dataStore.data.first().let { prefs ->
-        prefs[inAppReviewRequestDateKey] ?: ""
-    }
+    override suspend fun fetchInAppReviewRequestDate() =
+        dataStore.data.first().let { prefs ->
+            prefs[inAppReviewRequestDateKey] ?: ""
+        }
 
     companion object {
         private const val PREFS_KEY_APP_LAUNCH_COUNT = "prefs_key_app_launch_count"
@@ -69,17 +71,17 @@ class LocalAppDataSourceImpl(
         private val appLaunchCountKey by lazy { intPreferencesKey(PREFS_KEY_APP_LAUNCH_COUNT) }
         private val contentCreateCountKey by lazy {
             intPreferencesKey(
-                PREFS_KEY_CONTENT_CREATE_COUNT
+                PREFS_KEY_CONTENT_CREATE_COUNT,
             )
         }
         private val balanceGameParticipationCountKey by lazy {
             intPreferencesKey(
-                PREFS_KEY_BALANCE_GAME_PARTICIPATION_COUNT
+                PREFS_KEY_BALANCE_GAME_PARTICIPATION_COUNT,
             )
         }
         private val inAppReviewRequestDateKey by lazy {
             stringPreferencesKey(
-                PREFS_KEY_IN_APP_REVIEW_REQUEST_DATE
+                PREFS_KEY_IN_APP_REVIEW_REQUEST_DATE,
             )
         }
     }

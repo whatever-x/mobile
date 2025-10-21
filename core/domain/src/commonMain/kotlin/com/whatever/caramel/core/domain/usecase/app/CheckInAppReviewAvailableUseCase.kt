@@ -18,33 +18,36 @@ class CheckInAppReviewAvailableUseCase(
         val appActivityFlow = appRepository.getAppActivityFlow()
         val appLaunchCount = appRepository.getAppLaunchCount()
 
-        return appActivityFlow.map {
-            val (balanceGameParticipationCount, contentCreateCount) = it
-            val appActivityAvailable =
-                balanceGameParticipationCount >= AppPolicy.APP_ACTIVITY_MIN_COUNT_FOR_REVIEW ||
+        return appActivityFlow
+            .map {
+                val (balanceGameParticipationCount, contentCreateCount) = it
+                val appActivityAvailable =
+                    balanceGameParticipationCount >= AppPolicy.APP_ACTIVITY_MIN_COUNT_FOR_REVIEW ||
                         contentCreateCount >= AppPolicy.APP_ACTIVITY_MIN_COUNT_FOR_REVIEW
 
-            val appLaunchCountAvailable =
-                appLaunchCount >= AppPolicy.APP_LAUNCH_MIN_COUNT_FOR_REVIEW
-            val now = Clock.System
-                .now()
-                .toLocalDateTime(TimeZone.currentSystemDefault())
+                val appLaunchCountAvailable =
+                    appLaunchCount >= AppPolicy.APP_LAUNCH_MIN_COUNT_FOR_REVIEW
+                val now =
+                    Clock.System
+                        .now()
+                        .toLocalDateTime(TimeZone.currentSystemDefault())
 
-            val available =
-                appLaunchCountAvailable && appActivityAvailable && checkInAppReviewRequestDate(now = now)
-            if (available) {
-                appRepository.setInAppReviewRequestDate(dateTime = now)
-            }
-            available
-        }.distinctUntilChanged()
+                val available =
+                    appLaunchCountAvailable && appActivityAvailable && checkInAppReviewRequestDate(now = now)
+                if (available) {
+                    appRepository.setInAppReviewRequestDate(dateTime = now)
+                }
+                available
+            }.distinctUntilChanged()
     }
 
     private suspend fun checkInAppReviewRequestDate(now: LocalDateTime): Boolean {
         val nowInstant = now.toInstant(TimeZone.currentSystemDefault())
 
-        val lastInAppReviewRequestDate = appRepository
-            .getInAppReviewRequestDate()
-            .toInstant(TimeZone.currentSystemDefault())
+        val lastInAppReviewRequestDate =
+            appRepository
+                .getInAppReviewRequestDate()
+                .toInstant(TimeZone.currentSystemDefault())
 
         return (nowInstant - lastInAppReviewRequestDate).inWholeDays > AppPolicy.APP_IN_APP_REVIEW_REQUEST_MIN_DAY
     }

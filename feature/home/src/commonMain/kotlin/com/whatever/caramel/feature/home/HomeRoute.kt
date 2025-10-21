@@ -26,7 +26,7 @@ internal fun HomeRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val keyboardController = LocalSoftwareKeyboardController.current
-    val inAppReview : CaramelInAppReview = koinInject()
+    val inAppReview: CaramelInAppReview = koinInject()
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->

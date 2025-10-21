@@ -66,10 +66,11 @@ class CaramelViewModel(
         when (intent) {
             is AppIntent.NavigateToStartDestination -> startDestination(userStatus = intent.userStatus)
             is AppIntent.CloseErrorDialog -> reduce { copy(isShowErrorDialog = false) }
-            is AppIntent.ShowErrorDialog -> showErrorDialog(
-                message = intent.message,
-                description = intent.description
-            )
+            is AppIntent.ShowErrorDialog ->
+                showErrorDialog(
+                    message = intent.message,
+                    description = intent.description,
+                )
 
             is AppIntent.ShowToast -> postSideEffect(AppSideEffect.ShowToast(intent.message))
         }

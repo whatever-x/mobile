@@ -1,7 +1,6 @@
 package com.whatever.caramel.core.domain.usecase.app
 
 import com.whatever.caramel.core.domain.repository.AppRepository
-import com.whatever.caramel.core.domain.repository.CoupleRepository
 
 class AddAppLaunchCountUseCase(
     private val appRepository: AppRepository,
