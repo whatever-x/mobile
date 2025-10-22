@@ -8,14 +8,26 @@ import FirebaseCore
 import FirebaseAnalytics
 
 @objcMembers
+public class FBAParam: NSObject {
+    public let key: String
+    public let value: Any?
+
+    public init(key: String, value: Any?) {
+        self.key = key
+        self.value = value
+        super.init()
+    }
+}
+
+@objcMembers
 public class FirebaseAnalyticsBridge: NSObject {
 
-    /// 이벤트 로깅
-    /// - Parameters:
-    ///   - name: 이벤트 이름 (영문/숫자/언더바 권장)
-    ///   - params: 파라미터 값은 NSString/NSNumber가 가장 안전함
-    public func logEvent(name: String, params: [String: Any]?) {
-        let normalized = normalizeParams(params)
+    public func logEvent(name: String, paramPairs: [FBAParam]?) {
+        var dict: [String: Any] = [:]
+        paramPairs?.forEach { p in
+            dict[p.key] = p.value
+        }
+        let normalized = normalizeParams(dict)
         Analytics.logEvent(name, parameters: normalized)
     }
 

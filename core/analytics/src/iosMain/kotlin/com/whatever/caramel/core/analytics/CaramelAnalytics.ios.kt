@@ -1,36 +1,30 @@
 package com.whatever.caramel.core.analytics
 
+import firebaseAnalyticsBridge.FBAParam
+import firebaseAnalyticsBridge.FirebaseAnalyticsBridge
+import kotlinx.cinterop.ExperimentalForeignApi
+
+@OptIn(ExperimentalForeignApi::class)
 class CaramelAnalyticsImpl : CaramelAnalytics {
+
+    private val firebaseAnalyticsBridge = FirebaseAnalyticsBridge()
+
     override fun logEvent(
         eventName: String,
         params: Map<String, Any>?,
     ) {
-        iosAnalyticsCallback?.logEvent(eventName, params.toString())
+        val pairs = params?.toFBAParams()
+        firebaseAnalyticsBridge.logEventWithName(
+            name = eventName,
+            paramPairs = pairs
+        )
     }
 
-    private fun Map<String, Any>?.toString(): String {
-        if (this == null) return ""
+    private fun Map<String, Any?>.toFBAParams(): List<FBAParam> {
+        val list = mutableListOf<FBAParam>()
+        this.forEach { (k, v) -> list += FBAParam(key = k, value = v) }
 
-        val sb = StringBuilder()
-        this.forEach { (key, value) ->
-            sb.append("$key:$value,")
-        }
-        return sb.toString()
+        return list
     }
-}
 
-actual fun getCaramelAnalytics(): CaramelAnalytics = CaramelAnalyticsImpl()
-
-interface IosAnalyticsCallback {
-    fun logEvent(
-        eventId: String,
-        params: String,
-    )
-}
-
-private var iosAnalyticsCallback: IosAnalyticsCallback? = null
-
-@Suppress("unused")
-fun firebaseCallback(callback: IosAnalyticsCallback) {
-    iosAnalyticsCallback = callback
 }
