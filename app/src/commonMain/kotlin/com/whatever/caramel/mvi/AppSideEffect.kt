@@ -16,4 +16,6 @@ sealed interface AppSideEffect : UiSideEffect {
     data class ShowToast(
         val message: String,
     ) : AppSideEffect
+
+    data object RequestInAppReview : AppSideEffect
 }

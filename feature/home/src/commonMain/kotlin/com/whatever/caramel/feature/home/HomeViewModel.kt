@@ -7,8 +7,7 @@ import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.BalanceGameErrorCode
 import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
-import com.whatever.caramel.core.domain.usecase.app.AddAppLaunchCountUseCase
-import com.whatever.caramel.core.domain.usecase.app.CheckInAppReviewAvailableUseCase
+import com.whatever.caramel.core.domain.usecase.app.IncrementAppLaunchCountUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameChoiceUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
@@ -37,17 +36,13 @@ class HomeViewModel(
     private val getTodayScheduleUseCase: GetTodayScheduleUseCase,
     private val getTodayBalanceGameUseCase: GetTodayBalanceGameUseCase,
     private val submitBalanceGameChoiceUseCase: SubmitBalanceGameChoiceUseCase,
-    private val addAppLaunchCountUseCase: AddAppLaunchCountUseCase,
-    private val checkInAppReviewAvailableUseCase: CheckInAppReviewAvailableUseCase,
+    private val incrementAppLaunchCountUseCase: IncrementAppLaunchCountUseCase,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle, crashlytics) {
     init {
         viewModelScope.launch {
-            addAppLaunchCountUseCase()
-            checkInAppReviewAvailableUseCase().collect { isAvailable ->
-                if (isAvailable) postSideEffect(HomeSideEffect.RequestInAppReview)
-            }
+            incrementAppLaunchCountUseCase()
         }
     }
 
@@ -80,7 +75,7 @@ class HomeViewModel(
         }
     }
 
-    private suspend fun rotate() {
+    private fun rotate() {
         reduce {
             copy(isBalanceGameCardRotated = true)
         }
