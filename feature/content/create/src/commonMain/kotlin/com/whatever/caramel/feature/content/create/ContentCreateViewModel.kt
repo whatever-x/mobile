@@ -9,7 +9,6 @@ import com.whatever.caramel.core.domain.exception.code.AppErrorCode
 import com.whatever.caramel.core.domain.params.content.ContentParameterType
 import com.whatever.caramel.core.domain.params.content.memo.MemoParameter
 import com.whatever.caramel.core.domain.params.content.schdule.ScheduleParameter
-import com.whatever.caramel.core.domain.usecase.app.AddContentCreateCountUseCase
 import com.whatever.caramel.core.domain.usecase.content.CreateContentUseCase
 import com.whatever.caramel.core.domain.usecase.content.GetAllTagsUseCase
 import com.whatever.caramel.core.domain.validator.ContentValidator
@@ -33,7 +32,6 @@ import com.whatever.caramel.feature.content.create.mvi.ScheduleDateTimeType
 import com.whatever.caramel.feature.content.create.navigation.ContentCreateRoute
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
-import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -48,7 +46,6 @@ class ContentCreateViewModel(
     savedStateHandle: SavedStateHandle,
     private val getAllTagsUseCase: GetAllTagsUseCase,
     private val createContentUseCase: CreateContentUseCase,
-    private val addContentCreateCountUseCase: AddContentCreateCountUseCase,
 ) : BaseViewModel<ContentCreateState, ContentCreateSideEffect, ContentCreateIntent>(
         savedStateHandle,
         crashlytics,
@@ -436,7 +433,6 @@ class ContentCreateViewModel(
                     }
                 }
             createContentUseCase(parameter)
-            addContentCreateCountUseCase()
             postSideEffect(ContentCreateSideEffect.NavigateToBackStack)
         }
     }

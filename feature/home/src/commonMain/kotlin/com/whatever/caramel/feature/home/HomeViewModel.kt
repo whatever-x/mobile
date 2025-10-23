@@ -8,7 +8,6 @@ import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.BalanceGameErrorCode
 import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
 import com.whatever.caramel.core.domain.usecase.app.AddAppLaunchCountUseCase
-import com.whatever.caramel.core.domain.usecase.app.AddBalanceGameParticipationCountUseCase
 import com.whatever.caramel.core.domain.usecase.app.CheckInAppReviewAvailableUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameChoiceUseCase
@@ -38,7 +37,6 @@ class HomeViewModel(
     private val getTodayScheduleUseCase: GetTodayScheduleUseCase,
     private val getTodayBalanceGameUseCase: GetTodayBalanceGameUseCase,
     private val submitBalanceGameChoiceUseCase: SubmitBalanceGameChoiceUseCase,
-    private val addBalanceGameParticipationCountUseCase: AddBalanceGameParticipationCountUseCase,
     private val addAppLaunchCountUseCase: AddAppLaunchCountUseCase,
     private val checkInAppReviewAvailableUseCase: CheckInAppReviewAvailableUseCase,
     savedStateHandle: SavedStateHandle,
@@ -83,7 +81,6 @@ class HomeViewModel(
     }
 
     private suspend fun rotate() {
-        addBalanceGameParticipationCountUseCase()
         reduce {
             copy(isBalanceGameCardRotated = true)
         }

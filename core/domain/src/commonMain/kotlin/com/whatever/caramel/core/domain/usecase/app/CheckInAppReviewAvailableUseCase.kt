@@ -16,15 +16,11 @@ class CheckInAppReviewAvailableUseCase(
 ) {
     suspend operator fun invoke(): Flow<Boolean> {
         val appActivityFlow = appRepository.getAppActivityFlow()
-        val appLaunchCount = appRepository.getAppLaunchCount()
 
         return appActivityFlow
-            .map {
-                val (balanceGameParticipationCount, contentCreateCount) = it
+            .map { (appLaunchCount, activityParticipationCount) ->
                 val appActivityAvailable =
-                    balanceGameParticipationCount >= AppPolicy.APP_ACTIVITY_MIN_COUNT_FOR_REVIEW ||
-                        contentCreateCount >= AppPolicy.APP_ACTIVITY_MIN_COUNT_FOR_REVIEW
-
+                    activityParticipationCount >= AppPolicy.APP_ACTIVITY_MIN_COUNT_FOR_REVIEW
                 val appLaunchCountAvailable =
                     appLaunchCount >= AppPolicy.APP_LAUNCH_MIN_COUNT_FOR_REVIEW
                 val now =
@@ -33,7 +29,9 @@ class CheckInAppReviewAvailableUseCase(
                         .toLocalDateTime(TimeZone.currentSystemDefault())
 
                 val available =
-                    appLaunchCountAvailable && appActivityAvailable && checkInAppReviewRequestDate(now = now)
+                    appLaunchCountAvailable && appActivityAvailable && checkInAppReviewRequestDate(
+                        now = now
+                    )
                 if (available) {
                     appRepository.setInAppReviewRequestDate(dateTime = now)
                 }
