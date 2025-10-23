@@ -15,13 +15,9 @@ interface AppRepository {
 
     suspend fun setAppLaunchCount(count: Int)
 
-    suspend fun setBalanceGameParticipationCount(count: Int)
+    suspend fun setActivityParticipationCount(count: Int)
 
-    suspend fun setContentCreateCount(count: Int)
-
-    suspend fun getBalanceGameParticipationCount(): Int
-
-    suspend fun getContentCreateCount(): Int
+    suspend fun getActivityParticipationCount(): Int
 
     suspend fun setInAppReviewRequestDate(dateTime: LocalDateTime)
 

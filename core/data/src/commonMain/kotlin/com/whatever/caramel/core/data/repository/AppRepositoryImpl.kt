@@ -30,23 +30,18 @@ class AppRepositoryImpl(
                 ).toCheckForceUpdateResult()
         }
 
-    override suspend fun getAppLaunchCount(): Int = localAppDataSource.fetchAppLaunchCount()
+    override suspend fun getAppLaunchCount(): Int = localAppDataSource.appLaunchCountFlow.first()
 
     override suspend fun setAppLaunchCount(count: Int) {
         localAppDataSource.saveAppLaunchCount(count)
     }
 
-    override suspend fun setBalanceGameParticipationCount(count: Int) {
-        localAppDataSource.saveBalanceGameParticipationCount(count)
+    override suspend fun setActivityParticipationCount(count: Int) {
+        localAppDataSource.saveAppLaunchCount(count)
     }
 
-    override suspend fun setContentCreateCount(count: Int) {
-        localAppDataSource.saveContentCreateCount(count)
-    }
-
-    override suspend fun getBalanceGameParticipationCount(): Int = localAppDataSource.balanceGameParticipationCountFlow.first()
-
-    override suspend fun getContentCreateCount(): Int = localAppDataSource.contentCreateCountFlow.first()
+    override suspend fun getActivityParticipationCount(): Int =
+        localAppDataSource.activityParticipationCountFlow.first()
 
     override suspend fun setInAppReviewRequestDate(dateTime: LocalDateTime) =
         localAppDataSource.saveInAppReviewRequestDate(dateTime = dateTime.toString())
@@ -59,9 +54,9 @@ class AppRepositoryImpl(
 
     override suspend fun getAppActivityFlow(): Flow<Pair<Int, Int>> =
         combine(
-            localAppDataSource.balanceGameParticipationCountFlow,
-            localAppDataSource.contentCreateCountFlow,
-        ) { balanceGameParticipationCount, contentCreateCount ->
-            Pair(balanceGameParticipationCount, contentCreateCount)
+            localAppDataSource.appLaunchCountFlow,
+            localAppDataSource.activityParticipationCountFlow,
+        ) { appLaunchCount, activityParticipationCount ->
+            Pair(appLaunchCount, activityParticipationCount)
         }.distinctUntilChanged()
 }
