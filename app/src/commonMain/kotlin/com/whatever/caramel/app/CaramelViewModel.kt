@@ -22,7 +22,6 @@ class CaramelViewModel(
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<AppState, AppSideEffect, AppIntent>(savedStateHandle, crashlytics) {
-
     init {
         observeDeepLink()
         observeInAppReview()

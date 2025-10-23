@@ -12,10 +12,11 @@ class SubmitBalanceGameChoiceUseCase(
         gameId: Long,
         optionId: Long,
     ): BalanceGameResult {
-        val result = balanceGameRepository.submitOption(
-            gameId = gameId,
-            optionId = optionId,
-        )
+        val result =
+            balanceGameRepository.submitOption(
+                gameId = gameId,
+                optionId = optionId,
+            )
         if (result.partnerChoice != null) incrementActivityParticipationCountUseCase()
         return result
     }

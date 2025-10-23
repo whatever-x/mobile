@@ -29,9 +29,11 @@ class CheckInAppReviewAvailableUseCase(
                         .toLocalDateTime(TimeZone.currentSystemDefault())
 
                 val available =
-                    appLaunchCountAvailable && appActivityAvailable && checkInAppReviewRequestDate(
-                        now = now
-                    )
+                    appLaunchCountAvailable &&
+                        appActivityAvailable &&
+                        checkInAppReviewRequestDate(
+                            now = now,
+                        )
                 if (available) {
                     appRepository.setInAppReviewRequestDate(dateTime = now)
                 }

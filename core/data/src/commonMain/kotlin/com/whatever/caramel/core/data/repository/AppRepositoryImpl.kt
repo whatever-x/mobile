@@ -40,8 +40,7 @@ class AppRepositoryImpl(
         localAppDataSource.saveAppLaunchCount(count)
     }
 
-    override suspend fun getActivityParticipationCount(): Int =
-        localAppDataSource.activityParticipationCountFlow.first()
+    override suspend fun getActivityParticipationCount(): Int = localAppDataSource.activityParticipationCountFlow.first()
 
     override suspend fun setInAppReviewRequestDate(dateTime: LocalDateTime) =
         localAppDataSource.saveInAppReviewRequestDate(dateTime = dateTime.toString())

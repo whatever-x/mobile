@@ -12,16 +12,17 @@ import kotlinx.coroutines.flow.map
 class LocalAppDataSourceImpl(
     private val dataStore: DataStore<Preferences>,
 ) : LocalAppDataSource {
+    private val _activityParticipationCountFlow =
+        dataStore.data.map {
+            it[activityParticipationCountKey] ?: 0
+        }
 
-    private val _activityParticipationFlow = dataStore.data.map {
-        it[activityParticipationCountKey] ?: 0
-    }
-
-    private val _appLaunchCountFlow = dataStore.data.map {
-        it[appLaunchCountKey] ?: 0
-    }
+    private val _appLaunchCountFlow =
+        dataStore.data.map {
+            it[appLaunchCountKey] ?: 0
+        }
     override val activityParticipationCountFlow: Flow<Int>
-        get() = _activityParticipationFlow
+        get() = _activityParticipationCountFlow
 
     override val appLaunchCountFlow: Flow<Int>
         get() = _appLaunchCountFlow
