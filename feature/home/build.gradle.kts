@@ -17,7 +17,6 @@ kotlin {
             implementation(projects.core.crashlytics)
             implementation(projects.core.viewmodel)
             implementation(projects.core.util)
-            implementation(projects.core.inappReview)
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
