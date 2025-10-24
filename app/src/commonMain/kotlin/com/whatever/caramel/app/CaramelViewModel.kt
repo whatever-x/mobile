@@ -67,14 +67,6 @@ class CaramelViewModel(
 
     private fun observeDeepLink() {
         launch {
-            checkInAppReviewAvailableUseCase().collect { isAvailable ->
-                if (isAvailable) postSideEffect(AppSideEffect.RequestInAppReview)
-            }
-        }
-    }
-
-    private fun observeInAppReview() {
-        launch {
             deepLinkHandler.deepLinkFlow.collect { deepLink ->
                 when (deepLink) {
                     is CaramelDeepLink.Invite -> {
@@ -85,6 +77,14 @@ class CaramelViewModel(
 
                     is CaramelDeepLink.Unknown -> TODO()
                 }
+            }
+        }
+    }
+
+    private fun observeInAppReview() {
+        launch {
+            checkInAppReviewAvailableUseCase().collect { isAvailable ->
+                if (isAvailable) postSideEffect(AppSideEffect.RequestInAppReview)
             }
         }
     }
