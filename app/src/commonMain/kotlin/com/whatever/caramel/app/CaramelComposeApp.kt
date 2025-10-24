@@ -35,8 +35,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun CaramelComposeApp(
     navHostController: NavHostController,
     viewModel: CaramelViewModel = koinViewModel(),
+    inAppReview: CaramelInAppReview = koinInject(),
 ) {
-    val inAppReview: CaramelInAppReview = koinInject()
     CaramelTheme {
         val snackBarHostState = remember { SnackbarHostState() }
 

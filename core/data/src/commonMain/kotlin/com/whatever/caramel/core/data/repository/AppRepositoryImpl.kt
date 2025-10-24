@@ -37,7 +37,7 @@ class AppRepositoryImpl(
     }
 
     override suspend fun setActivityParticipationCount(count: Int) {
-        localAppDataSource.saveAppLaunchCount(count)
+        localAppDataSource.saveActivityParticipationCount(count)
     }
 
     override suspend fun getActivityParticipationCount(): Int = localAppDataSource.activityParticipationCountFlow.first()
