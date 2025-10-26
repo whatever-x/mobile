@@ -13,11 +13,20 @@ import com.appsflyer.deeplink.DeepLinkResult
 import com.whatever.caramel.app.CaramelComposeApp
 import com.whatever.caramel.core.deeplink.DeepLinkHandler
 import com.whatever.caramel.core.deeplink.model.AppsFlyerDeepLinkParameter
+import com.whatever.caramel.core.inAppReview.CaramelInAppReview
 import io.github.aakira.napier.Napier
 import org.koin.android.ext.android.inject
+import org.koin.android.scope.AndroidScopeComponent
+import org.koin.androidx.scope.activityScope
+import org.koin.core.parameter.parametersOf
+import org.koin.core.scope.Scope
 
-class MainActivity : ComponentActivity() {
+class MainActivity :
+    ComponentActivity(),
+    AndroidScopeComponent {
     private val deepLinkHandler: DeepLinkHandler by inject()
+    override val scope: Scope by activityScope()
+    private val inAppReview: CaramelInAppReview by scope.inject { parametersOf(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +41,7 @@ class MainActivity : ComponentActivity() {
 
             CaramelComposeApp(
                 navHostController = navHostController,
+                inAppReview = inAppReview,
             )
         }
     }

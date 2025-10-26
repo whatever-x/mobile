@@ -1,40 +1,30 @@
 package com.whatever.caramel.app
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.deeplink.DeepLinkHandler
 import com.whatever.caramel.core.deeplink.model.AppsFlyerDeepLinkValue
 import com.whatever.caramel.core.deeplink.model.CaramelDeepLink
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
+import com.whatever.caramel.core.domain.usecase.app.CheckInAppReviewAvailableUseCase
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.mvi.AppIntent
 import com.whatever.caramel.mvi.AppSideEffect
 import com.whatever.caramel.mvi.AppState
-import kotlinx.coroutines.launch
 
 class CaramelViewModel(
     private val connectCoupleUseCase: ConnectCoupleUseCase,
     private val deepLinkHandler: DeepLinkHandler,
+    private val checkInAppReviewAvailableUseCase: CheckInAppReviewAvailableUseCase,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<AppState, AppSideEffect, AppIntent>(savedStateHandle, crashlytics) {
     init {
-        viewModelScope.launch {
-            deepLinkHandler.deepLinkFlow.collect { deepLink ->
-                when (deepLink) {
-                    is CaramelDeepLink.Invite -> {
-                        this@CaramelViewModel.launch {
-                            tryToConnectCouple(inviteCode = deepLink.code)
-                        }
-                    }
-                    is CaramelDeepLink.Unknown -> TODO()
-                }
-            }
-        }
+        observeDeepLink()
+        observeInAppReview()
     }
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): AppState = AppState()
@@ -65,8 +55,37 @@ class CaramelViewModel(
         when (intent) {
             is AppIntent.NavigateToStartDestination -> startDestination(userStatus = intent.userStatus)
             is AppIntent.CloseErrorDialog -> reduce { copy(isShowErrorDialog = false) }
-            is AppIntent.ShowErrorDialog -> showErrorDialog(message = intent.message, description = intent.description)
+            is AppIntent.ShowErrorDialog ->
+                showErrorDialog(
+                    message = intent.message,
+                    description = intent.description,
+                )
+
             is AppIntent.ShowToast -> postSideEffect(AppSideEffect.ShowToast(intent.message))
+        }
+    }
+
+    private fun observeDeepLink() {
+        launch {
+            deepLinkHandler.deepLinkFlow.collect { deepLink ->
+                when (deepLink) {
+                    is CaramelDeepLink.Invite -> {
+                        this@CaramelViewModel.launch {
+                            tryToConnectCouple(inviteCode = deepLink.code)
+                        }
+                    }
+
+                    is CaramelDeepLink.Unknown -> TODO()
+                }
+            }
+        }
+    }
+
+    private fun observeInAppReview() {
+        launch {
+            checkInAppReviewAvailableUseCase().collect { isAvailable ->
+                if (isAvailable) postSideEffect(AppSideEffect.RequestInAppReview)
+            }
         }
     }
 
@@ -101,6 +120,7 @@ class CaramelViewModel(
                         postSideEffect(AppSideEffect.NavigateToInviteCoupleScreen)
                     }
                 }
+
                 UserStatus.COUPLED -> {
                     if (deepLinkHandler.deepLinkData?.first == AppsFlyerDeepLinkValue.INVITE) {
                         val inviteCode = deepLinkHandler.deepLinkData?.second?.get(0) ?: ""

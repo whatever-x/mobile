@@ -20,6 +20,7 @@ import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLay
 import com.whatever.caramel.core.designsystem.components.LocalSnackbarHostState
 import com.whatever.caramel.core.designsystem.components.showSnackbarMessage
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.inAppReview.CaramelInAppReview
 import com.whatever.caramel.feature.copule.connecting.navigation.navigateToConnectingCouple
 import com.whatever.caramel.feature.copule.invite.navigation.navigateToInviteCouple
 import com.whatever.caramel.feature.login.navigation.navigateToLogin
@@ -27,12 +28,14 @@ import com.whatever.caramel.feature.main.navigation.navigateToMain
 import com.whatever.caramel.feature.profile.create.navigation.navigateToCreateProfile
 import com.whatever.caramel.mvi.AppIntent
 import com.whatever.caramel.mvi.AppSideEffect
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CaramelComposeApp(
     navHostController: NavHostController,
     viewModel: CaramelViewModel = koinViewModel(),
+    inAppReview: CaramelInAppReview = koinInject(),
 ) {
     CaramelTheme {
         val snackBarHostState = remember { SnackbarHostState() }
@@ -124,10 +127,11 @@ fun CaramelComposeApp(
                                     snackbarHostState = snackBarHostState,
                                     message = sideEffect.message,
                                 )
+
+                            AppSideEffect.RequestInAppReview -> inAppReview.requestReview()
                         }
                     }
                 }
-
                 CaramelNavHost(
                     modifier = Modifier,
                     navHostController = navHostController,

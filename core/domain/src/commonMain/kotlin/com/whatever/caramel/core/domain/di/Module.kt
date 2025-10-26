@@ -1,6 +1,9 @@
 package com.whatever.caramel.core.domain.di
 
 import com.whatever.caramel.core.domain.usecase.app.CheckForceUpdateUseCase
+import com.whatever.caramel.core.domain.usecase.app.CheckInAppReviewAvailableUseCase
+import com.whatever.caramel.core.domain.usecase.app.IncrementActivityParticipationCountUseCase
+import com.whatever.caramel.core.domain.usecase.app.IncrementAppLaunchCountUseCase
 import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignOutUseCase
@@ -36,6 +39,9 @@ val useCaseModule =
     module {
         // App
         factory { CheckForceUpdateUseCase(get(), get()) }
+        factory { IncrementAppLaunchCountUseCase(get()) }
+        factory { IncrementActivityParticipationCountUseCase(get()) }
+        factory { CheckInAppReviewAvailableUseCase(get()) }
 
         // Auth
         factory { SignInWithSocialPlatformUseCase(get(), get(), get()) }
@@ -71,7 +77,7 @@ val useCaseModule =
         factory { GetAllTagsUseCase(get()) }
 
         // Content
-        factory { CreateContentUseCase(get(), get()) }
+        factory { CreateContentUseCase(get(), get(), get()) }
         factory { UpdateMemoUseCase(get()) }
         factory { DeleteMemoUseCase(get()) }
         factory { GetMemoListUseCase(get()) }
@@ -79,7 +85,7 @@ val useCaseModule =
 
         // BalanceGame
         factory { GetTodayBalanceGameUseCase(get()) }
-        factory { SubmitBalanceGameChoiceUseCase(get()) }
+        factory { SubmitBalanceGameChoiceUseCase(get(), get()) }
 
         // Common
         factory { GetLinkPreviewsForContentUseCase(get()) }

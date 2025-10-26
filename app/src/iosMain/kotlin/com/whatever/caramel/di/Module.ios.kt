@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.app.CaramelViewModel
 import com.whatever.caramel.app.util.PlatformManager
 import com.whatever.caramel.core.domain.vo.app.Platform
+import com.whatever.caramel.core.inAppReview.CaramelInAppReview
+import com.whatever.caramel.core.inAppReview.CaramelInAppReviewImpl
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -24,4 +26,5 @@ actual val appModule: Module
                 )
             }
             single<Platform> { PlatformManager() }
+            single<CaramelInAppReview> { CaramelInAppReviewImpl() }
         }
