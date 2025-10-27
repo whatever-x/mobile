@@ -1,6 +1,7 @@
 package com.whatever.caramel.app
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.analytics.CaramelAnalytics
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.deeplink.DeepLinkHandler
 import com.whatever.caramel.core.deeplink.model.AppsFlyerDeepLinkValue
@@ -19,6 +20,7 @@ class CaramelViewModel(
     private val connectCoupleUseCase: ConnectCoupleUseCase,
     private val deepLinkHandler: DeepLinkHandler,
     private val checkInAppReviewAvailableUseCase: CheckInAppReviewAvailableUseCase,
+    private val analytics: CaramelAnalytics,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<AppState, AppSideEffect, AppIntent>(savedStateHandle, crashlytics) {
@@ -84,7 +86,13 @@ class CaramelViewModel(
     private fun observeInAppReview() {
         launch {
             checkInAppReviewAvailableUseCase().collect { isAvailable ->
-                if (isAvailable) postSideEffect(AppSideEffect.RequestInAppReview)
+                if (isAvailable) {
+                    analytics.logEvent(
+                        eventName = "request_in_app_review",
+                        params = null
+                    )
+                    postSideEffect(AppSideEffect.RequestInAppReview)
+                }
             }
         }
     }
