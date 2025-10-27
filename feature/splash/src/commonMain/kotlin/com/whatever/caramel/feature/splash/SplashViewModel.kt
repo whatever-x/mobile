@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.splash
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.analytics.CaramelAnalytics
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.deeplink.DeepLinkHandler
 import com.whatever.caramel.core.domain.exception.CaramelException
@@ -16,6 +17,7 @@ class SplashViewModel(
     private val refreshUserSessionUseCase: RefreshUserSessionUseCase,
     private val checkForceUpdateUseCase: CheckForceUpdateUseCase,
     private val deepLinkHandler: DeepLinkHandler,
+    private val analytics: CaramelAnalytics,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<SplashState, SplashSideEffect, SplashIntent>(savedStateHandle, crashlytics) {
@@ -34,8 +36,9 @@ class SplashViewModel(
                     )
                 }
             } else {
-                val userStatus = refreshUserSessionUseCase()
-                postSideEffect(SplashSideEffect.NavigateToStartDestination(userStatus = userStatus))
+                val userInfo = refreshUserSessionUseCase()
+                analytics.setUserId(userId = userInfo.id.toString())
+                postSideEffect(SplashSideEffect.NavigateToStartDestination(userStatus = userInfo.userStatus))
             }
         }
     }

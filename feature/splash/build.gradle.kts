@@ -16,6 +16,7 @@ kotlin {
             implementation(projects.core.designsystem)
             implementation(projects.core.ui)
             implementation(projects.core.crashlytics)
+            implementation(projects.core.analytics)
             implementation(projects.core.viewmodel)
             implementation(projects.core.deeplink)
 
