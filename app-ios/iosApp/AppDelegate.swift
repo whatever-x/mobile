@@ -33,7 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(false)
 
         FirebaseApp.configure()
-        CaramelAnalytics_iosKt.firebaseCallback(callback: FirebaseLoggingCallback())
         
         Messaging.messaging().delegate = self
 
@@ -101,14 +100,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
               }
             }
         }
-    
-    class FirebaseLoggingCallback: IosAnalyticsCallback {
-        
-        func logEvent(eventId: String, params: String) {
-            let dict = splitStringToDictionary(params, ",", ":")
-            Analytics.logEvent(eventId, parameters: dict)
-        }
-    }
 
 }
 
