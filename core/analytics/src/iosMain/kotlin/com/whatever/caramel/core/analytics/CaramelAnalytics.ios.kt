@@ -20,6 +20,14 @@ class CaramelAnalyticsImpl : CaramelAnalytics {
         )
     }
 
+    override fun setUserId(userId: String?) {
+        firebaseAnalyticsBridge.setUserId(userId = userId)
+    }
+
+    override fun resetAnalyticsData() {
+        firebaseAnalyticsBridge.resetAnalyticsData()
+    }
+
     private fun Map<String, Any?>.toFBAParams(): List<FBAParam> {
         val list = mutableListOf<FBAParam>()
         this.forEach { (k, v) -> list += FBAParam(key = k, value = v) }

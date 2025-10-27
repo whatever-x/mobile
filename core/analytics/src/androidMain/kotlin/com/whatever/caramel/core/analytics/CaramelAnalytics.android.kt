@@ -29,4 +29,14 @@ class CaramelAnalyticsImpl(private val context: Context) : CaramelAnalytics {
 
         firebaseAnalytics.logEvent(eventName, sendEventBundle)
     }
+
+    override fun setUserId(userId: String?) {
+        firebaseAnalytics.setUserId(userId)
+    }
+
+    override fun resetAnalyticsData() {
+        firebaseAnalytics.resetAnalyticsData()
+    }
+
+
 }

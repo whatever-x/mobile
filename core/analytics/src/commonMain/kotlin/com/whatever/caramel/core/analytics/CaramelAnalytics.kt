@@ -5,4 +5,9 @@ interface CaramelAnalytics {
         eventName: String,
         params: Map<String, Any>?,
     )
+
+    fun setUserId(userId: String?)
+
+    fun resetAnalyticsData()
+
 }

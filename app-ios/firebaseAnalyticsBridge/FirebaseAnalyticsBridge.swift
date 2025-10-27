@@ -36,6 +36,11 @@ public class FirebaseAnalyticsBridge: NSObject {
         Analytics.setUserID(userId)
     }
 
+    /// Analytics 데이터 초기화
+    public func resetAnalyticsData() {
+        Analytics.resetAnalyticsData()
+    }
+
     /// User Property 설정 (최대 25개, 24시간 캐싱될 수 있음)
     public func setUserProperty(_ value: String?, forName name: String) {
         Analytics.setUserProperty(value, forName: name)
