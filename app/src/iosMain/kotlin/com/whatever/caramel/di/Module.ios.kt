@@ -21,6 +21,7 @@ actual val appModule: Module
                     crashlytics = get(),
                     analytics = get(),
                     checkInAppReviewAvailableUseCase = get()
+                    analyticsEventObserver = get()
                 /*
                  @ham2174 FIXME : SavedStateHandle Ios에서 사용 불가능.
                  koin-compose-viewmodel 버전이 업데이트 되기 전까지 CaramelViewModel 의 SavedStateHandle 사용 불가

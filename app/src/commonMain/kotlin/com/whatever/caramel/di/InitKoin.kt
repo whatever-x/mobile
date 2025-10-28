@@ -44,6 +44,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             // === App Layer ===
             appModule,
             deepLinkModule,
+            analyticsEventObserverModule,
             // ==== Data Layer ====
             repositoryModule,
             // Remote Module
