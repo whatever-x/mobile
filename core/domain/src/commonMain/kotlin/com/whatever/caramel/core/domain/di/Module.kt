@@ -47,13 +47,13 @@ val useCaseModule =
         factory { CheckForceUpdateUseCase(get(), get()) }
         factory { IncrementAppLaunchCountUseCase(get()) }
         factory { IncrementActivityParticipationCountUseCase(get()) }
-        factory { CheckInAppReviewAvailableUseCase(get()) }
+        factory { CheckInAppReviewAvailableUseCase(get(), get()) }
 
         // Auth
         factory { SignInWithSocialPlatformUseCase(get(), get(), get()) }
-        factory { RefreshUserSessionUseCase(get(), get()) }
-        factory { LogoutUseCase(get(), get(), get()) }
-        factory { SignOutUseCase(get(), get(), get()) }
+        factory { RefreshUserSessionUseCase(get(), get(), get()) }
+        factory { LogoutUseCase(get(), get(), get(), get()) }
+        factory { SignOutUseCase(get(), get(), get(), get()) }
 
         // User
         factory { CreateUserProfileUseCase(get()) }
