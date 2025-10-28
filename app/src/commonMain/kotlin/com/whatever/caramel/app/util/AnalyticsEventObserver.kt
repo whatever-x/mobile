@@ -14,7 +14,7 @@ class AnalyticsEventObserver(
                 is AnalyticsEvent.SetUserId -> analytics.setUserId(userId = event.id)
                 is AnalyticsEvent.LogEvent -> analytics.logEvent(
                     eventName = event.eventName,
-                    params = null
+                    params = event.params
                 )
                 is AnalyticsEvent.ResetAnalyticsData -> analytics.resetAnalyticsData()
             }
