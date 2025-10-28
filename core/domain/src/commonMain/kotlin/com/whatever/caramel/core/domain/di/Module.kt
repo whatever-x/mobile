@@ -1,5 +1,7 @@
 package com.whatever.caramel.core.domain.di
 
+import com.whatever.caramel.core.domain.event.AnalyticsEventBus
+import com.whatever.caramel.core.domain.event.AnalyticsEventBusImpl
 import com.whatever.caramel.core.domain.usecase.app.CheckForceUpdateUseCase
 import com.whatever.caramel.core.domain.usecase.app.CheckInAppReviewAvailableUseCase
 import com.whatever.caramel.core.domain.usecase.app.IncrementActivityParticipationCountUseCase
@@ -35,6 +37,10 @@ import com.whatever.caramel.core.domain.usecase.user.RefreshUserSessionUseCase
 import com.whatever.caramel.core.domain.usecase.user.UpdateUserSettingUseCase
 import org.koin.dsl.module
 
+val eventBusModule =
+    module {
+        single<AnalyticsEventBus> { AnalyticsEventBusImpl() }
+    }
 val useCaseModule =
     module {
         // App
