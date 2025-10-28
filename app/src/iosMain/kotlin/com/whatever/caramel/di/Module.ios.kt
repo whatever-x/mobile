@@ -19,8 +19,7 @@ actual val appModule: Module
                     deepLinkHandler = get(),
                     savedStateHandle = SavedStateHandle(),
                     crashlytics = get(),
-                    analytics = get(),
-                    checkInAppReviewAvailableUseCase = get()
+                    checkInAppReviewAvailableUseCase = get(),
                     analyticsEventObserver = get()
                 /*
                  @ham2174 FIXME : SavedStateHandle Ios에서 사용 불가능.

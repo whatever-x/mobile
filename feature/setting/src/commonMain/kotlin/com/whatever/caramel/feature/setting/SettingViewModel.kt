@@ -1,7 +1,6 @@
 package com.whatever.caramel.feature.setting
 
 import androidx.lifecycle.SavedStateHandle
-import com.whatever.caramel.core.analytics.CaramelAnalytics
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
@@ -23,7 +22,6 @@ class SettingViewModel(
     private val getUserSettingUseCase: GetUserSettingUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val signOutUseCase: SignOutUseCase,
-    private val analytics: CaramelAnalytics,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<SettingState, SettingSideEffect, SettingIntent>(savedStateHandle, crashlytics) {
@@ -97,7 +95,6 @@ class SettingViewModel(
     private fun signOut() {
         launch {
             signOutUseCase()
-            analytics.resetAnalyticsData()
             postSideEffect(SettingSideEffect.NavigateLogin)
         }
     }
@@ -176,7 +173,6 @@ class SettingViewModel(
     private fun logout() {
         launch {
             logoutUseCase()
-            analytics.resetAnalyticsData()
             postSideEffect(SettingSideEffect.NavigateLogin)
         }
     }
