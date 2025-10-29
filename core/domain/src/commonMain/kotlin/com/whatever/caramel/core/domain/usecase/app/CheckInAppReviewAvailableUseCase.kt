@@ -1,6 +1,5 @@
 package com.whatever.caramel.core.domain.usecase.app
 
-import com.whatever.caramel.core.domain.event.AnalyticsEvent
 import com.whatever.caramel.core.domain.event.AnalyticsEventBus
 import com.whatever.caramel.core.domain.event.AnalyticsLogEvent
 import com.whatever.caramel.core.domain.policy.AppPolicy

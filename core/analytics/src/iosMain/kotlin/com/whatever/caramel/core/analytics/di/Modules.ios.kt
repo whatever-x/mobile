@@ -5,6 +5,7 @@ import com.whatever.caramel.core.analytics.CaramelAnalyticsImpl
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-actual val analyticsModule: Module = module {
-    single<CaramelAnalytics> { CaramelAnalyticsImpl() }
-}
+actual val analyticsModule: Module =
+    module {
+        single<CaramelAnalytics> { CaramelAnalyticsImpl() }
+    }

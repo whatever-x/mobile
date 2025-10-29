@@ -9,5 +9,4 @@ interface CaramelAnalytics {
     fun setUserId(userId: String?)
 
     fun resetAnalyticsData()
-
 }

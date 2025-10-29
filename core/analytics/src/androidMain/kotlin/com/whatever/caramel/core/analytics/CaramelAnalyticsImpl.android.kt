@@ -4,7 +4,9 @@ import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 
-class CaramelAnalyticsImpl(private val context: Context) : CaramelAnalytics {
+class CaramelAnalyticsImpl(
+    private val context: Context,
+) : CaramelAnalytics {
     private val firebaseAnalytics: FirebaseAnalytics by lazy { FirebaseAnalytics.getInstance(context) }
 
     override fun logEvent(
@@ -37,5 +39,4 @@ class CaramelAnalyticsImpl(private val context: Context) : CaramelAnalytics {
     override fun resetAnalyticsData() {
         firebaseAnalytics.resetAnalyticsData()
     }
-
 }

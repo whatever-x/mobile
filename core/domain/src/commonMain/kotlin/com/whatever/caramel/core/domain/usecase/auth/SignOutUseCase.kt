@@ -1,6 +1,5 @@
 package com.whatever.caramel.core.domain.usecase.auth
 
-import com.whatever.caramel.core.domain.event.AnalyticsEvent
 import com.whatever.caramel.core.domain.event.AnalyticsEventBus
 import com.whatever.caramel.core.domain.event.AnalyticsUserLifecycleEvent
 import com.whatever.caramel.core.domain.repository.AuthRepository

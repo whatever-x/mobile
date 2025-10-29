@@ -12,7 +12,7 @@ val analyticsEventObserverModule: Module =
         single {
             AnalyticsEventObserver(
                 events = get<AnalyticsEventBus>().events,
-                analytics = get()
+                analytics = get(),
             )
         }
     }

@@ -6,7 +6,6 @@ import kotlinx.cinterop.ExperimentalForeignApi
 
 @OptIn(ExperimentalForeignApi::class)
 class CaramelAnalyticsImpl : CaramelAnalytics {
-
     private val firebaseAnalyticsBridge = FirebaseAnalyticsBridge()
 
     override fun logEvent(
@@ -16,7 +15,7 @@ class CaramelAnalyticsImpl : CaramelAnalytics {
         val pairs = params?.toFBAParams()
         firebaseAnalyticsBridge.logEventWithName(
             name = eventName,
-            paramPairs = pairs
+            paramPairs = pairs,
         )
     }
 
@@ -34,5 +33,4 @@ class CaramelAnalyticsImpl : CaramelAnalytics {
 
         return list
     }
-
 }

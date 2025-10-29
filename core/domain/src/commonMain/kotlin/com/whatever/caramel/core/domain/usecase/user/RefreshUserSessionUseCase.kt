@@ -21,9 +21,10 @@ class RefreshUserSessionUseCase(
         userRepository.setUserStatus(status = userStatus)
 
         analyticsEventBus.emit(
-            event = AnalyticsUserLifecycleEvent.RefreshedUserSession(
-                userId = userInfo.id.toString()
-            )
+            event =
+                AnalyticsUserLifecycleEvent.RefreshedUserSession(
+                    userId = userInfo.id.toString(),
+                ),
         )
 
         return userStatus
