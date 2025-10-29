@@ -21,7 +21,7 @@ kotlin {
         ).forEach { iosTarget ->
             iosTarget.compilations {
                 val main by getting {
-                    cinterops.create("firebaseBridge")
+                    cinterops.create("firebaseMessagingBridge")
                 }
             }
         }
@@ -46,7 +46,7 @@ kotlin {
 }
 
 swiftPackageConfig {
-    create("firebaseBridge") {
+    create("firebaseMessagingBridge") {
         customPackageSourcePath = "../../app-ios"
         minIos = "15.0"
 
