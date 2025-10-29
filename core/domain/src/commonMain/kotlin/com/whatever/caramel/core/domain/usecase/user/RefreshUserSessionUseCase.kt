@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.domain.usecase.user
 
-import com.whatever.caramel.core.domain.event.AnalyticsEvent
 import com.whatever.caramel.core.domain.event.AnalyticsEventBus
+import com.whatever.caramel.core.domain.event.AnalyticsUserLifecycleEvent
 import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.repository.UserRepository
 import com.whatever.caramel.core.domain.vo.user.UserStatus
@@ -20,7 +20,11 @@ class RefreshUserSessionUseCase(
         val userStatus = userInfo.userStatus
         userRepository.setUserStatus(status = userStatus)
 
-        analyticsEventBus.emit(event = AnalyticsEvent.SetUserId(id = userInfo.id.toString()))
+        analyticsEventBus.emit(
+            event = AnalyticsUserLifecycleEvent.RefreshedUserSession(
+                userId = userInfo.id.toString()
+            )
+        )
 
         return userStatus
     }

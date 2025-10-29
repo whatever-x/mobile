@@ -2,6 +2,7 @@ package com.whatever.caramel.core.domain.usecase.app
 
 import com.whatever.caramel.core.domain.event.AnalyticsEvent
 import com.whatever.caramel.core.domain.event.AnalyticsEventBus
+import com.whatever.caramel.core.domain.event.AnalyticsLogEvent
 import com.whatever.caramel.core.domain.policy.AppPolicy
 import com.whatever.caramel.core.domain.repository.AppRepository
 import kotlinx.coroutines.flow.Flow
@@ -45,12 +46,7 @@ class CheckInAppReviewAvailableUseCase(
             }.distinctUntilChanged()
             .onEach { available ->
                 if (available) {
-                    analyticsEventBus.emit(
-                        event = AnalyticsEvent.LogEvent(
-                            eventName = "request_in_app_review",
-                            params = null
-                        )
-                    )
+                    analyticsEventBus.emit(event = AnalyticsLogEvent.RequestedInAppReview)
                 }
             }
     }

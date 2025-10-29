@@ -2,6 +2,8 @@ package com.whatever.caramel.core.domain.usecase.auth
 
 import com.whatever.caramel.core.domain.event.AnalyticsEvent
 import com.whatever.caramel.core.domain.event.AnalyticsEventBus
+import com.whatever.caramel.core.domain.event.AnalyticsLogEvent
+import com.whatever.caramel.core.domain.event.AnalyticsUserLifecycleEvent
 import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.repository.CoupleRepository
 import com.whatever.caramel.core.domain.repository.UserRepository
@@ -17,6 +19,6 @@ class LogoutUseCase(
         authRepository.removeAuthToken()
         userRepository.removeUserStatus()
         coupleRepository.removeCoupleId()
-        analyticsEventBus.emit(event = AnalyticsEvent.ResetAnalyticsData)
+        analyticsEventBus.emit(event = AnalyticsUserLifecycleEvent.LogOuted)
     }
 }

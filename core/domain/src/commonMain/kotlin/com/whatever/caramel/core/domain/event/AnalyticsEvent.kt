@@ -1,16 +1,36 @@
 package com.whatever.caramel.core.domain.event
 
+typealias AnalyticsEventParams = Map<String, Any>?
+
 sealed interface AnalyticsEvent {
 
-    data class SetUserId(
-        val id: String
-    ) : AnalyticsEvent
+    interface Loggable : AnalyticsEvent {
+        val eventName: String
+        val params: AnalyticsEventParams
+    }
 
-    data class LogEvent(
-        val eventName: String,
-        val params: Map<String, Any>?
-    ) : AnalyticsEvent
+}
 
-    data object ResetAnalyticsData : AnalyticsEvent
+sealed class AnalyticsLogEvent(
+    final override val eventName: String,
+    final override val params: AnalyticsEventParams
+) : AnalyticsEvent.Loggable {
+
+    data object RequestedInAppReview : AnalyticsLogEvent(
+        eventName = "requested_in_app_review",
+        params = null
+    )
+
+}
+
+sealed interface AnalyticsUserLifecycleEvent : AnalyticsEvent {
+
+    data class RefreshedUserSession(
+        val userId: String
+    ) : AnalyticsUserLifecycleEvent
+
+    data object SignOuted : AnalyticsUserLifecycleEvent
+
+    data object LogOuted : AnalyticsUserLifecycleEvent
 
 }
