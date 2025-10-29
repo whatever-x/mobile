@@ -38,5 +38,4 @@ class CaramelAnalyticsImpl(private val context: Context) : CaramelAnalytics {
         firebaseAnalytics.resetAnalyticsData()
     }
 
-
 }

@@ -5,6 +5,8 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import com.appsflyer.AppsFlyerLib
 import com.google.firebase.FirebaseApp
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.whatever.caramel.app.BuildConfig
 import com.whatever.caramel.core.firebaseMessaging.R
 import com.whatever.caramel.di.initKoin
@@ -13,6 +15,7 @@ import io.github.aakira.napier.Napier
 import org.koin.android.ext.koin.androidContext
 
 class GlobalApplication : Application() {
+
     override fun onCreate() {
         super.onCreate()
 
@@ -28,6 +31,8 @@ class GlobalApplication : Application() {
         if (BuildConfig.DEBUG) {
             Napier.base(DebugAntilog())
             AppsFlyerLib.getInstance().setDebugLog(true)
+            FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(false)
+            FirebaseCrashlytics.getInstance().isCrashlyticsCollectionEnabled = false
         }
     }
 
@@ -45,4 +50,5 @@ class GlobalApplication : Application() {
 
         notificationManager.createNotificationChannel(notificationChannel)
     }
+
 }
