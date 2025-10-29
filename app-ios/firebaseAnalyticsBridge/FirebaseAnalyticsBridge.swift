@@ -22,6 +22,7 @@ public class FBAParam: NSObject {
 @objcMembers
 public class FirebaseAnalyticsBridge: NSObject {
 
+    /// Event 로깅 설정
     public func logEvent(name: String, paramPairs: [FBAParam]?) {
         var dict: [String: Any] = [:]
         paramPairs?.forEach { p in
@@ -44,11 +45,6 @@ public class FirebaseAnalyticsBridge: NSObject {
     /// User Property 설정 (최대 25개, 24시간 캐싱될 수 있음)
     public func setUserProperty(_ value: String?, forName name: String) {
         Analytics.setUserProperty(value, forName: name)
-    }
-
-    /// 수집 on/off
-    public func setAnalyticsCollectionEnabled(_ enabled: Bool) {
-        Analytics.setAnalyticsCollectionEnabled(enabled)
     }
 
     /// 스크린 이름 수동 설정 (필요 시)
