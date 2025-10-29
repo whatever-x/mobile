@@ -30,9 +30,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
 
-        Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(false)
-
         FirebaseApp.configure()
+
+        #if DEBUG
+            Analytics.setAnalyticsCollectionEnabled(false)
+            Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(false)
+        #endif
         
         Messaging.messaging().delegate = self
 
