@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.firebaseMessaging
 
 import com.whatever.caramel.core.remote.datasource.RemoteFirebaseControllerDataSource
-import firebaseBridge.FcmTokenBridge
+import firebaseMessagingBridge.FcmTokenBridge
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine

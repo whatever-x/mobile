@@ -1,5 +1,6 @@
 package com.whatever.caramel.di
 
+import com.whatever.caramel.core.analytics.di.analyticsModule
 import com.whatever.caramel.core.crashlytics.di.crashlyticsModule
 import com.whatever.caramel.core.data.di.networkInterceptorModule
 import com.whatever.caramel.core.data.di.repositoryModule
@@ -9,6 +10,7 @@ import com.whatever.caramel.core.datastore.di.dataStoreModule
 import com.whatever.caramel.core.datastore.di.platformDataStoreModule
 import com.whatever.caramel.core.deeplink.di.deepLinkModule
 import com.whatever.caramel.core.designsystem.di.hapticControllerModule
+import com.whatever.caramel.core.domain.di.eventBusModule
 import com.whatever.caramel.core.domain.di.useCaseModule
 import com.whatever.caramel.core.firebaseMessaging.di.firebaseMessagingModule
 import com.whatever.caramel.core.remote.di.deviceIdModule
@@ -42,6 +44,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             // === App Layer ===
             appModule,
             deepLinkModule,
+            analyticsEventObserverModule,
             // ==== Data Layer ====
             repositoryModule,
             // Remote Module
@@ -60,8 +63,11 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             firebaseMessagingModule,
             // Crashlytics Module
             crashlyticsModule,
+            // Analytics Module
+            analyticsModule,
             // ==== Domain Layer ====
             useCaseModule,
+            eventBusModule,
             // ==== Presentation Layer ====
             // DesignSystem Module
             hapticControllerModule,

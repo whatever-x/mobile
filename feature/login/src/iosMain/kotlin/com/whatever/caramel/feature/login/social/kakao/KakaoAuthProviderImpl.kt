@@ -3,8 +3,8 @@ package com.whatever.caramel.feature.login.social.kakao
 import androidx.compose.runtime.Composable
 import com.whatever.caramel.feature.login.social.SocialAuthResult
 import com.whatever.caramel.feature.login.social.SocialAuthenticator
+import kakaoLoginBridge.KakaoLoginBridge
 import kotlinx.cinterop.ExperimentalForeignApi
-import swiftBridge.KakaoLoginBridge
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 

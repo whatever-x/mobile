@@ -23,7 +23,7 @@ kotlin {
         ).forEach { iosTarget ->
             iosTarget.compilations {
                 val main by getting {
-                    cinterops.create("swiftBridge")
+                    cinterops.create("kakaoLoginBridge")
                 }
             }
         }
@@ -53,7 +53,7 @@ kotlin {
 }
 
 swiftPackageConfig {
-    create("swiftBridge") {
+    create("kakaoLoginBridge") {
         customPackageSourcePath = "../../app-ios"
         minIos = "15.0"
 
