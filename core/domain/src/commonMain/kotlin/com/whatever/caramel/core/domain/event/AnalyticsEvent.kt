@@ -24,6 +24,10 @@ sealed interface AnalyticsUserLifecycleEvent : AnalyticsEvent {
         val userId: String,
     ) : AnalyticsUserLifecycleEvent
 
+    data class SignIn(
+        val userId: String,
+    ) : AnalyticsUserLifecycleEvent
+
     data object SignOuted : AnalyticsUserLifecycleEvent
 
     data object LogOuted : AnalyticsUserLifecycleEvent
