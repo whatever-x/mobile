@@ -9,6 +9,7 @@ import com.whatever.caramel.core.remote.dto.auth.response.SignInResponse
 internal fun SignInResponse.toAuthResult(): AuthResult =
     AuthResult(
         coupleId = this.coupleId,
+        userId = this.userId,
         userStatus = UserStatus.valueOf(this.userStatus.name),
         authToken = serviceToken.toAuthToken(),
     )

@@ -12,4 +12,5 @@ data class SignInResponse(
     @SerialName("nickname") val nickname: String?,
     @SerialName("birthDay") val birthDay: String?,
     @SerialName("coupleId") val coupleId: Long?,
+    @SerialName("userId") val userId: Long,
 )
