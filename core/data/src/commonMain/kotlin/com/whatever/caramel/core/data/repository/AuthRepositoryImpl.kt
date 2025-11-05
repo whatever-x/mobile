@@ -28,7 +28,7 @@ internal class AuthRepositoryImpl(
                     idToken = idToken,
                     loginPlatform = LoginPlatformDto.valueOf(socialLoginType.name),
                 )
-            val response = remoteAuthDataSource.signIn(request = request)
+            val response = remoteAuthDataSource.signInV2(request = request)
             response.toAuthResult()
         }
 

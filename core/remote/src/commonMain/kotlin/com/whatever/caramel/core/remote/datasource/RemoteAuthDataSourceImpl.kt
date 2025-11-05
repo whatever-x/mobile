@@ -35,6 +35,12 @@ internal class RemoteAuthDataSourceImpl(
         authClient.delete("$BASE_AUTH_URL/account")
     }
 
+    override suspend fun signInV2(request: SignInRequest): SignInResponse =
+        defaultClient
+            .post("$BASE_AUTH_V2_URL/sign-in") {
+                setBody(body = request)
+            }.getBody()
+
     override suspend fun refreshV2(request: ServiceTokenDto): UserSessionRefreshResponse =
         authClient
             .post("$BASE_AUTH_V2_URL/refresh") {

@@ -14,5 +14,7 @@ interface RemoteAuthDataSource {
 
     suspend fun deleteAccount()
 
+    suspend fun signInV2(request: SignInRequest): SignInResponse
+
     suspend fun refreshV2(request: ServiceTokenDto): UserSessionRefreshResponse
 }
