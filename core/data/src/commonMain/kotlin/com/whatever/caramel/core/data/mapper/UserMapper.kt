@@ -56,5 +56,5 @@ internal fun UserSessionRefreshResponse.toRefreshUserSessionResult() =
     RefreshUserSessionResult(
         userId = this.userId,
         userStatus = UserStatus.valueOf(this.userStatus.name),
-        authToken = this.serviceToken.toAuthToken()
+        authToken = this.serviceToken.toAuthToken(),
     )

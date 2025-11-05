@@ -34,9 +34,10 @@ class SignInWithSocialPlatformUseCase(
             }
 
             analyticsEventBus.emit(
-                event = AnalyticsUserLifecycleEvent.SignIn(
-                    userId = userId.toString()
-                )
+                event =
+                    AnalyticsUserLifecycleEvent.SignIn(
+                        userId = userId.toString(),
+                    ),
             )
         }
 
