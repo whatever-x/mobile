@@ -15,6 +15,8 @@ internal class RemoteAuthDataSourceImpl(
     @Named("DefaultClient") private val defaultClient: HttpClient,
     @Named("AuthClient") private val authClient: HttpClient,
 ) : RemoteAuthDataSource {
+
+    @Deprecated("userId 필드 추가 됨에 따라 `signInV2` API로 대체 되었습니다.")
     override suspend fun signIn(request: SignInRequest): SignInResponse =
         defaultClient
             .post("$BASE_AUTH_URL/sign-in") {
