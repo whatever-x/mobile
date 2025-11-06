@@ -50,7 +50,7 @@ val useCaseModule =
         factory { CheckInAppReviewAvailableUseCase(get(), get()) }
 
         // Auth
-        factory { SignInWithSocialPlatformUseCase(get(), get(), get()) }
+        factory { SignInWithSocialPlatformUseCase(get(), get(), get(), get()) }
         factory { RefreshUserSessionUseCase(get(), get(), get()) }
         factory { LogoutUseCase(get(), get(), get(), get()) }
         factory { SignOutUseCase(get(), get(), get(), get()) }

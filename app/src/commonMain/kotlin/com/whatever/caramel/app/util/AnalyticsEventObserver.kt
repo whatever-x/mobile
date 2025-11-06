@@ -17,6 +17,7 @@ class AnalyticsEventObserver(
                         eventName = event.eventName,
                         params = event.params,
                     )
+                is AnalyticsUserLifecycleEvent.SignIn -> analytics.setUserId(userId = event.userId)
                 is AnalyticsUserLifecycleEvent.RefreshedUserSession -> analytics.setUserId(userId = event.userId)
                 is AnalyticsUserLifecycleEvent.LogOuted,
                 is AnalyticsUserLifecycleEvent.SignOuted,

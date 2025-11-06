@@ -1,5 +1,7 @@
 package com.whatever.caramel.core.domain.usecase.auth
 
+import com.whatever.caramel.core.domain.event.AnalyticsEventBus
+import com.whatever.caramel.core.domain.event.AnalyticsUserLifecycleEvent
 import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.repository.CoupleRepository
 import com.whatever.caramel.core.domain.repository.UserRepository
@@ -11,6 +13,7 @@ class SignInWithSocialPlatformUseCase(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
     private val coupleRepository: CoupleRepository,
+    private val analyticsEventBus: AnalyticsEventBus,
 ) {
     suspend operator fun invoke(
         idToken: String,
@@ -29,6 +32,13 @@ class SignInWithSocialPlatformUseCase(
             if (coupleId != null) {
                 coupleRepository.setCoupleId(coupleId = coupleId)
             }
+
+            analyticsEventBus.emit(
+                event =
+                    AnalyticsUserLifecycleEvent.SignIn(
+                        userId = userId.toString(),
+                    ),
+            )
         }
 
         return signInUserAuth.userStatus
