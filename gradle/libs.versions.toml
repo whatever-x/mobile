@@ -3,7 +3,7 @@ agp = "8.9.1"
 android-compileSdk = "36"
 android-minSdk = "28"
 android-targetSdk = "36"
-version-code = "10010102" # major(10), minor(01), patch(01), build(00)
+version-code = "10010103" # major(10), minor(01), patch(01), build(00)
 version-name = "1.1.1" # major(1), minor(1), patch(1)
 
 androidx-activityCompose = "1.10.1"
