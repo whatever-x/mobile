@@ -1,11 +1,13 @@
 package com.whatever.caramel.core.util
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 object DateUtil {
     /**
      * 년, 월에 따른 마지막 일자 구하는 함수
@@ -49,5 +51,7 @@ object DateUtil {
      * @return LocalDateTime 형식의 오늘 날짜와 시간
      * @author evergreentree97
      */
-    fun todayLocalDateTime(): LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+    fun todayLocalDateTime(): LocalDateTime =
+        Clock.System.now().toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
+
 }

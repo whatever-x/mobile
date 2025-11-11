@@ -43,7 +43,7 @@ internal fun CaramelCalendar(
     onClickCell: (LocalDate) -> Unit,
 ) {
     val (year, month) = getYearAndMonthFromPageIndex(index = pageIndex)
-    val firstDay = LocalDate(year = year, month = month, dayOfMonth = 1)
+    val firstDay = LocalDate(year = year, month = month, day = 1)
     val firstDayOfWeek = firstDay.dayOfWeek.appOrdianl
     val lastDay = DateUtil.getLastDayOfMonth(year, month.number)
     val totalCells = firstDayOfWeek + lastDay
@@ -71,7 +71,7 @@ internal fun CaramelCalendar(
                                         interactionSource = null,
                                         onClick = { onClickCell(date) },
                                     ),
-                                dayOfMonth = date.dayOfMonth,
+                                dayOfMonth = date.day,
                                 dayOfWeek = date.dayOfWeek,
                                 isFocus = selectedDate == date,
                                 isHoliday = date in yearHolidaySet,

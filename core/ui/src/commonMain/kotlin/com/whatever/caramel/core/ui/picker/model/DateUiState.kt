@@ -3,6 +3,7 @@ package com.whatever.caramel.core.ui.picker.model
 import com.whatever.caramel.core.util.DateUtil
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.number
 
 data class DateUiState(
     val year: Int,
@@ -15,8 +16,8 @@ data class DateUiState(
 
             return DateUiState(
                 year = today.year,
-                month = today.monthNumber,
-                day = today.dayOfMonth,
+                month = today.month.number,
+                day = today.day,
             )
         }
 
@@ -32,8 +33,8 @@ data class DateUiState(
         fun from(dateTime: LocalDateTime): DateUiState =
             DateUiState(
                 year = dateTime.year,
-                month = dateTime.monthNumber,
-                day = dateTime.dayOfMonth,
+                month = dateTime.month.number,
+                day = dateTime.day,
             )
     }
 }

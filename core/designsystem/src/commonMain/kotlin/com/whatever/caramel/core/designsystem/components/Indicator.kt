@@ -2,12 +2,11 @@ package com.whatever.caramel.core.designsystem.components
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
-import androidx.compose.material3.pulltorefresh.pullToRefreshIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,16 +22,12 @@ fun BoxScope.CaramelPullToRefreshIndicator(
     isRefreshing: Boolean,
     state: PullToRefreshState,
 ) {
-    Box(
-        modifier =
-            modifier
-                .align(alignment = Alignment.TopCenter)
-                .pullToRefreshIndicator(
-                    state = state,
-                    isRefreshing = isRefreshing,
-                    containerColor = Color.Unspecified,
-                    elevation = 0.dp,
-                ),
+    PullToRefreshDefaults.IndicatorBox(
+        state = state,
+        isRefreshing = isRefreshing,
+        modifier = modifier.align(alignment = Alignment.TopCenter),
+        containerColor = Color.Unspecified,
+        elevation = 0.dp,
     ) {
         Crossfade(
             targetState = isRefreshing,
@@ -60,4 +55,46 @@ fun BoxScope.CaramelPullToRefreshIndicator(
             }
         }
     }
+//    Box(
+//        modifier =
+//            modifier
+//                .align(alignment = Alignment.TopCenter)
+//                .pullToRefresh(
+//                    isRefreshing = isRefreshing,
+//                    state = state,
+//                    onRefresh = {}
+//                )
+////                .pullToRefreshIndicator(
+////                    state = state,
+////                    isRefreshing = isRefreshing,
+////                    containerColor = Color.Unspecified,
+////                    elevation = 0.dp,
+////                ),
+//    ) {
+//        Crossfade(
+//            targetState = isRefreshing,
+//            animationSpec = tween(durationMillis = 300),
+//        ) { refreshing ->
+//            if (refreshing) {
+//                CircularProgressIndicator(
+//                    color = CaramelTheme.color.fill.brand,
+//                    trackColor =
+//                        CaramelTheme.color.fill.brand
+//                            .copy(alpha = 0.3f),
+//                    strokeWidth = 5.dp,
+//                    strokeCap = StrokeCap.Round,
+//                )
+//            } else {
+//                CircularProgressIndicator(
+//                    progress = { state.distanceFraction },
+//                    color = CaramelTheme.color.fill.brand,
+//                    trackColor =
+//                        CaramelTheme.color.fill.brand
+//                            .copy(alpha = 0.3f),
+//                    strokeWidth = 5.dp,
+//                    strokeCap = StrokeCap.Round,
+//                )
+//            }
+//        }
+//    }
 }

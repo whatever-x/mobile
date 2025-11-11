@@ -77,6 +77,6 @@ data class ContentDetailState(
 
     val isMultiDay: Boolean
         get() =
-            scheduleDetail?.let { (it.dateTimeInfo.startDateTime.dayOfMonth != it.dateTimeInfo.endDateTime.dayOfMonth) || !isAllDay }
+            scheduleDetail?.let { (it.dateTimeInfo.startDateTime.day != it.dateTimeInfo.endDateTime.day) || !isAllDay }
                 ?: false
 }

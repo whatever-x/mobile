@@ -37,7 +37,9 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.math.min
 import kotlin.time.Duration.Companion.days
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 class CalendarViewModel(
     private val getCalendarOfYearUseCase: GetCalendarOfYearUseCase,
     crashlytics: CaramelCrashlytics,
@@ -243,7 +245,7 @@ class CalendarViewModel(
                 when {
                     currentState.isInitialized -> DateUtil.today()
                     isRefresh -> currentState.selectedDate
-                    else -> LocalDate(year = year, month = currentState.month, dayOfMonth = 1)
+                    else -> LocalDate(year = year, month = currentState.month, day = 1)
                 }
             val yearCalendar = getCalendarOfYearUseCase(forceUpdate = isRefresh, year = year)
             val calendarCellList =
@@ -316,7 +318,7 @@ class CalendarViewModel(
         val dateList = mutableListOf<LocalDate>()
         val lastDay = DateUtil.getLastDayOfMonth(year = year, month = month.number)
         for (day in 1..lastDay) {
-            dateList.add(LocalDate(year = year, month = month, dayOfMonth = day))
+            dateList.add(LocalDate(year = year, month = month, day = day))
         }
         return dateList.toList()
     }
