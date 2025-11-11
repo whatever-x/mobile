@@ -1,11 +1,13 @@
 package com.whatever.caramel.feature.home
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.BalanceGameErrorCode
 import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
+import com.whatever.caramel.core.domain.usecase.app.IncrementAppLaunchCountUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameChoiceUseCase
 import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfoUseCase
@@ -26,6 +28,7 @@ import com.whatever.caramel.feature.home.mvi.ScheduleItem
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val updateShareMessageUseCase: UpdateShareMessageUseCase,
@@ -33,9 +36,16 @@ class HomeViewModel(
     private val getTodayScheduleUseCase: GetTodayScheduleUseCase,
     private val getTodayBalanceGameUseCase: GetTodayBalanceGameUseCase,
     private val submitBalanceGameChoiceUseCase: SubmitBalanceGameChoiceUseCase,
+    private val incrementAppLaunchCountUseCase: IncrementAppLaunchCountUseCase,
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<HomeState, HomeSideEffect, HomeIntent>(savedStateHandle, crashlytics) {
+    init {
+        viewModelScope.launch {
+            incrementAppLaunchCountUseCase()
+        }
+    }
+
     override fun createInitialState(savedStateHandle: SavedStateHandle): HomeState = HomeState()
 
     override suspend fun handleIntent(intent: HomeIntent) {
@@ -50,6 +60,7 @@ class HomeViewModel(
                     ),
                 )
             }
+
             is HomeIntent.CreateTodoContent -> postSideEffect(HomeSideEffect.NavigateToCreateContent)
             is HomeIntent.SaveShareMessage -> saveShareMessage()
             is HomeIntent.ShowShareMessageEditBottomSheet -> showBottomSheet()
@@ -97,6 +108,7 @@ class HomeViewModel(
                 BalanceGameErrorCode.CAN_NOT_CHANGE_OPTION -> {
                     launch { initBalanceGame() }
                 }
+
                 CoupleErrorCode.CAN_NOT_LOAD_DATA -> {
                     reduce {
                         copy(
@@ -107,6 +119,7 @@ class HomeViewModel(
                         )
                     }
                 }
+
                 CoupleErrorCode.MEMBER_NOT_FOUND -> {
                     if (currentState.coupleState != HomeState.CoupleState.DISCONNECT) {
                         reduce {
@@ -118,6 +131,7 @@ class HomeViewModel(
                         }
                     }
                 }
+
                 else -> {
                     when (throwable.errorUiType) {
                         ErrorUiType.TOAST ->
@@ -126,6 +140,7 @@ class HomeViewModel(
                                     message = throwable.message,
                                 ),
                             )
+
                         ErrorUiType.DIALOG ->
                             postSideEffect(
                                 HomeSideEffect.ShowErrorDialog(

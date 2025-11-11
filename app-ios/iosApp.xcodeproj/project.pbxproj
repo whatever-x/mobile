@@ -13,6 +13,8 @@
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		BA7980140AA16F90FE41A1E5 /* KeychainHelperBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7987553DCC66B90D63EEFB /* KeychainHelperBridge.swift */; };
 		BA798D050359A3FCD8D56DD7 /* FirebaseCrashlyticsBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA798D5911C08037AABB0C2E /* FirebaseCrashlyticsBridge.swift */; };
+		BA798F289E47402104199408 /* FirebaseAnalyticsBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7986866DFC1424B1061A46 /* FirebaseAnalyticsBridge.swift */; };
+		BA798FC436F06D4FD40D9672 /* FirebaseMessagingBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7986105C9619DA11235B2A /* FirebaseMessagingBridge.swift */; };
 		BAA2B7AB2D72DA330017F868 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = BAA2B7AA2D72DA330017F868 /* FirebaseAnalytics */; };
 		BAA2B7AD2D72DA330017F868 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = BAA2B7AC2D72DA330017F868 /* FirebaseAnalyticsOnDeviceConversion */; };
 		BAA2B7AF2D72DA330017F868 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = BAA2B7AE2D72DA330017F868 /* FirebaseAnalyticsWithoutAdIdSupport */; };
@@ -51,6 +53,8 @@
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BA4C47392DEBF62200435A54 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		BA4C473A2DEBF62F00435A54 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		BA7986105C9619DA11235B2A /* FirebaseMessagingBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FirebaseMessagingBridge.swift; path = firebaseMessagingBridge/FirebaseMessagingBridge.swift; sourceTree = "<group>"; };
+		BA7986866DFC1424B1061A46 /* FirebaseAnalyticsBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FirebaseAnalyticsBridge.swift; path = firebaseAnalyticsBridge/FirebaseAnalyticsBridge.swift; sourceTree = "<group>"; };
 		BA7987553DCC66B90D63EEFB /* KeychainHelperBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeychainHelperBridge.swift; path = keychainHelperBridge/KeychainHelperBridge.swift; sourceTree = "<group>"; };
 		BA798D5911C08037AABB0C2E /* FirebaseCrashlyticsBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FirebaseCrashlyticsBridge.swift; path = firebaseCrashlyticsBridge/FirebaseCrashlyticsBridge.swift; sourceTree = "<group>"; };
 		E93275342DD225A7004AE2BF /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -99,6 +103,8 @@
 				7555FFB0242A642200829871 /* Frameworks */,
 				BA798D5911C08037AABB0C2E /* FirebaseCrashlyticsBridge.swift */,
 				BA7987553DCC66B90D63EEFB /* KeychainHelperBridge.swift */,
+				BA7986866DFC1424B1061A46 /* FirebaseAnalyticsBridge.swift */,
+				BA7986105C9619DA11235B2A /* FirebaseMessagingBridge.swift */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 0;
@@ -280,6 +286,8 @@
 				E987BEBD2DEB63D200CE545C /* MessagingDelegate.swift in Sources */,
 				BA798D050359A3FCD8D56DD7 /* FirebaseCrashlyticsBridge.swift in Sources */,
 				BA7980140AA16F90FE41A1E5 /* KeychainHelperBridge.swift in Sources */,
+				BA798F289E47402104199408 /* FirebaseAnalyticsBridge.swift in Sources */,
+				BA798FC436F06D4FD40D9672 /* FirebaseMessagingBridge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,7 +422,7 @@
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 10010100;
+				CURRENT_PROJECT_VERSION = 10010204;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = AR6HWFH5V3;
@@ -430,7 +438,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -457,7 +465,7 @@
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 10010100;
+				CURRENT_PROJECT_VERSION = 10010204;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = AR6HWFH5V3;
@@ -473,7 +481,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",

@@ -29,11 +29,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-#if DEBUG
-        Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(false)
-#endif
+
         FirebaseApp.configure()
-        CaramelAnalytics_iosKt.firebaseCallback(callback: FirebaseLoggingCallback())
+
+        #if DEBUG
+            Analytics.setAnalyticsCollectionEnabled(false)
+            Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(false)
+        #endif
         
         Messaging.messaging().delegate = self
 
@@ -101,14 +103,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
               }
             }
         }
-    
-    class FirebaseLoggingCallback: IosAnalyticsCallback {
-        
-        func logEvent(eventId: String, params: String) {
-            let dict = splitStringToDictionary(params, ",", ":")
-            Analytics.logEvent(eventId, parameters: dict)
-        }
-    }
 
 }
 

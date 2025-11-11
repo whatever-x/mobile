@@ -3,11 +3,11 @@ package com.whatever.caramel.core.analytics
 import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
-import org.koin.mp.KoinPlatform
 
-class CaramelAnalyticsImpl : CaramelAnalytics {
-    private val context: Context = KoinPlatform.getKoin().get()
-    private val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
+class CaramelAnalyticsImpl(
+    private val context: Context,
+) : CaramelAnalytics {
+    private val firebaseAnalytics: FirebaseAnalytics by lazy { FirebaseAnalytics.getInstance(context) }
 
     override fun logEvent(
         eventName: String,
@@ -28,8 +28,15 @@ class CaramelAnalyticsImpl : CaramelAnalytics {
                 }
                 bundle
             }
+
         firebaseAnalytics.logEvent(eventName, sendEventBundle)
     }
-}
 
-actual fun getCaramelAnalytics(): CaramelAnalytics = CaramelAnalyticsImpl()
+    override fun setUserId(userId: String?) {
+        firebaseAnalytics.setUserId(userId)
+    }
+
+    override fun resetAnalyticsData() {
+        firebaseAnalytics.resetAnalyticsData()
+    }
+}

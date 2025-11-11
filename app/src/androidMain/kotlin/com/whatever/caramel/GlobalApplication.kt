@@ -5,6 +5,8 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import com.appsflyer.AppsFlyerLib
 import com.google.firebase.FirebaseApp
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.whatever.caramel.app.BuildConfig
 import com.whatever.caramel.core.firebaseMessaging.R
 import com.whatever.caramel.di.initKoin
@@ -28,6 +30,8 @@ class GlobalApplication : Application() {
         if (BuildConfig.DEBUG) {
             Napier.base(DebugAntilog())
             AppsFlyerLib.getInstance().setDebugLog(true)
+            FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(false)
+            FirebaseCrashlytics.getInstance().isCrashlyticsCollectionEnabled = false
         }
     }
 
