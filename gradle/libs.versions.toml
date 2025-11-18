@@ -29,10 +29,10 @@ sqlite = "2.5.0-rc03"
 room = "2.7.0-rc03"
 moko = "0.20.1"
 napier = "2.7.1"
-gms = "4.4.2"
+gms = "4.4.4"
 kotlinx-date-time = "0.7.1"
-firebase-crahslytics = "3.0.4"
-firebase = "33.15.0"
+firebase-crahslytics = "3.0.6"
+firebase = "34.5.0"
 jetbrainsKotlinJvm = "2.2.0"
 datastore = "1.1.7"
 kakao = "2.21.4"
@@ -44,7 +44,6 @@ apps-flyer = "6.17.0"
 ktlint-cli = "1.6.0"
 spotless = "7.0.4"
 play-review = "2.0.2"
-
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -99,8 +98,8 @@ moko-permission-compose = { group = "dev.icerock.moko", name = "permissions-comp
 moko-permission-notifications = { group = "dev.icerock.moko", name = "permissions-notifications", version.ref = "moko" }
 
 firebase-bom-android = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
-firebase-analytics-ktx = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
-firebase-crashlytics-ktx = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
+firebase-analytics-ktx = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-crashlytics-ktx = { group = "com.google.firebase", name = "firebase-crashlytics" }
 firebase-fcm = { group = "com.google.firebase", name = "firebase-messaging" }
 
 datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
