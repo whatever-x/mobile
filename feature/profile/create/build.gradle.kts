@@ -24,7 +24,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
 
             implementation(libs.jetbrains.compose.navigation)
-            implementation(libs.compose.ui.backhandler)
+            implementation(libs.jetbrains.compose.ui.backhandler)
             implementation(libs.kotlinx.date.time)
 
             implementation(libs.bundles.moko)
