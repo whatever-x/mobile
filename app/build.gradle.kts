@@ -30,8 +30,8 @@ kotlin {
             implementation(libs.koin.androidx.compose)
             implementation(libs.ktor.client.okhttp)
             implementation(project.dependencies.platform(libs.firebase.bom.android))
-            implementation(libs.firebase.analytics.ktx)
-            implementation(libs.firebase.crashlytics.ktx)
+            implementation(libs.firebase.analytics)
+            implementation(libs.firebase.crashlytics)
             implementation(libs.apps.flyer)
         }
         commonMain.dependencies {
