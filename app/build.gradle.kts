@@ -78,7 +78,7 @@ kotlin {
             implementation(libs.jetbrains.androidx.compose.navigation)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.androidx.room.runtime)
-            implementation(libs.sqlite.bundled)
+            implementation(libs.androidx.sqlite.bundled)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.core)
