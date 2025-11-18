@@ -21,7 +21,10 @@ object DateFormatter {
             val localDateTime = this.toLocalDateTime()
 
             val year = localDateTime.year.toString().padStart(4, '0')
-            val month = localDateTime.month.number.toString().padStart(2, '0')
+            val month =
+                localDateTime.month.number
+                    .toString()
+                    .padStart(2, '0')
             val day = localDateTime.day.toString().padStart(2, '0')
 
             "$year$separator$month$separator$day"
@@ -64,7 +67,10 @@ object DateFormatter {
             check(year in 1..9999 && month in 1..12 && day in 1..31) { "날짜 형식이 잘못되었습니다." }
 
             val localDate = LocalDate(year, month, day)
-            val formattedMonth = localDate.month.number.toString().padStart(2, '0')
+            val formattedMonth =
+                localDate.month.number
+                    .toString()
+                    .padStart(2, '0')
             val formattedDay = localDate.day.toString().padStart(2, '0')
             "$year-$formattedMonth-$formattedDay"
         } catch (_: Exception) {

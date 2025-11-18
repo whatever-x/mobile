@@ -51,7 +51,5 @@ object DateUtil {
      * @return LocalDateTime 형식의 오늘 날짜와 시간
      * @author evergreentree97
      */
-    fun todayLocalDateTime(): LocalDateTime =
-        Clock.System.now().toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
-
+    fun todayLocalDateTime(): LocalDateTime = Clock.System.now().toLocalDateTime(timeZone = TimeZone.currentSystemDefault())
 }

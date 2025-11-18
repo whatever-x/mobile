@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BoxScope.CaramelPullToRefreshIndicator(
     modifier: Modifier = Modifier,
@@ -55,46 +54,4 @@ fun BoxScope.CaramelPullToRefreshIndicator(
             }
         }
     }
-//    Box(
-//        modifier =
-//            modifier
-//                .align(alignment = Alignment.TopCenter)
-//                .pullToRefresh(
-//                    isRefreshing = isRefreshing,
-//                    state = state,
-//                    onRefresh = {}
-//                )
-////                .pullToRefreshIndicator(
-////                    state = state,
-////                    isRefreshing = isRefreshing,
-////                    containerColor = Color.Unspecified,
-////                    elevation = 0.dp,
-////                ),
-//    ) {
-//        Crossfade(
-//            targetState = isRefreshing,
-//            animationSpec = tween(durationMillis = 300),
-//        ) { refreshing ->
-//            if (refreshing) {
-//                CircularProgressIndicator(
-//                    color = CaramelTheme.color.fill.brand,
-//                    trackColor =
-//                        CaramelTheme.color.fill.brand
-//                            .copy(alpha = 0.3f),
-//                    strokeWidth = 5.dp,
-//                    strokeCap = StrokeCap.Round,
-//                )
-//            } else {
-//                CircularProgressIndicator(
-//                    progress = { state.distanceFraction },
-//                    color = CaramelTheme.color.fill.brand,
-//                    trackColor =
-//                        CaramelTheme.color.fill.brand
-//                            .copy(alpha = 0.3f),
-//                    strokeWidth = 5.dp,
-//                    strokeCap = StrokeCap.Round,
-//                )
-//            }
-//        }
-//    }
 }

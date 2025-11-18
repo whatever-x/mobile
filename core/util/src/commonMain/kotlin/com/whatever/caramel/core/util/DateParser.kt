@@ -22,7 +22,10 @@ object DateParser {
             val day = rawDate.substring(6, 8)
 
             val localDate = LocalDate(year.toInt(), month.toInt(), day.toInt())
-            val formattedMonth = localDate.month.number.toString().padStart(2, '0')
+            val formattedMonth =
+                localDate.month.number
+                    .toString()
+                    .padStart(2, '0')
             val formattedDay = localDate.day.toString().padStart(2, '0')
             val dateStr = "${localDate.year}-$formattedMonth-${formattedDay}$timeZone"
             Instant.parse(dateStr).toEpochMilliseconds()
