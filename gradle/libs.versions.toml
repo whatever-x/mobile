@@ -40,9 +40,9 @@ kmp-spm = "1.0.4"
 turbine = "1.2.1"
 mokkery = "2.9.0"
 kotlinx-collections-immutable = "0.4.0"
-apps-flyer = "6.17.0"
 ktlint-cli = "1.6.0"
 spotless = "7.0.4"
+apps-flyer = "6.17.3"
 play-review = "2.0.2"
 
 [libraries]
