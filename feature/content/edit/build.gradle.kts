@@ -24,7 +24,7 @@ kotlin {
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.date.time)
 
-            implementation(libs.jetbrains.compose.navigation)
+            implementation(libs.jetbrains.androidx.compose.navigation)
             implementation(libs.bundles.coil)
         }
     }

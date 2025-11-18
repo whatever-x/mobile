@@ -27,8 +27,8 @@ kotlinx-date-time = "0.7.1"
 kotlinx-collections-immutable = "0.4.0"
 
 # org.jetbrains.androidx
-navigationCompose = "2.9.1"
 jetbrains-androidx-lifecycle = "2.9.6"
+jetbrains-androidx-navigation-compose = "2.9.1"
 
 # DI
 koin = "4.1.1"
@@ -88,10 +88,10 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 kotlinx-date-time = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-date-time" }
 
 # org.jetbrains.androidx
-jetbrains-compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 jetbrains-androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "jetbrains-androidx-lifecycle" }
 jetbrains-androidx-lifecycle-viewmodel-savestate = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-savedstate", version.ref = "jetbrains-androidx-lifecycle" }
 jetbrains-androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "jetbrains-androidx-lifecycle" }
+jetbrains-androidx-compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "jetbrains-androidx-navigation-compose" }
 
 # org.jetbrains.compose
 jetbrains-compose-ui-backhandler = { group = "org.jetbrains.compose.ui", name = "ui-backhandler", version.ref = "compose" }

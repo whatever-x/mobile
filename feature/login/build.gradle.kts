@@ -45,7 +45,7 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.jetbrains.androidx.lifecycle.runtime.compose)
 
-            implementation(libs.jetbrains.compose.navigation)
+            implementation(libs.jetbrains.androidx.compose.navigation)
 
             implementation(libs.bundles.moko)
         }

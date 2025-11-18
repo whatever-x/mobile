@@ -23,7 +23,7 @@ kotlin {
             implementation(libs.jetbrains.androidx.lifecycle.runtime.compose)
             implementation(libs.kotlinx.collections.immutable)
 
-            implementation(libs.jetbrains.compose.navigation)
+            implementation(libs.jetbrains.androidx.compose.navigation)
             implementation(libs.bundles.coil)
         }
     }
