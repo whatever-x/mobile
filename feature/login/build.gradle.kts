@@ -1,6 +1,9 @@
+@file:OptIn(ExperimentalSpmForKmpFeature::class)
+
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import io.github.frankois944.spmForKmp.swiftPackageConfig
+import io.github.frankois944.spmForKmp.utils.ExperimentalSpmForKmpFeature
 import java.net.URI
-import java.util.Locale
 
 plugins {
     id("caramel.kmp")
@@ -13,18 +16,21 @@ plugins {
 }
 
 kotlin {
-    val isWindow = System.getProperty("os.name").lowercase(Locale.getDefault()).contains("windows")
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64(),
+    ).forEach { iosTarget ->
+        iosTarget.swiftPackageConfig(cinteropName = "kakaoLoginBridge") {
+            customPackageSourcePath = "../../app-ios"
+            minIos = "15.0"
 
-    if (!isWindow) {
-        listOf(
-            iosX64(),
-            iosArm64(),
-            iosSimulatorArm64(),
-        ).forEach { iosTarget ->
-            iosTarget.compilations {
-                val main by getting {
-                    cinterops.create("kakaoLoginBridge")
-                }
+            dependency {
+                remotePackageVersion(
+                    url = URI("https://github.com/kakao/kakao-ios-sdk"),
+                    version = "2.24.4",
+                    products = { add("KakaoSDK") },
+                )
             }
         }
     }
@@ -52,21 +58,6 @@ kotlin {
     }
 }
 
-swiftPackageConfig {
-    create("kakaoLoginBridge") {
-        customPackageSourcePath = "../../app-ios"
-        minIos = "15.0"
-
-        dependency {
-            remotePackageVersion(
-                url = URI("https://github.com/kakao/kakao-ios-sdk"),
-                version = "2.24.4",
-                products = { add("KakaoSDK") },
-            )
-        }
-    }
-}
-
 android {
     namespace = "com.whatever.caramel.feature.login"
 
@@ -75,7 +66,8 @@ android {
     }
 
     defaultConfig {
-        val kakaoNativeAppKey = gradleLocalProperties(rootDir, providers).getProperty("KAKAO_NATIVE_APP_KEY")
+        val kakaoNativeAppKey =
+            gradleLocalProperties(rootDir, providers).getProperty("KAKAO_NATIVE_APP_KEY")
         buildConfigField("String", "KAKAO_NATIVE_APP_KEY", kakaoNativeAppKey)
 
         manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] = kakaoNativeAppKey.replace("\"", "")
