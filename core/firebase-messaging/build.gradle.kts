@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalSpmForKmpFeature::class)
+
+import io.github.frankois944.spmForKmp.swiftPackageConfig
+import io.github.frankois944.spmForKmp.utils.ExperimentalSpmForKmpFeature
 import java.net.URI
-import java.util.Locale
 
 plugins {
     id("caramel.kmp")
@@ -11,18 +14,21 @@ plugins {
 android.namespace = "com.whatever.caramel.core.firebaseMessaging"
 
 kotlin {
-    val isWindow = System.getProperty("os.name").lowercase(Locale.getDefault()).contains("windows")
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64(),
+    ).forEach { iosTarget ->
+        iosTarget.swiftPackageConfig(cinteropName = "firebaseMessagingBridge") {
+            customPackageSourcePath = "../../app-ios"
+            minIos = "15.0"
 
-    if (!isWindow) {
-        listOf(
-            iosX64(),
-            iosArm64(),
-            iosSimulatorArm64(),
-        ).forEach { iosTarget ->
-            iosTarget.compilations {
-                val main by getting {
-                    cinterops.create("firebaseMessagingBridge")
-                }
+            dependency {
+                remotePackageVersion(
+                    url = URI("https://github.com/firebase/firebase-ios-sdk"),
+                    version = "11.9.0",
+                    products = { add("FirebaseMessaging") },
+                )
             }
         }
     }
@@ -41,21 +47,6 @@ kotlin {
 
             implementation(libs.koin.core)
             implementation(libs.kotlinx.coroutines.core)
-        }
-    }
-}
-
-swiftPackageConfig {
-    create("firebaseMessagingBridge") {
-        customPackageSourcePath = "../../app-ios"
-        minIos = "15.0"
-
-        dependency {
-            remotePackageVersion(
-                url = URI("https://github.com/firebase/firebase-ios-sdk"),
-                version = "11.9.0",
-                products = { add("FirebaseMessaging") },
-            )
         }
     }
 }

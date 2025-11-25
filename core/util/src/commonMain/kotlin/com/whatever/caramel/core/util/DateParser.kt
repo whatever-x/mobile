@@ -1,8 +1,11 @@
 package com.whatever.caramel.core.util
 
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.number
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 object DateParser {
     /**
      * 날짜 문자열을 밀리초로 변환
@@ -19,11 +22,14 @@ object DateParser {
             val day = rawDate.substring(6, 8)
 
             val localDate = LocalDate(year.toInt(), month.toInt(), day.toInt())
-            val formattedMonth = localDate.monthNumber.toString().padStart(2, '0')
-            val formattedDay = localDate.dayOfMonth.toString().padStart(2, '0')
+            val formattedMonth =
+                localDate.month.number
+                    .toString()
+                    .padStart(2, '0')
+            val formattedDay = localDate.day.toString().padStart(2, '0')
             val dateStr = "${localDate.year}-$formattedMonth-${formattedDay}$timeZone"
             Instant.parse(dateStr).toEpochMilliseconds()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
 

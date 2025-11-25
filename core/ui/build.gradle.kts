@@ -13,7 +13,7 @@ kotlin {
             implementation(projects.core.designsystem)
             implementation(projects.core.util)
 
-            implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.jetbrains.androidx.lifecycle.runtime.compose)
             implementation(libs.kotlinx.collections.immutable)
         }
     }

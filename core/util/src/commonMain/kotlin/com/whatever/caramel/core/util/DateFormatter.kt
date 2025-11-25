@@ -1,12 +1,14 @@
 package com.whatever.caramel.core.util
 
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 object DateFormatter {
     /**
      * 밀리초를 날짜 문자열로 변환
@@ -19,11 +21,14 @@ object DateFormatter {
             val localDateTime = this.toLocalDateTime()
 
             val year = localDateTime.year.toString().padStart(4, '0')
-            val month = localDateTime.monthNumber.toString().padStart(2, '0')
-            val day = localDateTime.dayOfMonth.toString().padStart(2, '0')
+            val month =
+                localDateTime.month.number
+                    .toString()
+                    .padStart(2, '0')
+            val day = localDateTime.day.toString().padStart(2, '0')
 
             "$year$separator$month$separator$day"
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
 
@@ -33,7 +38,7 @@ object DateFormatter {
      * @return 년/월/일과 각 구분자로 설정된 문자열
      * @author RyuSw-cs
      * */
-    fun LocalDate.formatWithSeparator(separator: String = "-") = "$year$separator${month.number}$separator$dayOfMonth"
+    fun LocalDate.formatWithSeparator(separator: String = "-") = "$year$separator${month.number}$separator$day"
 
     /**
      * 밀리초를 LocalDateTime 형식으로 변환
@@ -62,10 +67,13 @@ object DateFormatter {
             check(year in 1..9999 && month in 1..12 && day in 1..31) { "날짜 형식이 잘못되었습니다." }
 
             val localDate = LocalDate(year, month, day)
-            val formattedMonth = localDate.monthNumber.toString().padStart(2, '0')
-            val formattedDay = localDate.dayOfMonth.toString().padStart(2, '0')
+            val formattedMonth =
+                localDate.month.number
+                    .toString()
+                    .padStart(2, '0')
+            val formattedDay = localDate.day.toString().padStart(2, '0')
             "$year-$formattedMonth-$formattedDay"
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             ""
         }
 }

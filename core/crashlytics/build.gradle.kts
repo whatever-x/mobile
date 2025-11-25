@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalSpmForKmpFeature::class)
+
+import io.github.frankois944.spmForKmp.swiftPackageConfig
+import io.github.frankois944.spmForKmp.utils.ExperimentalSpmForKmpFeature
 import java.net.URI
-import java.util.Locale
 
 plugins {
     id("caramel.kmp")
@@ -16,18 +19,21 @@ android {
 }
 
 kotlin {
-    val isWindow = System.getProperty("os.name").lowercase(Locale.getDefault()).contains("windows")
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64(),
+    ).forEach { iosTarget ->
+        iosTarget.swiftPackageConfig(cinteropName = "firebaseCrashlyticsBridge") {
+            customPackageSourcePath = "../../app-ios"
+            minIos = "15.0"
 
-    if (!isWindow) {
-        listOf(
-            iosX64(),
-            iosArm64(),
-            iosSimulatorArm64(),
-        ).forEach { iosTarget ->
-            iosTarget.compilations {
-                val main by getting {
-                    cinterops.create("firebaseCrashlyticsBridge")
-                }
+            dependency {
+                remotePackageVersion(
+                    url = URI("https://github.com/firebase/firebase-ios-sdk"),
+                    version = "11.9.0",
+                    products = { add("FirebaseCrashlytics") },
+                )
             }
         }
     }
@@ -35,26 +41,11 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.firebase.bom.android))
+            implementation(libs.firebase.crashlytics)
             implementation(libs.koin.android)
-            implementation(libs.firebase.crashlytics.ktx)
         }
         commonMain.dependencies {
             implementation(libs.koin.core)
-        }
-    }
-}
-
-swiftPackageConfig {
-    create("firebaseCrashlyticsBridge") {
-        customPackageSourcePath = "../../app-ios"
-        minIos = "15.0"
-
-        dependency {
-            remotePackageVersion(
-                url = URI("https://github.com/firebase/firebase-ios-sdk"),
-                version = "11.9.0",
-                products = { add("FirebaseCrashlytics") },
-            )
         }
     }
 }

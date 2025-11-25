@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.ui.util.toUiText
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.number
 
 @Composable
 fun ContentScheduleInfo(
@@ -70,7 +71,7 @@ private fun ScheduleDateTimeText(
         when (dateTimeType) {
             ScheduleDateTimeType.DATE -> {
                 val dayOfWeek = dateTime.dayOfWeek.toUiText()
-                "${dateTime.year}년 ${dateTime.monthNumber}월 ${dateTime.dayOfMonth}일 ($dayOfWeek)"
+                "${dateTime.year}년 ${dateTime.month.number}월 ${dateTime.day}일 ($dayOfWeek)"
             }
 
             ScheduleDateTimeType.TIME -> {

@@ -36,7 +36,7 @@ class AndroidApplicationPlugin : Plugin<Project>{
                         buildConfig = true
                     }
                     composeOptions {
-                        kotlinCompilerExtensionVersion = libs.version("compose-plugin")
+                        kotlinCompilerExtensionVersion = libs.version("compose")
                     }
                     packaging {
                         resources {
