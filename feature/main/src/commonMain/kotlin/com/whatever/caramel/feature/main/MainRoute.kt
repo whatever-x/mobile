@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -23,6 +24,9 @@ import com.whatever.caramel.core.designsystem.components.CaramelBottomNavigation
 import com.whatever.caramel.core.designsystem.components.CaramelNavItemCreateButton
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.content.ContentType
+import com.whatever.caramel.core.ui.admob.GoogleAdUnitIds
+import com.whatever.caramel.core.ui.admob.LocalMainGoogleAdBanner
+import com.whatever.caramel.core.ui.admob.rememberGoggleAdBannerState
 import com.whatever.caramel.core.ui.util.ObserveLifecycleEvent
 import com.whatever.caramel.feature.calendar.navigation.calendarContent
 import com.whatever.caramel.feature.calendar.navigation.navigateToCalendar
@@ -47,6 +51,7 @@ internal fun MainRoute(
 ) {
     val hapticFeedback = LocalHapticFeedback.current
     val mainNavHostController = rememberNavController()
+    val mainGoogleAdBannerState = rememberGoggleAdBannerState(adUnitId = GoogleAdUnitIds.TEST_BANNER)
     var currentItem by rememberSaveable { mutableStateOf(BottomNavItem.HOME) }
 
     ObserveLifecycleEvent { event ->
@@ -108,37 +113,41 @@ internal fun MainRoute(
             }
         },
     ) { innerPadding ->
-        NavHost(
-            modifier =
-                Modifier
-                    .padding(bottom = innerPadding.calculateBottomPadding()),
-            navController = mainNavHostController,
-            startDestination = HomeRoute,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None },
-            popEnterTransition = { EnterTransition.None },
-            popExitTransition = { ExitTransition.None },
+        CompositionLocalProvider(
+            LocalMainGoogleAdBanner provides mainGoogleAdBannerState
         ) {
-            homeContent(
-                navigateToSetting = navigateToSetting,
-                navigateToStaredCoupleDay = navigateToStaredCoupleDay,
-                navigateToTodoDetail = navigateToScheduleDetail,
-                navigateToCreateTodo = navigateToCreateMemo,
-                showErrorDialog = showErrorDialog,
-                showErrorToast = showErrorToast,
-            )
-            calendarContent(
-                navigateToCreateSchedule = navigateToCreateSchedule,
-                navigateToScheduleDetail = navigateToScheduleDetail,
-                showErrorDialog = showErrorDialog,
-                showErrorToast = showErrorToast,
-            )
-            memoContent(
-                navigateToMemoDetail = navigateToScheduleDetail,
-                showErrorToast = showErrorToast,
-                showErrorDialog = showErrorDialog,
-                navigateToCreateMemoWithTitle = navigateToCreateMemoWithTitle,
-            )
+            NavHost(
+                modifier =
+                    Modifier
+                        .padding(bottom = innerPadding.calculateBottomPadding()),
+                navController = mainNavHostController,
+                startDestination = HomeRoute,
+                enterTransition = { EnterTransition.None },
+                exitTransition = { ExitTransition.None },
+                popEnterTransition = { EnterTransition.None },
+                popExitTransition = { ExitTransition.None },
+            ) {
+                homeContent(
+                    navigateToSetting = navigateToSetting,
+                    navigateToStaredCoupleDay = navigateToStaredCoupleDay,
+                    navigateToTodoDetail = navigateToScheduleDetail,
+                    navigateToCreateTodo = navigateToCreateMemo,
+                    showErrorDialog = showErrorDialog,
+                    showErrorToast = showErrorToast,
+                )
+                calendarContent(
+                    navigateToCreateSchedule = navigateToCreateSchedule,
+                    navigateToScheduleDetail = navigateToScheduleDetail,
+                    showErrorDialog = showErrorDialog,
+                    showErrorToast = showErrorToast,
+                )
+                memoContent(
+                    navigateToMemoDetail = navigateToScheduleDetail,
+                    showErrorToast = showErrorToast,
+                    showErrorDialog = showErrorDialog,
+                    navigateToCreateMemoWithTitle = navigateToCreateMemoWithTitle,
+                )
+            }
         }
     }
 }

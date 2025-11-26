@@ -4,6 +4,7 @@ import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,6 +27,8 @@ import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLayout
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
+import com.whatever.caramel.core.ui.admob.CaramelGoogleAdBanner
+import com.whatever.caramel.core.ui.admob.LocalMainGoogleAdBanner
 import com.whatever.caramel.feature.home.components.ShareMessageBottomSheet
 import com.whatever.caramel.feature.home.components.header.disconnectedCard
 import com.whatever.caramel.feature.home.components.header.header
@@ -111,6 +114,7 @@ internal fun HomeScreen(
                     else -> 0
                 },
         )
+        val bannerState = LocalMainGoogleAdBanner.current
 
         PullToRefreshBox(
             modifier = Modifier.padding(top = innerPadding.calculateTopPadding()),
@@ -167,6 +171,14 @@ internal fun HomeScreen(
                     },
                     onClickEmptyTodo = { onIntent(HomeIntent.CreateTodoContent) },
                 )
+
+                item {
+                    CaramelGoogleAdBanner(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        bannerState = bannerState!!,
+                    )
+                }
             }
         }
     }
