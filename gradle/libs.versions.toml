@@ -61,6 +61,9 @@ apps-flyer = "6.17.3"
 kmp-spm = "1.1.0"
 play-review = "2.0.2"
 
+# AD
+ad-mob = "24.8.0"
+
 # Test
 turbine = "1.2.1"
 mokkery = "2.9.0"
@@ -141,6 +144,9 @@ apps-flyer = { group = "com.appsflyer", name = "af-android-sdk", version.ref = "
 
 # Utility
 play-review = { group = "com.google.android.play", name = "review-ktx", version.ref = "play-review" }
+
+# AD
+google-ad-mob = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "ad-mob" }
 
 # Test
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }

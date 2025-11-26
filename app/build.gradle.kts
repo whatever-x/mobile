@@ -33,6 +33,7 @@ kotlin {
             implementation(libs.firebase.analytics)
             implementation(libs.firebase.crashlytics)
             implementation(libs.apps.flyer)
+            implementation(libs.google.ad.mob)
         }
         commonMain.dependencies {
             // Project

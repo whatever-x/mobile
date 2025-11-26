@@ -9,6 +9,9 @@ android.namespace = "com.whatever.caramel.core.ui"
 
 kotlin {
     sourceSets {
+        androidMain.dependencies {
+            implementation(libs.google.ad.mob)
+        }
         commonMain.dependencies {
             implementation(projects.core.designsystem)
             implementation(projects.core.util)
