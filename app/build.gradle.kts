@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.FileInputStream
 import java.util.Properties
@@ -98,6 +99,7 @@ kotlin {
 android {
     defaultConfig {
         val properties = Properties().apply { load(rootProject.file("local.properties").inputStream()) }
+        val admobAppIdKey = "ADMOB_APP_ID"
         val appsFlyerKey = "APPS_FLYER_KEY"
 
         buildConfigField(
@@ -105,6 +107,8 @@ android {
             name = appsFlyerKey,
             value = properties.getProperty(appsFlyerKey),
         )
+
+        manifestPlaceholders[admobAppIdKey] = properties.getProperty(admobAppIdKey).replace("\"", "")
     }
 
     signingConfigs {
