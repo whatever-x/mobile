@@ -28,7 +28,7 @@ import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLay
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.ui.admob.CaramelGoogleAdBanner
-import com.whatever.caramel.core.ui.admob.LocalMainGoogleAdBanner
+import com.whatever.caramel.core.ui.admob.LocalHomeGoogleAdBanner
 import com.whatever.caramel.feature.home.components.ShareMessageBottomSheet
 import com.whatever.caramel.feature.home.components.header.disconnectedCard
 import com.whatever.caramel.feature.home.components.header.header
@@ -45,6 +45,7 @@ internal fun HomeScreen(
     state: HomeState,
     onIntent: (HomeIntent) -> Unit,
 ) {
+    val bannerState = LocalHomeGoogleAdBanner.current
     val sheetState =
         rememberStandardBottomSheetState(
             initialValue = SheetValue.PartiallyExpanded,
@@ -114,7 +115,6 @@ internal fun HomeScreen(
                     else -> 0
                 },
         )
-        val bannerState = LocalMainGoogleAdBanner.current
 
         PullToRefreshBox(
             modifier = Modifier.padding(top = innerPadding.calculateTopPadding()),
@@ -176,7 +176,7 @@ internal fun HomeScreen(
                     CaramelGoogleAdBanner(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        bannerState = bannerState!!,
+                        bannerState = bannerState,
                     )
                 }
             }
