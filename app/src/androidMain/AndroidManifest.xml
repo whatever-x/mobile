@@ -28,7 +28,7 @@
 
 		<meta-data
 			android:name="com.google.android.gms.ads.APPLICATION_ID"
-			android:value="${ADMOB_APP_ID}"/>
+			android:value="${ADMOB_APP_ID}" />
 
 		<activity android:exported="true"
 			android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mnc|colorMode|density|fontScale|fontWeightAdjustment|keyboard|layoutDirection|locale|mcc|navigation|smallestScreenSize|touchscreen|uiMode"

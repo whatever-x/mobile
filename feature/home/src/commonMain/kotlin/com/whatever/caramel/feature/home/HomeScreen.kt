@@ -174,8 +174,9 @@ internal fun HomeScreen(
 
                 item {
                     CaramelGoogleAdBanner(
-                        modifier = Modifier
-                            .fillMaxWidth(),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth(),
                         bannerState = bannerState,
                     )
                 }

@@ -48,33 +48,36 @@ actual fun rememberGoogleAdBannerState(
     bannerType: GoogleAdBannerType,
 ): GoogleAdBannerState {
     val context = LocalContext.current
-    val bannerSize = when (bannerType) {
-        is GoogleAdBannerType.InlineAdaptive -> {
-            AdSize.getCurrentOrientationInlineAdaptiveBannerAdSize(context, bannerType.width)
-        }
-
-        is GoogleAdBannerType.AnchoredAdaptive -> {
-            if (bannerType.width != SCREEN_FULL_WIDTH) {
-                AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, bannerType.width)
-            } else {
-                AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, AdSize.FULL_WIDTH)
+    val bannerSize =
+        when (bannerType) {
+            is GoogleAdBannerType.InlineAdaptive -> {
+                AdSize.getCurrentOrientationInlineAdaptiveBannerAdSize(context, bannerType.width)
             }
-        }
-    }
 
-    val adView = remember {
-        AdView(context).apply {
-            this.adListener = object : AdListener() {
-                override fun onAdFailedToLoad(p0: LoadAdError) {
-                    super.onAdFailedToLoad(p0)
-                    // TODO : 배너 배치 실패 시 Crash 로그 수집
+            is GoogleAdBannerType.AnchoredAdaptive -> {
+                if (bannerType.width != SCREEN_FULL_WIDTH) {
+                    AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, bannerType.width)
+                } else {
+                    AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, AdSize.FULL_WIDTH)
                 }
             }
-            this.adUnitId = adUnitId
-            setAdSize(bannerSize)
-            loadAd(AdRequest.Builder().build())
         }
-    }
+
+    val adView =
+        remember {
+            AdView(context).apply {
+                this.adListener =
+                    object : AdListener() {
+                        override fun onAdFailedToLoad(p0: LoadAdError) {
+                            super.onAdFailedToLoad(p0)
+                            // TODO : 배너 배치 실패 시 Crash 로그 수집
+                        }
+                    }
+                this.adUnitId = adUnitId
+                setAdSize(bannerSize)
+                loadAd(AdRequest.Builder().build())
+            }
+        }
 
     LifecycleResumeEffect(adView) {
         adView.resume()

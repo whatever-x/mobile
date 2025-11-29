@@ -20,13 +20,14 @@ private fun HomeScreenPreview(
     @PreviewParameter(HomeScreenPreviewData::class) data: HomeState,
 ) {
     CaramelTheme {
-        val homeBannerState = rememberGoogleAdBannerState(
-            bannerType = GoogleAdBannerType.AnchoredAdaptive(),
-            adUnitId = GoogleAdUnitIds.TEST_BANNER,
-        )
+        val homeBannerState =
+            rememberGoogleAdBannerState(
+                bannerType = GoogleAdBannerType.AnchoredAdaptive(),
+                adUnitId = GoogleAdUnitIds.TEST_BANNER,
+            )
 
         CompositionLocalProvider(
-            LocalHomeGoogleAdBanner provides homeBannerState
+            LocalHomeGoogleAdBanner provides homeBannerState,
         ) {
             HomeScreen(
                 state = data,
@@ -43,13 +44,14 @@ private fun QuizPreview(
     @PreviewParameter(QuizPreviewData::class) quizType: HomeState,
 ) {
     CaramelTheme {
-        val homeBannerState = rememberGoogleAdBannerState(
-            bannerType = GoogleAdBannerType.AnchoredAdaptive(),
-            adUnitId = GoogleAdUnitIds.TEST_BANNER,
-        )
+        val homeBannerState =
+            rememberGoogleAdBannerState(
+                bannerType = GoogleAdBannerType.AnchoredAdaptive(),
+                adUnitId = GoogleAdUnitIds.TEST_BANNER,
+            )
 
         CompositionLocalProvider(
-            LocalHomeGoogleAdBanner provides homeBannerState
+            LocalHomeGoogleAdBanner provides homeBannerState,
         ) {
             HomeScreen(
                 state = quizType,

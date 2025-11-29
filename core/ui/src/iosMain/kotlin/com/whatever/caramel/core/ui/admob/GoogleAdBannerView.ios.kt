@@ -33,20 +33,21 @@ actual object GoogleAdUnitIds {
 @Composable
 internal actual fun GoogleAdBannerView(
     modifier: Modifier,
-    bannerState: GoogleAdBannerState
+    bannerState: GoogleAdBannerState,
 ) {
     UIKitView(
-        modifier = modifier.heightIn(
-            min = 50.dp,
-            max = 250.dp
-        ),
+        modifier =
+            modifier.heightIn(
+                min = 50.dp,
+                max = 250.dp,
+            ),
         factory = { bannerState.bannerView },
     )
 }
 
 @Stable
 actual class GoogleAdBannerState(
-    internal val bannerView: GADBannerView
+    internal val bannerView: GADBannerView,
 )
 
 @Composable
@@ -55,33 +56,35 @@ actual fun rememberGoogleAdBannerState(
     bannerType: GoogleAdBannerType,
 ): GoogleAdBannerState {
     val rootViewController = LocalUIViewController.current
-    val delegate = BannerViewDelegate()
-    val adSize = when (bannerType) {
-        is GoogleAdBannerType.InlineAdaptive -> {
-            GADCurrentOrientationInlineAdaptiveBannerAdSizeWithWidth(width = bannerType.width.toDouble())
-        }
+    val delegate = GoogleAdBannerViewDelegate()
+    val adSize =
+        when (bannerType) {
+            is GoogleAdBannerType.InlineAdaptive -> {
+                GADCurrentOrientationInlineAdaptiveBannerAdSizeWithWidth(width = bannerType.width.toDouble())
+            }
 
-        is GoogleAdBannerType.AnchoredAdaptive -> {
-            if (bannerType.width != SCREEN_FULL_WIDTH) {
-                GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(width = bannerType.width.toDouble())
-            } else {
-                val screenWidth = UIScreen.mainScreen.bounds.useContents { size.width }
-                GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(width = screenWidth)
+            is GoogleAdBannerType.AnchoredAdaptive -> {
+                if (bannerType.width != SCREEN_FULL_WIDTH) {
+                    GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(width = bannerType.width.toDouble())
+                } else {
+                    val screenWidth = UIScreen.mainScreen.bounds.useContents { size.width }
+                    GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(width = screenWidth)
+                }
             }
         }
-    }
 
-    val bannerView = remember {
-        GADBannerView().apply {
-            this.adSize = adSize
-            this.adUnitID = adUnitId
-            this.rootViewController = rootViewController
-            this.delegate = delegate
+    val bannerView =
+        remember {
+            GADBannerView().apply {
+                this.adSize = adSize
+                this.adUnitID = adUnitId
+                this.rootViewController = rootViewController
+                this.delegate = delegate
 
-            val request = GADRequest()
-            this.loadRequest(request)
+                val request = GADRequest()
+                this.loadRequest(request)
+            }
         }
-    }
 
     DisposableEffect(bannerView) {
         onDispose {

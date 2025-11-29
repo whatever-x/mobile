@@ -53,10 +53,11 @@ internal fun MainRoute(
 ) {
     val hapticFeedback = LocalHapticFeedback.current
     val mainNavHostController = rememberNavController()
-    val mainGoogleAdBannerState = rememberGoogleAdBannerState(
-        adUnitId = GoogleAdUnitIds.TEST_BANNER,
-        bannerType = GoogleAdBannerType.AnchoredAdaptive(width = SCREEN_FULL_WIDTH),
-    )
+    val mainGoogleAdBannerState =
+        rememberGoogleAdBannerState(
+            adUnitId = GoogleAdUnitIds.TEST_BANNER,
+            bannerType = GoogleAdBannerType.AnchoredAdaptive(width = SCREEN_FULL_WIDTH),
+        )
     var currentItem by rememberSaveable { mutableStateOf(BottomNavItem.HOME) }
 
     ObserveLifecycleEvent { event ->
@@ -119,7 +120,7 @@ internal fun MainRoute(
         },
     ) { innerPadding ->
         CompositionLocalProvider(
-            LocalHomeGoogleAdBanner provides mainGoogleAdBannerState
+            LocalHomeGoogleAdBanner provides mainGoogleAdBannerState,
         ) {
             NavHost(
                 modifier =

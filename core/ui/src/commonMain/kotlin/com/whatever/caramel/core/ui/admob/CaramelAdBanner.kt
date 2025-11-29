@@ -23,11 +23,11 @@ fun CaramelGoogleAdBanner(
     if (isPreviewMode) {
         Box(
             modifier = modifier.background(color = Color.White),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = stringResource(resource = Res.string.ad_banner),
-                style = CaramelTheme.typography.heading1
+                style = CaramelTheme.typography.heading1,
             )
         }
     } else {
