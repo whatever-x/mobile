@@ -20,6 +20,7 @@ android {
         val properties = Properties().apply { load(rootProject.file("local.properties").inputStream()) }
         val debugUrl = "CARAMEL_DEBUG_URL"
         val releaseUrl = "CARAMEL_RELEASE_URL"
+        val qaUrl = "CARAMEL_QA_URL"
 
         fun getEnvOrProp(key: String): String = System.getenv(key) ?: properties.getProperty(key)
 
@@ -38,6 +39,16 @@ android {
                 "String",
                 "BASE_URL",
                 "\"${properties.getProperty(debugUrl)}\"",
+            )
+        }
+
+        getByName("qa") {
+            isMinifyEnabled = false
+
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"${getEnvOrProp(key = qaUrl)}\"",
             )
         }
     }

@@ -147,5 +147,11 @@ android {
                 "proguard-rules.pro",
             )
         }
+
+        getByName("qa") {
+            isMinifyEnabled = false
+            versionNameSuffix = "-qa"
+            signingConfig = signingConfigs.getByName("release")
+        }
     }
 }
