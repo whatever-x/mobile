@@ -4,6 +4,8 @@
 <dict>
 	<key>AppsFlyerKey</key>
 	<string>$(APPS_FLYER_KEY)</string>
+	<key>GADApplicationIdentifier</key>
+	<string>$(GOOGLE_ADMOB_APP_ID)</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

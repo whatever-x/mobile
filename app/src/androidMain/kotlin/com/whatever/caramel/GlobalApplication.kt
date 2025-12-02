@@ -4,6 +4,7 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import com.appsflyer.AppsFlyerLib
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -26,6 +27,7 @@ class GlobalApplication : Application() {
         FirebaseApp.initializeApp(this)
         AppsFlyerLib.getInstance().init(BuildConfig.APPS_FLYER_KEY, null, this)
         AppsFlyerLib.getInstance().start(this)
+        MobileAds.initialize(this)
 
         if (BuildConfig.DEBUG) {
             Napier.base(DebugAntilog())

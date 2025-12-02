@@ -33,6 +33,7 @@ kotlin {
             implementation(libs.firebase.analytics)
             implementation(libs.firebase.crashlytics)
             implementation(libs.apps.flyer)
+            implementation(libs.google.ad.mob)
         }
         commonMain.dependencies {
             // Project
@@ -97,6 +98,7 @@ kotlin {
 android {
     defaultConfig {
         val properties = Properties().apply { load(rootProject.file("local.properties").inputStream()) }
+        val admobAppIdKey = "ADMOB_APP_ID"
         val appsFlyerKey = "APPS_FLYER_KEY"
 
         buildConfigField(
@@ -104,6 +106,8 @@ android {
             name = appsFlyerKey,
             value = properties.getProperty(appsFlyerKey),
         )
+
+        manifestPlaceholders[admobAppIdKey] = properties.getProperty(admobAppIdKey).replace("\"", "")
     }
 
     signingConfigs {

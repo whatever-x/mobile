@@ -21,6 +21,7 @@
 		BAA2B7B12D72DA330017F868 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = BAA2B7B02D72DA330017F868 /* FirebaseCrashlytics */; };
 		E93275352DD225A7004AE2BF /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93275342DD225A7004AE2BF /* AdSupport.framework */; };
 		E93275372DD225BB004AE2BF /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93275362DD225BB004AE2BF /* AppTrackingTransparency.framework */; };
+		E972E3D02ED82BB40084F00C /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = E972E3CF2ED82BB40084F00C /* GoogleMobileAds */; };
 		E97442F12DF2DAC400B9CDEE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E97442F02DF2DAC400B9CDEE /* Assets.xcassets */; };
 		E97442F32DF2DB2B00B9CDEE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E97442F22DF2DB2B00B9CDEE /* GoogleService-Info.plist */; };
 		E987BEB22DEB080E00CE545C /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = E987BEB12DEB080E00CE545C /* FirebaseMessaging */; };
@@ -74,6 +75,7 @@
 			files = (
 				E987BEB22DEB080E00CE545C /* FirebaseMessaging in Frameworks */,
 				E9A293E82D78E3E50060A927 /* KakaoSDK in Frameworks */,
+				E972E3D02ED82BB40084F00C /* GoogleMobileAds in Frameworks */,
 				E93275372DD225BB004AE2BF /* AppTrackingTransparency.framework in Frameworks */,
 				BAA2B7AB2D72DA330017F868 /* FirebaseAnalytics in Frameworks */,
 				E9E80DF02DD54CED00BCB125 /* AppsFlyerLib-Dynamic in Frameworks */,
@@ -206,6 +208,7 @@
 				E9A293E62D78E3E50060A927 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				BAA2B7A92D72DA330017F868 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				E9E80DEE2DD54CED00BCB125 /* XCRemoteSwiftPackageReference "AppsFlyerFramework-Dynamic" */,
+				E972E3CE2ED82BB40084F00C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = 7555FF7C242A565900829871 /* Products */;
 			projectDirPath = "";
@@ -532,6 +535,14 @@
 				minimumVersion = 11.9.0;
 			};
 		};
+		E972E3CE2ED82BB40084F00C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.14.0;
+			};
+		};
 		E9A293E62D78E3E50060A927 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
@@ -570,6 +581,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BAA2B7A92D72DA330017F868 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
+		};
+		E972E3CF2ED82BB40084F00C /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E972E3CE2ED82BB40084F00C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 		E987BEB12DEB080E00CE545C /* FirebaseMessaging */ = {
 			isa = XCSwiftPackageProductDependency;
