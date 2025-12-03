@@ -43,8 +43,6 @@
 	<string>10010204</string>
 	<key>CaramelBaseUrl</key>
 	<string>$(CARAMEL_BASE_URL)</string>
-	<key>CaramelSampleUrl</key>
-	<string>$(CARAMEL_SAMPLE_URL)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>KakaoNativeAppKey</key>
