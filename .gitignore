@@ -25,6 +25,7 @@ core/database/schemas
 
 # Xcode
 **/GoogleService-Info.plist
+**/GoogleService-Info-Qa.plist
 *.xcworkspace
 *.xcuserdata/
 !*.xcworkspace/contents.xcworkspacedata
