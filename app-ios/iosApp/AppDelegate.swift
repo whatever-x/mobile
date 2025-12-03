@@ -18,6 +18,7 @@ import AppsFlyerLib
 import AppTrackingTransparency
 import AdSupport
 import UserNotifications
+import GoogleMobileAds
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -31,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
 
         FirebaseApp.configure()
+        MobileAds.shared.start()
 
         #if DEBUG
             Analytics.setAnalyticsCollectionEnabled(false)
