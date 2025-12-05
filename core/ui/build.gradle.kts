@@ -13,6 +13,12 @@ plugins {
 
 android.namespace = "com.whatever.caramel.core.ui"
 
+android {
+    buildFeatures {
+        buildConfig = true
+    }
+}
+
 kotlin {
     listOf(
         iosX64(),

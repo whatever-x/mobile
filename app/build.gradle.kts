@@ -137,6 +137,7 @@ android {
             isMinifyEnabled = false
             isDebuggable = false
             signingConfig = signingConfigs.getByName("release")
+            resValue("string", "app_name", "Caramel")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -146,10 +147,19 @@ android {
         debug {
             isMinifyEnabled = false
             isDebuggable = true
+            resValue("string", "app_name", "Caramel-Dev")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+        }
+
+        getByName("qa") {
+            isMinifyEnabled = false
+            applicationIdSuffix = ".qa"
+            versionNameSuffix = "-qa"
+            signingConfig = signingConfigs.getByName("release")
+            resValue("string", "app_name", "Caramel-QA")
         }
     }
 }

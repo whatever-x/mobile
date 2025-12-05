@@ -2,15 +2,12 @@ package com.whatever.caramel.buildlogic.convention
 
 import com.whatever.caramel.buildlogic.convention.extension.android
 import com.whatever.caramel.buildlogic.convention.extension.androidApplication
+import com.whatever.caramel.buildlogic.convention.extension.createQaBuildType
 import com.whatever.caramel.buildlogic.convention.extension.libs
-import com.whatever.caramel.buildlogic.convention.extension.plugin
 import com.whatever.caramel.buildlogic.convention.extension.version
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.apply
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.konan.properties.Properties
 
 @Suppress("unused")
 class AndroidApplicationPlugin : Plugin<Project>{
@@ -47,6 +44,7 @@ class AndroidApplicationPlugin : Plugin<Project>{
                         sourceCompatibility = JavaVersion.VERSION_17
                         targetCompatibility = JavaVersion.VERSION_17
                     }
+                    createQaBuildType()
                 }
             }
         }
