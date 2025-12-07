@@ -9,7 +9,7 @@ android.namespace = "com.whatever.caramel.core.viewmodel"
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.core.crashlytics)
+            implementation(projects.external.crashlytics)
             implementation(libs.jetbrains.androidx.lifecycle.viewmodel)
             implementation(libs.jetbrains.androidx.lifecycle.viewmodel.savestate)
         }

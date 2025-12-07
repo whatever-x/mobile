@@ -11,9 +11,9 @@ import com.appsflyer.AppsFlyerLib
 import com.appsflyer.deeplink.DeepLink
 import com.appsflyer.deeplink.DeepLinkResult
 import com.whatever.caramel.app.CaramelComposeApp
-import com.whatever.caramel.core.deeplink.DeepLinkHandler
-import com.whatever.caramel.core.deeplink.model.AppsFlyerDeepLinkParameter
-import com.whatever.caramel.core.inAppReview.CaramelInAppReview
+import com.whatever.caramel.external.deeplink.DeepLinkHandler
+import com.whatever.caramel.external.deeplink.model.AppsFlyerDeepLinkParameter
+import com.whatever.caramel.external.inappReview.CaramelInAppReview
 import io.github.aakira.napier.Napier
 import org.koin.android.ext.android.inject
 import org.koin.android.scope.AndroidScopeComponent

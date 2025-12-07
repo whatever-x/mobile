@@ -17,10 +17,10 @@ class KmpIosPlugin : Plugin<Project> {
                     iosTarget.binaries.framework {
                         baseName = "App"
                         isStatic = true
-                        export(project(":core:analytics"))
-                        export(project(":core:crashlytics"))
-                        export(project(":core:deeplink"))
-                        export(project(":core:firebase-messaging"))
+                        export(project(":external:analytics"))
+                        export(project(":external:crashlytics"))
+                        export(project(":external:deeplink"))
+                        export(project(":external:firebase-messaging"))
                         freeCompilerArgs += "-Xbinary=bundleId=com.whatever.caramel"
                     }
                 }

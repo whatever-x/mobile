@@ -41,14 +41,11 @@
 graph TD
     %% Core Layer
     Core(":core")
-    CoreAnalytics(":core:analytics")
     CoreData(":core:data")
     CoreDataBase(":core:database")
     CoreDataStore(":core:datastore")
-    CoreDeeplink(":core:deeplink")
     CoreDesignSystem(":core:designsystem")
     CoreDomain(":core:domain")
-    CoreFirebaseMessaging(":core:firebase-messaging")
     CoreRemote(":core:remote")
     CoreTesting(":core:testing")
     CoreUi(":core:designsystem:ui")
@@ -76,6 +73,13 @@ graph TD
     FeatureSetting(":feature:setting")
     FeatureSplash(":feature:splash")
     
+    %% External Layer
+    ExternalAnalytics(":external:analytics")
+    ExternalDeeplink(":external:deeplink")
+    ExternalFirebaseMessaging(":external:firebase-messaging")
+    ExternalCrashlytics(":external:crashlytics")
+    ExternalInAppReview(":external:inapp-review")
+    
     %% App Layer
     App(:app)
     
@@ -85,22 +89,25 @@ graph TD
     %% 1st module
     App --> Core
     App --> Feature
+    App --> External
     Core --> CoreDomain
-    Core --> CoreAnalytics
     Core --> CoreData
     Core --> CoreDataBase
     Core --> CoreDataStore
-    Core --> CoreDeeplink
     Core --> CoreDesignSystem
-    Core --> CoreFirebaseMessaging
     Core --> CoreRemote
     Core --> CoreTesting
     Core --> CoreUtil
     Core --> CoreViewModel
+    External --> ExternalInAppReview
+    External --> ExternalCrashlytics
+    External --> ExternalAnalytics
+    External --> ExternalDeeplink
+    External --> ExternalFirebaseMessaging
+    Feature --> ExternalCrashlytics
     Feature --> CoreDomain
     Feature --> CoreDesignSystem
     Feature --> CoreUi
-    Feature --> CoreAnalytics
     Feature --> CoreViewModel
     Feature --> FeatureCalendar
     Feature --> FeatureContent
@@ -112,6 +119,7 @@ graph TD
     FeatureCouple --> FeatureCoupleConnecting
     FeatureCouple --> FeatureCoupleConnect
     FeatureCouple --> FeatureCoupleInvite
+    FeatureSplash --> ExternalDeeplink
     Feature  --> FeatureHome
     Feature --> FeatureLogin
     Feature --> FeatureMain
@@ -137,8 +145,8 @@ graph TD
     FeatureMain --> FeatureCalendar
     FeatureMain --> FeatureHome
     FeatureMain --> FeatureMemo
-    FeatureMain --> CoreFirebaseMessaging
-    FeatureLogin --> CoreFirebaseMessaging
+    FeatureMain --> ExternalFirebaseMessaging
+    FeatureLogin --> ExternalFirebaseMessaging
     FeatureHome --> CoreUtil
     FeatureCalendar --> CoreUtil
     FeatureContentCreate --> CoreUtil

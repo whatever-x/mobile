@@ -43,9 +43,9 @@ kotlin {
             implementation(projects.core.domain)
             implementation(projects.core.designsystem)
             implementation(projects.core.ui)
-            implementation(projects.core.crashlytics)
+            implementation(projects.external.crashlytics)
             implementation(projects.core.viewmodel)
-            implementation(projects.core.firebaseMessaging)
+            implementation(projects.external.firebaseMessaging)
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
