@@ -20,7 +20,7 @@ import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLay
 import com.whatever.caramel.core.designsystem.components.LocalSnackbarHostState
 import com.whatever.caramel.core.designsystem.components.showSnackbarMessage
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.inAppReview.CaramelInAppReview
+import com.whatever.caramel.external.inappReview.CaramelInAppReview
 import com.whatever.caramel.feature.copule.connecting.navigation.navigateToConnectingCouple
 import com.whatever.caramel.feature.copule.invite.navigation.navigateToInviteCouple
 import com.whatever.caramel.feature.login.navigation.navigateToLogin

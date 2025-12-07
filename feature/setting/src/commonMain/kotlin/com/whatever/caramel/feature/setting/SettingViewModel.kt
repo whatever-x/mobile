@@ -1,7 +1,7 @@
 package com.whatever.caramel.feature.setting
 
 import androidx.lifecycle.SavedStateHandle
-import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
+import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase

@@ -3,7 +3,7 @@ package com.whatever.caramel.core.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
+import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
