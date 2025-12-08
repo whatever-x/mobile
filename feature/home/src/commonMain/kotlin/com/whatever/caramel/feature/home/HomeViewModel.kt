@@ -2,7 +2,6 @@ package com.whatever.caramel.feature.home
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.BalanceGameErrorCode
@@ -17,6 +16,7 @@ import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.util.codePointCount
 import com.whatever.caramel.core.viewmodel.BaseViewModel
+import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.feature.home.mvi.BalanceGameCard
 import com.whatever.caramel.feature.home.mvi.BalanceGameOptionItem
 import com.whatever.caramel.feature.home.mvi.HomeIntent

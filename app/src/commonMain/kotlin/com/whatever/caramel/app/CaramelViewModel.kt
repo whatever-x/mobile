@@ -2,16 +2,16 @@ package com.whatever.caramel.app
 
 import androidx.lifecycle.SavedStateHandle
 import com.whatever.caramel.app.util.AnalyticsEventObserver
-import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
-import com.whatever.caramel.external.deeplink.DeepLinkHandler
-import com.whatever.caramel.external.deeplink.model.AppsFlyerDeepLinkValue
-import com.whatever.caramel.external.deeplink.model.CaramelDeepLink
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.code.CoupleErrorCode
 import com.whatever.caramel.core.domain.usecase.app.CheckInAppReviewAvailableUseCase
 import com.whatever.caramel.core.domain.usecase.couple.ConnectCoupleUseCase
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.viewmodel.BaseViewModel
+import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
+import com.whatever.caramel.external.deeplink.DeepLinkHandler
+import com.whatever.caramel.external.deeplink.model.AppsFlyerDeepLinkValue
+import com.whatever.caramel.external.deeplink.model.CaramelDeepLink
 import com.whatever.caramel.mvi.AppIntent
 import com.whatever.caramel.mvi.AppSideEffect
 import com.whatever.caramel.mvi.AppState

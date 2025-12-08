@@ -1,12 +1,12 @@
 package com.whatever.caramel.feature.splash
 
 import androidx.lifecycle.SavedStateHandle
-import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
-import com.whatever.caramel.external.deeplink.DeepLinkHandler
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.usecase.app.CheckForceUpdateUseCase
 import com.whatever.caramel.core.domain.usecase.user.RefreshUserSessionUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
+import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
+import com.whatever.caramel.external.deeplink.DeepLinkHandler
 import com.whatever.caramel.feature.splash.mvi.SplashIntent
 import com.whatever.caramel.feature.splash.mvi.SplashSideEffect
 import com.whatever.caramel.feature.splash.mvi.SplashState

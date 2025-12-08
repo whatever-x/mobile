@@ -1,8 +1,8 @@
 package com.whatever.caramel.app.util
 
-import com.whatever.caramel.external.analytics.CaramelAnalytics
 import com.whatever.caramel.core.domain.event.AnalyticsEvent
 import com.whatever.caramel.core.domain.event.AnalyticsUserLifecycleEvent
+import com.whatever.caramel.external.analytics.CaramelAnalytics
 import kotlinx.coroutines.flow.Flow
 
 class AnalyticsEventObserver(

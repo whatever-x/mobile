@@ -9,8 +9,8 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.whatever.caramel.app.BuildConfig
-import com.whatever.caramel.external.firebaseMessaging.R
 import com.whatever.caramel.di.initKoin
+import com.whatever.caramel.external.firebaseMessaging.R
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import org.koin.android.ext.koin.androidContext

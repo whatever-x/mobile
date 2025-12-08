@@ -1,9 +1,9 @@
 package com.whatever.caramel.feature.main
 
 import androidx.lifecycle.SavedStateHandle
+import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.external.firebaseMessaging.FcmTokenProvider
-import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.main.mvi.MainIntent
 import com.whatever.caramel.feature.main.mvi.MainSideEffect
 import com.whatever.caramel.feature.main.mvi.MainState

@@ -2,7 +2,6 @@ package com.whatever.caramel.feature.content.edit
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.AppErrorCode
@@ -27,6 +26,7 @@ import com.whatever.caramel.core.ui.picker.model.toLocalDate
 import com.whatever.caramel.core.util.codePointCount
 import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
+import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditIntent
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditSideEffect
 import com.whatever.caramel.feature.content.edit.mvi.ContentEditState

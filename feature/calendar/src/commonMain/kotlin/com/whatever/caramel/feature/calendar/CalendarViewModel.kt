@@ -1,7 +1,6 @@
 package com.whatever.caramel.feature.calendar
 
 import androidx.lifecycle.SavedStateHandle
-import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.entity.Schedule
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
@@ -12,6 +11,7 @@ import com.whatever.caramel.core.domain.vo.calendar.Holiday
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.viewmodel.BaseViewModel
+import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.feature.calendar.mapper.toScheduleCell
 import com.whatever.caramel.feature.calendar.mapper.toScheduleUiModel
 import com.whatever.caramel.feature.calendar.model.CalendarBottomSheet

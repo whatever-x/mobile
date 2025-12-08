@@ -1,7 +1,6 @@
 package com.whatever.caramel.feature.setting
 
 import androidx.lifecycle.SavedStateHandle
-import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
@@ -10,6 +9,7 @@ import com.whatever.caramel.core.domain.usecase.couple.GetCoupleRelationshipInfo
 import com.whatever.caramel.core.domain.usecase.user.GetUserSettingUseCase
 import com.whatever.caramel.core.domain.usecase.user.UpdateUserSettingUseCase
 import com.whatever.caramel.core.viewmodel.BaseViewModel
+import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.feature.setting.mvi.CoupleUser
 import com.whatever.caramel.feature.setting.mvi.SettingIntent
 import com.whatever.caramel.feature.setting.mvi.SettingSideEffect

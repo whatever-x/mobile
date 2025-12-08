@@ -2,7 +2,6 @@ package com.whatever.caramel.feature.content.detail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.ContentErrorCode
@@ -14,6 +13,7 @@ import com.whatever.caramel.core.domain.usecase.schedule.DeleteScheduleUseCase
 import com.whatever.caramel.core.domain.usecase.schedule.GetScheduleUseCase
 import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.viewmodel.BaseViewModel
+import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.feature.content.detail.mvi.ContentDetailIntent
 import com.whatever.caramel.feature.content.detail.mvi.ContentDetailSideEffect
 import com.whatever.caramel.feature.content.detail.mvi.ContentDetailState

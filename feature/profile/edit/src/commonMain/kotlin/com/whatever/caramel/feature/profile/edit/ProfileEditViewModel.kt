@@ -2,7 +2,6 @@ package com.whatever.caramel.feature.profile.edit
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.couple.EditCoupleStartDateUseCase
@@ -11,6 +10,7 @@ import com.whatever.caramel.core.domain.validator.UserValidator
 import com.whatever.caramel.core.ui.picker.model.DateUiState
 import com.whatever.caramel.core.util.DateFormatter
 import com.whatever.caramel.core.viewmodel.BaseViewModel
+import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditIntent
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditSideEffect
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditState

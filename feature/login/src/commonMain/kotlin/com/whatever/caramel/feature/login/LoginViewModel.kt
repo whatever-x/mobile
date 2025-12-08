@@ -1,13 +1,13 @@
 package com.whatever.caramel.feature.login
 
 import androidx.lifecycle.SavedStateHandle
-import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
-import com.whatever.caramel.external.firebaseMessaging.FcmTokenProvider
 import com.whatever.caramel.core.viewmodel.BaseViewModel
+import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
+import com.whatever.caramel.external.firebaseMessaging.FcmTokenProvider
 import com.whatever.caramel.feature.login.mvi.LoginIntent
 import com.whatever.caramel.feature.login.mvi.LoginSideEffect
 import com.whatever.caramel.feature.login.mvi.LoginState

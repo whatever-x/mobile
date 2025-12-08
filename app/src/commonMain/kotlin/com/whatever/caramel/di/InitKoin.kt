@@ -1,22 +1,22 @@
 package com.whatever.caramel.di
 
-import com.whatever.caramel.external.analytics.di.analyticsModule
-import com.whatever.caramel.external.crashlytics.di.crashlyticsModule
 import com.whatever.caramel.core.data.di.networkInterceptorModule
 import com.whatever.caramel.core.data.di.repositoryModule
 import com.whatever.caramel.core.database.di.databaseModule
 import com.whatever.caramel.core.database.di.platformDatabaseModule
 import com.whatever.caramel.core.datastore.di.dataStoreModule
 import com.whatever.caramel.core.datastore.di.platformDataStoreModule
-import com.whatever.caramel.external.deeplink.di.deepLinkModule
 import com.whatever.caramel.core.designsystem.di.hapticControllerModule
 import com.whatever.caramel.core.domain.di.eventBusModule
 import com.whatever.caramel.core.domain.di.useCaseModule
-import com.whatever.caramel.external.firebaseMessaging.di.firebaseMessagingModule
 import com.whatever.caramel.core.remote.di.deviceIdModule
 import com.whatever.caramel.core.remote.di.networkClientEngineModule
 import com.whatever.caramel.core.remote.di.networkModule
 import com.whatever.caramel.core.remote.di.remoteDataSourceModule
+import com.whatever.caramel.external.analytics.di.analyticsModule
+import com.whatever.caramel.external.crashlytics.di.crashlyticsModule
+import com.whatever.caramel.external.deeplink.di.deepLinkModule
+import com.whatever.caramel.external.firebaseMessaging.di.firebaseMessagingModule
 import com.whatever.caramel.feature.calendar.di.calendarFeatureModule
 import com.whatever.caramel.feature.content.create.di.contentCreateFeatureModule
 import com.whatever.caramel.feature.content.detail.di.contentDetailFeatureModule

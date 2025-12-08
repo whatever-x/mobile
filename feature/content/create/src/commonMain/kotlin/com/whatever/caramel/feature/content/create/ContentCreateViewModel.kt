@@ -2,7 +2,6 @@ package com.whatever.caramel.feature.content.create
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
 import com.whatever.caramel.core.domain.exception.code.AppErrorCode
@@ -23,6 +22,7 @@ import com.whatever.caramel.core.util.DateUtil
 import com.whatever.caramel.core.util.codePointCount
 import com.whatever.caramel.core.util.copy
 import com.whatever.caramel.core.viewmodel.BaseViewModel
+import com.whatever.caramel.external.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateIntent
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateSideEffect
 import com.whatever.caramel.feature.content.create.mvi.ContentCreateState
