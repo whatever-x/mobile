@@ -1,9 +1,7 @@
 @file:Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 
-package com.whatever.caramel.core.ui.admob
+package com.whatever.caramel.external.admob.banner
 
-import android.Manifest
-import androidx.annotation.RequiresPermission
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
@@ -17,7 +15,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
-import com.whatever.caramel.core.ui.admob.GoogleAdBannerType.AnchoredAdaptive.Companion.SCREEN_FULL_WIDTH
+import com.whatever.caramel.external.admob.banner.GoogleAdBannerType.AnchoredAdaptive.Companion.SCREEN_FULL_WIDTH
 
 actual object GoogleAdUnitIds {
     actual const val TEST_BANNER = "ca-app-pub-3940256099942544/9214589741"
@@ -41,7 +39,6 @@ actual class GoogleAdBannerState(
     internal val adView: AdView,
 )
 
-@RequiresPermission(Manifest.permission.INTERNET)
 @Composable
 actual fun rememberGoogleAdBannerState(
     adUnitId: String,
@@ -56,9 +53,15 @@ actual fun rememberGoogleAdBannerState(
 
             is GoogleAdBannerType.AnchoredAdaptive -> {
                 if (bannerType.width != SCREEN_FULL_WIDTH) {
-                    AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, bannerType.width)
+                    AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
+                        context,
+                        bannerType.width,
+                    )
                 } else {
-                    AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, AdSize.FULL_WIDTH)
+                    AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
+                        context,
+                        AdSize.FULL_WIDTH,
+                    )
                 }
             }
         }

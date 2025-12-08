@@ -50,6 +50,7 @@ kotlin {
             implementation(projects.core.viewmodel)
             api(projects.external.deeplink)
             api(projects.external.firebaseMessaging)
+            implementation(projects.external.admob)
             implementation(projects.feature.profile.edit)
             implementation(projects.feature.profile.create)
             implementation(projects.feature.splash)

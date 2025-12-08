@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.ui.admob
+package com.whatever.caramel.external.admob.banner
 
 import GoogleMobileAds.GADBannerView
 import GoogleMobileAds.GADBannerViewDelegateProtocol
