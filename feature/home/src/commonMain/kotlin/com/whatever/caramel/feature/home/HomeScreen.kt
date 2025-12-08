@@ -27,8 +27,8 @@ import com.whatever.caramel.core.designsystem.components.CaramelTopBar
 import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLayout
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import com.whatever.caramel.core.ui.admob.CaramelGoogleAdBanner
-import com.whatever.caramel.core.ui.admob.LocalHomeGoogleAdBanner
+import com.whatever.caramel.external.admob.banner.CaramelGoogleAdBanner
+import com.whatever.caramel.external.admob.banner.LocalHomeGoogleAdBanner
 import com.whatever.caramel.feature.home.components.ShareMessageBottomSheet
 import com.whatever.caramel.feature.home.components.header.disconnectedCard
 import com.whatever.caramel.feature.home.components.header.header

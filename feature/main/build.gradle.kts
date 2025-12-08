@@ -17,9 +17,10 @@ kotlin {
             implementation(projects.core.domain)
             implementation(projects.core.designsystem)
             implementation(projects.core.ui)
-            implementation(projects.external.crashlytics)
             implementation(projects.core.viewmodel)
+            implementation(projects.external.crashlytics)
             implementation(projects.external.firebaseMessaging)
+            implementation(projects.external.admob)
 
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.core)

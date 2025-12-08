@@ -24,12 +24,11 @@ import com.whatever.caramel.core.designsystem.components.CaramelBottomNavigation
 import com.whatever.caramel.core.designsystem.components.CaramelNavItemCreateButton
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.content.ContentType
-import com.whatever.caramel.core.ui.admob.GoogleAdBannerType
-import com.whatever.caramel.core.ui.admob.GoogleAdBannerType.AnchoredAdaptive.Companion.SCREEN_FULL_WIDTH
-import com.whatever.caramel.core.ui.admob.GoogleAdUnitIds
-import com.whatever.caramel.core.ui.admob.LocalHomeGoogleAdBanner
-import com.whatever.caramel.core.ui.admob.rememberGoogleAdBannerState
 import com.whatever.caramel.core.ui.util.ObserveLifecycleEvent
+import com.whatever.caramel.external.admob.banner.GoogleAdBannerType
+import com.whatever.caramel.external.admob.banner.GoogleAdUnitIds
+import com.whatever.caramel.external.admob.banner.LocalHomeGoogleAdBanner
+import com.whatever.caramel.external.admob.banner.rememberGoogleAdBannerState
 import com.whatever.caramel.feature.calendar.navigation.calendarContent
 import com.whatever.caramel.feature.calendar.navigation.navigateToCalendar
 import com.whatever.caramel.feature.home.navigation.HomeRoute
@@ -53,10 +52,10 @@ internal fun MainRoute(
 ) {
     val hapticFeedback = LocalHapticFeedback.current
     val mainNavHostController = rememberNavController()
-    val mainGoogleAdBannerState =
+    val homeGoogleAdBannerState =
         rememberGoogleAdBannerState(
             adUnitId = GoogleAdUnitIds.TEST_BANNER,
-            bannerType = GoogleAdBannerType.AnchoredAdaptive(width = SCREEN_FULL_WIDTH),
+            bannerType = GoogleAdBannerType.AnchoredAdaptive(),
         )
     var currentItem by rememberSaveable { mutableStateOf(BottomNavItem.HOME) }
 
@@ -120,7 +119,7 @@ internal fun MainRoute(
         },
     ) { innerPadding ->
         CompositionLocalProvider(
-            LocalHomeGoogleAdBanner provides mainGoogleAdBannerState,
+            LocalHomeGoogleAdBanner provides homeGoogleAdBannerState,
         ) {
             NavHost(
                 modifier =
