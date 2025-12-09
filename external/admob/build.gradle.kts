@@ -45,9 +45,6 @@ kotlin {
             implementation(libs.google.ad.mob)
         }
         commonMain.dependencies {
-            implementation(projects.core.designsystem)
-            implementation(projects.core.ui)
-
             implementation(libs.jetbrains.androidx.lifecycle.runtime.compose)
         }
     }

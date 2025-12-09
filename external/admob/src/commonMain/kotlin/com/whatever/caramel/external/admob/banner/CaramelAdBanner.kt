@@ -9,10 +9,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
-import caramel.core.designsystem.generated.resources.Res
-import caramel.core.designsystem.generated.resources.ad_banner
-import com.whatever.caramel.core.designsystem.themes.CaramelTheme
-import org.jetbrains.compose.resources.stringResource
 
 val LocalHomeGoogleAdBanner =
     staticCompositionLocalOf<GoogleAdBannerState> {
@@ -32,8 +28,7 @@ fun CaramelGoogleAdBanner(
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                text = stringResource(resource = Res.string.ad_banner),
-                style = CaramelTheme.typography.heading1,
+                text = "배너 광고 자리",
             )
         }
     } else {
