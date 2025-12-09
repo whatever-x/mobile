@@ -15,12 +15,17 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
+import com.whatever.caramel.external.admob.BuildConfig
 import com.whatever.caramel.external.admob.banner.GoogleAdBannerType.AnchoredAdaptive.Companion.SCREEN_FULL_WIDTH
 
 actual object GoogleAdUnitIds {
-    actual const val TEST_BANNER = "ca-app-pub-3940256099942544/9214589741"
+    private val isDebug: Boolean = BuildConfig.DEBUG
 
-    actual const val HOME_BANNER = "ca-app-pub-9245072226361042/4144884869"
+    actual val HOME_BANNER = when (isDebug) {
+        true -> "ca-app-pub-3940256099942544/9214589741"
+        false -> "ca-app-pub-9245072226361042/4144884869"
+    }
+
 }
 
 @Composable

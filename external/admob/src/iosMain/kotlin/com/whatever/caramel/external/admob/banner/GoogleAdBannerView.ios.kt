@@ -19,12 +19,22 @@ import androidx.compose.ui.viewinterop.UIKitView
 import com.whatever.caramel.external.admob.banner.GoogleAdBannerType.AnchoredAdaptive.Companion.SCREEN_FULL_WIDTH
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
+import platform.Foundation.NSBundle
 import platform.UIKit.UIScreen
 
 actual object GoogleAdUnitIds {
-    actual const val TEST_BANNER = "ca-app-pub-3940256099942544/2435281174"
+    private val isDebug: Boolean
+        get() {
+            val displayName: String =
+                NSBundle.mainBundle.objectForInfoDictionaryKey("CFBundleDisplayName") as? String
+                    ?: "Unknown"
+            return displayName.contains("-Dev") || displayName.contains("-QA")
+        }
 
-    actual const val HOME_BANNER = "ca-app-pub-9245072226361042/9530319355"
+    actual val HOME_BANNER = when (isDebug) {
+        true -> "ca-app-pub-3940256099942544/2435281174"
+        false -> "ca-app-pub-9245072226361042/9530319355"
+    }
 }
 
 /**

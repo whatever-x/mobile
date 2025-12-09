@@ -10,8 +10,6 @@ import androidx.compose.ui.Modifier
  * 광고 Unit Id 모음
  */
 expect object GoogleAdUnitIds {
-    val TEST_BANNER: String
-
     val HOME_BANNER: String
 }
 
@@ -68,6 +66,6 @@ sealed interface GoogleAdBannerType {
  */
 @Composable
 expect fun rememberGoogleAdBannerState(
-    adUnitId: String = GoogleAdUnitIds.TEST_BANNER,
-    bannerType: GoogleAdBannerType = GoogleAdBannerType.AnchoredAdaptive(),
+    adUnitId: String,
+    bannerType: GoogleAdBannerType,
 ): GoogleAdBannerState
