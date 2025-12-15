@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
     id("caramel.android.application")
     id("caramel.kmp")
-    id("caramel.kmp.ios")
     id("caramel.compose")
     id("caramel.kotlin.serialization")
     id("caramel.google.services")
@@ -18,6 +18,23 @@ kotlin {
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+
+    val frameworkName = "App"
+    val xcf = XCFramework(xcFrameworkName = frameworkName)
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = frameworkName
+            isStatic = true
+            export(project(":external:deeplink"))
+            export(project(":external:firebase-messaging"))
+            xcf.add(framework = this)
         }
     }
 
@@ -45,8 +62,8 @@ kotlin {
             implementation(projects.core.database)
             implementation(projects.core.remote)
             implementation(projects.external.inappReview)
-            api(projects.external.analytics)
-            api(projects.external.crashlytics)
+            implementation(projects.external.analytics)
+            implementation(projects.external.crashlytics)
             implementation(projects.core.viewmodel)
             api(projects.external.deeplink)
             api(projects.external.firebaseMessaging)
