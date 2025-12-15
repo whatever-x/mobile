@@ -148,6 +148,16 @@ android {
                 storePassword = this["STORE_PASSWORD"] as String
             }
         }
+
+        create("qa") {
+            Properties().run {
+                load(FileInputStream(rootProject.file("local.properties")))
+                storeFile = rootProject.file(this["STORE_FILE"] as String)
+                keyAlias = this["KEY_ALIAS"] as String
+                keyPassword = this["KEY_PASSWORD"] as String
+                storePassword = this["STORE_PASSWORD"] as String
+            }
+        }
     }
 
     buildTypes {
