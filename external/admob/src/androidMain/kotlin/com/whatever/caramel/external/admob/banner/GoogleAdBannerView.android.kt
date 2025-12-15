@@ -21,11 +21,11 @@ import com.whatever.caramel.external.admob.banner.GoogleAdBannerType.AnchoredAda
 actual object GoogleAdUnitIds {
     private val isDebug: Boolean = BuildConfig.DEBUG
 
-    actual val HOME_BANNER = when (isDebug) {
-        true -> "ca-app-pub-3940256099942544/9214589741"
-        false -> "ca-app-pub-9245072226361042/4144884869"
-    }
-
+    actual val HOME_BANNER =
+        when (isDebug) {
+            true -> "ca-app-pub-3940256099942544/9214589741"
+            false -> "ca-app-pub-9245072226361042/4144884869"
+        }
 }
 
 @Composable

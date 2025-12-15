@@ -31,10 +31,11 @@ actual object GoogleAdUnitIds {
             return displayName.contains("-Dev") || displayName.contains("-QA")
         }
 
-    actual val HOME_BANNER = when (isDebug) {
-        true -> "ca-app-pub-3940256099942544/2435281174"
-        false -> "ca-app-pub-9245072226361042/9530319355"
-    }
+    actual val HOME_BANNER =
+        when (isDebug) {
+            true -> "ca-app-pub-3940256099942544/2435281174"
+            false -> "ca-app-pub-9245072226361042/9530319355"
+        }
 }
 
 /**
