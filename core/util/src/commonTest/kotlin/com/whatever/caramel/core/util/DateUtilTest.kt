@@ -11,7 +11,7 @@ class DateUtilTest {
     fun `변환 가능한 Millisecond라면 toFormattedDate은 구분자를 포함해서 날짜를 생성한다`() {
         assertEquals(
             expected = "2025-04-12",
-            actual = Companion.VALID_MILLISECOND.toFormattedDate(),
+            actual = VALID_MILLISECOND.toFormattedDate(),
         )
 
         assertEquals(
@@ -88,22 +88,22 @@ class DateUtilTest {
     @Test
     fun `toMillisecond는 올바른 날짜가 들어온다면 밀리초로 변환된다`() {
         assertEquals(
-            expected = Companion.VALID_MILLISECOND,
+            expected = VALID_MILLISECOND,
             actual = "20250412".toMillisecond(),
         )
 
         assertEquals(
-            expected = Companion.VALID_MILLISECOND,
+            expected = VALID_MILLISECOND,
             actual = "20250412T00:00:00.000Z".toMillisecond(),
         )
 
         assertEquals(
-            expected = Companion.VALID_MILLISECOND,
+            expected = VALID_MILLISECOND,
             actual = "2025.04.12".toMillisecond(),
         )
 
         assertEquals(
-            expected = Companion.VALID_MILLISECOND,
+            expected = VALID_MILLISECOND,
             actual = "1900-04-12".toMillisecond(),
         )
     }

@@ -13,9 +13,6 @@ class MainViewModel(
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<MainState, MainSideEffect, MainIntent>(savedStateHandle, crashlytics) {
-    override fun handleClientException(throwable: Throwable) {
-        super.handleClientException(throwable)
-    }
 
     override fun createInitialState(savedStateHandle: SavedStateHandle): MainState = MainState
 

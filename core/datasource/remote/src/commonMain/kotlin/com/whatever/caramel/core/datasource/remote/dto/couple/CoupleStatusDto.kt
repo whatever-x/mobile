@@ -1,0 +1,13 @@
+package com.whatever.caramel.core.datasource.remote.dto.couple
+
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+enum class CoupleStatusDto {
+    @SerialName("ACTIVE")
+    ACTIVE,
+
+    @SerialName("INACTIVE")
+    INACTIVE,
+}

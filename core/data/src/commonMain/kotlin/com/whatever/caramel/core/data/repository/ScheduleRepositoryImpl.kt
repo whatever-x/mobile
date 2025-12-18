@@ -8,9 +8,9 @@ import com.whatever.caramel.core.domain.params.content.schdule.ScheduleEditParam
 import com.whatever.caramel.core.domain.params.content.schdule.ScheduleParameter
 import com.whatever.caramel.core.domain.repository.ScheduleRepository
 import com.whatever.caramel.core.remote.datasource.RemoteScheduleDataSource
-import com.whatever.caramel.core.remote.dto.calendar.request.CreateScheduleRequest
-import com.whatever.caramel.core.remote.dto.calendar.request.UpdateScheduleRequest
-import com.whatever.caramel.core.remote.dto.memo.ContentAssigneeDto
+import com.whatever.caramel.core.datasource.remote.dto.calendar.request.CreateScheduleRequest
+import com.whatever.caramel.core.datasource.remote.dto.calendar.request.UpdateScheduleRequest
+import com.whatever.caramel.core.datasource.remote.dto.memo.ContentAssigneeDto
 import kotlinx.datetime.LocalDate
 
 class ScheduleRepositoryImpl(

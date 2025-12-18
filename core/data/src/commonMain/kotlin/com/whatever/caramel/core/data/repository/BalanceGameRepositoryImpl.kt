@@ -5,7 +5,7 @@ import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.domain.repository.BalanceGameRepository
 import com.whatever.caramel.core.domain.vo.balanceGame.BalanceGameResult
 import com.whatever.caramel.core.remote.datasource.RemoteBalanceGameDataSource
-import com.whatever.caramel.core.remote.dto.balanceGame.request.ChooseBalanceGameRequest
+import com.whatever.caramel.core.datasource.remote.dto.balanceGame.request.ChooseBalanceGameRequest
 
 class BalanceGameRepositoryImpl(
     private val remoteBalanceGameDataSource: RemoteBalanceGameDataSource,

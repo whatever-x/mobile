@@ -43,7 +43,7 @@ kotlin {
             implementation(libs.firebase.fcm)
         }
         commonMain.dependencies {
-            implementation(projects.core.remote)
+            implementation(projects.core.datasource.remote)
 
             implementation(libs.koin.core)
             implementation(libs.kotlinx.coroutines.core)

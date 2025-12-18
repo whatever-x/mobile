@@ -8,10 +8,10 @@ import com.whatever.caramel.core.domain.vo.couple.CoupleStatus
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.domain.vo.user.UserProfile
 import com.whatever.caramel.core.domain.vo.user.UserStatus
-import com.whatever.caramel.core.remote.dto.couple.CoupleUserInfoDto
-import com.whatever.caramel.core.remote.dto.couple.response.CoupleBasicResponse
-import com.whatever.caramel.core.remote.dto.couple.response.CoupleDetailResponse
-import com.whatever.caramel.core.remote.dto.couple.response.CoupleInvitationCodeResponse
+import com.whatever.caramel.core.datasource.remote.dto.couple.CoupleUserInfoDto
+import com.whatever.caramel.core.datasource.remote.dto.couple.response.CoupleBasicResponse
+import com.whatever.caramel.core.datasource.remote.dto.couple.response.CoupleDetailResponse
+import com.whatever.caramel.core.datasource.remote.dto.couple.response.CoupleInvitationCodeResponse
 
 internal fun CoupleInvitationCodeResponse.toCoupleInvitationCode() =
     CoupleInvitationCode(

@@ -3,8 +3,8 @@ package com.whatever.caramel.core.data.mapper
 import com.whatever.caramel.core.domain.vo.calendar.Anniversary
 import com.whatever.caramel.core.domain.vo.calendar.AnniversaryType
 import com.whatever.caramel.core.domain.vo.calendar.Holiday
-import com.whatever.caramel.core.remote.dto.calendar.HolidayDetailListResponse
-import com.whatever.caramel.core.remote.dto.couple.response.CoupleAnniversaryResponse
+import com.whatever.caramel.core.datasource.remote.dto.calendar.HolidayDetailListResponse
+import com.whatever.caramel.core.datasource.remote.dto.couple.response.CoupleAnniversaryResponse
 import kotlinx.datetime.LocalDate
 
 internal fun HolidayDetailListResponse.toHolidayList(): List<Holiday> =

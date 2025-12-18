@@ -66,6 +66,8 @@ kotlin {
         }
         with(commonMain) {
             dependencies {
+                implementation(projects.core.datasource.remote)
+                implementation(projects.core.datasource.local)
                 implementation(libs.bundles.ktor)
                 implementation(libs.koin.core)
                 implementation(libs.koin.annotation)

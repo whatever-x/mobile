@@ -5,11 +5,11 @@ import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.domain.vo.user.RefreshUserSessionResult
 import com.whatever.caramel.core.domain.vo.user.UserProfile
 import com.whatever.caramel.core.domain.vo.user.UserStatus
-import com.whatever.caramel.core.remote.dto.user.GenderDto
-import com.whatever.caramel.core.remote.dto.user.response.EditUserProfileResponse
-import com.whatever.caramel.core.remote.dto.user.response.UserInfoResponse
-import com.whatever.caramel.core.remote.dto.user.response.UserProfileResponse
-import com.whatever.caramel.core.remote.dto.user.response.UserSessionRefreshResponse
+import com.whatever.caramel.core.datasource.remote.dto.user.GenderDto
+import com.whatever.caramel.core.datasource.remote.dto.user.response.EditUserProfileResponse
+import com.whatever.caramel.core.datasource.remote.dto.user.response.UserInfoResponse
+import com.whatever.caramel.core.datasource.remote.dto.user.response.UserProfileResponse
+import com.whatever.caramel.core.datasource.remote.dto.user.response.UserSessionRefreshResponse
 
 internal fun UserProfileResponse.toUser() =
     User(

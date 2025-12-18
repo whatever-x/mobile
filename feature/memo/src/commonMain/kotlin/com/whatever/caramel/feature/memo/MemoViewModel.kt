@@ -134,9 +134,7 @@ class MemoViewModel(
     }
 
     private suspend fun loadPagingData() {
-        val currentMemoContentState = currentState.memoContent
-
-        when (currentMemoContentState) {
+        when (val currentMemoContentState = currentState.memoContent) {
             is MemoContentState.Empty,
             is MemoContentState.Loading,
             -> return

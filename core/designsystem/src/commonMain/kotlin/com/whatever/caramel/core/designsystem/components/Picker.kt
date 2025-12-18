@@ -174,7 +174,7 @@ fun <T> CaramelTextWheelPicker(
                                     LOOPING -> Int.MAX_VALUE
                                     BOUNDED -> items.size
                                 },
-                            key = { it -> getItem(it).hashCode() },
+                            key = { getItem(it).hashCode() },
                         ) { index ->
                             Text(
                                 text = getItem(index).toString(),

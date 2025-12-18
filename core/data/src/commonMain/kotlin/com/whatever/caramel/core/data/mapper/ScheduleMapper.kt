@@ -4,8 +4,8 @@ import com.whatever.caramel.core.domain.entity.Schedule
 import com.whatever.caramel.core.domain.vo.content.ContentAssignee
 import com.whatever.caramel.core.domain.vo.content.ContentData
 import com.whatever.caramel.core.domain.vo.content.schedule.DateTimeInfo
-import com.whatever.caramel.core.remote.dto.calendar.CalendarDetailResponse
-import com.whatever.caramel.core.remote.dto.calendar.response.GetScheduleResponse
+import com.whatever.caramel.core.datasource.remote.dto.calendar.CalendarDetailResponse
+import com.whatever.caramel.core.datasource.remote.dto.calendar.response.GetScheduleResponse
 import kotlinx.datetime.LocalDateTime
 
 internal fun CalendarDetailResponse.toScheduleList(): List<Schedule> =

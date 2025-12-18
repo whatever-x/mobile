@@ -11,9 +11,9 @@ import com.whatever.caramel.core.domain.repository.CoupleRepository
 import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
 import com.whatever.caramel.core.domain.vo.couple.CoupleRelationship
 import com.whatever.caramel.core.remote.datasource.RemoteCoupleDataSource
-import com.whatever.caramel.core.remote.dto.couple.request.CoupleConnectRequest
-import com.whatever.caramel.core.remote.dto.couple.request.CoupleSharedMessageRequest
-import com.whatever.caramel.core.remote.dto.couple.request.CoupleStartDateUpdateRequest
+import com.whatever.caramel.core.datasource.remote.dto.couple.request.CoupleConnectRequest
+import com.whatever.caramel.core.datasource.remote.dto.couple.request.CoupleSharedMessageRequest
+import com.whatever.caramel.core.datasource.remote.dto.couple.request.CoupleStartDateUpdateRequest
 
 class CoupleRepositoryImpl(
     private val localCoupleDataSource: LocalCoupleDataSource,

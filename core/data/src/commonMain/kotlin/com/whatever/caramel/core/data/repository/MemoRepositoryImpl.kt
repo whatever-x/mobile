@@ -9,11 +9,11 @@ import com.whatever.caramel.core.domain.params.content.memo.MemoParameter
 import com.whatever.caramel.core.domain.repository.MemoRepository
 import com.whatever.caramel.core.domain.vo.content.memo.MemoWithCursor
 import com.whatever.caramel.core.remote.datasource.RemoteMemoDataSource
-import com.whatever.caramel.core.remote.dto.memo.ContentAssigneeDto
-import com.whatever.caramel.core.remote.dto.memo.request.CreateMemoRequest
-import com.whatever.caramel.core.remote.dto.memo.request.DateTimeInfoRequest
-import com.whatever.caramel.core.remote.dto.memo.request.UpdateMemoRequest
-import com.whatever.caramel.core.remote.dto.tag.TagRequest
+import com.whatever.caramel.core.datasource.remote.dto.memo.ContentAssigneeDto
+import com.whatever.caramel.core.datasource.remote.dto.memo.request.CreateMemoRequest
+import com.whatever.caramel.core.datasource.remote.dto.memo.request.DateTimeInfoRequest
+import com.whatever.caramel.core.datasource.remote.dto.memo.request.UpdateMemoRequest
+import com.whatever.caramel.core.datasource.remote.dto.tag.TagRequest
 
 class MemoRepositoryImpl(
     private val remoteMemoDataSource: RemoteMemoDataSource,

@@ -8,7 +8,7 @@ import com.whatever.caramel.core.domain.repository.AppRepository
 import com.whatever.caramel.core.domain.vo.app.CheckForceUpdateResult
 import com.whatever.caramel.core.domain.vo.app.Platform
 import com.whatever.caramel.core.remote.datasource.RemoteAppDataSource
-import com.whatever.caramel.core.remote.dto.app.PlatformDto
+import com.whatever.caramel.core.datasource.remote.dto.app.PlatformDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged

@@ -68,10 +68,6 @@ actual fun rememberGoogleAdBannerState(
             AdView(context).apply {
                 this.adListener =
                     object : AdListener() {
-                        override fun onAdFailedToLoad(p0: LoadAdError) {
-                            super.onAdFailedToLoad(p0)
-                            // TODO : 배너 배치 실패 시 Crash 로그 수집
-                        }
                     }
                 this.adUnitId = adUnitId
                 setAdSize(bannerSize)

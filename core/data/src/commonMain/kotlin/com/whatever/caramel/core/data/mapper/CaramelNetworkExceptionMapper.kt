@@ -11,7 +11,6 @@ internal fun CaramelNetworkException.toCaramelException(): CaramelException =
         debugMessage = "통신 과정에서 오류가 발생했습니다. message를 확인해주세요.",
         description = this.description,
         errorUiType =
-            kotlin
-                .runCatching { ErrorUiType.valueOf(this.errorUiType) }
+            runCatching { ErrorUiType.valueOf(this.errorUiType) }
                 .getOrElse { ErrorUiType.DIALOG },
     )

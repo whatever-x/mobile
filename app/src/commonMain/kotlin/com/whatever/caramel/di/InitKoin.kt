@@ -5,10 +5,10 @@ import com.whatever.caramel.core.data.di.repositoryModule
 import com.whatever.caramel.core.designsystem.di.hapticControllerModule
 import com.whatever.caramel.core.domain.di.eventBusModule
 import com.whatever.caramel.core.domain.di.useCaseModule
-import com.whatever.caramel.core.remote.di.deviceIdModule
-import com.whatever.caramel.core.remote.di.networkClientEngineModule
-import com.whatever.caramel.core.remote.di.networkModule
-import com.whatever.caramel.core.remote.di.remoteDataSourceModule
+import com.whatever.caramel.external.network.di.deviceIdModule
+import com.whatever.caramel.external.network.di.networkClientEngineModule
+import com.whatever.caramel.external.network.di.networkModule
+import com.whatever.caramel.external.network.di.remoteDataSourceModule
 import com.whatever.caramel.external.analytics.di.analyticsModule
 import com.whatever.caramel.external.crashlytics.di.crashlyticsModule
 import com.whatever.caramel.external.datastore.di.dataStoreModule
@@ -43,23 +43,19 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             appModule,
             deepLinkModule,
             analyticsEventObserverModule,
-            // ==== Data Layer ====
-            repositoryModule,
-            // Remote Module
+            // ==== Infra Layer ====
             networkModule,
             networkClientEngineModule,
             networkInterceptorModule,
             remoteDataSourceModule,
             deviceIdModule,
-            // DataStore Module
             platformDataStoreModule,
             dataStoreModule,
-            // FirebaseMessaging Module
             firebaseMessagingModule,
-            // Crashlytics Module
             crashlyticsModule,
-            // Analytics Module
             analyticsModule,
+            // ==== Data Layer ====
+            repositoryModule,
             // ==== Domain Layer ====
             useCaseModule,
             eventBusModule,

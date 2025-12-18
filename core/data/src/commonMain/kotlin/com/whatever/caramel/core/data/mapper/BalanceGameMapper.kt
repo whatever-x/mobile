@@ -2,8 +2,8 @@ package com.whatever.caramel.core.data.mapper
 
 import com.whatever.caramel.core.domain.entity.BalanceGame
 import com.whatever.caramel.core.domain.vo.balanceGame.BalanceGameResult
-import com.whatever.caramel.core.remote.dto.balanceGame.OptionInfoDto
-import com.whatever.caramel.core.remote.dto.balanceGame.response.BalanceGameResponse
+import com.whatever.caramel.core.datasource.remote.dto.balanceGame.OptionInfoDto
+import com.whatever.caramel.core.datasource.remote.dto.balanceGame.response.BalanceGameResponse
 import kotlinx.datetime.LocalDate
 
 internal fun BalanceGameResponse.toBalanceGameResult(): BalanceGameResult =

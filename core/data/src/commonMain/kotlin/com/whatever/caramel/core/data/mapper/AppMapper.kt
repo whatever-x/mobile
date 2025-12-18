@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.data.mapper
 
 import com.whatever.caramel.core.domain.vo.app.CheckForceUpdateResult
-import com.whatever.caramel.core.remote.dto.app.response.GetUpdatePolicyResponse
+import com.whatever.caramel.core.datasource.remote.dto.app.response.GetUpdatePolicyResponse
 
 fun GetUpdatePolicyResponse.toCheckForceUpdateResult(): CheckForceUpdateResult =
     CheckForceUpdateResult(

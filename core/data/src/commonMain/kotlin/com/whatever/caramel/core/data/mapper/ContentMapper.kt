@@ -2,8 +2,8 @@ package com.whatever.caramel.core.data.mapper
 
 import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.domain.vo.content.LinkMetaData
-import com.whatever.caramel.core.remote.dto.common.OgTagDto
-import com.whatever.caramel.core.remote.dto.tag.TagDetailResponse
+import com.whatever.caramel.core.datasource.remote.dto.common.OgTagDto
+import com.whatever.caramel.core.datasource.remote.dto.tag.TagDetailResponse
 
 internal fun TagDetailResponse.toTag(): Tag =
     Tag(
