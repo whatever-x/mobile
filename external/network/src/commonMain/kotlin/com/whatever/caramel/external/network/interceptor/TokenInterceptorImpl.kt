@@ -41,13 +41,9 @@ internal class TokenInterceptorImpl(
 
                 return true
             } else {
-                remoteAuthDataSource.logOut()
-                localTokenDataSource.deleteToken()
                 return false
             }
         } catch (_: Exception) {
-            remoteAuthDataSource.logOut()
-            localTokenDataSource.deleteToken()
             return false
         }
     }
