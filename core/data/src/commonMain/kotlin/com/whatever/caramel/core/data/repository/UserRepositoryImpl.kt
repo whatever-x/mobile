@@ -3,12 +3,11 @@ package com.whatever.caramel.core.data.repository
 import com.whatever.caramel.core.data.mapper.toUser
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datasource.local.LocalUserDataSource
-import com.whatever.caramel.core.datastore.datasource.LocalUserDataSource
 import com.whatever.caramel.core.domain.entity.User
 import com.whatever.caramel.core.domain.repository.UserRepository
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.domain.vo.user.UserStatus
-import com.whatever.caramel.core.remote.datasource.RemoteUserDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteUserDataSource
 import com.whatever.caramel.core.datasource.remote.dto.user.request.EditUserProfileRequest
 import com.whatever.caramel.core.datasource.remote.dto.user.request.UserProfileRequest
 import com.whatever.caramel.core.datasource.remote.dto.user.request.UserSettingRequest

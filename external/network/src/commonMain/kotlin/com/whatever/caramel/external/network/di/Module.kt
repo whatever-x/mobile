@@ -1,16 +1,16 @@
 package com.whatever.caramel.external.network.di
 
-import com.whatever.caramel.core.datasource.remote.datasource.LinkMetadataRemoteDataSource
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteAppDataSource
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteAuthDataSource
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteBalanceGameDataSource
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteCalendarDataSource
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteCoupleDataSource
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteFirebaseControllerDataSource
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteMemoDataSource
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteScheduleDataSource
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteTagDataSource
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteUserDataSource
+import com.whatever.caramel.core.datasource.remote.LinkMetadataRemoteDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteAppDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteAuthDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteBalanceGameDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteCalendarDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteCoupleDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteFirebaseControllerDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteMemoDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteScheduleDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteTagDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteUserDataSource
 import com.whatever.caramel.external.network.HttpClientFactory
 import com.whatever.caramel.external.network.config.addDeviceIdHeader
 import com.whatever.caramel.external.network.config.addTimeZoneHeader

@@ -5,12 +5,11 @@ import com.whatever.caramel.core.data.mapper.toCoupleInvitationCode
 import com.whatever.caramel.core.data.mapper.toCoupleRelationship
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datasource.local.LocalCoupleDataSource
-import com.whatever.caramel.core.datastore.datasource.LocalCoupleDataSource
 import com.whatever.caramel.core.domain.entity.Couple
 import com.whatever.caramel.core.domain.repository.CoupleRepository
 import com.whatever.caramel.core.domain.vo.couple.CoupleInvitationCode
 import com.whatever.caramel.core.domain.vo.couple.CoupleRelationship
-import com.whatever.caramel.core.remote.datasource.RemoteCoupleDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteCoupleDataSource
 import com.whatever.caramel.core.datasource.remote.dto.couple.request.CoupleConnectRequest
 import com.whatever.caramel.core.datasource.remote.dto.couple.request.CoupleSharedMessageRequest
 import com.whatever.caramel.core.datasource.remote.dto.couple.request.CoupleStartDateUpdateRequest

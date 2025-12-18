@@ -1,7 +1,7 @@
 package com.whatever.caramel.external.network.interceptor
 
 import com.whatever.caramel.core.datasource.local.LocalTokenDataSource
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteAuthDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteAuthDataSource
 import com.whatever.caramel.core.datasource.remote.dto.auth.ServiceTokenDto
 
 internal class TokenInterceptorImpl(

@@ -1,6 +1,6 @@
 package com.whatever.caramel.external.network.datasource
 
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteUserDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteUserDataSource
 import com.whatever.caramel.core.datasource.remote.dto.user.request.EditUserProfileRequest
 import com.whatever.caramel.core.datasource.remote.dto.user.request.UserProfileRequest
 import com.whatever.caramel.core.datasource.remote.dto.user.request.UserSettingRequest

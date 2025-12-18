@@ -1,6 +1,6 @@
 package com.whatever.caramel.external.network.datasource
 
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteTagDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteTagDataSource
 import com.whatever.caramel.core.datasource.remote.dto.tag.TagDataResponse
 import com.whatever.caramel.external.network.util.getBody
 import io.ktor.client.HttpClient

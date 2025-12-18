@@ -1,7 +1,7 @@
 package com.whatever.caramel.external.firebaseMessaging
 
 import com.google.firebase.messaging.FirebaseMessaging
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteFirebaseControllerDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteFirebaseControllerDataSource
 import kotlinx.coroutines.tasks.await
 
 class FcmTokenProviderImpl(

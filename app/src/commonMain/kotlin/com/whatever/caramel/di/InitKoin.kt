@@ -1,6 +1,5 @@
 package com.whatever.caramel.di
 
-import com.whatever.caramel.core.data.di.networkInterceptorModule
 import com.whatever.caramel.core.data.di.repositoryModule
 import com.whatever.caramel.core.designsystem.di.hapticControllerModule
 import com.whatever.caramel.core.domain.di.eventBusModule
@@ -46,7 +45,6 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             // ==== Infra Layer ====
             networkModule,
             networkClientEngineModule,
-            networkInterceptorModule,
             remoteDataSourceModule,
             deviceIdModule,
             platformDataStoreModule,

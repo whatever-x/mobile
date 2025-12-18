@@ -6,8 +6,8 @@ import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.domain.repository.CalendarRepository
 import com.whatever.caramel.core.domain.vo.calendar.Anniversary
 import com.whatever.caramel.core.domain.vo.calendar.Holiday
-import com.whatever.caramel.core.remote.datasource.RemoteCalendarDataSource
-import com.whatever.caramel.core.remote.datasource.RemoteCoupleDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteCalendarDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteCoupleDataSource
 import kotlinx.datetime.LocalDate
 
 class CalendarRepositoryImpl(

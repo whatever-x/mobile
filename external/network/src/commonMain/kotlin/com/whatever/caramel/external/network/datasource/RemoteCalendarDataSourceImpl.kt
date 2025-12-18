@@ -1,6 +1,6 @@
 package com.whatever.caramel.external.network.datasource
 
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteCalendarDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteCalendarDataSource
 import com.whatever.caramel.core.datasource.remote.dto.calendar.HolidayDetailListResponse
 import com.whatever.caramel.external.network.util.getBody
 import io.ktor.client.HttpClient

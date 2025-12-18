@@ -6,8 +6,8 @@ import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.domain.entity.Tag
 import com.whatever.caramel.core.domain.repository.ContentRepository
 import com.whatever.caramel.core.domain.vo.content.LinkMetaData
-import com.whatever.caramel.core.remote.datasource.LinkMetadataRemoteDataSource
-import com.whatever.caramel.core.remote.datasource.RemoteTagDataSource
+import com.whatever.caramel.core.datasource.remote.LinkMetadataRemoteDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteTagDataSource
 
 class ContentRepositoryImpl(
     private val remoteLinkMetadataRemoteDataSource: LinkMetadataRemoteDataSource,

@@ -1,6 +1,6 @@
 package com.whatever.caramel.external.network.datasource
 
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteAuthDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteAuthDataSource
 import com.whatever.caramel.core.datasource.remote.dto.auth.ServiceTokenDto
 import com.whatever.caramel.core.datasource.remote.dto.auth.request.SignInRequest
 import com.whatever.caramel.core.datasource.remote.dto.auth.response.SignInResponse

@@ -1,6 +1,6 @@
 package com.whatever.caramel.external.network.datasource
 
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteBalanceGameDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteBalanceGameDataSource
 import com.whatever.caramel.core.datasource.remote.dto.balanceGame.request.ChooseBalanceGameRequest
 import com.whatever.caramel.core.datasource.remote.dto.balanceGame.response.BalanceGameResponse
 import com.whatever.caramel.external.network.util.getBody

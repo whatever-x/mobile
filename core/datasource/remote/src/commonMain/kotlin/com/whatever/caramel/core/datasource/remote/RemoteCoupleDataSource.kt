@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.datasource.remote.datasource
+package com.whatever.caramel.core.datasource.remote
 
 import com.whatever.caramel.core.datasource.remote.dto.couple.request.CoupleConnectRequest
 import com.whatever.caramel.core.datasource.remote.dto.couple.request.CoupleSharedMessageRequest

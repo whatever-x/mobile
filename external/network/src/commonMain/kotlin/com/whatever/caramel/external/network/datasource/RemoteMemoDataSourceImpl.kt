@@ -1,6 +1,6 @@
 package com.whatever.caramel.external.network.datasource
 
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteMemoDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteMemoDataSource
 import com.whatever.caramel.core.datasource.remote.dto.memo.request.CreateMemoRequest
 import com.whatever.caramel.core.datasource.remote.dto.memo.request.UpdateMemoRequest
 import com.whatever.caramel.core.datasource.remote.dto.memo.response.CreateMemoResponse

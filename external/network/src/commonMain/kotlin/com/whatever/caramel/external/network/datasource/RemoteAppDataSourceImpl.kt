@@ -1,6 +1,6 @@
 package com.whatever.caramel.external.network.datasource
 
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteAppDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteAppDataSource
 import com.whatever.caramel.core.datasource.remote.dto.app.PlatformDto
 import com.whatever.caramel.core.datasource.remote.dto.app.response.GetUpdatePolicyResponse
 import com.whatever.caramel.external.network.util.getBody

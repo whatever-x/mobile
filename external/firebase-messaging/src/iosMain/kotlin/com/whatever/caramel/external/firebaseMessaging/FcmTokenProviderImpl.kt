@@ -1,6 +1,6 @@
 package com.whatever.caramel.external.firebaseMessaging
 
-import com.whatever.caramel.core.remote.datasource.RemoteFirebaseControllerDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteFirebaseControllerDataSource
 import firebaseMessagingBridge.FcmTokenBridge
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlin.coroutines.resume

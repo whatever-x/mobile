@@ -1,6 +1,6 @@
 package com.whatever.caramel.external.network.datasource
 
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteScheduleDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteScheduleDataSource
 import com.whatever.caramel.core.datasource.remote.dto.calendar.CalendarDetailResponse
 import com.whatever.caramel.core.datasource.remote.dto.calendar.request.CreateScheduleRequest
 import com.whatever.caramel.core.datasource.remote.dto.calendar.request.UpdateScheduleRequest

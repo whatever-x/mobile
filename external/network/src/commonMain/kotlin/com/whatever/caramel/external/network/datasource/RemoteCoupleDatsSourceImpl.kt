@@ -1,6 +1,6 @@
 package com.whatever.caramel.external.network.datasource
 
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteCoupleDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteCoupleDataSource
 import com.whatever.caramel.core.datasource.remote.dto.couple.request.CoupleConnectRequest
 import com.whatever.caramel.core.datasource.remote.dto.couple.request.CoupleSharedMessageRequest
 import com.whatever.caramel.core.datasource.remote.dto.couple.request.CoupleStartDateUpdateRequest

@@ -1,6 +1,6 @@
 package com.whatever.caramel.external.network.datasource
 
-import com.whatever.caramel.core.datasource.remote.datasource.RemoteFirebaseControllerDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteFirebaseControllerDataSource
 import com.whatever.caramel.core.datasource.remote.dto.firebase.request.FcmTokenRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post

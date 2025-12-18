@@ -4,16 +4,15 @@ import com.whatever.caramel.core.data.mapper.toAuthResult
 import com.whatever.caramel.core.data.mapper.toRefreshUserSessionResult
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.datasource.local.LocalTokenDataSource
-import com.whatever.caramel.core.datastore.datasource.LocalTokenDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteAuthDataSource
+import com.whatever.caramel.core.datasource.remote.dto.auth.LoginPlatformDto
+import com.whatever.caramel.core.datasource.remote.dto.auth.ServiceTokenDto
+import com.whatever.caramel.core.datasource.remote.dto.auth.request.SignInRequest
 import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.vo.auth.AuthResult
 import com.whatever.caramel.core.domain.vo.auth.AuthToken
 import com.whatever.caramel.core.domain.vo.auth.SocialLoginType
 import com.whatever.caramel.core.domain.vo.user.RefreshUserSessionResult
-import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSource
-import com.whatever.caramel.core.datasource.remote.dto.auth.LoginPlatformDto
-import com.whatever.caramel.core.datasource.remote.dto.auth.ServiceTokenDto
-import com.whatever.caramel.core.datasource.remote.dto.auth.request.SignInRequest
 
 internal class AuthRepositoryImpl(
     private val remoteAuthDataSource: RemoteAuthDataSource,

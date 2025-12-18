@@ -7,7 +7,7 @@ import com.whatever.caramel.core.domain.entity.Schedule
 import com.whatever.caramel.core.domain.params.content.schdule.ScheduleEditParameter
 import com.whatever.caramel.core.domain.params.content.schdule.ScheduleParameter
 import com.whatever.caramel.core.domain.repository.ScheduleRepository
-import com.whatever.caramel.core.remote.datasource.RemoteScheduleDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteScheduleDataSource
 import com.whatever.caramel.core.datasource.remote.dto.calendar.request.CreateScheduleRequest
 import com.whatever.caramel.core.datasource.remote.dto.calendar.request.UpdateScheduleRequest
 import com.whatever.caramel.core.datasource.remote.dto.memo.ContentAssigneeDto

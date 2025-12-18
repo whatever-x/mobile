@@ -8,7 +8,7 @@ import com.whatever.caramel.core.domain.params.content.memo.MemoEditParameter
 import com.whatever.caramel.core.domain.params.content.memo.MemoParameter
 import com.whatever.caramel.core.domain.repository.MemoRepository
 import com.whatever.caramel.core.domain.vo.content.memo.MemoWithCursor
-import com.whatever.caramel.core.remote.datasource.RemoteMemoDataSource
+import com.whatever.caramel.core.datasource.remote.RemoteMemoDataSource
 import com.whatever.caramel.core.datasource.remote.dto.memo.ContentAssigneeDto
 import com.whatever.caramel.core.datasource.remote.dto.memo.request.CreateMemoRequest
 import com.whatever.caramel.core.datasource.remote.dto.memo.request.DateTimeInfoRequest

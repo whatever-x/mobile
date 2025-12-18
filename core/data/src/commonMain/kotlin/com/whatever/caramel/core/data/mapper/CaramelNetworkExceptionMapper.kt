@@ -1,8 +1,8 @@
 package com.whatever.caramel.core.data.mapper
 
+import com.whatever.caramel.core.datasource.remote.exception.CaramelNetworkException
 import com.whatever.caramel.core.domain.exception.CaramelException
 import com.whatever.caramel.core.domain.exception.ErrorUiType
-import com.whatever.caramel.core.remote.network.exception.CaramelNetworkException
 
 internal fun CaramelNetworkException.toCaramelException(): CaramelException =
     CaramelException(

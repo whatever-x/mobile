@@ -1,4 +1,4 @@
-package com.whatever.caramel.core.datasource.remote.datasource
+package com.whatever.caramel.core.datasource.remote
 
 import com.whatever.caramel.core.datasource.remote.dto.balanceGame.request.ChooseBalanceGameRequest
 import com.whatever.caramel.core.datasource.remote.dto.balanceGame.response.BalanceGameResponse
