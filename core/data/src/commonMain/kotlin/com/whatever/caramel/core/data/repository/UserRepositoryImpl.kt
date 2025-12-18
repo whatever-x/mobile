@@ -2,6 +2,7 @@ package com.whatever.caramel.core.data.repository
 
 import com.whatever.caramel.core.data.mapper.toUser
 import com.whatever.caramel.core.data.util.safeCall
+import com.whatever.caramel.core.datasource.local.LocalUserDataSource
 import com.whatever.caramel.core.datastore.datasource.LocalUserDataSource
 import com.whatever.caramel.core.domain.entity.User
 import com.whatever.caramel.core.domain.repository.UserRepository

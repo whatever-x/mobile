@@ -3,6 +3,7 @@ package com.whatever.caramel.core.data.repository
 import com.whatever.caramel.core.data.mapper.toAuthResult
 import com.whatever.caramel.core.data.mapper.toRefreshUserSessionResult
 import com.whatever.caramel.core.data.util.safeCall
+import com.whatever.caramel.core.datasource.local.LocalTokenDataSource
 import com.whatever.caramel.core.datastore.datasource.LocalTokenDataSource
 import com.whatever.caramel.core.domain.repository.AuthRepository
 import com.whatever.caramel.core.domain.vo.auth.AuthResult

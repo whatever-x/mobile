@@ -4,6 +4,7 @@ import com.whatever.caramel.core.data.mapper.toCouple
 import com.whatever.caramel.core.data.mapper.toCoupleInvitationCode
 import com.whatever.caramel.core.data.mapper.toCoupleRelationship
 import com.whatever.caramel.core.data.util.safeCall
+import com.whatever.caramel.core.datasource.local.LocalCoupleDataSource
 import com.whatever.caramel.core.datastore.datasource.LocalCoupleDataSource
 import com.whatever.caramel.core.domain.entity.Couple
 import com.whatever.caramel.core.domain.repository.CoupleRepository

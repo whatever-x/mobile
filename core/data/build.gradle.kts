@@ -8,15 +8,10 @@ android.namespace = "com.whatever.caramel.core.data"
 
 kotlin {
     sourceSets {
-        androidMain.dependencies {
-            implementation(libs.koin.core)
-            implementation(libs.ktor.client.okhttp)
-        }
         commonMain.dependencies {
             implementation(projects.core.domain)
-
-            implementation(projects.core.datastore)
-            implementation(projects.core.remote)
+            implementation(projects.core.datasource.local)
+            implementation(projects.core.datasource.remote)
 
             implementation(projects.core.util)
 
@@ -24,9 +19,6 @@ kotlin {
 
             implementation(libs.bundles.ktor)
             implementation(libs.kotlinx.date.time)
-        }
-        nativeMain.dependencies {
-            implementation(libs.ktor.client.darwin)
         }
     }
 }

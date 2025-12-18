@@ -12,6 +12,7 @@ kotlin {
             implementation(libs.koin.android)
         }
         commonMain.dependencies {
+            implementation(projects.core.datasource.local)
             implementation(libs.bundles.datastore)
             implementation(libs.koin.core)
         }
