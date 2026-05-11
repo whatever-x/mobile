@@ -29,6 +29,7 @@ import com.whatever.caramel.core.remote.network.config.addDeviceIdHeader
 import com.whatever.caramel.core.remote.network.config.addTimeZoneHeader
 import com.whatever.caramel.core.remote.network.config.caramelDefaultRequest
 import com.whatever.caramel.core.remote.network.config.caramelResponseValidator
+import com.whatever.caramel.core.remote.network.exception.CaramelNetworkException
 import com.whatever.caramel.core.remote.network.interceptor.TokenInterceptor
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.auth.Auth
@@ -77,10 +78,22 @@ val networkModule =
                                 if (accessToken.isNotEmpty() && refreshToken.isNotEmpty()) {
                                     BearerTokens(accessToken, refreshToken)
                                 } else {
-                                    null
+                                    throw CaramelNetworkException(
+                                        code = "AUTH002",
+                                        debugMessage = "토큰 재생성이 실패하였습니다.",
+                                        message = "인증 정보가 만료되었습니다.",
+                                        description = null,
+                                        errorUiType = "TOAST",
+                                    )
                                 }
                             } else {
-                                null
+                                throw CaramelNetworkException(
+                                    code = "AUTH002",
+                                    debugMessage = "토큰 재생성이 실패하였습니다.",
+                                    message = "인증 정보가 만료되었습니다.",
+                                    description = null,
+                                    errorUiType = "TOAST",
+                                )
                             }
                         }
                     }
