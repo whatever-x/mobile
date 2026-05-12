@@ -43,7 +43,7 @@ internal class RemoteAuthDataSourceImpl(
             }.getBody()
 
     override suspend fun refreshV2(request: ServiceTokenDto): UserSessionRefreshResponse =
-        authClient
+        defaultClient
             .post("$BASE_AUTH_V2_URL/refresh") {
                 setBody(body = request)
             }.getBody()

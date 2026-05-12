@@ -4,11 +4,15 @@ import com.whatever.caramel.core.datastore.datasource.LocalTokenDataSource
 import com.whatever.caramel.core.remote.datasource.RemoteAuthDataSource
 import com.whatever.caramel.core.remote.dto.auth.ServiceTokenDto
 import com.whatever.caramel.core.remote.network.interceptor.TokenInterceptor
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 class TokenInterceptorImpl(
     private val localTokenDataSource: LocalTokenDataSource,
     private val remoteAuthDataSource: RemoteAuthDataSource,
 ) : TokenInterceptor {
+    private val refreshMutex = Mutex()
+
     override suspend fun getAccessToken(): String = localTokenDataSource.fetchAccessToken()
 
     override suspend fun getRefreshToken(): String = localTokenDataSource.fetchRefreshToken()
@@ -20,34 +24,35 @@ class TokenInterceptorImpl(
      * @author ham2174
      * @since 2025.03.15
      */
-    override suspend fun refresh(): Boolean {
-        try {
-            val accessToken = localTokenDataSource.fetchAccessToken()
-            val refreshToken = localTokenDataSource.fetchRefreshToken()
+    override suspend fun refresh(): Boolean =
+        refreshMutex.withLock {
+            try {
+                val accessToken = localTokenDataSource.fetchAccessToken()
+                val refreshToken = localTokenDataSource.fetchRefreshToken()
 
-            if (accessToken.isNotEmpty() && refreshToken.isNotEmpty()) {
-                val response =
-                    remoteAuthDataSource.refresh(
-                        request =
-                            ServiceTokenDto(
-                                accessToken = accessToken,
-                                refreshToken = refreshToken,
-                            ),
+                if (accessToken.isNotEmpty() && refreshToken.isNotEmpty()) {
+                    val response =
+                        remoteAuthDataSource.refresh(
+                            request =
+                                ServiceTokenDto(
+                                    accessToken = accessToken,
+                                    refreshToken = refreshToken,
+                                ),
+                        )
+
+                    localTokenDataSource.saveToken(
+                        accessToken = response.accessToken,
+                        refreshToken = response.refreshToken,
                     )
 
-                localTokenDataSource.saveToken(
-                    accessToken = response.accessToken,
-                    refreshToken = response.refreshToken,
-                )
-
-                return true
-            } else {
+                    return true
+                } else {
+                    // @ham2174 TODO : 로그아웃 API 호출
+                    return false
+                }
+            } catch (e: Exception) {
                 // @ham2174 TODO : 로그아웃 API 호출
                 return false
             }
-        } catch (e: Exception) {
-            // @ham2174 TODO : 로그아웃 API 호출
-            return false
         }
-    }
 }
