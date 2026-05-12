@@ -24,34 +24,35 @@ class TokenInterceptorImpl(
      * @author ham2174
      * @since 2025.03.15
      */
-    override suspend fun refresh(): Boolean = refreshMutex.withLock {
-        try {
-            val accessToken = localTokenDataSource.fetchAccessToken()
-            val refreshToken = localTokenDataSource.fetchRefreshToken()
+    override suspend fun refresh(): Boolean =
+        refreshMutex.withLock {
+            try {
+                val accessToken = localTokenDataSource.fetchAccessToken()
+                val refreshToken = localTokenDataSource.fetchRefreshToken()
 
-            if (accessToken.isNotEmpty() && refreshToken.isNotEmpty()) {
-                val response =
-                    remoteAuthDataSource.refresh(
-                        request =
-                            ServiceTokenDto(
-                                accessToken = accessToken,
-                                refreshToken = refreshToken,
-                            ),
+                if (accessToken.isNotEmpty() && refreshToken.isNotEmpty()) {
+                    val response =
+                        remoteAuthDataSource.refresh(
+                            request =
+                                ServiceTokenDto(
+                                    accessToken = accessToken,
+                                    refreshToken = refreshToken,
+                                ),
+                        )
+
+                    localTokenDataSource.saveToken(
+                        accessToken = response.accessToken,
+                        refreshToken = response.refreshToken,
                     )
 
-                localTokenDataSource.saveToken(
-                    accessToken = response.accessToken,
-                    refreshToken = response.refreshToken,
-                )
-
-                return true
-            } else {
+                    return true
+                } else {
+                    // @ham2174 TODO : 로그아웃 API 호출
+                    return false
+                }
+            } catch (e: Exception) {
                 // @ham2174 TODO : 로그아웃 API 호출
                 return false
             }
-        } catch (e: Exception) {
-            // @ham2174 TODO : 로그아웃 API 호출
-            return false
         }
-    }
 }
