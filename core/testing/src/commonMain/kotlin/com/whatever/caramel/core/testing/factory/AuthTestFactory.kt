@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.testing.factory
 
-import com.whatever.caramel.core.domain.vo.auth.AuthToken
 import com.whatever.caramel.core.domain.vo.auth.AuthResult
+import com.whatever.caramel.core.domain.vo.auth.AuthToken
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.testing.constants.TestAuthInfo
 import com.whatever.caramel.core.testing.constants.TestCoupleInfo
