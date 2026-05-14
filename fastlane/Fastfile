@@ -31,7 +31,7 @@ platform :android do
     )
 
     firebase_app_distribution(
-      app: "1:240831513869:android:25441e47503fdff9211c44",
+      app: "1:240831513869:android:2f5c40e9aa340d8a211c44",
       groups: "caramel-팀원",
       firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
       release_notes_file: "fastlane/android-release-notes.txt",
