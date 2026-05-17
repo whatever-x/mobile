@@ -19,12 +19,13 @@ import androidx.compose.ui.viewinterop.UIKitView
 import com.whatever.caramel.core.ui.admob.GoogleAdBannerType.AnchoredAdaptive.Companion.SCREEN_FULL_WIDTH
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
+import platform.Foundation.NSBundle
 import platform.UIKit.UIScreen
 
 actual object GoogleAdUnitIds {
-    actual const val TEST_BANNER = "ca-app-pub-3940256099942544/2435281174"
+    actual val TEST_BANNER = NSBundle.mainBundle.objectForInfoDictionaryKey("GoogleAdmobTestBannerId") as String
 
-    actual const val HOME_BANNER = "ca-app-pub-9245072226361042/9530319355"
+    actual val HOME_BANNER = NSBundle.mainBundle.objectForInfoDictionaryKey("GoogleAdmobHomeBannerId") as String
 }
 
 /**

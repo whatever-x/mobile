@@ -6,6 +6,10 @@
 	<string>$(APPS_FLYER_KEY)</string>
 	<key>GADApplicationIdentifier</key>
 	<string>$(GOOGLE_ADMOB_APP_ID)</string>
+	<key>GoogleAdmobHomeBannerId</key>
+	<string>$(GOOGLE_ADMOB_HOME_BANNER_ID)</string>
+	<key>GoogleAdmobTestBannerId</key>
+	<string>$(GOOGLE_ADMOB_TEST_BANNER_ID)</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
