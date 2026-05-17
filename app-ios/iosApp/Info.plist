@@ -249,7 +249,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>10020002</string>
+	<string>10020003</string>
 	<key>CaramelBaseUrl</key>
 	<string>$(CARAMEL_BASE_URL)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
