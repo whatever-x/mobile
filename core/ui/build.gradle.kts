@@ -1,5 +1,6 @@
 @file:OptIn(ExperimentalSpmForKmpFeature::class)
 
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import io.github.frankois944.spmForKmp.swiftPackageConfig
 import io.github.frankois944.spmForKmp.utils.ExperimentalSpmForKmpFeature
 
@@ -16,6 +17,23 @@ android.namespace = "com.whatever.caramel.core.ui"
 android {
     buildFeatures {
         buildConfig = true
+    }
+
+    defaultConfig {
+        val properties = gradleLocalProperties(rootDir, providers)
+        val admobTestBannerIdKey = "ADMOB_TEST_BANNER_ID"
+        val admobHomeBannerIdKey = "ADMOB_HOME_BANNER_ID"
+
+        buildConfigField(
+            type = "String",
+            name = admobTestBannerIdKey,
+            value = properties.getProperty(admobTestBannerIdKey),
+        )
+        buildConfigField(
+            type = "String",
+            name = admobHomeBannerIdKey,
+            value = properties.getProperty(admobHomeBannerIdKey),
+        )
     }
 }
 
