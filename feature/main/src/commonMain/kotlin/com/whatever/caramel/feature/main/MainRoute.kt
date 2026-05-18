@@ -55,7 +55,7 @@ internal fun MainRoute(
     val mainNavHostController = rememberNavController()
     val mainGoogleAdBannerState =
         rememberGoogleAdBannerState(
-            adUnitId = GoogleAdUnitIds.TEST_BANNER,
+            adUnitId = GoogleAdUnitIds.HOME_BANNER,
             bannerType = GoogleAdBannerType.AnchoredAdaptive(width = SCREEN_FULL_WIDTH),
         )
     var currentItem by rememberSaveable { mutableStateOf(BottomNavItem.HOME) }
