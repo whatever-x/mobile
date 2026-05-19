@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
-		583FC0462DEBEB5A002005A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 583FC0452DEBEB5A002005A1 /* Assets.xcassets */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		BA7980140AA16F90FE41A1E5 /* KeychainHelperBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7987553DCC66B90D63EEFB /* KeychainHelperBridge.swift */; };
 		BA798D050359A3FCD8D56DD7 /* FirebaseCrashlyticsBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA798D5911C08037AABB0C2E /* FirebaseCrashlyticsBridge.swift */; };
@@ -21,8 +20,11 @@
 		BAA2B7B12D72DA330017F868 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = BAA2B7B02D72DA330017F868 /* FirebaseCrashlytics */; };
 		E93275352DD225A7004AE2BF /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93275342DD225A7004AE2BF /* AdSupport.framework */; };
 		E93275372DD225BB004AE2BF /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93275362DD225BB004AE2BF /* AppTrackingTransparency.framework */; };
+		E962CE8D2EE05011008E1284 /* GoogleService-Info-Qa.plist in Resources */ = {isa = PBXBuildFile; fileRef = E962CE8A2EE04C11008E1284 /* GoogleService-Info-Qa.plist */; };
+		E962CE8E2EE05011008E1284 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E97442F22DF2DB2B00B9CDEE /* GoogleService-Info.plist */; };
+		E972E3D02ED82BB40084F00C /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = E972E3CF2ED82BB40084F00C /* GoogleMobileAds */; };
 		E97442F12DF2DAC400B9CDEE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E97442F02DF2DAC400B9CDEE /* Assets.xcassets */; };
-		E97442F32DF2DB2B00B9CDEE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E97442F22DF2DB2B00B9CDEE /* GoogleService-Info.plist */; };
+		E98165282EDF102D0015367C /* Qa.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E98165272EDF102D0015367C /* Qa.xcconfig */; };
 		E987BEB22DEB080E00CE545C /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = E987BEB12DEB080E00CE545C /* FirebaseMessaging */; };
 		E987BEBD2DEB63D200CE545C /* MessagingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E987BEBC2DEB63D200CE545C /* MessagingDelegate.swift */; };
 		E987BEBF2DEB640800CE545C /* NotificationCenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E987BEBE2DEB640800CE545C /* NotificationCenterDelegate.swift */; };
@@ -47,7 +49,6 @@
 /* Begin PBXFileReference section */
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.java; };
-		583FC0452DEBEB5A002005A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../Downloads/AppIcons/Assets.xcassets; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -59,9 +60,11 @@
 		BA798D5911C08037AABB0C2E /* FirebaseCrashlyticsBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FirebaseCrashlyticsBridge.swift; path = firebaseCrashlyticsBridge/FirebaseCrashlyticsBridge.swift; sourceTree = "<group>"; };
 		E93275342DD225A7004AE2BF /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		E93275362DD225BB004AE2BF /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
+		E962CE8A2EE04C11008E1284 /* GoogleService-Info-Qa.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Qa.plist"; sourceTree = "<group>"; };
 		E96349E22D7C238E00F6BBF7 /* iosApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iosApp.entitlements; sourceTree = "<group>"; };
 		E97442F02DF2DAC400B9CDEE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E97442F22DF2DB2B00B9CDEE /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E98165272EDF102D0015367C /* Qa.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Qa.xcconfig; sourceTree = "<group>"; };
 		E987BEBC2DEB63D200CE545C /* MessagingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingDelegate.swift; sourceTree = "<group>"; };
 		E987BEBE2DEB640800CE545C /* NotificationCenterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterDelegate.swift; sourceTree = "<group>"; };
 		E9A293E92D78E4930060A927 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -74,6 +77,7 @@
 			files = (
 				E987BEB22DEB080E00CE545C /* FirebaseMessaging in Frameworks */,
 				E9A293E82D78E3E50060A927 /* KakaoSDK in Frameworks */,
+				E972E3D02ED82BB40084F00C /* GoogleMobileAds in Frameworks */,
 				E93275372DD225BB004AE2BF /* AppTrackingTransparency.framework in Frameworks */,
 				BAA2B7AB2D72DA330017F868 /* FirebaseAnalytics in Frameworks */,
 				E9E80DF02DD54CED00BCB125 /* AppsFlyerLib-Dynamic in Frameworks */,
@@ -120,10 +124,10 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				E962CE8A2EE04C11008E1284 /* GoogleService-Info-Qa.plist */,
 				E97442F22DF2DB2B00B9CDEE /* GoogleService-Info.plist */,
 				E97442F02DF2DAC400B9CDEE /* Assets.xcassets */,
 				BA4C473D2DEBF67700435A54 /* Configuration */,
-				583FC0452DEBEB5A002005A1 /* Assets.xcassets */,
 				E96349E22D7C238E00F6BBF7 /* iosApp.entitlements */,
 				7555FF82242A565900829871 /* ContentView.swift */,
 				7555FF8C242A565B00829871 /* Info.plist */,
@@ -150,6 +154,7 @@
 			children = (
 				BA4C47392DEBF62200435A54 /* Debug.xcconfig */,
 				BA4C473A2DEBF62F00435A54 /* Release.xcconfig */,
+				E98165272EDF102D0015367C /* Qa.xcconfig */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -167,6 +172,7 @@
 				7555FF79242A565900829871 /* Resources */,
 				7555FFB4242A642300829871 /* Embed Frameworks */,
 				BABA8A5E2D7330F300E0C23B /* ShellScript */,
+				E962CE8C2EE04C52008E1284 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -206,6 +212,7 @@
 				E9A293E62D78E3E50060A927 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				BAA2B7A92D72DA330017F868 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				E9E80DEE2DD54CED00BCB125 /* XCRemoteSwiftPackageReference "AppsFlyerFramework-Dynamic" */,
+				E972E3CE2ED82BB40084F00C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = 7555FF7C242A565900829871 /* Products */;
 			projectDirPath = "";
@@ -221,9 +228,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E962CE8D2EE05011008E1284 /* GoogleService-Info-Qa.plist in Resources */,
+				E962CE8E2EE05011008E1284 /* GoogleService-Info.plist in Resources */,
+				E98165282EDF102D0015367C /* Qa.xcconfig in Resources */,
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
-				583FC0462DEBEB5A002005A1 /* Assets.xcassets in Resources */,
-				E97442F32DF2DB2B00B9CDEE /* GoogleService-Info.plist in Resources */,
 				E97442F12DF2DAC400B9CDEE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,6 +279,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+		E962CE8C2EE04C52008E1284 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\nCONFIG_NAME=\"${CONFIGURATION}\"\n\nBASE_PLIST=\"${PROJECT_DIR}/iosApp/GoogleService-Info.plist\"\nQA_PLIST=\"${PROJECT_DIR}/iosApp/GoogleService-Info-Qa.plist\"\n\nDEST_PLIST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleService-Info.plist\"\n\necho \"CONFIGURATION = ${CONFIG_NAME}\"\n\nif [ \"${CONFIG_NAME}\" = \"Qa\" ]; then\n  echo \"Using QA Firebase config: ${QA_PLIST}\"\n  SRC_PLIST=\"${QA_PLIST}\"\nelse\n  echo \"Using Debug/Release Firebase config: ${BASE_PLIST}\"\n  SRC_PLIST=\"${BASE_PLIST}\"\nfi\n\nif [ -f \"${SRC_PLIST}\" ]; then\n  cp \"${SRC_PLIST}\" \"${DEST_PLIST}\"\n  echo \"Copied ${SRC_PLIST} -> ${DEST_PLIST}\"\nelse\n  echo \"❌ Firebase config file not found: ${SRC_PLIST}\"\n  exit 1\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -347,6 +372,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Caramel-Dev";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -404,6 +430,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Caramel;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -418,11 +445,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BA4C47392DEBF62200435A54 /* Debug.xcconfig */;
 			buildSettings = {
+				APP_DISPLAY_NAME = "Caramel-Dev";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 10010204;
+				CURRENT_PROJECT_VERSION = 10020003;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = AR6HWFH5V3;
@@ -432,13 +460,14 @@
 					"$(SRCROOT)/../app/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
 				);
 				INFOPLIST_FILE = iosApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "[Dev] Caramel";
+				INFOPLIST_KEY_CFBundleDisplayName = "Caramel-Dev";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				KOTLIN_FRAMEWORK_BUILD_TYPE = debug;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -461,11 +490,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BA4C473A2DEBF62F00435A54 /* Release.xcconfig */;
 			buildSettings = {
+				APP_DISPLAY_NAME = Caramel;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 10010204;
+				CURRENT_PROJECT_VERSION = 10020003;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = AR6HWFH5V3;
@@ -477,11 +507,12 @@
 				INFOPLIST_FILE = iosApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Caramel;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				KOTLIN_FRAMEWORK_BUILD_TYPE = release;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -500,6 +531,109 @@
 			};
 			name = Release;
 		};
+		E98165202EDF0FDD0015367C /* Qa */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E98165272EDF102D0015367C /* Qa.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Caramel-QA";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Qa;
+		};
+		E98165212EDF0FDD0015367C /* Qa */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E98165272EDF102D0015367C /* Qa.xcconfig */;
+			buildSettings = {
+				APP_DISPLAY_NAME = "Caramel-QA";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 10020003;
+				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = AR6HWFH5V3;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../app/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
+				);
+				INFOPLIST_FILE = iosApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Caramel-Qa";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				KOTLIN_FRAMEWORK_BUILD_TYPE = release;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.2.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					app,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.whatever.caramel.qa;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore com.whatever.caramel.qa";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Qa;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -508,6 +642,7 @@
 			buildConfigurations = (
 				7555FFA3242A565B00829871 /* Debug */,
 				7555FFA4242A565B00829871 /* Release */,
+				E98165202EDF0FDD0015367C /* Qa */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -517,6 +652,7 @@
 			buildConfigurations = (
 				7555FFA6242A565B00829871 /* Debug */,
 				7555FFA7242A565B00829871 /* Release */,
+				E98165212EDF0FDD0015367C /* Qa */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -530,6 +666,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 11.9.0;
+			};
+		};
+		E972E3CE2ED82BB40084F00C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.14.0;
 			};
 		};
 		E9A293E62D78E3E50060A927 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
@@ -570,6 +714,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BAA2B7A92D72DA330017F868 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
+		};
+		E972E3CF2ED82BB40084F00C /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E972E3CE2ED82BB40084F00C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 		E987BEB12DEB080E00CE545C /* FirebaseMessaging */ = {
 			isa = XCSwiftPackageProductDependency;

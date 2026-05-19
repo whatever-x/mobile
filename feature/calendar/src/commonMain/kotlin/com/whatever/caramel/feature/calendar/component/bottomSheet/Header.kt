@@ -57,7 +57,7 @@ internal fun BottomSheetScheduleListHeader(
                     style = CaramelTheme.typography.heading2,
                     color = CaramelTheme.color.text.primary,
                     textAlign = TextAlign.Center,
-                    text = "${date.month.number}.${date.dayOfMonth}.",
+                    text = "${date.month.number}.${date.day}.",
                 )
                 Text(
                     style = CaramelTheme.typography.heading3,

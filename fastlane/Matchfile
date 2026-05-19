@@ -1,6 +1,7 @@
 git_url("git@github.com:whatever-x/ios-match")
 type("appstore")
-app_identifier(
-    ["com.whatever.caramel"]
-)
+app_identifier([
+    "com.whatever.caramel",
+    "com.whatever.caramel.qa"
+])
 username("whatever2024.team@gmail.com")

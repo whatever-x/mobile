@@ -10,8 +10,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.crashlytics)
-            implementation(libs.androidx.lifecycle.viewmodel)
-            implementation(libs.androidx.lifecycle.viewmodel.savestate)
+            implementation(libs.jetbrains.androidx.lifecycle.viewmodel)
+            implementation(libs.jetbrains.androidx.lifecycle.viewmodel.savestate)
         }
     }
 }

@@ -1,12 +1,14 @@
 package com.whatever.caramel.core.domain.entity
 
 import com.whatever.caramel.core.domain.vo.couple.CoupleStatus
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 data class Couple(
     val id: Long,
     val startDate: String,

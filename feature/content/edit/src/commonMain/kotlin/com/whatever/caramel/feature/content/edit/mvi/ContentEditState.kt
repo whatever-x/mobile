@@ -20,6 +20,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration.Companion.hours
+import kotlin.time.ExperimentalTime
 
 data class ContentEditState(
     val isLoading: Boolean = false,
@@ -62,6 +63,7 @@ data class ScheduleDateTimeState(
             return LocalDateTime(date = date, time = time)
         }
 
+    @OptIn(ExperimentalTime::class)
     companion object {
         fun fromNow(plusHours: Int = 0): ScheduleDateTimeState {
             val timeZone = TimeZone.currentSystemDefault()

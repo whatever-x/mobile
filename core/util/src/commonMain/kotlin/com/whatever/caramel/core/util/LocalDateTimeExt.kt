@@ -1,11 +1,12 @@
 package com.whatever.caramel.core.util
 
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.number
 
 fun LocalDateTime.copy(
     year: Int = this.year,
-    monthNumber: Int = this.monthNumber,
-    dayOfMonth: Int = this.dayOfMonth,
+    monthNumber: Int = month.number,
+    dayOfMonth: Int = day,
     hour: Int = this.hour,
     minute: Int = this.minute,
     second: Int = this.second,
@@ -13,8 +14,8 @@ fun LocalDateTime.copy(
 ): LocalDateTime =
     LocalDateTime(
         year = year,
-        monthNumber = monthNumber,
-        dayOfMonth = dayOfMonth,
+        month = monthNumber,
+        day = dayOfMonth,
         hour = hour,
         minute = minute,
         second = second,

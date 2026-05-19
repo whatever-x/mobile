@@ -1,7 +1,7 @@
 package com.whatever.caramel.core.testing.factory
 
+import com.whatever.caramel.core.domain.vo.auth.AuthResult
 import com.whatever.caramel.core.domain.vo.auth.AuthToken
-import com.whatever.caramel.core.domain.vo.auth.UserAuth
 import com.whatever.caramel.core.domain.vo.user.UserStatus
 import com.whatever.caramel.core.testing.constants.TestAuthInfo
 import com.whatever.caramel.core.testing.constants.TestCoupleInfo
@@ -21,29 +21,26 @@ object AuthTestFactory {
         )
 
     fun createSingleUserAuth() =
-        UserAuth(
+        AuthResult(
             coupleId = null,
+            userId = TestUserInfo.TEST_USER_ID,
             userStatus = UserStatus.SINGLE,
-            nickname = TestUserInfo.TEST_USER_NICKNAME,
-            birthday = TestUserInfo.TEST_BIRTH_DAY,
             authToken = createValidToken(),
         )
 
     fun createNewUserAuth() =
-        UserAuth(
+        AuthResult(
             coupleId = null,
+            userId = TestUserInfo.TEST_USER_ID,
             userStatus = UserStatus.NEW,
-            nickname = null,
-            birthday = null,
             authToken = createValidToken(),
         )
 
     fun createCoupleUserAuth() =
-        UserAuth(
+        AuthResult(
             coupleId = TestCoupleInfo.TEST_COUPLE_ID,
+            userId = TestUserInfo.TEST_USER_ID,
             userStatus = UserStatus.COUPLED,
-            nickname = TestUserInfo.TEST_USER_NICKNAME,
-            birthday = TestUserInfo.TEST_BIRTH_DAY,
             authToken = createValidToken(),
         )
 }

@@ -1,6 +1,7 @@
 package com.whatever.caramel.buildlogic.convention.extension
 
 
+import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.TestedExtension
@@ -43,6 +44,15 @@ fun Project.configureAndroid() {
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_17
             targetCompatibility = JavaVersion.VERSION_17
+        }
+    }
+}
+
+fun TestedExtension.createQaBuildType() {
+    buildTypes {
+        maybeCreate("qa").apply {
+            initWith(getByName("release"))
+            isDebuggable = true
         }
     }
 }

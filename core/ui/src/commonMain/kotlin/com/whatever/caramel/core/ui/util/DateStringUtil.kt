@@ -5,6 +5,7 @@ import caramel.core.designsystem.generated.resources.Res
 import caramel.core.designsystem.generated.resources.day_of_week
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.number
 import org.jetbrains.compose.resources.stringArrayResource
 
 @Composable
@@ -14,7 +15,7 @@ fun DayOfWeek.toUiText(): String {
     return dayOfWeek[index]
 }
 
-private fun LocalDateTime.toDateText() = "${year}년 ${monthNumber}월 ${dayOfMonth}일"
+private fun LocalDateTime.toDateText() = "${year}년 ${month.number}월 ${day}일"
 
 private fun LocalDateTime.toTimeText(): String {
     val hourText = hour.toString().padStart(2, '0')
