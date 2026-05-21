@@ -9,7 +9,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.ui.admob.GoogleAdBannerType
 import com.whatever.caramel.core.ui.admob.GoogleAdUnitIds
-import com.whatever.caramel.core.ui.admob.LocalHomeGoogleAdBanner
 import com.whatever.caramel.core.ui.admob.rememberGoogleAdBannerState
 import com.whatever.caramel.feature.home.mvi.HomeState
 

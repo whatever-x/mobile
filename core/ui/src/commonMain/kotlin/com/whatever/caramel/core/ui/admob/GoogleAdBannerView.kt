@@ -4,13 +4,7 @@ package com.whatever.caramel.core.ui.admob
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
-
-val LocalHomeGoogleAdBanner =
-    staticCompositionLocalOf<GoogleAdBannerState> {
-        error("No HomeGoogleAdBanner provided")
-    }
 
 /**
  * 광고 Unit Id 모음
