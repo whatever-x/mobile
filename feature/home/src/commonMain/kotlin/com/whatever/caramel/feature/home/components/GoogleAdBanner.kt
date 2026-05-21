@@ -6,9 +6,7 @@ import androidx.compose.ui.Modifier
 import com.whatever.caramel.core.ui.admob.CaramelGoogleAdBanner
 import com.whatever.caramel.core.ui.admob.GoogleAdBannerState
 
-internal fun LazyListScope.googleAdBanner(
-    bannerState: GoogleAdBannerState,
-) {
+internal fun LazyListScope.googleAdBanner(bannerState: GoogleAdBannerState) {
     item(
         key = "home_google_ad_banner",
         contentType = "google_ad_banner",

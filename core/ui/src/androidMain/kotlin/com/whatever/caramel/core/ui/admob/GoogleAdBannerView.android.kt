@@ -103,19 +103,20 @@ private fun createAdView(
     adUnitId: String,
     bannerType: GoogleAdBannerType,
 ): AdView {
-    val adSize = when (bannerType) {
-        is GoogleAdBannerType.InlineAdaptive -> {
-            AdSize.getCurrentOrientationInlineAdaptiveBannerAdSize(context, bannerType.width)
-        }
+    val adSize =
+        when (bannerType) {
+            is GoogleAdBannerType.InlineAdaptive -> {
+                AdSize.getCurrentOrientationInlineAdaptiveBannerAdSize(context, bannerType.width)
+            }
 
-        is GoogleAdBannerType.AnchoredAdaptive -> {
-            if (bannerType.width != SCREEN_FULL_WIDTH) {
-                AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, bannerType.width)
-            } else {
-                AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, AdSize.FULL_WIDTH)
+            is GoogleAdBannerType.AnchoredAdaptive -> {
+                if (bannerType.width != SCREEN_FULL_WIDTH) {
+                    AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, bannerType.width)
+                } else {
+                    AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, AdSize.FULL_WIDTH)
+                }
             }
         }
-    }
 
     return AdView(context).apply {
         adListener =
