@@ -97,6 +97,7 @@ actual fun rememberGoogleAdBannerState(
     return GoogleAdBannerState(adView = adView)
 }
 
+@RequiresPermission(Manifest.permission.INTERNET)
 private fun createAdView(
     context: Context,
     adUnitId: String,
