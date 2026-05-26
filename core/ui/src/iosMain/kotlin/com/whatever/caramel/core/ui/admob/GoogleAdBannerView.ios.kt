@@ -57,7 +57,10 @@ actual fun rememberGoogleAdBannerState(
     bannerType: GoogleAdBannerType,
 ): GoogleAdBannerState {
     val rootViewController = LocalUIViewController.current
-    val delegate = remember { GoogleAdBannerViewDelegate() }
+    val delegate =
+        remember(adUnitId, bannerType, rootViewController) {
+            GoogleAdBannerViewDelegate()
+        }
     val adSize =
         when (bannerType) {
             is GoogleAdBannerType.InlineAdaptive -> {
