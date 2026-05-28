@@ -228,7 +228,7 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.0</string>
+	<string>1.2.1</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -249,7 +249,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>10020003</string>
+	<string>10020101</string>
 	<key>CaramelBaseUrl</key>
 	<string>$(CARAMEL_BASE_URL)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
