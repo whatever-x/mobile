@@ -27,11 +27,11 @@ import com.whatever.caramel.core.domain.vo.content.ContentType
 import com.whatever.caramel.core.ui.admob.GoogleAdBannerType
 import com.whatever.caramel.core.ui.admob.GoogleAdBannerType.AnchoredAdaptive.Companion.SCREEN_FULL_WIDTH
 import com.whatever.caramel.core.ui.admob.GoogleAdUnitIds
-import com.whatever.caramel.core.ui.admob.LocalHomeGoogleAdBanner
 import com.whatever.caramel.core.ui.admob.rememberGoogleAdBannerState
 import com.whatever.caramel.core.ui.util.ObserveLifecycleEvent
 import com.whatever.caramel.feature.calendar.navigation.calendarContent
 import com.whatever.caramel.feature.calendar.navigation.navigateToCalendar
+import com.whatever.caramel.feature.home.LocalHomeGoogleAdBanner
 import com.whatever.caramel.feature.home.navigation.HomeRoute
 import com.whatever.caramel.feature.home.navigation.homeContent
 import com.whatever.caramel.feature.home.navigation.navigateToHome
@@ -53,7 +53,7 @@ internal fun MainRoute(
 ) {
     val hapticFeedback = LocalHapticFeedback.current
     val mainNavHostController = rememberNavController()
-    val mainGoogleAdBannerState =
+    val homeGoogleAdBannerState =
         rememberGoogleAdBannerState(
             adUnitId = GoogleAdUnitIds.HOME_BANNER,
             bannerType = GoogleAdBannerType.AnchoredAdaptive(width = SCREEN_FULL_WIDTH),
@@ -120,7 +120,7 @@ internal fun MainRoute(
         },
     ) { innerPadding ->
         CompositionLocalProvider(
-            LocalHomeGoogleAdBanner provides mainGoogleAdBannerState,
+            LocalHomeGoogleAdBanner provides homeGoogleAdBannerState,
         ) {
             NavHost(
                 modifier =
