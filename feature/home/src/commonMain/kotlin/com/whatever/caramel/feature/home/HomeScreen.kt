@@ -152,6 +152,7 @@ internal fun HomeScreen(
                 quiz(
                     balanceGameCard = state.balanceGameCard,
                     isBalanceGameCardRotated = state.isBalanceGameCardRotated,
+                    showHistory = state.coupleState != HomeState.CoupleState.DISCONNECT,
                     myNickname = state.myNickname,
                     myGender = state.myGender,
                     partnerNickname = state.partnerNickname,

@@ -54,6 +54,7 @@ import org.jetbrains.compose.resources.stringResource
 internal fun LazyListScope.quiz(
     balanceGameCard: BalanceGameCard,
     isBalanceGameCardRotated: Boolean,
+    showHistory: Boolean,
     myNickname: String,
     myGender: Gender,
     partnerNickname: String,
@@ -112,10 +113,12 @@ internal fun LazyListScope.quiz(
                         color = CaramelTheme.color.text.secondary,
                     )
 
-                    HistoryLink(
-                        modifier = Modifier.align(alignment = Alignment.CenterEnd),
-                        onClick = onClickHistory,
-                    )
+                    if (showHistory) {
+                        HistoryLink(
+                            modifier = Modifier.align(alignment = Alignment.CenterEnd),
+                            onClick = onClickHistory,
+                        )
+                    }
                 }
 
                 QuestionArea(
