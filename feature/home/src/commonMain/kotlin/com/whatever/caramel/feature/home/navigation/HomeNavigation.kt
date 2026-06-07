@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.whatever.caramel.core.domain.vo.content.ContentType
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.feature.home.HomeRoute
 import kotlinx.serialization.Serializable
 
@@ -25,14 +26,12 @@ fun NavGraphBuilder.homeContent(
     navigateToCreateTodo: (ContentType) -> Unit,
     navigateToBalanceGameHistory: () -> Unit,
     navigateToBalanceGameShare: (
-        gameId: Long,
         question: String,
-        myNickname: String,
-        myGender: String,
         myChoice: String,
-        partnerNickname: String,
-        partnerGender: String,
         partnerChoice: String,
+        myGender: Gender,
+        partnerGender: Gender,
+        isSameChoice: Boolean,
     ) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
     showErrorToast: (String) -> Unit,

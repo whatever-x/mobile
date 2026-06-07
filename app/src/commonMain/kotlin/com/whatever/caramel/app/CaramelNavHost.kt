@@ -188,25 +188,14 @@ internal fun CaramelNavHost(
                     )
                 },
                 navigateToBalanceGameHistory = { navigateToBalanceGameHistory() },
-                navigateToBalanceGameShare = {
-                    gameId,
-                    question,
-                    myNickname,
-                    myGender,
-                    myChoice,
-                    partnerNickname,
-                    partnerGender,
-                    partnerChoice,
-                    ->
+                navigateToBalanceGameShare = { question, myChoice, partnerChoice, myGender, partnerGender, isSameChoice ->
                     navigateToBalanceGameShare(
-                        gameId = gameId,
                         question = question,
-                        myNickname = myNickname,
-                        myGender = myGender,
                         myChoice = myChoice,
-                        partnerNickname = partnerNickname,
-                        partnerGender = partnerGender,
                         partnerChoice = partnerChoice,
+                        myGender = myGender,
+                        partnerGender = partnerGender,
+                        isSameChoice = isSameChoice,
                     )
                 },
             )
@@ -230,16 +219,14 @@ internal fun CaramelNavHost(
             )
             balanceGameHistoryScreen(
                 navigateToBack = { popBackStack() },
-                navigateToShare = { gameId, question, myNickname, myGender, myChoice, partnerNickname, partnerGender, partnerChoice ->
+                navigateToShare = { question, myChoice, partnerChoice, myGender, partnerGender, isSameChoice ->
                     navigateToBalanceGameShare(
-                        gameId = gameId,
                         question = question,
-                        myNickname = myNickname,
-                        myGender = myGender,
                         myChoice = myChoice,
-                        partnerNickname = partnerNickname,
-                        partnerGender = partnerGender,
                         partnerChoice = partnerChoice,
+                        myGender = myGender,
+                        partnerGender = partnerGender,
+                        isSameChoice = isSameChoice,
                     )
                 },
             )

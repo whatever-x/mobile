@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.feature.balancegame.history.mvi.BalanceGameHistorySideEffect
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -12,14 +13,12 @@ internal fun BalanceGameHistoryRoute(
     viewModel: BalanceGameHistoryViewModel = koinViewModel(),
     navigateToBack: () -> Unit,
     navigateToShare: (
-        gameId: Long,
         question: String,
-        myNickname: String,
-        myGender: String,
         myChoice: String,
-        partnerNickname: String,
-        partnerGender: String,
         partnerChoice: String,
+        myGender: Gender,
+        partnerGender: Gender,
+        isSameChoice: Boolean,
     ) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -30,14 +29,12 @@ internal fun BalanceGameHistoryRoute(
                 is BalanceGameHistorySideEffect.NavigateToBack -> navigateToBack()
                 is BalanceGameHistorySideEffect.NavigateToShare ->
                     navigateToShare(
-                        sideEffect.gameId,
                         sideEffect.question,
-                        sideEffect.myNickname,
-                        sideEffect.myGender,
                         sideEffect.myChoice,
-                        sideEffect.partnerNickname,
-                        sideEffect.partnerGender,
                         sideEffect.partnerChoice,
+                        sideEffect.myGender.toGender(),
+                        sideEffect.partnerGender.toGender(),
+                        sideEffect.myChoice == sideEffect.partnerChoice,
                     )
             }
         }
@@ -48,3 +45,5 @@ internal fun BalanceGameHistoryRoute(
         onIntent = { intent -> viewModel.intent(intent) },
     )
 }
+
+private fun String.toGender(): Gender = runCatching { Gender.valueOf(this) }.getOrDefault(Gender.IDLE)

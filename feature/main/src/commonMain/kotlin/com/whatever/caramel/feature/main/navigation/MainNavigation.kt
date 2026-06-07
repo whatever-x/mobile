@@ -7,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.whatever.caramel.core.domain.vo.content.ContentType
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.feature.main.MainRoute
 import kotlinx.serialization.Serializable
 
@@ -31,14 +32,12 @@ fun NavGraphBuilder.mainGraph(
     navigateToCreateMemoWithTitle: (String, ContentType) -> Unit,
     navigateToBalanceGameHistory: () -> Unit,
     navigateToBalanceGameShare: (
-        gameId: Long,
         question: String,
-        myNickname: String,
-        myGender: String,
         myChoice: String,
-        partnerNickname: String,
-        partnerGender: String,
         partnerChoice: String,
+        myGender: Gender,
+        partnerGender: Gender,
+        isSameChoice: Boolean,
     ) -> Unit,
 ) {
     composable<MainRoute>(

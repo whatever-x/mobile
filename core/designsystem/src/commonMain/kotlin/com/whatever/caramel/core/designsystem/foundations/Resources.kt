@@ -14,6 +14,7 @@ import caramel.core.designsystem.generated.resources.ic_arrow_right_16
 import caramel.core.designsystem.generated.resources.ic_arrow_right_24
 import caramel.core.designsystem.generated.resources.ic_arrow_up_16
 import caramel.core.designsystem.generated.resources.ic_arrow_up_24
+import caramel.core.designsystem.generated.resources.ic_back_arrow_24
 import caramel.core.designsystem.generated.resources.ic_calendar_18
 import caramel.core.designsystem.generated.resources.ic_calendar_24
 import caramel.core.designsystem.generated.resources.ic_cancel_16
@@ -82,6 +83,7 @@ object Resources {
         val ic_arrow_right_24 = Res.drawable.ic_arrow_right_24
         val ic_arrow_up_16 = Res.drawable.ic_arrow_up_16
         val ic_arrow_up_24 = Res.drawable.ic_arrow_up_24
+        val ic_back_arrow_24 = Res.drawable.ic_back_arrow_24
         val ic_calendar_24 = Res.drawable.ic_calendar_24
         val ic_cancel_16 = Res.drawable.ic_cancel_16
         val ic_cancel_24 = Res.drawable.ic_cancel_24

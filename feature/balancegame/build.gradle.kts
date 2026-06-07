@@ -24,5 +24,9 @@ kotlin {
             implementation(libs.kotlinx.date.time)
             implementation(libs.kotlinx.collections.immutable)
         }
+
+        androidMain.dependencies {
+            implementation(libs.androidx.core.ktx)
+        }
     }
 }

@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.feature.balancegame.history.BalanceGameHistoryRoute
 import kotlinx.serialization.Serializable
 
@@ -22,14 +23,12 @@ fun NavController.navigateToBalanceGameHistory(navOptions: NavOptions? = null) {
 fun NavGraphBuilder.balanceGameHistoryScreen(
     navigateToBack: () -> Unit,
     navigateToShare: (
-        gameId: Long,
         question: String,
-        myNickname: String,
-        myGender: String,
         myChoice: String,
-        partnerNickname: String,
-        partnerGender: String,
         partnerChoice: String,
+        myGender: Gender,
+        partnerGender: Gender,
+        isSameChoice: Boolean,
     ) -> Unit,
 ) {
     composable<BalanceGameHistoryRoute>(
