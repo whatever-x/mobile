@@ -103,8 +103,7 @@ private fun Header(
                     indication = null,
                     interactionSource = null,
                     onClick = onClickCard,
-                )
-                .padding(
+                ).padding(
                     horizontal = CaramelTheme.spacing.l,
                     vertical = 14.dp,
                 ),
