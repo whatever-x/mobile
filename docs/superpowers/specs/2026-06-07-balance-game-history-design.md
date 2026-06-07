@@ -160,7 +160,6 @@
     data class BalanceGameShareRoute(
         val gameId: Long,
         val question: String,
-        val date: String,             // ISO yyyy-MM-dd
         val myNickname: String,
         val myGender: String,         // Gender.name
         val myChoice: String,
@@ -169,6 +168,7 @@
         val partnerChoice: String,
     )
     ```
+    - `date`는 제외한다. 공유 대상인 펼친 결과 카드에 날짜 표기가 없고, 홈 today-게임 경로는 날짜를 보관하지 않아 불필요한 배선을 유발하기 때문.
   - `navigateToBalanceGameShare(args...)` 시그니처 변경.
 - **파급 수정**:
   - `app/CaramelNavHost.kt` — `balanceGameShareScreen` 및 두 호출부(`navigateToBalanceGameHistory`/`Share`) 갱신.
