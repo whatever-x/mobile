@@ -15,6 +15,10 @@ sealed interface HomeSideEffect : UiSideEffect {
 
     data object NavigateToEditAnniversary : HomeSideEffect
 
+    data object NavigateToBalanceGameHistory : HomeSideEffect
+
+    data object NavigateToBalanceGameShare : HomeSideEffect
+
     data class ShowErrorDialog(
         val message: String,
         val description: String?,

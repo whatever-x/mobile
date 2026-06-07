@@ -4,6 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.whatever.caramel.feature.balancegame.history.navigation.balanceGameHistoryScreen
+import com.whatever.caramel.feature.balancegame.history.navigation.navigateToBalanceGameHistory
+import com.whatever.caramel.feature.balancegame.share.navigation.balanceGameShareScreen
+import com.whatever.caramel.feature.balancegame.share.navigation.navigateToBalanceGameShare
 import com.whatever.caramel.feature.content.create.navigation.contentCreateScreen
 import com.whatever.caramel.feature.content.create.navigation.navigateToContentCreate
 import com.whatever.caramel.feature.content.detail.navigation.contentDetailScreen
@@ -183,6 +187,8 @@ internal fun CaramelNavHost(
                         title = title,
                     )
                 },
+                navigateToBalanceGameHistory = { navigateToBalanceGameHistory() },
+                navigateToBalanceGameShare = { navigateToBalanceGameShare() },
             )
             contentEditScreen(
                 popBackStack = { popBackStack() },
@@ -201,6 +207,12 @@ internal fun CaramelNavHost(
                 showErrorDialog = { title, message ->
                     onIntent(AppIntent.ShowErrorDialog(title, message))
                 },
+            )
+            balanceGameHistoryScreen(
+                navigateToBack = { popBackStack() },
+            )
+            balanceGameShareScreen(
+                navigateToBack = { popBackStack() },
             )
         }
     }

@@ -17,6 +17,7 @@ import com.whatever.caramel.core.remote.di.deviceIdModule
 import com.whatever.caramel.core.remote.di.networkClientEngineModule
 import com.whatever.caramel.core.remote.di.networkModule
 import com.whatever.caramel.core.remote.di.remoteDataSourceModule
+import com.whatever.caramel.feature.balancegame.di.balanceGameFeatureModule
 import com.whatever.caramel.feature.calendar.di.calendarFeatureModule
 import com.whatever.caramel.feature.content.create.di.contentCreateFeatureModule
 import com.whatever.caramel.feature.content.detail.di.contentDetailFeatureModule
@@ -72,6 +73,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             // DesignSystem Module
             hapticControllerModule,
             // Feature Module
+            balanceGameFeatureModule,
             calendarFeatureModule,
             contentCreateFeatureModule,
             contentDetailFeatureModule,

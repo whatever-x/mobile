@@ -15,8 +15,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,8 +32,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import caramel.feature.home.generated.resources.Res
+import caramel.feature.home.generated.resources.balance_game_history
 import caramel.feature.home.generated.resources.check_choice_button
 import caramel.feature.home.generated.resources.check_our_choice
+import caramel.feature.home.generated.resources.share_balance_game_result
 import caramel.feature.home.generated.resources.today_caramel
 import caramel.feature.home.generated.resources.waiting_for_partner_answer
 import caramel.feature.home.generated.resources.waku_we_will_choice_same
@@ -56,6 +60,8 @@ internal fun LazyListScope.quiz(
     partnerGender: Gender,
     onOptionClick: (BalanceGameOptionItem) -> Unit,
     onRotateCard: () -> Unit,
+    onClickHistory: () -> Unit,
+    onClickShareResult: () -> Unit,
 ) {
     item(key = "Quiz") {
         val rotation = remember { Animatable(0f) }
@@ -93,11 +99,24 @@ internal fun LazyListScope.quiz(
                         ).padding(top = 48.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text(
-                    text = stringResource(resource = Res.string.today_caramel),
-                    style = CaramelTheme.typography.body4.bold,
-                    color = CaramelTheme.color.text.secondary,
-                )
+                Box(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = CaramelTheme.spacing.l),
+                ) {
+                    Text(
+                        modifier = Modifier.align(alignment = Alignment.Center),
+                        text = stringResource(resource = Res.string.today_caramel),
+                        style = CaramelTheme.typography.body4.bold,
+                        color = CaramelTheme.color.text.secondary,
+                    )
+
+                    HistoryLink(
+                        modifier = Modifier.align(alignment = Alignment.CenterEnd),
+                        onClick = onClickHistory,
+                    )
+                }
 
                 QuestionArea(
                     modifier =
@@ -161,6 +180,15 @@ internal fun LazyListScope.quiz(
                         myChoiceOption = balanceGameCard.myOption!!,
                         partnerChoiceOption = balanceGameCard.partnerOption!!,
                     )
+
+                    ShareResultButton(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = CaramelTheme.spacing.xl)
+                                .padding(bottom = CaramelTheme.spacing.xl),
+                        onClick = onClickShareResult,
+                    )
                 }
             }
 
@@ -174,6 +202,71 @@ internal fun LazyListScope.quiz(
                 contentDescription = null,
             )
         }
+    }
+}
+
+@Composable
+private fun HistoryLink(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    Row(
+        modifier =
+            modifier.clickable(
+                interactionSource = null,
+                indication = null,
+                onClick = onClick,
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = stringResource(resource = Res.string.balance_game_history),
+            style = CaramelTheme.typography.body4.bold,
+            color = CaramelTheme.color.text.secondary,
+        )
+
+        Icon(
+            modifier = Modifier.size(size = 16.dp),
+            painter = painterResource(resource = Resources.Icon.ic_arrow_right_16),
+            tint = CaramelTheme.color.icon.secondary,
+            contentDescription = null,
+        )
+    }
+}
+
+@Composable
+private fun ShareResultButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    Row(
+        modifier =
+            modifier
+                .background(
+                    color = CaramelTheme.color.fill.quinary,
+                    shape = CaramelTheme.shape.l,
+                ).clip(shape = CaramelTheme.shape.l)
+                .clickable(onClick = onClick)
+                .padding(vertical = CaramelTheme.spacing.m),
+        horizontalArrangement =
+            Arrangement.spacedBy(
+                space = CaramelTheme.spacing.xs,
+                alignment = Alignment.CenterHorizontally,
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            modifier = Modifier.size(size = 16.dp),
+            painter = painterResource(resource = Resources.Icon.ic_share_16),
+            tint = CaramelTheme.color.icon.primary,
+            contentDescription = null,
+        )
+
+        Text(
+            text = stringResource(resource = Res.string.share_balance_game_result),
+            style = CaramelTheme.typography.body4.bold,
+            color = CaramelTheme.color.text.primary,
+        )
     }
 }
 
