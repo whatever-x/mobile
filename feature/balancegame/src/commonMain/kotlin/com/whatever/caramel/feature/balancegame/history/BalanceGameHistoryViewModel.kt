@@ -36,32 +36,35 @@ class BalanceGameHistoryViewModel(
     private fun loadInitialData() {
         launch {
             reduce { copy(isLoading = true) }
-            val coupleJob =
-                launch {
-                    val couple = getCoupleRelationshipInfoUseCase()
-                    reduce {
-                        copy(
-                            myNickname = couple.myInfo.userProfile.nickName,
-                            myGender = couple.myInfo.userProfile.gender,
-                            partnerNickname = couple.partnerInfo?.userProfile?.nickName ?: "",
-                            partnerGender = couple.partnerInfo?.userProfile?.gender ?: Gender.IDLE,
-                        )
+            try {
+                val coupleJob =
+                    launch {
+                        val couple = getCoupleRelationshipInfoUseCase()
+                        reduce {
+                            copy(
+                                myNickname = couple.myInfo.userProfile.nickName,
+                                myGender = couple.myInfo.userProfile.gender,
+                                partnerNickname = couple.partnerInfo?.userProfile?.nickName ?: "",
+                                partnerGender = couple.partnerInfo?.userProfile?.gender ?: Gender.IDLE,
+                            )
+                        }
                     }
-                }
-            val historyJob =
-                launch {
-                    val history = getBalanceGameHistoryUseCase(cursor = null)
-                    reduce {
-                        copy(
-                            items = history.gameResults.map { it.toHistoryUiModel() }.toImmutableList(),
-                            nextCursor = history.nextCursor,
-                            isEndReached = history.nextCursor == null,
-                        )
+                val historyJob =
+                    launch {
+                        val history = getBalanceGameHistoryUseCase(cursor = null)
+                        reduce {
+                            copy(
+                                items = history.gameResults.map { it.toHistoryUiModel() }.toImmutableList(),
+                                nextCursor = history.nextCursor,
+                                isEndReached = history.nextCursor == null,
+                            )
+                        }
                     }
-                }
-            coupleJob.join()
-            historyJob.join()
-            reduce { copy(isLoading = false) }
+                coupleJob.join()
+                historyJob.join()
+            } finally {
+                reduce { copy(isLoading = false) }
+            }
         }
     }
 
@@ -69,14 +72,17 @@ class BalanceGameHistoryViewModel(
         if (currentState.isLoadingMore || currentState.isEndReached || currentState.nextCursor == null) return
         launch {
             reduce { copy(isLoadingMore = true) }
-            val history = getBalanceGameHistoryUseCase(cursor = currentState.nextCursor)
-            reduce {
-                copy(
-                    items = (items + history.gameResults.map { it.toHistoryUiModel() }).toImmutableList(),
-                    nextCursor = history.nextCursor,
-                    isEndReached = history.nextCursor == null,
-                    isLoadingMore = false,
-                )
+            try {
+                val history = getBalanceGameHistoryUseCase(cursor = currentState.nextCursor)
+                reduce {
+                    copy(
+                        items = (items + history.gameResults.map { it.toHistoryUiModel() }).toImmutableList(),
+                        nextCursor = history.nextCursor,
+                        isEndReached = history.nextCursor == null,
+                    )
+                }
+            } finally {
+                reduce { copy(isLoadingMore = false) }
             }
         }
     }

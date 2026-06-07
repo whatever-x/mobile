@@ -86,45 +86,54 @@ internal fun BalanceGameHistoryScreen(
             },
         )
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = listState,
-            contentPadding =
-                PaddingValues(
-                    start = CaramelTheme.spacing.xl,
-                    end = CaramelTheme.spacing.xl,
-                    top = CaramelTheme.spacing.l,
-                    bottom = CaramelTheme.spacing.xxl,
-                ),
-            verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.m),
-        ) {
-            items(
-                items = state.items,
-                key = { it.gameId },
-                contentType = { "history_item" },
-            ) { item ->
-                BalanceGameHistoryCard(
-                    item = item,
-                    expanded = state.expandedGameId == item.gameId,
-                    myNickname = state.myNickname,
-                    myGender = state.myGender,
-                    partnerNickname = state.partnerNickname,
-                    partnerGender = state.partnerGender,
-                    onClickCard = { onIntent(BalanceGameHistoryIntent.ClickHistoryCard(item.gameId)) },
-                    onClickShare = { onIntent(BalanceGameHistoryIntent.ClickShareResult(item.gameId)) },
-                )
+        if (state.isLoading && state.items.isEmpty()) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator(modifier = Modifier.size(24.dp))
             }
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                state = listState,
+                contentPadding =
+                    PaddingValues(
+                        start = CaramelTheme.spacing.xl,
+                        end = CaramelTheme.spacing.xl,
+                        top = CaramelTheme.spacing.l,
+                        bottom = CaramelTheme.spacing.xxl,
+                    ),
+                verticalArrangement = Arrangement.spacedBy(CaramelTheme.spacing.m),
+            ) {
+                items(
+                    items = state.items,
+                    key = { it.gameId },
+                    contentType = { "history_item" },
+                ) { item ->
+                    BalanceGameHistoryCard(
+                        item = item,
+                        expanded = state.expandedGameId == item.gameId,
+                        myNickname = state.myNickname,
+                        myGender = state.myGender,
+                        partnerNickname = state.partnerNickname,
+                        partnerGender = state.partnerGender,
+                        onClickCard = { onIntent(BalanceGameHistoryIntent.ClickHistoryCard(item.gameId)) },
+                        onClickShare = { onIntent(BalanceGameHistoryIntent.ClickShareResult(item.gameId)) },
+                    )
+                }
 
-            if (state.isLoadingMore) {
-                item(key = "loading_footer", contentType = "loading") {
-                    Box(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(CaramelTheme.spacing.l),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                if (state.isLoadingMore) {
+                    item(key = "loading_footer", contentType = "loading") {
+                        Box(
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(CaramelTheme.spacing.l),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                        }
                     }
                 }
             }
