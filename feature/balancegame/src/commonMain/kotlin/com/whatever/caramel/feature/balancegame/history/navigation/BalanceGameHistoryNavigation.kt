@@ -19,13 +19,26 @@ fun NavController.navigateToBalanceGameHistory(navOptions: NavOptions? = null) {
     )
 }
 
-fun NavGraphBuilder.balanceGameHistoryScreen(navigateToBack: () -> Unit) {
+fun NavGraphBuilder.balanceGameHistoryScreen(
+    navigateToBack: () -> Unit,
+    navigateToShare: (
+        gameId: Long,
+        question: String,
+        myNickname: String,
+        myGender: String,
+        myChoice: String,
+        partnerNickname: String,
+        partnerGender: String,
+        partnerChoice: String,
+    ) -> Unit,
+) {
     composable<BalanceGameHistoryRoute>(
         exitTransition = { ExitTransition.None },
         popEnterTransition = { EnterTransition.None },
     ) {
         BalanceGameHistoryRoute(
             navigateToBack = navigateToBack,
+            navigateToShare = navigateToShare,
         )
     }
 }

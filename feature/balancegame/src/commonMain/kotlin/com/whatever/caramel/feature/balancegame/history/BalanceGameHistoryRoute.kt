@@ -11,6 +11,16 @@ import org.koin.compose.viewmodel.koinViewModel
 internal fun BalanceGameHistoryRoute(
     viewModel: BalanceGameHistoryViewModel = koinViewModel(),
     navigateToBack: () -> Unit,
+    navigateToShare: (
+        gameId: Long,
+        question: String,
+        myNickname: String,
+        myGender: String,
+        myChoice: String,
+        partnerNickname: String,
+        partnerGender: String,
+        partnerChoice: String,
+    ) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -18,7 +28,17 @@ internal fun BalanceGameHistoryRoute(
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is BalanceGameHistorySideEffect.NavigateToBack -> navigateToBack()
-                is BalanceGameHistorySideEffect.NavigateToShare -> Unit
+                is BalanceGameHistorySideEffect.NavigateToShare ->
+                    navigateToShare(
+                        sideEffect.gameId,
+                        sideEffect.question,
+                        sideEffect.myNickname,
+                        sideEffect.myGender,
+                        sideEffect.myChoice,
+                        sideEffect.partnerNickname,
+                        sideEffect.partnerGender,
+                        sideEffect.partnerChoice,
+                    )
             }
         }
     }
