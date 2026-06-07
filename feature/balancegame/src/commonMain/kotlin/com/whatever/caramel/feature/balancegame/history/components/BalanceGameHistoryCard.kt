@@ -60,15 +60,12 @@ internal fun BalanceGameHistoryCard(
                     width = 1.dp,
                     color = CaramelTheme.color.fill.quaternary,
                     shape = CaramelTheme.shape.l,
-                ).clickable(
-                    indication = null,
-                    interactionSource = null,
-                    onClick = onClickCard,
                 ),
     ) {
         Header(
             item = item,
             expanded = expanded,
+            onClickCard = onClickCard,
         )
 
         AnimatedVisibility(
@@ -92,6 +89,7 @@ internal fun BalanceGameHistoryCard(
 private fun Header(
     item: BalanceGameHistoryUiModel,
     expanded: Boolean,
+    onClickCard: () -> Unit,
 ) {
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f,
@@ -101,6 +99,11 @@ private fun Header(
         modifier =
             Modifier
                 .fillMaxWidth()
+                .clickable(
+                    indication = null,
+                    interactionSource = null,
+                    onClick = onClickCard,
+                )
                 .padding(
                     horizontal = CaramelTheme.spacing.l,
                     vertical = 14.dp,
