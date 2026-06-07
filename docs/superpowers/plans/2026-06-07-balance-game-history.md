@@ -85,7 +85,7 @@ package com.whatever.caramel.core.domain.vo.balanceGame
 
 data class BalanceGameHistory(
     val nextCursor: String?,
-    val results: List<BalanceGameResult>,
+    val gameResults: List<BalanceGameResult>,
 )
 ```
 
@@ -255,7 +255,7 @@ import com.whatever.caramel.core.remote.dto.balanceGame.response.BalanceGameHist
 internal fun BalanceGameHistoryResponse.toBalanceGameHistory(): BalanceGameHistory =
     BalanceGameHistory(
         nextCursor = this.cursor.next,
-        results = this.list.map { it.toBalanceGameResult() },
+        gameResults = this.list.map { it.toBalanceGameResult() },
     )
 ```
 
@@ -502,7 +502,7 @@ class BalanceGameHistoryViewModel(
                     val history = getBalanceGameHistoryUseCase(cursor = null)
                     reduce {
                         copy(
-                            items = history.results.map { it.toHistoryUiModel() }.toImmutableList(),
+                            items = history.gameResults.map { it.toHistoryUiModel() }.toImmutableList(),
                             nextCursor = history.nextCursor,
                             isEndReached = history.nextCursor == null,
                         )
@@ -521,7 +521,7 @@ class BalanceGameHistoryViewModel(
             val history = getBalanceGameHistoryUseCase(cursor = currentState.nextCursor)
             reduce {
                 copy(
-                    items = (items + history.results.map { it.toHistoryUiModel() }).toImmutableList(),
+                    items = (items + history.gameResults.map { it.toHistoryUiModel() }).toImmutableList(),
                     nextCursor = history.nextCursor,
                     isEndReached = history.nextCursor == null,
                     isLoadingMore = false,
