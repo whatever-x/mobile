@@ -49,7 +49,16 @@ internal fun MainRoute(
     navigateToCreateMemoWithTitle: (String, ContentType) -> Unit,
     navigateToCreateSchedule: (ContentType, String) -> Unit,
     navigateToBalanceGameHistory: () -> Unit,
-    navigateToBalanceGameShare: () -> Unit,
+    navigateToBalanceGameShare: (
+        gameId: Long,
+        question: String,
+        myNickname: String,
+        myGender: String,
+        myChoice: String,
+        partnerNickname: String,
+        partnerGender: String,
+        partnerChoice: String,
+    ) -> Unit,
     showErrorToast: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
 ) {

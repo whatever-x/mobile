@@ -30,7 +30,16 @@ fun NavGraphBuilder.mainGraph(
     showErrorDialog: (String, String?) -> Unit,
     navigateToCreateMemoWithTitle: (String, ContentType) -> Unit,
     navigateToBalanceGameHistory: () -> Unit,
-    navigateToBalanceGameShare: () -> Unit,
+    navigateToBalanceGameShare: (
+        gameId: Long,
+        question: String,
+        myNickname: String,
+        myGender: String,
+        myChoice: String,
+        partnerNickname: String,
+        partnerGender: String,
+        partnerChoice: String,
+    ) -> Unit,
 ) {
     composable<MainRoute>(
         exitTransition = { ExitTransition.None },

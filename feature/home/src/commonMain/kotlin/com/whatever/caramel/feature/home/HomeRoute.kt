@@ -20,7 +20,16 @@ internal fun HomeRoute(
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: (ContentType) -> Unit,
     navigateToBalanceGameHistory: () -> Unit,
-    navigateToBalanceGameShare: () -> Unit,
+    navigateToBalanceGameShare: (
+        gameId: Long,
+        question: String,
+        myNickname: String,
+        myGender: String,
+        myChoice: String,
+        partnerNickname: String,
+        partnerGender: String,
+        partnerChoice: String,
+    ) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
     showErrorToast: (String) -> Unit,
 ) {
@@ -40,7 +49,17 @@ internal fun HomeRoute(
 
                 is HomeSideEffect.NavigateToEditAnniversary -> navigateToStaredCoupleDay()
                 is HomeSideEffect.NavigateToBalanceGameHistory -> navigateToBalanceGameHistory()
-                is HomeSideEffect.NavigateToBalanceGameShare -> navigateToBalanceGameShare()
+                is HomeSideEffect.NavigateToBalanceGameShare ->
+                    navigateToBalanceGameShare(
+                        sideEffect.gameId,
+                        sideEffect.question,
+                        sideEffect.myNickname,
+                        sideEffect.myGender,
+                        sideEffect.myChoice,
+                        sideEffect.partnerNickname,
+                        sideEffect.partnerGender,
+                        sideEffect.partnerChoice,
+                    )
                 is HomeSideEffect.ShowErrorDialog ->
                     showErrorDialog(
                         sideEffect.message,

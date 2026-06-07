@@ -17,7 +17,16 @@ sealed interface HomeSideEffect : UiSideEffect {
 
     data object NavigateToBalanceGameHistory : HomeSideEffect
 
-    data object NavigateToBalanceGameShare : HomeSideEffect
+    data class NavigateToBalanceGameShare(
+        val gameId: Long,
+        val question: String,
+        val myNickname: String,
+        val myGender: String,
+        val myChoice: String,
+        val partnerNickname: String,
+        val partnerGender: String,
+        val partnerChoice: String,
+    ) : HomeSideEffect
 
     data class ShowErrorDialog(
         val message: String,

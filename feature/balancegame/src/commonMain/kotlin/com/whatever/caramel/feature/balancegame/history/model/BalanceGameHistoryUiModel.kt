@@ -19,9 +19,17 @@ internal fun BalanceGameResult.toHistoryUiModel(): BalanceGameHistoryUiModel =
             buildString {
                 append(gameInfo.date.year.toString())
                 append(".")
-                append(gameInfo.date.month.number.toString().padStart(2, '0'))
+                append(
+                    gameInfo.date.month.number
+                        .toString()
+                        .padStart(2, '0'),
+                )
                 append(".")
-                append(gameInfo.date.day.toString().padStart(2, '0'))
+                append(
+                    gameInfo.date.day
+                        .toString()
+                        .padStart(2, '0'),
+                )
             },
         myChoiceText = myChoice?.text ?: "",
         partnerChoiceText = partnerChoice?.text ?: "",

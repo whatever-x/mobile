@@ -188,7 +188,27 @@ internal fun CaramelNavHost(
                     )
                 },
                 navigateToBalanceGameHistory = { navigateToBalanceGameHistory() },
-                navigateToBalanceGameShare = { navigateToBalanceGameShare() },
+                navigateToBalanceGameShare = {
+                    gameId,
+                    question,
+                    myNickname,
+                    myGender,
+                    myChoice,
+                    partnerNickname,
+                    partnerGender,
+                    partnerChoice,
+                    ->
+                    navigateToBalanceGameShare(
+                        gameId = gameId,
+                        question = question,
+                        myNickname = myNickname,
+                        myGender = myGender,
+                        myChoice = myChoice,
+                        partnerNickname = partnerNickname,
+                        partnerGender = partnerGender,
+                        partnerChoice = partnerChoice,
+                    )
+                },
             )
             contentEditScreen(
                 popBackStack = { popBackStack() },
@@ -210,6 +230,18 @@ internal fun CaramelNavHost(
             )
             balanceGameHistoryScreen(
                 navigateToBack = { popBackStack() },
+                navigateToShare = { gameId, question, myNickname, myGender, myChoice, partnerNickname, partnerGender, partnerChoice ->
+                    navigateToBalanceGameShare(
+                        gameId = gameId,
+                        question = question,
+                        myNickname = myNickname,
+                        myGender = myGender,
+                        myChoice = myChoice,
+                        partnerNickname = partnerNickname,
+                        partnerGender = partnerGender,
+                        partnerChoice = partnerChoice,
+                    )
+                },
             )
             balanceGameShareScreen(
                 navigateToBack = { popBackStack() },

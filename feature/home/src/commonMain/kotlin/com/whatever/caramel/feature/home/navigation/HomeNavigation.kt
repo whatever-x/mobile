@@ -24,7 +24,16 @@ fun NavGraphBuilder.homeContent(
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: (ContentType) -> Unit,
     navigateToBalanceGameHistory: () -> Unit,
-    navigateToBalanceGameShare: () -> Unit,
+    navigateToBalanceGameShare: (
+        gameId: Long,
+        question: String,
+        myNickname: String,
+        myGender: String,
+        myChoice: String,
+        partnerNickname: String,
+        partnerGender: String,
+        partnerChoice: String,
+    ) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
     showErrorToast: (String) -> Unit,
 ) {

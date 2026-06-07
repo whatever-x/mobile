@@ -44,7 +44,10 @@ internal fun BalanceGameHistoryScreen(
     val listState = rememberLazyListState()
     val shouldLoadMore by remember {
         derivedStateOf {
-            val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: return@derivedStateOf false
+            val lastVisible =
+                listState.layoutInfo.visibleItemsInfo
+                    .lastOrNull()
+                    ?.index ?: return@derivedStateOf false
             val total = listState.layoutInfo.totalItemsCount
             total > 0 && lastVisible >= total - LOAD_MORE_PREFETCH_DISTANCE
         }

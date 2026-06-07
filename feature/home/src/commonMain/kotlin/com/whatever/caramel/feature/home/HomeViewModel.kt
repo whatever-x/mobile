@@ -73,7 +73,21 @@ class HomeViewModel(
             is HomeIntent.InputShareMessage -> inputShareMessage(text = intent.newShareMessage)
             is HomeIntent.RotateBalanceGameCard -> rotate()
             is HomeIntent.ClickBalanceGameHistory -> postSideEffect(HomeSideEffect.NavigateToBalanceGameHistory)
-            is HomeIntent.ClickShareBalanceGameResult -> postSideEffect(HomeSideEffect.NavigateToBalanceGameShare)
+            is HomeIntent.ClickShareBalanceGameResult -> {
+                val card = currentState.balanceGameCard
+                postSideEffect(
+                    HomeSideEffect.NavigateToBalanceGameShare(
+                        gameId = card.id,
+                        question = card.question,
+                        myNickname = currentState.myNickname,
+                        myGender = currentState.myGender.name,
+                        myChoice = card.myOption?.name ?: "",
+                        partnerNickname = currentState.partnerNickname,
+                        partnerGender = currentState.partnerGender.name,
+                        partnerChoice = card.partnerOption?.name ?: "",
+                    ),
+                )
+            }
         }
     }
 
