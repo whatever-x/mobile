@@ -22,5 +22,9 @@ kotlin {
             implementation(libs.jetbrains.androidx.lifecycle.runtime.compose)
             implementation(libs.jetbrains.androidx.compose.navigation)
         }
+
+        androidMain.dependencies {
+            implementation(libs.androidx.core.ktx)
+        }
     }
 }

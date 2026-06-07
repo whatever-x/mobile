@@ -4,4 +4,8 @@ import com.whatever.caramel.core.viewmodel.UiSideEffect
 
 sealed interface BalanceGameShareSideEffect : UiSideEffect {
     data object NavigateToBack : BalanceGameShareSideEffect
+
+    data class ShowSnackBar(
+        val message: String,
+    ) : BalanceGameShareSideEffect
 }
