@@ -7,6 +7,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.whatever.caramel.core.domain.vo.content.ContentType
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.ui.util.ObserveLifecycleEvent
 import com.whatever.caramel.feature.home.mvi.HomeIntent
 import com.whatever.caramel.feature.home.mvi.HomeSideEffect
@@ -20,7 +21,14 @@ internal fun HomeRoute(
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: (ContentType) -> Unit,
     navigateToBalanceGameHistory: () -> Unit,
-    navigateToBalanceGameShare: () -> Unit,
+    navigateToBalanceGameShare: (
+        question: String,
+        myChoice: String,
+        partnerChoice: String,
+        myGender: Gender,
+        partnerGender: Gender,
+        isSameChoice: Boolean,
+    ) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
     showErrorToast: (String) -> Unit,
 ) {
@@ -40,7 +48,15 @@ internal fun HomeRoute(
 
                 is HomeSideEffect.NavigateToEditAnniversary -> navigateToStaredCoupleDay()
                 is HomeSideEffect.NavigateToBalanceGameHistory -> navigateToBalanceGameHistory()
-                is HomeSideEffect.NavigateToBalanceGameShare -> navigateToBalanceGameShare()
+                is HomeSideEffect.NavigateToBalanceGameShare ->
+                    navigateToBalanceGameShare(
+                        sideEffect.question,
+                        sideEffect.myChoice,
+                        sideEffect.partnerChoice,
+                        sideEffect.myGender,
+                        sideEffect.partnerGender,
+                        sideEffect.isSameChoice,
+                    )
                 is HomeSideEffect.ShowErrorDialog ->
                     showErrorDialog(
                         sideEffect.message,

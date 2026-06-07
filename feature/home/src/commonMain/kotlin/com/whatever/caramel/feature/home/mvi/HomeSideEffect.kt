@@ -1,6 +1,7 @@
 package com.whatever.caramel.feature.home.mvi
 
 import com.whatever.caramel.core.domain.vo.content.ContentType
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.viewmodel.UiSideEffect
 
 sealed interface HomeSideEffect : UiSideEffect {
@@ -17,7 +18,14 @@ sealed interface HomeSideEffect : UiSideEffect {
 
     data object NavigateToBalanceGameHistory : HomeSideEffect
 
-    data object NavigateToBalanceGameShare : HomeSideEffect
+    data class NavigateToBalanceGameShare(
+        val question: String,
+        val myChoice: String,
+        val partnerChoice: String,
+        val myGender: Gender,
+        val partnerGender: Gender,
+        val isSameChoice: Boolean,
+    ) : HomeSideEffect
 
     data class ShowErrorDialog(
         val message: String,

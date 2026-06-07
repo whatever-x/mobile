@@ -4,5 +4,8 @@
 	<string name="balance_game_history_title">밸런스 게임 히스토리</string>
 
 	<!-- Share -->
-	<string name="balance_game_share_title">결과 공유하기</string>
+	<string name="balance_game_share_title">결과 공유</string>
+	<string name="balance_game_share_description">우리의 밸런스 게임 결과를\n이미지로 저장하고 공유해보세요!</string>
+	<string name="balance_game_share_save_button">이미지 저장하기</string>
+	<string name="balance_game_share_share_button">공유하기</string>
 </resources>

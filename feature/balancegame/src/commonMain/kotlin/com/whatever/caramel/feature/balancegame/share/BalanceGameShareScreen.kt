@@ -17,7 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import caramel.feature.balancegame.generated.resources.Res
+import caramel.feature.balancegame.generated.resources.balance_game_share_description
+import caramel.feature.balancegame.generated.resources.balance_game_share_save_button
+import caramel.feature.balancegame.generated.resources.balance_game_share_share_button
 import caramel.feature.balancegame.generated.resources.balance_game_share_title
 import com.whatever.caramel.core.designsystem.components.CaramelButton
 import com.whatever.caramel.core.designsystem.components.CaramelButtonSize
@@ -27,7 +31,7 @@ import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.balancegame.share.capture.capturable
 import com.whatever.caramel.feature.balancegame.share.capture.rememberCaptureController
-import com.whatever.caramel.feature.balancegame.share.component.MockShareCard
+import com.whatever.caramel.feature.balancegame.share.component.BalanceGameShareCard
 import com.whatever.caramel.feature.balancegame.share.mvi.BalanceGameShareIntent
 import com.whatever.caramel.feature.balancegame.share.mvi.BalanceGameShareState
 import kotlinx.coroutines.launch
@@ -65,11 +69,25 @@ internal fun BalanceGameShareScreen(
                             interactionSource = null,
                             onClick = { onIntent(BalanceGameShareIntent.ClickBackButton) },
                         ),
-                    painter = painterResource(resource = Resources.Icon.ic_arrow_left_24),
+                    painter = painterResource(resource = Resources.Icon.ic_back_arrow_24),
                     tint = CaramelTheme.color.icon.primary,
                     contentDescription = null,
                 )
             },
+        )
+
+        Text(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = CaramelTheme.spacing.xl,
+                        vertical = CaramelTheme.spacing.m,
+                    ),
+            text = stringResource(resource = Res.string.balance_game_share_description),
+            style = CaramelTheme.typography.body1.bold,
+            color = CaramelTheme.color.text.primary,
+            textAlign = TextAlign.Center,
         )
 
         Box(
@@ -80,7 +98,15 @@ internal fun BalanceGameShareScreen(
                     .padding(CaramelTheme.spacing.xl),
             contentAlignment = Alignment.Center,
         ) {
-            MockShareCard(modifier = Modifier.capturable(captureController))
+            BalanceGameShareCard(
+                modifier = Modifier.capturable(captureController),
+                question = state.question,
+                myChoice = state.myChoice,
+                partnerChoice = state.partnerChoice,
+                myGender = state.myGender,
+                partnerGender = state.partnerGender,
+                isSameChoice = state.isSameChoice,
+            )
         }
 
         Row(
@@ -100,7 +126,7 @@ internal fun BalanceGameShareScreen(
                 modifier = Modifier.weight(1f),
                 buttonType = buttonType,
                 buttonSize = CaramelButtonSize.Large,
-                text = "저장하기",
+                text = stringResource(resource = Res.string.balance_game_share_save_button),
                 onClick = {
                     coroutineScope.launch {
                         val image = captureController.capture()
@@ -113,7 +139,7 @@ internal fun BalanceGameShareScreen(
                 buttonType =
                     if (state.exportInProgress) CaramelButtonType.Disabled else CaramelButtonType.Enabled1,
                 buttonSize = CaramelButtonSize.Large,
-                text = "공유하기",
+                text = stringResource(resource = Res.string.balance_game_share_share_button),
                 onClick = {
                     coroutineScope.launch {
                         val image = captureController.capture()

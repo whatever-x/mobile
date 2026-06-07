@@ -188,7 +188,16 @@ internal fun CaramelNavHost(
                     )
                 },
                 navigateToBalanceGameHistory = { navigateToBalanceGameHistory() },
-                navigateToBalanceGameShare = { navigateToBalanceGameShare() },
+                navigateToBalanceGameShare = { question, myChoice, partnerChoice, myGender, partnerGender, isSameChoice ->
+                    navigateToBalanceGameShare(
+                        question = question,
+                        myChoice = myChoice,
+                        partnerChoice = partnerChoice,
+                        myGender = myGender,
+                        partnerGender = partnerGender,
+                        isSameChoice = isSameChoice,
+                    )
+                },
             )
             contentEditScreen(
                 popBackStack = { popBackStack() },

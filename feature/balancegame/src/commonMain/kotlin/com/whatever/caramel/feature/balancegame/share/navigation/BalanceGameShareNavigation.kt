@@ -6,15 +6,39 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.feature.balancegame.share.BalanceGameShareRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object BalanceGameShareRoute
+data class BalanceGameShareRoute(
+    val question: String,
+    val myChoice: String,
+    val partnerChoice: String,
+    val myGender: String,
+    val partnerGender: String,
+    val isSameChoice: Boolean,
+)
 
-fun NavController.navigateToBalanceGameShare(navOptions: NavOptions? = null) {
+fun NavController.navigateToBalanceGameShare(
+    question: String,
+    myChoice: String,
+    partnerChoice: String,
+    myGender: Gender,
+    partnerGender: Gender,
+    isSameChoice: Boolean,
+    navOptions: NavOptions? = null,
+) {
     navigate(
-        route = BalanceGameShareRoute,
+        route =
+            BalanceGameShareRoute(
+                question = question,
+                myChoice = myChoice,
+                partnerChoice = partnerChoice,
+                myGender = myGender.name,
+                partnerGender = partnerGender.name,
+                isSameChoice = isSameChoice,
+            ),
         navOptions = navOptions,
     )
 }

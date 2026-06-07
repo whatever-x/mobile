@@ -24,6 +24,7 @@ import com.whatever.caramel.core.designsystem.components.CaramelBottomNavigation
 import com.whatever.caramel.core.designsystem.components.CaramelNavItemCreateButton
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.core.domain.vo.content.ContentType
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.ui.admob.GoogleAdBannerType
 import com.whatever.caramel.core.ui.admob.GoogleAdBannerType.AnchoredAdaptive.Companion.SCREEN_FULL_WIDTH
 import com.whatever.caramel.core.ui.admob.GoogleAdUnitIds
@@ -49,7 +50,14 @@ internal fun MainRoute(
     navigateToCreateMemoWithTitle: (String, ContentType) -> Unit,
     navigateToCreateSchedule: (ContentType, String) -> Unit,
     navigateToBalanceGameHistory: () -> Unit,
-    navigateToBalanceGameShare: () -> Unit,
+    navigateToBalanceGameShare: (
+        question: String,
+        myChoice: String,
+        partnerChoice: String,
+        myGender: Gender,
+        partnerGender: Gender,
+        isSameChoice: Boolean,
+    ) -> Unit,
     showErrorToast: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
 ) {
