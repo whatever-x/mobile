@@ -1,6 +1,7 @@
 package com.whatever.caramel.core.remote.datasource
 
 import com.whatever.caramel.core.remote.dto.balanceGame.request.ChooseBalanceGameRequest
+import com.whatever.caramel.core.remote.dto.balanceGame.response.BalanceGameHistoryResponse
 import com.whatever.caramel.core.remote.dto.balanceGame.response.BalanceGameResponse
 
 interface RemoteBalanceGameDataSource {
@@ -10,4 +11,9 @@ interface RemoteBalanceGameDataSource {
         gameId: Long,
         request: ChooseBalanceGameRequest,
     ): BalanceGameResponse
+
+    suspend fun fetchBalanceGameHistory(
+        size: Int?,
+        cursor: String?,
+    ): BalanceGameHistoryResponse
 }

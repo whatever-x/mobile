@@ -219,6 +219,16 @@ internal fun CaramelNavHost(
             )
             balanceGameHistoryScreen(
                 navigateToBack = { popBackStack() },
+                navigateToShare = { question, myChoice, partnerChoice, myGender, partnerGender, isSameChoice ->
+                    navigateToBalanceGameShare(
+                        question = question,
+                        myChoice = myChoice,
+                        partnerChoice = partnerChoice,
+                        myGender = myGender,
+                        partnerGender = partnerGender,
+                        isSameChoice = isSameChoice,
+                    )
+                },
             )
             balanceGameShareScreen(
                 navigateToBack = { popBackStack() },
