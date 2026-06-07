@@ -72,6 +72,8 @@ class HomeViewModel(
             is HomeIntent.ClearShareMessage -> clearShareMessage()
             is HomeIntent.InputShareMessage -> inputShareMessage(text = intent.newShareMessage)
             is HomeIntent.RotateBalanceGameCard -> rotate()
+            is HomeIntent.ClickBalanceGameHistory -> postSideEffect(HomeSideEffect.NavigateToBalanceGameHistory)
+            is HomeIntent.ClickShareBalanceGameResult -> postSideEffect(HomeSideEffect.NavigateToBalanceGameShare)
         }
     }
 

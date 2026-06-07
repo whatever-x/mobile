@@ -19,6 +19,8 @@ internal fun HomeRoute(
     navigateToStaredCoupleDay: () -> Unit,
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: (ContentType) -> Unit,
+    navigateToBalanceGameHistory: () -> Unit,
+    navigateToBalanceGameShare: () -> Unit,
     showErrorDialog: (String, String?) -> Unit,
     showErrorToast: (String) -> Unit,
 ) {
@@ -37,6 +39,8 @@ internal fun HomeRoute(
                     )
 
                 is HomeSideEffect.NavigateToEditAnniversary -> navigateToStaredCoupleDay()
+                is HomeSideEffect.NavigateToBalanceGameHistory -> navigateToBalanceGameHistory()
+                is HomeSideEffect.NavigateToBalanceGameShare -> navigateToBalanceGameShare()
                 is HomeSideEffect.ShowErrorDialog ->
                     showErrorDialog(
                         sideEffect.message,

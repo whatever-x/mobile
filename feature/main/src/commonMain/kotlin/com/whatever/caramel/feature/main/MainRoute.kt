@@ -48,6 +48,8 @@ internal fun MainRoute(
     navigateToCreateMemo: (ContentType) -> Unit,
     navigateToCreateMemoWithTitle: (String, ContentType) -> Unit,
     navigateToCreateSchedule: (ContentType, String) -> Unit,
+    navigateToBalanceGameHistory: () -> Unit,
+    navigateToBalanceGameShare: () -> Unit,
     showErrorToast: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
 ) {
@@ -138,6 +140,8 @@ internal fun MainRoute(
                     navigateToStaredCoupleDay = navigateToStaredCoupleDay,
                     navigateToTodoDetail = navigateToScheduleDetail,
                     navigateToCreateTodo = navigateToCreateMemo,
+                    navigateToBalanceGameHistory = navigateToBalanceGameHistory,
+                    navigateToBalanceGameShare = navigateToBalanceGameShare,
                     showErrorDialog = showErrorDialog,
                     showErrorToast = showErrorToast,
                 )

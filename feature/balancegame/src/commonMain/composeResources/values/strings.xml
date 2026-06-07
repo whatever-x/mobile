@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+	<!-- History -->
+	<string name="balance_game_history_title">밸런스 게임 히스토리</string>
+
+	<!-- Share -->
+	<string name="balance_game_share_title">결과 공유하기</string>
+</resources>

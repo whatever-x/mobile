@@ -12,6 +12,8 @@
 	<string name="waiting_for_partner_answer">%1$s의 선택을 기다리는 중이에요</string>
 	<string name="check_our_choice">서로의 선택이 같은지 확인해 보세요</string>
 	<string name="check_choice_button">서로의 선택 확인하기</string>
+	<string name="balance_game_history">히스토리</string>
+	<string name="share_balance_game_result">결과 공유하기</string>
 
 	<!-- Todo -->
 	<string name="start_couple_date_guid">커플 시작일을 입력해 주세요.\n기념일이 다가오면 알려드릴게요.</string>

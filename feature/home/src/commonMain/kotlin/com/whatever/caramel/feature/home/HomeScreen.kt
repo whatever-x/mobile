@@ -158,6 +158,8 @@ internal fun HomeScreen(
                     partnerGender = state.partnerGender,
                     onOptionClick = { option -> onIntent(HomeIntent.ClickBalanceGameOptionButton(option = option)) },
                     onRotateCard = { onIntent(HomeIntent.RotateBalanceGameCard) },
+                    onClickHistory = { onIntent(HomeIntent.ClickBalanceGameHistory) },
+                    onClickShareResult = { onIntent(HomeIntent.ClickShareBalanceGameResult) },
                 )
 
                 todo(

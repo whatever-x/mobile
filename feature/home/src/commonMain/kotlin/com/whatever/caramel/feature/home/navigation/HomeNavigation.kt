@@ -23,6 +23,8 @@ fun NavGraphBuilder.homeContent(
     navigateToStaredCoupleDay: () -> Unit,
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: (ContentType) -> Unit,
+    navigateToBalanceGameHistory: () -> Unit,
+    navigateToBalanceGameShare: () -> Unit,
     showErrorDialog: (String, String?) -> Unit,
     showErrorToast: (String) -> Unit,
 ) {
@@ -32,6 +34,8 @@ fun NavGraphBuilder.homeContent(
             navigateToStaredCoupleDay = navigateToStaredCoupleDay,
             navigateToTodoDetail = navigateToTodoDetail,
             navigateToCreateTodo = navigateToCreateTodo,
+            navigateToBalanceGameHistory = navigateToBalanceGameHistory,
+            navigateToBalanceGameShare = navigateToBalanceGameShare,
             showErrorDialog = showErrorDialog,
             showErrorToast = showErrorToast,
         )

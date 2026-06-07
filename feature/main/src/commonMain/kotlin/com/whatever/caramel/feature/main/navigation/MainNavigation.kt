@@ -29,6 +29,8 @@ fun NavGraphBuilder.mainGraph(
     showErrorToast: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
     navigateToCreateMemoWithTitle: (String, ContentType) -> Unit,
+    navigateToBalanceGameHistory: () -> Unit,
+    navigateToBalanceGameShare: () -> Unit,
 ) {
     composable<MainRoute>(
         exitTransition = { ExitTransition.None },
@@ -44,6 +46,8 @@ fun NavGraphBuilder.mainGraph(
             showErrorToast = showErrorToast,
             showErrorDialog = showErrorDialog,
             navigateToCreateMemoWithTitle = navigateToCreateMemoWithTitle,
+            navigateToBalanceGameHistory = navigateToBalanceGameHistory,
+            navigateToBalanceGameShare = navigateToBalanceGameShare,
         )
     }
 }
