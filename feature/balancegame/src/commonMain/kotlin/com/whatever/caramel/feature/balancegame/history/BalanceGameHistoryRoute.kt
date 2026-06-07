@@ -18,6 +18,7 @@ internal fun BalanceGameHistoryRoute(
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is BalanceGameHistorySideEffect.NavigateToBack -> navigateToBack()
+                is BalanceGameHistorySideEffect.NavigateToShare -> Unit
             }
         }
     }
