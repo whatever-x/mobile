@@ -30,12 +30,14 @@ class RemoteBalanceGameDataSourceImpl(
         cursor: String?,
     ): BalanceGameHistoryResponse =
         authClient
-            .get(BALANCE_GAME_BASE_URL) {
+            .get("$BALANCE_GAME_BASE_URL/history") {
                 size?.let { parameter("size", it) }
                 cursor?.let { parameter("cursor", it) }
+                parameter("sortType", SORT_TYPE_GAME_DATE_DESC)
             }.getBody()
 
     companion object {
         private const val BALANCE_GAME_BASE_URL = "/v1/balance-game"
+        private const val SORT_TYPE_GAME_DATE_DESC = "GAME_DATE_DESC"
     }
 }
