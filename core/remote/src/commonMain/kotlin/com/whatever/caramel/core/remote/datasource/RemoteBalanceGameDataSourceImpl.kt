@@ -1,10 +1,12 @@
 package com.whatever.caramel.core.remote.datasource
 
 import com.whatever.caramel.core.remote.dto.balanceGame.request.ChooseBalanceGameRequest
+import com.whatever.caramel.core.remote.dto.balanceGame.response.BalanceGameHistoryResponse
 import com.whatever.caramel.core.remote.dto.balanceGame.response.BalanceGameResponse
 import com.whatever.caramel.core.remote.network.util.getBody
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import org.koin.core.annotation.Named
@@ -23,7 +25,19 @@ class RemoteBalanceGameDataSourceImpl(
                 setBody(body = request)
             }.getBody()
 
+    override suspend fun fetchBalanceGameHistory(
+        size: Int?,
+        cursor: String?,
+    ): BalanceGameHistoryResponse =
+        authClient
+            .get("$BALANCE_GAME_BASE_URL/history") {
+                size?.let { parameter("size", it) }
+                cursor?.let { parameter("cursor", it) }
+                parameter("sortType", SORT_TYPE_GAME_DATE_DESC)
+            }.getBody()
+
     companion object {
         private const val BALANCE_GAME_BASE_URL = "/v1/balance-game"
+        private const val SORT_TYPE_GAME_DATE_DESC = "GAME_DATE_DESC"
     }
 }

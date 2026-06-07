@@ -9,6 +9,7 @@ import com.whatever.caramel.core.domain.usecase.app.IncrementAppLaunchCountUseCa
 import com.whatever.caramel.core.domain.usecase.auth.LogoutUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignInWithSocialPlatformUseCase
 import com.whatever.caramel.core.domain.usecase.auth.SignOutUseCase
+import com.whatever.caramel.core.domain.usecase.balanceGame.GetBalanceGameHistoryUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.GetTodayBalanceGameUseCase
 import com.whatever.caramel.core.domain.usecase.balanceGame.SubmitBalanceGameChoiceUseCase
 import com.whatever.caramel.core.domain.usecase.calendar.GetCalendarOfYearUseCase
@@ -92,6 +93,7 @@ val useCaseModule =
         // BalanceGame
         factory { GetTodayBalanceGameUseCase(get()) }
         factory { SubmitBalanceGameChoiceUseCase(get(), get()) }
+        factory { GetBalanceGameHistoryUseCase(get()) }
 
         // Common
         factory { GetLinkPreviewsForContentUseCase(get()) }
