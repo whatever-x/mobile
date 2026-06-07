@@ -265,6 +265,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera Permission required</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>밸런스 게임 결과 이미지를 사진 앨범에 저장하기 위해 사용됩니다.</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>이 앱은 맞춤형 광고 및 딥링크 추적을 위해 사용자의 활동 정보를 사용합니다.</string>
 	<key>UIApplicationSceneManifest</key>
