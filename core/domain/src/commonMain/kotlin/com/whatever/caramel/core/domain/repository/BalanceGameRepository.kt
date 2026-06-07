@@ -1,5 +1,6 @@
 package com.whatever.caramel.core.domain.repository
 
+import com.whatever.caramel.core.domain.vo.balanceGame.BalanceGameHistory
 import com.whatever.caramel.core.domain.vo.balanceGame.BalanceGameResult
 
 interface BalanceGameRepository {
@@ -9,4 +10,9 @@ interface BalanceGameRepository {
         gameId: Long,
         optionId: Long,
     ): BalanceGameResult
+
+    suspend fun getBalanceGameHistory(
+        size: Int?,
+        cursor: String?,
+    ): BalanceGameHistory
 }
