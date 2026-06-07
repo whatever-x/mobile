@@ -23,6 +23,8 @@ class MemoViewModel(
     savedStateHandle: SavedStateHandle,
     crashlytics: CaramelCrashlytics,
 ) : BaseViewModel<MemoState, MemoSideEffect, MemoIntent>(savedStateHandle, crashlytics) {
+    private var isInitialized = false
+
     override fun createInitialState(savedStateHandle: SavedStateHandle): MemoState = MemoState()
 
     override suspend fun handleIntent(intent: MemoIntent) {
@@ -72,6 +74,13 @@ class MemoViewModel(
     }
 
     private suspend fun initialize() {
+        // 최초 진입에서만 로딩뷰(스켈레톤)를 노출하고, 이후 resume 에서는 로딩뷰 없이 무음 리프레시한다.
+        if (isInitialized) {
+            silentRefresh()
+            return
+        }
+        isInitialized = true
+
         reduce {
             copy(
                 isTagLoading = true,
@@ -84,6 +93,54 @@ class MemoViewModel(
 
         initMemoList()
         initTagList()
+    }
+
+    /**
+     * resume 시 호출되는 무음 리프레시.
+     * 로딩 상태(memoContent = Loading, isTagLoading = true)로 전환하지 않고,
+     * 데이터를 모두 받아온 뒤 한 번에 교체해 스켈레톤 깜빡임을 없앤다.
+     * 기존 [initialize] 와 동일하게 전체 탭 기준 첫 페이지로 갱신한다.
+     */
+    private suspend fun silentRefresh() {
+        val tagListJob =
+            launch {
+                val fetchedTags = getAllTagsUseCase()
+                val newTagList = (persistentListOf(Tag(id = 0L, label = "")) + fetchedTags).toImmutableList()
+
+                reduce {
+                    copy(
+                        isTagLoading = false,
+                        tagList = newTagList,
+                        selectedTag = newTagList[0],
+                    )
+                }
+            }
+
+        val memoListJob =
+            launch {
+                val memoWithCursor =
+                    getMemoListUseCase(
+                        size = 10,
+                        cursor = null,
+                        tagId = 0L,
+                    )
+
+                val memoContentState =
+                    if (memoWithCursor.memos.isEmpty()) {
+                        MemoContentState.Empty
+                    } else {
+                        MemoContentState.Content(memoList = memoWithCursor.memos.toImmutableList())
+                    }
+
+                reduce {
+                    copy(
+                        cursor = memoWithCursor.nextCursor,
+                        memoContent = memoContentState,
+                    )
+                }
+            }
+
+        joinAll(tagListJob, memoListJob)
     }
 
     private suspend fun refresh() {
