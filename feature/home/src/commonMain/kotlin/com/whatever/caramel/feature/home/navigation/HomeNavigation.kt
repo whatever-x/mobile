@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.whatever.caramel.core.domain.vo.content.ContentType
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.feature.home.HomeRoute
 import kotlinx.serialization.Serializable
 
@@ -23,6 +24,15 @@ fun NavGraphBuilder.homeContent(
     navigateToStaredCoupleDay: () -> Unit,
     navigateToTodoDetail: (Long, ContentType) -> Unit,
     navigateToCreateTodo: (ContentType) -> Unit,
+    navigateToBalanceGameHistory: () -> Unit,
+    navigateToBalanceGameShare: (
+        question: String,
+        myChoice: String,
+        partnerChoice: String,
+        myGender: Gender,
+        partnerGender: Gender,
+        isSameChoice: Boolean,
+    ) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
     showErrorToast: (String) -> Unit,
 ) {
@@ -32,6 +42,8 @@ fun NavGraphBuilder.homeContent(
             navigateToStaredCoupleDay = navigateToStaredCoupleDay,
             navigateToTodoDetail = navigateToTodoDetail,
             navigateToCreateTodo = navigateToCreateTodo,
+            navigateToBalanceGameHistory = navigateToBalanceGameHistory,
+            navigateToBalanceGameShare = navigateToBalanceGameShare,
             showErrorDialog = showErrorDialog,
             showErrorToast = showErrorToast,
         )

@@ -7,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
 import com.whatever.caramel.core.domain.vo.content.ContentType
+import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.feature.main.MainRoute
 import kotlinx.serialization.Serializable
 
@@ -29,6 +30,15 @@ fun NavGraphBuilder.mainGraph(
     showErrorToast: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
     navigateToCreateMemoWithTitle: (String, ContentType) -> Unit,
+    navigateToBalanceGameHistory: () -> Unit,
+    navigateToBalanceGameShare: (
+        question: String,
+        myChoice: String,
+        partnerChoice: String,
+        myGender: Gender,
+        partnerGender: Gender,
+        isSameChoice: Boolean,
+    ) -> Unit,
 ) {
     composable<MainRoute>(
         exitTransition = { ExitTransition.None },
@@ -44,6 +54,8 @@ fun NavGraphBuilder.mainGraph(
             showErrorToast = showErrorToast,
             showErrorDialog = showErrorDialog,
             navigateToCreateMemoWithTitle = navigateToCreateMemoWithTitle,
+            navigateToBalanceGameHistory = navigateToBalanceGameHistory,
+            navigateToBalanceGameShare = navigateToBalanceGameShare,
         )
     }
 }

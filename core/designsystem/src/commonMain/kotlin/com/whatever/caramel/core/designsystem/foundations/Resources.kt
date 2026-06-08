@@ -14,6 +14,7 @@ import caramel.core.designsystem.generated.resources.ic_arrow_right_16
 import caramel.core.designsystem.generated.resources.ic_arrow_right_24
 import caramel.core.designsystem.generated.resources.ic_arrow_up_16
 import caramel.core.designsystem.generated.resources.ic_arrow_up_24
+import caramel.core.designsystem.generated.resources.ic_back_arrow_24
 import caramel.core.designsystem.generated.resources.ic_calendar_18
 import caramel.core.designsystem.generated.resources.ic_calendar_24
 import caramel.core.designsystem.generated.resources.ic_cancel_16
@@ -48,6 +49,7 @@ import caramel.core.designsystem.generated.resources.ic_progress_dot_active_18
 import caramel.core.designsystem.generated.resources.ic_progress_dot_inactive_18
 import caramel.core.designsystem.generated.resources.ic_send_24
 import caramel.core.designsystem.generated.resources.ic_setting_24
+import caramel.core.designsystem.generated.resources.ic_share_16
 import caramel.core.designsystem.generated.resources.ic_tag_18
 import caramel.core.designsystem.generated.resources.ic_trash_24
 import caramel.core.designsystem.generated.resources.ic_uncheck_box_20
@@ -81,6 +83,7 @@ object Resources {
         val ic_arrow_right_24 = Res.drawable.ic_arrow_right_24
         val ic_arrow_up_16 = Res.drawable.ic_arrow_up_16
         val ic_arrow_up_24 = Res.drawable.ic_arrow_up_24
+        val ic_back_arrow_24 = Res.drawable.ic_back_arrow_24
         val ic_calendar_24 = Res.drawable.ic_calendar_24
         val ic_cancel_16 = Res.drawable.ic_cancel_16
         val ic_cancel_24 = Res.drawable.ic_cancel_24
@@ -112,6 +115,7 @@ object Resources {
         val ic_progress_dot_inactive_18 = Res.drawable.ic_progress_dot_inactive_18
         val ic_send_24 = Res.drawable.ic_send_24
         val ic_setting_24 = Res.drawable.ic_setting_24
+        val ic_share_16 = Res.drawable.ic_share_16
         val ic_trash_24 = Res.drawable.ic_trash_24
         val ic_uncheck_box_20 = Res.drawable.ic_uncheck_box_20
         val ic_vertex_17_9 = Res.drawable.ic_vertex_17_9

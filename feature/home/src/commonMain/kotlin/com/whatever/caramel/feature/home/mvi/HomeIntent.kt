@@ -29,6 +29,10 @@ sealed interface HomeIntent : UiIntent {
 
     data object RotateBalanceGameCard : HomeIntent
 
+    data object ClickBalanceGameHistory : HomeIntent
+
+    data object ClickShareBalanceGameResult : HomeIntent
+
     data object HideDialog : HomeIntent
 
     data class InputShareMessage(

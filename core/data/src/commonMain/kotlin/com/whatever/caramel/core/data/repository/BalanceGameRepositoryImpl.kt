@@ -1,8 +1,10 @@
 package com.whatever.caramel.core.data.repository
 
+import com.whatever.caramel.core.data.mapper.toBalanceGameHistory
 import com.whatever.caramel.core.data.mapper.toBalanceGameResult
 import com.whatever.caramel.core.data.util.safeCall
 import com.whatever.caramel.core.domain.repository.BalanceGameRepository
+import com.whatever.caramel.core.domain.vo.balanceGame.BalanceGameHistory
 import com.whatever.caramel.core.domain.vo.balanceGame.BalanceGameResult
 import com.whatever.caramel.core.remote.datasource.RemoteBalanceGameDataSource
 import com.whatever.caramel.core.remote.dto.balanceGame.request.ChooseBalanceGameRequest
@@ -28,5 +30,17 @@ class BalanceGameRepositoryImpl(
                             optionId = optionId,
                         ),
                 ).toBalanceGameResult()
+        }
+
+    override suspend fun getBalanceGameHistory(
+        size: Int?,
+        cursor: String?,
+    ): BalanceGameHistory =
+        safeCall {
+            remoteBalanceGameDataSource
+                .fetchBalanceGameHistory(
+                    size = size,
+                    cursor = cursor,
+                ).toBalanceGameHistory()
         }
 }

@@ -152,12 +152,15 @@ internal fun HomeScreen(
                 quiz(
                     balanceGameCard = state.balanceGameCard,
                     isBalanceGameCardRotated = state.isBalanceGameCardRotated,
+                    showHistory = state.coupleState != HomeState.CoupleState.DISCONNECT,
                     myNickname = state.myNickname,
                     myGender = state.myGender,
                     partnerNickname = state.partnerNickname,
                     partnerGender = state.partnerGender,
                     onOptionClick = { option -> onIntent(HomeIntent.ClickBalanceGameOptionButton(option = option)) },
                     onRotateCard = { onIntent(HomeIntent.RotateBalanceGameCard) },
+                    onClickHistory = { onIntent(HomeIntent.ClickBalanceGameHistory) },
+                    onClickShareResult = { onIntent(HomeIntent.ClickShareBalanceGameResult) },
                 )
 
                 todo(
