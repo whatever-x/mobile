@@ -1,5 +1,5 @@
 [versions]
-agp = "8.9.1"
+agp = "9.2.1"
 android-compileSdk = "36"
 android-minSdk = "28"
 android-targetSdk = "36"
@@ -8,9 +8,9 @@ version-name = "1.3.0" # major(1), minor(3), patch(0)
 
 # Multiplatform
 compose = "1.9.3"
-kotlin = "2.2.21"
-ksp = "2.2.21-2.0.4"
-jetbrainsKotlinJvm = "2.2.21"
+kotlin = "2.4.0"
+ksp = "2.3.9"
+jetbrainsKotlinJvm = "2.4.0"
 
 # androidX
 androidx-core-ktx = "1.16.0"
@@ -59,6 +59,7 @@ apps-flyer = "6.17.3"
 
 # Utility
 kmp-spm = "1.4.10"
+buildkonfig = "0.21.2"
 play-review = "2.0.2"
 
 # AD
@@ -160,10 +161,10 @@ compose-compiler-gradleplugin = { group = "org.jetbrains.kotlin", name = "compos
 compose-multiplatform-gradleplugin = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "compose" }
 android-gradleplugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 ksp-gradleplugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+buildkonfig-gradleplugin = { group = "com.codingfeline.buildkonfig", name = "buildkonfig-gradle-plugin", version.ref = "buildkonfig" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
@@ -171,6 +172,7 @@ jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serializati
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "androidx-room" }
 kmp-spm = { id = "io.github.frankois944.spmForKmp", version.ref = "kmp-spm" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 googleServices = { id = "com.google.gms.google-services", version.ref = "gms" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crahslytics" }
 jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
@@ -205,5 +207,6 @@ plugins = [
     "compose-compiler-gradleplugin",
     "compose-multiplatform-gradleplugin",
     "android-gradleplugin",
-    "ksp-gradleplugin"
+    "ksp-gradleplugin",
+    "buildkonfig-gradleplugin"
 ]

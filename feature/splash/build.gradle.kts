@@ -7,9 +7,11 @@ plugins {
     id("caramel.kmp.test")
 }
 
-android.namespace = "com.whatever.caramel.feature.splash"
-
 kotlin {
+    android {
+        namespace = "com.whatever.caramel.feature.splash"
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.domain)

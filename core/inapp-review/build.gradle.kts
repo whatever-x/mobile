@@ -4,14 +4,11 @@ plugins {
     id("caramel.kmp.ios")
 }
 
-android {
-    namespace = "com.whatever.caramel.core.inAppReview"
-    buildFeatures {
-        buildConfig = true
-    }
-}
-
 kotlin {
+    android {
+        namespace = "com.whatever.caramel.core.inAppReview"
+    }
+
     sourceSets {
         androidMain.dependencies {
             implementation(libs.koin.android)

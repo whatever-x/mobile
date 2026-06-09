@@ -132,14 +132,14 @@ Quiz.kt onClickHistory / onClickShare
 - `feature/main/.../MainRoute.kt` (homeContent 호출부 람다 전달)
 - `feature/main/.../navigation/MainNavigation.kt` (mainGraph 파라미터 2개)
 - `feature/main/build.gradle.kts` (`projects.feature.balancegame` 의존성 추가)
-- `app/.../CaramelNavHost.kt` (screen 등록 + navigate 연결)
-- `app/build.gradle.kts` (`projects.feature.balancegame` 의존성 추가)
+- `compose-app/.../CaramelNavHost.kt` (screen 등록 + navigate 연결)
+- `android-app/build.gradle.kts` (`projects.feature.balancegame` 의존성 추가)
 - `core/designsystem/.../foundations/Resources.kt` (ic_share_16 등록)
 
 ## 검증 기준
 
 1. `./gradlew :feature:balancegame:compileKotlinJvm` (또는 모듈 빌드) 성공
-2. `./gradlew :app:assembleDebug` 성공
+2. `./gradlew :android-app:assembleDebug` 성공
 3. `./gradlew spotlessCheck` 통과
 4. 수동 확인: 홈 카드에 "히스토리 >" 항상 노출 → 탭 시 히스토리 셸 진입 → 뒤로가기 동작
 5. 수동 확인: 발란스 게임 둘 다 선택 후 결과 뒤집힘 상태에서 "결과 공유하기" 노출 → 탭 시 공유 셸 진입 → 뒤로가기 동작

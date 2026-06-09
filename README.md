@@ -77,7 +77,7 @@ graph TD
     FeatureSplash(":feature:splash")
     
     %% App Layer
-    App(:app)
+    App(":android-app")
     
     %% Build
     BuildLogic(":build-logic")

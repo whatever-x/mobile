@@ -4,9 +4,11 @@ plugins {
     id("caramel.kmp.ios")
 }
 
-android.namespace = "com.whatever.caramel.core.datastore"
-
 kotlin {
+    android {
+        namespace = "com.whatever.caramel.core.datastore"
+    }
+
     sourceSets {
         androidMain.dependencies {
             implementation(libs.koin.android)

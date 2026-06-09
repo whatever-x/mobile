@@ -6,9 +6,11 @@ plugins {
     id("caramel.kotlin.serialization")
 }
 
-android.namespace = "com.whatever.caramel.feature.couple.invite"
-
 kotlin {
+    android {
+        namespace = "com.whatever.caramel.feature.couple.invite"
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.domain)

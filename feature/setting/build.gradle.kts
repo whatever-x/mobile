@@ -1,23 +1,32 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+
 plugins {
     id("caramel.kmp")
     id("caramel.kmp.android")
     id("caramel.kmp.ios")
     id("caramel.compose")
     id("caramel.kotlin.serialization")
+    alias(libs.plugins.buildkonfig)
 }
 
-android {
-    namespace = "com.whatever.caramel.feature.setting"
+buildkonfig {
+    packageName = "com.whatever.caramel.feature.setting"
 
-    defaultConfig {
-        buildFeatures {
-            buildConfig = true
-        }
-        buildConfigField("String", "VERSION_NAME", "\"${libs.versions.version.name.get()}\"")
+    defaultConfigs {
+        buildConfigField(
+            STRING,
+            "VERSION_NAME",
+            libs.versions.version.name
+                .get(),
+        )
     }
 }
 
 kotlin {
+    android {
+        namespace = "com.whatever.caramel.feature.setting"
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.domain)

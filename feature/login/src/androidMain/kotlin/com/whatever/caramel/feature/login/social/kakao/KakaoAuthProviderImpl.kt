@@ -8,7 +8,7 @@ import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import com.whatever.caramel.feature.login.BuildConfig
+import com.whatever.caramel.feature.login.BuildKonfig
 import com.whatever.caramel.feature.login.social.SocialAuthResult
 import com.whatever.caramel.feature.login.social.SocialAuthenticator
 import kotlinx.coroutines.CancellableContinuation
@@ -27,7 +27,7 @@ private class KakaoAuthenticator(
     private val context: Context,
 ) : SocialAuthenticator<KakaoUser> {
     init {
-        KakaoSdk.init(context, BuildConfig.KAKAO_NATIVE_APP_KEY)
+        KakaoSdk.init(context, BuildKonfig.KAKAO_NATIVE_APP_KEY)
     }
 
     override suspend fun authenticate(): SocialAuthResult<KakaoUser> =

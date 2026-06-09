@@ -11,9 +11,11 @@ plugins {
     alias(libs.plugins.kmp.spm)
 }
 
-android.namespace = "com.whatever.caramel.core.analytics"
-
 kotlin {
+    android {
+        namespace = "com.whatever.caramel.core.analytics"
+    }
+
     listOf(
         iosX64(),
         iosArm64(),

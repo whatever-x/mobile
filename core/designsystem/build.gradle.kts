@@ -1,5 +1,3 @@
-import com.whatever.caramel.buildlogic.convention.extension.kotlin
-
 plugins {
     id("caramel.kmp")
     id("caramel.kmp.android")
@@ -7,9 +5,11 @@ plugins {
     id("caramel.compose")
 }
 
-android.namespace = "com.whatever.caramel.core.designsystem"
-
 kotlin {
+    android {
+        namespace = "com.whatever.caramel.core.designsystem"
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(libs.koin.core)

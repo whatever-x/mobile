@@ -6,11 +6,9 @@ plugins {
     id("androidx.room")
 }
 
-android.namespace = "com.whatever.caramel.core.database"
-
 kotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-Xexpect-actual-classes")
+    android {
+        namespace = "com.whatever.caramel.core.database"
     }
 
     room {
@@ -30,5 +28,8 @@ kotlin {
 }
 
 dependencies {
-    ksp(libs.androidx.room.compiler)
+    add("kspAndroid", libs.androidx.room.compiler)
+    add("kspIosX64", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
 }

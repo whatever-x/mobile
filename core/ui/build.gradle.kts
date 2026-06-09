@@ -1,8 +1,9 @@
 @file:OptIn(ExperimentalSpmForKmpFeature::class)
 
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import io.github.frankois944.spmForKmp.swiftPackageConfig
 import io.github.frankois944.spmForKmp.utils.ExperimentalSpmForKmpFeature
+import java.util.Properties
 
 plugins {
     id("caramel.kmp")
@@ -10,34 +11,36 @@ plugins {
     id("caramel.kmp.ios")
     id("caramel.compose")
     alias(libs.plugins.kmp.spm)
+    alias(libs.plugins.buildkonfig)
 }
 
-android.namespace = "com.whatever.caramel.core.ui"
+buildkonfig {
+    packageName = "com.whatever.caramel.core.ui"
 
-android {
-    buildFeatures {
-        buildConfig = true
-    }
+    val properties =
+        Properties().apply {
+            rootProject.file("local.properties").inputStream().use(::load)
+        }
 
-    defaultConfig {
-        val properties = gradleLocalProperties(rootDir, providers)
-        val admobTestBannerIdKey = "ADMOB_TEST_BANNER_ID"
-        val admobHomeBannerIdKey = "ADMOB_HOME_BANNER_ID"
-
+    defaultConfigs {
         buildConfigField(
-            type = "String",
-            name = admobTestBannerIdKey,
-            value = properties.getProperty(admobTestBannerIdKey),
+            STRING,
+            "ADMOB_TEST_BANNER_ID",
+            properties.getProperty("ADMOB_TEST_BANNER_ID").removeSurrounding("\""),
         )
         buildConfigField(
-            type = "String",
-            name = admobHomeBannerIdKey,
-            value = properties.getProperty(admobHomeBannerIdKey),
+            STRING,
+            "ADMOB_HOME_BANNER_ID",
+            properties.getProperty("ADMOB_HOME_BANNER_ID").removeSurrounding("\""),
         )
     }
 }
 
 kotlin {
+    android {
+        namespace = "com.whatever.caramel.core.ui"
+    }
+
     listOf(
         iosX64(),
         iosArm64(),

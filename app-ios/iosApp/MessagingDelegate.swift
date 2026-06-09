@@ -8,7 +8,7 @@
 
 import Foundation
 import FirebaseMessaging
-import App
+import ComposeApp
 
 extension AppDelegate: MessagingDelegate {
     

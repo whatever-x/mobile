@@ -4,9 +4,11 @@ plugins {
     id("caramel.kmp.android")
 }
 
-android.namespace = "com.whatever.caramel.core.viewmodel"
-
 kotlin {
+    android {
+        namespace = "com.whatever.caramel.core.viewmodel"
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.crashlytics)

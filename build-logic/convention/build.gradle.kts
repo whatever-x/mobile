@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     `kotlin-dsl`
@@ -19,7 +20,7 @@ repositories {
 }
 
 val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions.jvmTarget = "17"
+compileKotlin.compilerOptions.jvmTarget.set(JvmTarget.JVM_17)
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -44,9 +45,9 @@ gradlePlugin {
             id = "caramel.kmp.ios"
             implementationClass = "com.whatever.caramel.buildlogic.convention.KmpIosPlugin"
         }
-        register("kmpCompose") {
+        register("cmp") {
             id = "caramel.compose"
-            implementationClass = "com.whatever.caramel.buildlogic.convention.KmpComposePlugin"
+            implementationClass = "com.whatever.caramel.buildlogic.convention.CmpPlugin"
         }
         register("kotlinSerialization") {
             id = "caramel.kotlin.serialization"
@@ -57,11 +58,6 @@ gradlePlugin {
             id = "caramel.android.application"
             implementationClass =
                 "com.whatever.caramel.buildlogic.convention.AndroidApplicationPlugin"
-        }
-        register("googleServices") {
-            id = "caramel.google.services"
-            implementationClass =
-                "com.whatever.caramel.buildlogic.convention.GoogleServicesPlugin"
         }
         register("kmpTest") {
             id = "caramel.kmp.test"

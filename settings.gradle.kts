@@ -29,7 +29,8 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "caramel"
-include(":app")
+include(":android-app")
+include(":compose-app")
 include(":core")
 include(":core:data")
 include(":core:domain")

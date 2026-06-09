@@ -24,19 +24,19 @@ All Gradle tasks run from repo root via `./gradlew`. `local.properties` (keystor
 # Current test homes: core:util, feature:splash, feature:login, feature:profile:create.
 
 # Android build / install. Build types: debug (Caramel-Dev), qa (.qa suffix, debuggable release), release (Caramel).
-./gradlew :app:assembleDebug
-./gradlew :app:installDebug
+./gradlew :android-app:assembleDebug
+./gradlew :android-app:installDebug
 ```
 
-iOS: open `app-ios/iosApp.xcodeproj` in Xcode and run. The shared KMP framework is produced by the `:app` module's iOS targets and consumed by the Xcode project.
+iOS: open `app-ios/iosApp.xcodeproj` in Xcode and run. The shared Compose/KMP framework is produced by the `:compose-app` module's iOS targets and consumed by the Xcode project.
 
 ## Architecture
 
 Three layers, enforced by module dependencies (see `settings.gradle.kts` and the diagram in `README.md`). Dependencies point **downward only**:
 
 ```
-:app  →  :feature:*  →  :core:domain, :core:ui, :core:designsystem, :core:viewmodel
-                ↑
+:android-app  →  :compose-app, :feature:*  →  :core:domain, :core:ui, :core:designsystem, :core:viewmodel
+                         ↑
 :core:data (implements domain repositories) → :core:remote, :core:database, :core:datastore
 ```
 
@@ -58,7 +58,7 @@ A module usually hosts one screen, but a module may host several closely-related
 
 ### Dependency injection (Koin)
 
-Every module exposes a Koin module via a `di/` package. They are all assembled in `app/src/commonMain/.../di/InitKoin.kt` (`initKoin()`), grouped by layer. **A new feature/repository must register its module there** or it won't be injected. ViewModels are obtained in Composables with `koinViewModel()`.
+Every module exposes a Koin module via a `di/` package. They are all assembled in `compose-app/src/commonMain/.../di/InitKoin.kt` (`initKoin()`), grouped by layer. **A new feature/repository must register its module there** or it won't be injected. ViewModels are obtained in Composables with `koinViewModel()`.
 
 ### Errors
 
@@ -67,7 +67,7 @@ Domain failures use `CaramelException` (`core/domain/.../exception/CaramelExcept
 ## Build conventions
 
 Build setup is centralized in `build-logic/` as convention plugins applied by id in each module's `build.gradle.kts`:
-- `caramel.kmp`, `caramel.kmp.ios`, `caramel.compose`, `caramel.kmp.test`, `caramel.android.application`, `caramel.kotlin.serialization`, `caramel.google.services`.
+- `caramel.kmp`, `caramel.kmp.ios`, `caramel.compose`, `caramel.kmp.test`, `caramel.android.application`, `caramel.kotlin.serialization`.
 
 When adding a module: create it, `include(":path")` in `settings.gradle.kts`, apply the relevant convention plugins, and add it as a project dependency where consumed (type-safe accessors are enabled — use `projects.feature.home`, not string paths). Versions/libraries come from `gradle/libs.versions.toml` (use `libs.bundles.*` where they exist, e.g. `bundles.ktor`).
 
