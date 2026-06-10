@@ -13,7 +13,7 @@ import Firebase
 import FirebaseAnalytics
 import FirebaseCore
 import FirebaseMessaging
-import App
+import ComposeApp
 import AppsFlyerLib
 import AppTrackingTransparency
 import AdSupport

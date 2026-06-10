@@ -1,37 +1,29 @@
 package com.whatever.caramel.buildlogic.convention
 
-import com.whatever.caramel.buildlogic.convention.extension.android
-import com.whatever.caramel.buildlogic.convention.extension.configureAndroid
-import com.whatever.caramel.buildlogic.convention.extension.createQaBuildType
+import com.whatever.caramel.buildlogic.convention.extension.androidLibrary
 import com.whatever.caramel.buildlogic.convention.extension.kotlin
-import com.whatever.caramel.buildlogic.convention.extension.libraryAndroidOptions
+import com.whatever.caramel.buildlogic.convention.extension.libs
+import com.whatever.caramel.buildlogic.convention.extension.version
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-@Suppress("unused")
 class KmpAndroidPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply("com.android.library")
+                apply("com.android.kotlin.multiplatform.library")
             }
+
             kotlin {
-                androidTarget {
-                    compilations.all {
-                        libraryAndroidOptions {
-                            compileTaskProvider.configure {
-                                compilerOptions {
-                                    jvmTarget.set(JvmTarget.JVM_17)
-                                }
-                            }
-                        }
+                androidLibrary {
+                    compileSdk = libs.version("android-compileSdk").toInt()
+                    minSdk = libs.version("android-minSdk").toInt()
+                    androidResources.enable = true
+                    compilerOptions {
+                        jvmTarget.set(JvmTarget.JVM_17)
                     }
                 }
-            }
-            android {
-                configureAndroid()
-                createQaBuildType()
             }
         }
     }

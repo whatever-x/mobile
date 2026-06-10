@@ -4,9 +4,11 @@ plugins {
     id("caramel.kmp.ios")
 }
 
-android.namespace = "com.whatever.caramel.core.data"
-
 kotlin {
+    android {
+        namespace = "com.whatever.caramel.core.data"
+    }
+
     sourceSets {
         androidMain.dependencies {
             implementation(libs.koin.core)

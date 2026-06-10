@@ -1,35 +1,53 @@
-# Root
-*.iml
-.kotlin/
-.gradle
-**/build/
-xcuserdata
-!src/**/build/
-local.properties
-.idea
+# OS / IDE
 .DS_Store
-captures
-.externalNativeBuild
-.cxx
-*.jks
-*.aab
+**/.DS_Store
+.idea/
+*.iml
+.gradle/
+.kotlin/
+
+# Gradle / Android build outputs
+**/build/
+!src/**/build/
+captures/
+.externalNativeBuild/
+.cxx/
 *.apk
+*.aab
+
+# Local secrets
+local.properties
+*.jks
+*.keystore
+*.p12
+*.pem
+*.mobileprovision
+
+# Firebase / Google service config
+**/google-services.json
+**/GoogleService-Info*.plist
+
+# iOS local config / user state
+*.xcconfig
+*.xcuserstate
+*.xcuserdata/
+**/xcuserdata/
+**/*.xcworkspace/xcshareddata/
+**/xcshareddata/WorkspaceSettings.xcsettings
+
+# Keep shareable Xcode project files
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/xcshareddata/xcschemes/
+!*.xcodeproj/xcshareddata/xcschemes/*.xcscheme
+!*.xcworkspace/contents.xcworkspacedata
+
+# KMP / SPM generated artifacts
+core/database/schemas/
+**/exported*/
+**/spmKmpPlugin/
+
+# Fastlane secrets / generated reports
 fastlane/.env
 fastlane/report.xml
 fastlane/*.p8
-
-# ComposeApp
-app/google-services.json
-core/database/schemas
-*/*/exported*/*
-
-# Xcode
-**/GoogleService-Info.plist
-**/GoogleService-Info-Qa.plist
-*.xcworkspace
-*.xcuserdata/
-!*.xcworkspace/contents.xcworkspacedata
-!*.xcodeproj/project.pbxproj
-!*.xcodeproj/xcshareddata/
-**/xcshareddata/WorkspaceSettings.xcsettings
-*.xcconfig

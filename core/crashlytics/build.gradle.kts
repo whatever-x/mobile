@@ -1,5 +1,6 @@
 @file:OptIn(ExperimentalSpmForKmpFeature::class)
 
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
 import io.github.frankois944.spmForKmp.swiftPackageConfig
 import io.github.frankois944.spmForKmp.utils.ExperimentalSpmForKmpFeature
 import java.net.URI
@@ -9,16 +10,34 @@ plugins {
     id("caramel.kmp.android")
     id("caramel.kmp.ios")
     alias(libs.plugins.kmp.spm)
+    alias(libs.plugins.buildkonfig)
 }
 
-android {
-    namespace = "com.whatever.caramel.core.crashlytics"
-    buildFeatures {
-        buildConfig = true
+buildkonfig {
+    packageName = "com.whatever.caramel.core.crashlytics"
+
+    val requestedTasks =
+        gradle.startParameter.taskNames
+            .joinToString(separator = " ")
+            .lowercase()
+    val flavor =
+        providers.gradleProperty("buildkonfig.flavor").orNull
+            ?: if ("release" in requestedTasks && "qa" !in requestedTasks) "release" else "debug"
+
+    defaultConfigs {
+        buildConfigField(
+            BOOLEAN,
+            "DEBUG",
+            (flavor != "release").toString(),
+        )
     }
 }
 
 kotlin {
+    android {
+        namespace = "com.whatever.caramel.core.crashlytics"
+    }
+
     listOf(
         iosX64(),
         iosArm64(),

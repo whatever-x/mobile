@@ -4,9 +4,11 @@ plugins {
     id("caramel.kmp.ios")
 }
 
-android.namespace = "com.whatever.caramel.core.deeplink"
-
 kotlin {
+    android {
+        namespace = "com.whatever.caramel.core.deeplink"
+    }
+
     sourceSets {
         androidMain.dependencies {
             implementation(libs.androidx.core.ktx)

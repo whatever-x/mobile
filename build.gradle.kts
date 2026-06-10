@@ -2,13 +2,13 @@ import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
 
 plugins {
     alias(libs.plugins.androidApplication) apply false
-    alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.jetbrainsCompose) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.room) apply false
     alias(libs.plugins.kmp.spm) apply false
+    alias(libs.plugins.buildkonfig) apply false
     alias(libs.plugins.googleServices) apply false
     alias(libs.plugins.crashlytics) apply false
     alias(libs.plugins.jetbrainsKotlinJvm) apply false
@@ -26,13 +26,21 @@ subprojects {
             target("**/*.kt")
             targetExclude(
                 "**/build/**",
-                "**/generated/**"
+                "**/generated/**",
+                "**/exported*/**",
+                "**/spmKmpPlugin/**",
             )
             ktlint(ktlintCliVersion)
         }
 
         kotlinGradle {
             target("**/*.gradle.kts")
+            targetExclude(
+                "**/build/**",
+                "**/generated/**",
+                "**/exported*/**",
+                "**/spmKmpPlugin/**",
+            )
             ktlint(ktlintCliVersion)
         }
 
@@ -43,7 +51,9 @@ subprojects {
             )
             targetExclude(
                 "**/build/**",
-                "**/generated/**"
+                "**/generated/**",
+                "**/exported*/**",
+                "**/spmKmpPlugin/**",
             )
 
             eclipseWtp(EclipseWtpFormatterStep.XML)

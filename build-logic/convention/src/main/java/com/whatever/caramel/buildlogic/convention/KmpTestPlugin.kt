@@ -6,7 +6,6 @@ import com.whatever.caramel.buildlogic.convention.extension.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-@Suppress("unused")
 class KmpTestPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {

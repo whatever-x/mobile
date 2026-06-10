@@ -6,9 +6,11 @@ plugins {
     id("caramel.kotlin.serialization")
 }
 
-android.namespace = "com.whatever.caramel.feature.content.create"
-
 kotlin {
+    android {
+        namespace = "com.whatever.caramel.feature.content.create"
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.domain)

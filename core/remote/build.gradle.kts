@@ -1,3 +1,5 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import java.util.Properties
 
 plugins {
@@ -7,56 +9,54 @@ plugins {
     id("caramel.kotlin.serialization")
     alias(libs.plugins.ksp)
     alias(libs.plugins.kmp.spm)
+    alias(libs.plugins.buildkonfig)
 }
 
-android.namespace = "com.whatever.caramel.core.remote"
+buildkonfig {
+    packageName = "com.whatever.caramel.core.remote"
 
-android {
-    buildFeatures {
-        buildConfig = true
-    }
-
-    buildTypes {
-        val properties = Properties().apply { load(rootProject.file("local.properties").inputStream()) }
-        val debugUrl = "CARAMEL_DEBUG_URL"
-        val releaseUrl = "CARAMEL_RELEASE_URL"
-        val qaUrl = "CARAMEL_QA_URL"
-
-        fun getEnvOrProp(key: String): String = System.getenv(key) ?: properties.getProperty(key)
-
-        getByName("release") {
-            isMinifyEnabled = false
-
-            buildConfigField(
-                "String",
-                "BASE_URL",
-                "\"${getEnvOrProp(key = releaseUrl)}\"",
-            )
+    val properties =
+        Properties().apply {
+            rootProject.file("local.properties").inputStream().use(::load)
         }
+    val requestedTasks =
+        gradle.startParameter.taskNames
+            .joinToString(separator = " ")
+            .lowercase()
+    val flavor =
+        providers.gradleProperty("buildkonfig.flavor").orNull
+            ?: when {
+                "qa" in requestedTasks -> "qa"
+                "release" in requestedTasks -> "release"
+                else -> "debug"
+            }
 
-        getByName("debug") {
-            buildConfigField(
-                "String",
-                "BASE_URL",
-                "\"${properties.getProperty(debugUrl)}\"",
-            )
-        }
+    fun configValue(key: String): String =
+        System.getenv(key)
+            ?: properties.getProperty(key)
+            ?: error("Missing '$key' in local.properties or environment.")
 
-        getByName("qa") {
-            isMinifyEnabled = false
-
-            buildConfigField(
-                "String",
-                "BASE_URL",
-                "\"${getEnvOrProp(key = qaUrl)}\"",
-            )
-        }
+    defaultConfigs {
+        buildConfigField(
+            STRING,
+            "BASE_URL",
+            when (flavor) {
+                "release" -> configValue("CARAMEL_RELEASE_URL")
+                "qa" -> configValue("CARAMEL_QA_URL")
+                else -> configValue("CARAMEL_DEBUG_URL")
+            }.removeSurrounding("\""),
+        )
+        buildConfigField(
+            BOOLEAN,
+            "DEBUG",
+            (flavor != "release").toString(),
+        )
     }
 }
 
 kotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-Xexpect-actual-classes")
+    android {
+        namespace = "com.whatever.caramel.core.remote"
     }
 
     listOf(

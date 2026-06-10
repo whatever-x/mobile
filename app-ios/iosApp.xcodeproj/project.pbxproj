@@ -255,7 +255,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT/..\"\n./gradlew :app:embedAndSignAppleFrameworkForXcode\n";
+			shellScript = "cd \"$SRCROOT/..\"\n./gradlew :compose-app:embedAndSignAppleFrameworkForXcode\n";
 		};
 		BABA8A5E2D7330F300E0C23B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -457,7 +457,7 @@
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../app/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
+					"$(SRCROOT)/../compose-app/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
 				);
 				INFOPLIST_FILE = iosApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Caramel-Dev";
@@ -471,7 +471,7 @@
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
-					app,
+					ComposeApp,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.whatever.caramel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -502,7 +502,7 @@
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../app/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
+					"$(SRCROOT)/../compose-app/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
 				);
 				INFOPLIST_FILE = iosApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Caramel;
@@ -516,7 +516,7 @@
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
-					app,
+					ComposeApp,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.whatever.caramel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -605,7 +605,7 @@
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../app/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
+					"$(SRCROOT)/../compose-app/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
 				);
 				INFOPLIST_FILE = iosApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Caramel-Qa";
@@ -619,7 +619,7 @@
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
-					app,
+					ComposeApp,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.whatever.caramel.qa;
 				PRODUCT_NAME = "$(TARGET_NAME)";

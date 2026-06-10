@@ -6,9 +6,11 @@ plugins {
     id("caramel.kotlin.serialization")
 }
 
-android.namespace = "com.whatever.caramel.feature.calendar"
-
 kotlin {
+    android {
+        namespace = "com.whatever.caramel.feature.calendar"
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.domain)

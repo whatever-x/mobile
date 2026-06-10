@@ -22,13 +22,13 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
-import com.whatever.caramel.core.ui.BuildConfig
+import com.whatever.caramel.core.ui.BuildKonfig
 import com.whatever.caramel.core.ui.admob.GoogleAdBannerType.AnchoredAdaptive.Companion.SCREEN_FULL_WIDTH
 
 actual object GoogleAdUnitIds {
-    actual val TEST_BANNER = BuildConfig.ADMOB_TEST_BANNER_ID
+    actual val TEST_BANNER = BuildKonfig.ADMOB_TEST_BANNER_ID
 
-    actual val HOME_BANNER = BuildConfig.ADMOB_HOME_BANNER_ID
+    actual val HOME_BANNER = BuildKonfig.ADMOB_HOME_BANNER_ID
 }
 
 @Composable

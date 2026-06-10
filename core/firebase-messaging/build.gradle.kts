@@ -11,9 +11,11 @@ plugins {
     alias(libs.plugins.kmp.spm)
 }
 
-android.namespace = "com.whatever.caramel.core.firebaseMessaging"
-
 kotlin {
+    android {
+        namespace = "com.whatever.caramel.core.firebaseMessaging"
+    }
+
     listOf(
         iosX64(),
         iosArm64(),
