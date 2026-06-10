@@ -8,7 +8,6 @@ import com.google.android.gms.ads.MobileAds
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.whatever.caramel.BuildConfig
 import com.whatever.caramel.core.firebaseMessaging.R
 import com.whatever.caramel.di.androidAppModule
 import com.whatever.caramel.di.initKoin
@@ -16,12 +15,12 @@ import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import org.koin.android.ext.koin.androidContext
 
-class CaroApplication : Application() {
+class CaramelApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
         initKoin {
-            androidContext(this@CaroApplication)
+            androidContext(this@CaramelApplication)
             modules(androidAppModule)
         }
 
