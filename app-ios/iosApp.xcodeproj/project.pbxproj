@@ -24,7 +24,6 @@
 		E962CE8E2EE05011008E1284 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E97442F22DF2DB2B00B9CDEE /* GoogleService-Info.plist */; };
 		E972E3D02ED82BB40084F00C /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = E972E3CF2ED82BB40084F00C /* GoogleMobileAds */; };
 		E97442F12DF2DAC400B9CDEE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E97442F02DF2DAC400B9CDEE /* Assets.xcassets */; };
-		E98165282EDF102D0015367C /* Qa.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E98165272EDF102D0015367C /* Qa.xcconfig */; };
 		E987BEB22DEB080E00CE545C /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = E987BEB12DEB080E00CE545C /* FirebaseMessaging */; };
 		E987BEBD2DEB63D200CE545C /* MessagingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E987BEBC2DEB63D200CE545C /* MessagingDelegate.swift */; };
 		E987BEBF2DEB640800CE545C /* NotificationCenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E987BEBE2DEB640800CE545C /* NotificationCenterDelegate.swift */; };
@@ -230,7 +229,6 @@
 			files = (
 				E962CE8D2EE05011008E1284 /* GoogleService-Info-Qa.plist in Resources */,
 				E962CE8E2EE05011008E1284 /* GoogleService-Info.plist in Resources */,
-				E98165282EDF102D0015367C /* Qa.xcconfig in Resources */,
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
 				E97442F12DF2DAC400B9CDEE /* Assets.xcassets in Resources */,
 			);
