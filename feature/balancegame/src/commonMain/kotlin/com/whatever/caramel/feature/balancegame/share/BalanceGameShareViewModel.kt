@@ -34,6 +34,8 @@ class BalanceGameShareViewModel(
             is BalanceGameShareIntent.ClickBackButton -> postSideEffect(BalanceGameShareSideEffect.NavigateToBack)
             is BalanceGameShareIntent.ClickSaveImage -> saveImage(intent.image)
             is BalanceGameShareIntent.ClickShareImage -> shareImage(intent.image)
+            is BalanceGameShareIntent.SaveImagePermissionDenied ->
+                postSideEffect(BalanceGameShareSideEffect.ShowSnackBar.GalleryPermissionRequired)
         }
     }
 
@@ -43,8 +45,13 @@ class BalanceGameShareViewModel(
             reduce { copy(exportInProgress = true) }
             val result = imageShareManager.saveToGallery(image = image, fileName = IMAGE_FILE_NAME)
             reduce { copy(exportInProgress = false) }
-            val message = if (result.isSuccess) "이미지를 저장했어요." else "이미지 저장에 실패했어요."
-            postSideEffect(BalanceGameShareSideEffect.ShowSnackBar(message))
+            val sideEffect =
+                if (result.isSuccess) {
+                    BalanceGameShareSideEffect.ShowSnackBar.ImageSaveSuccess
+                } else {
+                    BalanceGameShareSideEffect.ShowSnackBar.ImageSaveFailure
+                }
+            postSideEffect(sideEffect)
         }
     }
 
@@ -55,7 +62,7 @@ class BalanceGameShareViewModel(
             val result = imageShareManager.shareImage(image = image, fileName = IMAGE_FILE_NAME)
             reduce { copy(exportInProgress = false) }
             if (result.isFailure) {
-                postSideEffect(BalanceGameShareSideEffect.ShowSnackBar("이미지 공유에 실패했어요."))
+                postSideEffect(BalanceGameShareSideEffect.ShowSnackBar.ImageShareFailure)
             }
         }
     }

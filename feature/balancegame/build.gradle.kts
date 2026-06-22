@@ -25,6 +25,8 @@ kotlin {
             implementation(libs.jetbrains.androidx.compose.navigation)
             implementation(libs.kotlinx.date.time)
             implementation(libs.kotlinx.collections.immutable)
+            implementation(libs.moko.permission.compose)
+            implementation(libs.moko.permission.storage)
         }
 
         androidMain.dependencies {

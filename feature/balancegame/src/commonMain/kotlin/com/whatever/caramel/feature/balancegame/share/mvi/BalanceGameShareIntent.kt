@@ -13,4 +13,6 @@ sealed interface BalanceGameShareIntent : UiIntent {
     data class ClickShareImage(
         val image: ImageBitmap,
     ) : BalanceGameShareIntent
+
+    data object SaveImagePermissionDenied : BalanceGameShareIntent
 }

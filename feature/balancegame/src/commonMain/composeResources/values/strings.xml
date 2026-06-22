@@ -10,4 +10,8 @@
 	<string name="balance_game_share_description">우리의 밸런스 게임 결과를\n이미지로 저장하고 공유해보세요!</string>
 	<string name="balance_game_share_save_button">이미지 저장하기</string>
 	<string name="balance_game_share_share_button">공유하기</string>
+	<string name="balance_game_share_save_success">이미지를 저장했어요.</string>
+	<string name="balance_game_share_save_failure">이미지 저장에 실패했어요.</string>
+	<string name="balance_game_share_share_failure">이미지 공유에 실패했어요.</string>
+	<string name="balance_game_share_gallery_permission_required">이미지를 저장하려면 사진 접근 권한이 필요해요.</string>
 </resources>
