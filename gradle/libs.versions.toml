@@ -130,6 +130,7 @@ napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 # Permission
 moko-permission-compose = { group = "dev.icerock.moko", name = "permissions-compose", version.ref = "moko" }
 moko-permission-notifications = { group = "dev.icerock.moko", name = "permissions-notifications", version.ref = "moko" }
+moko-permission-storage = { group = "dev.icerock.moko", name = "permissions-storage", version.ref = "moko" }
 
 # Firebase
 firebase-bom-android = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
