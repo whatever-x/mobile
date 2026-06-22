@@ -34,6 +34,8 @@ class BalanceGameShareViewModel(
             is BalanceGameShareIntent.ClickBackButton -> postSideEffect(BalanceGameShareSideEffect.NavigateToBack)
             is BalanceGameShareIntent.ClickSaveImage -> saveImage(intent.image)
             is BalanceGameShareIntent.ClickShareImage -> shareImage(intent.image)
+            is BalanceGameShareIntent.SaveImagePermissionDenied ->
+                postSideEffect(BalanceGameShareSideEffect.ShowSnackBar("이미지를 저장하려면 사진 접근 권한이 필요해요."))
         }
     }
 
