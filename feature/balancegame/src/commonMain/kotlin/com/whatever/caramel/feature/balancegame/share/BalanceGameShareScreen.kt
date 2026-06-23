@@ -20,13 +20,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import caramel.feature.balancegame.generated.resources.Res
 import caramel.feature.balancegame.generated.resources.balance_game_share_description
+import caramel.feature.balancegame.generated.resources.balance_game_share_photo_permission_dialog_cancel
+import caramel.feature.balancegame.generated.resources.balance_game_share_photo_permission_dialog_message
+import caramel.feature.balancegame.generated.resources.balance_game_share_photo_permission_dialog_settings
+import caramel.feature.balancegame.generated.resources.balance_game_share_photo_permission_dialog_title
 import caramel.feature.balancegame.generated.resources.balance_game_share_save_button
 import caramel.feature.balancegame.generated.resources.balance_game_share_share_button
 import caramel.feature.balancegame.generated.resources.balance_game_share_title
 import com.whatever.caramel.core.designsystem.components.CaramelButton
 import com.whatever.caramel.core.designsystem.components.CaramelButtonSize
 import com.whatever.caramel.core.designsystem.components.CaramelButtonType
+import com.whatever.caramel.core.designsystem.components.CaramelDialog
 import com.whatever.caramel.core.designsystem.components.CaramelTopBar
+import com.whatever.caramel.core.designsystem.components.DefaultCaramelDialogLayout
 import com.whatever.caramel.core.designsystem.foundations.Resources
 import com.whatever.caramel.core.designsystem.themes.CaramelTheme
 import com.whatever.caramel.feature.balancegame.share.capture.capturable
@@ -45,6 +51,21 @@ internal fun BalanceGameShareScreen(
 ) {
     val captureController = rememberCaptureController()
     val coroutineScope = rememberCoroutineScope()
+
+    if (state.isShowPhotoPermissionDialog) {
+        CaramelDialog(
+            show = state.isShowPhotoPermissionDialog,
+            title = stringResource(resource = Res.string.balance_game_share_photo_permission_dialog_title),
+            message = stringResource(resource = Res.string.balance_game_share_photo_permission_dialog_message),
+            mainButtonText = stringResource(resource = Res.string.balance_game_share_photo_permission_dialog_settings),
+            subButtonText = stringResource(resource = Res.string.balance_game_share_photo_permission_dialog_cancel),
+            onDismissRequest = { onIntent(BalanceGameShareIntent.DismissPhotoPermissionDialog) },
+            onMainButtonClick = { onIntent(BalanceGameShareIntent.ClickPhotoPermissionSettingsButton) },
+            onSubButtonClick = { onIntent(BalanceGameShareIntent.DismissPhotoPermissionDialog) },
+        ) {
+            DefaultCaramelDialogLayout()
+        }
+    }
 
     Column(
         modifier =

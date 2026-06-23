@@ -5,6 +5,8 @@ import com.whatever.caramel.core.viewmodel.UiSideEffect
 sealed interface BalanceGameShareSideEffect : UiSideEffect {
     data object NavigateToBack : BalanceGameShareSideEffect
 
+    data object OpenPhotoPermissionSettings : BalanceGameShareSideEffect
+
     sealed interface ShowSnackBar : BalanceGameShareSideEffect {
         data object ImageSaveSuccess : ShowSnackBar
 

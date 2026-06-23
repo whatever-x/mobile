@@ -15,4 +15,8 @@ sealed interface BalanceGameShareIntent : UiIntent {
     ) : BalanceGameShareIntent
 
     data object SaveImagePermissionDenied : BalanceGameShareIntent
+
+    data object DismissPhotoPermissionDialog : BalanceGameShareIntent
+
+    data object ClickPhotoPermissionSettingsButton : BalanceGameShareIntent
 }

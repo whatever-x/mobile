@@ -13,3 +13,5 @@ interface ImageShareManager {
         fileName: String,
     ): Result<Unit>
 }
+
+class PhotoLibraryPermissionDeniedException : Exception("Photo library add permission denied")
