@@ -53,6 +53,7 @@ internal fun BalanceGameShareRoute(
         viewModel.sideEffect.collect { sideEffect ->
             when (sideEffect) {
                 is BalanceGameShareSideEffect.NavigateToBack -> navigateToBack()
+                is BalanceGameShareSideEffect.OpenPhotoPermissionSettings -> permissionsController.openAppSettings()
                 is BalanceGameShareSideEffect.ShowSnackBar -> {
                     val message =
                         when (sideEffect) {

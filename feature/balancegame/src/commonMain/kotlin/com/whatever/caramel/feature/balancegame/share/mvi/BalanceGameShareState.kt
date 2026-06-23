@@ -6,6 +6,7 @@ import com.whatever.caramel.core.viewmodel.UiState
 data class BalanceGameShareState(
     val isLoading: Boolean = false,
     val exportInProgress: Boolean = false,
+    val isShowPhotoPermissionDialog: Boolean = false,
     val question: String = "",
     val myChoice: String = "",
     val partnerChoice: String = "",

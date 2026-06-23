@@ -14,4 +14,10 @@
 	<string name="balance_game_share_save_failure">이미지 저장에 실패했어요.</string>
 	<string name="balance_game_share_share_failure">이미지 공유에 실패했어요.</string>
 	<string name="balance_game_share_gallery_permission_required">이미지를 저장하려면 사진 접근 권한이 필요해요.</string>
+	<string name="balance_game_share_photo_permission_dialog_title">사진 저장 권한이 필요해요</string>
+	<string
+		name="balance_game_share_photo_permission_dialog_message">설정에서 사진 추가 권한을 허용한 뒤 다시 시도해주세요.</string>
+	<string
+		name="balance_game_share_photo_permission_dialog_settings">설정으로 이동</string>
+	<string name="balance_game_share_photo_permission_dialog_cancel">취소</string>
 </resources>

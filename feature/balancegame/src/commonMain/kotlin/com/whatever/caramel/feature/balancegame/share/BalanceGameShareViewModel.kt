@@ -7,6 +7,7 @@ import com.whatever.caramel.core.crashlytics.CaramelCrashlytics
 import com.whatever.caramel.core.domain.vo.user.Gender
 import com.whatever.caramel.core.viewmodel.BaseViewModel
 import com.whatever.caramel.feature.balancegame.share.image.ImageShareManager
+import com.whatever.caramel.feature.balancegame.share.image.PhotoLibraryPermissionDeniedException
 import com.whatever.caramel.feature.balancegame.share.mvi.BalanceGameShareIntent
 import com.whatever.caramel.feature.balancegame.share.mvi.BalanceGameShareSideEffect
 import com.whatever.caramel.feature.balancegame.share.mvi.BalanceGameShareState
@@ -34,6 +35,8 @@ class BalanceGameShareViewModel(
             is BalanceGameShareIntent.ClickBackButton -> postSideEffect(BalanceGameShareSideEffect.NavigateToBack)
             is BalanceGameShareIntent.ClickSaveImage -> saveImage(intent.image)
             is BalanceGameShareIntent.ClickShareImage -> shareImage(intent.image)
+            is BalanceGameShareIntent.DismissPhotoPermissionDialog -> hidePhotoPermissionDialog()
+            is BalanceGameShareIntent.ClickPhotoPermissionSettingsButton -> openPhotoPermissionSettings()
             is BalanceGameShareIntent.SaveImagePermissionDenied ->
                 postSideEffect(BalanceGameShareSideEffect.ShowSnackBar.GalleryPermissionRequired)
         }
@@ -45,13 +48,19 @@ class BalanceGameShareViewModel(
             reduce { copy(exportInProgress = true) }
             val result = imageShareManager.saveToGallery(image = image, fileName = IMAGE_FILE_NAME)
             reduce { copy(exportInProgress = false) }
-            val sideEffect =
-                if (result.isSuccess) {
-                    BalanceGameShareSideEffect.ShowSnackBar.ImageSaveSuccess
-                } else {
-                    BalanceGameShareSideEffect.ShowSnackBar.ImageSaveFailure
+            when {
+                result.isSuccess -> {
+                    postSideEffect(BalanceGameShareSideEffect.ShowSnackBar.ImageSaveSuccess)
                 }
-            postSideEffect(sideEffect)
+
+                result.exceptionOrNull() is PhotoLibraryPermissionDeniedException -> {
+                    reduce { copy(isShowPhotoPermissionDialog = true) }
+                }
+
+                else -> {
+                    postSideEffect(BalanceGameShareSideEffect.ShowSnackBar.ImageSaveFailure)
+                }
+            }
         }
     }
 
@@ -65,6 +74,15 @@ class BalanceGameShareViewModel(
                 postSideEffect(BalanceGameShareSideEffect.ShowSnackBar.ImageShareFailure)
             }
         }
+    }
+
+    private fun hidePhotoPermissionDialog() {
+        reduce { copy(isShowPhotoPermissionDialog = false) }
+    }
+
+    private fun openPhotoPermissionSettings() {
+        reduce { copy(isShowPhotoPermissionDialog = false) }
+        postSideEffect(BalanceGameShareSideEffect.OpenPhotoPermissionSettings)
     }
 
     companion object {
