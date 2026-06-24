@@ -57,6 +57,29 @@ android {
         )
     }
 
+    flavorDimensions += "environment"
+
+    productFlavors {
+        create("dev") {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            resValue("string", "app_name", "Caramel-Dev")
+        }
+
+        create("qa") {
+            dimension = "environment"
+            applicationIdSuffix = ".qa"
+            versionNameSuffix = "-qa"
+            resValue("string", "app_name", "Caramel-Qa")
+        }
+
+        create("prod") {
+            dimension = "environment"
+            resValue("string", "app_name", "Caramel")
+        }
+    }
+
     signingConfigs {
         listOf(getByName("debug"), create("release")).forEach { signingConfig ->
             signingConfig.storeFile = rootProject.file(requiredProperties.getValue(storeFileKey))
@@ -70,8 +93,8 @@ android {
         release {
             isMinifyEnabled = false
             isDebuggable = false
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = "true"
             signingConfig = signingConfigs.getByName("release")
-            resValue("string", "app_name", "Caramel")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -81,20 +104,11 @@ android {
         debug {
             isMinifyEnabled = false
             isDebuggable = true
-            resValue("string", "app_name", "Caramel-Dev")
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = "false"
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
-        }
-
-        maybeCreate("qa").apply {
-            isMinifyEnabled = false
-            isDebuggable = true
-            applicationIdSuffix = ".qa"
-            versionNameSuffix = "-qa"
-            signingConfig = signingConfigs.getByName("release")
-            resValue("string", "app_name", "Caramel-QA")
         }
     }
 }
