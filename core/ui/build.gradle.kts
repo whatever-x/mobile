@@ -3,7 +3,7 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import io.github.frankois944.spmForKmp.swiftPackageConfig
 import io.github.frankois944.spmForKmp.utils.ExperimentalSpmForKmpFeature
-import java.util.Properties
+import org.jetbrains.compose.internal.utils.getLocalProperty
 
 plugins {
     id("caramel.kmp")
@@ -17,21 +17,22 @@ plugins {
 buildkonfig {
     packageName = "com.whatever.caramel.core.ui"
 
-    val properties =
-        Properties().apply {
-            rootProject.file("local.properties").inputStream().use(::load)
-        }
-
     defaultConfigs {
         buildConfigField(
             STRING,
             "ADMOB_TEST_BANNER_ID",
-            properties.getProperty("ADMOB_TEST_BANNER_ID").removeSurrounding("\""),
+            rootProject
+                .getLocalProperty("ADMOB_TEST_BANNER_ID")
+                ?.removeSurrounding("\"")
+                ?: error("Missing 'ADMOB_TEST_BANNER_ID' in local.properties."),
         )
         buildConfigField(
             STRING,
             "ADMOB_HOME_BANNER_ID",
-            properties.getProperty("ADMOB_HOME_BANNER_ID").removeSurrounding("\""),
+            rootProject
+                .getLocalProperty("ADMOB_HOME_BANNER_ID")
+                ?.removeSurrounding("\"")
+                ?: error("Missing 'ADMOB_HOME_BANNER_ID' in local.properties."),
         )
     }
 }
