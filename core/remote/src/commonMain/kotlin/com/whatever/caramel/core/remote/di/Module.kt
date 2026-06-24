@@ -25,6 +25,7 @@ import com.whatever.caramel.core.remote.datasource.RemoteUserDataSourceImpl
 import com.whatever.caramel.core.remote.di.qualifier.AuthClient
 import com.whatever.caramel.core.remote.di.qualifier.DefaultClient
 import com.whatever.caramel.core.remote.network.HttpClientFactory
+import com.whatever.caramel.core.remote.network.config.NetworkConfig
 import com.whatever.caramel.core.remote.network.config.addDeviceIdHeader
 import com.whatever.caramel.core.remote.network.config.addTimeZoneHeader
 import com.whatever.caramel.core.remote.network.config.caramelDefaultRequest
@@ -40,17 +41,23 @@ import org.koin.dsl.module
 
 expect val networkClientEngineModule: Module
 expect val deviceIdModule: Module
+expect val networkConfigModule: Module
 
 val networkModule =
     module {
-        single { HttpClientFactory.create(engine = get()) }
+        single {
+            HttpClientFactory.create(
+                engine = get(),
+                isDebug = get<NetworkConfig>().isDebug,
+            )
+        }
 
         single(DefaultClient) {
             get<HttpClient>().config {
                 addDeviceIdHeader(get())
                 addTimeZoneHeader()
                 caramelResponseValidator()
-                caramelDefaultRequest()
+                caramelDefaultRequest(baseUrl = get<NetworkConfig>().baseUrl)
             }
         }
 

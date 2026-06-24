@@ -5,9 +5,9 @@ import io.ktor.client.plugins.DefaultRequest
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 
-internal fun HttpClientConfig<*>.caramelDefaultRequest() {
+internal fun HttpClientConfig<*>.caramelDefaultRequest(baseUrl: String) {
     install(DefaultRequest) {
-        url(NetworkConfig.BASE_URL)
+        url(baseUrl)
         contentType(ContentType.Application.Json)
     }
 }
