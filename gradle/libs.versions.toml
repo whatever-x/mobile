@@ -52,7 +52,7 @@ firebase = "34.5.0"
 firebase-crahslytics = "3.0.6"
 
 # Auth
-kakao = "2.22.0"
+kakao = "2.24.0"
 
 # Deep Link
 apps-flyer = "6.17.3"
