@@ -7,18 +7,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.whatever.caramel.core.designsystem.util.HapticController
 import com.whatever.caramel.core.designsystem.util.HapticStyle
 import com.whatever.caramel.feature.profile.edit.mvi.ProfileEditSideEffect
-import org.koin.compose.getKoin
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun ProfileEditRoute(
     viewModel: ProfileEditViewModel = koinViewModel(),
+    hapticController: HapticController = koinInject(),
     popBackStack: () -> Unit,
     showErrorDialog: (String, String?) -> Unit,
     showErrorToast: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val hapticController: HapticController = getKoin().get()
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { sideEffect ->

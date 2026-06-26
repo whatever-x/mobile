@@ -1,10 +1,8 @@
 @file:OptIn(ExperimentalSpmForKmpFeature::class)
 
-import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import io.github.frankois944.spmForKmp.swiftPackageConfig
 import io.github.frankois944.spmForKmp.utils.ExperimentalSpmForKmpFeature
 import java.net.URI
-import java.util.Properties
 
 plugins {
     id("caramel.kmp")
@@ -14,24 +12,6 @@ plugins {
     id("caramel.kotlin.serialization")
     id("caramel.kmp.test")
     alias(libs.plugins.kmp.spm)
-    alias(libs.plugins.buildkonfig)
-}
-
-buildkonfig {
-    packageName = "com.whatever.caramel.feature.login"
-
-    val properties =
-        Properties().apply {
-            rootProject.file("local.properties").inputStream().use(::load)
-        }
-
-    defaultConfigs {
-        buildConfigField(
-            STRING,
-            "KAKAO_NATIVE_APP_KEY",
-            properties.getProperty("KAKAO_NATIVE_APP_KEY").removeSurrounding("\""),
-        )
-    }
 }
 
 kotlin {

@@ -15,6 +15,7 @@ import com.whatever.caramel.core.domain.di.useCaseModule
 import com.whatever.caramel.core.firebaseMessaging.di.firebaseMessagingModule
 import com.whatever.caramel.core.remote.di.deviceIdModule
 import com.whatever.caramel.core.remote.di.networkClientEngineModule
+import com.whatever.caramel.core.remote.di.networkConfigModule
 import com.whatever.caramel.core.remote.di.networkModule
 import com.whatever.caramel.core.remote.di.remoteDataSourceModule
 import com.whatever.caramel.feature.balancegame.di.balanceGameFeatureModule
@@ -51,6 +52,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             // Remote Module
             networkModule,
             networkClientEngineModule,
+            networkConfigModule,
             networkInterceptorModule,
             remoteDataSourceModule,
             deviceIdModule,

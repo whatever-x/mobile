@@ -1,6 +1,5 @@
 package com.whatever.caramel.core.remote.network
 
-import com.whatever.caramel.core.remote.network.config.NetworkConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.HttpTimeout
@@ -13,7 +12,10 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 object HttpClientFactory {
-    fun create(engine: HttpClientEngine): HttpClient =
+    fun create(
+        engine: HttpClientEngine,
+        isDebug: Boolean,
+    ): HttpClient =
         HttpClient(engine) {
             expectSuccess = true
 
@@ -33,7 +35,7 @@ object HttpClientFactory {
             }
             install(Logging) {
                 logger = Logger.SIMPLE
-                level = if (NetworkConfig.isDebug) LogLevel.ALL else LogLevel.NONE
+                level = if (isDebug) LogLevel.ALL else LogLevel.NONE
             }
         }
 }

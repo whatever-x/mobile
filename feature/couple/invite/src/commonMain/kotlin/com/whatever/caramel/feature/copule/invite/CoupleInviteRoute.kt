@@ -9,15 +9,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.whatever.caramel.core.designsystem.components.LocalSnackbarHostState
 import com.whatever.caramel.core.designsystem.components.showSnackbarMessage
 import com.whatever.caramel.feature.copule.invite.clipboard.createPlatformClipEntry
+import com.whatever.caramel.feature.copule.invite.config.InviteUrlProvider
 import com.whatever.caramel.feature.copule.invite.mvi.CoupleInviteSideEffect
 import com.whatever.caramel.feature.copule.invite.share.ShareService
-import org.koin.compose.getKoin
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun CoupleInviteRoute(
     viewModel: CoupleInviteViewModel = koinViewModel(),
-    shareService: ShareService = getKoin().get(),
+    shareService: ShareService = koinInject(),
+    inviteUrlProvider: InviteUrlProvider = koinInject(),
     navigateToConnectCouple: () -> Unit,
     navigateToLogin: () -> Unit,
     showErrorDialog: (String, String?) -> Unit,
@@ -49,7 +51,7 @@ internal fun CoupleInviteRoute(
                 is CoupleInviteSideEffect.ShareOfInvite -> {
                     shareService.shareContents(
                         title = "연인이 카라멜에 초대했어요!\n초대를 수락하고 일정과 메모를 공유해보세요",
-                        url = "https://caramel.onelink.me/7nAT/2l5wk4ab?p1=${sideEffect.inviteCode}",
+                        url = inviteUrlProvider.createInviteUrl(inviteCode = sideEffect.inviteCode),
                     )
                 }
                 is CoupleInviteSideEffect.ShowErrorDialog -> showErrorDialog(sideEffect.message, sideEffect.description)

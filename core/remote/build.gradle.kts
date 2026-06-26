@@ -1,6 +1,5 @@
-import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
-import java.util.Properties
+import org.jetbrains.compose.internal.utils.getLocalProperty
 
 plugins {
     id("caramel.kmp")
@@ -15,42 +14,44 @@ plugins {
 buildkonfig {
     packageName = "com.whatever.caramel.core.remote"
 
-    val properties =
-        Properties().apply {
-            rootProject.file("local.properties").inputStream().use(::load)
+    defaultConfigs { }
+
+    /**
+     * :core:remote:compileAndroidMain 같은 flavor가 없는 Android target 컴파일을 위한 기본값입니다.
+     * 실제 앱 variant 빌드에서는 아래 flavor별 targetConfigs 값으로 대체됩니다.
+     *
+     * @author 함건형
+     */
+    targetConfigs {
+        create("android") {
+            buildConfigField(
+                STRING,
+                "CARAMEL_BASE_URL",
+                rootProject
+                    .getLocalProperty("CARAMEL_DEBUG_URL")
+                    ?.removeSurrounding("\"")
+                    ?: error("Missing 'CARAMEL_DEBUG_URL' in local.properties."),
+            )
         }
-    val requestedTasks =
-        gradle.startParameter.taskNames
-            .joinToString(separator = " ")
-            .lowercase()
-    val flavor =
-        providers.gradleProperty("buildkonfig.flavor").orNull
-            ?: when {
-                "qa" in requestedTasks -> "qa"
-                "release" in requestedTasks -> "release"
-                else -> "debug"
+    }
+
+    mapOf(
+        "dev" to "CARAMEL_DEBUG_URL",
+        "qa" to "CARAMEL_DEBUG_URL",
+        "prod" to "CARAMEL_RELEASE_URL",
+    ).forEach { (flavor, urlKey) ->
+        targetConfigs(flavor) {
+            create("android") {
+                buildConfigField(
+                    STRING,
+                    "CARAMEL_BASE_URL",
+                    rootProject
+                        .getLocalProperty(urlKey)
+                        ?.removeSurrounding("\"")
+                        ?: error("Missing '$urlKey' in local.properties."),
+                )
             }
-
-    fun configValue(key: String): String =
-        System.getenv(key)
-            ?: properties.getProperty(key)
-            ?: error("Missing '$key' in local.properties or environment.")
-
-    defaultConfigs {
-        buildConfigField(
-            STRING,
-            "BASE_URL",
-            when (flavor) {
-                "release" -> configValue("CARAMEL_RELEASE_URL")
-                "qa" -> configValue("CARAMEL_QA_URL")
-                else -> configValue("CARAMEL_DEBUG_URL")
-            }.removeSurrounding("\""),
-        )
-        buildConfigField(
-            BOOLEAN,
-            "DEBUG",
-            (flavor != "release").toString(),
-        )
+        }
     }
 }
 

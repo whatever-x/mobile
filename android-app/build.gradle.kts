@@ -1,4 +1,4 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import org.jetbrains.compose.internal.utils.getLocalProperty
 
 plugins {
     id("caramel.android.application")
@@ -7,26 +7,29 @@ plugins {
 }
 
 android {
-    val localProperties = gradleLocalProperties(rootDir, providers)
     val admobAppIdKey = "ADMOB_APP_ID"
     val appsFlyerKey = "APPS_FLYER_KEY"
-    val kakaoNativeAppKey = "KAKAO_NATIVE_APP_KEY"
+    val kakaoNativeAppKeyByFlavor =
+        mapOf(
+            "dev" to "KAKAO_NATIVE_APP_KEY_DEV",
+            "qa" to "KAKAO_NATIVE_APP_KEY_QA",
+            "prod" to "KAKAO_NATIVE_APP_KEY_PROD",
+        )
     val storeFileKey = "STORE_FILE"
     val keyAliasKey = "KEY_ALIAS"
     val keyPasswordKey = "KEY_PASSWORD"
     val storePasswordKey = "STORE_PASSWORD"
-    val requiredProperties =
-        listOf(
-            admobAppIdKey,
-            appsFlyerKey,
-            kakaoNativeAppKey,
-            storeFileKey,
-            keyAliasKey,
-            keyPasswordKey,
-            storePasswordKey,
-        ).associateWith { key ->
-            localProperties.getProperty(key) ?: error("Missing '$key' in local.properties.")
-        }
+
+    fun getRequiredLocalProperty(key: String): String =
+        rootProject
+            .getLocalProperty(key)
+            ?.removeSurrounding("\"")
+            ?: error("Missing '$key' in local.properties.")
+
+    fun getKakaoNativeAppKey(flavor: String): String {
+        val key = kakaoNativeAppKeyByFlavor.getValue(flavor)
+        return getRequiredLocalProperty(key)
+    }
 
     namespace = "com.whatever.caramel"
 
@@ -40,29 +43,60 @@ android {
             libs.versions.version.name
                 .get()
 
-        manifestPlaceholders[admobAppIdKey] =
-            requiredProperties.getValue(admobAppIdKey).removeSurrounding("\"")
-        manifestPlaceholders[kakaoNativeAppKey] =
-            requiredProperties.getValue(kakaoNativeAppKey).removeSurrounding("\"")
+        manifestPlaceholders[admobAppIdKey] = getRequiredLocalProperty(admobAppIdKey)
 
         buildConfigField(
             "String",
             appsFlyerKey,
             "\"${
-                requiredProperties.getValue(appsFlyerKey)
-                    .removeSurrounding("\"")
+                getRequiredLocalProperty(appsFlyerKey)
                     .replace("\\", "\\\\")
                     .replace("\"", "\\\"")
             }\"",
         )
     }
 
+    flavorDimensions += "environment"
+
+    productFlavors {
+        create("dev") {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            resValue("string", "app_name", "Caramel-Dev")
+            manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] = getKakaoNativeAppKey("dev")
+            manifestPlaceholders["ONELINK_URI_SCHEME"] = "carameldev"
+            manifestPlaceholders["ONELINK_PATH_PREFIX"] = "/lUSb"
+            manifestPlaceholders["INVITE_ONELINK_URL"] = "https://caramel.onelink.me/lUSb/couple-invite"
+        }
+
+        create("qa") {
+            dimension = "environment"
+            applicationIdSuffix = ".qa"
+            versionNameSuffix = "-qa"
+            resValue("string", "app_name", "Caramel-Qa")
+            manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] = getKakaoNativeAppKey("qa")
+            manifestPlaceholders["ONELINK_URI_SCHEME"] = "caramelqa"
+            manifestPlaceholders["ONELINK_PATH_PREFIX"] = "/WjZR"
+            manifestPlaceholders["INVITE_ONELINK_URL"] = "https://caramel.onelink.me/WjZR/couple-invite"
+        }
+
+        create("prod") {
+            dimension = "environment"
+            resValue("string", "app_name", "Caramel")
+            manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] = getKakaoNativeAppKey("prod")
+            manifestPlaceholders["ONELINK_URI_SCHEME"] = "caramel"
+            manifestPlaceholders["ONELINK_PATH_PREFIX"] = "/7nAT"
+            manifestPlaceholders["INVITE_ONELINK_URL"] = "https://caramel.onelink.me/7nAT/2l5wk4ab"
+        }
+    }
+
     signingConfigs {
         listOf(getByName("debug"), create("release")).forEach { signingConfig ->
-            signingConfig.storeFile = rootProject.file(requiredProperties.getValue(storeFileKey))
-            signingConfig.keyAlias = requiredProperties.getValue(keyAliasKey)
-            signingConfig.keyPassword = requiredProperties.getValue(keyPasswordKey)
-            signingConfig.storePassword = requiredProperties.getValue(storePasswordKey)
+            signingConfig.storeFile = rootProject.file(getRequiredLocalProperty(storeFileKey))
+            signingConfig.keyAlias = getRequiredLocalProperty(keyAliasKey)
+            signingConfig.keyPassword = getRequiredLocalProperty(keyPasswordKey)
+            signingConfig.storePassword = getRequiredLocalProperty(storePasswordKey)
         }
     }
 
@@ -70,8 +104,8 @@ android {
         release {
             isMinifyEnabled = false
             isDebuggable = false
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = "true"
             signingConfig = signingConfigs.getByName("release")
-            resValue("string", "app_name", "Caramel")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -81,20 +115,11 @@ android {
         debug {
             isMinifyEnabled = false
             isDebuggable = true
-            resValue("string", "app_name", "Caramel-Dev")
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = "false"
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
-        }
-
-        maybeCreate("qa").apply {
-            isMinifyEnabled = false
-            isDebuggable = true
-            applicationIdSuffix = ".qa"
-            versionNameSuffix = "-qa"
-            signingConfig = signingConfigs.getByName("release")
-            resValue("string", "app_name", "Caramel-QA")
         }
     }
 }
