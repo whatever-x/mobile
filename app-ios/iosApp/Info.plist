@@ -4,6 +4,10 @@
 <dict>
 	<key>AppsFlyerKey</key>
 	<string>$(APPS_FLYER_KEY)</string>
+	<key>AppsFlyerAppID</key>
+	<string>$(APPS_FLYER_APP_ID)</string>
+	<key>InviteOneLinkUrl</key>
+	<string>$(INVITE_ONELINK_URL)</string>
 	<key>GADApplicationIdentifier</key>
 	<string>$(GOOGLE_ADMOB_APP_ID)</string>
 	<key>SKAdNetworkItems</key>
@@ -244,7 +248,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>caramel</string>
+				<string>$(ONELINK_URI_SCHEME)</string>
 			</array>
 		</dict>
 	</array>

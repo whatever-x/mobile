@@ -35,6 +35,9 @@
 		<meta-data
 			android:name="com.whatever.caramel.KAKAO_NATIVE_APP_KEY"
 			android:value="${KAKAO_NATIVE_APP_KEY}" />
+		<meta-data
+			android:name="com.whatever.caramel.INVITE_ONELINK_URL"
+			android:value="${INVITE_ONELINK_URL}" />
 
 		<activity android:exported="true"
 			android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mnc|colorMode|density|fontScale|fontWeightAdjustment|keyboard|layoutDirection|locale|mcc|navigation|smallestScreenSize|touchscreen|uiMode"
@@ -51,7 +54,8 @@
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
 
-				<data android:scheme="caramel" android:host="onelink" />
+				<data android:scheme="${ONELINK_URI_SCHEME}"
+					android:host="onelink" />
 			</intent-filter>
 
 			<intent-filter android:autoVerify="true">
@@ -60,7 +64,7 @@
 				<category android:name="android.intent.category.BROWSABLE" />
 
 				<data android:scheme="https" android:host="caramel.onelink.me"
-					android:pathPrefix="/7nAT" />
+					android:pathPrefix="${ONELINK_PATH_PREFIX}" />
 			</intent-filter>
 		</activity>
 

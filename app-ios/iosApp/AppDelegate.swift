@@ -63,7 +63,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             fatalError("❌ Apps Flyer App Key is Not Found")
         }
-        AppsFlyerLib.shared().appleAppID = "6745321351"
+        if let appsFlyerAppID = Bundle.main.object(forInfoDictionaryKey: "AppsFlyerAppID") as? String {
+            AppsFlyerLib.shared().appleAppID = appsFlyerAppID
+        } else {
+            fatalError("❌ Apps Flyer App ID is Not Found")
+        }
         AppsFlyerLib.shared().delegate = self
         AppsFlyerLib.shared().deepLinkDelegate = self
         AppsFlyerLib.shared().waitForATTUserAuthorization(timeoutInterval: 60)

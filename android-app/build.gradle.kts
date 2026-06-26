@@ -65,6 +65,9 @@ android {
             versionNameSuffix = "-dev"
             resValue("string", "app_name", "Caramel-Dev")
             manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] = getKakaoNativeAppKey("dev")
+            manifestPlaceholders["ONELINK_URI_SCHEME"] = "carameldev"
+            manifestPlaceholders["ONELINK_PATH_PREFIX"] = "/lUSb"
+            manifestPlaceholders["INVITE_ONELINK_URL"] = "https://caramel.onelink.me/lUSb/couple-invite"
         }
 
         create("qa") {
@@ -73,12 +76,18 @@ android {
             versionNameSuffix = "-qa"
             resValue("string", "app_name", "Caramel-Qa")
             manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] = getKakaoNativeAppKey("qa")
+            manifestPlaceholders["ONELINK_URI_SCHEME"] = "caramelqa"
+            manifestPlaceholders["ONELINK_PATH_PREFIX"] = "/WjZR"
+            manifestPlaceholders["INVITE_ONELINK_URL"] = "https://caramel.onelink.me/WjZR/couple-invite"
         }
 
         create("prod") {
             dimension = "environment"
             resValue("string", "app_name", "Caramel")
             manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] = getKakaoNativeAppKey("prod")
+            manifestPlaceholders["ONELINK_URI_SCHEME"] = "caramel"
+            manifestPlaceholders["ONELINK_PATH_PREFIX"] = "/7nAT"
+            manifestPlaceholders["INVITE_ONELINK_URL"] = "https://caramel.onelink.me/7nAT/2l5wk4ab"
         }
     }
 
