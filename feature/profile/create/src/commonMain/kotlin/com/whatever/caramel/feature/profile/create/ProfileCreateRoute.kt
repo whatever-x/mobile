@@ -17,7 +17,7 @@ import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.PermissionsControllerFactory
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.getKoin
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -29,13 +29,13 @@ internal fun ProfileCreateRoute(
         koinViewModel {
             parametersOf(permissionsControllerFactory.createPermissionsController())
         },
+    hapticController: HapticController = koinInject(),
     navigateToLogin: () -> Unit,
     navigateToStartDestination: (UserStatus) -> Unit,
     showErrorToast: (String) -> Unit,
     showErrorDialog: (String, String?) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val hapticController: HapticController = getKoin().get()
     val urlHandler = LocalUriHandler.current
     val privacyPolicyUrl = stringResource(Resources.String.privacy_policy_url)
     val termsOfServiceUrl = stringResource(Resources.String.terms_of_service_url)
